@@ -70,7 +70,7 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -893,7 +893,7 @@ drop table store_sales if exists cascade;</stringProp>
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="analyze" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="analyze" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="analyze table customer_address compute statistics;" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -1842,7 +1842,76 @@ LIMIT 100</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q11.sql-- 
 
-with year_total as ( select c_customer_id customer_id ,c_first_name customer_first_name ,c_last_name customer_last_name ,c_preferred_cust_flag customer_preferred_cust_flag ,c_birth_country customer_birth_country ,c_login customer_login ,c_email_address customer_email_address ,d_year dyear ,sum(ss_ext_list_price-ss_ext_discount_amt) year_total ,&apos;s&apos; sale_type from customer, store_sales, date_dim where c_customer_sk = ss_customer_sk and ss_sold_date_sk = d_date_sk group by c_customer_id ,c_first_name ,c_last_name ,c_preferred_cust_flag ,c_birth_country ,c_login ,c_email_address ,d_year union all select c_customer_id customer_id ,c_first_name customer_first_name ,c_last_name customer_last_name ,c_preferred_cust_flag customer_preferred_cust_flag ,c_birth_country customer_birth_country ,c_login customer_login ,c_email_address customer_email_address ,d_year dyear ,sum(ws_ext_list_price-ws_ext_discount_amt) year_total ,&apos;w&apos; sale_type from customer, web_sales, date_dim where c_customer_sk = ws_bill_customer_sk and ws_sold_date_sk = d_date_sk group by c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, c_birth_country, c_login, c_email_address, d_year) select t_s_secyear.customer_id ,t_s_secyear.customer_first_name ,t_s_secyear.customer_last_name ,t_s_secyear.customer_preferred_cust_flag from year_total t_s_firstyear ,year_total t_s_secyear ,year_total t_w_firstyear ,year_total t_w_secyear where t_s_secyear.customer_id = t_s_firstyear.customer_id and t_s_firstyear.customer_id = t_w_secyear.customer_id and t_s_firstyear.customer_id = t_w_firstyear.customer_id and t_s_firstyear.sale_type = &apos;s&apos; and t_w_firstyear.sale_type = &apos;w&apos; and t_s_secyear.sale_type = &apos;s&apos; and t_w_secyear.sale_type = &apos;w&apos; and t_s_firstyear.dyear = 2001 and t_s_secyear.dyear = 2001+1 and t_w_firstyear.dyear = 2001 and t_w_secyear.dyear = 2001+1 and t_s_firstyear.year_total &gt; 0 and t_w_firstyear.year_total &gt; 0 and case when t_w_firstyear.year_total &gt; 0 then t_w_secyear.year_total / t_w_firstyear.year_total else 0.0 end &gt; case when t_s_firstyear.year_total &gt; 0 then t_s_secyear.year_total / t_s_firstyear.year_total else 0.0 end order by t_s_secyear.customer_id ,t_s_secyear.customer_first_name ,t_s_secyear.customer_last_name , t_s_secyear.customer_preferred_cust_flag LIMIT 100</stringProp>
+with year_total as (
+ select c_customer_id customer_id
+       ,c_first_name customer_first_name
+       ,c_last_name customer_last_name
+       ,c_preferred_cust_flag customer_preferred_cust_flag
+       ,c_birth_country customer_birth_country
+       ,c_login customer_login
+       ,c_email_address customer_email_address
+       ,d_year dyear
+       ,sum(ss_ext_list_price-ss_ext_discount_amt) year_total
+       ,&apos;s&apos; sale_type
+ from customer, store_sales, date_dim
+ where c_customer_sk = ss_customer_sk
+   and ss_sold_date_sk = d_date_sk
+ group by c_customer_id
+         ,c_first_name
+         ,c_last_name
+         ,c_preferred_cust_flag
+         ,c_birth_country
+         ,c_login
+         ,c_email_address
+         ,d_year
+ union all
+ select c_customer_id customer_id
+       ,c_first_name customer_first_name
+       ,c_last_name customer_last_name
+       ,c_preferred_cust_flag customer_preferred_cust_flag
+       ,c_birth_country customer_birth_country
+       ,c_login customer_login
+       ,c_email_address customer_email_address
+       ,d_year dyear
+       ,sum(ws_ext_list_price-ws_ext_discount_amt) year_total
+       ,&apos;w&apos; sale_type
+ from customer, web_sales, date_dim
+ where c_customer_sk = ws_bill_customer_sk
+   and ws_sold_date_sk = d_date_sk
+ group by
+    c_customer_id, c_first_name, c_last_name, c_preferred_cust_flag, c_birth_country,
+    c_login, c_email_address, d_year)
+ select
+    t_s_secyear.customer_id
+   ,t_s_secyear.customer_first_name
+   ,t_s_secyear.customer_last_name
+   ,t_s_secyear.customer_preferred_cust_flag
+ from year_total t_s_firstyear
+     ,year_total t_s_secyear
+     ,year_total t_w_firstyear
+     ,year_total t_w_secyear
+ where t_s_secyear.customer_id = t_s_firstyear.customer_id
+         and t_s_firstyear.customer_id = t_w_secyear.customer_id
+         and t_s_firstyear.customer_id = t_w_firstyear.customer_id
+         and t_s_firstyear.sale_type = &apos;s&apos;
+         and t_w_firstyear.sale_type = &apos;w&apos;
+         and t_s_secyear.sale_type = &apos;s&apos;
+         and t_w_secyear.sale_type = &apos;w&apos;
+         and t_s_firstyear.dyear = 2001
+         and t_s_secyear.dyear = 2001+1
+         and t_w_firstyear.dyear = 2001
+         and t_w_secyear.dyear = 2001+1
+         and t_s_firstyear.year_total &gt; 0
+         and t_w_firstyear.year_total &gt; 0
+         and case when t_w_firstyear.year_total &gt; 0 then t_w_secyear.year_total / t_w_firstyear.year_total else 0.0 end
+             &gt; case when t_s_firstyear.year_total &gt; 0 then t_s_secyear.year_total / t_s_firstyear.year_total else 0.0 end
+ order by 
+         t_s_secyear.customer_id
+         ,t_s_secyear.customer_first_name
+         ,t_s_secyear.customer_last_name
+         ,
+t_s_secyear.customer_preferred_cust_flag
+ LIMIT 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -1856,7 +1925,24 @@ with year_total as ( select c_customer_id customer_id ,c_first_name customer_fir
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q12.sql-- 
 
-select i_item_id, i_item_desc, i_category, i_class, i_current_price, sum(ws_ext_sales_price) as itemrevenue, sum(ws_ext_sales_price)*100/sum(sum(ws_ext_sales_price)) over (partition by i_class) as revenueratio from web_sales, item, date_dim where ws_item_sk = i_item_sk and i_category in (&apos;Sports&apos;, &apos;Books&apos;, &apos;Home&apos;) and ws_sold_date_sk = d_date_sk and d_date between cast(&apos;1999-02-22&apos; as date) and (cast(&apos;1999-02-22&apos; as date) + interval &apos;30&apos; day) group by i_item_id, i_item_desc, i_category, i_class, i_current_price order by i_category, i_class, i_item_id, i_item_desc, revenueratio LIMIT 100</stringProp>
+ select i_item_id,
+  i_item_desc, i_category, i_class, i_current_price,
+  sum(ws_ext_sales_price) as itemrevenue,
+  sum(ws_ext_sales_price)*100/sum(sum(ws_ext_sales_price)) over
+          (partition by i_class) as revenueratio
+ from
+	web_sales, item, date_dim
+ where
+	ws_item_sk = i_item_sk
+  	and i_category in (&apos;Sports&apos;, &apos;Books&apos;, &apos;Home&apos;)
+  	and ws_sold_date_sk = d_date_sk
+	and d_date between cast(&apos;1999-02-22&apos; as date)
+				and (cast(&apos;1999-02-22&apos; as date) + interval &apos;30&apos; day)
+ group by
+	i_item_id, i_item_desc, i_category, i_class, i_current_price
+ order by
+	i_category, i_class, i_item_id, i_item_desc, revenueratio
+ LIMIT 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -1870,7 +1956,54 @@ select i_item_id, i_item_desc, i_category, i_class, i_current_price, sum(ws_ext_
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q13.sql-- 
 
-select avg(ss_quantity) avg_qu ,avg(ss_ext_sales_price) avg_ext_sales ,avg(ss_ext_wholesale_cost) ave_ext_whole ,sum(ss_ext_wholesale_cost) sum_ext_whole from store_sales ,store ,customer_demographics ,household_demographics ,customer_address ,date_dim where s_store_sk = ss_store_sk and ss_sold_date_sk = d_date_sk and d_year = 2001 and((ss_hdemo_sk=hd_demo_sk and cd_demo_sk = ss_cdemo_sk and cd_marital_status = &apos;M&apos; and cd_education_status = &apos;Advanced Degree&apos; and ss_sales_price between 100.00 and 150.00 and hd_dep_count = 3 )or (ss_hdemo_sk=hd_demo_sk and cd_demo_sk = ss_cdemo_sk and cd_marital_status = &apos;S&apos; and cd_education_status = &apos;College&apos; and ss_sales_price between 50.00 and 100.00 and hd_dep_count = 1 ) or (ss_hdemo_sk=hd_demo_sk and cd_demo_sk = ss_cdemo_sk and cd_marital_status = &apos;W&apos; and cd_education_status = &apos;2 yr Degree&apos; and ss_sales_price between 150.00 and 200.00 and hd_dep_count = 1 )) and((ss_addr_sk = ca_address_sk and ca_country = &apos;United States&apos; and ca_state in (&apos;TX&apos;, &apos;OH&apos;, &apos;TX&apos;) and ss_net_profit between 100 and 200 ) or (ss_addr_sk = ca_address_sk and ca_country = &apos;United States&apos; and ca_state in (&apos;OR&apos;, &apos;NM&apos;, &apos;KY&apos;) and ss_net_profit between 150 and 300 ) or (ss_addr_sk = ca_address_sk and ca_country = &apos;United States&apos; and ca_state in (&apos;VA&apos;, &apos;TX&apos;, &apos;MS&apos;) and ss_net_profit between 50 and 250 ))</stringProp>
+select avg(ss_quantity)	avg_qu
+       ,avg(ss_ext_sales_price)	avg_ext_sales
+       ,avg(ss_ext_wholesale_cost)	ave_ext_whole
+       ,sum(ss_ext_wholesale_cost)	sum_ext_whole
+ from store_sales
+     ,store
+     ,customer_demographics
+     ,household_demographics
+     ,customer_address
+     ,date_dim
+ where s_store_sk = ss_store_sk
+ and  ss_sold_date_sk = d_date_sk and d_year = 2001
+ and((ss_hdemo_sk=hd_demo_sk
+  and cd_demo_sk = ss_cdemo_sk
+  and cd_marital_status = &apos;M&apos;
+  and cd_education_status = &apos;Advanced Degree&apos;
+  and ss_sales_price between 100.00 and 150.00
+  and hd_dep_count = 3
+     )or
+     (ss_hdemo_sk=hd_demo_sk
+  and cd_demo_sk = ss_cdemo_sk
+  and cd_marital_status = &apos;S&apos;
+  and cd_education_status = &apos;College&apos;
+  and ss_sales_price between 50.00 and 100.00
+  and hd_dep_count = 1
+     ) or
+     (ss_hdemo_sk=hd_demo_sk
+  and cd_demo_sk = ss_cdemo_sk
+  and cd_marital_status = &apos;W&apos;
+  and cd_education_status = &apos;2 yr Degree&apos;
+  and ss_sales_price between 150.00 and 200.00
+  and hd_dep_count = 1
+     ))
+ and((ss_addr_sk = ca_address_sk
+  and ca_country = &apos;United States&apos;
+  and ca_state in (&apos;TX&apos;, &apos;OH&apos;, &apos;TX&apos;)
+  and ss_net_profit between 100 and 200
+     ) or
+     (ss_addr_sk = ca_address_sk
+  and ca_country = &apos;United States&apos;
+  and ca_state in (&apos;OR&apos;, &apos;NM&apos;, &apos;KY&apos;)
+  and ss_net_profit between 150 and 300
+     ) or
+     (ss_addr_sk = ca_address_sk
+  and ca_country = &apos;United States&apos;
+  and ca_state in (&apos;VA&apos;, &apos;TX&apos;, &apos;MS&apos;)
+  and ss_net_profit between 50 and 250
+     ));</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2051,7 +2184,19 @@ with cross_items as
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q15.sql-- 
 
-select ca_zip, sum(cs_sales_price) sum_price from catalog_sales, customer, customer_address, date_dim where cs_bill_customer_sk = c_customer_sk and c_current_addr_sk = ca_address_sk and ( substr(ca_zip,1,5) in (&apos;85669&apos;, &apos;86197&apos;,&apos;88274&apos;,&apos;83405&apos;,&apos;86475&apos;, &apos;85392&apos;, &apos;85460&apos;, &apos;80348&apos;, &apos;81792&apos;) or ca_state in (&apos;CA&apos;,&apos;WA&apos;,&apos;GA&apos;) or cs_sales_price &gt; 500) and cs_sold_date_sk = d_date_sk and d_qoy = 2 and d_year = 2001 group by ca_zip order by ca_zip limit 100</stringProp>
+ select ca_zip, sum(cs_sales_price) sum_price
+ from catalog_sales, customer, customer_address, date_dim
+ where cs_bill_customer_sk = c_customer_sk
+ 	and c_current_addr_sk = ca_address_sk
+ 	and ( substr(ca_zip,1,5) in (&apos;85669&apos;, &apos;86197&apos;,&apos;88274&apos;,&apos;83405&apos;,&apos;86475&apos;,
+                                   &apos;85392&apos;, &apos;85460&apos;, &apos;80348&apos;, &apos;81792&apos;)
+ 	      or ca_state in (&apos;CA&apos;,&apos;WA&apos;,&apos;GA&apos;)
+ 	      or cs_sales_price &gt; 500)
+ 	and cs_sold_date_sk = d_date_sk
+ 	and d_qoy = 2 and d_year = 2001
+ group by ca_zip
+ order by ca_zip
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2100,7 +2245,37 @@ select ca_zip, sum(cs_sales_price) sum_price from catalog_sales, customer, custo
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q17.sql-- 
 
-select i_item_id ,i_item_desc ,s_state ,count(ss_quantity) as store_sales_quantitycount ,avg(ss_quantity) as store_sales_quantityave ,stddev_samp(ss_quantity) as store_sales_quantitystdev ,stddev_samp(ss_quantity)/avg(ss_quantity) as store_sales_quantitycov ,count(sr_return_quantity) as_store_returns_quantitycount ,avg(sr_return_quantity) as_store_returns_quantityave ,stddev_samp(sr_return_quantity) as_store_returns_quantitystdev ,stddev_samp(sr_return_quantity)/avg(sr_return_quantity) as store_returns_quantitycov ,count(cs_quantity) as catalog_sales_quantitycount ,avg(cs_quantity) as catalog_sales_quantityave ,stddev_samp(cs_quantity)/avg(cs_quantity) as catalog_sales_quantitystdev ,stddev_samp(cs_quantity)/avg(cs_quantity) as catalog_sales_quantitycov from store_sales, store_returns, catalog_sales, date_dim d1, date_dim d2, date_dim d3, store, item where d1.d_quarter_name = &apos;2001Q1&apos; and d1.d_date_sk = ss_sold_date_sk and i_item_sk = ss_item_sk and s_store_sk = ss_store_sk and ss_customer_sk = sr_customer_sk and ss_item_sk = sr_item_sk and ss_ticket_number = sr_ticket_number and sr_returned_date_sk = d2.d_date_sk and d2.d_quarter_name in (&apos;2001Q1&apos;,&apos;2001Q2&apos;,&apos;2001Q3&apos;) and sr_customer_sk = cs_bill_customer_sk and sr_item_sk = cs_item_sk and cs_sold_date_sk = d3.d_date_sk and d3.d_quarter_name in (&apos;2001Q1&apos;,&apos;2001Q2&apos;,&apos;2001Q3&apos;) group by i_item_id, i_item_desc, s_state order by i_item_id, i_item_desc, s_state limit 100</stringProp>
+ select i_item_id
+       ,i_item_desc
+       ,s_state
+       ,count(ss_quantity) as store_sales_quantitycount
+       ,avg(ss_quantity) as store_sales_quantityave
+       ,stddev_samp(ss_quantity) as store_sales_quantitystdev
+       ,stddev_samp(ss_quantity)/avg(ss_quantity) as store_sales_quantitycov
+       ,count(sr_return_quantity) as_store_returns_quantitycount
+       ,avg(sr_return_quantity) as_store_returns_quantityave
+       ,stddev_samp(sr_return_quantity) as_store_returns_quantitystdev
+       ,stddev_samp(sr_return_quantity)/avg(sr_return_quantity) as store_returns_quantitycov
+       ,count(cs_quantity) as catalog_sales_quantitycount ,avg(cs_quantity) as catalog_sales_quantityave
+       ,stddev_samp(cs_quantity)/avg(cs_quantity) as catalog_sales_quantitystdev
+       ,stddev_samp(cs_quantity)/avg(cs_quantity) as catalog_sales_quantitycov
+ from store_sales, store_returns, catalog_sales, date_dim d1, date_dim d2, date_dim d3, store, item
+ where d1.d_quarter_name = &apos;2001Q1&apos;
+   and d1.d_date_sk = ss_sold_date_sk
+   and i_item_sk = ss_item_sk
+   and s_store_sk = ss_store_sk
+   and ss_customer_sk = sr_customer_sk
+   and ss_item_sk = sr_item_sk
+   and ss_ticket_number = sr_ticket_number
+   and sr_returned_date_sk = d2.d_date_sk
+   and d2.d_quarter_name in (&apos;2001Q1&apos;,&apos;2001Q2&apos;,&apos;2001Q3&apos;)
+   and sr_customer_sk = cs_bill_customer_sk
+   and sr_item_sk = cs_item_sk
+   and cs_sold_date_sk = d3.d_date_sk
+   and d3.d_quarter_name in (&apos;2001Q1&apos;,&apos;2001Q2&apos;,&apos;2001Q3&apos;)
+ group by i_item_id, i_item_desc, s_state
+ order by i_item_id, i_item_desc, s_state
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2114,7 +2289,33 @@ select i_item_id ,i_item_desc ,s_state ,count(ss_quantity) as store_sales_quanti
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q18.sql-- 
 
-select i_item_id, ca_country, ca_state, ca_county, avg( cast(cs_quantity as decimal(12,2))) agg1, avg( cast(cs_list_price as decimal(12,2))) agg2, avg( cast(cs_coupon_amt as decimal(12,2))) agg3, avg( cast(cs_sales_price as decimal(12,2))) agg4, avg( cast(cs_net_profit as decimal(12,2))) agg5, avg( cast(c_birth_year as decimal(12,2))) agg6, avg( cast(cd1.cd_dep_count as decimal(12,2))) agg7 from catalog_sales, customer_demographics cd1, customer_demographics cd2, customer, customer_address, date_dim, item where cs_sold_date_sk = d_date_sk and cs_item_sk = i_item_sk and cs_bill_cdemo_sk = cd1.cd_demo_sk and cs_bill_customer_sk = c_customer_sk and cd1.cd_gender = &apos;F&apos; and cd1.cd_education_status = &apos;Unknown&apos; and c_current_cdemo_sk = cd2.cd_demo_sk and c_current_addr_sk = ca_address_sk and c_birth_month in (1,6,8,9,12,2) and d_year = 1998 and ca_state in (&apos;MS&apos;,&apos;IN&apos;,&apos;ND&apos;,&apos;OK&apos;,&apos;NM&apos;,&apos;VA&apos;,&apos;MS&apos;) group by rollup (i_item_id, ca_country, ca_state, ca_county) order by ca_country, ca_state, ca_county, i_item_id LIMIT 100</stringProp>
+select i_item_id,
+        ca_country,
+        ca_state,
+        ca_county,
+        avg( cast(cs_quantity as decimal(12,2))) agg1,
+        avg( cast(cs_list_price as decimal(12,2))) agg2,
+        avg( cast(cs_coupon_amt as decimal(12,2))) agg3,
+        avg( cast(cs_sales_price as decimal(12,2))) agg4,
+        avg( cast(cs_net_profit as decimal(12,2))) agg5,
+        avg( cast(c_birth_year as decimal(12,2))) agg6,
+        avg( cast(cd1.cd_dep_count as decimal(12,2))) agg7
+ from catalog_sales, customer_demographics cd1,
+      customer_demographics cd2, customer, customer_address, date_dim, item
+ where cs_sold_date_sk = d_date_sk and
+       cs_item_sk = i_item_sk and
+       cs_bill_cdemo_sk = cd1.cd_demo_sk and
+       cs_bill_customer_sk = c_customer_sk and
+       cd1.cd_gender = &apos;F&apos; and
+       cd1.cd_education_status = &apos;Unknown&apos; and
+       c_current_cdemo_sk = cd2.cd_demo_sk and
+       c_current_addr_sk = ca_address_sk and
+       c_birth_month in (1,6,8,9,12,2) and
+       d_year = 1998 and
+       ca_state  in (&apos;MS&apos;,&apos;IN&apos;,&apos;ND&apos;,&apos;OK&apos;,&apos;NM&apos;,&apos;VA&apos;,&apos;MS&apos;)
+ group by rollup (i_item_id, ca_country, ca_state, ca_county)
+ order by ca_country, ca_state, ca_county, i_item_id
+ LIMIT 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2128,7 +2329,21 @@ select i_item_id, ca_country, ca_state, ca_county, avg( cast(cs_quantity as deci
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q19.sql-- 
 
-select i_brand_id brand_id, i_brand brand, i_manufact_id, i_manufact, sum(ss_ext_sales_price) ext_price from date_dim, store_sales, item,customer,customer_address,store where d_date_sk = ss_sold_date_sk and ss_item_sk = i_item_sk and i_manager_id = 8 and d_moy = 11 and d_year = 1998 and ss_customer_sk = c_customer_sk and c_current_addr_sk = ca_address_sk and substr(ca_zip,1,5) &lt;&gt; substr(s_zip,1,5) and ss_store_sk = s_store_sk group by i_brand, i_brand_id, i_manufact_id, i_manufact order by ext_price desc, brand, brand_id, i_manufact_id, i_manufact limit 100</stringProp>
+ select i_brand_id brand_id, i_brand brand, i_manufact_id, i_manufact,
+ 	sum(ss_ext_sales_price) ext_price
+ from date_dim, store_sales, item,customer,customer_address,store
+ where d_date_sk = ss_sold_date_sk
+   and ss_item_sk = i_item_sk
+   and i_manager_id = 8
+   and d_moy = 11
+   and d_year = 1998
+   and ss_customer_sk = c_customer_sk
+   and c_current_addr_sk = ca_address_sk
+   and substr(ca_zip,1,5) &lt;&gt; substr(s_zip,1,5)
+   and ss_store_sk = s_store_sk
+ group by i_brand, i_brand_id, i_manufact_id, i_manufact
+ order by ext_price desc, brand, brand_id, i_manufact_id, i_manufact
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2142,7 +2357,22 @@ select i_brand_id brand_id, i_brand brand, i_manufact_id, i_manufact, sum(ss_ext
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q20.sql-- 
 
-select i_item_id, i_item_desc ,i_category ,i_class ,i_current_price ,sum(cs_ext_sales_price) as itemrevenue ,sum(cs_ext_sales_price)*100/sum(sum(cs_ext_sales_price)) over (partition by i_class) as revenueratio from catalog_sales, item, date_dim where cs_item_sk = i_item_sk and i_category in (&apos;Sports&apos;, &apos;Books&apos;, &apos;Home&apos;) and cs_sold_date_sk = d_date_sk and d_date between cast(&apos;1999-02-22&apos; as date) and (cast(&apos;1999-02-22&apos; as date) + interval &apos;30&apos; day) group by i_item_id, i_item_desc, i_category, i_class, i_current_price order by i_category, i_class, i_item_id, i_item_desc, revenueratio limit 100</stringProp>
+select i_item_id, i_item_desc
+       ,i_category
+       ,i_class
+       ,i_current_price
+       ,sum(cs_ext_sales_price) as itemrevenue
+       ,sum(cs_ext_sales_price)*100/sum(sum(cs_ext_sales_price)) over
+           (partition by i_class) as revenueratio
+ from catalog_sales, item, date_dim
+ where cs_item_sk = i_item_sk
+   and i_category in (&apos;Sports&apos;, &apos;Books&apos;, &apos;Home&apos;)
+   and cs_sold_date_sk = d_date_sk
+ and d_date between cast(&apos;1999-02-22&apos; as date)
+ 				and (cast(&apos;1999-02-22&apos; as date) + interval &apos;30&apos; day)
+ group by i_item_id, i_item_desc, i_category, i_class, i_current_price
+ order by i_category, i_class, i_item_id, i_item_desc, revenueratio
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2191,7 +2421,15 @@ select i_item_id, i_item_desc ,i_category ,i_class ,i_current_price ,sum(cs_ext_
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q22.sql-- 
 
-select i_product_name, i_brand, i_class, i_category, avg(inv_quantity_on_hand) qoh from inventory, date_dim, item, warehouse where inv_date_sk=d_date_sk and inv_item_sk=i_item_sk and inv_warehouse_sk = w_warehouse_sk and d_month_seq between 1200 and 1200 + 11 group by rollup(i_product_name, i_brand, i_class, i_category) order by qoh, i_product_name, i_brand, i_class, i_category limit 100</stringProp>
+ select i_product_name, i_brand, i_class, i_category, avg(inv_quantity_on_hand) qoh
+       from inventory, date_dim, item, warehouse
+       where inv_date_sk=d_date_sk
+              and inv_item_sk=i_item_sk
+              and inv_warehouse_sk = w_warehouse_sk
+              and d_month_seq between 1200 and 1200 + 11
+       group by rollup(i_product_name, i_brand, i_class, i_category)
+ order by qoh, i_product_name, i_brand, i_class, i_category
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2382,7 +2620,35 @@ select i_product_name, i_brand, i_class, i_category, avg(inv_quantity_on_hand) q
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q25.sql-- 
 
-select i_item_id, i_item_desc, s_store_id, s_store_name, sum(ss_net_profit) as store_sales_profit, sum(sr_net_loss) as store_returns_loss, sum(cs_net_profit) as catalog_sales_profit from store_sales, store_returns, catalog_sales, date_dim d1, date_dim d2, date_dim d3, store, item where d1.d_moy = 4 and d1.d_year = 2001 and d1.d_date_sk = ss_sold_date_sk and i_item_sk = ss_item_sk and s_store_sk = ss_store_sk and ss_customer_sk = sr_customer_sk and ss_item_sk = sr_item_sk and ss_ticket_number = sr_ticket_number and sr_returned_date_sk = d2.d_date_sk and d2.d_moy between 4 and 10 and d2.d_year = 2001 and sr_customer_sk = cs_bill_customer_sk and sr_item_sk = cs_item_sk and cs_sold_date_sk = d3.d_date_sk and d3.d_moy between 4 and 10 and d3.d_year = 2001 group by i_item_id, i_item_desc, s_store_id, s_store_name order by i_item_id, i_item_desc, s_store_id, s_store_name limit 100</stringProp>
+ select i_item_id, i_item_desc, s_store_id, s_store_name,
+    sum(ss_net_profit) as store_sales_profit,
+    sum(sr_net_loss) as store_returns_loss,
+    sum(cs_net_profit) as catalog_sales_profit
+ from
+    store_sales, store_returns, catalog_sales, date_dim d1, date_dim d2, date_dim d3,
+    store, item
+ where
+    d1.d_moy = 4
+    and d1.d_year = 2001
+    and d1.d_date_sk = ss_sold_date_sk
+    and i_item_sk = ss_item_sk
+    and s_store_sk = ss_store_sk
+    and ss_customer_sk = sr_customer_sk
+    and ss_item_sk = sr_item_sk
+    and ss_ticket_number = sr_ticket_number
+    and sr_returned_date_sk = d2.d_date_sk
+    and d2.d_moy between 4 and 10
+    and d2.d_year = 2001
+    and sr_customer_sk = cs_bill_customer_sk
+    and sr_item_sk = cs_item_sk
+    and cs_sold_date_sk = d3.d_date_sk
+    and d3.d_moy between 4 and 10
+    and d3.d_year = 2001
+ group by
+    i_item_id, i_item_desc, s_store_id, s_store_name
+ order by
+    i_item_id, i_item_desc, s_store_id, s_store_name
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2396,7 +2662,24 @@ select i_item_id, i_item_desc, s_store_id, s_store_name, sum(ss_net_profit) as s
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q26.sql-- 
 
-select i_item_id, avg(cs_quantity) agg1, avg(cs_list_price) agg2, avg(cs_coupon_amt) agg3, avg(cs_sales_price) agg4 from catalog_sales, customer_demographics, date_dim, item, promotion where cs_sold_date_sk = d_date_sk and cs_item_sk = i_item_sk and cs_bill_cdemo_sk = cd_demo_sk and cs_promo_sk = p_promo_sk and cd_gender = &apos;M&apos; and cd_marital_status = &apos;S&apos; and cd_education_status = &apos;College&apos; and (p_channel_email = &apos;N&apos; or p_channel_event = &apos;N&apos;) and d_year = 2000 group by i_item_id order by i_item_id limit 100</stringProp>
+ select i_item_id,
+        avg(cs_quantity) agg1,
+        avg(cs_list_price) agg2,
+        avg(cs_coupon_amt) agg3,
+        avg(cs_sales_price) agg4
+ from catalog_sales, customer_demographics, date_dim, item, promotion
+ where cs_sold_date_sk = d_date_sk and
+       cs_item_sk = i_item_sk and
+       cs_bill_cdemo_sk = cd_demo_sk and
+       cs_promo_sk = p_promo_sk and
+       cd_gender = &apos;M&apos; and
+       cd_marital_status = &apos;S&apos; and
+       cd_education_status = &apos;College&apos; and
+       (p_channel_email = &apos;N&apos; or p_channel_event = &apos;N&apos;) and
+       d_year = 2000
+ group by i_item_id
+ order by i_item_id
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2410,7 +2693,25 @@ select i_item_id, avg(cs_quantity) agg1, avg(cs_list_price) agg2, avg(cs_coupon_
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q27.sql-- 
 
-select i_item_id, s_state, grouping(s_state) g_state, avg(ss_quantity) agg1, avg(ss_list_price) agg2, avg(ss_coupon_amt) agg3, avg(ss_sales_price) agg4 from store_sales, customer_demographics, date_dim, store, item where ss_sold_date_sk = d_date_sk and ss_item_sk = i_item_sk and ss_store_sk = s_store_sk and ss_cdemo_sk = cd_demo_sk and cd_gender = &apos;M&apos; and cd_marital_status = &apos;S&apos; and cd_education_status = &apos;College&apos; and d_year = 2002 and s_state in (&apos;TN&apos;,&apos;TN&apos;, &apos;TN&apos;, &apos;TN&apos;, &apos;TN&apos;, &apos;TN&apos;) group by rollup (i_item_id, s_state) order by i_item_id, s_state limit 100</stringProp>
+ select i_item_id,
+        s_state, grouping(s_state) g_state,
+        avg(ss_quantity) agg1,
+        avg(ss_list_price) agg2,
+        avg(ss_coupon_amt) agg3,
+        avg(ss_sales_price) agg4
+ from store_sales, customer_demographics, date_dim, store, item
+ where ss_sold_date_sk = d_date_sk and
+       ss_item_sk = i_item_sk and
+       ss_store_sk = s_store_sk and
+       ss_cdemo_sk = cd_demo_sk and
+       cd_gender = &apos;M&apos; and
+       cd_marital_status = &apos;S&apos; and
+       cd_education_status = &apos;College&apos; and
+       d_year = 2002 and
+       s_state in (&apos;TN&apos;,&apos;TN&apos;, &apos;TN&apos;, &apos;TN&apos;, &apos;TN&apos;, &apos;TN&apos;)
+ group by rollup (i_item_id, s_state)
+ order by i_item_id, s_state
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2487,7 +2788,38 @@ select *
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q29.sql-- 
 
-select i_item_id ,i_item_desc ,s_store_id ,s_store_name ,sum(ss_quantity) as store_sales_quantity ,sum(sr_return_quantity) as store_returns_quantity ,sum(cs_quantity) as catalog_sales_quantity from store_sales, store_returns, catalog_sales, date_dim d1, date_dim d2, date_dim d3, store, item where d1.d_moy = 9 and d1.d_year = 1999 and d1.d_date_sk = ss_sold_date_sk and i_item_sk = ss_item_sk and s_store_sk = ss_store_sk and ss_customer_sk = sr_customer_sk and ss_item_sk = sr_item_sk and ss_ticket_number = sr_ticket_number and sr_returned_date_sk = d2.d_date_sk and d2.d_moy between 9 and 9 + 3 and d2.d_year = 1999 and sr_customer_sk = cs_bill_customer_sk and sr_item_sk = cs_item_sk and cs_sold_date_sk = d3.d_date_sk and d3.d_year in (1999,1999+1,1999+2) group by i_item_id, i_item_desc, s_store_id, s_store_name order by i_item_id, i_item_desc, s_store_id, s_store_name limit 100</stringProp>
+select
+     i_item_id
+    ,i_item_desc
+    ,s_store_id
+    ,s_store_name
+    ,sum(ss_quantity)        as store_sales_quantity
+    ,sum(sr_return_quantity) as store_returns_quantity
+    ,sum(cs_quantity)        as catalog_sales_quantity
+ from
+    store_sales, store_returns, catalog_sales, date_dim d1, date_dim d2,
+    date_dim d3, store, item
+ where
+     d1.d_moy               = 9
+ and d1.d_year              = 1999
+ and d1.d_date_sk           = ss_sold_date_sk
+ and i_item_sk              = ss_item_sk
+ and s_store_sk             = ss_store_sk
+ and ss_customer_sk         = sr_customer_sk
+ and ss_item_sk             = sr_item_sk
+ and ss_ticket_number       = sr_ticket_number
+ and sr_returned_date_sk    = d2.d_date_sk
+ and d2.d_moy               between 9 and  9 + 3
+ and d2.d_year              = 1999
+ and sr_customer_sk         = cs_bill_customer_sk
+ and sr_item_sk             = cs_item_sk
+ and cs_sold_date_sk        = d3.d_date_sk
+ and d3.d_year              in (1999,1999+1,1999+2)
+ group by
+    i_item_id, i_item_desc, s_store_id, s_store_name
+ order by
+    i_item_id, i_item_desc, s_store_id, s_store_name
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2501,7 +2833,29 @@ select i_item_id ,i_item_desc ,s_store_id ,s_store_name ,sum(ss_quantity) as sto
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q30.sql-- 
 
-with customer_total_return as (select wr_returning_customer_sk as ctr_customer_sk ,ca_state as ctr_state, sum(wr_return_amt) as ctr_total_return from web_returns, date_dim, customer_address where wr_returned_date_sk = d_date_sk and d_year = 2002 and wr_returning_addr_sk = ca_address_sk group by wr_returning_customer_sk,ca_state) select c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address ,c_last_review_date,ctr_total_return from customer_total_return ctr1, customer_address, customer where ctr1.ctr_total_return &gt; (select avg(ctr_total_return)*1.2 from customer_total_return ctr2 where ctr1.ctr_state = ctr2.ctr_state) and ca_address_sk = c_current_addr_sk and ca_state = &apos;GA&apos; and ctr1.ctr_customer_sk = c_customer_sk order by c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address ,c_last_review_date,ctr_total_return limit 100</stringProp>
+ with customer_total_return as
+ (select wr_returning_customer_sk as ctr_customer_sk
+        ,ca_state as ctr_state,
+ 	sum(wr_return_amt) as ctr_total_return
+ from web_returns, date_dim, customer_address
+ where wr_returned_date_sk = d_date_sk
+   and d_year = 2002
+   and wr_returning_addr_sk = ca_address_sk
+ group by wr_returning_customer_sk,ca_state)
+ select c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag
+       ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address
+       ,c_last_review_date,ctr_total_return
+ from customer_total_return ctr1, customer_address, customer
+ where ctr1.ctr_total_return &gt; (select avg(ctr_total_return)*1.2
+ 			  from customer_total_return ctr2
+                  	  where ctr1.ctr_state = ctr2.ctr_state)
+       and ca_address_sk = c_current_addr_sk
+       and ca_state = &apos;GA&apos;
+       and ctr1.ctr_customer_sk = c_customer_sk
+ order by c_customer_id,c_salutation,c_first_name,c_last_name,c_preferred_cust_flag
+                  ,c_birth_day,c_birth_month,c_birth_year,c_birth_country,c_login,c_email_address
+                  ,c_last_review_date,ctr_total_return
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2515,7 +2869,50 @@ with customer_total_return as (select wr_returning_customer_sk as ctr_customer_s
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q31.sql-- 
 
-with ss as (select ca_county,d_qoy, d_year,sum(ss_ext_sales_price) as store_sales from store_sales,date_dim,customer_address where ss_sold_date_sk = d_date_sk and ss_addr_sk=ca_address_sk group by ca_county,d_qoy, d_year), ws as (select ca_county,d_qoy, d_year,sum(ws_ext_sales_price) as web_sales from web_sales,date_dim,customer_address where ws_sold_date_sk = d_date_sk and ws_bill_addr_sk=ca_address_sk group by ca_county,d_qoy, d_year) select ss1.ca_county ,ss1.d_year ,ws2.web_sales/ws1.web_sales web_q1_q2_increase ,ss2.store_sales/ss1.store_sales store_q1_q2_increase ,ws3.web_sales/ws2.web_sales web_q2_q3_increase ,ss3.store_sales/ss2.store_sales store_q2_q3_increase from ss ss1, ss ss2, ss ss3, ws ws1, ws ws2, ws ws3 where ss1.d_qoy = 1 and ss1.d_year = 2000 and ss1.ca_county = ss2.ca_county and ss2.d_qoy = 2 and ss2.d_year = 2000 and ss2.ca_county = ss3.ca_county and ss3.d_qoy = 3 and ss3.d_year = 2000 and ss1.ca_county = ws1.ca_county and ws1.d_qoy = 1 and ws1.d_year = 2000 and ws1.ca_county = ws2.ca_county and ws2.d_qoy = 2 and ws2.d_year = 2000 and ws1.ca_county = ws3.ca_county and ws3.d_qoy = 3 and ws3.d_year = 2000 and case when ws1.web_sales &gt; 0 then ws2.web_sales/ws1.web_sales else null end &gt; case when ss1.store_sales &gt; 0 then ss2.store_sales/ss1.store_sales else null end and case when ws2.web_sales &gt; 0 then ws3.web_sales/ws2.web_sales else null end &gt; case when ss2.store_sales &gt; 0 then ss3.store_sales/ss2.store_sales else null end order by ss1.ca_county</stringProp>
+ with ss as
+ (select ca_county,d_qoy, d_year,sum(ss_ext_sales_price) as store_sales
+ from store_sales,date_dim,customer_address
+ where ss_sold_date_sk = d_date_sk
+  and ss_addr_sk=ca_address_sk
+ group by ca_county,d_qoy, d_year),
+ ws as
+ (select ca_county,d_qoy, d_year,sum(ws_ext_sales_price) as web_sales
+ from web_sales,date_dim,customer_address
+ where ws_sold_date_sk = d_date_sk
+  and ws_bill_addr_sk=ca_address_sk
+ group by ca_county,d_qoy, d_year)
+ select
+        ss1.ca_county
+       ,ss1.d_year
+       ,ws2.web_sales/ws1.web_sales web_q1_q2_increase
+       ,ss2.store_sales/ss1.store_sales store_q1_q2_increase
+       ,ws3.web_sales/ws2.web_sales web_q2_q3_increase
+       ,ss3.store_sales/ss2.store_sales store_q2_q3_increase
+ from
+        ss ss1, ss ss2, ss ss3, ws ws1, ws ws2, ws ws3
+ where
+    ss1.d_qoy = 1
+    and ss1.d_year = 2000
+    and ss1.ca_county = ss2.ca_county
+    and ss2.d_qoy = 2
+    and ss2.d_year = 2000
+ and ss2.ca_county = ss3.ca_county
+    and ss3.d_qoy = 3
+    and ss3.d_year = 2000
+    and ss1.ca_county = ws1.ca_county
+    and ws1.d_qoy = 1
+    and ws1.d_year = 2000
+    and ws1.ca_county = ws2.ca_county
+    and ws2.d_qoy = 2
+    and ws2.d_year = 2000
+    and ws1.ca_county = ws3.ca_county
+    and ws3.d_qoy = 3
+    and ws3.d_year = 2000
+    and case when ws1.web_sales &gt; 0 then ws2.web_sales/ws1.web_sales else null end
+       &gt; case when ss1.store_sales &gt; 0 then ss2.store_sales/ss1.store_sales else null end
+    and case when ws2.web_sales &gt; 0 then ws3.web_sales/ws2.web_sales else null end
+       &gt; case when ss2.store_sales &gt; 0 then ss3.store_sales/ss2.store_sales else null end
+ order by ss1.ca_county;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2623,7 +3020,29 @@ limit 100;</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q34.sql-- 
 
-select c_last_name, c_first_name, c_salutation, c_preferred_cust_flag, ss_ticket_number, cnt FROM (select ss_ticket_number, ss_customer_sk, count(*) cnt from store_sales,date_dim,store,household_demographics where store_sales.ss_sold_date_sk = date_dim.d_date_sk and store_sales.ss_store_sk = store.s_store_sk and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk and (date_dim.d_dom between 1 and 3 or date_dim.d_dom between 25 and 28) and (household_demographics.hd_buy_potential = &apos;&gt;10000&apos; or household_demographics.hd_buy_potential = &apos;unknown&apos;) and household_demographics.hd_vehicle_count &gt; 0 and (case when household_demographics.hd_vehicle_count &gt; 0 then household_demographics.hd_dep_count/ household_demographics.hd_vehicle_count else null end) &gt; 1.2 and date_dim.d_year in (1999, 1999+1, 1999+2) and store.s_county in (&apos;Williamson County&apos;,&apos;Williamson County&apos;,&apos;Williamson County&apos;,&apos;Williamson County&apos;, &apos;Williamson County&apos;,&apos;Williamson County&apos;,&apos;Williamson County&apos;,&apos;Williamson County&apos;) group by ss_ticket_number,ss_customer_sk) dn,customer where ss_customer_sk = c_customer_sk and cnt between 15 and 20 order by c_last_name,c_first_name,c_salutation,c_preferred_cust_flag desc, ss_ticket_number</stringProp>
+ select c_last_name, c_first_name, c_salutation, c_preferred_cust_flag, ss_ticket_number,
+        cnt
+ FROM
+   (select ss_ticket_number, ss_customer_sk, count(*) cnt
+    from store_sales,date_dim,store,household_demographics
+    where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+    and store_sales.ss_store_sk = store.s_store_sk
+    and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk
+    and (date_dim.d_dom between 1 and 3 or date_dim.d_dom between 25 and 28)
+    and (household_demographics.hd_buy_potential = &apos;&gt;10000&apos; or
+         household_demographics.hd_buy_potential = &apos;unknown&apos;)
+    and household_demographics.hd_vehicle_count &gt; 0
+    and (case when household_demographics.hd_vehicle_count &gt; 0
+	then household_demographics.hd_dep_count/ household_demographics.hd_vehicle_count
+	else null
+	end)  &gt; 1.2
+    and date_dim.d_year in (1999, 1999+1, 1999+2)
+    and store.s_county in (&apos;Williamson County&apos;,&apos;Williamson County&apos;,&apos;Williamson County&apos;,&apos;Williamson County&apos;,
+                           &apos;Williamson County&apos;,&apos;Williamson County&apos;,&apos;Williamson County&apos;,&apos;Williamson County&apos;)
+    group by ss_ticket_number,ss_customer_sk) dn,customer
+    where ss_customer_sk = c_customer_sk
+      and cnt between 15 and 20
+    order by c_last_name,c_first_name,c_salutation,c_preferred_cust_flag desc, ss_ticket_number;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2694,7 +3113,29 @@ select c_last_name, c_first_name, c_salutation, c_preferred_cust_flag, ss_ticket
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q36.sql-- 
 
-select sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin ,i_category ,i_class ,grouping(i_category)+grouping(i_class) as lochierarchy ,rank() over ( partition by grouping(i_category)+grouping(i_class), case when grouping(i_class) = 0 then i_category end order by sum(ss_net_profit)/sum(ss_ext_sales_price) asc) as rank_within_parent from store_sales, date_dim d1, item, store where d1.d_year = 2001 and d1.d_date_sk = ss_sold_date_sk and i_item_sk = ss_item_sk and s_store_sk = ss_store_sk and s_state in (&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;) group by rollup(i_category,i_class) order by lochierarchy desc ,case when lochierarchy = 0 then i_category end ,rank_within_parent limit 100</stringProp>
+ select
+    sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin
+   ,i_category
+   ,i_class
+   ,grouping(i_category)+grouping(i_class) as lochierarchy
+   ,rank() over (
+ 	partition by grouping(i_category)+grouping(i_class),
+ 	case when grouping(i_class) = 0 then i_category end
+ 	order by sum(ss_net_profit)/sum(ss_ext_sales_price) asc) as rank_within_parent
+ from
+    store_sales, date_dim d1, item, store
+ where
+    d1.d_year = 2001
+    and d1.d_date_sk = ss_sold_date_sk
+    and i_item_sk  = ss_item_sk
+    and s_store_sk  = ss_store_sk
+    and s_state in (&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;,&apos;TN&apos;)
+ group by rollup(i_category,i_class)
+ order by
+   lochierarchy desc
+  ,case when lochierarchy = 0 then i_category end
+  ,rank_within_parent
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2708,7 +3149,18 @@ select sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin ,i_category ,i
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q37.sql-- 
 
-select i_item_id, i_item_desc, i_current_price from item, inventory, date_dim, catalog_sales where i_current_price between 68 and 68 + 30 and inv_item_sk = i_item_sk and d_date_sk=inv_date_sk and d_date between cast(&apos;2000-02-01&apos; as date) and (cast(&apos;2000-02-01&apos; as date) + interval &apos;60&apos; day) and i_manufact_id in (677,940,694,808) and inv_quantity_on_hand between 100 and 500 and cs_item_sk = i_item_sk group by i_item_id,i_item_desc,i_current_price order by i_item_id limit 100</stringProp>
+ select i_item_id, i_item_desc, i_current_price
+ from item, inventory, date_dim, catalog_sales
+ where i_current_price between 68 and 68 + 30
+   and inv_item_sk = i_item_sk
+   and d_date_sk=inv_date_sk
+   and d_date between cast(&apos;2000-02-01&apos; as date) and (cast(&apos;2000-02-01&apos; as date) + interval &apos;60&apos; day)
+   and i_manufact_id in (677,940,694,808)
+   and inv_quantity_on_hand between 100 and 500
+   and cs_item_sk = i_item_sk
+ group by i_item_id,i_item_desc,i_current_price
+ order by i_item_id
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2722,7 +3174,26 @@ select i_item_id, i_item_desc, i_current_price from item, inventory, date_dim, c
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q38.sql-- 
 
-select count(*) count_1 from ( select distinct c_last_name, c_first_name, d_date from store_sales, date_dim, customer where store_sales.ss_sold_date_sk = date_dim.d_date_sk and store_sales.ss_customer_sk = customer.c_customer_sk and d_month_seq between 1200 and 1200 + 11 intersect select distinct c_last_name, c_first_name, d_date from catalog_sales, date_dim, customer where catalog_sales.cs_sold_date_sk = date_dim.d_date_sk and catalog_sales.cs_bill_customer_sk = customer.c_customer_sk and d_month_seq between 1200 and 1200 + 11 intersect select distinct c_last_name, c_first_name, d_date from web_sales, date_dim, customer where web_sales.ws_sold_date_sk = date_dim.d_date_sk and web_sales.ws_bill_customer_sk = customer.c_customer_sk and d_month_seq between 1200 and 1200 + 11 ) hot_cust limit 100</stringProp>
+ select count(*) count_1 from (
+    select distinct c_last_name, c_first_name, d_date
+    from store_sales, date_dim, customer
+          where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+      and store_sales.ss_customer_sk = customer.c_customer_sk
+      and d_month_seq between 1200 and  1200 + 11
+  intersect
+    select distinct c_last_name, c_first_name, d_date
+    from catalog_sales, date_dim, customer
+          where catalog_sales.cs_sold_date_sk = date_dim.d_date_sk
+      and catalog_sales.cs_bill_customer_sk = customer.c_customer_sk
+      and d_month_seq between  1200 and  1200 + 11
+  intersect
+    select distinct c_last_name, c_first_name, d_date
+    from web_sales, date_dim, customer
+          where web_sales.ws_sold_date_sk = date_dim.d_date_sk
+      and web_sales.ws_bill_customer_sk = customer.c_customer_sk
+      and d_month_seq between  1200 and  1200 + 11
+ ) hot_cust
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2805,7 +3276,28 @@ select count(*) count_1 from ( select distinct c_last_name, c_first_name, d_date
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q40.sql-- 
 
-select w_state ,i_item_id ,sum(case when (cast(d_date as date) &lt; cast(&apos;2000-03-11&apos; as date)) then cs_sales_price - coalesce(cr_refunded_cash,0) else 0 end) as sales_before ,sum(case when (cast(d_date as date) &gt;= cast(&apos;2000-03-11&apos; as date)) then cs_sales_price - coalesce(cr_refunded_cash,0) else 0 end) as sales_after from catalog_sales left outer join catalog_returns on (cs_order_number = cr_order_number and cs_item_sk = cr_item_sk) ,warehouse, item, date_dim where i_current_price between 0.99 and 1.49 and i_item_sk = cs_item_sk and cs_warehouse_sk = w_warehouse_sk and cs_sold_date_sk = d_date_sk and d_date between (cast(&apos;2000-03-11&apos; as date) - interval &apos;30&apos; day) and (cast(&apos;2000-03-11&apos; as date) + interval &apos;30&apos; day) group by w_state,i_item_id order by w_state,i_item_id limit 100</stringProp>
+select
+   w_state
+  ,i_item_id
+  ,sum(case when (cast(d_date as date) &lt; cast(&apos;2000-03-11&apos; as date))
+ 		then cs_sales_price - coalesce(cr_refunded_cash,0) else 0 end) as sales_before
+  ,sum(case when (cast(d_date as date) &gt;= cast(&apos;2000-03-11&apos; as date))
+ 		then cs_sales_price - coalesce(cr_refunded_cash,0) else 0 end) as sales_after
+ from
+   catalog_sales left outer join catalog_returns on
+       (cs_order_number = cr_order_number
+        and cs_item_sk = cr_item_sk)
+  ,warehouse, item, date_dim
+ where
+     i_current_price between 0.99 and 1.49
+ and i_item_sk          = cs_item_sk
+ and cs_warehouse_sk    = w_warehouse_sk
+ and cs_sold_date_sk    = d_date_sk
+ and d_date between (cast(&apos;2000-03-11&apos; as date) - interval &apos;30&apos; day)
+                and (cast(&apos;2000-03-11&apos; as date) + interval &apos;30&apos; day)
+ group by w_state,i_item_id
+ order by w_state,i_item_id
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2819,7 +3311,55 @@ select w_state ,i_item_id ,sum(case when (cast(d_date as date) &lt; cast(&apos;2
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q41.sql--
 
-select distinct(i_product_name) from item i1 where i_manufact_id between 738 and 738+40 and (select count(*) as item_cnt from item where (i_manufact = i1.i_manufact and ((i_category = &apos;Women&apos; and (i_color = &apos;powder&apos; or i_color = &apos;khaki&apos;) and (i_units = &apos;Ounce&apos; or i_units = &apos;Oz&apos;) and (i_size = &apos;medium&apos; or i_size = &apos;extra large&apos;) ) or (i_category = &apos;Women&apos; and (i_color = &apos;brown&apos; or i_color = &apos;honeydew&apos;) and (i_units = &apos;Bunch&apos; or i_units = &apos;Ton&apos;) and (i_size = &apos;N/A&apos; or i_size = &apos;small&apos;) ) or (i_category = &apos;Men&apos; and (i_color = &apos;floral&apos; or i_color = &apos;deep&apos;) and (i_units = &apos;N/A&apos; or i_units = &apos;Dozen&apos;) and (i_size = &apos;petite&apos; or i_size = &apos;large&apos;) ) or (i_category = &apos;Men&apos; and (i_color = &apos;light&apos; or i_color = &apos;cornflower&apos;) and (i_units = &apos;Box&apos; or i_units = &apos;Pound&apos;) and (i_size = &apos;medium&apos; or i_size = &apos;extra large&apos;) ))) or (i_manufact = i1.i_manufact and ((i_category = &apos;Women&apos; and (i_color = &apos;midnight&apos; or i_color = &apos;snow&apos;) and (i_units = &apos;Pallet&apos; or i_units = &apos;Gross&apos;) and (i_size = &apos;medium&apos; or i_size = &apos;extra large&apos;) ) or (i_category = &apos;Women&apos; and (i_color = &apos;cyan&apos; or i_color = &apos;papaya&apos;) and (i_units = &apos;Cup&apos; or i_units = &apos;Dram&apos;) and (i_size = &apos;N/A&apos; or i_size = &apos;small&apos;) ) or (i_category = &apos;Men&apos; and (i_color = &apos;orange&apos; or i_color = &apos;frosted&apos;) and (i_units = &apos;Each&apos; or i_units = &apos;Tbl&apos;) and (i_size = &apos;petite&apos; or i_size = &apos;large&apos;) ) or (i_category = &apos;Men&apos; and (i_color = &apos;forest&apos; or i_color = &apos;ghost&apos;) and (i_units = &apos;Lb&apos; or i_units = &apos;Bundle&apos;) and (i_size = &apos;medium&apos; or i_size = &apos;extra large&apos;) )))) &gt; 0 order by i_product_name limit 100</stringProp>
+select distinct(i_product_name)
+ from item i1
+ where i_manufact_id between 738 and 738+40
+   and (select count(*) as item_cnt
+        from item
+        where (i_manufact = i1.i_manufact and
+        ((i_category = &apos;Women&apos; and 
+        (i_color = &apos;powder&apos; or i_color = &apos;khaki&apos;) and
+        (i_units = &apos;Ounce&apos; or i_units = &apos;Oz&apos;) and
+        (i_size = &apos;medium&apos; or i_size = &apos;extra large&apos;)
+        ) or
+        (i_category = &apos;Women&apos; and
+        (i_color = &apos;brown&apos; or i_color = &apos;honeydew&apos;) and
+        (i_units = &apos;Bunch&apos; or i_units = &apos;Ton&apos;) and
+        (i_size = &apos;N/A&apos; or i_size = &apos;small&apos;)
+        ) or
+        (i_category = &apos;Men&apos; and
+        (i_color = &apos;floral&apos; or i_color = &apos;deep&apos;) and
+        (i_units = &apos;N/A&apos; or i_units = &apos;Dozen&apos;) and
+        (i_size = &apos;petite&apos; or i_size = &apos;large&apos;)
+        ) or
+        (i_category = &apos;Men&apos; and
+        (i_color = &apos;light&apos; or i_color = &apos;cornflower&apos;) and
+        (i_units = &apos;Box&apos; or i_units = &apos;Pound&apos;) and
+        (i_size = &apos;medium&apos; or i_size = &apos;extra large&apos;)
+        ))) or
+       (i_manufact = i1.i_manufact and
+        ((i_category = &apos;Women&apos; and 
+        (i_color = &apos;midnight&apos; or i_color = &apos;snow&apos;) and
+        (i_units = &apos;Pallet&apos; or i_units = &apos;Gross&apos;) and
+        (i_size = &apos;medium&apos; or i_size = &apos;extra large&apos;)
+        ) or
+        (i_category = &apos;Women&apos; and
+        (i_color = &apos;cyan&apos; or i_color = &apos;papaya&apos;) and
+        (i_units = &apos;Cup&apos; or i_units = &apos;Dram&apos;) and
+        (i_size = &apos;N/A&apos; or i_size = &apos;small&apos;)
+        ) or
+        (i_category = &apos;Men&apos; and
+        (i_color = &apos;orange&apos; or i_color = &apos;frosted&apos;) and
+        (i_units = &apos;Each&apos; or i_units = &apos;Tbl&apos;) and
+        (i_size = &apos;petite&apos; or i_size = &apos;large&apos;)
+        ) or
+        (i_category = &apos;Men&apos; and
+        (i_color = &apos;forest&apos; or i_color = &apos;ghost&apos;) and
+        (i_units = &apos;Lb&apos; or i_units = &apos;Bundle&apos;) and
+        (i_size = &apos;medium&apos; or i_size = &apos;extra large&apos;)
+        )))) &gt; 0
+ order by i_product_name
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2833,7 +3373,20 @@ select distinct(i_product_name) from item i1 where i_manufact_id between 738 and
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q42.sql-- 
 
-select dt.d_year, item.i_category_id, item.i_category, sum(ss_ext_sales_price) sum_sales from date_dim dt, store_sales, item where dt.d_date_sk = store_sales.ss_sold_date_sk and store_sales.ss_item_sk = item.i_item_sk and item.i_manager_id = 1 and dt.d_moy=11 and dt.d_year=2000 group by dt.d_year ,item.i_category_id ,item.i_category order by sum(ss_ext_sales_price) desc,dt.d_year ,item.i_category_id ,item.i_category limit 100</stringProp>
+ select dt.d_year, item.i_category_id, item.i_category, sum(ss_ext_sales_price) sum_sales
+ from 	date_dim dt, store_sales, item
+ where dt.d_date_sk = store_sales.ss_sold_date_sk
+ 	and store_sales.ss_item_sk = item.i_item_sk
+ 	and item.i_manager_id = 1
+ 	and dt.d_moy=11
+ 	and dt.d_year=2000
+ group by 	dt.d_year
+ 		,item.i_category_id
+ 		,item.i_category
+ order by       sum(ss_ext_sales_price) desc,dt.d_year
+ 		,item.i_category_id
+ 		,item.i_category
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2847,7 +3400,23 @@ select dt.d_year, item.i_category_id, item.i_category, sum(ss_ext_sales_price) s
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q43.sql-- 
 
-select s_store_name, s_store_id, sum(case when (d_day_name=&apos;Sunday&apos;) then ss_sales_price else null end) sun_sales, sum(case when (d_day_name=&apos;Monday&apos;) then ss_sales_price else null end) mon_sales, sum(case when (d_day_name=&apos;Tuesday&apos;) then ss_sales_price else null end) tue_sales, sum(case when (d_day_name=&apos;Wednesday&apos;) then ss_sales_price else null end) wed_sales, sum(case when (d_day_name=&apos;Thursday&apos;) then ss_sales_price else null end) thu_sales, sum(case when (d_day_name=&apos;Friday&apos;) then ss_sales_price else null end) fri_sales, sum(case when (d_day_name=&apos;Saturday&apos;) then ss_sales_price else null end) sat_sales from date_dim, store_sales, store where d_date_sk = ss_sold_date_sk and s_store_sk = ss_store_sk and s_gmt_offset = -5 and d_year = 2000 group by s_store_name, s_store_id order by s_store_name, s_store_id,sun_sales,mon_sales,tue_sales,wed_sales, thu_sales,fri_sales,sat_sales limit 100</stringProp>
+ select s_store_name, s_store_id,
+        sum(case when (d_day_name=&apos;Sunday&apos;) then ss_sales_price else null end) sun_sales,
+        sum(case when (d_day_name=&apos;Monday&apos;) then ss_sales_price else null end) mon_sales,
+        sum(case when (d_day_name=&apos;Tuesday&apos;) then ss_sales_price else  null end) tue_sales,
+        sum(case when (d_day_name=&apos;Wednesday&apos;) then ss_sales_price else null end) wed_sales,
+        sum(case when (d_day_name=&apos;Thursday&apos;) then ss_sales_price else null end) thu_sales,
+        sum(case when (d_day_name=&apos;Friday&apos;) then ss_sales_price else null end) fri_sales,
+        sum(case when (d_day_name=&apos;Saturday&apos;) then ss_sales_price else null end) sat_sales
+ from date_dim, store_sales, store
+ where d_date_sk = ss_sold_date_sk and
+       s_store_sk = ss_store_sk and
+       s_gmt_offset = -5 and
+       d_year = 2000
+ group by s_store_name, s_store_id
+ order by s_store_name, s_store_id,sun_sales,mon_sales,tue_sales,wed_sales,
+          thu_sales,fri_sales,sat_sales
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2905,7 +3474,23 @@ select asceding.rnk, i1.i_product_name best_performing, i2.i_product_name worst_
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q45.sql-- 
 
-select ca_zip, ca_city, sum(ws_sales_price) sum_sales from web_sales, customer, customer_address, date_dim, item where ws_bill_customer_sk = c_customer_sk and c_current_addr_sk = ca_address_sk and ws_item_sk = i_item_sk and ( substr(ca_zip,1,5) in (&apos;85669&apos;, &apos;86197&apos;,&apos;88274&apos;,&apos;83405&apos;,&apos;86475&apos;, &apos;85392&apos;, &apos;85460&apos;, &apos;80348&apos;, &apos;81792&apos;) or i_item_id in (select i_item_id from item where i_item_sk in (2, 3, 5, 7, 11, 13, 17, 19, 23, 29) ) ) and ws_sold_date_sk = d_date_sk and d_qoy = 2 and d_year = 2001 group by ca_zip, ca_city order by ca_zip, ca_city limit 100</stringProp>
+select ca_zip, ca_city, sum(ws_sales_price) sum_sales
+ from web_sales, customer, customer_address, date_dim, item
+ where ws_bill_customer_sk = c_customer_sk
+ 	and c_current_addr_sk = ca_address_sk
+ 	and ws_item_sk = i_item_sk
+ 	and ( substr(ca_zip,1,5) in (&apos;85669&apos;, &apos;86197&apos;,&apos;88274&apos;,&apos;83405&apos;,&apos;86475&apos;, &apos;85392&apos;, &apos;85460&apos;, &apos;80348&apos;, &apos;81792&apos;)
+ 	      or
+ 	      i_item_id in (select i_item_id
+                             from item
+                             where i_item_sk in (2, 3, 5, 7, 11, 13, 17, 19, 23, 29)
+                             )
+ 	    )
+ 	and ws_sold_date_sk = d_date_sk
+ 	and d_qoy = 2 and d_year = 2001
+ group by ca_zip, ca_city
+ order by ca_zip, ca_city
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2919,7 +3504,29 @@ select ca_zip, ca_city, sum(ws_sales_price) sum_sales from web_sales, customer, 
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q46.sql-- 
 
-select c_last_name, c_first_name, ca_city, bought_city, ss_ticket_number, amt,profit from (select ss_ticket_number ,ss_customer_sk ,ca_city bought_city ,sum(ss_coupon_amt) amt ,sum(ss_net_profit) profit from store_sales, date_dim, store, household_demographics, customer_address where store_sales.ss_sold_date_sk = date_dim.d_date_sk and store_sales.ss_store_sk = store.s_store_sk and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk and store_sales.ss_addr_sk = customer_address.ca_address_sk and (household_demographics.hd_dep_count = 4 or household_demographics.hd_vehicle_count= 3) and date_dim.d_dow in (6,0) and date_dim.d_year in (1999,1999+1,1999+2) and store.s_city in (&apos;Fairview&apos;,&apos;Midway&apos;,&apos;Fairview&apos;,&apos;Fairview&apos;,&apos;Fairview&apos;) group by ss_ticket_number,ss_customer_sk,ss_addr_sk,ca_city) dn,customer,customer_address current_addr where ss_customer_sk = c_customer_sk and customer.c_current_addr_sk = current_addr.ca_address_sk and current_addr.ca_city &lt;&gt; bought_city order by c_last_name, c_first_name, ca_city, bought_city, ss_ticket_number limit 100</stringProp>
+ select c_last_name, c_first_name, ca_city, bought_city, ss_ticket_number, amt,profit
+ from
+   (select ss_ticket_number
+          ,ss_customer_sk
+          ,ca_city bought_city
+          ,sum(ss_coupon_amt) amt
+          ,sum(ss_net_profit) profit
+    from store_sales, date_dim, store, household_demographics, customer_address
+    where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+    and store_sales.ss_store_sk = store.s_store_sk
+    and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk
+    and store_sales.ss_addr_sk = customer_address.ca_address_sk
+    and (household_demographics.hd_dep_count = 4 or
+         household_demographics.hd_vehicle_count= 3)
+    and date_dim.d_dow in (6,0)
+    and date_dim.d_year in (1999,1999+1,1999+2)
+    and store.s_city in (&apos;Fairview&apos;,&apos;Midway&apos;,&apos;Fairview&apos;,&apos;Fairview&apos;,&apos;Fairview&apos;) 
+    group by ss_ticket_number,ss_customer_sk,ss_addr_sk,ca_city) dn,customer,customer_address current_addr
+    where ss_customer_sk = c_customer_sk
+      and customer.c_current_addr_sk = current_addr.ca_address_sk
+      and current_addr.ca_city &lt;&gt; bought_city
+  order by c_last_name, c_first_name, ca_city, bought_city, ss_ticket_number
+  limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -2992,7 +3599,69 @@ with v1 as(
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q48.sql-- 
 
-select sum (ss_quantity) sum_quan from store_sales, store, customer_demographics, customer_address, date_dim where s_store_sk = ss_store_sk and ss_sold_date_sk = d_date_sk and d_year = 2000 and ( ( cd_demo_sk = ss_cdemo_sk and cd_marital_status = &apos;M&apos; and cd_education_status = &apos;4 yr Degree&apos; and ss_sales_price between 100.00 and 150.00 ) or ( cd_demo_sk = ss_cdemo_sk and cd_marital_status = &apos;D&apos; and cd_education_status = &apos;2 yr Degree&apos; and ss_sales_price between 50.00 and 100.00 ) or ( cd_demo_sk = ss_cdemo_sk and cd_marital_status = &apos;S&apos; and cd_education_status = &apos;College&apos; and ss_sales_price between 150.00 and 200.00 ) ) and ( ( ss_addr_sk = ca_address_sk and ca_country = &apos;United States&apos; and ca_state in (&apos;CO&apos;, &apos;OH&apos;, &apos;TX&apos;) and ss_net_profit between 0 and 2000 ) or (ss_addr_sk = ca_address_sk and ca_country = &apos;United States&apos; and ca_state in (&apos;OR&apos;, &apos;MN&apos;, &apos;KY&apos;) and ss_net_profit between 150 and 3000 ) or (ss_addr_sk = ca_address_sk and ca_country = &apos;United States&apos; and ca_state in (&apos;VA&apos;, &apos;CA&apos;, &apos;MS&apos;) and ss_net_profit between 50 and 25000 ) )</stringProp>
+select sum (ss_quantity) sum_quan
+ from store_sales, store, customer_demographics, customer_address, date_dim
+ where s_store_sk = ss_store_sk
+ and  ss_sold_date_sk = d_date_sk and d_year = 2000
+ and
+ (
+  (
+   cd_demo_sk = ss_cdemo_sk
+   and
+   cd_marital_status = &apos;M&apos;
+   and 
+   cd_education_status = &apos;4 yr Degree&apos;
+   and
+   ss_sales_price between 100.00 and 150.00
+   )
+ or
+  (
+  cd_demo_sk = ss_cdemo_sk
+   and
+   cd_marital_status = &apos;D&apos;
+   and 
+   cd_education_status = &apos;2 yr Degree&apos;
+   and
+   ss_sales_price between 50.00 and 100.00
+  )
+ or
+ (
+  cd_demo_sk = ss_cdemo_sk
+   and
+   cd_marital_status = &apos;S&apos;
+   and 
+   cd_education_status = &apos;College&apos;
+   and
+   ss_sales_price between 150.00 and 200.00
+ )
+ )
+ and
+ (
+  (
+  ss_addr_sk = ca_address_sk
+  and
+  ca_country = &apos;United States&apos;
+  and
+  ca_state in (&apos;CO&apos;, &apos;OH&apos;, &apos;TX&apos;)
+  and ss_net_profit between 0 and 2000
+  )
+ or
+  (ss_addr_sk = ca_address_sk
+  and
+  ca_country = &apos;United States&apos;
+  and
+  ca_state in (&apos;OR&apos;, &apos;MN&apos;, &apos;KY&apos;)
+  and ss_net_profit between 150 and 3000
+  )
+ or
+  (ss_addr_sk = ca_address_sk
+  and
+  ca_country = &apos;United States&apos;
+  and
+  ca_state in (&apos;VA&apos;, &apos;CA&apos;, &apos;MS&apos;)
+  and ss_net_profit between 50 and 25000
+  )
+ );</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3006,7 +3675,101 @@ select sum (ss_quantity) sum_quan from store_sales, store, customer_demographics
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q49.sql-- 
 
-select &apos;web&apos; as channel, web.item, web.return_ratio, web.return_rank, web.currency_rank from ( select item, return_ratio, currency_ratio, rank() over (order by return_ratio) as return_rank, rank() over (order by currency_ratio) as currency_rank from ( select ws.ws_item_sk as item ,(cast(sum(coalesce(wr.wr_return_quantity,0)) as decimal(15,4))/ cast(sum(coalesce(ws.ws_quantity,0)) as decimal(15,4) )) as return_ratio ,(cast(sum(coalesce(wr.wr_return_amt,0)) as decimal(15,4))/ cast(sum(coalesce(ws.ws_net_paid,0)) as decimal(15,4) )) as currency_ratio from web_sales ws left outer join web_returns wr on (ws.ws_order_number = wr.wr_order_number and ws.ws_item_sk = wr.wr_item_sk) ,date_dim where wr.wr_return_amt &gt; 10000 and ws.ws_net_profit &gt; 1 and ws.ws_net_paid &gt; 0 and ws.ws_quantity &gt; 0 and ws_sold_date_sk = d_date_sk and d_year = 2001 and d_moy = 12 group by ws.ws_item_sk ) in_web ) web where (web.return_rank &lt;= 10 or web.currency_rank &lt;= 10) union select &apos;catalog&apos; as channel, catalog.item, catalog.return_ratio, catalog.return_rank, catalog.currency_rank from ( select item, return_ratio, currency_ratio, rank() over (order by return_ratio) as return_rank, rank() over (order by currency_ratio) as currency_rank from ( select cs.cs_item_sk as item ,(cast(sum(coalesce(cr.cr_return_quantity,0)) as decimal(15,4))/ cast(sum(coalesce(cs.cs_quantity,0)) as decimal(15,4) )) as return_ratio ,(cast(sum(coalesce(cr.cr_return_amount,0)) as decimal(15,4))/ cast(sum(coalesce(cs.cs_net_paid,0)) as decimal(15,4) )) as currency_ratio from catalog_sales cs left outer join catalog_returns cr on (cs.cs_order_number = cr.cr_order_number and cs.cs_item_sk = cr.cr_item_sk) ,date_dim where cr.cr_return_amount &gt; 10000 and cs.cs_net_profit &gt; 1 and cs.cs_net_paid &gt; 0 and cs.cs_quantity &gt; 0 and cs_sold_date_sk = d_date_sk and d_year = 2001 and d_moy = 12 group by cs.cs_item_sk ) in_cat ) catalog where (catalog.return_rank &lt;= 10 or catalog.currency_rank &lt;=10) union select &apos;store&apos; as channel, store.item, store.return_ratio, store.return_rank, store.currency_rank from ( select item, return_ratio, currency_ratio, rank() over (order by return_ratio) as return_rank, rank() over (order by currency_ratio) as currency_rank from ( select sts.ss_item_sk as item ,(cast(sum(coalesce(sr.sr_return_quantity,0)) as decimal(15,4))/ cast(sum(coalesce(sts.ss_quantity,0)) as decimal(15,4) )) as return_ratio ,(cast(sum(coalesce(sr.sr_return_amt,0)) as decimal(15,4))/ cast(sum(coalesce(sts.ss_net_paid,0)) as decimal(15,4) )) as currency_ratio from store_sales sts left outer join store_returns sr on (sts.ss_ticket_number = sr.sr_ticket_number and sts.ss_item_sk = sr.sr_item_sk) ,date_dim where sr.sr_return_amt &gt; 10000 and sts.ss_net_profit &gt; 1 and sts.ss_net_paid &gt; 0 and sts.ss_quantity &gt; 0 and ss_sold_date_sk = d_date_sk and d_year = 2001 and d_moy = 12 group by sts.ss_item_sk ) in_store ) store where (store.return_rank &lt;= 10 or store.currency_rank &lt;= 10) order by 1,4,5 limit 100</stringProp>
+select &apos;web&apos; as channel, web.item, web.return_ratio, web.return_rank, web.currency_rank
+ from (
+ 	select
+    item, return_ratio, currency_ratio,
+ 	  rank() over (order by return_ratio) as return_rank,
+ 	  rank() over (order by currency_ratio) as currency_rank
+ 	from
+ 	(	select ws.ws_item_sk as item
+ 		,(cast(sum(coalesce(wr.wr_return_quantity,0)) as decimal(15,4))/
+ 		cast(sum(coalesce(ws.ws_quantity,0)) as decimal(15,4) )) as return_ratio
+ 		,(cast(sum(coalesce(wr.wr_return_amt,0)) as decimal(15,4))/
+ 		cast(sum(coalesce(ws.ws_net_paid,0)) as decimal(15,4) )) as currency_ratio
+ 		from
+ 		 web_sales ws left outer join web_returns wr
+ 			on (ws.ws_order_number = wr.wr_order_number and
+ 			ws.ws_item_sk = wr.wr_item_sk)
+        ,date_dim
+ 		where
+ 			wr.wr_return_amt &gt; 10000
+ 			and ws.ws_net_profit &gt; 1
+                         and ws.ws_net_paid &gt; 0
+                         and ws.ws_quantity &gt; 0
+                         and ws_sold_date_sk = d_date_sk
+                         and d_year = 2001
+                         and d_moy = 12
+ 		group by ws.ws_item_sk
+ 	) in_web
+ ) web
+ where (web.return_rank &lt;= 10 or web.currency_rank &lt;= 10)
+ union
+ select
+    &apos;catalog&apos; as channel, catalog.item, catalog.return_ratio,
+    catalog.return_rank, catalog.currency_rank
+ from (
+ 	select
+    item, return_ratio, currency_ratio,
+ 	  rank() over (order by return_ratio) as return_rank,
+ 	  rank() over (order by currency_ratio) as currency_rank
+ 	from
+ 	(	select
+ 		cs.cs_item_sk as item
+ 		,(cast(sum(coalesce(cr.cr_return_quantity,0)) as decimal(15,4))/
+ 		cast(sum(coalesce(cs.cs_quantity,0)) as decimal(15,4) )) as return_ratio
+ 		,(cast(sum(coalesce(cr.cr_return_amount,0)) as decimal(15,4))/
+ 		cast(sum(coalesce(cs.cs_net_paid,0)) as decimal(15,4) )) as currency_ratio
+ 		from
+ 		catalog_sales cs left outer join catalog_returns cr
+ 			on (cs.cs_order_number = cr.cr_order_number and
+ 			cs.cs_item_sk = cr.cr_item_sk)
+                ,date_dim
+ 		where
+ 			cr.cr_return_amount &gt; 10000
+ 			and cs.cs_net_profit &gt; 1
+                         and cs.cs_net_paid &gt; 0
+                         and cs.cs_quantity &gt; 0
+                         and cs_sold_date_sk = d_date_sk
+                         and d_year = 2001
+                         and d_moy = 12
+                 group by cs.cs_item_sk
+ 	) in_cat
+ ) catalog
+ where (catalog.return_rank &lt;= 10 or catalog.currency_rank &lt;=10)
+ union
+ select
+    &apos;store&apos; as channel, store.item, store.return_ratio,
+    store.return_rank, store.currency_rank
+ from (
+ 	select
+      item, return_ratio, currency_ratio,
+ 	    rank() over (order by return_ratio) as return_rank,
+ 	    rank() over (order by currency_ratio) as currency_rank
+ 	from
+ 	(	select sts.ss_item_sk as item
+ 		,(cast(sum(coalesce(sr.sr_return_quantity,0)) as decimal(15,4))/
+               cast(sum(coalesce(sts.ss_quantity,0)) as decimal(15,4) )) as return_ratio
+ 		,(cast(sum(coalesce(sr.sr_return_amt,0)) as decimal(15,4))/
+               cast(sum(coalesce(sts.ss_net_paid,0)) as decimal(15,4) )) as currency_ratio
+ 		from
+ 		store_sales sts left outer join store_returns sr
+ 			on (sts.ss_ticket_number = sr.sr_ticket_number and sts.ss_item_sk = sr.sr_item_sk)
+                ,date_dim
+ 		where
+ 			sr.sr_return_amt &gt; 10000
+ 			and sts.ss_net_profit &gt; 1
+                         and sts.ss_net_paid &gt; 0
+                         and sts.ss_quantity &gt; 0
+                         and ss_sold_date_sk = d_date_sk
+                         and d_year = 2001
+                         and d_moy = 12
+ 		group by sts.ss_item_sk
+ 	) in_store
+ ) store
+ where (store.return_rank &lt;= 10 or store.currency_rank &lt;= 10)
+ order by 1,4,5
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3111,7 +3874,19 @@ WITH web_v1 as (
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q52.sql-- 
 
-select dt.d_year ,item.i_brand_id brand_id ,item.i_brand brand ,sum(ss_ext_sales_price) ext_price from date_dim dt, store_sales, item where dt.d_date_sk = store_sales.ss_sold_date_sk and store_sales.ss_item_sk = item.i_item_sk and item.i_manager_id = 1 and dt.d_moy=11 and dt.d_year=2000 group by dt.d_year, item.i_brand, item.i_brand_id order by dt.d_year, ext_price desc, brand_id limit 100</stringProp>
+ select dt.d_year
+ 	,item.i_brand_id brand_id
+ 	,item.i_brand brand
+ 	,sum(ss_ext_sales_price) ext_price
+ from date_dim dt, store_sales, item
+ where dt.d_date_sk = store_sales.ss_sold_date_sk
+    and store_sales.ss_item_sk = item.i_item_sk
+    and item.i_manager_id = 1
+    and dt.d_moy=11
+    and dt.d_year=2000
+ group by dt.d_year, item.i_brand, item.i_brand_id
+ order by dt.d_year, ext_price desc, brand_id
+limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3165,7 +3940,57 @@ select * from
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q54.sql-- 
 
-with my_customers as ( select distinct c_customer_sk , c_current_addr_sk from ( select cs_sold_date_sk sold_date_sk, cs_bill_customer_sk customer_sk, cs_item_sk item_sk from catalog_sales union all select ws_sold_date_sk sold_date_sk, ws_bill_customer_sk customer_sk, ws_item_sk item_sk from web_sales ) cs_or_ws_sales, item, date_dim, customer where sold_date_sk = d_date_sk and item_sk = i_item_sk and i_category = &apos;Women&apos; and i_class = &apos;maternity&apos; and c_customer_sk = cs_or_ws_sales.customer_sk and d_moy = 12 and d_year = 1998 ) , my_revenue as ( select c_customer_sk, sum(ss_ext_sales_price) as revenue from my_customers, store_sales, customer_address, store, date_dim where c_current_addr_sk = ca_address_sk and ca_county = s_county and ca_state = s_state and ss_sold_date_sk = d_date_sk and c_customer_sk = ss_customer_sk and d_month_seq between (select distinct d_month_seq+1 from date_dim where d_year = 1998 and d_moy = 12) and (select distinct d_month_seq+3 from date_dim where d_year = 1998 and d_moy = 12) group by c_customer_sk ) , segments as (select cast((revenue/50) as integer) as segment from my_revenue) select segment, count(*) as num_customers, segment*50 as segment_base from segments group by segment order by segment, num_customers limit 100</stringProp>
+with my_customers as (
+ select distinct c_customer_sk
+        , c_current_addr_sk
+ from
+        ( select cs_sold_date_sk sold_date_sk,
+                 cs_bill_customer_sk customer_sk,
+                 cs_item_sk item_sk
+          from   catalog_sales
+          union all
+          select ws_sold_date_sk sold_date_sk,
+                 ws_bill_customer_sk customer_sk,
+                 ws_item_sk item_sk
+          from   web_sales
+         ) cs_or_ws_sales,
+         item,
+         date_dim,
+         customer
+ where   sold_date_sk = d_date_sk
+         and item_sk = i_item_sk
+         and i_category = &apos;Women&apos;
+         and i_class = &apos;maternity&apos;
+         and c_customer_sk = cs_or_ws_sales.customer_sk
+         and d_moy = 12
+         and d_year = 1998
+ )
+ , my_revenue as (
+ select c_customer_sk,
+        sum(ss_ext_sales_price) as revenue
+ from   my_customers,
+        store_sales,
+        customer_address,
+        store,
+        date_dim
+ where  c_current_addr_sk = ca_address_sk
+        and ca_county = s_county
+        and ca_state = s_state
+        and ss_sold_date_sk = d_date_sk
+        and c_customer_sk = ss_customer_sk
+        and d_month_seq between (select distinct d_month_seq+1
+                                 from   date_dim where d_year = 1998 and d_moy = 12)
+                           and  (select distinct d_month_seq+3
+                                 from   date_dim where d_year = 1998 and d_moy = 12)
+ group by c_customer_sk
+ )
+ , segments as
+ (select cast((revenue/50) as integer) as segment from my_revenue)
+ select segment, count(*) as num_customers, segment*50 as segment_base
+ from segments
+ group by segment
+ order by segment, num_customers
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3179,7 +4004,17 @@ with my_customers as ( select distinct c_customer_sk , c_current_addr_sk from ( 
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q55.sql-- 
 
-select i_brand_id brand_id, i_brand brand, sum(ss_ext_sales_price) ext_price from date_dim, store_sales, item where d_date_sk = ss_sold_date_sk and ss_item_sk = i_item_sk and i_manager_id=28 and d_moy=11 and d_year=1999 group by i_brand, i_brand_id order by ext_price desc, brand_id limit 100</stringProp>
+select i_brand_id brand_id, i_brand brand,
+ 	sum(ss_ext_sales_price) ext_price
+ from date_dim, store_sales, item
+ where d_date_sk = ss_sold_date_sk
+ 	and ss_item_sk = i_item_sk
+ 	and i_manager_id=28
+ 	and d_moy=11
+ 	and d_year=1999
+ group by i_brand, i_brand_id
+ order by ext_price desc, brand_id
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3375,7 +4210,47 @@ with ss_items as
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q59.sql-- 
 
-with wss as (select d_week_seq, ss_store_sk, sum(case when (d_day_name=&apos;Sunday&apos;) then ss_sales_price else null end) sun_sales, sum(case when (d_day_name=&apos;Monday&apos;) then ss_sales_price else null end) mon_sales, sum(case when (d_day_name=&apos;Tuesday&apos;) then ss_sales_price else null end) tue_sales, sum(case when (d_day_name=&apos;Wednesday&apos;) then ss_sales_price else null end) wed_sales, sum(case when (d_day_name=&apos;Thursday&apos;) then ss_sales_price else null end) thu_sales, sum(case when (d_day_name=&apos;Friday&apos;) then ss_sales_price else null end) fri_sales, sum(case when (d_day_name=&apos;Saturday&apos;) then ss_sales_price else null end) sat_sales from store_sales,date_dim where d_date_sk = ss_sold_date_sk group by d_week_seq,ss_store_sk ) select s_store_name1,s_store_id1,d_week_seq1 ,sun_sales1/sun_sales2,mon_sales1/mon_sales2 ,tue_sales1/tue_sales2,wed_sales1/wed_sales2,thu_sales1/thu_sales2 ,fri_sales1/fri_sales2,sat_sales1/sat_sales2 from (select s_store_name s_store_name1,wss.d_week_seq d_week_seq1 ,s_store_id s_store_id1,sun_sales sun_sales1 ,mon_sales mon_sales1,tue_sales tue_sales1 ,wed_sales wed_sales1,thu_sales thu_sales1 ,fri_sales fri_sales1,sat_sales sat_sales1 from wss,store,date_dim d where d.d_week_seq = wss.d_week_seq and ss_store_sk = s_store_sk and d_month_seq between 1212 and 1212 + 11) y, (select s_store_name s_store_name2,wss.d_week_seq d_week_seq2 ,s_store_id s_store_id2,sun_sales sun_sales2 ,mon_sales mon_sales2,tue_sales tue_sales2 ,wed_sales wed_sales2,thu_sales thu_sales2 ,fri_sales fri_sales2,sat_sales sat_sales2 from wss,store,date_dim d where d.d_week_seq = wss.d_week_seq and ss_store_sk = s_store_sk and d_month_seq between 1212+ 12 and 1212 + 23) x where s_store_id1=s_store_id2 and d_week_seq1=d_week_seq2-52 order by s_store_name1,s_store_id1,d_week_seq1 limit 100</stringProp>
+ with wss as
+ (select d_week_seq,
+        ss_store_sk,
+        sum(case when (d_day_name=&apos;Sunday&apos;) then ss_sales_price else null end) sun_sales,
+        sum(case when (d_day_name=&apos;Monday&apos;) then ss_sales_price else null end) mon_sales,
+        sum(case when (d_day_name=&apos;Tuesday&apos;) then ss_sales_price else  null end) tue_sales,
+        sum(case when (d_day_name=&apos;Wednesday&apos;) then ss_sales_price else null end) wed_sales,
+        sum(case when (d_day_name=&apos;Thursday&apos;) then ss_sales_price else null end) thu_sales,
+        sum(case when (d_day_name=&apos;Friday&apos;) then ss_sales_price else null end) fri_sales,
+        sum(case when (d_day_name=&apos;Saturday&apos;) then ss_sales_price else null end) sat_sales
+ from store_sales,date_dim
+ where d_date_sk = ss_sold_date_sk
+ group by d_week_seq,ss_store_sk
+ )
+ select  s_store_name1,s_store_id1,d_week_seq1
+       ,sun_sales1/sun_sales2,mon_sales1/mon_sales2
+       ,tue_sales1/tue_sales2,wed_sales1/wed_sales2,thu_sales1/thu_sales2
+       ,fri_sales1/fri_sales2,sat_sales1/sat_sales2
+ from
+ (select s_store_name s_store_name1,wss.d_week_seq d_week_seq1
+        ,s_store_id s_store_id1,sun_sales sun_sales1
+        ,mon_sales mon_sales1,tue_sales tue_sales1
+        ,wed_sales wed_sales1,thu_sales thu_sales1
+        ,fri_sales fri_sales1,sat_sales sat_sales1
+  from wss,store,date_dim d
+  where d.d_week_seq = wss.d_week_seq and
+        ss_store_sk = s_store_sk and
+        d_month_seq between 1212 and 1212 + 11) y,
+ (select s_store_name s_store_name2,wss.d_week_seq d_week_seq2
+        ,s_store_id s_store_id2,sun_sales sun_sales2
+        ,mon_sales mon_sales2,tue_sales tue_sales2
+        ,wed_sales wed_sales2,thu_sales thu_sales2
+        ,fri_sales fri_sales2,sat_sales sat_sales2
+  from wss,store,date_dim d
+  where d.d_week_seq = wss.d_week_seq and
+        ss_store_sk = s_store_sk and
+        d_month_seq between 1212+ 12 and 1212 + 23) x
+ where s_store_id1=s_store_id2
+   and d_week_seq1=d_week_seq2-52
+ order by s_store_name1,s_store_id1,d_week_seq1
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3447,7 +4322,36 @@ with ss as (
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q61.sql-- 
 
-select promotions,total,cast(promotions as decimal(15,4))/cast(total as decimal(15,4))*100 from (select sum(ss_ext_sales_price) promotions from store_sales, store, promotion, date_dim, customer, customer_address, item where ss_sold_date_sk = d_date_sk and ss_store_sk = s_store_sk and ss_promo_sk = p_promo_sk and ss_customer_sk= c_customer_sk and ca_address_sk = c_current_addr_sk and ss_item_sk = i_item_sk and ca_gmt_offset = -5 and i_category = &apos;Jewelry&apos; and (p_channel_dmail = &apos;Y&apos; or p_channel_email = &apos;Y&apos; or p_channel_tv = &apos;Y&apos;) and s_gmt_offset = -5 and d_year = 1998 and d_moy = 11) promotional_sales cross join (select sum(ss_ext_sales_price) total from store_sales, store, date_dim, customer, customer_address, item where ss_sold_date_sk = d_date_sk and ss_store_sk = s_store_sk and ss_customer_sk= c_customer_sk and ca_address_sk = c_current_addr_sk and ss_item_sk = i_item_sk and ca_gmt_offset = -5 and i_category = &apos;Jewelry&apos; and s_gmt_offset = -5 and d_year = 1998 and d_moy = 11) all_sales order by promotions, total limit 100</stringProp>
+select promotions,total,cast(promotions as decimal(15,4))/cast(total as decimal(15,4))*100
+ from
+   (select sum(ss_ext_sales_price) promotions
+     from  store_sales, store, promotion, date_dim, customer, customer_address, item
+     where ss_sold_date_sk = d_date_sk
+     and   ss_store_sk = s_store_sk
+     and   ss_promo_sk = p_promo_sk
+     and   ss_customer_sk= c_customer_sk
+     and   ca_address_sk = c_current_addr_sk
+     and   ss_item_sk = i_item_sk
+     and   ca_gmt_offset = -5
+     and   i_category = &apos;Jewelry&apos;
+     and   (p_channel_dmail = &apos;Y&apos; or p_channel_email = &apos;Y&apos; or p_channel_tv = &apos;Y&apos;)
+     and   s_gmt_offset = -5
+     and   d_year = 1998
+     and   d_moy  = 11) promotional_sales cross join
+   (select sum(ss_ext_sales_price) total
+     from  store_sales, store, date_dim, customer, customer_address, item
+     where ss_sold_date_sk = d_date_sk
+     and   ss_store_sk = s_store_sk
+     and   ss_customer_sk= c_customer_sk
+     and   ca_address_sk = c_current_addr_sk
+     and   ss_item_sk = i_item_sk
+     and   ca_gmt_offset = -5
+     and   i_category = &apos;Jewelry&apos;
+     and   s_gmt_offset = -5
+     and   d_year = 1998
+     and   d_moy  = 11) all_sales
+ order by promotions, total
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3539,7 +4443,63 @@ select *
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q64.sql-- 
 
-with cs_ui as (select cs_item_sk ,sum(cs_ext_list_price) as sale,sum(cr_refunded_cash+cr_reversed_charge+cr_store_credit) as refund from catalog_sales ,catalog_returns where cs_item_sk = cr_item_sk and cs_order_number = cr_order_number group by cs_item_sk having sum(cs_ext_list_price)&gt;2*sum(cr_refunded_cash+cr_reversed_charge+cr_store_credit)), cross_sales as (select i_product_name product_name, i_item_sk item_sk, s_store_name store_name, s_zip store_zip, ad1.ca_street_number b_street_number, ad1.ca_street_name b_streen_name, ad1.ca_city b_city, ad1.ca_zip b_zip, ad2.ca_street_number c_street_number, ad2.ca_street_name c_street_name, ad2.ca_city c_city, ad2.ca_zip c_zip, d1.d_year as syear, d2.d_year as fsyear, d3.d_year s2year, count(*) cnt, sum(ss_wholesale_cost) s1, sum(ss_list_price) s2, sum(ss_coupon_amt) s3 FROM store_sales, store_returns, cs_ui, date_dim d1, date_dim d2, date_dim d3, store, customer, customer_demographics cd1, customer_demographics cd2, promotion, household_demographics hd1, household_demographics hd2, customer_address ad1, customer_address ad2, income_band ib1, income_band ib2, item WHERE ss_store_sk = s_store_sk AND ss_sold_date_sk = d1.d_date_sk AND ss_customer_sk = c_customer_sk AND ss_cdemo_sk= cd1.cd_demo_sk AND ss_hdemo_sk = hd1.hd_demo_sk AND ss_addr_sk = ad1.ca_address_sk and ss_item_sk = i_item_sk and ss_item_sk = sr_item_sk and ss_ticket_number = sr_ticket_number and ss_item_sk = cs_ui.cs_item_sk and c_current_cdemo_sk = cd2.cd_demo_sk AND c_current_hdemo_sk = hd2.hd_demo_sk AND c_current_addr_sk = ad2.ca_address_sk and c_first_sales_date_sk = d2.d_date_sk and c_first_shipto_date_sk = d3.d_date_sk and ss_promo_sk = p_promo_sk and hd1.hd_income_band_sk = ib1.ib_income_band_sk and hd2.hd_income_band_sk = ib2.ib_income_band_sk and cd1.cd_marital_status &lt;&gt; cd2.cd_marital_status and i_color in (&apos;purple&apos;,&apos;burlywood&apos;,&apos;indian&apos;,&apos;spring&apos;,&apos;floral&apos;,&apos;medium&apos;) and i_current_price between 64 and 64 + 10 and i_current_price between 64 + 1 and 64 + 15 group by i_product_name, i_item_sk, s_store_name, s_zip, ad1.ca_street_number, ad1.ca_street_name, ad1.ca_city, ad1.ca_zip, ad2.ca_street_number, ad2.ca_street_name, ad2.ca_city, ad2.ca_zip, d1.d_year, d2.d_year, d3.d_year ) select cs1.product_name, cs1.store_name, cs1.store_zip, cs1.b_street_number, cs1.b_streen_name, cs1.b_city, cs1.b_zip, cs1.c_street_number, cs1.c_street_name, cs1.c_city, cs1.c_zip, cs1.syear, cs1.cnt, cs1.s1, cs1.s2, cs1.s3, cs2.s1, cs2.s2, cs2.s3, cs2.syear, cs2.cnt from cross_sales cs1,cross_sales cs2 where cs1.item_sk=cs2.item_sk and cs1.syear = 1999 and cs2.syear = 1999 + 1 and cs2.cnt &lt;= cs1.cnt and cs1.store_name = cs2.store_name and cs1.store_zip = cs2.store_zip order by cs1.product_name, cs1.store_name, cs2.cnt</stringProp>
+with cs_ui as
+  (select cs_item_sk
+         ,sum(cs_ext_list_price) as sale,sum(cr_refunded_cash+cr_reversed_charge+cr_store_credit) as refund
+   from catalog_sales
+       ,catalog_returns
+   where cs_item_sk = cr_item_sk
+     and cs_order_number = cr_order_number
+   group by cs_item_sk
+   having sum(cs_ext_list_price)&gt;2*sum(cr_refunded_cash+cr_reversed_charge+cr_store_credit)),
+ cross_sales as
+  (select i_product_name product_name, i_item_sk item_sk, s_store_name store_name, s_zip store_zip,
+          ad1.ca_street_number b_street_number, ad1.ca_street_name b_streen_name, ad1.ca_city b_city,
+          ad1.ca_zip b_zip, ad2.ca_street_number c_street_number, ad2.ca_street_name c_street_name,
+          ad2.ca_city c_city, ad2.ca_zip c_zip, d1.d_year as syear, d2.d_year as fsyear, d3.d_year s2year,
+          count(*) cnt, sum(ss_wholesale_cost) s1, sum(ss_list_price) s2, sum(ss_coupon_amt) s3
+   FROM store_sales, store_returns, cs_ui, date_dim d1, date_dim d2, date_dim d3,
+        store, customer, customer_demographics cd1, customer_demographics cd2,
+        promotion, household_demographics hd1, household_demographics hd2,
+        customer_address ad1, customer_address ad2, income_band ib1, income_band ib2, item
+   WHERE  ss_store_sk = s_store_sk AND
+          ss_sold_date_sk = d1.d_date_sk AND
+          ss_customer_sk = c_customer_sk AND
+          ss_cdemo_sk= cd1.cd_demo_sk AND
+          ss_hdemo_sk = hd1.hd_demo_sk AND
+          ss_addr_sk = ad1.ca_address_sk and
+          ss_item_sk = i_item_sk and
+          ss_item_sk = sr_item_sk and
+          ss_ticket_number = sr_ticket_number and
+          ss_item_sk = cs_ui.cs_item_sk and
+          c_current_cdemo_sk = cd2.cd_demo_sk AND
+          c_current_hdemo_sk = hd2.hd_demo_sk AND
+          c_current_addr_sk = ad2.ca_address_sk and
+          c_first_sales_date_sk = d2.d_date_sk and
+          c_first_shipto_date_sk = d3.d_date_sk and
+          ss_promo_sk = p_promo_sk and
+          hd1.hd_income_band_sk = ib1.ib_income_band_sk and
+          hd2.hd_income_band_sk = ib2.ib_income_band_sk and
+          cd1.cd_marital_status &lt;&gt; cd2.cd_marital_status and
+          i_color in (&apos;purple&apos;,&apos;burlywood&apos;,&apos;indian&apos;,&apos;spring&apos;,&apos;floral&apos;,&apos;medium&apos;) and
+          i_current_price between 64 and 64 + 10 and
+          i_current_price between 64 + 1 and 64 + 15
+ group by i_product_name, i_item_sk, s_store_name, s_zip, ad1.ca_street_number,
+          ad1.ca_street_name, ad1.ca_city, ad1.ca_zip, ad2.ca_street_number,
+          ad2.ca_street_name, ad2.ca_city, ad2.ca_zip, d1.d_year, d2.d_year, d3.d_year
+ )
+ select cs1.product_name, cs1.store_name, cs1.store_zip, cs1.b_street_number,
+        cs1.b_streen_name, cs1.b_city, cs1.b_zip, cs1.c_street_number, cs1.c_street_name,
+        cs1.c_city, cs1.c_zip, cs1.syear, cs1.cnt, cs1.s1, cs1.s2, cs1.s3, cs2.s1,
+        cs2.s2, cs2.s3, cs2.syear, cs2.cnt
+ from cross_sales cs1,cross_sales cs2
+ where cs1.item_sk=cs2.item_sk and
+      cs1.syear = 1999 and
+      cs2.syear = 1999 + 1 and
+      cs2.cnt &lt;= cs1.cnt and
+      cs1.store_name = cs2.store_name and
+      cs1.store_zip = cs2.store_zip
+ order by cs1.product_name, cs1.store_name, cs2.cnt;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3757,7 +4717,32 @@ select * from
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q68.sql-- 
 
-select c_last_name, c_first_name, ca_city, bought_city, ss_ticket_number, extended_price, extended_tax, list_price from (select ss_ticket_number, ss_customer_sk, ca_city bought_city, sum(ss_ext_sales_price) extended_price, sum(ss_ext_list_price) list_price, sum(ss_ext_tax) extended_tax from store_sales, date_dim, store, household_demographics, customer_address where store_sales.ss_sold_date_sk = date_dim.d_date_sk and store_sales.ss_store_sk = store.s_store_sk and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk and store_sales.ss_addr_sk = customer_address.ca_address_sk and date_dim.d_dom between 1 and 2 and (household_demographics.hd_dep_count = 4 or household_demographics.hd_vehicle_count = 3) and date_dim.d_year in (1999,1999+1,1999+2) and store.s_city in (&apos;Midway&apos;,&apos;Fairview&apos;) group by ss_ticket_number, ss_customer_sk, ss_addr_sk,ca_city) dn, customer, customer_address current_addr where ss_customer_sk = c_customer_sk and customer.c_current_addr_sk = current_addr.ca_address_sk and current_addr.ca_city &lt;&gt; bought_city order by c_last_name, ss_ticket_number limit 100</stringProp>
+select
+    c_last_name, c_first_name, ca_city, bought_city, ss_ticket_number, extended_price,
+    extended_tax, list_price
+ from (select
+        ss_ticket_number, ss_customer_sk, ca_city bought_city,
+        sum(ss_ext_sales_price) extended_price,
+        sum(ss_ext_list_price) list_price,
+        sum(ss_ext_tax) extended_tax
+     from store_sales, date_dim, store, household_demographics, customer_address
+     where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+        and store_sales.ss_store_sk = store.s_store_sk
+        and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk
+        and store_sales.ss_addr_sk = customer_address.ca_address_sk
+        and date_dim.d_dom between 1 and 2
+        and (household_demographics.hd_dep_count = 4 or
+             household_demographics.hd_vehicle_count = 3)
+        and date_dim.d_year in (1999,1999+1,1999+2)
+        and store.s_city in (&apos;Midway&apos;,&apos;Fairview&apos;)
+     group by ss_ticket_number, ss_customer_sk, ss_addr_sk,ca_city) dn,
+    customer,
+    customer_address current_addr
+ where ss_customer_sk = c_customer_sk
+   and customer.c_current_addr_sk = current_addr.ca_address_sk
+   and current_addr.ca_city &lt;&gt; bought_city
+ order by c_last_name, ss_ticket_number
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3813,7 +4798,35 @@ select
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q70.sql-- 
 
-select sum(ss_net_profit) as total_sum, s_state, s_county ,grouping(s_state)+grouping(s_county) as lochierarchy ,rank() over ( partition by grouping(s_state)+grouping(s_county), case when grouping(s_county) = 0 then s_state end order by sum(ss_net_profit) desc) as rank_within_parent from store_sales, date_dim d1, store where d1.d_month_seq between 1200 and 1200+11 and d1.d_date_sk = ss_sold_date_sk and s_store_sk = ss_store_sk and s_state in (select s_state from (select s_state as s_state, rank() over ( partition by s_state order by sum(ss_net_profit) desc) as ranking from store_sales, store, date_dim where d_month_seq between 1200 and 1200+11 and d_date_sk = ss_sold_date_sk and s_store_sk = ss_store_sk group by s_state) tmp1 where ranking &lt;= 5) group by rollup(s_state,s_county) order by lochierarchy desc ,case when lochierarchy = 0 then s_state end ,rank_within_parent limit 100</stringProp>
+select
+    sum(ss_net_profit) as total_sum, s_state, s_county
+   ,grouping(s_state)+grouping(s_county) as lochierarchy
+   ,rank() over (
+ 	    partition by grouping(s_state)+grouping(s_county),
+ 	    case when grouping(s_county) = 0 then s_state end
+ 	    order by sum(ss_net_profit) desc) as rank_within_parent
+ from
+    store_sales, date_dim d1, store
+ where
+    d1.d_month_seq between 1200 and 1200+11
+ and d1.d_date_sk = ss_sold_date_sk
+ and s_store_sk  = ss_store_sk
+ and s_state in
+    (select s_state from
+        (select s_state as s_state,
+ 			      rank() over ( partition by s_state order by sum(ss_net_profit) desc) as ranking
+         from store_sales, store, date_dim
+         where  d_month_seq between 1200 and 1200+11
+ 			   and d_date_sk = ss_sold_date_sk
+ 			   and s_store_sk  = ss_store_sk
+         group by s_state) tmp1
+     where ranking &lt;= 5)
+ group by rollup(s_state,s_county)
+ order by
+   lochierarchy desc
+  ,case when lochierarchy = 0 then s_state end
+  ,rank_within_parent
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3827,7 +4840,46 @@ select sum(ss_net_profit) as total_sum, s_state, s_county ,grouping(s_state)+gro
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q71.sql-- 
 
-select i_brand_id brand_id, i_brand brand,t_hour,t_minute, sum(ext_price) ext_price from item, (select ws_ext_sales_price as ext_price, ws_sold_date_sk as sold_date_sk, ws_item_sk as sold_item_sk, ws_sold_time_sk as time_sk from web_sales, date_dim where d_date_sk = ws_sold_date_sk and d_moy=11 and d_year=1999 union all select cs_ext_sales_price as ext_price, cs_sold_date_sk as sold_date_sk, cs_item_sk as sold_item_sk, cs_sold_time_sk as time_sk from catalog_sales, date_dim where d_date_sk = cs_sold_date_sk and d_moy=11 and d_year=1999 union all select ss_ext_sales_price as ext_price, ss_sold_date_sk as sold_date_sk, ss_item_sk as sold_item_sk, ss_sold_time_sk as time_sk from store_sales,date_dim where d_date_sk = ss_sold_date_sk and d_moy=11 and d_year=1999 ) tmp, time_dim where sold_item_sk = i_item_sk and i_manager_id=1 and time_sk = t_time_sk and (t_meal_time = &apos;breakfast&apos; or t_meal_time = &apos;dinner&apos;) group by i_brand, i_brand_id,t_hour,t_minute order by ext_price desc, i_brand_id</stringProp>
+select i_brand_id brand_id, i_brand brand,t_hour,t_minute,
+ 	  sum(ext_price) ext_price
+ from item,
+    (select
+        ws_ext_sales_price as ext_price,
+        ws_sold_date_sk as sold_date_sk,
+        ws_item_sk as sold_item_sk,
+        ws_sold_time_sk as time_sk
+     from web_sales, date_dim
+     where d_date_sk = ws_sold_date_sk
+        and d_moy=11
+        and d_year=1999
+     union all
+     select
+        cs_ext_sales_price as ext_price,
+        cs_sold_date_sk as sold_date_sk,
+        cs_item_sk as sold_item_sk,
+        cs_sold_time_sk as time_sk
+      from catalog_sales, date_dim
+      where d_date_sk = cs_sold_date_sk
+          and d_moy=11
+          and d_year=1999
+     union all
+     select
+        ss_ext_sales_price as ext_price,
+        ss_sold_date_sk as sold_date_sk,
+        ss_item_sk as sold_item_sk,
+        ss_sold_time_sk as time_sk
+     from store_sales,date_dim
+     where d_date_sk = ss_sold_date_sk
+        and d_moy=11
+        and d_year=1999
+     ) tmp, time_dim
+ where
+   sold_item_sk = i_item_sk
+   and i_manager_id=1
+   and time_sk = t_time_sk
+   and (t_meal_time = &apos;breakfast&apos; or t_meal_time = &apos;dinner&apos;)
+ group by i_brand, i_brand_id,t_hour,t_minute
+ order by ext_price desc, i_brand_id;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3841,7 +4893,32 @@ select i_brand_id brand_id, i_brand brand,t_hour,t_minute, sum(ext_price) ext_pr
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q72.sql-- 
 
-select i_item_desc ,w_warehouse_name ,d1.d_week_seq ,sum(case when p_promo_sk is null then 1 else 0 end) no_promo ,sum(case when p_promo_sk is not null then 1 else 0 end) promo ,count(*) total_cnt from catalog_sales join inventory on (cs_item_sk = inv_item_sk) join warehouse on (w_warehouse_sk=inv_warehouse_sk) join item on (i_item_sk = cs_item_sk) join customer_demographics on (cs_bill_cdemo_sk = cd_demo_sk) join household_demographics on (cs_bill_hdemo_sk = hd_demo_sk) join date_dim d1 on (cs_sold_date_sk = d1.d_date_sk) join date_dim d2 on (inv_date_sk = d2.d_date_sk) join date_dim d3 on (cs_ship_date_sk = d3.d_date_sk) left outer join promotion on (cs_promo_sk=p_promo_sk) left outer join catalog_returns on (cr_item_sk = cs_item_sk and cr_order_number = cs_order_number) where d1.d_week_seq = d2.d_week_seq and inv_quantity_on_hand &lt; cs_quantity and d3.d_date &gt; (cast(d1.d_date AS DATE) + interval &apos;5&apos; day) and hd_buy_potential = &apos;&gt;10000&apos; and d1.d_year = 1999 and cd_marital_status = &apos;D&apos; group by i_item_desc,w_warehouse_name,d1.d_week_seq order by total_cnt desc, i_item_desc, w_warehouse_name, d1.d_week_seq limit 100</stringProp>
+select i_item_desc
+       ,w_warehouse_name
+       ,d1.d_week_seq
+       ,sum(case when p_promo_sk is null then 1 else 0 end) no_promo
+       ,sum(case when p_promo_sk is not null then 1 else 0 end) promo
+       ,count(*) total_cnt
+ from catalog_sales
+ join inventory on (cs_item_sk = inv_item_sk)
+ join warehouse on (w_warehouse_sk=inv_warehouse_sk)
+ join item on (i_item_sk = cs_item_sk)
+ join customer_demographics on (cs_bill_cdemo_sk = cd_demo_sk)
+ join household_demographics on (cs_bill_hdemo_sk = hd_demo_sk)
+ join date_dim d1 on (cs_sold_date_sk = d1.d_date_sk)
+ join date_dim d2 on (inv_date_sk = d2.d_date_sk)
+ join date_dim d3 on (cs_ship_date_sk = d3.d_date_sk)
+ left outer join promotion on (cs_promo_sk=p_promo_sk)
+ left outer join catalog_returns on (cr_item_sk = cs_item_sk and cr_order_number = cs_order_number)
+ where d1.d_week_seq = d2.d_week_seq
+   and inv_quantity_on_hand &lt; cs_quantity
+   and d3.d_date &gt; (cast(d1.d_date AS DATE) + interval &apos;5&apos; day)
+   and hd_buy_potential = &apos;&gt;10000&apos;
+   and d1.d_year = 1999
+   and cd_marital_status = &apos;D&apos;
+ group by i_item_desc,w_warehouse_name,d1.d_week_seq
+ order by total_cnt desc, i_item_desc, w_warehouse_name, d1.d_week_seq
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3855,7 +4932,26 @@ select i_item_desc ,w_warehouse_name ,d1.d_week_seq ,sum(case when p_promo_sk is
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q73.sql-- 
 
-select c_last_name, c_first_name, c_salutation, c_preferred_cust_flag, ss_ticket_number, cnt from (select ss_ticket_number, ss_customer_sk, count(*) cnt from store_sales,date_dim,store,household_demographics where store_sales.ss_sold_date_sk = date_dim.d_date_sk and store_sales.ss_store_sk = store.s_store_sk and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk and date_dim.d_dom between 1 and 2 and (household_demographics.hd_buy_potential = &apos;&gt;10000&apos; or household_demographics.hd_buy_potential = &apos;unknown&apos;) and household_demographics.hd_vehicle_count &gt; 0 and case when household_demographics.hd_vehicle_count &gt; 0 then household_demographics.hd_dep_count/ household_demographics.hd_vehicle_count else null end &gt; 1 and date_dim.d_year in (1999,1999+1,1999+2) and store.s_county in (&apos;Williamson County&apos;,&apos;Franklin Parish&apos;,&apos;Bronx County&apos;,&apos;Orange County&apos;) group by ss_ticket_number,ss_customer_sk) dj,customer where ss_customer_sk = c_customer_sk and cnt between 1 and 5 order by cnt desc, c_last_name asc</stringProp>
+select
+    c_last_name, c_first_name, c_salutation, c_preferred_cust_flag,
+    ss_ticket_number, cnt from
+   (select ss_ticket_number, ss_customer_sk, count(*) cnt
+    from store_sales,date_dim,store,household_demographics
+    where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+    and store_sales.ss_store_sk = store.s_store_sk
+    and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk
+    and date_dim.d_dom between 1 and 2
+    and (household_demographics.hd_buy_potential = &apos;&gt;10000&apos; or
+         household_demographics.hd_buy_potential = &apos;unknown&apos;)
+    and household_demographics.hd_vehicle_count &gt; 0
+    and case when household_demographics.hd_vehicle_count &gt; 0 then
+             household_demographics.hd_dep_count/ household_demographics.hd_vehicle_count else null end &gt; 1
+    and date_dim.d_year in (1999,1999+1,1999+2)
+    and store.s_county in (&apos;Williamson County&apos;,&apos;Franklin Parish&apos;,&apos;Bronx County&apos;,&apos;Orange County&apos;)
+    group by ss_ticket_number,ss_customer_sk) dj,customer
+    where ss_customer_sk = c_customer_sk
+      and cnt between 1 and 5
+    order by cnt desc, c_last_name asc;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3869,7 +4965,52 @@ select c_last_name, c_first_name, c_salutation, c_preferred_cust_flag, ss_ticket
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q74.sql-- 
 
-with year_total as ( select c_customer_id customer_id, c_first_name customer_first_name, c_last_name customer_last_name, d_year as year, sum(ss_net_paid) year_total, &apos;s&apos; sale_type from customer, store_sales, date_dim where c_customer_sk = ss_customer_sk and ss_sold_date_sk = d_date_sk and d_year in (2001,2001+1) group by c_customer_id, c_first_name, c_last_name, d_year union all select c_customer_id customer_id, c_first_name customer_first_name, c_last_name customer_last_name, d_year as year, sum(ws_net_paid) year_total, &apos;w&apos; sale_type from customer, web_sales, date_dim where c_customer_sk = ws_bill_customer_sk and ws_sold_date_sk = d_date_sk and d_year in (2001,2001+1) group by c_customer_id, c_first_name, c_last_name, d_year) select t_s_secyear.customer_id, t_s_secyear.customer_first_name, t_s_secyear.customer_last_name from year_total t_s_firstyear, year_total t_s_secyear, year_total t_w_firstyear, year_total t_w_secyear where t_s_secyear.customer_id = t_s_firstyear.customer_id and t_s_firstyear.customer_id = t_w_secyear.customer_id and t_s_firstyear.customer_id = t_w_firstyear.customer_id and t_s_firstyear.sale_type = &apos;s&apos; and t_w_firstyear.sale_type = &apos;w&apos; and t_s_secyear.sale_type = &apos;s&apos; and t_w_secyear.sale_type = &apos;w&apos; and t_s_firstyear.year = 2001 and t_s_secyear.year = 2001+1 and t_w_firstyear.year = 2001 and t_w_secyear.year = 2001+1 and t_s_firstyear.year_total &gt; 0 and t_w_firstyear.year_total &gt; 0 and case when t_w_firstyear.year_total &gt; 0 then t_w_secyear.year_total / t_w_firstyear.year_total else null end &gt; case when t_s_firstyear.year_total &gt; 0 then t_s_secyear.year_total / t_s_firstyear.year_total else null end order by 1, 1, 1 limit 100</stringProp>
+with year_total as (
+ select
+    c_customer_id customer_id, c_first_name customer_first_name,
+    c_last_name customer_last_name, d_year as year,
+    sum(ss_net_paid) year_total, &apos;s&apos; sale_type
+ from
+    customer, store_sales, date_dim
+ where c_customer_sk = ss_customer_sk
+    and ss_sold_date_sk = d_date_sk
+    and d_year in (2001,2001+1)
+ group by
+    c_customer_id, c_first_name, c_last_name, d_year
+ union all
+ select
+    c_customer_id customer_id, c_first_name customer_first_name,
+    c_last_name customer_last_name, d_year as year,
+    sum(ws_net_paid) year_total, &apos;w&apos; sale_type
+ from
+    customer, web_sales, date_dim
+ where c_customer_sk = ws_bill_customer_sk
+    and ws_sold_date_sk = d_date_sk
+    and d_year in (2001,2001+1)
+ group by
+    c_customer_id, c_first_name, c_last_name, d_year)
+ select
+    t_s_secyear.customer_id, t_s_secyear.customer_first_name, t_s_secyear.customer_last_name
+ from
+    year_total t_s_firstyear, year_total t_s_secyear,
+    year_total t_w_firstyear, year_total t_w_secyear
+ where t_s_secyear.customer_id = t_s_firstyear.customer_id
+    and t_s_firstyear.customer_id = t_w_secyear.customer_id
+    and t_s_firstyear.customer_id = t_w_firstyear.customer_id
+    and t_s_firstyear.sale_type = &apos;s&apos;
+    and t_w_firstyear.sale_type = &apos;w&apos;
+    and t_s_secyear.sale_type = &apos;s&apos;
+    and t_w_secyear.sale_type = &apos;w&apos;
+    and t_s_firstyear.year = 2001
+    and t_s_secyear.year = 2001+1
+    and t_w_firstyear.year = 2001
+    and t_w_secyear.year = 2001+1
+    and t_s_firstyear.year_total &gt; 0
+    and t_w_firstyear.year_total &gt; 0
+    and case when t_w_firstyear.year_total &gt; 0 then t_w_secyear.year_total / t_w_firstyear.year_total else null end
+      &gt; case when t_s_firstyear.year_total &gt; 0 then t_s_secyear.year_total / t_s_firstyear.year_total else null end
+ order by 1, 1, 1
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3883,7 +5024,60 @@ with year_total as ( select c_customer_id customer_id, c_first_name customer_fir
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q75.sql-- 
 
-WITH all_sales AS ( SELECT d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id, SUM(sales_cnt) AS sales_cnt, SUM(sales_amt) AS sales_amt FROM ( SELECT d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id, cs_quantity - COALESCE(cr_return_quantity,0) AS sales_cnt, cs_ext_sales_price - COALESCE(cr_return_amount,0.0) AS sales_amt FROM catalog_sales JOIN item ON i_item_sk=cs_item_sk JOIN date_dim ON d_date_sk=cs_sold_date_sk LEFT JOIN catalog_returns ON (cs_order_number=cr_order_number AND cs_item_sk=cr_item_sk) WHERE i_category=&apos;Books&apos; UNION SELECT d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id, ss_quantity - COALESCE(sr_return_quantity,0) AS sales_cnt, ss_ext_sales_price - COALESCE(sr_return_amt,0.0) AS sales_amt FROM store_sales JOIN item ON i_item_sk=ss_item_sk JOIN date_dim ON d_date_sk=ss_sold_date_sk LEFT JOIN store_returns ON (ss_ticket_number=sr_ticket_number AND ss_item_sk=sr_item_sk) WHERE i_category=&apos;Books&apos; UNION SELECT d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id, ws_quantity - COALESCE(wr_return_quantity,0) AS sales_cnt, ws_ext_sales_price - COALESCE(wr_return_amt,0.0) AS sales_amt FROM web_sales JOIN item ON i_item_sk=ws_item_sk JOIN date_dim ON d_date_sk=ws_sold_date_sk LEFT JOIN web_returns ON (ws_order_number=wr_order_number AND ws_item_sk=wr_item_sk) WHERE i_category=&apos;Books&apos;) sales_detail GROUP BY d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id) SELECT prev_yr.d_year AS prev_year, curr_yr.d_year AS year, curr_yr.i_brand_id, curr_yr.i_class_id, curr_yr.i_category_id, curr_yr.i_manufact_id, prev_yr.sales_cnt AS prev_yr_cnt, curr_yr.sales_cnt AS curr_yr_cnt, curr_yr.sales_cnt-prev_yr.sales_cnt AS sales_cnt_diff, curr_yr.sales_amt-prev_yr.sales_amt AS sales_amt_diff FROM all_sales curr_yr, all_sales prev_yr WHERE curr_yr.i_brand_id=prev_yr.i_brand_id AND curr_yr.i_class_id=prev_yr.i_class_id AND curr_yr.i_category_id=prev_yr.i_category_id AND curr_yr.i_manufact_id=prev_yr.i_manufact_id AND curr_yr.d_year=2002 AND prev_yr.d_year=2002-1 AND CAST(curr_yr.sales_cnt AS DECIMAL(17,2))/CAST(prev_yr.sales_cnt AS DECIMAL(17,2))&lt;0.9 ORDER BY sales_cnt_diff LIMIT 100</stringProp>
+ WITH all_sales AS (
+    SELECT
+        d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id,
+        SUM(sales_cnt) AS sales_cnt, SUM(sales_amt) AS sales_amt
+    FROM (
+        SELECT
+            d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id,
+            cs_quantity - COALESCE(cr_return_quantity,0) AS sales_cnt,
+            cs_ext_sales_price - COALESCE(cr_return_amount,0.0) AS sales_amt
+        FROM catalog_sales
+        JOIN item ON i_item_sk=cs_item_sk
+        JOIN date_dim ON d_date_sk=cs_sold_date_sk
+        LEFT JOIN catalog_returns ON (cs_order_number=cr_order_number
+                                      AND cs_item_sk=cr_item_sk)
+        WHERE i_category=&apos;Books&apos;
+        UNION
+        SELECT
+            d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id,
+             ss_quantity - COALESCE(sr_return_quantity,0) AS sales_cnt,
+             ss_ext_sales_price - COALESCE(sr_return_amt,0.0) AS sales_amt
+        FROM store_sales
+        JOIN item ON i_item_sk=ss_item_sk
+        JOIN date_dim ON d_date_sk=ss_sold_date_sk
+        LEFT JOIN store_returns ON (ss_ticket_number=sr_ticket_number
+                                    AND ss_item_sk=sr_item_sk)
+        WHERE i_category=&apos;Books&apos;
+        UNION
+        SELECT
+            d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id,
+            ws_quantity - COALESCE(wr_return_quantity,0) AS sales_cnt,
+            ws_ext_sales_price - COALESCE(wr_return_amt,0.0) AS sales_amt
+        FROM web_sales
+        JOIN item ON i_item_sk=ws_item_sk
+        JOIN date_dim ON d_date_sk=ws_sold_date_sk
+        LEFT JOIN web_returns ON (ws_order_number=wr_order_number
+                                  AND ws_item_sk=wr_item_sk)
+        WHERE i_category=&apos;Books&apos;) sales_detail
+    GROUP BY d_year, i_brand_id, i_class_id, i_category_id, i_manufact_id)
+ SELECT
+    prev_yr.d_year AS prev_year, curr_yr.d_year AS year, curr_yr.i_brand_id,
+    curr_yr.i_class_id, curr_yr.i_category_id, curr_yr.i_manufact_id,
+    prev_yr.sales_cnt AS prev_yr_cnt, curr_yr.sales_cnt AS curr_yr_cnt,
+    curr_yr.sales_cnt-prev_yr.sales_cnt AS sales_cnt_diff,
+    curr_yr.sales_amt-prev_yr.sales_amt AS sales_amt_diff
+ FROM all_sales curr_yr, all_sales prev_yr
+ WHERE curr_yr.i_brand_id=prev_yr.i_brand_id
+   AND curr_yr.i_class_id=prev_yr.i_class_id
+   AND curr_yr.i_category_id=prev_yr.i_category_id
+   AND curr_yr.i_manufact_id=prev_yr.i_manufact_id
+   AND curr_yr.d_year=2002
+   AND prev_yr.d_year=2002-1
+   AND CAST(curr_yr.sales_cnt AS DECIMAL(17,2))/CAST(prev_yr.sales_cnt AS DECIMAL(17,2))&lt;0.9
+ ORDER BY sales_cnt_diff
+ LIMIT 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3897,7 +5091,36 @@ WITH all_sales AS ( SELECT d_year, i_brand_id, i_class_id, i_category_id, i_manu
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q76.sql-- 
 
-SELECT channel, col_name, d_year, d_qoy, i_category, COUNT(*) sales_cnt, SUM(ext_sales_price) sales_amt FROM( SELECT &apos;store&apos; as channel, ss_store_sk col_name, d_year, d_qoy, i_category, ss_ext_sales_price ext_sales_price FROM store_sales, item, date_dim WHERE ss_store_sk IS NULL AND ss_sold_date_sk=d_date_sk AND ss_item_sk=i_item_sk UNION ALL SELECT &apos;web&apos; as channel, ws_ship_customer_sk col_name, d_year, d_qoy, i_category, ws_ext_sales_price ext_sales_price FROM web_sales, item, date_dim WHERE ws_ship_customer_sk IS NULL AND ws_sold_date_sk=d_date_sk AND ws_item_sk=i_item_sk UNION ALL SELECT &apos;catalog&apos; as channel, cs_ship_addr_sk col_name, d_year, d_qoy, i_category, cs_ext_sales_price ext_sales_price FROM catalog_sales, item, date_dim WHERE cs_ship_addr_sk IS NULL AND cs_sold_date_sk=d_date_sk AND cs_item_sk=i_item_sk) foo GROUP BY channel, col_name, d_year, d_qoy, i_category ORDER BY channel, col_name, d_year, d_qoy, i_category limit 100</stringProp>
+SELECT
+    channel, col_name, d_year, d_qoy, i_category, COUNT(*) sales_cnt,
+    SUM(ext_sales_price) sales_amt
+ FROM(
+    SELECT
+        &apos;store&apos; as channel, ss_store_sk col_name, d_year, d_qoy, i_category,
+        ss_ext_sales_price ext_sales_price
+    FROM store_sales, item, date_dim
+    WHERE ss_store_sk IS NULL
+      AND ss_sold_date_sk=d_date_sk
+      AND ss_item_sk=i_item_sk
+    UNION ALL
+    SELECT
+        &apos;web&apos; as channel, ws_ship_customer_sk col_name, d_year, d_qoy, i_category,
+        ws_ext_sales_price ext_sales_price
+    FROM web_sales, item, date_dim
+    WHERE ws_ship_customer_sk IS NULL
+      AND ws_sold_date_sk=d_date_sk
+      AND ws_item_sk=i_item_sk
+    UNION ALL
+    SELECT
+        &apos;catalog&apos; as channel, cs_ship_addr_sk col_name, d_year, d_qoy, i_category,
+        cs_ext_sales_price ext_sales_price
+    FROM catalog_sales, item, date_dim
+    WHERE cs_ship_addr_sk IS NULL
+      AND cs_sold_date_sk=d_date_sk
+      AND cs_item_sk=i_item_sk) foo
+ GROUP BY channel, col_name, d_year, d_qoy, i_category
+ ORDER BY channel, col_name, d_year, d_qoy, i_category
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3911,7 +5134,74 @@ SELECT channel, col_name, d_year, d_qoy, i_category, COUNT(*) sales_cnt, SUM(ext
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q77.sql-- 
 
-with ss as (select s_store_sk, sum(ss_ext_sales_price) as sales, sum(ss_net_profit) as profit from store_sales, date_dim, store where ss_sold_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) and ss_store_sk = s_store_sk group by s_store_sk), sr as (select s_store_sk, sum(sr_return_amt) as returns, sum(sr_net_loss) as profit_loss from store_returns, date_dim, store where sr_returned_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) and sr_store_sk = s_store_sk group by s_store_sk), cs as (select cs_call_center_sk, sum(cs_ext_sales_price) as sales, sum(cs_net_profit) as profit from catalog_sales, date_dim where cs_sold_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) group by cs_call_center_sk), cr as (select cr_call_center_sk, sum(cr_return_amount) as returns, sum(cr_net_loss) as profit_loss from catalog_returns, date_dim where cr_returned_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) group by cr_call_center_sk), ws as (select wp_web_page_sk, sum(ws_ext_sales_price) as sales, sum(ws_net_profit) as profit from web_sales, date_dim, web_page where ws_sold_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) and ws_web_page_sk = wp_web_page_sk group by wp_web_page_sk), wr as (select wp_web_page_sk, sum(wr_return_amt) as returns, sum(wr_net_loss) as profit_loss from web_returns, date_dim, web_page where wr_returned_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) and wr_web_page_sk = wp_web_page_sk group by wp_web_page_sk) select channel, id, sum(sales) as sales, sum(returns) as returns, sum(profit) as profit from (select &apos;store channel&apos; as channel, ss.s_store_sk as id, sales, coalesce(returns, 0) as returns, (profit - coalesce(profit_loss,0)) as profit from ss left join sr on ss.s_store_sk = sr.s_store_sk union all select &apos;catalog channel&apos; as channel, cs_call_center_sk as id, sales, returns, (profit - profit_loss) as profit from cs cross join cr union all select &apos;web channel&apos; as channel, ws.wp_web_page_sk as id, sales, coalesce(returns, 0) returns, (profit - coalesce(profit_loss,0)) as profit from ws left join wr on ws.wp_web_page_sk = wr.wp_web_page_sk ) x group by rollup(channel, id) order by channel, id limit 100</stringProp>
+with ss as
+ (select s_store_sk, sum(ss_ext_sales_price) as sales, sum(ss_net_profit) as profit
+  from store_sales, date_dim, store
+  where ss_sold_date_sk = d_date_sk
+    and d_date between cast(&apos;2000-08-23&apos; as date) and
+                       (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+    and ss_store_sk = s_store_sk
+  group by s_store_sk),
+ sr as
+ (select s_store_sk, sum(sr_return_amt) as returns, sum(sr_net_loss) as profit_loss
+ from store_returns, date_dim, store
+ where sr_returned_date_sk = d_date_sk
+    and d_date between cast(&apos;2000-08-23&apos; as date) and
+                       (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+    and sr_store_sk = s_store_sk
+ group by s_store_sk),
+ cs as
+ (select cs_call_center_sk, sum(cs_ext_sales_price) as sales, sum(cs_net_profit) as profit
+ from catalog_sales, date_dim
+ where cs_sold_date_sk = d_date_sk
+    and d_date between cast(&apos;2000-08-23&apos; as date) and
+                       (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+ group by cs_call_center_sk),
+ cr as
+ (select cr_call_center_sk, sum(cr_return_amount) as returns, sum(cr_net_loss) as profit_loss
+ from catalog_returns, date_dim
+ where cr_returned_date_sk = d_date_sk
+    and d_date between cast(&apos;2000-08-23&apos; as date) and
+                       (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+	group by cr_call_center_sk),
+ ws as
+ (select wp_web_page_sk, sum(ws_ext_sales_price) as sales, sum(ws_net_profit) as profit
+ from web_sales, date_dim, web_page
+ where ws_sold_date_sk = d_date_sk
+    and d_date between cast(&apos;2000-08-23&apos; as date) and
+                       (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+    and ws_web_page_sk = wp_web_page_sk
+ group by wp_web_page_sk),
+ wr as
+ (select wp_web_page_sk, sum(wr_return_amt) as returns, sum(wr_net_loss) as profit_loss
+ from web_returns, date_dim, web_page
+ where wr_returned_date_sk = d_date_sk
+       and d_date between cast(&apos;2000-08-23&apos; as date) and
+                          (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+       and wr_web_page_sk = wp_web_page_sk
+ group by wp_web_page_sk)
+ select channel, id, sum(sales) as sales, sum(returns) as returns, sum(profit) as profit
+ from
+ (select
+    &apos;store channel&apos; as channel, ss.s_store_sk as id, sales,
+    coalesce(returns, 0) as returns, (profit - coalesce(profit_loss,0)) as profit
+ from ss left join sr
+      on  ss.s_store_sk = sr.s_store_sk
+ union all
+ select
+    &apos;catalog channel&apos; as channel, cs_call_center_sk as id, sales,
+    returns, (profit - profit_loss) as profit
+ from cs cross join cr
+ union all
+ select
+    &apos;web channel&apos; as channel, ws.wp_web_page_sk as id, sales,
+    coalesce(returns, 0) returns, (profit - coalesce(profit_loss,0)) as profit
+ from   ws left join wr
+        on  ws.wp_web_page_sk = wr.wp_web_page_sk
+ ) x
+ group by rollup(channel, id)
+ order by channel, id
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3925,7 +5215,61 @@ with ss as (select s_store_sk, sum(ss_ext_sales_price) as sales, sum(ss_net_prof
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q78.sql-- 
 
-with ws as (select d_year AS ws_sold_year, ws_item_sk, ws_bill_customer_sk ws_customer_sk, sum(ws_quantity) ws_qty, sum(ws_wholesale_cost) ws_wc, sum(ws_sales_price) ws_sp from web_sales left join web_returns on wr_order_number=ws_order_number and ws_item_sk=wr_item_sk join date_dim on ws_sold_date_sk = d_date_sk where wr_order_number is null group by d_year, ws_item_sk, ws_bill_customer_sk ), cs as (select d_year AS cs_sold_year, cs_item_sk, cs_bill_customer_sk cs_customer_sk, sum(cs_quantity) cs_qty, sum(cs_wholesale_cost) cs_wc, sum(cs_sales_price) cs_sp from catalog_sales left join catalog_returns on cr_order_number=cs_order_number and cs_item_sk=cr_item_sk join date_dim on cs_sold_date_sk = d_date_sk where cr_order_number is null group by d_year, cs_item_sk, cs_bill_customer_sk ), ss as (select d_year AS ss_sold_year, ss_item_sk, ss_customer_sk, sum(ss_quantity) ss_qty, sum(ss_wholesale_cost) ss_wc, sum(ss_sales_price) ss_sp from store_sales left join store_returns on sr_ticket_number=ss_ticket_number and ss_item_sk=sr_item_sk join date_dim on ss_sold_date_sk = d_date_sk where sr_ticket_number is null group by d_year, ss_item_sk, ss_customer_sk ) select ss_sold_year, ss_item_sk, ss_customer_sk, round(ss_qty/(coalesce(ws_qty,0)+coalesce(cs_qty,0)),2) ratio, ss_qty store_qty, ss_wc store_wholesale_cost, ss_sp store_sales_price, coalesce(ws_qty,0)+coalesce(cs_qty,0) other_chan_qty, coalesce(ws_wc,0)+coalesce(cs_wc,0) other_chan_wholesale_cost, coalesce(ws_sp,0)+coalesce(cs_sp,0) other_chan_sales_price from ss left join ws on (ws_sold_year=ss_sold_year and ws_item_sk=ss_item_sk and ws_customer_sk=ss_customer_sk) left join cs on (cs_sold_year=ss_sold_year and cs_item_sk=ss_item_sk and cs_customer_sk=ss_customer_sk) where (coalesce(ws_qty,0)&gt;0 or coalesce(cs_qty, 0)&gt;0) and ss_sold_year=2000 order by ss_sold_year, ss_item_sk, ss_customer_sk, ss_qty desc, ss_wc desc, ss_sp desc, other_chan_qty, other_chan_wholesale_cost, other_chan_sales_price, round(ss_qty/(coalesce(ws_qty+cs_qty,1)),2) limit 100</stringProp>
+with ws as
+   (select d_year AS ws_sold_year, ws_item_sk,
+     ws_bill_customer_sk ws_customer_sk,
+     sum(ws_quantity) ws_qty,
+     sum(ws_wholesale_cost) ws_wc,
+     sum(ws_sales_price) ws_sp
+    from web_sales
+    left join web_returns on wr_order_number=ws_order_number and ws_item_sk=wr_item_sk
+    join date_dim on ws_sold_date_sk = d_date_sk
+    where wr_order_number is null
+    group by d_year, ws_item_sk, ws_bill_customer_sk
+    ),
+ cs as
+   (select d_year AS cs_sold_year, cs_item_sk,
+     cs_bill_customer_sk cs_customer_sk,
+     sum(cs_quantity) cs_qty,
+     sum(cs_wholesale_cost) cs_wc,
+     sum(cs_sales_price) cs_sp
+    from catalog_sales
+    left join catalog_returns on cr_order_number=cs_order_number and cs_item_sk=cr_item_sk
+    join date_dim on cs_sold_date_sk = d_date_sk
+    where cr_order_number is null
+    group by d_year, cs_item_sk, cs_bill_customer_sk
+    ),
+ ss as
+   (select d_year AS ss_sold_year, ss_item_sk,
+     ss_customer_sk,
+     sum(ss_quantity) ss_qty,
+     sum(ss_wholesale_cost) ss_wc,
+     sum(ss_sales_price) ss_sp
+    from store_sales
+    left join store_returns on sr_ticket_number=ss_ticket_number and ss_item_sk=sr_item_sk
+    join date_dim on ss_sold_date_sk = d_date_sk
+    where sr_ticket_number is null
+    group by d_year, ss_item_sk, ss_customer_sk
+    )
+ select
+   ss_sold_year, ss_item_sk, ss_customer_sk,
+   round(ss_qty/(coalesce(ws_qty,0)+coalesce(cs_qty,0)),2) ratio,
+   ss_qty store_qty, ss_wc store_wholesale_cost, ss_sp store_sales_price,
+   coalesce(ws_qty,0)+coalesce(cs_qty,0) other_chan_qty,
+   coalesce(ws_wc,0)+coalesce(cs_wc,0) other_chan_wholesale_cost,
+   coalesce(ws_sp,0)+coalesce(cs_sp,0) other_chan_sales_price
+ from ss
+ left join ws on (ws_sold_year=ss_sold_year and ws_item_sk=ss_item_sk and ws_customer_sk=ss_customer_sk)
+ left join cs on (cs_sold_year=ss_sold_year and cs_item_sk=ss_item_sk and cs_customer_sk=ss_customer_sk)
+ where (coalesce(ws_qty,0)&gt;0 or coalesce(cs_qty, 0)&gt;0) and ss_sold_year=2000
+ order by
+   ss_sold_year, ss_item_sk, ss_customer_sk,
+   ss_qty desc, ss_wc desc, ss_sp desc,
+   other_chan_qty,
+   other_chan_wholesale_cost,
+   other_chan_sales_price,
+   round(ss_qty/(coalesce(ws_qty+cs_qty,1)),2)
+  limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3939,7 +5283,27 @@ with ws as (select d_year AS ws_sold_year, ws_item_sk, ws_bill_customer_sk ws_cu
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q79.sql-- 
 
-select c_last_name,c_first_name,substr(s_city,1,30),ss_ticket_number,amt,profit from (select ss_ticket_number ,ss_customer_sk ,store.s_city ,sum(ss_coupon_amt) amt ,sum(ss_net_profit) profit from store_sales,date_dim,store,household_demographics where store_sales.ss_sold_date_sk = date_dim.d_date_sk and store_sales.ss_store_sk = store.s_store_sk and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk and (household_demographics.hd_dep_count = 6 or household_demographics.hd_vehicle_count &gt; 2) and date_dim.d_dow = 1 and date_dim.d_year in (1999,1999+1,1999+2) and store.s_number_employees between 200 and 295 group by ss_ticket_number,ss_customer_sk,ss_addr_sk,store.s_city) ms,customer where ss_customer_sk = c_customer_sk order by c_last_name,c_first_name,substr(s_city,1,30), profit limit 100</stringProp>
+ select
+  c_last_name,c_first_name,substr(s_city,1,30),ss_ticket_number,amt,profit
+  from
+   (select ss_ticket_number
+          ,ss_customer_sk
+          ,store.s_city
+          ,sum(ss_coupon_amt) amt
+          ,sum(ss_net_profit) profit
+    from store_sales,date_dim,store,household_demographics
+    where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+    and store_sales.ss_store_sk = store.s_store_sk
+    and store_sales.ss_hdemo_sk = household_demographics.hd_demo_sk
+    and (household_demographics.hd_dep_count = 6 or
+        household_demographics.hd_vehicle_count &gt; 2)
+    and date_dim.d_dow = 1
+    and date_dim.d_year in (1999,1999+1,1999+2)
+    and store.s_number_employees between 200 and 295
+    group by ss_ticket_number,ss_customer_sk,ss_addr_sk,store.s_city) ms,customer
+    where ss_customer_sk = c_customer_sk
+ order by c_last_name,c_first_name,substr(s_city,1,30), profit
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3953,7 +5317,73 @@ select c_last_name,c_first_name,substr(s_city,1,30),ss_ticket_number,amt,profit 
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q80.sql-- 
 
-with ssr as (select s_store_id as store_id, sum(ss_ext_sales_price) as sales, sum(coalesce(sr_return_amt, 0)) as returns, sum(ss_net_profit - coalesce(sr_net_loss, 0)) as profit from store_sales left outer join store_returns on (ss_item_sk = sr_item_sk and ss_ticket_number = sr_ticket_number), date_dim, store, item, promotion where ss_sold_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) and ss_store_sk = s_store_sk and ss_item_sk = i_item_sk and i_current_price &gt; 50 and ss_promo_sk = p_promo_sk and p_channel_tv = &apos;N&apos; group by s_store_id), csr as (select cp_catalog_page_id as catalog_page_id, sum(cs_ext_sales_price) as sales, sum(coalesce(cr_return_amount, 0)) as returns, sum(cs_net_profit - coalesce(cr_net_loss, 0)) as profit from catalog_sales left outer join catalog_returns on (cs_item_sk = cr_item_sk and cs_order_number = cr_order_number), date_dim, catalog_page, item, promotion where cs_sold_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) and cs_catalog_page_sk = cp_catalog_page_sk and cs_item_sk = i_item_sk and i_current_price &gt; 50 and cs_promo_sk = p_promo_sk and p_channel_tv = &apos;N&apos; group by cp_catalog_page_id), wsr as (select web_site_id, sum(ws_ext_sales_price) as sales, sum(coalesce(wr_return_amt, 0)) as returns, sum(ws_net_profit - coalesce(wr_net_loss, 0)) as profit from web_sales left outer join web_returns on (ws_item_sk = wr_item_sk and ws_order_number = wr_order_number), date_dim, web_site, item, promotion where ws_sold_date_sk = d_date_sk and d_date between cast(&apos;2000-08-23&apos; as date) and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day) and ws_web_site_sk = web_site_sk and ws_item_sk = i_item_sk and i_current_price &gt; 50 and ws_promo_sk = p_promo_sk and p_channel_tv = &apos;N&apos; group by web_site_id) select channel, id, sum(sales) as sales, sum(returns) as returns, sum(profit) as profit from (select &apos;store channel&apos; as channel, concat(&apos;store&apos;, store_id) as id, sales, returns, profit from ssr union all select &apos;catalog channel&apos; as channel, concat(&apos;catalog_page&apos;, catalog_page_id) as id, sales, returns, profit from csr union all select &apos;web channel&apos; as channel, concat(&apos;web_site&apos;, web_site_id) as id, sales, returns, profit from wsr) x group by rollup (channel, id) order by channel, id limit 100</stringProp>
+with ssr as
+ (select  s_store_id as store_id,
+          sum(ss_ext_sales_price) as sales,
+          sum(coalesce(sr_return_amt, 0)) as returns,
+          sum(ss_net_profit - coalesce(sr_net_loss, 0)) as profit
+  from store_sales left outer join store_returns on
+         (ss_item_sk = sr_item_sk and ss_ticket_number = sr_ticket_number),
+     date_dim, store, item, promotion
+ where ss_sold_date_sk = d_date_sk
+       and d_date between cast(&apos;2000-08-23&apos; as date)
+                  and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+       and ss_store_sk = s_store_sk
+       and ss_item_sk = i_item_sk
+       and i_current_price &gt; 50
+       and ss_promo_sk = p_promo_sk
+       and p_channel_tv = &apos;N&apos;
+ group by s_store_id),
+ csr as
+ (select  cp_catalog_page_id as catalog_page_id,
+          sum(cs_ext_sales_price) as sales,
+          sum(coalesce(cr_return_amount, 0)) as returns,
+          sum(cs_net_profit - coalesce(cr_net_loss, 0)) as profit
+  from catalog_sales left outer join catalog_returns on
+         (cs_item_sk = cr_item_sk and cs_order_number = cr_order_number),
+     date_dim, catalog_page, item, promotion
+ where cs_sold_date_sk = d_date_sk
+       and d_date between cast(&apos;2000-08-23&apos; as date)
+                  and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+        and cs_catalog_page_sk = cp_catalog_page_sk
+       and cs_item_sk = i_item_sk
+       and i_current_price &gt; 50
+       and cs_promo_sk = p_promo_sk
+       and p_channel_tv = &apos;N&apos;
+ group by cp_catalog_page_id),
+ wsr as
+ (select  web_site_id,
+          sum(ws_ext_sales_price) as sales,
+          sum(coalesce(wr_return_amt, 0)) as returns,
+          sum(ws_net_profit - coalesce(wr_net_loss, 0)) as profit
+  from web_sales left outer join web_returns on
+         (ws_item_sk = wr_item_sk and ws_order_number = wr_order_number),
+     date_dim, web_site, item, promotion
+ where ws_sold_date_sk = d_date_sk
+       and d_date between cast(&apos;2000-08-23&apos; as date)
+                  and (cast(&apos;2000-08-23&apos; as date) + interval &apos;30&apos; day)
+        and ws_web_site_sk = web_site_sk
+       and ws_item_sk = i_item_sk
+       and i_current_price &gt; 50
+       and ws_promo_sk = p_promo_sk
+       and p_channel_tv = &apos;N&apos;
+ group by web_site_id)
+ select channel, id, sum(sales) as sales, sum(returns) as returns, sum(profit) as profit
+ from (select
+        &apos;store channel&apos; as channel, concat(&apos;store&apos;, store_id) as id, sales, returns, profit
+      from ssr
+      union all
+      select
+        &apos;catalog channel&apos; as channel, concat(&apos;catalog_page&apos;, catalog_page_id) as id,
+        sales, returns, profit
+      from csr
+      union all
+      select
+        &apos;web channel&apos; as channel, concat(&apos;web_site&apos;, web_site_id) as id, sales, returns, profit
+      from  wsr) x
+ group by rollup (channel, id)
+ order by channel, id
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3967,7 +5397,30 @@ with ssr as (select s_store_id as store_id, sum(ss_ext_sales_price) as sales, su
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q81.sql-- 
 
-with customer_total_return as (select cr_returning_customer_sk as ctr_customer_sk, ca_state as ctr_state, sum(cr_return_amt_inc_tax) as ctr_total_return from catalog_returns, date_dim, customer_address where cr_returned_date_sk = d_date_sk and d_year = 2000 and cr_returning_addr_sk = ca_address_sk group by cr_returning_customer_sk, ca_state ) select c_customer_id,c_salutation,c_first_name,c_last_name,ca_street_number,ca_street_name, ca_street_type,ca_suite_number,ca_city,ca_county,ca_state,ca_zip,ca_country, ca_gmt_offset,ca_location_type,ctr_total_return from customer_total_return ctr1, customer_address, customer where ctr1.ctr_total_return &gt; (select avg(ctr_total_return)*1.2 from customer_total_return ctr2 where ctr1.ctr_state = ctr2.ctr_state) and ca_address_sk = c_current_addr_sk and ca_state = &apos;GA&apos; and ctr1.ctr_customer_sk = c_customer_sk order by c_customer_id,c_salutation,c_first_name,c_last_name,ca_street_number,ca_street_name ,ca_street_type,ca_suite_number,ca_city,ca_county,ca_state,ca_zip,ca_country,ca_gmt_offset ,ca_location_type,ctr_total_return limit 100</stringProp>
+ with customer_total_return as
+ (select
+    cr_returning_customer_sk as ctr_customer_sk, ca_state as ctr_state,
+        sum(cr_return_amt_inc_tax) as ctr_total_return
+ from catalog_returns, date_dim, customer_address
+ where cr_returned_date_sk = d_date_sk
+   and d_year = 2000
+   and cr_returning_addr_sk = ca_address_sk
+ group by cr_returning_customer_sk, ca_state )
+ select
+    c_customer_id,c_salutation,c_first_name,c_last_name,ca_street_number,ca_street_name,
+    ca_street_type,ca_suite_number,ca_city,ca_county,ca_state,ca_zip,ca_country,
+    ca_gmt_offset,ca_location_type,ctr_total_return
+ from customer_total_return ctr1, customer_address, customer
+ where ctr1.ctr_total_return &gt; (select avg(ctr_total_return)*1.2
+ 			  from customer_total_return ctr2
+                  	  where ctr1.ctr_state = ctr2.ctr_state)
+       and ca_address_sk = c_current_addr_sk
+       and ca_state = &apos;GA&apos;
+       and ctr1.ctr_customer_sk = c_customer_sk
+ order by c_customer_id,c_salutation,c_first_name,c_last_name,ca_street_number,ca_street_name
+                   ,ca_street_type,ca_suite_number,ca_city,ca_county,ca_state,ca_zip,ca_country,ca_gmt_offset
+                  ,ca_location_type,ctr_total_return
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -3981,7 +5434,18 @@ with customer_total_return as (select cr_returning_customer_sk as ctr_customer_s
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q82.sql-- 
 
-select i_item_id, i_item_desc, i_current_price from item, inventory, date_dim, store_sales where i_current_price between 62 and 62+30 and inv_item_sk = i_item_sk and d_date_sk=inv_date_sk and d_date between cast(&apos;2000-05-25&apos; as date) and (cast(&apos;2000-05-25&apos; as date) + interval &apos;60&apos; day) and i_manufact_id in (129, 270, 821, 423) and inv_quantity_on_hand between 100 and 500 and ss_item_sk = i_item_sk group by i_item_id,i_item_desc,i_current_price order by i_item_id limit 100</stringProp>
+ select i_item_id, i_item_desc, i_current_price
+ from item, inventory, date_dim, store_sales
+ where i_current_price between 62 and 62+30
+   and inv_item_sk = i_item_sk
+   and d_date_sk=inv_date_sk
+   and d_date between cast(&apos;2000-05-25&apos; as date) and (cast(&apos;2000-05-25&apos; as date) + interval &apos;60&apos; day)
+   and i_manufact_id in (129, 270, 821, 423)
+   and inv_quantity_on_hand between 100 and 500
+   and ss_item_sk = i_item_sk
+ group by i_item_id,i_item_desc,i_current_price
+ order by i_item_id
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4045,7 +5509,24 @@ with sr_items as
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q84.sql-- 
 
-select c_customer_id as customer_id ,coalesce(c_last_name,&apos;&apos;) + &apos;, &apos; + coalesce(c_first_name,&apos;&apos;) as customername from customer ,customer_address ,customer_demographics ,household_demographics ,income_band ,store_returns where ca_city = &apos;Edgewood&apos; and c_current_addr_sk = ca_address_sk and ib_lower_bound &gt;= 38128 and ib_upper_bound &lt;= 38128 + 50000 and ib_income_band_sk = hd_income_band_sk and cd_demo_sk = c_current_cdemo_sk and hd_demo_sk = c_current_hdemo_sk and sr_cdemo_sk = cd_demo_sk order by c_customer_id limit 100</stringProp>
+ select c_customer_id as customer_id
+       ,coalesce(c_last_name,&apos;&apos;) + &apos;, &apos; + coalesce(c_first_name,&apos;&apos;) as customername
+ from customer
+     ,customer_address
+     ,customer_demographics
+     ,household_demographics
+     ,income_band
+     ,store_returns
+ where ca_city	        =  &apos;Edgewood&apos;
+   and c_current_addr_sk = ca_address_sk
+   and ib_lower_bound   &gt;=  38128
+   and ib_upper_bound   &lt;=  38128 + 50000
+   and ib_income_band_sk = hd_income_band_sk
+   and cd_demo_sk = c_current_cdemo_sk
+   and hd_demo_sk = c_current_hdemo_sk
+   and sr_cdemo_sk = cd_demo_sk
+ order by c_customer_id
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4059,7 +5540,85 @@ select c_customer_id as customer_id ,coalesce(c_last_name,&apos;&apos;) + &apos;
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q85.sql-- 
 
-select substr(r_reason_desc,1,20), avg(ws_quantity), avg(wr_refunded_cash), avg(wr_fee) from web_sales, web_returns, web_page, customer_demographics cd1, customer_demographics cd2, customer_address, date_dim, reason where ws_web_page_sk = wp_web_page_sk and ws_item_sk = wr_item_sk and ws_order_number = wr_order_number and ws_sold_date_sk = d_date_sk and d_year = 2000 and cd1.cd_demo_sk = wr_refunded_cdemo_sk and cd2.cd_demo_sk = wr_returning_cdemo_sk and ca_address_sk = wr_refunded_addr_sk and r_reason_sk = wr_reason_sk and ( ( cd1.cd_marital_status = &apos;M&apos; and cd1.cd_marital_status = cd2.cd_marital_status and cd1.cd_education_status = &apos;Advanced Degree&apos; and cd1.cd_education_status = cd2.cd_education_status and ws_sales_price between 100.00 and 150.00 ) or ( cd1.cd_marital_status = &apos;S&apos; and cd1.cd_marital_status = cd2.cd_marital_status and cd1.cd_education_status = &apos;College&apos; and cd1.cd_education_status = cd2.cd_education_status and ws_sales_price between 50.00 and 100.00 ) or ( cd1.cd_marital_status = &apos;W&apos; and cd1.cd_marital_status = cd2.cd_marital_status and cd1.cd_education_status = &apos;2 yr Degree&apos; and cd1.cd_education_status = cd2.cd_education_status and ws_sales_price between 150.00 and 200.00 ) ) and ( ( ca_country = &apos;United States&apos; and ca_state in (&apos;IN&apos;, &apos;OH&apos;, &apos;NJ&apos;) and ws_net_profit between 100 and 200 ) or ( ca_country = &apos;United States&apos; and ca_state in (&apos;WI&apos;, &apos;CT&apos;, &apos;KY&apos;) and ws_net_profit between 150 and 300 ) or ( ca_country = &apos;United States&apos; and ca_state in (&apos;LA&apos;, &apos;IA&apos;, &apos;AR&apos;) and ws_net_profit between 50 and 250 ) ) group by r_reason_desc order by substr(r_reason_desc,1,20) ,avg(ws_quantity) ,avg(wr_refunded_cash) ,avg(wr_fee) limit 100</stringProp>
+select
+    substr(r_reason_desc,1,20), avg(ws_quantity), avg(wr_refunded_cash), avg(wr_fee)
+ from web_sales, web_returns, web_page, customer_demographics cd1,
+      customer_demographics cd2, customer_address, date_dim, reason
+ where ws_web_page_sk = wp_web_page_sk
+   and ws_item_sk = wr_item_sk
+   and ws_order_number = wr_order_number
+   and ws_sold_date_sk = d_date_sk and d_year = 2000
+   and cd1.cd_demo_sk = wr_refunded_cdemo_sk
+   and cd2.cd_demo_sk = wr_returning_cdemo_sk
+   and ca_address_sk = wr_refunded_addr_sk
+   and r_reason_sk = wr_reason_sk
+   and
+   (
+    (
+     cd1.cd_marital_status = &apos;M&apos;
+     and
+     cd1.cd_marital_status = cd2.cd_marital_status
+     and
+     cd1.cd_education_status = &apos;Advanced Degree&apos;
+     and
+     cd1.cd_education_status = cd2.cd_education_status
+     and
+     ws_sales_price between 100.00 and 150.00
+    )
+   or
+    (
+     cd1.cd_marital_status = &apos;S&apos;
+     and
+     cd1.cd_marital_status = cd2.cd_marital_status
+     and
+     cd1.cd_education_status = &apos;College&apos;
+     and
+     cd1.cd_education_status = cd2.cd_education_status
+     and
+     ws_sales_price between 50.00 and 100.00
+    )
+   or
+    (
+     cd1.cd_marital_status = &apos;W&apos;
+     and
+     cd1.cd_marital_status = cd2.cd_marital_status
+     and
+     cd1.cd_education_status = &apos;2 yr Degree&apos;
+     and
+     cd1.cd_education_status = cd2.cd_education_status
+     and
+     ws_sales_price between 150.00 and 200.00
+    )
+   )
+   and
+   (
+    (
+     ca_country = &apos;United States&apos;
+     and
+     ca_state in (&apos;IN&apos;, &apos;OH&apos;, &apos;NJ&apos;)
+     and ws_net_profit between 100 and 200
+    )
+    or
+    (
+     ca_country = &apos;United States&apos;
+     and
+     ca_state in (&apos;WI&apos;, &apos;CT&apos;, &apos;KY&apos;)
+     and ws_net_profit between 150 and 300
+    )
+    or
+    (
+     ca_country = &apos;United States&apos;
+     and
+     ca_state in (&apos;LA&apos;, &apos;IA&apos;, &apos;AR&apos;)
+     and ws_net_profit between 50 and 250
+    )
+   )
+ group by r_reason_desc
+ order by substr(r_reason_desc,1,20)
+        ,avg(ws_quantity)
+        ,avg(wr_refunded_cash)
+        ,avg(wr_fee)
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4073,7 +5632,24 @@ select substr(r_reason_desc,1,20), avg(ws_quantity), avg(wr_refunded_cash), avg(
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q86.sql-- 
 
-select sum(ws_net_paid) as total_sum, i_category, i_class, grouping(i_category)+grouping(i_class) as lochierarchy, rank() over ( partition by grouping(i_category)+grouping(i_class), case when grouping(i_class) = 0 then i_category end order by sum(ws_net_paid) desc) as rank_within_parent from web_sales, date_dim d1, item where d1.d_month_seq between 1200 and 1200+11 and d1.d_date_sk = ws_sold_date_sk and i_item_sk = ws_item_sk group by rollup(i_category,i_class) order by lochierarchy desc, case when lochierarchy = 0 then i_category end, rank_within_parent limit 100</stringProp>
+ select sum(ws_net_paid) as total_sum, i_category, i_class,
+  grouping(i_category)+grouping(i_class) as lochierarchy,
+  rank() over (
+ 	    partition by grouping(i_category)+grouping(i_class),
+ 	    case when grouping(i_class) = 0 then i_category end
+ 	    order by sum(ws_net_paid) desc) as rank_within_parent
+ from
+    web_sales, date_dim d1, item
+ where
+    d1.d_month_seq between 1200 and 1200+11
+ and d1.d_date_sk = ws_sold_date_sk
+ and i_item_sk  = ws_item_sk
+ group by rollup(i_category,i_class)
+ order by
+   lochierarchy desc,
+   case when lochierarchy = 0 then i_category end,
+   rank_within_parent
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4087,7 +5663,25 @@ select sum(ws_net_paid) as total_sum, i_category, i_class, grouping(i_category)+
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q87.sql-- 
 
-select count(*) from ((select distinct c_last_name, c_first_name, d_date from store_sales, date_dim, customer where store_sales.ss_sold_date_sk = date_dim.d_date_sk and store_sales.ss_customer_sk = customer.c_customer_sk and d_month_seq between 1200 and 1200+11) except (select distinct c_last_name, c_first_name, d_date from catalog_sales, date_dim, customer where catalog_sales.cs_sold_date_sk = date_dim.d_date_sk and catalog_sales.cs_bill_customer_sk = customer.c_customer_sk and d_month_seq between 1200 and 1200+11) except (select distinct c_last_name, c_first_name, d_date from web_sales, date_dim, customer where web_sales.ws_sold_date_sk = date_dim.d_date_sk and web_sales.ws_bill_customer_sk = customer.c_customer_sk and d_month_seq between 1200 and 1200+11) ) cool_cust</stringProp>
+select count(*)
+ from ((select distinct c_last_name, c_first_name, d_date
+       from store_sales, date_dim, customer
+       where store_sales.ss_sold_date_sk = date_dim.d_date_sk
+         and store_sales.ss_customer_sk = customer.c_customer_sk
+         and d_month_seq between 1200 and 1200+11)
+       except
+      (select distinct c_last_name, c_first_name, d_date
+       from catalog_sales, date_dim, customer
+       where catalog_sales.cs_sold_date_sk = date_dim.d_date_sk
+         and catalog_sales.cs_bill_customer_sk = customer.c_customer_sk
+         and d_month_seq between 1200 and 1200+11)
+       except
+      (select distinct c_last_name, c_first_name, d_date
+       from web_sales, date_dim, customer
+       where web_sales.ws_sold_date_sk = date_dim.d_date_sk
+         and web_sales.ws_bill_customer_sk = customer.c_customer_sk
+         and d_month_seq between 1200 and 1200+11)
+) cool_cust;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4240,7 +5834,25 @@ select *
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q90.sql--
 
-select cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio from ( select count(*) amc from web_sales, household_demographics , time_dim, web_page where ws_sold_time_sk = time_dim.t_time_sk and ws_ship_hdemo_sk = household_demographics.hd_demo_sk and ws_web_page_sk = web_page.wp_web_page_sk and time_dim.t_hour between 8 and 8+1 and household_demographics.hd_dep_count = 6 and web_page.wp_char_count between 5000 and 5200) at cross join ( select count(*) pmc from web_sales, household_demographics , time_dim, web_page where ws_sold_time_sk = time_dim.t_time_sk and ws_ship_hdemo_sk = household_demographics.hd_demo_sk and ws_web_page_sk = web_page.wp_web_page_sk and time_dim.t_hour between 19 and 19+1 and household_demographics.hd_dep_count = 6 and web_page.wp_char_count between 5000 and 5200) pt order by am_pm_ratio limit 100</stringProp>
+ select cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio
+ from ( select count(*) amc
+       from web_sales, household_demographics , time_dim, web_page
+       where ws_sold_time_sk = time_dim.t_time_sk
+         and ws_ship_hdemo_sk = household_demographics.hd_demo_sk
+         and ws_web_page_sk = web_page.wp_web_page_sk
+         and time_dim.t_hour between 8 and 8+1
+         and household_demographics.hd_dep_count = 6
+         and web_page.wp_char_count between 5000 and 5200) at cross join
+      ( select count(*) pmc
+       from web_sales, household_demographics , time_dim, web_page
+       where ws_sold_time_sk = time_dim.t_time_sk
+         and ws_ship_hdemo_sk = household_demographics.hd_demo_sk
+         and ws_web_page_sk = web_page.wp_web_page_sk
+         and time_dim.t_hour between 19 and 19+1
+         and household_demographics.hd_dep_count = 6
+         and web_page.wp_char_count between 5000 and 5200) pt
+ order by am_pm_ratio
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4254,7 +5866,27 @@ select cast(amc as decimal(15,4))/cast(pmc as decimal(15,4)) am_pm_ratio from ( 
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q91.sql-- 
 
-select cc_call_center_id Call_Center, cc_name Call_Center_Name, cc_manager Manager, sum(cr_net_loss) Returns_Loss from call_center, catalog_returns, date_dim, customer, customer_address, customer_demographics, household_demographics where cr_call_center_sk = cc_call_center_sk and cr_returned_date_sk = d_date_sk and cr_returning_customer_sk = c_customer_sk and cd_demo_sk = c_current_cdemo_sk and hd_demo_sk = c_current_hdemo_sk and ca_address_sk = c_current_addr_sk and d_year = 1998 and d_moy = 11 and ( (cd_marital_status = &apos;M&apos; and cd_education_status = &apos;Unknown&apos;) or(cd_marital_status = &apos;W&apos; and cd_education_status = &apos;Advanced Degree&apos;)) and hd_buy_potential like &apos;Unknown%&apos; and ca_gmt_offset = -7 group by cc_call_center_id,cc_name,cc_manager,cd_marital_status,cd_education_status order by sum(cr_net_loss) desc</stringProp>
+select
+        cc_call_center_id Call_Center, cc_name Call_Center_Name, cc_manager Manager,
+        sum(cr_net_loss) Returns_Loss
+ from
+        call_center, catalog_returns, date_dim, customer, customer_address,
+        customer_demographics, household_demographics
+ where
+        cr_call_center_sk        = cc_call_center_sk
+ and    cr_returned_date_sk      = d_date_sk
+ and    cr_returning_customer_sk = c_customer_sk
+ and    cd_demo_sk               = c_current_cdemo_sk
+ and    hd_demo_sk               = c_current_hdemo_sk
+ and    ca_address_sk            = c_current_addr_sk
+ and    d_year                   = 1998
+ and    d_moy                    = 11
+ and    ( (cd_marital_status     = &apos;M&apos; and cd_education_status = &apos;Unknown&apos;)
+        or(cd_marital_status     = &apos;W&apos; and cd_education_status = &apos;Advanced Degree&apos;))
+ and    hd_buy_potential like &apos;Unknown%&apos;
+ and    ca_gmt_offset            = -7
+ group by cc_call_center_id,cc_name,cc_manager,cd_marital_status,cd_education_status
+ order by sum(cr_net_loss) desc;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4297,7 +5929,19 @@ select cc_call_center_id Call_Center, cc_name Call_Center_Name, cc_manager Manag
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q93.sql-- 
 
-select ss_customer_sk, sum(act_sales) sumsales from (select ss_item_sk, ss_ticket_number, ss_customer_sk, case when sr_return_quantity is not null then (ss_quantity-sr_return_quantity)*ss_sales_price else (ss_quantity*ss_sales_price) end act_sales from store_sales left outer join store_returns on (sr_item_sk = ss_item_sk and sr_ticket_number = ss_ticket_number), reason where sr_reason_sk = r_reason_sk and r_reason_desc = &apos;reason 28&apos;) t group by ss_customer_sk order by sumsales, ss_customer_sk limit 100</stringProp>
+ select ss_customer_sk, sum(act_sales) sumsales
+ from (select
+         ss_item_sk, ss_ticket_number, ss_customer_sk,
+         case when sr_return_quantity is not null then (ss_quantity-sr_return_quantity)*ss_sales_price
+                                                  else (ss_quantity*ss_sales_price) end act_sales
+       from store_sales
+       left outer join store_returns
+       on (sr_item_sk = ss_item_sk and sr_ticket_number = ss_ticket_number),
+       reason
+       where sr_reason_sk = r_reason_sk and r_reason_desc = &apos;reason 28&apos;) t
+ group by ss_customer_sk
+ order by sumsales, ss_customer_sk
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4386,7 +6030,17 @@ with ws_wh as
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q96.sql-- 
 
-select count(*) from store_sales, household_demographics, time_dim, store where ss_sold_time_sk = time_dim.t_time_sk and ss_hdemo_sk = household_demographics.hd_demo_sk and ss_store_sk = s_store_sk and time_dim.t_hour = 20 and time_dim.t_minute &gt;= 30 and household_demographics.hd_dep_count = 7 and store.s_store_name = &apos;ese&apos; order by count(*) limit 100</stringProp>
+ select count(*)
+ from store_sales, household_demographics, time_dim, store
+ where ss_sold_time_sk = time_dim.t_time_sk
+     and ss_hdemo_sk = household_demographics.hd_demo_sk
+     and ss_store_sk = s_store_sk
+     and time_dim.t_hour = 20
+     and time_dim.t_minute &gt;= 30
+     and household_demographics.hd_dep_count = 7
+     and store.s_store_name = &apos;ese&apos;
+ order by count(*)
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4400,7 +6054,24 @@ select count(*) from store_sales, household_demographics, time_dim, store where 
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q97.sql-- 
 
-with ssci as ( select ss_customer_sk customer_sk, ss_item_sk item_sk from store_sales,date_dim where ss_sold_date_sk = d_date_sk and d_month_seq between 1200 and 1200 + 11 group by ss_customer_sk, ss_item_sk), csci as( select cs_bill_customer_sk customer_sk, cs_item_sk item_sk from catalog_sales,date_dim where cs_sold_date_sk = d_date_sk and d_month_seq between 1200 and 1200 + 11 group by cs_bill_customer_sk, cs_item_sk) select sum(case when ssci.customer_sk is not null and csci.customer_sk is null then 1 else 0 end) store_only ,sum(case when ssci.customer_sk is null and csci.customer_sk is not null then 1 else 0 end) catalog_only ,sum(case when ssci.customer_sk is not null and csci.customer_sk is not null then 1 else 0 end) store_and_catalog from ssci full outer join csci on (ssci.customer_sk=csci.customer_sk and ssci.item_sk = csci.item_sk) limit 100</stringProp>
+ with ssci as (
+ select ss_customer_sk customer_sk, ss_item_sk item_sk
+ from store_sales,date_dim
+ where ss_sold_date_sk = d_date_sk
+   and d_month_seq between 1200 and 1200 + 11
+ group by ss_customer_sk, ss_item_sk),
+ csci as(
+  select cs_bill_customer_sk customer_sk, cs_item_sk item_sk
+ from catalog_sales,date_dim
+ where cs_sold_date_sk = d_date_sk
+   and d_month_seq between 1200 and 1200 + 11
+ group by cs_bill_customer_sk, cs_item_sk)
+ select sum(case when ssci.customer_sk is not null and csci.customer_sk is null then 1 else 0 end) store_only
+       ,sum(case when ssci.customer_sk is null and csci.customer_sk is not null then 1 else 0 end) catalog_only
+       ,sum(case when ssci.customer_sk is not null and csci.customer_sk is not null then 1 else 0 end) store_and_catalog
+ from ssci full outer join csci on (ssci.customer_sk=csci.customer_sk
+                                and ssci.item_sk = csci.item_sk)
+ limit 100;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4414,7 +6085,22 @@ with ssci as ( select ss_customer_sk customer_sk, ss_item_sk item_sk from store_
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">--q98.sql-- 
 
-select i_item_desc, i_category, i_class, i_current_price ,sum(ss_ext_sales_price) as itemrevenue ,sum(ss_ext_sales_price)*100/sum(sum(ss_ext_sales_price)) over (partition by i_class) as revenueratio from store_sales, item, date_dim where ss_item_sk = i_item_sk and i_category in (&apos;Sports&apos;, &apos;Books&apos;, &apos;Home&apos;) and ss_sold_date_sk = d_date_sk and d_date between cast(&apos;1999-02-22&apos; as date) and (cast(&apos;1999-02-22&apos; as date) + interval &apos;30&apos; day) group by i_item_id, i_item_desc, i_category, i_class, i_current_price order by i_category, i_class, i_item_id, i_item_desc, revenueratio</stringProp>
+select i_item_desc, i_category, i_class, i_current_price
+      ,sum(ss_ext_sales_price) as itemrevenue
+      ,sum(ss_ext_sales_price)*100/sum(sum(ss_ext_sales_price)) over
+          (partition by i_class) as revenueratio
+from
+	 store_sales, item, date_dim
+where
+	ss_item_sk = i_item_sk
+  	and i_category in (&apos;Sports&apos;, &apos;Books&apos;, &apos;Home&apos;)
+  	and ss_sold_date_sk = d_date_sk
+	and d_date between cast(&apos;1999-02-22&apos; as date)
+				and (cast(&apos;1999-02-22&apos; as date) + interval &apos;30&apos; day)
+group by
+	i_item_id, i_item_desc, i_category, i_class, i_current_price
+order by
+	i_category, i_class, i_item_id, i_item_desc, revenueratio</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -4458,7 +6144,7 @@ select i_item_desc, i_category, i_class, i_current_price ,sum(ss_ext_sales_price
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="false">
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">drop table customer_address if exists cascade; 
