@@ -7298,39 +7298,89 @@ order by
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="only 1-10 sql" enabled="true"/>
         <hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_1&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_1&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q1.sql--" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q14a.sql--" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q1.sql--
+            <stringProp name="query">--q14a.sql--
 
- WITH customer_total_return AS
-   (SELECT sr_customer_sk AS ctr_customer_sk, sr_store_sk AS ctr_store_sk,
-           sum(sr_return_amt) AS ctr_total_return
-    FROM store_returns, date_dim
-    WHERE sr_returned_date_sk = d_date_sk AND d_year = 2000
-    GROUP BY sr_customer_sk, sr_store_sk)
- SELECT c_customer_id
-   FROM customer_total_return ctr1, store, customer
-   WHERE ctr1.ctr_total_return &gt;
-    (SELECT avg(ctr_total_return)*1.2
-      FROM customer_total_return ctr2
-       WHERE ctr1.ctr_store_sk = ctr2.ctr_store_sk)
-   AND s_store_sk = ctr1.ctr_store_sk
-   AND s_state = &apos;TN&apos;
-   AND ctr1.ctr_customer_sk = c_customer_sk
-   ORDER BY c_customer_id LIMIT 100</stringProp>
+with cross_items as
+ (select i_item_sk ss_item_sk
+ from item,
+    (select iss.i_brand_id brand_id, iss.i_class_id class_id, iss.i_category_id category_id
+     from store_sales, item iss, date_dim d1
+     where ss_item_sk = iss.i_item_sk
+                    and ss_sold_date_sk = d1.d_date_sk
+       and d1.d_year between 1999 AND 1999 + 2
+   intersect
+     select ics.i_brand_id, ics.i_class_id, ics.i_category_id
+     from catalog_sales, item ics, date_dim d2
+     where cs_item_sk = ics.i_item_sk
+       and cs_sold_date_sk = d2.d_date_sk
+       and d2.d_year between 1999 AND 1999 + 2
+   intersect
+     select iws.i_brand_id, iws.i_class_id, iws.i_category_id
+     from web_sales, item iws, date_dim d3
+     where ws_item_sk = iws.i_item_sk
+       and ws_sold_date_sk = d3.d_date_sk
+       and d3.d_year between 1999 AND 1999 + 2) x
+ where i_brand_id = brand_id
+   and i_class_id = class_id
+   and i_category_id = category_id
+),
+ avg_sales as
+ (select avg(quantity*list_price) average_sales
+  from (
+     select ss_quantity quantity, ss_list_price list_price
+     from store_sales, date_dim
+     where ss_sold_date_sk = d_date_sk
+       and d_year between 1999 and 2001
+   union all
+     select cs_quantity quantity, cs_list_price list_price
+     from catalog_sales, date_dim
+     where cs_sold_date_sk = d_date_sk
+       and d_year between 1999 and 1999 + 2
+   union all
+     select ws_quantity quantity, ws_list_price list_price
+     from web_sales, date_dim
+     where ws_sold_date_sk = d_date_sk
+       and d_year between 1999 and 1999 + 2) x)
+ select channel, i_brand_id,i_class_id,i_category_id,sum(sales) sum_sale, sum(number_sales) sum_num
+ from(
+     select &apos;store&apos; channel, i_brand_id,i_class_id
+             ,i_category_id,sum(ss_quantity*ss_list_price) sales
+             , count(*) number_sales
+     from store_sales, item, date_dim
+     where ss_item_sk in (select ss_item_sk from cross_items)
+       and ss_item_sk = i_item_sk
+       and ss_sold_date_sk = d_date_sk
+       and d_year = 1999+2
+       and d_moy = 11
+     group by i_brand_id,i_class_id,i_category_id
+     having sum(ss_quantity*ss_list_price) &gt; (select average_sales from avg_sales)
+   union all
+     select &apos;catalog&apos; channel, i_brand_id,i_class_id,i_category_id, sum(cs_quantity*cs_list_price) sales, count(*) number_sales
+     from catalog_sales, item, date_dim
+     where cs_item_sk in (select ss_item_sk from cross_items)
+       and cs_item_sk = i_item_sk
+       and cs_sold_date_sk = d_date_sk
+       and d_year = 1999+2
+       and d_moy = 11
+     group by i_brand_id,i_class_id,i_category_id
+     having sum(cs_quantity*cs_list_price) &gt; (select average_sales from avg_sales)
+   union all
+     select &apos;web&apos; channel, i_brand_id,i_class_id,i_category_id, sum(ws_quantity*ws_list_price) sales , count(*) number_sales
+     from web_sales, item, date_dim
+     where ws_item_sk in (select ss_item_sk from cross_items)
+       and ws_item_sk = i_item_sk
+       and ws_sold_date_sk = d_date_sk
+       and d_year = 1999+2
+       and d_moy = 11
+     group by i_brand_id,i_class_id,i_category_id
+     having sum(ws_quantity*ws_list_price) &gt; (select average_sales from avg_sales)
+ ) y
+ group by rollup (channel, i_brand_id,i_class_id,i_category_id)
+ order by channel,i_brand_id,i_class_id,i_category_id
+ limit 100</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -7339,691 +7389,74 @@ order by
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_2&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_2&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q2.sql--" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q14b.sql--" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q2.sql--
+            <stringProp name="query">--q14b.sql--
 
- WITH wscs as
- (SELECT sold_date_sk, sales_price
-  FROM (SELECT ws_sold_date_sk sold_date_sk, ws_ext_sales_price sales_price
-        FROM web_sales
-        UNION ALL
-       SELECT cs_sold_date_sk sold_date_sk, cs_ext_sales_price sales_price
-        FROM catalog_sales)),
- wswscs AS
- (SELECT d_week_seq,
-        sum(case when (d_day_name=&apos;Sunday&apos;) then sales_price else null end) sun_sales,
-        sum(case when (d_day_name=&apos;Monday&apos;) then sales_price else null end) mon_sales,
-        sum(case when (d_day_name=&apos;Tuesday&apos;) then sales_price else  null end) tue_sales,
-        sum(case when (d_day_name=&apos;Wednesday&apos;) then sales_price else null end) wed_sales,
-        sum(case when (d_day_name=&apos;Thursday&apos;) then sales_price else null end) thu_sales,
-        sum(case when (d_day_name=&apos;Friday&apos;) then sales_price else null end) fri_sales,
-        sum(case when (d_day_name=&apos;Saturday&apos;) then sales_price else null end) sat_sales
- FROM wscs, date_dim
- WHERE d_date_sk = sold_date_sk
- GROUP BY d_week_seq)
- SELECT d_week_seq1
-       ,round(sun_sales1/sun_sales2,2)	sun_rate
-       ,round(mon_sales1/mon_sales2,2)	mon_rate
-       ,round(tue_sales1/tue_sales2,2)	tue_rate
-       ,round(wed_sales1/wed_sales2,2)	wed_rate
-       ,round(thu_sales1/thu_sales2,2)	thu_rate
-       ,round(fri_sales1/fri_sales2,2)	fri_rate
-       ,round(sat_sales1/sat_sales2,2)	sat_rate
- FROM
- (SELECT wswscs.d_week_seq d_week_seq1
-        ,sun_sales sun_sales1
-        ,mon_sales mon_sales1
-        ,tue_sales tue_sales1
-        ,wed_sales wed_sales1
-        ,thu_sales thu_sales1
-        ,fri_sales fri_sales1
-        ,sat_sales sat_sales1
-  FROM wswscs,date_dim
-  WHERE date_dim.d_week_seq = wswscs.d_week_seq AND d_year = 2001) y,
- (SELECT wswscs.d_week_seq d_week_seq2
-        ,sun_sales sun_sales2
-        ,mon_sales mon_sales2
-        ,tue_sales tue_sales2
-        ,wed_sales wed_sales2
-        ,thu_sales thu_sales2
-        ,fri_sales fri_sales2
-        ,sat_sales sat_sales2
-  FROM wswscs, date_dim
-  WHERE date_dim.d_week_seq = wswscs.d_week_seq AND d_year = 2001 + 1) z
- WHERE d_week_seq1=d_week_seq2-53
- ORDER BY d_week_seq1</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_3&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_3&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q3.sql--" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q3.sql--
-
- SELECT dt.d_year, item.i_brand_id brand_id, item.i_brand brand,SUM(ss_ext_sales_price) sum_agg
- FROM  date_dim dt, store_sales, item
- WHERE dt.d_date_sk = store_sales.ss_sold_date_sk
-   AND store_sales.ss_item_sk = item.i_item_sk
-   AND item.i_manufact_id = 128
-   AND dt.d_moy=11
- GROUP BY dt.d_year, item.i_brand, item.i_brand_id
- ORDER BY dt.d_year, sum_agg desc, brand_id
- LIMIT 100</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_4&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_4&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q4.sql--" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q4.sql--
-
-WITH year_total AS (
- SELECT c_customer_id customer_id,
-        c_first_name customer_first_name,
-        c_last_name customer_last_name,
-        c_preferred_cust_flag customer_preferred_cust_flag,
-        c_birth_country customer_birth_country,
-        c_login customer_login,
-        c_email_address customer_email_address,
-        d_year dyear,
-        sum(((ss_ext_list_price-ss_ext_wholesale_cost-ss_ext_discount_amt)+ss_ext_sales_price)/2) year_total,
-        &apos;s&apos; sale_type
- FROM customer, store_sales, date_dim
- WHERE c_customer_sk = ss_customer_sk AND ss_sold_date_sk = d_date_sk
- GROUP BY c_customer_id,
-          c_first_name,
-          c_last_name,
-          c_preferred_cust_flag,
-          c_birth_country,
-          c_login,
-          c_email_address,
-          d_year
- UNION ALL
- SELECT c_customer_id customer_id,
-        c_first_name customer_first_name,
-        c_last_name customer_last_name,
-        c_preferred_cust_flag customer_preferred_cust_flag,
-        c_birth_country customer_birth_country,
-        c_login customer_login,
-        c_email_address customer_email_address,
-        d_year dyear,
-        sum((((cs_ext_list_price-cs_ext_wholesale_cost-cs_ext_discount_amt)+cs_ext_sales_price)/2) ) year_total,
-        &apos;c&apos; sale_type
- FROM customer, catalog_sales, date_dim
- WHERE c_customer_sk = cs_bill_customer_sk AND cs_sold_date_sk = d_date_sk
- GROUP BY c_customer_id,
-          c_first_name,
-          c_last_name,
-          c_preferred_cust_flag,
-          c_birth_country,
-          c_login,
-          c_email_address,
-          d_year
- UNION ALL
- SELECT c_customer_id customer_id
-       ,c_first_name customer_first_name
-       ,c_last_name customer_last_name
-       ,c_preferred_cust_flag customer_preferred_cust_flag
-       ,c_birth_country customer_birth_country
-       ,c_login customer_login
-       ,c_email_address customer_email_address
-       ,d_year dyear
-       ,sum((((ws_ext_list_price-ws_ext_wholesale_cost-ws_ext_discount_amt)+ws_ext_sales_price)/2) ) year_total
-       ,&apos;w&apos; sale_type
- FROM customer, web_sales, date_dim
- WHERE c_customer_sk = ws_bill_customer_sk AND ws_sold_date_sk = d_date_sk
- GROUP BY c_customer_id,
-          c_first_name,
-          c_last_name,
-          c_preferred_cust_flag,
-          c_birth_country,
-          c_login,
-          c_email_address,
-          d_year)
- SELECT
-   t_s_secyear.customer_id,
-   t_s_secyear.customer_first_name,
-   t_s_secyear.customer_last_name,
-   t_s_secyear.customer_preferred_cust_flag
- FROM year_total t_s_firstyear, year_total t_s_secyear, year_total t_c_firstyear,
-      year_total t_c_secyear, year_total t_w_firstyear, year_total t_w_secyear
- WHERE t_s_secyear.customer_id = t_s_firstyear.customer_id
-   and t_s_firstyear.customer_id = t_c_secyear.customer_id
-   and t_s_firstyear.customer_id = t_c_firstyear.customer_id
-   and t_s_firstyear.customer_id = t_w_firstyear.customer_id
-   and t_s_firstyear.customer_id = t_w_secyear.customer_id
-   and t_s_firstyear.sale_type = &apos;s&apos;
-   and t_c_firstyear.sale_type = &apos;c&apos;
-   and t_w_firstyear.sale_type = &apos;w&apos;
-   and t_s_secyear.sale_type = &apos;s&apos;
-   and t_c_secyear.sale_type = &apos;c&apos;
-   and t_w_secyear.sale_type = &apos;w&apos;
-   and t_s_firstyear.dyear = 2001
-   and t_s_secyear.dyear = 2001+1
-   and t_c_firstyear.dyear = 2001
-   and t_c_secyear.dyear = 2001+1
-   and t_w_firstyear.dyear = 2001
-   and t_w_secyear.dyear = 2001+1
-   and t_s_firstyear.year_total &gt; 0
-   and t_c_firstyear.year_total &gt; 0
-   and t_w_firstyear.year_total &gt; 0
-   and case when t_c_firstyear.year_total &gt; 0 then t_c_secyear.year_total / t_c_firstyear.year_total else null end
-           &gt; case when t_s_firstyear.year_total &gt; 0 then t_s_secyear.year_total / t_s_firstyear.year_total else null end
-   and case when t_c_firstyear.year_total &gt; 0 then t_c_secyear.year_total / t_c_firstyear.year_total else null end
-           &gt; case when t_w_firstyear.year_total &gt; 0 then t_w_secyear.year_total / t_w_firstyear.year_total else null end
- ORDER BY
-   t_s_secyear.customer_id,
-   t_s_secyear.customer_first_name,
-   t_s_secyear.customer_last_name,
-   t_s_secyear.customer_preferred_cust_flag
- LIMIT 100</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_5&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_5&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q5.sql--" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q5.sql--
-
- WITH ssr AS
-  (SELECT s_store_id,
-          sum(sales_price) as sales,
-          sum(profit) as profit,
-          sum(return_amt) as returns,
-          sum(net_loss) as profit_loss
-  FROM
-    (SELECT ss_store_sk as store_sk,
-            ss_sold_date_sk  as date_sk,
-            ss_ext_sales_price as sales_price,
-            ss_net_profit as profit,
-            cast(0 as decimal(7,2)) as return_amt,
-            cast(0 as decimal(7,2)) as net_loss
-    FROM store_sales
-    UNION ALL
-    SELECT sr_store_sk as store_sk,
-           sr_returned_date_sk as date_sk,
-           cast(0 as decimal(7,2)) as sales_price,
-           cast(0 as decimal(7,2)) as profit,
-           sr_return_amt as return_amt,
-           sr_net_loss as net_loss
-    FROM store_returns)
-    salesreturns, date_dim, store
-  WHERE date_sk = d_date_sk
-       and d_date between cast(&apos;2000-08-23&apos; as date)
-                  and ((cast(&apos;2000-08-23&apos; as date) + interval &apos;14&apos; day))
-       and store_sk = s_store_sk
- GROUP BY s_store_id),
- csr AS
- (SELECT cp_catalog_page_id,
-         sum(sales_price) as sales,
-         sum(profit) as profit,
-         sum(return_amt) as returns,
-         sum(net_loss) as profit_loss
- FROM
-   (SELECT cs_catalog_page_sk as page_sk,
-           cs_sold_date_sk  as date_sk,
-           cs_ext_sales_price as sales_price,
-           cs_net_profit as profit,
-           cast(0 as decimal(7,2)) as return_amt,
-           cast(0 as decimal(7,2)) as net_loss
-    FROM catalog_sales
-    UNION ALL
-    SELECT cr_catalog_page_sk as page_sk,
-           cr_returned_date_sk as date_sk,
-           cast(0 as decimal(7,2)) as sales_price,
-           cast(0 as decimal(7,2)) as profit,
-           cr_return_amount as return_amt,
-           cr_net_loss as net_loss
-    from catalog_returns
-   ) salesreturns, date_dim, catalog_page
- WHERE date_sk = d_date_sk
-       and d_date between cast(&apos;2000-08-23&apos; as date)
-                  and ((cast(&apos;2000-08-23&apos; as date) + interval &apos;14&apos; day))
-       and page_sk = cp_catalog_page_sk
- GROUP BY cp_catalog_page_id)
- ,
- wsr AS
- (SELECT web_site_id,
-         sum(sales_price) as sales,
-         sum(profit) as profit,
-         sum(return_amt) as returns,
-         sum(net_loss) as profit_loss
- from
-  (select  ws_web_site_sk as wsr_web_site_sk,
-            ws_sold_date_sk  as date_sk,
-            ws_ext_sales_price as sales_price,
-            ws_net_profit as profit,
-            cast(0 as decimal(7,2)) as return_amt,
-            cast(0 as decimal(7,2)) as net_loss
-    from web_sales
-    union all
-    select ws_web_site_sk as wsr_web_site_sk,
-           wr_returned_date_sk as date_sk,
-           cast(0 as decimal(7,2)) as sales_price,
-           cast(0 as decimal(7,2)) as profit,
-           wr_return_amt as return_amt,
-           wr_net_loss as net_loss
-    FROM web_returns LEFT  OUTER JOIN web_sales on
-         ( wr_item_sk = ws_item_sk
-           and wr_order_number = ws_order_number)
-   ) salesreturns, date_dim, web_site
- WHERE date_sk = d_date_sk
-       and d_date between cast(&apos;2000-08-23&apos; as date)
-                  and ((cast(&apos;2000-08-23&apos; as date) + interval &apos;14&apos; day))
-       and wsr_web_site_sk = web_site_sk
- GROUP BY web_site_id)
- SELECT channel,
-        id,
-        sum(sales) as sales,
-        sum(returns) as returns,
-        sum(profit) as profit
- from
- (select &apos;store channel&apos; as channel,
-         concat(&apos;store&apos;, s_store_id) as id,
-         sales,
-         returns,
-        (profit - profit_loss) as profit
- FROM ssr
- UNION ALL
- select &apos;catalog channel&apos; as channel,
-        concat(&apos;catalog_page&apos;, cp_catalog_page_id) as id,
-        sales,
-        returns,
-        (profit - profit_loss) as profit
- FROM  csr
- UNION ALL
- SELECT &apos;web channel&apos; as channel,
-        concat(&apos;web_site&apos;, web_site_id) as id,
-        sales,
-        returns,
-        (profit - profit_loss) as profit
- FROM wsr
- ) x
- GROUP BY ROLLUP (channel, id)
- ORDER BY channel, id
- LIMIT 100</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_6&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_6&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q6.sql--" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q6.sql--
-
-SELECT state, cnt FROM (
- SELECT a.ca_state state, count(*) cnt
- FROM
-    customer_address a, customer c, store_sales s, date_dim d, item i
- WHERE a.ca_address_sk = c.c_current_addr_sk
- 	AND c.c_customer_sk = s.ss_customer_sk
- 	AND s.ss_sold_date_sk = d.d_date_sk
- 	AND s.ss_item_sk = i.i_item_sk
- 	AND d.d_month_seq =
- 	     (SELECT distinct (d_month_seq) FROM date_dim 
-        WHERE d_year = 2001 AND d_moy = 1)
- 	AND i.i_current_price &gt; 1.2 *
-             (SELECT avg(j.i_current_price) FROM item j
- 	            WHERE j.i_category = i.i_category)
- GROUP BY a.ca_state
-) 
-WHERE cnt &gt;= 10
-ORDER BY cnt LIMIT 100</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_7&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_7&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q7.sql--" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q7.sql--
-
- SELECT i_item_id,
-        avg(ss_quantity) agg1,
-        avg(ss_list_price) agg2,
-        avg(ss_coupon_amt) agg3,
-        avg(ss_sales_price) agg4
- FROM store_sales, customer_demographics, date_dim, item, promotion
- WHERE ss_sold_date_sk = d_date_sk AND
-       ss_item_sk = i_item_sk AND
-       ss_cdemo_sk = cd_demo_sk AND
-       ss_promo_sk = p_promo_sk AND
-       cd_gender = &apos;M&apos; AND
-       cd_marital_status = &apos;S&apos; AND
-       cd_education_status = &apos;College&apos; AND
-       (p_channel_email = &apos;N&apos; or p_channel_event = &apos;N&apos;) AND
-       d_year = 2000
- GROUP BY i_item_id
- ORDER BY i_item_id LIMIT 100</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_8&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_8&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q8.sql--" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q8.sql--
-
- select s_store_name, sum(ss_net_profit)
- from store_sales, date_dim, store,
-     (SELECT ca_zip
-       from (
-       (SELECT substr(ca_zip,1,5) ca_zip FROM customer_address
-          WHERE substr(ca_zip,1,5) IN (
-               &apos;24128&apos;,&apos;76232&apos;,&apos;65084&apos;,&apos;87816&apos;,&apos;83926&apos;,&apos;77556&apos;,&apos;20548&apos;,
-               &apos;26231&apos;,&apos;43848&apos;,&apos;15126&apos;,&apos;91137&apos;,&apos;61265&apos;,&apos;98294&apos;,&apos;25782&apos;,
-               &apos;17920&apos;,&apos;18426&apos;,&apos;98235&apos;,&apos;40081&apos;,&apos;84093&apos;,&apos;28577&apos;,&apos;55565&apos;,
-               &apos;17183&apos;,&apos;54601&apos;,&apos;67897&apos;,&apos;22752&apos;,&apos;86284&apos;,&apos;18376&apos;,&apos;38607&apos;,
-               &apos;45200&apos;,&apos;21756&apos;,&apos;29741&apos;,&apos;96765&apos;,&apos;23932&apos;,&apos;89360&apos;,&apos;29839&apos;,
-               &apos;25989&apos;,&apos;28898&apos;,&apos;91068&apos;,&apos;72550&apos;,&apos;10390&apos;,&apos;18845&apos;,&apos;47770&apos;,
-               &apos;82636&apos;,&apos;41367&apos;,&apos;76638&apos;,&apos;86198&apos;,&apos;81312&apos;,&apos;37126&apos;,&apos;39192&apos;,
-               &apos;88424&apos;,&apos;72175&apos;,&apos;81426&apos;,&apos;53672&apos;,&apos;10445&apos;,&apos;42666&apos;,&apos;66864&apos;,
-               &apos;66708&apos;,&apos;41248&apos;,&apos;48583&apos;,&apos;82276&apos;,&apos;18842&apos;,&apos;78890&apos;,&apos;49448&apos;,
-               &apos;14089&apos;,&apos;38122&apos;,&apos;34425&apos;,&apos;79077&apos;,&apos;19849&apos;,&apos;43285&apos;,&apos;39861&apos;,
-               &apos;66162&apos;,&apos;77610&apos;,&apos;13695&apos;,&apos;99543&apos;,&apos;83444&apos;,&apos;83041&apos;,&apos;12305&apos;,
-               &apos;57665&apos;,&apos;68341&apos;,&apos;25003&apos;,&apos;57834&apos;,&apos;62878&apos;,&apos;49130&apos;,&apos;81096&apos;,
-               &apos;18840&apos;,&apos;27700&apos;,&apos;23470&apos;,&apos;50412&apos;,&apos;21195&apos;,&apos;16021&apos;,&apos;76107&apos;,
-               &apos;71954&apos;,&apos;68309&apos;,&apos;18119&apos;,&apos;98359&apos;,&apos;64544&apos;,&apos;10336&apos;,&apos;86379&apos;,
-               &apos;27068&apos;,&apos;39736&apos;,&apos;98569&apos;,&apos;28915&apos;,&apos;24206&apos;,&apos;56529&apos;,&apos;57647&apos;,
-               &apos;54917&apos;,&apos;42961&apos;,&apos;91110&apos;,&apos;63981&apos;,&apos;14922&apos;,&apos;36420&apos;,&apos;23006&apos;,
-               &apos;67467&apos;,&apos;32754&apos;,&apos;30903&apos;,&apos;20260&apos;,&apos;31671&apos;,&apos;51798&apos;,&apos;72325&apos;,
-               &apos;85816&apos;,&apos;68621&apos;,&apos;13955&apos;,&apos;36446&apos;,&apos;41766&apos;,&apos;68806&apos;,&apos;16725&apos;,
-               &apos;15146&apos;,&apos;22744&apos;,&apos;35850&apos;,&apos;88086&apos;,&apos;51649&apos;,&apos;18270&apos;,&apos;52867&apos;,
-               &apos;39972&apos;,&apos;96976&apos;,&apos;63792&apos;,&apos;11376&apos;,&apos;94898&apos;,&apos;13595&apos;,&apos;10516&apos;,
-               &apos;90225&apos;,&apos;58943&apos;,&apos;39371&apos;,&apos;94945&apos;,&apos;28587&apos;,&apos;96576&apos;,&apos;57855&apos;,
-               &apos;28488&apos;,&apos;26105&apos;,&apos;83933&apos;,&apos;25858&apos;,&apos;34322&apos;,&apos;44438&apos;,&apos;73171&apos;,
-               &apos;30122&apos;,&apos;34102&apos;,&apos;22685&apos;,&apos;71256&apos;,&apos;78451&apos;,&apos;54364&apos;,&apos;13354&apos;,
-               &apos;45375&apos;,&apos;40558&apos;,&apos;56458&apos;,&apos;28286&apos;,&apos;45266&apos;,&apos;47305&apos;,&apos;69399&apos;,
-               &apos;83921&apos;,&apos;26233&apos;,&apos;11101&apos;,&apos;15371&apos;,&apos;69913&apos;,&apos;35942&apos;,&apos;15882&apos;,
-               &apos;25631&apos;,&apos;24610&apos;,&apos;44165&apos;,&apos;99076&apos;,&apos;33786&apos;,&apos;70738&apos;,&apos;26653&apos;,
-               &apos;14328&apos;,&apos;72305&apos;,&apos;62496&apos;,&apos;22152&apos;,&apos;10144&apos;,&apos;64147&apos;,&apos;48425&apos;,
-               &apos;14663&apos;,&apos;21076&apos;,&apos;18799&apos;,&apos;30450&apos;,&apos;63089&apos;,&apos;81019&apos;,&apos;68893&apos;,
-               &apos;24996&apos;,&apos;51200&apos;,&apos;51211&apos;,&apos;45692&apos;,&apos;92712&apos;,&apos;70466&apos;,&apos;79994&apos;,
-               &apos;22437&apos;,&apos;25280&apos;,&apos;38935&apos;,&apos;71791&apos;,&apos;73134&apos;,&apos;56571&apos;,&apos;14060&apos;,
-               &apos;19505&apos;,&apos;72425&apos;,&apos;56575&apos;,&apos;74351&apos;,&apos;68786&apos;,&apos;51650&apos;,&apos;20004&apos;,
-               &apos;18383&apos;,&apos;76614&apos;,&apos;11634&apos;,&apos;18906&apos;,&apos;15765&apos;,&apos;41368&apos;,&apos;73241&apos;,
-               &apos;76698&apos;,&apos;78567&apos;,&apos;97189&apos;,&apos;28545&apos;,&apos;76231&apos;,&apos;75691&apos;,&apos;22246&apos;,
-               &apos;51061&apos;,&apos;90578&apos;,&apos;56691&apos;,&apos;68014&apos;,&apos;51103&apos;,&apos;94167&apos;,&apos;57047&apos;,
-               &apos;14867&apos;,&apos;73520&apos;,&apos;15734&apos;,&apos;63435&apos;,&apos;25733&apos;,&apos;35474&apos;,&apos;24676&apos;,
-               &apos;94627&apos;,&apos;53535&apos;,&apos;17879&apos;,&apos;15559&apos;,&apos;53268&apos;,&apos;59166&apos;,&apos;11928&apos;,
-               &apos;59402&apos;,&apos;33282&apos;,&apos;45721&apos;,&apos;43933&apos;,&apos;68101&apos;,&apos;33515&apos;,&apos;36634&apos;,
-               &apos;71286&apos;,&apos;19736&apos;,&apos;58058&apos;,&apos;55253&apos;,&apos;67473&apos;,&apos;41918&apos;,&apos;19515&apos;,
-               &apos;36495&apos;,&apos;19430&apos;,&apos;22351&apos;,&apos;77191&apos;,&apos;91393&apos;,&apos;49156&apos;,&apos;50298&apos;,
-               &apos;87501&apos;,&apos;18652&apos;,&apos;53179&apos;,&apos;18767&apos;,&apos;63193&apos;,&apos;23968&apos;,&apos;65164&apos;,
-               &apos;68880&apos;,&apos;21286&apos;,&apos;72823&apos;,&apos;58470&apos;,&apos;67301&apos;,&apos;13394&apos;,&apos;31016&apos;,
-               &apos;70372&apos;,&apos;67030&apos;,&apos;40604&apos;,&apos;24317&apos;,&apos;45748&apos;,&apos;39127&apos;,&apos;26065&apos;,
-               &apos;77721&apos;,&apos;31029&apos;,&apos;31880&apos;,&apos;60576&apos;,&apos;24671&apos;,&apos;45549&apos;,&apos;13376&apos;,
-               &apos;50016&apos;,&apos;33123&apos;,&apos;19769&apos;,&apos;22927&apos;,&apos;97789&apos;,&apos;46081&apos;,&apos;72151&apos;,
-               &apos;15723&apos;,&apos;46136&apos;,&apos;51949&apos;,&apos;68100&apos;,&apos;96888&apos;,&apos;64528&apos;,&apos;14171&apos;,
-               &apos;79777&apos;,&apos;28709&apos;,&apos;11489&apos;,&apos;25103&apos;,&apos;32213&apos;,&apos;78668&apos;,&apos;22245&apos;,
-               &apos;15798&apos;,&apos;27156&apos;,&apos;37930&apos;,&apos;62971&apos;,&apos;21337&apos;,&apos;51622&apos;,&apos;67853&apos;,
-               &apos;10567&apos;,&apos;38415&apos;,&apos;15455&apos;,&apos;58263&apos;,&apos;42029&apos;,&apos;60279&apos;,&apos;37125&apos;,
-               &apos;56240&apos;,&apos;88190&apos;,&apos;50308&apos;,&apos;26859&apos;,&apos;64457&apos;,&apos;89091&apos;,&apos;82136&apos;,
-               &apos;62377&apos;,&apos;36233&apos;,&apos;63837&apos;,&apos;58078&apos;,&apos;17043&apos;,&apos;30010&apos;,&apos;60099&apos;,
-               &apos;28810&apos;,&apos;98025&apos;,&apos;29178&apos;,&apos;87343&apos;,&apos;73273&apos;,&apos;30469&apos;,&apos;64034&apos;,
-               &apos;39516&apos;,&apos;86057&apos;,&apos;21309&apos;,&apos;90257&apos;,&apos;67875&apos;,&apos;40162&apos;,&apos;11356&apos;,
-               &apos;73650&apos;,&apos;61810&apos;,&apos;72013&apos;,&apos;30431&apos;,&apos;22461&apos;,&apos;19512&apos;,&apos;13375&apos;,
-               &apos;55307&apos;,&apos;30625&apos;,&apos;83849&apos;,&apos;68908&apos;,&apos;26689&apos;,&apos;96451&apos;,&apos;38193&apos;,
-               &apos;46820&apos;,&apos;88885&apos;,&apos;84935&apos;,&apos;69035&apos;,&apos;83144&apos;,&apos;47537&apos;,&apos;56616&apos;,
-               &apos;94983&apos;,&apos;48033&apos;,&apos;69952&apos;,&apos;25486&apos;,&apos;61547&apos;,&apos;27385&apos;,&apos;61860&apos;,
-               &apos;58048&apos;,&apos;56910&apos;,&apos;16807&apos;,&apos;17871&apos;,&apos;35258&apos;,&apos;31387&apos;,&apos;35458&apos;,
-               &apos;35576&apos;))
-       INTERSECT
-       (select ca_zip
-          FROM
-            (SELECT substr(ca_zip,1,5) ca_zip,count(*) cnt
-              FROM customer_address, customer
-              WHERE ca_address_sk = c_current_addr_sk and
-                    c_preferred_cust_flag=&apos;Y&apos;
-              group by ca_zip
-              having count(*) &gt; 10) A1)
-         ) A2
-      ) V1
- where ss_store_sk = s_store_sk
-  and ss_sold_date_sk = d_date_sk
-  and d_qoy = 2 and d_year = 1998
-  and (substr(s_zip,1,2) = substr(V1.ca_zip,1,2))
- group by s_store_name
- order by s_store_name LIMIT 100</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_9&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_9&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q9.sql--" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q9.sql--
-
-select case when (select count(*) from store_sales
-                  where ss_quantity between 1 and 20) &gt; 74129
-            then (select avg(ss_ext_discount_amt) from store_sales
-                  where ss_quantity between 1 and 20)
-            else (select avg(ss_net_paid) from store_sales
-                  where ss_quantity between 1 and 20) end bucket1 ,
-       case when (select count(*) from store_sales
-                  where ss_quantity between 21 and 40) &gt; 122840
-            then (select avg(ss_ext_discount_amt) from store_sales
-                  where ss_quantity between 21 and 40)
-            else (select avg(ss_net_paid) from store_sales
-                  where ss_quantity between 21 and 40) end bucket2,
-       case when (select count(*) from store_sales
-                  where ss_quantity between 41 and 60) &gt; 56580
-            then (select avg(ss_ext_discount_amt) from store_sales
-                  where ss_quantity between 41 and 60)
-            else (select avg(ss_net_paid) from store_sales
-                  where ss_quantity between 41 and 60) end bucket3,
-       case when (select count(*) from store_sales
-                  where ss_quantity between 61 and 80) &gt; 10097
-            then (select avg(ss_ext_discount_amt) from store_sales
-                  where ss_quantity between 61 and 80)
-            else (select avg(ss_net_paid) from store_sales
-                  where ss_quantity between 61 and 80) end bucket4,
-       case when (select count(*) from store_sales
-                  where ss_quantity between 81 and 100) &gt; 165306
-            then (select avg(ss_ext_discount_amt) from store_sales
-                  where ss_quantity between 81 and 100)
-            else (select avg(ss_net_paid) from store_sales
-                  where ss_quantity between 81 and 100) end bucket5
-from reason
-where r_reason_sk = 1</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_10&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session task_group_id &apos;tpcds_10&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="--q10.sql--" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">--q10.sql--
-
- select
-  cd_gender, cd_marital_status, cd_education_status, count(*) cnt1,
-  cd_purchase_estimate, count(*) cnt2, cd_credit_rating, count(*) cnt3,
-  cd_dep_count, count(*) cnt4, cd_dep_employed_count,  count(*) cnt5,
-  cd_dep_college_count, count(*) cnt6
- from
-  customer c, customer_address ca, customer_demographics
- where
-  c.c_current_addr_sk = ca.ca_address_sk and
-  ca_county in (&apos;Rush County&apos;,&apos;Toole County&apos;,&apos;Jefferson County&apos;,
-                &apos;Dona Ana County&apos;,&apos;La Porte County&apos;) and
-  cd_demo_sk = c.c_current_cdemo_sk AND
-  exists (select * from store_sales, date_dim
-          where c.c_customer_sk = ss_customer_sk AND
-                ss_sold_date_sk = d_date_sk AND
-                d_year = 2002 AND
-                d_moy between 1 AND 1+3) AND
-   (exists (select * from web_sales, date_dim
-            where c.c_customer_sk = ws_bill_customer_sk AND
-                  ws_sold_date_sk = d_date_sk AND
-                  d_year = 2002 AND
-                  d_moy between 1 AND 1+3) or
-    exists (select * from catalog_sales, date_dim
-            where c.c_customer_sk = cs_ship_customer_sk AND
-                  cs_sold_date_sk = d_date_sk AND
-                  d_year = 2002 AND
-                  d_moy between 1 AND 1+3))
- group by cd_gender,
-          cd_marital_status,
-          cd_education_status,
-          cd_purchase_estimate,
-          cd_credit_rating,
-          cd_dep_count,
-          cd_dep_employed_count,
-          cd_dep_college_count
- order by cd_gender,
-          cd_marital_status,
-          cd_education_status,
-          cd_purchase_estimate,
-          cd_credit_rating,
-          cd_dep_count,
-          cd_dep_employed_count,
-          cd_dep_college_count
-LIMIT 100</stringProp>
+ with  cross_items as
+ (select i_item_sk ss_item_sk
+  from item,
+     (select iss.i_brand_id brand_id, iss.i_class_id class_id, iss.i_category_id category_id
+      from store_sales, item iss, date_dim d1
+      where ss_item_sk = iss.i_item_sk
+         and ss_sold_date_sk = d1.d_date_sk
+         and d1.d_year between 1999 AND 1999 + 2
+     intersect
+       select ics.i_brand_id, ics.i_class_id, ics.i_category_id
+       from catalog_sales, item ics, date_dim d2
+       where cs_item_sk = ics.i_item_sk
+         and cs_sold_date_sk = d2.d_date_sk
+         and d2.d_year between 1999 AND 1999 + 2
+     intersect
+       select iws.i_brand_id, iws.i_class_id, iws.i_category_id
+       from web_sales, item iws, date_dim d3
+       where ws_item_sk = iws.i_item_sk
+         and ws_sold_date_sk = d3.d_date_sk
+         and d3.d_year between 1999 AND 1999 + 2) x
+  where i_brand_id = brand_id
+    and i_class_id = class_id
+    and i_category_id = category_id
+ ),
+ avg_sales as
+ (select avg(quantity*list_price) average_sales
+  from (select ss_quantity quantity, ss_list_price list_price
+         from store_sales, date_dim
+         where ss_sold_date_sk = d_date_sk and d_year between 1999 and 1999 + 2
+       union all
+         select cs_quantity quantity, cs_list_price list_price
+         from catalog_sales, date_dim
+         where cs_sold_date_sk = d_date_sk and d_year between 1999 and 1999 + 2
+       union all
+         select ws_quantity quantity, ws_list_price list_price
+         from web_sales, date_dim
+         where ws_sold_date_sk = d_date_sk and d_year between 1999 and 1999 + 2) x)
+ select * from
+ (select &apos;store&apos; channel, i_brand_id,i_class_id,i_category_id
+        ,sum(ss_quantity*ss_list_price) sales, count(*) number_sales
+  from store_sales, item, date_dim
+  where ss_item_sk in (select ss_item_sk from cross_items)
+    and ss_item_sk = i_item_sk
+    and ss_sold_date_sk = d_date_sk
+    and d_week_seq = (select d_week_seq from date_dim
+                     where d_year = 1999 + 1 and d_moy = 12 and d_dom = 11)
+  group by i_brand_id,i_class_id,i_category_id
+  having sum(ss_quantity*ss_list_price) &gt; (select average_sales from avg_sales)) this_year,
+ (select &apos;store&apos; channel, i_brand_id,i_class_id
+        ,i_category_id, sum(ss_quantity*ss_list_price) sales, count(*) number_sales
+ from store_sales, item, date_dim
+ where ss_item_sk in (select ss_item_sk from cross_items)
+   and ss_item_sk = i_item_sk
+   and ss_sold_date_sk = d_date_sk
+   and d_week_seq = (select d_week_seq from date_dim
+                     where d_year = 1999 and d_moy = 12 and d_dom = 11)
+ group by i_brand_id,i_class_id,i_category_id
+ having sum(ss_quantity*ss_list_price) &gt; (select average_sales from avg_sales)) last_year
+ where this_year.i_brand_id= last_year.i_brand_id
+   and this_year.i_class_id = last_year.i_class_id
+   and this_year.i_category_id = last_year.i_category_id
+ order by this_year.channel, this_year.i_brand_id, this_year.i_class_id, this_year.i_category_id
+ limit 100</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
