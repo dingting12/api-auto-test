@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ant-jmeter-test" default="run" basedir=".">
+    <tstamp>
+        <format property="time" pattern="_yyyy_MMdd_HHmmss" />
+    </tstamp>
+
+    <property name="jmeter.home" value="/home/dbtest/apache-jmeter-4.0" />
+    <property name="jmeter.jmx.files" value="xx.jmx" />
+    <property name="jdbc.url" value="jdbc:mysql://node4:3306/dev" />
+    <property name="jdbc.username" value="test" />
+    <property name="jdbc.password" value="123456" />
+
+    <property name="report.title" value="Smoke Test"/>
+    <property name="base.dir" value="./" />
+    <property name="test.plan.dir" value="${base.dir}" />
+    <property name="jmeter.result.jtl.dir" value="${base.dir}/target/jtl" />
+    <property name="jmeter.result.html.dir" value="${base.dir}/target/html_report" />
+    <property name="detail" value="_detail" />
+    <property name="ReportName" value="SmokeReport" />
+    <property name="jmeter.result.jtlName" value="${jmeter.result.jtl.dir}/output.jtl" />
+    <property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}/report.html" />
+    <property name="jmeter.result.jtlNamedetail" value="${jmeter.result.jtl.dir}/output.jtl" />
+    <property name="jmeter.result.htmlNamedetail" value="${jmeter.result.html.dir}/error.html" />
+
+    <property environment="env" />
+
+    <target name="run">
+        <antcall target="test" />
+        <antcall target="report" />
+        <antcall target="result" />
+    </target>
+    
+    <target name="test">
+        <taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" />
+        <jmeter jmeterhome="${jmeter.home}" resultlog="${jmeter.result.jtlName}">
+            <testplans dir="${test.plan.dir}" includes="${jmeter.jmx.files}" />
+            
+            <property name="jmeter.save.saveservice.output_format" value="xml"/>
+        </jmeter>
+    </target>
+        
+    <path id="xslt.classpath">
+        <fileset dir="${jmeter.home}/lib" includes="xalan*.jar"/>
+        <fileset dir="${jmeter.home}/lib" includes="serializer*.jar"/>
+    </path>
+
+
+    <path id="task.classpath">
+        <fileset dir="${base.dir}/lib" includes="*.jar"/>
+        <fileset dir="${jmeter.home}/lib" includes="slf4j*.jar"/>
+        <fileset dir="${jmeter.home}/lib" includes="log4j*.jar"/>
+    </path>
+
+
+    <target name="report">
+        <tstamp><format property="report.datestamp" pattern="yyyy/MM/dd HH:mm" /></tstamp>
+        <xslt 
+              classpathref="xslt.classpath"
+              force="true"
+              in="${jmeter.result.jtlName}"
+              out="${jmeter.result.htmlName}"
+              style="${jmeter.home}/extras/jmeter-results-detail-report_21.xsl">
+              <param name="dateReport" expression="${report.datestamp}"/>
+       </xslt>
+       <xslt 
+              classpathref="xslt.classpath"
+              force="true"
+              in="${jmeter.result.jtlNamedetail}"
+              out="${jmeter.result.htmlNamedetail}"
+              style="${jmeter.home}/extras/jmeter-results-shanhe-me.xsl">
+              <param name="dateReport" expression="${report.datestamp}"/>
+       </xslt>
+
+        <copy todir="${jmeter.result.html.dir}">
+            <fileset dir="${jmeter.home}/extras">
+                <include name="collapse.png" />
+                <include name="expand.png" />
+            </fileset>
+        </copy>
+    </target>
+
+
+    <target name="result">
+        <taskdef name="result" classname="com.datapps.report.ant.JMeterResultTask" classpathref="task.classpath" />
+        <result application="linkoopdb" build="533" jtlfile="${jmeter.result.jtlName}"
+            url="${jdbc.url}" username="${jdbc.username}" password="${jdbc.password}" >
+        </result>
+    </target>
+
+</project>
