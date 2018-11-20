@@ -1,5 +1,5 @@
 #!/bin/bash
-host=192.168.1.91
+host=node4
 tbl=simpletest
 newtbl=simpletestnew
 echo $0

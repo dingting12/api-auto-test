@@ -10,10 +10,10 @@ clidml2=$CURRENT_HOME/clidml.sh.output
 clicmd1=$CURRENT_HOME/clicmd.sh.expected
 clicmd2=$CURRENT_HOME/clicmd.sh.output
 
-var1=/home/single/linkoopdb
+var1=/home/testdb/linkoopdb
 var2=/home/user/linkoopdb
 
-var3=tcp://192.168.1.91/ldb
+var3=tcp://node4/ldb
 var4=tcp://testdb/ldb
 
 
