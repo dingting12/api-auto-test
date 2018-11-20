@@ -1,0 +1,161 @@
+workdir: /home/user/linkoopdb/linkoopdb_current/ldb-client
+cmd-line:
+         /usr/java/jdk1.8.0_60/bin/java  -DLINKOOPDB_COM_NAME=ldb-client -DLINKOOP_APP=grassland  -classpath /home/user/linkoopdb/linkoopdb_current/bin/../conf:lib/* com.datapps.linkoopdb.client.cmdline.SqlTool --inlineRc=url=jdbc:linkoopdb:tcp://testdb/ldb,user=admin,password=123456
+LDB Client v. 1.0.0.
+JDBC Connection established to a Linkoop Database v. 1.0.0 database
+as "ADMIN" with R/W TRANSACTION_READ_COMMITTED Isolation.
+
+    \q    to Quit.
+    \?    lists Special Commands.
+    :?    lists Edit-Buffer/History commands.
+    *?    lists PL commands.
+    /?    displays help on how to set and use macros (incl. functions).
+
+SPECIAL Commands begin with '\' and execute when you hit ENTER.
+EDIT-BUFFER / HISTORY Commands begin with ':' and execute when you hit ENTER.
+PROCEDURAL LANGUAGE commands begin with '*' and end when you hit ENTER.
+MACRO executions and definitions begin with '/' and end when you hit ENTER.
+All other lines comprise SQL Statements (or comments).
+  SQL Statements are terminated by either unquoted ';' (which executes the
+  statement), or a blank line (which moves the statement into the edit buffer
+  without executing).
+After turning on variable expansion with command "*" (or any other PL
+command), PL variables may be used in most commands like so:  *{PLVARNAME}.
+Be aware when using regular expressions on commands, that the regex.s
+operate only on the command text after the * or \ prefix, if any.
+
+sql> Execution-time reporting is set to false
+sql> SPECIAL COMMANDS
+Filter substrings are case-sensitive!  Use "SCHEMANAME." to narrow to schema.
+    \?                   Special command Help
+    \.                   Enter raw SQL.  End with line containing only "."
+    \=                   Commit JDBC session
+    \! COMMAND [ARGS]    Execute external program (no support for stdin)
+    \a [true|false]      Auto-commit JDBC DML commands (for current conn)
+    \b                   save next result to Binary buffer (no display)
+    \bd file/path.bin    Dump Binary buffer to file
+    \bl file/path.bin    Load file into Binary buffer
+    \bp                  use ? in next SQL statement to upload Binary buffer
+    \c [true|false]      Continue upon errors (a.o.t. abort upon error)
+    \d OBJECTNAME [regx] Describe table or view columns
+    \d{tvsiSanur*?} [substr]  List objects of specified type:
+  (Tbls/Views/Seqs/Indexes/SysTbls/Aliases/schemaNames/Users/Roles/table-like)
+    \h [true|false]      enable or disable HTML output mode
+    \i file/path.sql     Include/execute commands from external file
+    \j [urlid]           display Jdbc connection details, or connect to 'urlid'
+    \j acct [pwd] jdbc:url     Establish connection to Jdbc data source at URL
+    \l LEVEL  A Message  Log message.  (list available levels with \l?)
+    \m file/path.dsv [*] iMport DSV text file records into a table (opts \m?)
+    \mq  f/path.csv [*]  Ditto, but with traditional CSV double-quoting
+    \o [file/path.html]  tee (or stop teeing) query Output to specified file
+    \oc                  stop teeing query Output and write Closing HTML
+    \p[r] [A Message]    Print string to stdout (r = Raw HTML when in \h mode)
+    \q [abort message]   Quit (or you can end input with Ctrl-Z or Ctrl-D)
+    \t [true|false]      report execution Times for all SQL commands
+    \v [TRAN_ISO_LVL]    view/set the connection transaction isolation leVel
+    \x {TABLE|SELECT...} eXport table or query to DSV text file (options \x?)
+    \xq {TABLE|SEL...}   Ditto, but with traditional CSV double-quoting.
+
+sql> EDIT BUFFER AND HISTORY COMMANDS.  Not available for non-interactive use.
+    :?                Edit buffer / history Help
+    :b                List current contents of edit Buffer
+    :h                Show History of previous commands (plus buffer contents)
+    :X  (integer X)   Load command #X from Command history into the Edit buffer
+    :-Y  (integer -Y) Same an editY means Y commands back
+    :/regex/          Same as :-Y, except it means latest command in history
+                      matching the given regular expression
+The remaining edit/execute commands all operate on the Edit Buffer by default,
+but will also operate on any command from history if you interpose a command
+identifier right after the colon, like ":/blue/;" to re-execute the last
+command you ran which contains "blue", or ":w -3 /tmp/output.txt" to append
+the third command 'back' to a file.
+    :;                Execute edit buffer content (special, PL, or SQL command)
+    :a[text]          Enter append mode with a copy of the buffer contents
+    :aAPPENDAGE;      Append to buffer contents then executes resulting command
+    :s/from regex/to/ Substitute match of "from regex" with "to"
+    :s/from/to/[igm;] One or multiple Substitutions with specified options
+                from:  Standard regexp.  See 'perlre' man page or
+                       Java API spec for java.util.regex.Pattern.
+                to:    If empty, from's will be deleted (e.g. ":s/x//").
+                [igm;] Options work exactly as in Perl or java.util.regex,
+                       except ';' means to execute after substitution,
+                       'g' means Global (multiple) substitutions,
+                       and option 's' is always on.
+                /:     Can actually be any character which occurs in
+                       neither "to" string nor "from" string.
+                SUBSTITUTION MODE SWITCHES:
+                       i:  case Insensitive
+                       g:  Global (substitute ALL occurrences of "from" string)
+                       m:  ^ and $ match line breaks (like Perl m option)
+                       ;:  execute immediately after substitution
+    :w file/path.sql  Append current buffer contents to the specified file
+
+sql> PROCEDURAL LANGUAGE HELP
+
+This help describes variable usage (referencing) and the PL help commands.
+Please use the following commands for help about other aspects of PL.
+
+* ?                           This PL Help
+* ? assign                    Help about variable assignments:  * ? assign
+* ? control                   Help about control structures like '*if' and
+                              loops:  *? control
+* dump VARNAME path.txt       Dump variable value to text file
+* list[values] [VARNAME1...]  List PL variable(s) (defaults to all)
+* listsysprops [VARNAME1...]  List Java System property(s) (defaults to all)
+* prepare VARNAME             Use ? in next SQL statement to upload val.
+                              (Just "?", since "*{?}" is the auto var.).
+
+Resolve PL variable values, which have been set, like: *{VARNAME}.
+Resolve PL variable values, which MAY have been set, like: *{:VARNAME}.
+SqlTool reserves variables with names beginning with * for special purposes.
+ These are called SqlTool system variables.  Variables beginning with a
+ letter and followed by zero or more letters, digits, or _, are 'user' vars.
+Resolve System Property values (which you may not set) like: ${property.name}.
+Resolve PL variables in logical expressions, like (*VARNAME == 1).  [No curlies]
+When purposefully telling SqlTool a variable's "name", like to make an
+ assignment, write just the name like:  VARNAME = 1.  [Bare names]
+Use PL vars in math expressions, like ((NEWVAR = VARNAME * 3)).  [Bare names]
+Auto. variable ? is set to the very latest SQL datum fetched (or update count).
+    Query:  The value of the last field of the last row returned.
+            (Except will be set to the *NULL_REP_TOKEN value instead of to
+            real null if the value retrieved is a SQL null).
+    other:  Return status of the command
+            (for updates this will be the number of rows updated).
+    null/unset:  If the last SQL command failed, ? will be unset (aka null).
+Auto. variable # is set to rowcount of the last completed query.
+
+sql> Macros may only be entered as the first thing in a command, because macros
+are stored 'commands', not stored text (like PL variables).
+SqlTool functions are macros that accept positional parameters and the function
+names always end with () (like "myFunction()").
+Unless noted, everything said here about macros also applies to functions.
+
+/?                     Display this help
+/=                     Display all macros
+/= name body...        Define a macro with body of the specified Special, PL,
+                       or SQL command (do not type the SQL-terminating ";").
+/: name [appendage]    Define a macro wth body equal to the current buffer
+                       contents.  If you want your 'appendage' to begin with a
+                       space, then you must type two spaces after the name
+                       here.  This can be used to define a macro with content
+                       of a multi-lined SQL statement, or even of chunked SQL
+                       statements.
+/name [appendage]      Expand (non-function) macro to buffer
+/name [appendage];     Execute (non-function) macro after variables in body
+                       are dereferenced
+/name(param1,...) [appendage]    Expand function to buffer
+/name(param1,...) [appendage];   Execute function after dereferencing
+
+Macros may contain PL variable references.
+The references are not expanded until the macro executes.  Use the : syntax,
+like *{:name} to prevent the execution from failing if that variable is not set
+(this will cause the unset variable to expand to the empty string).
+
+Define functions exactly as you define macros, except with names like "this()",
+and the function body may contain positional PL variable references like
+*{1}, *{2}, *{:3}, etc.  Use the colon (like "*{:3}") for optional parameters
+(see previous paragraph).
+Use functions exactly like macros, except insert comma-separated parameters (if
+any), between the parentheses of the function name, like
+"fn1();" or "fn2(first param value, second param value)".
+sql> 
