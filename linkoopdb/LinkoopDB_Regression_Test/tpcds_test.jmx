@@ -32,9 +32,21 @@
             <stringProp name="Argument.desc">dba user password</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="tpcds_1t_url" elementType="Argument">
-            <stringProp name="Argument.name">tpcds_1t_url</stringProp>
-            <stringProp name="Argument.value">hdfs://node1:8020/node3/linkoopdb/gloway/tpcds-1t</stringProp>
+          <elementProp name="b" elementType="Argument">
+            <stringProp name="Argument.name">b</stringProp>
+            <stringProp name="Argument.value">TPCDS</stringProp>
+            <stringProp name="Argument.desc">dba user2</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="b_password" elementType="Argument">
+            <stringProp name="Argument.name">b_password</stringProp>
+            <stringProp name="Argument.value">123456</stringProp>
+            <stringProp name="Argument.desc">dba user1 password</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="tpcds_1g_url" elementType="Argument">
+            <stringProp name="Argument.name">tpcds_1g_url</stringProp>
+            <stringProp name="Argument.value">hdfs://node1:8020/node3/linkoopdb/gloway/tpcds-1g</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">data url on hdfs</stringProp>
           </elementProp>
@@ -57,7 +69,59 @@
         <stringProp name="username">${a}</stringProp>
       </JDBCDataSource>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="TPCDS" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">${b}</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">${b}</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="LDB EXT: TPCDS" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -70,11 +134,87 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CREATE USER" enabled="false"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user ${b} if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop user ${b} if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="grant change_authorization to ${b};" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">grant change_authorization to ${b};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="connect user ${b} password &apos;${b_password}&apos;;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">connect user ${b} password &apos;${b_password}&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">drop table customer_address if exists cascade;
+            <stringProp name="query">drop table customer_address1 if exists cascade;
+drop table customer_demographics1 if exists cascade;
+drop table date_dim1 if exists cascade;
+drop table warehouse1 if exists cascade;
+drop table ship_mode1 if exists cascade;
+drop table time_dim1 if exists cascade;
+drop table reason1 if exists cascade;
+drop table income_band1 if exists cascade;
+drop table item1 if exists cascade;
+drop table store1 if exists cascade;
+drop table call_center1 if exists cascade;
+drop table customer1 if exists cascade;
+drop table web_site1 if exists cascade;
+drop table store_returns1 if exists cascade;
+drop table household_demographics1 if exists cascade;
+drop table web_page1 if exists cascade;
+drop table promotion1 if exists cascade;
+drop table catalog_page1 if exists cascade;
+drop table inventory1 if exists cascade;
+drop table catalog_returns1 if exists cascade;
+drop table web_returns1 if exists cascade;
+drop table web_sales1 if exists cascade;
+drop table catalog_sales1 if exists cascade;
+drop table store_sales1 if exists cascade;
+
+drop table customer_address if exists cascade;
 drop table customer_demographics if exists cascade;
 drop table date_dim if exists cascade;
 drop table warehouse if exists cascade;
@@ -97,7 +237,22 @@ drop table catalog_returns if exists cascade;
 drop table web_returns if exists cascade;
 drop table web_sales if exists cascade;
 drop table catalog_sales if exists cascade;
-drop table store_sales if exists cascade;</stringProp>
+drop table store_sales if exists cascade;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -107,9 +262,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer_address" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer_address1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table customer_address
+            <stringProp name="query">create external table customer_address1
 (
     ca_address_sk             integer               not null,
     ca_address_id             char(16)              not null,
@@ -125,7 +280,7 @@ drop table store_sales if exists cascade;</stringProp>
     ca_gmt_offset             decimal(5,2)                  ,
     ca_location_type          char(20)                      ,
     primary key (ca_address_sk)
-) location (&apos;${tpcds_1t_url}/customer_address&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/customer_address&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -135,9 +290,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer_demographics" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer_demographics1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table customer_demographics
+            <stringProp name="query">create external table customer_demographics1
 (
     cd_demo_sk                integer               not null,
     cd_gender                 char(1)                       ,
@@ -149,7 +304,7 @@ drop table store_sales if exists cascade;</stringProp>
     cd_dep_employed_count     integer                       ,
     cd_dep_college_count      integer                       ,
     primary key (cd_demo_sk)
-) location (&apos;${tpcds_1t_url}/customer_demographics&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/customer_demographics&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -159,9 +314,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table date_dim" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table date_dim1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table date_dim
+            <stringProp name="query">create external table date_dim1
 (
     d_date_sk                 integer               not null,
     d_date_id                 char(16)              not null,
@@ -192,7 +347,7 @@ drop table store_sales if exists cascade;</stringProp>
     d_current_quarter         char(1)                       ,
     d_current_year            char(1)                       ,
     primary key (d_date_sk)
-) location (&apos;${tpcds_1t_url}/date_dim&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/date_dim&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -202,9 +357,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table warehouse" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table warehouse1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table warehouse
+            <stringProp name="query">create external table warehouse1
 (
     w_warehouse_sk            integer               not null,
     w_warehouse_id            char(16)              not null,
@@ -221,7 +376,7 @@ drop table store_sales if exists cascade;</stringProp>
     w_country                 varchar(20)                   ,
     w_gmt_offset              decimal(5,2)                  ,
     primary key (w_warehouse_sk)
-) location (&apos;${tpcds_1t_url}/warehouse&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/warehouse&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -231,9 +386,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table ship_mode" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table ship_mode1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table ship_mode
+            <stringProp name="query">create external table ship_mode1
 (
     sm_ship_mode_sk           integer               not null,
     sm_ship_mode_id           char(16)              not null,
@@ -242,7 +397,7 @@ drop table store_sales if exists cascade;</stringProp>
     sm_carrier                char(20)                      ,
     sm_contract               char(20)                      ,
     primary key (sm_ship_mode_sk)
-) location (&apos;${tpcds_1t_url}/ship_mode&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/ship_mode&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -252,9 +407,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table time_dim" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table time_dim1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table time_dim
+            <stringProp name="query">create external table time_dim1
 (
     t_time_sk                 integer               not null,
     t_time_id                 char(16)              not null,
@@ -267,7 +422,7 @@ drop table store_sales if exists cascade;</stringProp>
     t_sub_shift               char(20)                      ,
     t_meal_time               char(20)                      ,
     primary key (t_time_sk)
-) location (&apos;${tpcds_1t_url}/time_dim&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/time_dim&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -277,15 +432,15 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table reason" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table reason1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table reason
+            <stringProp name="query">create external table reason1
 (
     r_reason_sk               integer               not null,
     r_reason_id               char(16)              not null,
     r_reason_desc             char(100)                     ,
     primary key (r_reason_sk)
-) location (&apos;${tpcds_1t_url}/reason&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/reason&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -295,15 +450,15 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table income_band" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table income_band1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table income_band
+            <stringProp name="query">create external table income_band1
 (
     ib_income_band_sk         integer               not null,
     ib_lower_bound            integer                       ,
     ib_upper_bound            integer                       ,
     primary key (ib_income_band_sk)
-) location (&apos;${tpcds_1t_url}/income_band&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/income_band&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -313,9 +468,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table item" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table item1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table item
+            <stringProp name="query">create external table item1
 (
     i_item_sk                 integer               not null,
     i_item_id                 char(16)              not null,
@@ -340,7 +495,7 @@ drop table store_sales if exists cascade;</stringProp>
     i_manager_id              integer                       ,
     i_product_name            char(50)                      ,
     primary key (i_item_sk)
-) location (&apos;${tpcds_1t_url}/item&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/item&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -350,9 +505,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table store
+            <stringProp name="query">create external table store1
 (
     s_store_sk                integer               not null,
     s_store_id                char(16)              not null,
@@ -384,7 +539,7 @@ drop table store_sales if exists cascade;</stringProp>
     s_gmt_offset              decimal(5,2)                  ,
     s_tax_precentage          decimal(5,2)                  ,
     primary key (s_store_sk)
-) location (&apos;${tpcds_1t_url}/store&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/store&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -394,9 +549,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table call_center" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table call_center1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table call_center
+            <stringProp name="query">create external table call_center1
 (
     cc_call_center_sk         integer               not null,
     cc_call_center_id         char(16)              not null,
@@ -430,7 +585,7 @@ drop table store_sales if exists cascade;</stringProp>
     cc_gmt_offset             decimal(5,2)                  ,
     cc_tax_percentage         decimal(5,2)                  ,
     primary key (cc_call_center_sk)
-) location (&apos;${tpcds_1t_url}/call_center&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/call_center&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -440,9 +595,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table customer
+            <stringProp name="query">create external table customer1
 (
     c_customer_sk             integer               not null,
     c_customer_id             char(16)              not null,
@@ -463,7 +618,7 @@ drop table store_sales if exists cascade;</stringProp>
     c_email_address           char(50)                      ,
     c_last_review_date        char(10)                      ,
     primary key (c_customer_sk)
-) location (&apos;${tpcds_1t_url}/customer&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/customer&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -473,9 +628,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_site" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_site1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table web_site
+            <stringProp name="query">create external table web_site1
 (
     web_site_sk               integer               not null,
     web_site_id               char(16)              not null,
@@ -504,7 +659,7 @@ drop table store_sales if exists cascade;</stringProp>
     web_gmt_offset            decimal(5,2)                  ,
     web_tax_percentage        decimal(5,2)                  ,
     primary key (web_site_sk)
-) location (&apos;${tpcds_1t_url}/web_site&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/web_site&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -514,9 +669,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store_returns" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store_returns1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table store_returns
+            <stringProp name="query">create external table store_returns1
 (
     sr_returned_date_sk       integer                       ,
     sr_return_time_sk         integer                       ,
@@ -539,7 +694,7 @@ drop table store_sales if exists cascade;</stringProp>
     sr_store_credit           decimal(7,2)                  ,
     sr_net_loss               decimal(7,2)                  ,
     primary key (sr_item_sk, sr_ticket_number)
-) location (&apos;${tpcds_1t_url}/store_returns&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/store_returns&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -549,9 +704,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table household_demographics" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table household_demographics1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table household_demographics
+            <stringProp name="query">create external table household_demographics1
 (
     hd_demo_sk                integer               not null,
     hd_income_band_sk         integer                       ,
@@ -559,7 +714,7 @@ drop table store_sales if exists cascade;</stringProp>
     hd_dep_count              integer                       ,
     hd_vehicle_count          integer                       ,
     primary key (hd_demo_sk)
-) location (&apos;${tpcds_1t_url}/household_demographics&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/household_demographics&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -569,9 +724,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_page" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_page1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table web_page
+            <stringProp name="query">create external table web_page1
 (
     wp_web_page_sk            integer               not null,
     wp_web_page_id            char(16)              not null,
@@ -588,7 +743,7 @@ drop table store_sales if exists cascade;</stringProp>
     wp_image_count            integer                       ,
     wp_max_ad_count           integer                       ,
     primary key (wp_web_page_sk)
-) location (&apos;${tpcds_1t_url}/web_page&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/web_page&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -598,9 +753,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table promotion" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table promotion1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table promotion
+            <stringProp name="query">create external table promotion1
 (
     p_promo_sk                integer               not null,
     p_promo_id                char(16)              not null,
@@ -622,7 +777,7 @@ drop table store_sales if exists cascade;</stringProp>
     p_purpose                 char(15)                      ,
     p_discount_active         char(1)                       ,
     primary key (p_promo_sk)
-) location (&apos;${tpcds_1t_url}/promotion&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/promotion&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -632,9 +787,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_page" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_page1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table catalog_page
+            <stringProp name="query">create external table catalog_page1
 (
     cp_catalog_page_sk        integer               not null,
     cp_catalog_page_id        char(16)              not null,
@@ -646,7 +801,7 @@ drop table store_sales if exists cascade;</stringProp>
     cp_description            varchar(100)                  ,
     cp_type                   varchar(100)                  ,
     primary key (cp_catalog_page_sk)
-) location (&apos;${tpcds_1t_url}/catalog_page&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/catalog_page&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -656,16 +811,16 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table inventory" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table inventory1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table inventory
+            <stringProp name="query">create external table inventory1
 (
     inv_date_sk               integer               not null,
     inv_item_sk               integer               not null,
     inv_warehouse_sk          integer               not null,
     inv_quantity_on_hand      integer                       ,
     primary key (inv_date_sk, inv_item_sk, inv_warehouse_sk)
-) location (&apos;${tpcds_1t_url}/inventory&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/inventory&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -675,9 +830,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_returns" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_returns1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table catalog_returns
+            <stringProp name="query">create external table catalog_returns1
 (
     cr_returned_date_sk       integer                       ,
     cr_returned_time_sk       integer                       ,
@@ -707,7 +862,7 @@ drop table store_sales if exists cascade;</stringProp>
     cr_store_credit           decimal(7,2)                  ,
     cr_net_loss               decimal(7,2)                  ,
     primary key (cr_item_sk, cr_order_number)
-) location (&apos;${tpcds_1t_url}/catalog_returns&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/catalog_returns&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -717,9 +872,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_returns" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_returns1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table web_returns
+            <stringProp name="query">create external table web_returns1
 (
     wr_returned_date_sk       integer                       ,
     wr_returned_time_sk       integer                       ,
@@ -746,7 +901,7 @@ drop table store_sales if exists cascade;</stringProp>
     wr_account_credit         decimal(7,2)                  ,
     wr_net_loss               decimal(7,2)                  ,
     primary key (wr_item_sk, wr_order_number)
-) location (&apos;${tpcds_1t_url}/web_returns&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/web_returns&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -756,9 +911,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_sales" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_sales1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table web_sales
+            <stringProp name="query">create external table web_sales1
 (
     ws_sold_date_sk           integer                       ,
     ws_sold_time_sk           integer                       ,
@@ -795,7 +950,7 @@ drop table store_sales if exists cascade;</stringProp>
     ws_net_paid_inc_ship_tax  decimal(7,2)                  ,
     ws_net_profit             decimal(7,2)                  ,
     primary key (ws_item_sk, ws_order_number)
-) location (&apos;${tpcds_1t_url}/web_sales&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/web_sales&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -805,9 +960,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_sales" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_sales1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table catalog_sales
+            <stringProp name="query">create external table catalog_sales1
 (
     cs_sold_date_sk           integer                       ,
     cs_sold_time_sk           integer                       ,
@@ -844,7 +999,7 @@ drop table store_sales if exists cascade;</stringProp>
     cs_net_paid_inc_ship_tax  decimal(7,2)                  ,
     cs_net_profit             decimal(7,2)                  ,
     primary key (cs_item_sk, cs_order_number)
-) location (&apos;${tpcds_1t_url}/catalog_sales&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/catalog_sales&apos;) format &apos;parquet&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -854,9 +1009,9 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store_sales" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store_sales1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table store_sales
+            <stringProp name="query">create external table store_sales1
 (
     ss_sold_date_sk           integer                       ,
     ss_sold_time_sk           integer                       ,
@@ -882,7 +1037,295 @@ drop table store_sales if exists cascade;</stringProp>
     ss_net_paid_inc_tax       decimal(7,2)                  ,
     ss_net_profit             decimal(7,2)                  ,
     primary key (ss_item_sk, ss_ticket_number)
-) location (&apos;${tpcds_1t_url}/store_sales&apos;) format &apos;parquet&apos;;</stringProp>
+) location (&apos;${tpcds_1g_url}/store_sales&apos;) format &apos;parquet&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE customer_address AS (SELECT * FROM customer_address1) WITH DATA;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE customer_address AS (SELECT * FROM customer_address1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE customer_demographics AS (SELECT * FROM customer_demographics1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE customer_demographics AS (SELECT * FROM customer_demographics1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE date_dim AS (SELECT * FROM date_dim1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE date_dim AS (SELECT * FROM date_dim1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE warehouse AS (SELECT * FROM warehouse1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE warehouse AS (SELECT * FROM warehouse1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE ship_mode AS (SELECT * FROM ship_mode1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE ship_mode AS (SELECT * FROM ship_mode1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE time_dim AS (SELECT * FROM time_dim1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE time_dim AS (SELECT * FROM time_dim1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE reason AS (SELECT * FROM reason1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE reason AS (SELECT * FROM reason1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE income_band AS (SELECT * FROM income_band1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE income_band AS (SELECT * FROM income_band1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE item AS (SELECT * FROM item1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE item AS (SELECT * FROM item1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE store AS (SELECT * FROM store1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE store AS (SELECT * FROM store1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE call_center AS (SELECT * FROM call_center1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE call_center AS (SELECT * FROM call_center1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE customer AS (SELECT * FROM customer1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE customer AS (SELECT * FROM customer1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE web_site AS (SELECT * FROM web_site1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE web_site AS (SELECT * FROM web_site1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE promotion AS (SELECT * FROM promotion1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE promotion AS (SELECT * FROM promotion1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE catalog_page AS (SELECT * FROM catalog_page1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE catalog_page AS (SELECT * FROM catalog_page1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE inventory AS (SELECT * FROM inventory1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE inventory AS (SELECT * FROM inventory1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE catalog_returns AS (SELECT * FROM catalog_returns1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE catalog_returns AS (SELECT * FROM catalog_returns1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE store_sales AS (SELECT * FROM store_sales1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE store_sales AS (SELECT * FROM store_sales1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE web_returns AS (SELECT * FROM web_returns1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE web_returns AS (SELECT * FROM web_returns1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE web_sales AS (SELECT * FROM web_sales1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE web_sales AS (SELECT * FROM web_sales1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE catalog_sales AS (SELECT * FROM catalog_sales1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE catalog_sales AS (SELECT * FROM catalog_sales1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE store_returns AS (SELECT * FROM store_returns1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE store_returns AS (SELECT * FROM store_returns1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE household_demographics AS (SELECT * FROM household_demographics1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE household_demographics AS (SELECT * FROM household_demographics1) WITH DATA;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE web_page AS (SELECT * FROM web_page1) WITH DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE TABLE web_page AS (SELECT * FROM web_page1) WITH DATA;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1175,6 +1618,57 @@ drop table store_sales if exists cascade;</stringProp>
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">analyze table store_sales compute statistics;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CHANGE AUTHORIZATION" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user ${b} if exists cascade;" enabled="false">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop user ${b} if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;" enabled="false">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="grant change_authorization to ${b};" enabled="false">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">grant change_authorization to ${b};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="connect user ${b} password &apos;${b_password}&apos;;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">connect user ${b} password &apos;${b_password}&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
