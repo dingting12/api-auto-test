@@ -90,65 +90,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <!--http://www.mojohaus.org/xml-maven-plugin/examples/transform-saxon.html-->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>xml-maven-plugin</artifactId>
-                <version>1.0-beta-3</version>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>transform</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <transformationSets>
-                        <transformationSet>
-                            <dir>${jmeter.result.jtl.dir}</dir>
-                            <stylesheet>src\test\resources\jmeter-results-report.xsl</stylesheet>
-                            <outputDir>${jmeter.result.html.dir}</outputDir>
-                            <fileMappers>
-                                <fileMapper
-                                        implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                                    <targetExtension>html</targetExtension>
-                                </fileMapper>
-                            </fileMappers>
-                        </transformationSet>
-                        <transformationSet>
-                            <dir>${jmeter.result.jtl.dir}</dir>
-                            <stylesheet>src\test\resources\jmeter-results-error-report.xsl</stylesheet>
-                            <outputDir>${jmeter.result.html.dir}</outputDir>
-                            <fileMappers>
-                                <fileMapper
-                                        implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                                    <targetExtension>error.html</targetExtension>
-                                </fileMapper>
-                            </fileMappers>
-                        </transformationSet>
-                        <transformationSet>
-                            <dir>${jmeter.result.jtl.dir}</dir>
-                            <stylesheet>src\test\resources\jmeter-results-detail-report.xsl</stylesheet>
-                            <outputDir>${jmeter.result.html.dir}</outputDir>
-                            <fileMappers>
-                                <fileMapper
-                                        implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                                    <targetExtension>detail.html</targetExtension>
-                                </fileMapper>
-                            </fileMappers>
-                        </transformationSet>
-                    </transformationSets>
-                </configuration>
-                <!-- using XSLT 2.0 -->
-                <dependencies>
-                    <dependency>
-                        <groupId>net.sf.saxon</groupId>
-                        <artifactId>saxon</artifactId>
-                        <version>8.7</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
     </build>
 
@@ -174,6 +115,73 @@
             <properties>
                 <jmeter.test.dir>linkoopdb/performancetest</jmeter.test.dir>
             </properties>
+        </profile>
+
+        <profile>
+            <id>report</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!--http://www.mojohaus.org/xml-maven-plugin/examples/transform-saxon.html-->
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>xml-maven-plugin</artifactId>
+                        <version>1.0-beta-3</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>transform</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <transformationSets>
+                                <transformationSet>
+                                    <dir>${jmeter.result.jtl.dir}</dir>
+                                    <stylesheet>src\test\resources\jmeter-results-report.xsl</stylesheet>
+                                    <outputDir>${jmeter.result.html.dir}</outputDir>
+                                    <fileMappers>
+                                        <fileMapper
+                                                implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>html</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <dir>${jmeter.result.jtl.dir}</dir>
+                                    <stylesheet>src\test\resources\jmeter-results-error-report.xsl</stylesheet>
+                                    <outputDir>${jmeter.result.html.dir}</outputDir>
+                                    <fileMappers>
+                                        <fileMapper
+                                                implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>error.html</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <dir>${jmeter.result.jtl.dir}</dir>
+                                    <stylesheet>src\test\resources\jmeter-results-detail-report.xsl</stylesheet>
+                                    <outputDir>${jmeter.result.html.dir}</outputDir>
+                                    <fileMappers>
+                                        <fileMapper
+                                                implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>detail.html</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                            </transformationSets>
+                        </configuration>
+                        <!-- using XSLT 2.0 -->
+                        <dependencies>
+                            <dependency>
+                                <groupId>net.sf.saxon</groupId>
+                                <artifactId>saxon</artifactId>
+                                <version>8.7</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
