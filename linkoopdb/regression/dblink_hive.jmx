@@ -1648,6 +1648,12 @@
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">FeatureTransformers</stringProp>
           </elementProp>
+          <elementProp name="hive_link_wr" elementType="Argument">
+            <stringProp name="Argument.name">hive_link_wr</stringProp>
+            <stringProp name="Argument.value">hive_link_wr</stringProp>
+            <stringProp name="Argument.desc">hive_db_link</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -1815,7 +1821,9 @@
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 drop database link ${hive_link} if exists cascade;" enabled="true">
                   <stringProp name="dataSource">${a}</stringProp>
                   <stringProp name="queryType">Update Statement</stringProp>
-                  <stringProp name="query">drop database link ${hive_link} if exists cascade;</stringProp>
+                  <stringProp name="query">drop database link ${hive_link} if exists cascade;
+drop database link ${hive_link_wr} if exists cascade;
+</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -1871,10 +1879,10 @@
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 drop database link ${hive_link} if exists cascade;" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 create database " enabled="true">
                   <stringProp name="dataSource">${a}</stringProp>
                   <stringProp name="queryType">Update Statement</stringProp>
-                  <stringProp name="query">drop database link ${hive_link} if exists cascade;</stringProp>
+                  <stringProp name="query">create database link ${hive_link_wr} connect to &apos;hive&apos; identified by &apos;hive&apos; using &apos;hive&apos; PROPERTIES (&apos;database&apos;:&apos;hive_database_wr&apos;);</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -1883,7 +1891,45 @@
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 TC-hiveC-a002" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">SELECT count(*) FROM ${hive_link_wr}.hive_table_wr;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="51">3</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 drop database link ${hive_link_wr} if exists cascade;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop database link ${hive_link} if exists cascade;
+drop database link ${hive_link_wr} if exists cascade;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="126 LDBX021-02 GRANT hive database link" enabled="true"/>
               <hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="126 LDBX021-02 drop database link ${hive_link} if exists cascade;" enabled="true">
