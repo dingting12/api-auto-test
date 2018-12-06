@@ -15,7 +15,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="node" elementType="Argument">
             <stringProp name="Argument.name">node</stringProp>
-            <stringProp name="Argument.value">192.168.1.73</stringProp>
+            <stringProp name="Argument.value">${__P(host,'192.168.1.73')}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="user" elementType="Argument">
@@ -56,6 +56,16 @@
           <elementProp name="datapath" elementType="Argument">
             <stringProp name="Argument.name">datapath</stringProp>
             <stringProp name="Argument.value">/node5/studio/gengchenyu/file/testwy.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="schema" elementType="Argument">
+            <stringProp name="Argument.name">schema</stringProp>
+            <stringProp name="Argument.value">schema</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="logdir" elementType="Argument">
+            <stringProp name="Argument.name">logdir</stringProp>
+            <stringProp name="Argument.value">logs</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -106,9 +116,48 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP SCHEMA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP SCHEMA IF EXISTS ${schema} CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE SCHEMA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE SCHEMA ${schema};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SET SCHEMA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">SET SCHEMA ${schema};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="867 db link中创建视图后在系统表里无法查到该视图 " enabled="true"/>
         <hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" DROP DATABASE LINK ORACLE_LINK_WR4 IF EXISTS CASCADE;" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP DATABASE LINK ORACLE_LINK_WR4 IF EXISTS CASCADE;" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="query">DROP DATABASE LINK ORACLE_LINK_WR4 IF EXISTS CASCADE;
 
@@ -2936,7 +2985,7 @@ DROP PROCEDURE sp_condsp1_wr IF EXISTS;</stringProp>
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <Summariser guiclass="SummariserGui" testclass="Summariser" testname="setup" enabled="true"/>
+        <Summariser guiclass="SummariserGui" testclass="Summariser" testname="Generate Summary Results" enabled="true"/>
         <hashTree/>
         <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
@@ -3005,8 +3054,8 @@ DROP PROCEDURE sp_condsp1_wr IF EXISTS;</stringProp>
         </ResultCollector>
         <hashTree/>
         <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-          <stringProp name="FileSaver.filename">test/${__time(YMDHMS)}/${__samplerName}.</stringProp>
-          <boolProp name="FileSaver.errorsonly">false</boolProp>
+          <stringProp name="FileSaver.filename">${logdir}/${__BeanShell(ctx.getThreadGroup().getName())}/${__samplerName}.</stringProp>
+          <boolProp name="FileSaver.errorsonly">true</boolProp>
           <boolProp name="FileSaver.skipautonumber">false</boolProp>
           <boolProp name="FileSaver.skipsuffix">false</boolProp>
           <boolProp name="FileSaver.successonly">false</boolProp>
@@ -3042,43 +3091,7 @@ DROP PROCEDURE sp_condsp1_wr IF EXISTS;</stringProp>
               <threadCounts>true</threadCounts>
             </value>
           </objProp>
-          <stringProp name="filename">test/${__time(YMDHMS)}/assertion-results.xml</stringProp>
-        </ResultCollector>
-        <hashTree/>
-        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>true</xml>
-              <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <sentBytes>true</sentBytes>
-              <threadCounts>true</threadCounts>
-              <idleTime>true</idleTime>
-              <connectTime>true</connectTime>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
+          <stringProp name="filename">${logdir}/assertion-results.xml</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
