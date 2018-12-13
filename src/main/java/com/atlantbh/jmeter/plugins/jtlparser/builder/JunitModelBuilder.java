@@ -24,8 +24,8 @@ public class JunitModelBuilder {
     }
 
 
-    public static JunitModelBuilder newInstance(){
-        if(builder == null) {
+    public static JunitModelBuilder newInstance() {
+        if (builder == null) {
             builder = new JunitModelBuilder();
         }
         return builder;
@@ -33,10 +33,14 @@ public class JunitModelBuilder {
 
     private TestStep createTestStep(Sampler sampler) {
         TestStep testStep = new TestStep();
-        testStep.setName(sampler.getSamplerName() + ": " +sampler.getName());
-        for (AssertionResult assertion: sampler.getAssertionResults()) {
+        testStep.setName(sampler.getSamplerName() + ": " + sampler.getName());
+        for (AssertionResult assertion : sampler.getAssertionResults()) {
             if (assertion.isFailure()) {
-                testStep.setAssertionFailures(assertion.getName(),assertion.getFailureMessage());
+                String failureMessage = assertion.getFailureMessage();
+                if (failureMessage.length() > 256) {
+                    failureMessage = failureMessage.substring(0, 256);
+                }
+                testStep.setAssertionFailures(assertion.getName() + ": failureMessage", assertion.getFailureMessage());
             }
         }
         if (sampler.hasFailedAssertions())
@@ -47,11 +51,11 @@ public class JunitModelBuilder {
         return testStep;
     }
 
-    private TestCase createTestCase(ThreadGroup threadGroup){
+    private TestCase createTestCase(ThreadGroup threadGroup) {
         TestCase testCase = new TestCase();
         testCase.setClassName(threadGroup.getThreadName());
 
-        for(Sampler sampler: threadGroup.getSamplers()) {
+        for (Sampler sampler : threadGroup.getSamplers()) {
             TestStep testStep = createTestStep(sampler);
             testCase.addTestStep(testStep);
             totalTestSteps++;
@@ -59,7 +63,7 @@ public class JunitModelBuilder {
         return testCase;
     }
 
-    public TestSuite generateTestSuite(ArrayList<ThreadGroup> threadGroups){
+    public TestSuite generateTestSuite(ArrayList<ThreadGroup> threadGroups) {
         TestSuite testSuite = new TestSuite();
         testSuite.setName("Test Plan");
         totalFailedTestSteps = 0;
@@ -67,7 +71,7 @@ public class JunitModelBuilder {
         totalTestStepsExecutionTime = 0;
 
 
-        for (ThreadGroup threadGroup: threadGroups) {
+        for (ThreadGroup threadGroup : threadGroups) {
             TestCase testCase = createTestCase(threadGroup);
             testSuite.addTestCase(testCase);
         }
