@@ -52,11 +52,12 @@ public class JUnitReportTask extends Task {
             String filename = jtlFile.getName();
             filename = filename.substring(0, filename.lastIndexOf("."));
             File xmlFile = new File(targetFolder, filename + ".xml");
-            generateJUnitXmlReport(jtlFile.getAbsolutePath(), xmlFile.getAbsolutePath());
+            generateJUnitXmlReport(filename, jtlFile.getAbsolutePath(), xmlFile.getAbsolutePath());
         }
     }
 
-    private void generateJUnitXmlReport(String jtlFilename, String xmlFilename) {
+    private void generateJUnitXmlReport(String testSuiteName, String jtlFilename, String xmlFilename) {
+        System.out.println("Generate JUnit report " + xmlFilename);
         JtlParser parser = new JtlParser();
         try {
             NodeList list = parser.getStartNode(jtlFilename);
@@ -65,6 +66,7 @@ public class JUnitReportTask extends Task {
             ArrayList<ThreadGroup> threads = parser.getThreadGroups();
             JunitModelBuilder builder = JunitModelBuilder.newInstance();
             TestSuite testSuite = builder.generateTestSuite(threads);
+            testSuite.setName(testSuiteName);
             ArrayList<TestSuite> testSuites = new ArrayList<TestSuite>();
             testSuites.add(testSuite);
 
