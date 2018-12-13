@@ -121,14 +121,15 @@
                         <xsl:for-each select="*">
                             <li>
                                 <xsl:variable name="filename" select="@name"/>
+                                <xsl:variable name="groupname" select="substring-before($filename, '.')"/>
                                 <xsl:variable name="jtl">
                                     ../../../target/report/jtl/<xsl:value-of select="$filename"/>
                                 </xsl:variable>
                                 <xsl:variable name="doc" select="document($jtl)"></xsl:variable>
 
                                 <a target="_blank">
-                                    <xsl:attribute name="href"><xsl:value-of select="$filename"/>.html</xsl:attribute>
-                                    <xsl:value-of select="$filename"/>
+                                    <xsl:attribute name="href"><xsl:value-of select="$groupname"/>.html</xsl:attribute>
+                                    <xsl:value-of select="$groupname"/>
                                 </a>
 
                                 <xsl:call-template name="summary">
