@@ -13,7 +13,7 @@
                 * { margin: 0; padding: 0 }
                 html, body { width: 100%; height: 100%; background: #b4b4b4; font-size: 12px }
                 table { border: none; border-collapse: collapse; table-layout: fixed }
-                td { vertical-align: baseline; font-size: 12px }
+                td { vertical-align: baseline; font-size: 14px }
                 #left-panel { position: absolute; left: 0; top: 0; bottom: 0; width: 300px; overflow: auto; background: #dee4ea }
                 #left-panel li.navigation { font-weight: bold; cursor: default; color: #9da8b2; line-height: 18px; background-position: 12px 5px; background-repeat: no-repeat; padding: 0 0 0 25px; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAICAYAAAArzdW1AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBQqGbO7BEcAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAKRJREFUGNN1zM0KgkAYheF3RvtXSsGyWhRNaILS7bdt11W0KgJvoPwZp0UlBPUtz3nOJw7Hk7necv5dOA2Qaazo2vZP0LEt9olCVtqQROufKNmuqBuBNAYW4QzXGX6B0bDPcjGnMQYJ8Cg12U59oSzaUJQa4IUAXMclDHwAAn/MxPMw765FZd2QRgopBWmsKCrdfhXnS/4ZYElBXdyxewN008Y8AephLAkqz613AAAAAElFTkSuQmCC) }
                 #left-panel li.success { color: #565b60 }
@@ -37,7 +37,7 @@
                 #right-panel .trail { border-top: 1px solid #b4b4b4 }
 
 				table#summary tr th { color: #ffffff; font-weight: bold; text-align:center; background:#2674a6; white-space: nowrap; }
-				table#summary tr td { background:#eeeee0; white-space: nowrap; }
+				table#summary tr td { background:#eeeee0; white-space: nowrap; line-height: 18px }
 				.failure { font-weight:bold; color:red;	}
             ]]></style>
                 <script type="text/javascript"><![CDATA[
@@ -127,7 +127,7 @@
         <xsl:param name="group"/>
         <h2>Summary</h2>
         <div id="summary-panel">
-            <table id="summary" align="center" class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+            <table id="summary" align="center" class="details" border="0" cellpadding="5" cellspacing="2" width="100%">
                 <tr valign="top">
                     <th>Group</th>
                     <th># Samples</th>
