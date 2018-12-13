@@ -115,29 +115,8 @@
             ]]></script>
             </head>
             <body>
-                <div id="filelist-panel">
-                    <ul>
-                        <xsl:variable name="dirname" select="@name"/>
-                        <xsl:for-each select="*">
-                            <li>
-                                <xsl:variable name="filename" select="@name"/>
-                                <xsl:variable name="groupname" select="substring-before($filename, '.')"/>
-                                <xsl:variable name="jtl">
-                                    ../../../target/report/jtl/<xsl:value-of select="$filename"/>
-                                </xsl:variable>
-                                <xsl:variable name="doc" select="document($jtl)"></xsl:variable>
-
-                                <a target="_blank">
-                                    <xsl:attribute name="href"><xsl:value-of select="$groupname"/>.html</xsl:attribute>
-                                    <xsl:value-of select="$groupname"/>
-                                </a>
-
-                                <xsl:call-template name="summary">
-                                    <xsl:with-param name="doc" select="$doc"/>
-                                </xsl:call-template>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
+                <div id="summary-panel">
+                    <xsl:call-template name="summaryTable"/>
                 </div>
             </body>
         </html>
@@ -145,10 +124,12 @@
 
     <xsl:template name="summary">
         <xsl:param name="doc"/>
+        <xsl:param name="group"/>
+        <h2>Summary</h2>
         <div id="summary-panel">
-            <h2>Summary</h2>
             <table id="summary" align="center" class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
                 <tr valign="top">
+                    <th>Group</th>
                     <th># Samples</th>
                     <th>Failures</th>
                     <th>Success Rate</th>
@@ -179,6 +160,20 @@
                         </xsl:choose>
                     </xsl:attribute>
                     <td align="center">
+                        <xsl:choose>
+                            <xsl:when test="$allFailureCount &gt; 0">
+                                <a target="_blank">
+                                    <xsl:attribute name="href"><xsl:value-of select="$group"/>.html
+                                    </xsl:attribute>
+                                    <xsl:value-of select="$group"/>
+                                </a>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="$group"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </td>
+                    <td align="center">
                         <xsl:value-of select="$allCount"/>
                     </td>
                     <td align="center">
@@ -207,6 +202,102 @@
                 </tr>
             </table>
         </div>
+    </xsl:template>
+
+    <xsl:template name="summaryTable">
+        <table id="summary" align="center" class="details" border="0" cellpadding="5" cellspacing="2" width="100%">
+            <tr valign="top">
+                <th>Group</th>
+                <th># Samples</th>
+                <th>Failures</th>
+                <th>Success Rate</th>
+                <th>Average Time</th>
+                <th>Min Time</th>
+                <th>Max Time</th>
+            </tr>
+            <xsl:variable name="dirname" select="@name"/>
+            <xsl:for-each select="*">
+                <xsl:variable name="filename" select="@name"/>
+                <xsl:variable name="groupname" select="substring-before($filename, '.')"/>
+                <xsl:variable name="jtl">
+                    ../../../target/report/jtl/<xsl:value-of select="$filename"/>
+                </xsl:variable>
+                <xsl:variable name="doc" select="document($jtl)"></xsl:variable>
+
+                <xsl:call-template name="summaryRow">
+                    <xsl:with-param name="doc" select="$doc"/>
+                    <xsl:with-param name="group" select="$groupname"/>
+                </xsl:call-template>
+            </xsl:for-each>
+        </table>
+    </xsl:template>
+
+    <xsl:template name="summaryRow">
+        <xsl:param name="doc"/>
+        <xsl:param name="group"/>
+        <tr valign="top">
+            <xsl:variable name="allCount" select="count($doc/testResults/*)"/>
+            <xsl:variable name="allFailureCount" select="count($doc/testResults/*[attribute::s='false'])"/>
+            <xsl:variable name="allSuccessCount" select="count($doc/testResults/*[attribute::s='true'])"/>
+            <xsl:variable name="allSuccessPercent" select="$allSuccessCount div $allCount"/>
+            <xsl:variable name="allTotalTime" select="sum($doc/testResults/*/@t)"/>
+            <xsl:variable name="allAverageTime" select="$allTotalTime div $allCount"/>
+            <xsl:variable name="allMinTime">
+                <xsl:call-template name="min">
+                    <xsl:with-param name="nodes" select="$doc/testResults/*/@t"/>
+                </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="allMaxTime">
+                <xsl:call-template name="max">
+                    <xsl:with-param name="nodes" select="$doc/testResults/*/@t"/>
+                </xsl:call-template>
+            </xsl:variable>
+            <xsl:attribute name="class">
+                <xsl:choose>
+                    <xsl:when test="$allFailureCount &gt; 0">failure</xsl:when>
+                </xsl:choose>
+            </xsl:attribute>
+            <td align="center">
+                <xsl:choose>
+                    <xsl:when test="$allFailureCount &gt; 0">
+                        <a target="_blank">
+                            <xsl:attribute name="href"><xsl:value-of select="$group"/>.html
+                            </xsl:attribute>
+                            <xsl:value-of select="$group"/>
+                        </a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$group"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </td>
+            <td align="center">
+                <xsl:value-of select="$allCount"/>
+            </td>
+            <td align="center">
+                <xsl:value-of select="$allFailureCount"/>
+            </td>
+            <td align="center">
+                <xsl:call-template name="display-percent">
+                    <xsl:with-param name="value" select="$allSuccessPercent"/>
+                </xsl:call-template>
+            </td>
+            <td align="center">
+                <xsl:call-template name="display-time">
+                    <xsl:with-param name="value" select="$allAverageTime"/>
+                </xsl:call-template>
+            </td>
+            <td align="center">
+                <xsl:call-template name="display-time">
+                    <xsl:with-param name="value" select="$allMinTime"/>
+                </xsl:call-template>
+            </td>
+            <td align="center">
+                <xsl:call-template name="display-time">
+                    <xsl:with-param name="value" select="$allMaxTime"/>
+                </xsl:call-template>
+            </td>
+        </tr>
     </xsl:template>
 
     <xsl:template name="min">
