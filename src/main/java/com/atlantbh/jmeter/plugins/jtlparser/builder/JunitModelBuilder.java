@@ -40,7 +40,7 @@ public class JunitModelBuilder {
                 if (failureMessage.length() > 256) {
                     failureMessage = failureMessage.substring(0, 256);
                 }
-                testStep.setAssertionFailures(assertion.getName() + ": failureMessage", assertion.getFailureMessage());
+                testStep.setAssertionFailures(assertion.getName() + ": " + failureMessage, assertion.getFailureMessage());
             }
         }
         if (sampler.hasFailedAssertions())
