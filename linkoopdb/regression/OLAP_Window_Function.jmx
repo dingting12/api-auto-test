@@ -5102,10 +5102,10 @@ BOB	null	null	null	null
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">SELECT DEPTNO,ENAME,SAL,
-REGR_SLOPE(sals,sal) OVER (PARTITION BY DEPTNO ORDER BY DEPTNO ROWS between current row and 1 following) slope1,
-REGR_SLOPE(sals,sals)OVER (PARTITION BY DEPTNO ORDER BY DEPTNO range between 5 preceding and unbounded following) slope2,
-REGR_INTERCEPT(sal,sals) OVER (PARTITION BY DEPTNO ORDER BY DEPTNO ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) intercept1,
-REGR_INTERCEPT(sal,sal)OVER (PARTITION BY DEPTNO ORDER BY DEPTNO range between 5 preceding and unbounded following) intercept2
+REGR_SLOPE(sals,sal) OVER (PARTITION BY DEPTNO ORDER BY sal ROWS between current row and 1 following) slope1,
+REGR_SLOPE(sals,sals)OVER (PARTITION BY DEPTNO ORDER BY sal range between 5 preceding and unbounded following) slope2,
+REGR_INTERCEPT(sal,sals) OVER (PARTITION BY DEPTNO ORDER BY sal ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) intercept1,
+REGR_INTERCEPT(sal,sal)OVER (PARTITION BY DEPTNO ORDER BY sal range between 5 preceding and unbounded following) intercept2
 FROM t_regr_wr
 WHERE SAL&lt;&gt;800
 ORDER BY SAL DESC;
@@ -5118,7 +5118,7 @@ ORDER BY SAL DESC;
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
               <collectionProp name="Asserion.test_strings">
                 <stringProp name="1248021383">DEPTNO	ENAME	SAL	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
 60	TOM	58900	null	null	null	null
@@ -5127,11 +5127,18 @@ ORDER BY SAL DESC;
 30	SMTH	28	null	null	null	null
 20	MITH	5	0.574468085106383	1.0	null	0.0
 </stringProp>
+                <stringProp name="-1152406694">DEPTNO	ENAME	SAL	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
+60	TOM	58900	null	null	null	null
+10	JAKE	310	null	null	null	null
+20	SMTH	99	null	null	-15.888888888888886	null
+30	SMTH	28	null	null	null	null
+20	MITH	5	0.574468085106383	1.0	null	0.0
+</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
+              <intProp name="Assertion.test_type">48</intProp>
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
