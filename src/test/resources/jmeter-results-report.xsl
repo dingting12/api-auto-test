@@ -258,11 +258,11 @@
                                             <div class="zebra">
                                                 <table>
                                                     <tr>
-                                                        <td class="data key">Query String</td>
+                                                        <td class="data key">SQL Query</td>
                                                         <td class="data delimiter">:</td>
                                                         <td class="data">
                                                             <pre class="data">
-                                                                <xsl:value-of select="queryString"/>
+                                                                <xsl:value-of select="samplerData"/>
                                                             </pre>
                                                         </td>
                                                     </tr>
