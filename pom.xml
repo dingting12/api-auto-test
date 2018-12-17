@@ -21,7 +21,6 @@
         <jmx>*.jmx</jmx>
         <jmeter.result.jtl.list.dir>${project.build.directory}/report/summary</jmeter.result.jtl.list.dir>
         <jmeter.result.jtl.dir>${project.build.directory}/report/jtl</jmeter.result.jtl.dir>
-        <jmeter.result.jtl.request>false</jmeter.result.jtl.request>
         <jmeter.result.jtl.response>false</jmeter.result.jtl.response>
         <jmeter.result.junit.dir>${project.build.directory}/report/junit</jmeter.result.junit.dir>
         <jmeter.result.html.dir>${project.build.directory}/report/html</jmeter.result.html.dir>
@@ -104,9 +103,7 @@
                     <ignoreResultFailures>true</ignoreResultFailures>
                     <testResultsTimestamp>false</testResultsTimestamp>
                     <propertiesJMeter>
-                        <jmeter.save.saveservice.samplerData>${jmeter.result.jtl.request}</jmeter.save.saveservice.samplerData>
-                        <jmeter.save.saveservice.response_data>${jmeter.result.jtl.response}</jmeter.save.saveservice.response_data>
-                        <jmeter.save.saveservice.response_data.on_error>true</jmeter.save.saveservice.response_data.on_error>
+                        <jmeter.save.saveservice.response_data.on_error>${jmeter.result.jtl.response}</jmeter.save.saveservice.response_data.on_error>
                         <jmeter.save.saveservice.sample_count>true</jmeter.save.saveservice.sample_count>
                     </propertiesJMeter>
                     <propertiesUser>
@@ -148,13 +145,13 @@
                 <jmeter.test.dir>linkoopdb/performance</jmeter.test.dir>
             </properties>
         </profile>
-		
+
         <profile>
             <id>pallas</id>
             <properties>
                 <jmeter.test.dir>linkoopdb/pallas</jmeter.test.dir>
             </properties>
-        </profile>		
+        </profile>
 
         <profile>
             <id>tpch</id>
@@ -181,6 +178,24 @@
             <id>report</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <replace dir="${jmeter.result.jtl.dir}" token="&amp;#x0" value=""/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <!--http://www.mojohaus.org/xml-maven-plugin/examples/transform-saxon.html-->
                         <groupId>org.codehaus.mojo</groupId>
