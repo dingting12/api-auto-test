@@ -65,3 +65,215 @@
 <sample t="137" ts="1544760614080" s="true" lb="DROP TABLE LINK PUBLIC.A_TRAIN_DATA IF EXISTS ;" rc="200" tn="bug 1-1" ng="1" na="1"/>
 
 </testResults>
+1545201501962,516,DROP SCHEMA,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,515,0,480
+1545201502502,34,CREATE SCHEMA,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,34,0,1
+1545201502536,17,733 LDBX043 drop database link proc__mysql_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,16,0,0
+1545201502553,1509,733 LDBX043 create database link proc__mysql_link  connect to 'test' identified by '123456'  using 'jdbc:mysql://192.168.1.73:3307/ldb_test';,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,1509,0,0
+1545201504063,4,733 LDBX043 DROP TABLE proc__mysql_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201504067,294,"733 LDBX043 CREATE TABLE proc__mysql_link.t_sp_dblink_emp( EMPNO INT, ENAME VARCHAR(20), JOB VARCHAR(20), MGR INT, HIREDATE DATE, SAL INT, COMM INT, DEPTNO INT );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,294,0,0
+1545201504361,1856,"733 LDBX043 INSERT INTO proc__mysql_link.t_sp_dblink_emp VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,1856,0,0
+1545201506218,79,733 LDBX043 TC-001,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,78,0,0
+1545201506301,389,733 LDBX043 DROP TABLE proc__mysql_link.t_sp_dblink_dept IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,389,0,0
+1545201506691,337,"733 LDBX043 CREATE TABLE proc__mysql_link.t_sp_dblink_dept( DEPTNO INT, DNAME VARCHAR(20), LOC VARCHAR(20) );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,337,0,0
+1545201507028,610,"733 LDBX043 INSERT INTO proc__mysql_link.t_sp_dblink_dept VALUES (10,'ACCOUNTING','NEW YORK');",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,610,0,0
+1545201507639,85,733 LDBX043 TC-002,200,OK,StoredProcedure 1-1,text,true,,5,0,1,1,85,0,0
+1545201507724,4,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201507728,22,"733 LDBX043 CREATE PROCEDURE sp_dblink_1(OUT parameter_counts INT) BEGIN 	 	DECLARE counts INT DEFAULT 0; 	 	SET counts=(SELECT COUNT(*) FROM  	proc__mysql_link.t_sp_dblink_emp AS emp,proc__mysql_link.t_sp_dblink_dept AS dept 	WHERE emp.deptno=dept.deptno AND emp.sal<=1000); 	 	SET parameter_counts=counts; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,22,0,0
+1545201507751,1449,733 LDBX043 CALL sp_dblink_1(parameter_counts);,200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,1449,0,0
+1545201509201,5,733 LDBX043 TC-003,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,5,0,0
+1545201509207,33,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,33,0,0
+1545201509241,5,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201509246,25,"733 LDBX043 CREATE PROCEDURE sp_dblink_2(IN parameter_empno INT,IN parameter_ename VARCHAR(50),                              IN parameter_empno1 INT,IN parameter_ename1 VARCHAR(50),                              OUT parameter_eno1 INT,OUT parameter_name1 VARCHAR(50)) BEGIN 	 	UPDATE proc__mysql_link.t_sp_dblink_emp 	SET EMPNO=parameter_empno,ENAME=parameter_ename 	WHERE EMPNO=:parameter_empno1 AND ENAME=:parameter_ename1; 	 	SELECT empno,ename INTO parameter_eno1,parameter_name1 FROM proc__mysql_link.t_sp_dblink_emp 	WHERE EMPNO=:parameter_empno AND ENAME=:parameter_ename; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,25,0,0
+1545201509272,166,"733 LDBX043 CALL sp_dblink_2(1011,'cd',7934,'MILLER',parameter_eno1,parameter_name1);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,166,0,0
+1545201509438,6,733 LDBX043 TC-004,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201509445,5,733 LDBX043 TC-005,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,5,0,0
+1545201509450,32,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,32,0,0
+1545201509482,7,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,7,0,0
+1545201509489,17,"733 LDBX043 CREATE PROCEDURE sp_dblink_3(IN parameter_empno2 INT,IN parameter_ename2 VARCHAR(50),OUT test_counts INT) BEGIN 	DECLARE counts INT DEFAULT 0; 	 	DELETE FROM proc__mysql_link.t_sp_dblink_emp     WHERE EMPNO=:parameter_empno2 AND ENAME=:parameter_ename2;          SET counts=(SELECT COUNT(*) FROM proc__mysql_link.t_sp_dblink_emp);          SET test_counts=counts; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,17,0,1
+1545201509506,225,"733 LDBX043 CALL sp_dblink_3(1011,'cd',test_counts);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,225,0,0
+1545201509732,6,733 LDBX043 TC-006,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,6,0,0
+1545201509739,30,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,30,0,0
+1545201509769,5,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201509774,18,"733 LDBX043 CREATE PROCEDURE sp_dblink_4(IN parameter_empno4 INT,IN parameter_ename4 VARCHAR(50),OUT eno INT,OUT name VARCHAR(50)) BEGIN 	 	INSERT INTO proc__mysql_link.t_sp_dblink_emp VALUES(parameter_empno4,parameter_ename4,'CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20); 	 	SELECT empno,ename INTO eno,name FROM proc__mysql_link.t_sp_dblink_emp 	WHERE empno=:parameter_empno4 AND ename=:parameter_ename4; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,18,0,0
+1545201509793,265,"733 LDBX043 CALL sp_dblink_4(1011,'cd',eno,name);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,265,0,0
+1545201510059,6,733 LDBX043 TC-007,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201510065,9,733 LDBX043 TC-008,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,9,0,0
+1545201510074,90,733 LDBX043 TC-009,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,90,0,0
+1545201510165,398,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,398,0,0
+1545201510563,159,733 LDBX043 DROP TABLE proc__mysql_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,159,0,0
+1545201510722,82,733 LDBX043 drop database link proc__mysql_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,81,0,0
+1545201510804,4,733 LDBX043 drop database proc_mssqlserver_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201510808,4240,733 LDBX043 create database link proc_mssqlserver_link connect to 'sa' identified by 'LinkoopDB123' using 'jdbc:sqlserver://192.168.1.73;Database=insen' properties ('schema':'dbo');,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4240,0,0
+1545201515048,6,733 LDBX043 proc_mssqlserver_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201515054,255,"733 LDBX043 CREATE TABLE proc_mssqlserver_link.t_sp_dblink_emp( EMPNO INT, ENAME VARCHAR(20), JOB VARCHAR(20), MGR INT, HIREDATE DATE, SAL INT, COMM INT, DEPTNO INT );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,255,0,0
+1545201515310,6340,"733 LDBX043 INSERT INTO proc_mssqlserver_link.t_sp_dblink_emp VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6340,0,0
+1545201521650,278,733 LDBX043 TC-010,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,278,0,0
+1545201521928,151,733 LDBX043 DROP TABLE proc_mssqlserver_link.t_sp_dblink_dept IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,151,0,0
+1545201522080,229,"733 LDBX043 CREATE TABLE proc_mssqlserver_link.t_sp_dblink_dept( DEPTNO INT, DNAME VARCHAR(20), LOC VARCHAR(20) );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,229,0,0
+1545201522309,1710,"733 LDBX043 INSERT INTO proc_mssqlserver_link.t_sp_dblink_dept VALUES (10,'ACCOUNTING','NEW YORK');",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,1709,0,0
+1545201524019,265,733 LDBX043 TC-011,200,OK,StoredProcedure 1-1,text,true,,5,0,1,1,265,0,0
+1545201524284,4,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,3,0,0
+1545201524288,18,"733 LDBX043 CREATE PROCEDURE sp_dblink_1(OUT parameter_counts INT) BEGIN 	 	DECLARE counts INT DEFAULT 0; 	 	SET counts=(SELECT COUNT(*) FROM  	proc_mssqlserver_link.t_sp_dblink_emp AS emp,proc_mssqlserver_link.t_sp_dblink_dept AS dept 	WHERE emp.deptno=dept.deptno AND emp.sal<=1000); 	 	SET parameter_counts=counts; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,18,0,0
+1545201524306,2019,733 LDBX043 CALL sp_dblink_1(parameter_counts);,200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,2019,0,0
+1545201526326,3,733 LDBX043 TC-012,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,3,0,0
+1545201526330,29,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,29,0,0
+1545201526359,6,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201526365,21,"733 LDBX043 CREATE PROCEDURE sp_dblink_2(IN parameter_empno INT,IN parameter_ename VARCHAR(50),                              IN parameter_empno1 INT,IN parameter_ename1 VARCHAR(50),                              OUT parameter_eno1 INT,OUT parameter_name1 VARCHAR(50)) BEGIN 	 	UPDATE proc_mssqlserver_link.t_sp_dblink_emp 	SET EMPNO=parameter_empno,ENAME=parameter_ename 	WHERE EMPNO=:parameter_empno1 AND ENAME=:parameter_ename1; 	 	SELECT empno,ename INTO parameter_eno1,parameter_name1 FROM proc_mssqlserver_link.t_sp_dblink_emp 	WHERE EMPNO=:parameter_empno AND ENAME=:parameter_ename; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,21,0,0
+1545201526386,442,"733 LDBX043 CALL sp_dblink_2(1011,'cd',7934,'MILLER',parameter_eno1,parameter_name1);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,442,0,0
+1545201526829,6,733 LDBX043 TC-013,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201526836,3,733 LDBX043 TC-014,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,3,0,0
+1545201526839,29,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,29,0,0
+1545201526868,5,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201526874,19,"733 LDBX043 CREATE PROCEDURE sp_dblink_3(IN parameter_empno2 INT,IN parameter_ename2 VARCHAR(50),OUT test_counts INT) BEGIN 	DECLARE counts INT DEFAULT 0; 	 	DELETE FROM proc_mssqlserver_link.t_sp_dblink_emp     WHERE EMPNO=:parameter_empno2 AND ENAME=:parameter_ename2;          SET counts=(SELECT COUNT(*) FROM proc_mssqlserver_link.t_sp_dblink_emp);          SET test_counts=counts; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,19,0,0
+1545201526894,560,"733 LDBX043 CALL sp_dblink_3(1011,'cd',test_counts);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,560,0,0
+1545201527454,9,733 LDBX043 TC-015,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,9,0,0
+1545201527464,37,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,37,0,0
+1545201527501,9,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,9,0,0
+1545201527510,19,"733 LDBX043 CREATE PROCEDURE sp_dblink_4(IN parameter_empno4 INT,IN parameter_ename4 VARCHAR(50),OUT eno INT,OUT name VARCHAR(50)) BEGIN 	 	INSERT INTO proc_mssqlserver_link.t_sp_dblink_emp VALUES(parameter_empno4,parameter_ename4,'CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20); 	 	SELECT empno,ename INTO eno,name FROM proc_mssqlserver_link.t_sp_dblink_emp 	WHERE empno=:parameter_empno4 AND ename=:parameter_ename4; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,19,0,0
+1545201527530,709,"733 LDBX043 CALL sp_dblink_4(1011,'cd',eno,name);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,709,0,0
+1545201528240,24,733 LDBX043 TC-016,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,24,0,0
+1545201528264,6,733 LDBX043 TC-017,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,6,0,0
+1545201528271,267,733 LDBX043 TC-018,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,267,0,0
+1545201528539,29,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,29,0,0
+1545201528569,75,733 LDBX043 DROP TABLE proc_mssqlserver_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,75,0,0
+1545201528644,144,733 LDBX043 drop database link proc_mssqlserver_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,144,0,0
+1545201528788,4,733 LDBX043 drop database link proc_oracle_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201528792,1782,733 LDBX043 create database link proc_oracle_link  connect to 'testlink1' identified by '123456'  using 'jdbc:oracle:thin:@192.168.1.73:1521:xe';,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,1782,0,0
+1545201530575,5,733 LDBX043 DROP TABLE proc_oracle_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201530580,418,"733 LDBX043 CREATE TABLE proc_oracle_link.t_sp_dblink_emp( EMPNO INT, ENAME VARCHAR(20), JOB VARCHAR(20), MGR INT, HIREDATE DATE, SAL INT, COMM INT, DEPTNO INT );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,418,0,0
+1545201530999,3692,"733 LDBX043 INSERT INTO proc_oracle_link.t_sp_dblink_emp VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,3692,0,0
+1545201534692,165,733 LDBX043 TC-019,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,165,0,0
+1545201534858,200,733 LDBX043 DROP TABLE proc_oracle_link.t_sp_dblink_dept IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,200,0,0
+1545201535059,402,"733 LDBX043 CREATE TABLE proc_oracle_link.t_sp_dblink_dept( DEPTNO INT, DNAME VARCHAR(20), LOC VARCHAR(20) );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,401,0,0
+1545201535461,1003,"733 LDBX043 INSERT INTO proc_oracle_link.t_sp_dblink_dept VALUES (10,'ACCOUNTING','NEW YORK');",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,1003,0,0
+1545201536465,161,733 LDBX043 TC-020,200,OK,StoredProcedure 1-1,text,true,,5,0,1,1,161,0,0
+1545201536626,89,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,89,0,0
+1545201536716,118,"733 LDBX043 CREATE PROCEDURE sp_dblink_1(OUT parameter_counts INT) BEGIN 	 	DECLARE counts INT DEFAULT 0; 	 	SET counts=(SELECT COUNT(*) FROM  	proc_oracle_link.t_sp_dblink_emp AS emp,proc_oracle_link.t_sp_dblink_dept AS dept 	WHERE emp.deptno=dept.deptno AND emp.sal<=1000); 	 	SET parameter_counts=counts; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,118,0,0
+1545201536835,1994,733 LDBX043 CALL sp_dblink_1(parameter_counts);,200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,1994,0,0
+1545201538830,89,733 LDBX043 TC-021,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,89,0,0
+1545201538920,65,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,65,0,0
+1545201538986,158,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,157,0,0
+1545201539144,416,"733 LDBX043 CREATE PROCEDURE sp_dblink_2(IN parameter_empno INT,IN parameter_ename VARCHAR(50),                              IN parameter_empno1 INT,IN parameter_ename1 VARCHAR(50),                              OUT parameter_eno1 INT,OUT parameter_name1 VARCHAR(50)) BEGIN 	 	UPDATE proc_oracle_link.t_sp_dblink_emp 	SET EMPNO=parameter_empno,ENAME=parameter_ename 	WHERE EMPNO=:parameter_empno1 AND ENAME=:parameter_ename1; 	 	SELECT empno,ename INTO parameter_eno1,parameter_name1 FROM proc_oracle_link.t_sp_dblink_emp 	WHERE EMPNO=:parameter_empno AND ENAME=:parameter_ename; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,416,0,0
+1545201539560,411,"733 LDBX043 CALL sp_dblink_2(1011,'cd',7934,'MILLER',parameter_eno1,parameter_name1);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,411,0,0
+1545201539971,21,733 LDBX043 TC-022,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,21,0,0
+1545201539992,103,733 LDBX043 TC-023,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,103,0,0
+1545201540095,38,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,38,0,0
+1545201540133,185,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,185,0,0
+1545201540317,73,"733 LDBX043 CREATE PROCEDURE sp_dblink_3(IN parameter_empno2 INT,IN parameter_ename2 VARCHAR(50),OUT test_counts INT) BEGIN 	DECLARE counts INT DEFAULT 0; 	 	DELETE FROM proc_oracle_link.t_sp_dblink_emp     WHERE EMPNO=:parameter_empno2 AND ENAME=:parameter_ename2;          SET counts=(SELECT COUNT(*) FROM proc_oracle_link.t_sp_dblink_emp);          SET test_counts=counts; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,73,0,0
+1545201540390,449,"733 LDBX043 CALL sp_dblink_3(1011,'cd',test_counts);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,449,0,0
+1545201540839,34,733 LDBX043 TC-024,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,34,0,0
+1545201540873,61,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,61,0,0
+1545201540934,25,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,25,0,0
+1545201540959,28,"733 LDBX043 CREATE PROCEDURE sp_dblink_4(IN parameter_empno4 INT,IN parameter_ename4 VARCHAR(50),OUT eno INT,OUT name VARCHAR(50)) BEGIN 	 	INSERT INTO proc_oracle_link.t_sp_dblink_emp VALUES(parameter_empno4,parameter_ename4,'CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20); 	 	SELECT empno,ename INTO eno,name FROM proc_oracle_link.t_sp_dblink_emp 	WHERE empno=:parameter_empno4 AND ename=:parameter_ename4; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,28,0,0
+1545201540987,587,"733 LDBX043 CALL sp_dblink_4(1011,'cd',eno,name);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,587,0,0
+1545201541574,8,733 LDBX043 TC-025,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,7,0,0
+1545201541582,725,733 LDBX043 TC-026,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,725,0,0
+1545201542307,156,733 LDBX043 TC-027,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,155,0,0
+1545201542463,34,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,34,0,0
+1545201542498,146,733 LDBX043 DROP TABLE proc_oracle_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,146,0,0
+1545201542645,88,733 LDBX043 drop database link proc_oracle_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,88,0,0
+1545201542733,115,733 LDBX043 drop database link proc_postgres_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,115,0,0
+1545201542849,202,733 LDBX043 create database link proc_postgres_link  connect to 'postgres' identified by 'linkoopdb'  using 'jdbc:postgresql://192.168.1.73:5432/postgres';,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,201,0,0
+1545201543051,4,733 LDBX043 DROP TABLE proc_postgres_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201543056,156,"733 LDBX043 CREATE TABLE proc_postgres_link.t_sp_dblink_emp( EMPNO INT, ENAME VARCHAR(20), JOB VARCHAR(20), MGR INT, HIREDATE DATE, SAL INT, COMM INT, DEPTNO INT );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,156,0,0
+1545201543212,2126,"733 LDBX043 INSERT INTO proc_postgres_link.t_sp_dblink_emp VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,2126,0,0
+1545201545339,101,733 LDBX043 TC-028,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,101,0,0
+1545201545440,71,733 LDBX043 DROP TABLE proc_postgres_link.t_sp_dblink_dept IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,71,0,0
+1545201545511,129,"733 LDBX043 CREATE TABLE proc_postgres_link.t_sp_dblink_dept( DEPTNO INT, DNAME VARCHAR(20), LOC VARCHAR(20) );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,129,0,0
+1545201545641,744,"733 LDBX043 INSERT INTO proc_postgres_link.t_sp_dblink_dept VALUES (10,'ACCOUNTING','NEW YORK');",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,744,0,0
+1545201546385,99,733 LDBX043 TC-029,200,OK,StoredProcedure 1-1,text,true,,5,0,1,1,99,0,0
+1545201546484,4,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201546488,26,"733 LDBX043 CREATE PROCEDURE sp_dblink_1(OUT parameter_counts INT) BEGIN 	 	DECLARE counts INT DEFAULT 0; 	 	SET counts=(SELECT COUNT(*) FROM  	proc_postgres_link.t_sp_dblink_emp AS emp,proc_postgres_link.t_sp_dblink_dept AS dept 	WHERE emp.deptno=dept.deptno AND emp.sal<=1000); 	 	SET parameter_counts=counts; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,26,0,0
+1545201546514,1753,733 LDBX043 CALL sp_dblink_1(parameter_counts);,200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,1753,0,0
+1545201548267,5,733 LDBX043 TC-030,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,5,0,0
+1545201548273,35,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,35,0,0
+1545201548309,6,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201548315,18,"733 LDBX043 CREATE PROCEDURE sp_dblink_2(IN parameter_empno INT,IN parameter_ename VARCHAR(50),                              IN parameter_empno1 INT,IN parameter_ename1 VARCHAR(50),                              OUT parameter_eno1 INT,OUT parameter_name1 VARCHAR(50)) BEGIN 	 	UPDATE proc_postgres_link.t_sp_dblink_emp 	SET EMPNO=parameter_empno,ENAME=parameter_ename 	WHERE EMPNO=:parameter_empno1 AND ENAME=:parameter_ename1; 	 	SELECT empno,ename INTO parameter_eno1,parameter_name1 FROM proc_postgres_link.t_sp_dblink_emp 	WHERE EMPNO=:parameter_empno AND ENAME=:parameter_ename; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,18,0,0
+1545201548334,166,"733 LDBX043 CALL sp_dblink_2(1011,'cd',7934,'MILLER',parameter_eno1,parameter_name1);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,166,0,0
+1545201548500,6,733 LDBX043 TC-031,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201548507,6,733 LDBX043 TC-032,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,6,0,0
+1545201548514,32,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,32,0,0
+1545201548546,13,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,13,0,0
+1545201548559,16,"733 LDBX043 CREATE PROCEDURE sp_dblink_3(IN parameter_empno2 INT,IN parameter_ename2 VARCHAR(50),OUT test_counts INT) BEGIN 	DECLARE counts INT DEFAULT 0; 	 	DELETE FROM proc_postgres_link.t_sp_dblink_emp     WHERE EMPNO=:parameter_empno2 AND ENAME=:parameter_ename2;          SET counts=(SELECT COUNT(*) FROM proc_postgres_link.t_sp_dblink_emp);          SET test_counts=counts; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,16,0,0
+1545201548576,240,"733 LDBX043 CALL sp_dblink_3(1011,'cd',test_counts);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,240,0,0
+1545201548816,5,733 LDBX043 TC-033,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,5,0,0
+1545201548821,33,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,33,0,0
+1545201548855,4,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201548860,15,"733 LDBX043 CREATE PROCEDURE sp_dblink_4(IN parameter_empno4 INT,IN parameter_ename4 VARCHAR(50),OUT eno INT,OUT name VARCHAR(50)) BEGIN 	 	INSERT INTO proc_postgres_link.t_sp_dblink_emp VALUES(parameter_empno4,parameter_ename4,'CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20); 	 	SELECT empno,ename INTO eno,name FROM proc_postgres_link.t_sp_dblink_emp 	WHERE empno=:parameter_empno4 AND ename=:parameter_ename4; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,15,0,0
+1545201548876,298,"733 LDBX043 CALL sp_dblink_4(1011,'cd',eno,name);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,298,0,0
+1545201549174,5,733 LDBX043 TC-034,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201549179,6,733 LDBX043 TC-035,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,6,0,1
+1545201549186,547,733 LDBX043 TC-036,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,547,0,0
+1545201549733,36,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,36,0,0
+1545201549769,97,733 LDBX043 DROP TABLE proc_postgres_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,97,0,0
+1545201549866,40,733 LDBX043 drop database link proc_postgres_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,40,0,0
+1545201549906,4,733 LDBX043 drop database link proc_teradata_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201549911,37452,"733 LDBX043 CREATE DATABASE LINK proc_teradata_link CONNECT TO 'testdblink' IDENTIFIED BY 'testdblink'  USING 'jdbc:teradata://192.168.1.134/CLIENT_CHARSET=cp936,TMODE=TERA,CHARSET=ASCII,LOB_SUPPORT=ON,COLUMN_NAME = ON,MAYBENULL = ON,database=testdblinkbase' PROPERTIES ('host':'192.168.1.134' , 'schema':'testdblinkbase');",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,37452,0,0
+1545201587364,4,733 LDBX043 DROP TABLE proc_teradata_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201587369,1110,"733 LDBX043 CREATE TABLE proc_teradata_link.t_sp_dblink_emp( EMPNO INT, ENAME VARCHAR(20), JOB VARCHAR(20), MGR INT, HIREDATE DATE, SAL INT, COMM INT, DEPTNO INT );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,1110,0,0
+1545201588479,20124,"733 LDBX043 INSERT INTO proc_teradata_link.t_sp_dblink_emp VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,20124,0,0
+1545201608603,997,733 LDBX043 TC-037,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,997,0,0
+1545201609601,1088,733 LDBX043 DROP TABLE proc_teradata_link.t_sp_dblink_dept IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,1088,0,0
+1545201610691,760,"733 LDBX043 CREATE TABLE proc_teradata_link.t_sp_dblink_dept( DEPTNO INT, DNAME VARCHAR(20), LOC VARCHAR(20) );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,760,0,0
+1545201611451,6729,"733 LDBX043 INSERT INTO proc_teradata_link.t_sp_dblink_dept VALUES (10,'ACCOUNTING','NEW YORK');",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6729,0,0
+1545201618179,988,733 LDBX043 TC-038,200,OK,StoredProcedure 1-1,text,true,,5,0,1,1,987,0,0
+1545201619167,4,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201619171,23,"733 LDBX043 CREATE PROCEDURE sp_dblink_1(OUT parameter_counts INT) BEGIN 	 	DECLARE counts INT DEFAULT 0; 	 	SET counts=(SELECT COUNT(*) FROM  	proc_teradata_link.t_sp_dblink_emp AS emp,proc_teradata_link.t_sp_dblink_dept AS dept 	WHERE emp.deptno=dept.deptno AND emp.sal<=1000); 	 	SET parameter_counts=counts; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,23,0,0
+1545201619195,4811,733 LDBX043 CALL sp_dblink_1(parameter_counts);,200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,4811,0,0
+1545201624007,7,733 LDBX043 TC-039,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,7,0,0
+1545201624014,36,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,36,0,0
+1545201624051,5,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201624057,21,"733 LDBX043 CREATE PROCEDURE sp_dblink_2(IN parameter_empno INT,IN parameter_ename VARCHAR(50),                              IN parameter_empno1 INT,IN parameter_ename1 VARCHAR(50),                              OUT parameter_eno1 INT,OUT parameter_name1 VARCHAR(50)) BEGIN 	 	UPDATE proc_teradata_link.t_sp_dblink_emp 	SET EMPNO=parameter_empno,ENAME=parameter_ename 	WHERE EMPNO=:parameter_empno1 AND ENAME=:parameter_ename1; 	 	SELECT empno,ename INTO parameter_eno1,parameter_name1 FROM proc_teradata_link.t_sp_dblink_emp 	WHERE EMPNO=:parameter_empno AND ENAME=:parameter_ename; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,20,0,0
+1545201624078,982,"733 LDBX043 CALL sp_dblink_2(1011,'cd',7934,'MILLER',parameter_eno1,parameter_name1);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,982,0,0
+1545201625061,5,733 LDBX043 TC-040,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201625066,6,733 LDBX043 TC-041,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,5,0,0
+1545201625072,33,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,33,0,0
+1545201625105,6,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201625111,16,"733 LDBX043 CREATE PROCEDURE sp_dblink_3(IN parameter_empno2 INT,IN parameter_ename2 VARCHAR(50),OUT test_counts INT) BEGIN 	DECLARE counts INT DEFAULT 0; 	 	DELETE FROM proc_teradata_link.t_sp_dblink_emp     WHERE EMPNO=:parameter_empno2 AND ENAME=:parameter_ename2;          SET counts=(SELECT COUNT(*) FROM proc_teradata_link.t_sp_dblink_emp);          SET test_counts=counts; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,16,0,0
+1545201625128,1708,"733 LDBX043 CALL sp_dblink_3(1011,'cd',test_counts);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,1708,0,0
+1545201626837,5,733 LDBX043 TC-042,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,5,0,0
+1545201626842,38,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,38,0,0
+1545201626881,5,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201626886,17,"733 LDBX043 CREATE PROCEDURE sp_dblink_4(IN parameter_empno4 INT,IN parameter_ename4 VARCHAR(50),OUT eno INT,OUT name VARCHAR(50)) BEGIN 	 	INSERT INTO proc_teradata_link.t_sp_dblink_emp VALUES(parameter_empno4,parameter_ename4,'CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20); 	 	SELECT empno,ename INTO eno,name FROM proc_teradata_link.t_sp_dblink_emp 	WHERE empno=:parameter_empno4 AND ename=:parameter_ename4; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,17,0,0
+1545201626903,2160,"733 LDBX043 CALL sp_dblink_4(1011,'cd',eno,name);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,2160,0,0
+1545201629063,5,733 LDBX043 TC-043,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201629068,5,733 LDBX043 TC-044,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,5,0,0
+1545201629073,856,733 LDBX043 TC-045,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,856,0,0
+1545201629929,30,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,30,0,0
+1545201629959,1209,733 LDBX043 DROP TABLE proc_teradata_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,1209,0,0
+1545201631167,223,733 LDBX043 drop database link proc_teradata_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,223,0,0
+1545201631390,7,733 LDBX043 drop database link proc_hive_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,7,0,0
+1545201631397,2491,733 LDBX043 create database link proc_hive_link  connect to 'test' identified by '123456'  using 'jdbc:mysql://192.168.1.73:3307/ldb_test';,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,2491,0,0
+1545201633888,5,733 LDBX043 DROP TABLE proc_hive_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201633893,277,"733 LDBX043 CREATE TABLE proc_hive_link.t_sp_dblink_emp( EMPNO INT, ENAME VARCHAR(20), JOB VARCHAR(20), MGR INT, HIREDATE DATE, SAL INT, COMM INT, DEPTNO INT );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,277,0,0
+1545201634171,2139,"733 LDBX043 INSERT INTO proc_hive_link.t_sp_dblink_emp VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,2138,0,0
+1545201636311,115,733 LDBX043 TC-046,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,115,0,0
+1545201636426,233,733 LDBX043 DROP TABLE proc_hive_link.t_sp_dblink_dept IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,233,0,0
+1545201636659,378,"733 LDBX043 CREATE TABLE proc_hive_link.t_sp_dblink_dept( DEPTNO INT, DNAME VARCHAR(20), LOC VARCHAR(20) );",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,378,0,0
+1545201637038,670,"733 LDBX043 INSERT INTO proc_hive_link.t_sp_dblink_dept VALUES (10,'ACCOUNTING','NEW YORK');",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,670,0,0
+1545201637708,101,733 LDBX043 TC-047,200,OK,StoredProcedure 1-1,text,true,,5,0,1,1,101,0,0
+1545201637810,4,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201637814,17,"733 LDBX043 CREATE PROCEDURE sp_dblink_1(OUT parameter_counts INT) BEGIN 	 	DECLARE counts INT DEFAULT 0; 	 	SET counts=(SELECT COUNT(*) FROM  	proc__mysql_link.t_sp_dblink_emp AS emp,proc__mysql_link.t_sp_dblink_dept AS dept 	WHERE emp.deptno=dept.deptno AND emp.sal<=1000); 	 	SET parameter_counts=counts; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,17,0,0
+1545201637831,1618,733 LDBX043 CALL sp_dblink_1(parameter_counts);,200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,1618,0,1
+1545201639450,5,733 LDBX043 TC-048,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,5,0,0
+1545201639455,30,733 LDBX043 DROP PROCEDURE sp_dblink_1 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,30,0,1
+1545201639485,6,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,6,0,0
+1545201639491,19,"733 LDBX043 CREATE PROCEDURE sp_dblink_2(IN parameter_empno INT,IN parameter_ename VARCHAR(50),                              IN parameter_empno1 INT,IN parameter_ename1 VARCHAR(50),                              OUT parameter_eno1 INT,OUT parameter_name1 VARCHAR(50)) BEGIN 	 	UPDATE proc_hive_link.t_sp_dblink_emp 	SET EMPNO=parameter_empno,ENAME=parameter_ename 	WHERE EMPNO=:parameter_empno1 AND ENAME=:parameter_ename1; 	 	SELECT empno,ename INTO parameter_eno1,parameter_name1 FROM proc_hive_link.t_sp_dblink_emp 	WHERE EMPNO=:parameter_empno AND ENAME=:parameter_ename; END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,19,0,0
+1545201639511,303,"733 LDBX043 CALL sp_dblink_2(1011,'cd',7934,'MILLER',parameter_eno1,parameter_name1);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,303,0,0
+1545201639814,5,733 LDBX043 TC-049,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,1
+1545201639820,4,733 LDBX043 TC-050,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,4,0,0
+1545201639825,31,733 LDBX043 DROP PROCEDURE sp_dblink_2 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,31,0,0
+1545201639857,5,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201639862,15,"733 LDBX043 CREATE PROCEDURE sp_dblink_3(IN parameter_empno2 INT,IN parameter_ename2 VARCHAR(50),OUT test_counts INT) BEGIN 	DECLARE counts INT DEFAULT 0; 	 	DELETE FROM proc_hive_link.t_sp_dblink_emp     WHERE EMPNO=:parameter_empno2 AND ENAME=:parameter_ename2;          SET counts=(SELECT COUNT(*) FROM proc_hive_link.t_sp_dblink_emp);          SET test_counts=counts; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,15,0,0
+1545201639878,222,"733 LDBX043 CALL sp_dblink_3(1011,'cd',test_counts);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,222,0,0
+1545201640100,9,733 LDBX043 TC-051,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,9,0,1
+1545201640109,31,733 LDBX043 DROP PROCEDURE sp_dblink_3 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,31,0,0
+1545201640140,5,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,5,0,0
+1545201640145,16,"733 LDBX043 CREATE PROCEDURE sp_dblink_4(IN parameter_empno4 INT,IN parameter_ename4 VARCHAR(50),OUT eno INT,OUT name VARCHAR(50)) BEGIN 	 	INSERT INTO proc_hive_link.t_sp_dblink_emp VALUES(parameter_empno4,parameter_ename4,'CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20); 	 	SELECT empno,ename INTO eno,name FROM proc_hive_link.t_sp_dblink_emp 	WHERE empno=:parameter_empno4 AND ename=:parameter_ename4; 	 END;",200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,16,0,0
+1545201640161,277,"733 LDBX043 CALL sp_dblink_4(1011,'cd',eno,name);",200,OK,StoredProcedure 1-1,text,true,,3,0,1,1,277,0,0
+1545201640439,5,733 LDBX043 TC-052,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,4,0,0
+1545201640444,4,733 LDBX043 TC-053,200,OK,StoredProcedure 1-1,text,true,,7,0,1,1,4,0,0
+1545201640448,83,733 LDBX043 TC-054,200,OK,StoredProcedure 1-1,text,true,,6,0,1,1,83,0,0
+1545201640531,29,733 LDBX043 DROP PROCEDURE sp_dblink_4 IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,29,0,0
+1545201640560,202,733 LDBX043 DROP TABLE proc_hive_link.t_sp_dblink_emp IF EXISTS CASCADE;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,202,0,0
+1545201640762,79,733 LDBX043 drop database link proc_hive_link if exists cascade;,200,OK,StoredProcedure 1-1,text,true,,9,0,1,1,79,0,0
