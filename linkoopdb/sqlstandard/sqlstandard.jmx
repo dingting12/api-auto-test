@@ -1759,7 +1759,7 @@
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="聚合报告" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <boolProp name="ResultCollector.error_logging">true</boolProp>
         <objProp>
           <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
@@ -4060,7 +4060,16 @@ AND mgr!=7566  AND hiredate!=&apos;1981-11-17&apos;
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E031_02 Lower case identifiers" enabled="true"/>
           <hashTree>
@@ -4868,9 +4877,9 @@ union distinct select * from SQLT_wr1);</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E071_4 Columns combined via table operators need not have exactly the same data type" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E071_5 Columns combined via table operators need not have exactly the same data type" enabled="true"/>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E071_5 Table operators in subqueries" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E071_6 Table operators in subqueries" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT t2.ename,t3.dname FROM Test_Sql_wy_t2 t2 full JOIN Test_Sql_wy_t3 t3 ON t2.DEPTNO=t3.DEPTNO" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
@@ -5613,7 +5622,7 @@ INSERT INTO Test_Sql_wy_t3 VALUES (40,&apos;OPERATIONS&apos;,&apos;BOSTON&apos;)
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E101_2 Searched UPDATE statement" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E101_3 Searched UPDATE statement" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="UPDATE Test_Sql_wy_t3 SET DNAME=&apos;frist&apos; WHERE DEPTNO=50;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
@@ -5630,7 +5639,7 @@ WHERE DEPTNO=50;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E101_3 Searched DELETE statement" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E101_4 Searched DELETE statement" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DELETE FROM Test_Sql_wy_t2 where EMPNO=7698;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
@@ -5860,11 +5869,10 @@ INSERT INTO Test_Sql_wy_t3 VALUES (40,&apos;OPERATIONS&apos;,&apos;BOSTON&apos;)
           <hashTree/>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121-01 DECLARE CURSOR" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/declare cursor1 cursor for  select * from Test_Sql_wy_t2;  " enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_1 IF EXISTS CASCADE;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">declare cursor1 cursor for         
-select * from Test_Sql_wy_t2;  </stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_1 IF EXISTS CASCADE;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -5872,27 +5880,54 @@ select * from Test_Sql_wy_t2;  </stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE PROCEDURE sp_cursor_1() BEGIN &#x9;declare cursor1 cursor for          select * from Test_Sql_wy_t2;   END;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE PROCEDURE sp_cursor_1()
+BEGIN
+	declare cursor1 cursor for         
+select * from Test_Sql_wy_t2;  
+END;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CALL sp_cursor_1();" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">CALL sp_cursor_1();</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121-02 ORDER BY columns need not be in select list&#x9;" enabled="true"/>
-          <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121-03 Value expressions in ORDER BY clause" enabled="true"/>
-          <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121–04 OPEN statement" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ open cursor1;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_1 IF EXISTS CASCADE;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> open cursor1;</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_1 IF EXISTS CASCADE;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -5900,25 +5935,499 @@ select * from Test_Sql_wy_t2;  </stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE PROCEDURE sp_cursor_1() BEGIN &#x9;declare cursor1 cursor for          select * from Test_Sql_wy_t2;   END;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE PROCEDURE sp_cursor_1()
+BEGIN
+	declare cursor1 cursor for         
+select * from Test_Sql_wy_t2;  
+END;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CALL sp_cursor_1();" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">CALL sp_cursor_1();</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121-03 Value expressions in ORDER BY clause" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_2 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_2 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE PROCEDURE sp_cursor_2() BEGIN &#x9;declare cursor1 cursor for          select * from Test_Sql_wy_t2 ORDER BY EMPNO ASC;   END;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE PROCEDURE sp_cursor_2()
+BEGIN
+	declare cursor1 cursor for         
+select * from Test_Sql_wy_t2 ORDER BY EMPNO ASC;  
+END;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CALL sp_cursor_2();" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">CALL sp_cursor_2();</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_2 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_2 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121–04 OPEN statement" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE PROCEDURE sp_cursor_3() BEGIN &#x9;declare cursor1 cursor for          select * from Test_Sql_wy_t2 ORDER BY EMPNO ASC;   open cursor1; END;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE PROCEDURE sp_cursor_3()
+BEGIN
+	declare cursor1 cursor for         
+select * from Test_Sql_wy_t2 ORDER BY EMPNO ASC;  
+open cursor1;
+END;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CALL sp_cursor_3();" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">CALL sp_cursor_3();</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121–06 Positioned UPDATE statement" enabled="true"/>
-          <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121–07 Positioned DELETE statement" enabled="true"/>
-          <hashTree/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP table test_proc_cursor_employee IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP table test_proc_cursor_employee IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE test_proc_cursor_employee (employee_number INTEGER primary key ,manager_employee_number INTEGER ,department_number INTEGER ,job_code INTEGER ,last_name CHAR(20) NOT NULL ,first_name VARCHAR(30) NOT NULL ,hire_date DATE NOT NULL ,birthdate DATE NOT NULL ,salary_amount DECIMAL(10,2) NOT NULL);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE TABLE test_proc_cursor_employee
+(employee_number INTEGER primary key
+,manager_employee_number INTEGER
+,department_number INTEGER
+,job_code INTEGER
+,last_name CHAR(20) NOT NULL
+,first_name VARCHAR(30) NOT NULL
+,hire_date DATE NOT NULL
+,birthdate DATE NOT NULL
+,salary_amount DECIMAL(10,2) NOT NULL);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE upd_cur1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE upd_cur1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE PROCEDURE upd_cur1 () MODIFIES SQL DATA BEGIN  DECLARE salary DECIMAL(10,2);  FOR for_loop AS cursor1 CURSOR FOR  SELECT employee_number, salary_amount FROM test_proc_cursor_employee  WHERE department_number = 403  DO   SET salary = for_loop.salary_amount;    IF salary &lt; 30000 THEN UPDATE test_proc_cursor_employee  SET salary_amount = salary * 1.10 WHERE CURRENT OF cursor1;   ELSEIF salary &lt; 40000 AND salary&gt;=30000 THEN UPDATE test_proc_cursor_employee  SET salary_amount = salary * 1.08 WHERE CURRENT OF cursor1;   ELSEIF salary &lt; 50000 AND salary&gt;=40000 THEN UPDATE test_proc_cursor_employee  SET salary_amount = salary * 1.05 WHERE CURRENT OF cursor1;   END IF;  END FOR; END;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE PROCEDURE upd_cur1 ()
+MODIFIES SQL DATA
+BEGIN
+ DECLARE salary DECIMAL(10,2);
+ FOR for_loop AS cursor1 CURSOR FOR
+ SELECT employee_number, salary_amount FROM test_proc_cursor_employee
+ WHERE department_number = 403
+ DO
+  SET salary = for_loop.salary_amount;
+
+  IF salary &lt; 30000 THEN UPDATE test_proc_cursor_employee
+ SET salary_amount = salary * 1.10 WHERE CURRENT OF cursor1;
+
+ ELSEIF salary &lt; 40000 AND salary&gt;=30000 THEN UPDATE test_proc_cursor_employee
+ SET salary_amount = salary * 1.08 WHERE CURRENT OF cursor1;
+
+ ELSEIF salary &lt; 50000 AND salary&gt;=40000 THEN UPDATE test_proc_cursor_employee
+ SET salary_amount = salary * 1.05 WHERE CURRENT OF cursor1;
+
+ END IF;
+ END FOR;
+END;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CALL upd_cur1();" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">CALL upd_cur1();</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE upd_cur1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE upd_cur1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP table test_proc_cursor_employee IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP table test_proc_cursor_employee IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121–07 Positioned DELETE statement" enabled="false"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP table test_proc_cursor_employee IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP table test_proc_cursor_employee IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE test_proc_cursor_employee (employee_number INTEGER primary key ,manager_employee_number INTEGER ,department_number INTEGER ,job_code INTEGER ,last_name CHAR(20) NOT NULL ,first_name VARCHAR(30) NOT NULL ,hire_date DATE NOT NULL ,birthdate DATE NOT NULL ,salary_amount DECIMAL(10,2) NOT NULL);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE TABLE test_proc_cursor_employee
+(employee_number INTEGER primary key
+,manager_employee_number INTEGER
+,department_number INTEGER
+,job_code INTEGER
+,last_name CHAR(20) NOT NULL
+,first_name VARCHAR(30) NOT NULL
+,hire_date DATE NOT NULL
+,birthdate DATE NOT NULL
+,salary_amount DECIMAL(10,2) NOT NULL);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE upd_cur1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE upd_cur1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE PROCEDURE upd_cur1 () MODIFIES SQL DATA BEGIN  DECLARE salary DECIMAL(10,2);  FOR for_loop AS cursor1 CURSOR FOR  SELECT employee_number, salary_amount FROM test_proc_cursor_employee  WHERE department_number = 403  DO   SET salary = for_loop.salary_amount;    IF salary &lt; 30000 THEN UPDATE test_proc_cursor_employee  SET salary_amount = salary * 1.10 WHERE CURRENT OF cursor1;   ELSEIF salary &lt; 40000 AND salary&gt;=30000 THEN UPDATE test_proc_cursor_employee  SET salary_amount = salary * 1.08 WHERE CURRENT OF cursor1;   ELSEIF salary &lt; 50000 AND salary&gt;=40000 THEN UPDATE test_proc_cursor_employee  SET salary_amount = salary * 1.05 WHERE CURRENT OF cursor1;   END IF;  END FOR; END;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE PROCEDURE upd_cur1 ()
+MODIFIES SQL DATA
+BEGIN
+ DECLARE salary DECIMAL(10,2);
+ FOR for_loop AS cursor1 CURSOR FOR
+ SELECT employee_number, salary_amount FROM test_proc_cursor_employee
+ WHERE department_number = 403
+ DO
+  SET salary = for_loop.salary_amount;
+
+  IF salary &lt; 30000 THEN delete from test_proc_cursor_employee WHERE CURRENT OF cursor1;
+ END IF;
+ END FOR;
+END;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CALL upd_cur1();" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">CALL upd_cur1();</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE upd_cur1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE upd_cur1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP table test_proc_cursor_employee IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP table test_proc_cursor_employee IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121–08 CLOSE statement" enabled="true"/>
-          <hashTree/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE PROCEDURE sp_cursor_3() BEGIN &#x9;declare cursor1 cursor for          select * from Test_Sql_wy_t2 ORDER BY EMPNO ASC;   open cursor1; close cursor1; END;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE PROCEDURE sp_cursor_3()
+BEGIN
+	declare cursor1 cursor for         
+select * from Test_Sql_wy_t2 ORDER BY EMPNO ASC;  
+open cursor1;
+close cursor1;
+END;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CALL sp_cursor_3();" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">CALL sp_cursor_3();</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121–10 FETCH statement: implicit NEXT" enabled="true"/>
-          <hashTree/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE PROCEDURE sp_cursor_3() BEGIN &#x9;declare cursor1 cursor for          select * from Test_Sql_wy_t2 ORDER BY EMPNO ASC;   open cursor1; close cursor1; END;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE PROCEDURE sp_cursor_3()
+BEGIN
+	declare cursor1 cursor for         
+select * from Test_Sql_wy_t2 ORDER BY EMPNO ASC;  
+open cursor1;
+close cursor1;
+END;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CALL sp_cursor_3();" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">CALL sp_cursor_3();</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP PROCEDURE sp_cursor_3 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E121–17 WITH HOLD cursors" enabled="true"/>
           <hashTree/>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE Test_Sql_wy_t2 IF EXISTS CASCADE;" enabled="true">
@@ -6264,16 +6773,7 @@ DROP PRIMARY KEY(t141_3_int);</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE Test_Sql_wy_TE141_3 IF EXISTS CASCADE;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -6351,16 +6851,7 @@ DROP PRIMARY KEY(t141_3_int);</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO Test_Sql_wy_t2 VALUES (7369,&apos;SMITH&apos;,&apos;CLERK&apos;,7902,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),800,NULL,20); INSERT INTO Test_Sql_wy_t2 VALUES (7499,&apos;ALLEN&apos;,&apos;SALESMAN&apos;,7698,TO_DATE(&apos;1981-2-20&apos;,&apos;yyyy-mm-dd&apos;),1600,300,30); INSERT INTO Test_Sql_wy_t2 VALUES (7521,&apos;WARD&apos;,&apos;SALESMAN&apos;,7698,TO_DATE(&apos;1981-2-2&apos;,&apos;yyyy-mm-dd&apos;),1250,500,30); INSERT INTO Test_Sql_wy_t2 VALUES (7566,&apos;JONES&apos;,&apos;MANAGER&apos;,7839,TO_DATE(&apos;1981-4-2&apos;,&apos;yyyy-mm-dd&apos;),2975,NULL,20); INSERT INTO Test_Sql_wy_t2 VALUES (7654,&apos;MARTIN&apos;,&apos;SALESMAN&apos;,7698,TO_DATE(&apos;1981-9-28&apos;,&apos;yyyy-mm-dd&apos;),1250,1400,30); INSERT INTO Test_Sql_wy_t2 VALUES (7698,&apos;BLAKE&apos;,&apos;MANAGER&apos;,7839,TO_DATE(&apos;1981-5-1&apos;,&apos;yyyy-mm-dd&apos;),2850,NULL,30); INSERT INTO Test_Sql_wy_t2 VALUES (7782,&apos;CLARK&apos;,&apos;MANAGER&apos;,7839,TO_DATE(&apos;1981-6-9&apos;,&apos;yyyy-mm-dd&apos;),2450,NULL,10); INSERT INTO Test_Sql_wy_t2 VALUES (7839,&apos;KING&apos;,&apos;PRESIDENT&apos;,NULL,TO_DATE(&apos;1981-11-17&apos;,&apos;yyyy-mm-dd&apos;),5000,NULL,10); INSERT INTO Test_Sql_wy_t2 VALUES (7844,&apos;TURNER&apos;,&apos;SALESMAN&apos;,7698,TO_DATE(&apos;1981-9-8&apos;,&apos;yyyy-mm-dd&apos;),1500,0,30); INSERT INTO Test_Sql_wy_t2 VALUES (7900,&apos;JAMES&apos;,&apos;CLERK&apos;,7698,TO_DATE(&apos;1981-12-3&apos;,&apos;yyyy-mm-dd&apos;),950,NULL,30); INSERT INTO Test_Sql_wy_t2 VALUES (7902,&apos;FORD&apos;,&apos;ANALYST&apos;,7566,TO_DATE(&apos;1981-12-3&apos;,&apos;yyyy-mm-dd&apos;),3000,NULL,20); INSERT INTO Test_Sql_wy_t2 VALUES (7934,&apos;MILLER&apos;,&apos;CLERK&apos;,7782,TO_DATE(&apos;1982-1-23&apos;,&apos;yyyy-mm-dd&apos;),1300,NULL,10);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -6398,16 +6889,7 @@ INSERT INTO Test_Sql_wy_t3 VALUES (40,&apos;OPERATIONS&apos;,&apos;BOSTON&apos;)
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E141_ 6 CHECK constraints" enabled="true"/>
           <hashTree>
@@ -6584,16 +7066,7 @@ INSERT INTO Test_Sql_wy_t3 VALUES (40,&apos;OPERATIONS&apos;,&apos;BOSTON&apos;)
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM Test_Sql_wy_TE141_1;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -6669,16 +7142,7 @@ INSERT INTO Test_Sql_wy_t3 VALUES (40,&apos;OPERATIONS&apos;,&apos;BOSTON&apos;)
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E152_1 SET TRANSACTION statement: ISOLATION LEVEL SERIALIZABLE clause" enabled="true"/>
           <hashTree>
@@ -6695,16 +7159,7 @@ INSERT INTO Test_Sql_wy_t3 VALUES (40,&apos;OPERATIONS&apos;,&apos;BOSTON&apos;)
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E152_2 SET TRANSACTION statement: READ ONLY and READ WRITE clauses" enabled="true"/>
           <hashTree>
@@ -6721,22 +7176,93 @@ INSERT INTO Test_Sql_wy_t3 VALUES (40,&apos;OPERATIONS&apos;,&apos;BOSTON&apos;)
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
           </hashTree>
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E* Other" enabled="true"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E153 Updatable queries with subqueries" enabled="true"/>
-          <hashTree/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="  DROP TABLE Test_Sql_wy_t2 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">  DROP TABLE Test_Sql_wy_t2 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="  CREATE TABLE Test_Sql_wy_t2 (       EMPNO                 INT primary key,       ENAME         VARCHAR(20)       );" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">    CREATE TABLE Test_Sql_wy_t2 (
+      EMPNO                 INT primary key,
+      ENAME         VARCHAR(20)
+      );</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="  INSERT INTO Test_Sql_wy_t2 VALUES(1,&apos;dsds&apos;),(2,&apos;cdiyui&apos;),(3,&apos;cmcoi&apos;);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">  INSERT INTO Test_Sql_wy_t2 VALUES(1,&apos;dsds&apos;),(2,&apos;cdiyui&apos;),(3,&apos;cmcoi&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT COUNT(*) FROM Test_Sql_wy_t2;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT COUNT(*) FROM Test_Sql_wy_t2;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="  UPDATE Test_Sql_wy_t2    SET ename=&apos;qoqoqoq&apos;    WHERE empno=(   SELECT empno FROM Test_Sql_wy_t2   WHERE ename=&apos;dsds&apos;);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">  UPDATE Test_Sql_wy_t2 
+  SET ename=&apos;qoqoqoq&apos; 
+  WHERE empno=(
+  SELECT empno FROM Test_Sql_wy_t2
+  WHERE ename=&apos;dsds&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="  DROP TABLE Test_Sql_wy_t2 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">  DROP TABLE Test_Sql_wy_t2 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E161 SQL comments using leading double minus" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ --rollback;" enabled="true">
@@ -6774,19 +7300,8 @@ INSERT INTO Test_Sql_wy_t3 VALUES (40,&apos;OPERATIONS&apos;,&apos;BOSTON&apos;)
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="E182 &quot;Host language Binding (previously &quot;&quot;Module Language&quot;&quot;)&quot;" enabled="true"/>
-          <hashTree/>
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="F021 Basic information schema" enabled="true"/>
         <hashTree>
@@ -10343,16 +10858,7 @@ ADD COLUMN t051_1_date1 date;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ INSERT INTO Test_Sql_wy_TE051_2 VALUES(&apos;2018-09-08 12:00:01&apos;);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -10364,16 +10870,7 @@ ADD COLUMN t051_1_date1 date;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ SELECT * FROM Test_Sql_wy_TE051_2;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -10385,16 +10882,7 @@ ADD COLUMN t051_1_date1 date;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ UPDATE Test_Sql_wy_TE051_2 SET t051_2_time=&apos;2017-09-09 14:08:50&apos;  WHERE t051_2_time=&apos;2018-09-08 12:00:01&apos;;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -10408,16 +10896,7 @@ WHERE t051_2_time=&apos;2018-09-08 12:00:01&apos;;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ DELETE FROM Test_Sql_wy_TE051_2;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -10429,16 +10908,7 @@ WHERE t051_2_time=&apos;2018-09-08 12:00:01&apos;;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ table ALTER Test_Sql_wy_TE051_2 ADD COLUMN t051_2_time1 date;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -10451,16 +10921,7 @@ ADD COLUMN t051_2_time1 date;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ SELECT * FROM Test_Sql_wy_TE051_2;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -10472,16 +10933,7 @@ ADD COLUMN t051_2_time1 date;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE Test_Sql_wy_TE051_2 IF EXISTS CASCADE;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -12593,7 +13045,7 @@ WHERE t2.EMPNO=Test_Sql_wy_num1;
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="p5" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="p5" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP PROCEDURE IF EXISTS proc_person_update;" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
@@ -13146,7 +13598,16 @@ EXTERNAL NAME &apos;CLASSPATH:aaa.bbb.ccc.Test1.testAbs&apos;;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/ call ;" enabled="true">
               <stringProp name="dataSource"></stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -13158,7 +13619,16 @@ EXTERNAL NAME &apos;CLASSPATH:aaa.bbb.ccc.Test1.testAbs&apos;;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="T321-05 RETURN statement" enabled="true"/>
           <hashTree>
