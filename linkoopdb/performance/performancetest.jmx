@@ -33,7 +33,7 @@
           </elementProp>
           <elementProp name="b" elementType="Argument">
             <stringProp name="Argument.name">b</stringProp>
-            <stringProp name="Argument.value">TPCDS1G</stringProp>
+            <stringProp name="Argument.value">TPCDS1T</stringProp>
             <stringProp name="Argument.desc">dba user2</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -51,7 +51,7 @@
           </elementProp>
           <elementProp name="insert_loop_num" elementType="Argument">
             <stringProp name="Argument.name">insert_loop_num</stringProp>
-            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.value">${__P(insertloop,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="node9" elementType="Argument">
@@ -61,7 +61,7 @@
           </elementProp>
           <elementProp name="storage_loop_num" elementType="Argument">
             <stringProp name="Argument.name">storage_loop_num</stringProp>
-            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.value">${__P(storageloop,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="thread_num" elementType="Argument">
@@ -145,7 +145,7 @@
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="DB性能测试" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="DB性能测试" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -160,7 +160,7 @@
       <hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1002 DB性能测试" enabled="true"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CHANGE AUTHORIZATION" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CHANGE AUTHORIZATION" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user ${b} if exists cascade;" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
@@ -199,7 +199,7 @@
             </JDBCSampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="connect user ${b} password &apos;${b_password}&apos;;" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="dataSource">${b}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">connect user ${b} password &apos;${b_password}&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -211,7 +211,7 @@
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table " enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table " enabled="true"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table as select(无主键)" enabled="true"/>
             <hashTree>
@@ -927,28 +927,30 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="insert into table" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="insert into table" enabled="true"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="插入一条多次" enabled="true"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="HDFS存储" enabled="true"/>
               <hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
-                  <stringProp name="dataSource">${b}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">drop table cap_insert_hdfs_0003;</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree/>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table cap_insert_hdfs_0003" enabled="true">
-                  <stringProp name="dataSource">${b}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">create table cap_insert_hdfs_0003
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="相同数据多次" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
+                    <stringProp name="dataSource">${b}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">drop table cap_insert_hdfs_0003;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree/>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table cap_insert_hdfs_0003" enabled="true">
+                    <stringProp name="dataSource">${b}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">create table cap_insert_hdfs_0003
 (
     ws_sold_date_sk           integer                       ,
     ws_sold_time_sk           integer                       ,
@@ -985,23 +987,6 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
     ws_net_paid_inc_ship_tax  decimal(7,2)                  ,
     ws_net_profit             decimal(7,2)                  
 ); </stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree/>
-                <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="循环插入多次" enabled="true">
-                  <boolProp name="LoopController.continue_forever">true</boolProp>
-                  <stringProp name="LoopController.loops">${insert_loop_num}</stringProp>
-                </LoopController>
-                <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert_hdfs_一条数据多次" enabled="true">
-                    <stringProp name="dataSource">${b}</stringProp>
-                    <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">insert into cap_insert_hdfs_0003 values(2451425,51522,2451509,13222,37986,476197,4808,45819,29281,1841841,4852,6263,26,19,16,2,118,1,69,6.86,14.33,13.90,29.67,959.10,473.34,988.77,18.41,652.18,444.36,306.92,325.33,751.28,769.69,-166.42);</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -1010,9 +995,88 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                     <stringProp name="resultSetHandler">Store as String</stringProp>
                   </JDBCSampler>
                   <hashTree/>
+                  <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="循环插入多次" enabled="true">
+                    <boolProp name="LoopController.continue_forever">true</boolProp>
+                    <stringProp name="LoopController.loops">${insert_loop_num}</stringProp>
+                  </LoopController>
+                  <hashTree>
+                    <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert_hdfs_重复数据多次" enabled="true">
+                      <stringProp name="dataSource">${b}</stringProp>
+                      <stringProp name="queryType">Select Statement</stringProp>
+                      <stringProp name="query">insert into cap_insert_hdfs_0003 values(2451425,51522,2451509,13222,37986,476197,4808,45819,29281,1841841,4852,6263,26,19,16,2,118,1,69,6.86,14.33,13.90,29.67,959.10,473.34,988.77,18.41,652.18,444.36,306.92,325.33,751.28,769.69,-166.42);</stringProp>
+                      <stringProp name="queryArguments"></stringProp>
+                      <stringProp name="queryArgumentsTypes"></stringProp>
+                      <stringProp name="variableNames"></stringProp>
+                      <stringProp name="resultVariable"></stringProp>
+                      <stringProp name="queryTimeout"></stringProp>
+                      <stringProp name="resultSetHandler">Store as String</stringProp>
+                    </JDBCSampler>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="不同数据多次" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
+                    <stringProp name="dataSource">${b}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">drop table cap_insert_hdfs_0004;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree/>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table cap_insert_hdfs_0004" enabled="true">
+                    <stringProp name="dataSource">${b}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">create table cap_insert_hdfs_0004
+(
+     ws_sold_date_sk           integer                       ,
+    ws_sold_time_sk           integer                       ,
+    ws_ship_date_sk           integer                       ,
+    ws_item_sk                integer               not null,
+    ws_bill_customer_sk       integer                       ,
+    ws_warehouse_sk           integer                       ,
+    ws_promo_sk               integer                       ,
+    ws_order_number           bigint               not null,
+    ws_quantity               integer                       ,
+    ws_wholesale_cost         decimal(7,2)                  ,
+    ws_list_price             decimal(7,2)                  ,
+    ws_ext_wholesale_cost     decimal(7,2)                  ,
+    ws_ext_list_price         decimal(7,2)                  ,
+    ws_net_profit             decimal(7,2)                                
+); </stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree/>
+                  <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="循环插入多次" enabled="true">
+                    <boolProp name="LoopController.continue_forever">true</boolProp>
+                    <stringProp name="LoopController.loops">${insert_loop_num}</stringProp>
+                  </LoopController>
+                  <hashTree>
+                    <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert_hdfs_不同数据多次" enabled="true">
+                      <stringProp name="dataSource">${b}</stringProp>
+                      <stringProp name="queryType">Callable Statement</stringProp>
+                      <stringProp name="query">insert into cap_insert_hdfs_0004 values (?,?,563,?,2890,563,?,?,5163,?,?,1421.24,?,?)</stringProp>
+                      <stringProp name="queryArguments">${__Random(1,9999)},${__Random(1,9999)},${__Random(1,9999)},${__Random(1,9999)},${__Random(1,9999)},${__Random(1,999)},${__Random(1,999)},${__Random(1,999)},${__Random(1,999)}</stringProp>
+                      <stringProp name="queryArgumentsTypes">integer,integer,integer,integer,integer,decimal,decimal,decimal,decimal</stringProp>
+                      <stringProp name="variableNames"></stringProp>
+                      <stringProp name="resultVariable"></stringProp>
+                      <stringProp name="queryTimeout"></stringProp>
+                      <stringProp name="resultSetHandler">Store as String</stringProp>
+                    </JDBCSampler>
+                    <hashTree/>
+                  </hashTree>
                 </hashTree>
               </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="pallas存储" enabled="true"/>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="pallas存储" enabled="false"/>
               <hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
@@ -1170,7 +1234,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="HDFS导入到PALLAS-百万级数据" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="HDFS导入到PALLAS-百万级数据" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
                 <stringProp name="dataSource">${b}</stringProp>
@@ -1236,7 +1300,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS导入到HDFS-百万级数据" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS导入到HDFS-百万级数据" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
                 <stringProp name="dataSource">${b}</stringProp>
@@ -1303,7 +1367,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="select" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="select" enabled="true"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="true"/>
             <hashTree>
@@ -1312,7 +1376,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(万)_where条件(精确查询,一个key)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_date_dim_hdfs WHERE D_DATE_SK=2415033</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1324,7 +1388,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(万)_where条件(精确查询,2个key)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE wr_item_sk=14039 and wr_order_number=19375</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1336,7 +1400,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(万)_where条件(like返回万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK like &apos;%24%&apos;;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1348,7 +1412,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(万)_where条件(like返回万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK like &apos;%24%&apos; ORDER BY WR_RETURNED_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1360,7 +1424,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(万)_where条件(一个，返回几十)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK =2451913 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1372,7 +1436,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(万)_where条件(一个，返回几十)，order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK =2451913 order by WR_RETURNED_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1384,7 +1448,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(万)_where条件(一个，返回万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK &gt;2451913 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1396,7 +1460,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(万)_where条件(一个，返回万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK &gt;2451913 order by WR_RETURNED_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1411,7 +1475,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为十万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(十万)_where条件(精确查询,2个key)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE ws_item_sk=13222 and ws_order_number=1806</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1423,7 +1487,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(十万)_where条件(like返回十万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK like &apos;%45%&apos;;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1435,7 +1499,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(十万)_where条件(like返回万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK like &apos;%45%&apos; ORDER BY WS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1447,7 +1511,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(十万)_where条件(一个，返回几百)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK = 2452230 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1459,7 +1523,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(十万)_where条件(一个，返回几百)，order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK = 2452230 ORDER BY WS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1471,7 +1535,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(十万)_where条件(一个，返回十万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK &gt;2452230  ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1483,7 +1547,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(十万)_where条件(一个，返回十万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK &gt;2452230 ORDER BY WS_SOLD_TIME_SK ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1498,7 +1562,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为百万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(百万)_where条件(精确查询,一个key)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_customer_demographics_hdfs WHERE cd_demo_sk=33</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1510,7 +1574,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(百万)_where条件(精确查询,2个key)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE ss_item_sk=5695 AND ss_ticket_number=872</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1522,7 +1586,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(百万)_where条件(like返回百万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK like &apos;%45%&apos;;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1534,7 +1598,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(百万)_where条件(like返回百万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK like &apos;%45%&apos; ORDER BY SS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1546,7 +1610,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(百万)_where条件(一个，返回千级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK=2451897 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1558,7 +1622,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(百万)_where条件(一个，返回千级)，order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK=2451897 order by SS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1570,7 +1634,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(百万)_where条件(一个，返回百万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK&gt;2451897 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1582,7 +1646,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_简单(百万)_where条件(一个，返回百万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK&gt;2451897 order by SS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1600,7 +1664,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(万)_where条件(多个条件，返回十几)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK = 2451564 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK&gt;61487</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1612,7 +1676,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(万)_where条件(多个条件，返回十几),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK = 2451564 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK&gt;61487 ORDER BY WR_RETURN_SHIP_COST</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1624,7 +1688,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(万)_where条件(多个条件，返回万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK between 2451191 AND 2452988 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK &gt;22087 </stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1636,7 +1700,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(万)_where条件(多个条件，返回万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_returns_hdfs WHERE WR_RETURNED_DATE_SK between 2451191 AND 2452988 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK &gt;22087 ORDER BY WR_RETURN_SHIP_COST;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1651,7 +1715,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为十万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(十万)_where条件(多个条件，返回几百)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK=2451761 AND (WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 ) 
 </stringProp>
@@ -1664,7 +1728,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(十万)_where条件(多个条件，返回几百),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK=2451761 AND (WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 )   ORDER BY WS_SOLD_DATE_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1676,7 +1740,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(十万)_where条件(多个条件，返回十万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK=2451761 AND WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1688,7 +1752,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(十万)_where条件(多个条件，返回十万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_web_sales_hdfs WHERE WS_SOLD_DATE_SK=2451761 AND WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 ORDER BY WS_SOLD_DATE_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1703,7 +1767,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为百万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(百万)_where条件(多个条件，返回几千)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK=2451167 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )
 </stringProp>
@@ -1716,7 +1780,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(百万)_where条件(多个条件，返回几千),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK=2451167 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )  order by SS_CUSTOMER_SK
 </stringProp>
@@ -1729,7 +1793,7 @@ drop table cap_data_dim_pallas if exists cascade;</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(百万)_where条件(多个条件，返回百万级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">
 SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 2452900 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )</stringProp>
@@ -1742,7 +1806,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_多条件(百万)_where条件(多个条件，返回百万级),order by" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">
 SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 2452900 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  ) order by SS_CUSTOMER_SK</stringProp>
@@ -1761,7 +1825,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_统计(万)_一个聚合函数，group by(千级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT WR_RETURNED_DATE_SK,count(*) FROM cap_web_returns_hdfs GROUP BY WR_RETURNED_DATE_SK </stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1773,7 +1837,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_统计(万)_多个聚合函数，group by(千级)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT WR_RETURNED_DATE_SK,count(*),avg(WR_RETURNED_TIME_SK),SUM(WR_REFUNDED_CUSTOMER_SK),MAX(WR_REFUNDED_CDEMO_SK) FROM cap_web_returns_hdfs GROUP BY WR_RETURNED_DATE_SK </stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1785,7 +1849,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_统计(万)_聚合函数，where条件，group by和in" enabled="false">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT WR_ITEM_SK,count(*) AS result1,sum(WR_RETURNING_CUSTOMER_SK) AS result2,avg(WR_REFUNDED_ADDR_SK) AS result3,max(WR_RETURN_TAX) AS result4 FROM cap_web_returns WHERE WR_RETURNED_DATE_SK IN (2451564,2451786,2452606) AND WR_REFUNDED_ADDR_SK&gt;10000 OR WR_ITEM_SK&gt;776 GROUP BY WR_ITEM_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1797,7 +1861,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_统计(万)_聚合函数，where条件，group by，in和order by" enabled="false">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT WR_ITEM_SK,count(*) AS result1,sum(WR_RETURNING_CUSTOMER_SK) AS result2,avg(WR_REFUNDED_ADDR_SK) AS result3,max(WR_RETURN_TAX) AS result4 FROM cap_web_returns WHERE WR_RETURNED_DATE_SK IN (2451564,2451786,2452606) AND WR_REFUNDED_ADDR_SK&gt;10000 OR WR_ITEM_SK&gt;776 GROUP BY WR_ITEM_SK order by WR_ITEM_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1812,7 +1876,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为十万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_统计(十万)_一个聚合函数，group by(千级分组)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT WS_SHIP_DATE_SK, count(*) AS result1 FROM cap_web_sales_hdfs  GROUP BY WS_SHIP_DATE_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1824,7 +1888,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_统计(十万)_多个聚合函数，group by(千级分组)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT WS_SHIP_DATE_SK, count(*) AS result1,sum(WS_SHIP_ADDR_SK) AS result2,avg(WS_SHIP_CDEMO_SK) AS result3,max(WS_SHIP_CUSTOMER_SK) AS result4 FROM cap_web_sales_hdfs  GROUP BY WS_SHIP_DATE_SK </stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1839,7 +1903,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为百万级" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_统计(百万)_一个聚合函数，group by(十万级组)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT SS_CDEMO_SK,count(*) AS result1 FROM cap_store_sales_hdfs  GROUP BY SS_CDEMO_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -1851,7 +1915,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select_HDFS_统计(百万)_多个聚合函数，group by(十万级组)" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT SS_CDEMO_SK,count(*) AS result1,sum(SS_PROMO_SK) AS result2,avg(SS_QUANTITY) AS result3,max(SS_SALES_PRICE) AS result4 FROM cap_store_sales_hdfs GROUP BY SS_CDEMO_SK </stringProp>
                     <stringProp name="queryArguments"></stringProp>
@@ -3591,14 +3655,14 @@ drop table cap_web_returns_delete_pallas2 if exists cascade;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="join" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="join" enabled="true"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="true"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据准备" enabled="true"/>
               <hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">drop table cap_date_dim_join;
 drop table cap_store_join;
@@ -3614,7 +3678,7 @@ drop table cap_catalog_sales_join</stringProp>
                 </JDBCSampler>
                 <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="创建表cap_date_dim_join" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">CREATE TABLE cap_date_dim_join AS (SELECT * FROM date_dim) WITH DATA;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
@@ -3626,7 +3690,7 @@ drop table cap_catalog_sales_join</stringProp>
                 </JDBCSampler>
                 <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="创建表cap_store_join" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">CREATE TABLE cap_store_join AS (SELECT * FROM store) WITH DATA;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
@@ -3638,7 +3702,7 @@ drop table cap_catalog_sales_join</stringProp>
                 </JDBCSampler>
                 <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="创建表cap_household_demographics_join" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">CREATE TABLE cap_household_demographics_join AS (SELECT * FROM household_demographics) WITH DATA;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
@@ -3650,7 +3714,7 @@ drop table cap_catalog_sales_join</stringProp>
                 </JDBCSampler>
                 <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="创建表cap_inventory_join" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">CREATE TABLE cap_inventory_join AS (SELECT * FROM inventory) WITH DATA;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
@@ -3662,7 +3726,7 @@ drop table cap_catalog_sales_join</stringProp>
                 </JDBCSampler>
                 <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="创建表cap_catalog_sales_join" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">CREATE TABLE cap_catalog_sales_join AS (SELECT * FROM catalog_sales) WITH DATA;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
@@ -3679,7 +3743,7 @@ drop table cap_catalog_sales_join</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="两张大表" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="join_hdfs_两张大表_无where和group_查询所有字段_结果为十亿级" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query"> select cs_sold_date_sk,cs_sold_time_sk,cs_ship_date_sk,cs_bill_customer_sk,inv_date_sk,     inv_item_sk
  from cap_catalog_sales_join
@@ -3695,7 +3759,7 @@ drop table cap_catalog_sales_join</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="join_hdfs_两张大表_where,group和多个聚合函数_结果为万级" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query"> select CS_BILL_ADDR_SK,count(*),avg(CS_BILL_HDEMO_SK)
  from cap_catalog_sales_join
@@ -3714,7 +3778,7 @@ drop table cap_catalog_sales_join</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="一张大表一张小表" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="join_hdfs_一张大表一张小表_无where和group_查询所有字段_结果为百万级" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">select SS_COUPON_AMT,d_dow,
      ss_sold_date_sk,
@@ -3732,7 +3796,7 @@ drop table cap_catalog_sales_join</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="join_hdfs_一张大表一张小表_where,group和多个聚合函数_结果为千级" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">select sum(SS_COUPON_AMT),avg(cap_date_dim_join.d_dow)
     from cap_store_sales_hdfs
@@ -3750,7 +3814,7 @@ drop table cap_catalog_sales_join</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="两张小表" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="join_hdfs_两张小表_无where和group_查询所有字段_结果为百万级" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT wr_returned_date_sk,wr_returned_time_sk,wr_item_sk,ws_sold_date_sk,
     ws_sold_time_sk,
@@ -3766,7 +3830,7 @@ join cap_web_sales_hdfs on  ws_item_sk = wr_item_sk</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="join_hdfs_两张小表_where,group和多个聚合函数_结果为万级" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">SELECT WR_ITEM_SK, AVG(WS_SALES_PRICE),SUM(WR_REFUNDED_CUSTOMER_SK),COUNT(*) from cap_web_returns_hdfs 
 join cap_web_sales_hdfs on  ws_item_sk = wr_item_sk 
@@ -3786,7 +3850,7 @@ WHERE WR_REFUNDED_CUSTOMER_SK&gt;3000 GROUP BY WR_ITEM_SK</stringProp>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="一张大表多张小表" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="join_hdfs_一张大表多张小表_无where_查询所有字段_结果百万级" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">select ss_ticket_number,s_city,ss_net_profit,d_dow,hd_dep_count,i_current_price,t_time,         c_current_cdemo_sk, c_current_hdemo_sk
     from cap_store_sales_hdfs
@@ -3806,7 +3870,7 @@ WHERE WR_REFUNDED_CUSTOMER_SK&gt;3000 GROUP BY WR_ITEM_SK</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="join_hdfs_一张大表多张小表_where_查询多个字段_结果十万级" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
+                    <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">select ss_ticket_number,ss_customer_sk,s_city,ss_coupon_amt,ss_net_profit
     from cap_store_sales_hdfs
@@ -4368,111 +4432,6 @@ ss_sold_date_sk           integer                       ,
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="并发" enabled="false"/>
-          <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="true"/>
-            <hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="并发极限" enabled="true"/>
-              <hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="limit 0" enabled="true"/>
-                <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_store_sales limit 0;" enabled="true">
-                    <stringProp name="dataSource">${b}</stringProp>
-                    <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select * from cap_store_sales_hdfs limit 0;</stringProp>
-                    <stringProp name="queryArguments"></stringProp>
-                    <stringProp name="queryArgumentsTypes"></stringProp>
-                    <stringProp name="variableNames"></stringProp>
-                    <stringProp name="resultVariable"></stringProp>
-                    <stringProp name="queryTimeout"></stringProp>
-                    <stringProp name="resultSetHandler">Store as String</stringProp>
-                  </JDBCSampler>
-                  <hashTree/>
-                </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="where条件" enabled="false"/>
-                <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_web_returns WHERE WR_RETURNED_DATE_SK=2451310" enabled="true">
-                    <stringProp name="dataSource">${b}</stringProp>
-                    <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select * from cap_web_returns WHERE WR_RETURNED_DATE_SK=2451310</stringProp>
-                    <stringProp name="queryArguments"></stringProp>
-                    <stringProp name="queryArgumentsTypes"></stringProp>
-                    <stringProp name="variableNames"></stringProp>
-                    <stringProp name="resultVariable"></stringProp>
-                    <stringProp name="queryTimeout"></stringProp>
-                    <stringProp name="resultSetHandler">Store as String</stringProp>
-                  </JDBCSampler>
-                  <hashTree/>
-                </hashTree>
-              </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="特定并发效率" enabled="false"/>
-              <hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_web_returns WHERE WR_RETURNED_DATE_SK=2451310" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">select * from cap_web_returns WHERE WR_RETURNED_DATE_SK=2451310</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree/>
-              </hashTree>
-            </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为pallas引擎" enabled="false"/>
-            <hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="并发极限" enabled="true"/>
-              <hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="limit 0" enabled="true"/>
-                <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_store_sales_pallas limit 0;" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
-                    <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select * from cap_store_sales_pallas limit 0;</stringProp>
-                    <stringProp name="queryArguments"></stringProp>
-                    <stringProp name="queryArgumentsTypes"></stringProp>
-                    <stringProp name="variableNames"></stringProp>
-                    <stringProp name="resultVariable"></stringProp>
-                    <stringProp name="queryTimeout"></stringProp>
-                    <stringProp name="resultSetHandler">Store as String</stringProp>
-                  </JDBCSampler>
-                  <hashTree/>
-                </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="where条件" enabled="true"/>
-                <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK=2451310" enabled="true">
-                    <stringProp name="dataSource">${a}</stringProp>
-                    <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select * from cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK=2451310</stringProp>
-                    <stringProp name="queryArguments"></stringProp>
-                    <stringProp name="queryArgumentsTypes"></stringProp>
-                    <stringProp name="variableNames"></stringProp>
-                    <stringProp name="resultVariable"></stringProp>
-                    <stringProp name="queryTimeout"></stringProp>
-                    <stringProp name="resultSetHandler">Store as String</stringProp>
-                  </JDBCSampler>
-                  <hashTree/>
-                </hashTree>
-              </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="特定并发效率" enabled="true"/>
-              <hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK=2451310" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">select * from cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK=2451310</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree/>
-              </hashTree>
-            </hashTree>
-          </hashTree>
           <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
@@ -4509,125 +4468,6 @@ ss_sold_date_sk           integer                       ,
             <stringProp name="filename"></stringProp>
           </ResultCollector>
           <hashTree/>
-        </hashTree>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="并发测试" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${loop_num}</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${thread_num}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">0</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="并发" enabled="true"/>
-        <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="true"/>
-          <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="并发极限" enabled="true"/>
-            <hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="limit 0" enabled="true"/>
-              <hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_store_sales limit 0;" enabled="true">
-                  <stringProp name="dataSource">${b}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">select * from cap_store_sales_hdfs limit 0;</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree/>
-              </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="where条件" enabled="false"/>
-              <hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_web_returns WHERE WR_RETURNED_DATE_SK=2451310" enabled="true">
-                  <stringProp name="dataSource">${b}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">select * from cap_web_returns WHERE WR_RETURNED_DATE_SK=2451310</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree/>
-              </hashTree>
-            </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="特定并发效率" enabled="false"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_web_returns WHERE WR_RETURNED_DATE_SK=2451310" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from cap_web_returns WHERE WR_RETURNED_DATE_SK=2451310</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为pallas引擎" enabled="false"/>
-          <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="并发极限" enabled="true"/>
-            <hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="limit 0" enabled="true"/>
-              <hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_store_sales_pallas limit 0;" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">select * from cap_store_sales_pallas limit 0;</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree/>
-              </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="where条件" enabled="true"/>
-              <hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK=2451310" enabled="true">
-                  <stringProp name="dataSource">${a}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">select * from cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK=2451310</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree/>
-              </hashTree>
-            </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="特定并发效率" enabled="true"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK=2451310" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK=2451310</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
         </hashTree>
       </hashTree>
     </hashTree>
