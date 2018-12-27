@@ -3812,41 +3812,6 @@ drop table cap_catalog_sales_join</stringProp>
               </hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="两张表join" enabled="true"/>
               <hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="两张大表" enabled="true"/>
-                <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="HDFS表-join-两张表join-2张大表(cap_catalog_sales_join和cap_inventory_join)-join,查询几个字段-返回结果万亿" enabled="true">
-                    <stringProp name="dataSource">${b}</stringProp>
-                    <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query"> select cs_sold_date_sk,cs_sold_time_sk,cs_ship_date_sk,cs_bill_customer_sk,inv_date_sk,     inv_item_sk
- from cap_catalog_sales_join
- join cap_inventory_join on cs_item_sk = inv_item_sk
-</stringProp>
-                    <stringProp name="queryArguments"></stringProp>
-                    <stringProp name="queryArgumentsTypes"></stringProp>
-                    <stringProp name="variableNames"></stringProp>
-                    <stringProp name="resultVariable"></stringProp>
-                    <stringProp name="queryTimeout"></stringProp>
-                    <stringProp name="resultSetHandler">Store as String</stringProp>
-                    <stringProp name="TestPlan.comments">catalog_sales一百多万，inventory一千多万</stringProp>
-                  </JDBCSampler>
-                  <hashTree/>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="HDFS表-join-两张表join-2张大表(cap_catalog_sales_join和cap_inventory_join)-join,聚合函数,where和group-返回结果" enabled="true">
-                    <stringProp name="dataSource">${b}</stringProp>
-                    <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query"> select CS_BILL_ADDR_SK,count(*),avg(CS_BILL_HDEMO_SK)
- from cap_catalog_sales_join
- join cap_inventory_join on (cs_item_sk = inv_item_sk)
- WHERE CS_SOLD_TIME_SK&gt;46000 GROUP BY CS_BILL_ADDR_SK</stringProp>
-                    <stringProp name="queryArguments"></stringProp>
-                    <stringProp name="queryArgumentsTypes"></stringProp>
-                    <stringProp name="variableNames"></stringProp>
-                    <stringProp name="resultVariable"></stringProp>
-                    <stringProp name="queryTimeout"></stringProp>
-                    <stringProp name="resultSetHandler">Store as String</stringProp>
-                    <stringProp name="TestPlan.comments">catalog_sales一百多万，inventory一千多万</stringProp>
-                  </JDBCSampler>
-                  <hashTree/>
-                </hashTree>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="一张大表一张小表" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="HDFS表-join-两张表join-1张大表(cap_store_sales_hdfs)和1张小表(cap_date_dim_join)-join,查询几个字段-返回结果十亿级" enabled="true">
@@ -3913,6 +3878,41 @@ WHERE WR_REFUNDED_CUSTOMER_SK&gt;3000 GROUP BY WR_ITEM_SK</stringProp>
                     <stringProp name="resultVariable"></stringProp>
                     <stringProp name="queryTimeout"></stringProp>
                     <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree/>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="两张大表" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="HDFS表-join-两张表join-2张大表(cap_catalog_sales_join和cap_inventory_join)-join,查询几个字段-返回结果万亿" enabled="true">
+                    <stringProp name="dataSource">${b}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query"> select cs_sold_date_sk,cs_sold_time_sk,cs_ship_date_sk,cs_bill_customer_sk,inv_date_sk,     inv_item_sk
+ from cap_catalog_sales_join
+ join cap_inventory_join on cs_item_sk = inv_item_sk
+</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                    <stringProp name="TestPlan.comments">catalog_sales一百多万，inventory一千多万</stringProp>
+                  </JDBCSampler>
+                  <hashTree/>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="HDFS表-join-两张表join-2张大表(cap_catalog_sales_join和cap_inventory_join)-join,聚合函数,where和group-返回结果" enabled="false">
+                    <stringProp name="dataSource">${b}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query"> select CS_BILL_ADDR_SK,count(*),avg(CS_BILL_HDEMO_SK)
+ from cap_catalog_sales_join
+ join cap_inventory_join on (cs_item_sk = inv_item_sk)
+ WHERE CS_SOLD_TIME_SK&gt;46000 GROUP BY CS_BILL_ADDR_SK</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                    <stringProp name="TestPlan.comments">catalog_sales一百多万，inventory一千多万</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                 </hashTree>
@@ -4652,19 +4652,6 @@ ss_sold_date_sk           integer                       ,
           <hashTree/>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
