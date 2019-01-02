@@ -45,12 +45,12 @@
           </elementProp>
           <elementProp name="thread_num" elementType="Argument">
             <stringProp name="Argument.name">thread_num</stringProp>
-            <stringProp name="Argument.value">${__P(thread,100)}</stringProp>
+            <stringProp name="Argument.value">${__P(thread,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="loop_num" elementType="Argument">
             <stringProp name="Argument.name">loop_num</stringProp>
-            <stringProp name="Argument.value">${__P(loop,100)}</stringProp>
+            <stringProp name="Argument.value">${__P(loop,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="ef_thread_num" elementType="Argument">
@@ -61,7 +61,7 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="admin" enabled="false">
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="admin" enabled="true">
         <boolProp name="autocommit">true</boolProp>
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
@@ -92,6 +92,42 @@
         <stringProp name="trimInterval">60000</stringProp>
         <stringProp name="username">${b}</stringProp>
       </JDBCDataSource>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>true</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
@@ -129,6 +165,59 @@
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="PALLAS表-WEIYING并发测试" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">${loop_num}</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${thread_num}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">0</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-ddl" enabled="false">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">CREATE TABLE IF NOT EXISTS PUBLIC.T_USER_TEST_PALLAS(PHONE VARCHAR(20),OPEN_ID VARCHAR(50),GENDER VARCHAR(1),
+AGE VARCHAR(1024),BIRTHDAY VARCHAR(1024),PRODUCT_NAME VARCHAR(1024),BRAND VARCHAR(1024),OPEN_DATE VARCHAR(1024),
+RWSC BIGINT,&quot;NATIONALITY&quot; VARCHAR(50),&quot;PROVINCE&quot; VARCHAR(50),CITY VARCHAR(50),DEGREE VARCHAR(50),
+PRIMARY KEY(PHONE)) ENGINE PALLAS;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-copy data" enabled="false">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">INSERT INTO T_USER_TEST_PALLAS SELECT * FROM WEIYING.EX_T_USER_TEST</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-并发测试-SELECT PHONE FROM T_USER_TEST_PALLAS where phone = 18675835845" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">SELECT PHONE FROM T_USER_TEST_PALLAS where phone = 18675835845</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="HDFS表-并发测试-limit0-极限值" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
