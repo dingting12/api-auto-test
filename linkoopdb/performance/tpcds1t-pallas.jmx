@@ -90,6 +90,42 @@
         <stringProp name="username">${b}</stringProp>
       </JDBCDataSource>
       <hashTree/>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>true</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
@@ -194,30 +230,30 @@
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">drop table customer_address1 if exists cascade;
-drop table customer_demographics1 if exists cascade;
-drop table date_dim1 if exists cascade;
-drop table warehouse1 if exists cascade;
-drop table ship_mode1 if exists cascade;
-drop table time_dim1 if exists cascade;
-drop table reason1 if exists cascade;
-drop table income_band1 if exists cascade;
-drop table item1 if exists cascade;
-drop table store1 if exists cascade;
-drop table call_center1 if exists cascade;
-drop table customer1 if exists cascade;
-drop table web_site1 if exists cascade;
-drop table store_returns1 if exists cascade;
-drop table household_demographics1 if exists cascade;
-drop table web_page1 if exists cascade;
-drop table promotion1 if exists cascade;
-drop table catalog_page1 if exists cascade;
-drop table inventory1 if exists cascade;
-drop table catalog_returns1 if exists cascade;
-drop table web_returns1 if exists cascade;
-drop table web_sales1 if exists cascade;
-drop table catalog_sales1 if exists cascade;
-drop table store_sales1 if exists cascade;
+            <stringProp name="query">drop table ex_parquet_customer_address if exists cascade;
+drop table ex_parquet_customer_demographics if exists cascade;
+drop table ex_parquet_date_dim if exists cascade;
+drop table ex_parquet_warehouse if exists cascade;
+drop table ex_parquet_ship_mode if exists cascade;
+drop table ex_parquet_time_dim if exists cascade;
+drop table ex_parquet_reason if exists cascade;
+drop table ex_parquet_income_band if exists cascade;
+drop table ex_parquet_item if exists cascade;
+drop table ex_parquet_store if exists cascade;
+drop table ex_parquet_call_center if exists cascade;
+drop table ex_parquet_customer if exists cascade;
+drop table ex_parquet_web_site if exists cascade;
+drop table ex_parquet_store_returns if exists cascade;
+drop table ex_parquet_household_demographics if exists cascade;
+drop table ex_parquet_web_page if exists cascade;
+drop table ex_parquet_promotion if exists cascade;
+drop table ex_parquet_catalog_page if exists cascade;
+drop table ex_parquet_inventory if exists cascade;
+drop table ex_parquet_catalog_returns if exists cascade;
+drop table ex_parquet_web_returns if exists cascade;
+drop table ex_parquet_web_sales if exists cascade;
+drop table ex_parquet_catalog_sales if exists cascade;
+drop table ex_parquet_store_sales if exists cascade;
 
 drop table customer_address if exists cascade;
 drop table customer_demographics if exists cascade;
@@ -242,22 +278,7 @@ drop table catalog_returns if exists cascade;
 drop table web_returns if exists cascade;
 drop table web_sales if exists cascade;
 drop table catalog_sales if exists cascade;
-drop table store_sales if exists cascade;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</stringProp>
+drop table store_sales if exists cascade;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -267,9 +288,9 @@ drop table store_sales if exists cascade;
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer_address1" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create parquet external table" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table customer_address1
+            <stringProp name="query">create external table ex_parquet_customer_address
 (
     ca_address_sk             integer               not null,
     ca_address_id             char(16)              not null,
@@ -285,19 +306,9 @@ drop table store_sales if exists cascade;
     ca_gmt_offset             decimal(5,2)                  ,
     ca_location_type          char(20)                      ,
     primary key (ca_address_sk)
-) location (&apos;${tpcds_data_url}/customer_address&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer_demographics1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table customer_demographics1
+) location (&apos;${tpcds_data_url}/customer_address&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_customer_demographics
 (
     cd_demo_sk                integer               not null,
     cd_gender                 char(1)                       ,
@@ -309,19 +320,9 @@ drop table store_sales if exists cascade;
     cd_dep_employed_count     integer                       ,
     cd_dep_college_count      integer                       ,
     primary key (cd_demo_sk)
-) location (&apos;${tpcds_data_url}/customer_demographics&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table date_dim1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table date_dim1
+) location (&apos;${tpcds_data_url}/customer_demographics&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_date_dim
 (
     d_date_sk                 integer               not null,
     d_date_id                 char(16)              not null,
@@ -352,19 +353,9 @@ drop table store_sales if exists cascade;
     d_current_quarter         char(1)                       ,
     d_current_year            char(1)                       ,
     primary key (d_date_sk)
-) location (&apos;${tpcds_data_url}/date_dim&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table warehouse1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table warehouse1
+) location (&apos;${tpcds_data_url}/date_dim&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_warehouse
 (
     w_warehouse_sk            integer               not null,
     w_warehouse_id            char(16)              not null,
@@ -381,19 +372,10 @@ drop table store_sales if exists cascade;
     w_country                 varchar(20)                   ,
     w_gmt_offset              decimal(5,2)                  ,
     primary key (w_warehouse_sk)
-) location (&apos;${tpcds_data_url}/warehouse&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table ship_mode1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table ship_mode1
+) location (&apos;${tpcds_data_url}/warehouse&apos;) format &apos;parquet&apos;;
+
+
+create external table ex_parquet_ship_mode
 (
     sm_ship_mode_sk           integer               not null,
     sm_ship_mode_id           char(16)              not null,
@@ -402,19 +384,9 @@ drop table store_sales if exists cascade;
     sm_carrier                char(20)                      ,
     sm_contract               char(20)                      ,
     primary key (sm_ship_mode_sk)
-) location (&apos;${tpcds_data_url}/ship_mode&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table time_dim1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table time_dim1
+) location (&apos;${tpcds_data_url}/ship_mode&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_time_dim
 (
     t_time_sk                 integer               not null,
     t_time_id                 char(16)              not null,
@@ -427,55 +399,25 @@ drop table store_sales if exists cascade;
     t_sub_shift               char(20)                      ,
     t_meal_time               char(20)                      ,
     primary key (t_time_sk)
-) location (&apos;${tpcds_data_url}/time_dim&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table reason1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table reason1
+) location (&apos;${tpcds_data_url}/time_dim&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_reason
 (
     r_reason_sk               integer               not null,
     r_reason_id               char(16)              not null,
     r_reason_desc             char(100)                     ,
     primary key (r_reason_sk)
-) location (&apos;${tpcds_data_url}/reason&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table income_band1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table income_band1
+) location (&apos;${tpcds_data_url}/reason&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_income_band
 (
     ib_income_band_sk         integer               not null,
     ib_lower_bound            integer                       ,
     ib_upper_bound            integer                       ,
     primary key (ib_income_band_sk)
-) location (&apos;${tpcds_data_url}/income_band&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table item1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table item1
+) location (&apos;${tpcds_data_url}/income_band&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_item
 (
     i_item_sk                 integer               not null,
     i_item_id                 char(16)              not null,
@@ -500,19 +442,9 @@ drop table store_sales if exists cascade;
     i_manager_id              integer                       ,
     i_product_name            char(50)                      ,
     primary key (i_item_sk)
-) location (&apos;${tpcds_data_url}/item&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table store1
+) location (&apos;${tpcds_data_url}/item&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_store
 (
     s_store_sk                integer               not null,
     s_store_id                char(16)              not null,
@@ -544,19 +476,9 @@ drop table store_sales if exists cascade;
     s_gmt_offset              decimal(5,2)                  ,
     s_tax_precentage          decimal(5,2)                  ,
     primary key (s_store_sk)
-) location (&apos;${tpcds_data_url}/store&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table call_center1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table call_center1
+) location (&apos;${tpcds_data_url}/store&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_call_center
 (
     cc_call_center_sk         integer               not null,
     cc_call_center_id         char(16)              not null,
@@ -590,19 +512,9 @@ drop table store_sales if exists cascade;
     cc_gmt_offset             decimal(5,2)                  ,
     cc_tax_percentage         decimal(5,2)                  ,
     primary key (cc_call_center_sk)
-) location (&apos;${tpcds_data_url}/call_center&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table customer1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table customer1
+) location (&apos;${tpcds_data_url}/call_center&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_customer
 (
     c_customer_sk             integer               not null,
     c_customer_id             char(16)              not null,
@@ -623,19 +535,9 @@ drop table store_sales if exists cascade;
     c_email_address           char(50)                      ,
     c_last_review_date        char(10)                      ,
     primary key (c_customer_sk)
-) location (&apos;${tpcds_data_url}/customer&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_site1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table web_site1
+) location (&apos;${tpcds_data_url}/customer&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_web_site
 (
     web_site_sk               integer               not null,
     web_site_id               char(16)              not null,
@@ -664,19 +566,9 @@ drop table store_sales if exists cascade;
     web_gmt_offset            decimal(5,2)                  ,
     web_tax_percentage        decimal(5,2)                  ,
     primary key (web_site_sk)
-) location (&apos;${tpcds_data_url}/web_site&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store_returns1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table store_returns1
+) location (&apos;${tpcds_data_url}/web_site&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_store_returns
 (
     sr_returned_date_sk       integer                       ,
     sr_return_time_sk         integer                       ,
@@ -699,19 +591,9 @@ drop table store_sales if exists cascade;
     sr_store_credit           decimal(7,2)                  ,
     sr_net_loss               decimal(7,2)                  ,
     primary key (sr_item_sk, sr_ticket_number)
-) location (&apos;${tpcds_data_url}/store_returns&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table household_demographics1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table household_demographics1
+) location (&apos;${tpcds_data_url}/store_returns&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_household_demographics
 (
     hd_demo_sk                integer               not null,
     hd_income_band_sk         integer                       ,
@@ -719,19 +601,9 @@ drop table store_sales if exists cascade;
     hd_dep_count              integer                       ,
     hd_vehicle_count          integer                       ,
     primary key (hd_demo_sk)
-) location (&apos;${tpcds_data_url}/household_demographics&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_page1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table web_page1
+) location (&apos;${tpcds_data_url}/household_demographics&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_web_page
 (
     wp_web_page_sk            integer               not null,
     wp_web_page_id            char(16)              not null,
@@ -748,19 +620,9 @@ drop table store_sales if exists cascade;
     wp_image_count            integer                       ,
     wp_max_ad_count           integer                       ,
     primary key (wp_web_page_sk)
-) location (&apos;${tpcds_data_url}/web_page&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table promotion1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table promotion1
+) location (&apos;${tpcds_data_url}/web_page&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_promotion
 (
     p_promo_sk                integer               not null,
     p_promo_id                char(16)              not null,
@@ -782,19 +644,9 @@ drop table store_sales if exists cascade;
     p_purpose                 char(15)                      ,
     p_discount_active         char(1)                       ,
     primary key (p_promo_sk)
-) location (&apos;${tpcds_data_url}/promotion&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_page1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table catalog_page1
+) location (&apos;${tpcds_data_url}/promotion&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_catalog_page
 (
     cp_catalog_page_sk        integer               not null,
     cp_catalog_page_id        char(16)              not null,
@@ -806,38 +658,18 @@ drop table store_sales if exists cascade;
     cp_description            varchar(100)                  ,
     cp_type                   varchar(100)                  ,
     primary key (cp_catalog_page_sk)
-) location (&apos;${tpcds_data_url}/catalog_page&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table inventory1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table inventory1
+) location (&apos;${tpcds_data_url}/catalog_page&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_inventory
 (
     inv_date_sk               integer               not null,
     inv_item_sk               integer               not null,
     inv_warehouse_sk          integer               not null,
     inv_quantity_on_hand      integer                       ,
     primary key (inv_date_sk, inv_item_sk, inv_warehouse_sk)
-) location (&apos;${tpcds_data_url}/inventory&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_returns1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table catalog_returns1
+) location (&apos;${tpcds_data_url}/inventory&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_catalog_returns
 (
     cr_returned_date_sk       integer                       ,
     cr_returned_time_sk       integer                       ,
@@ -867,19 +699,9 @@ drop table store_sales if exists cascade;
     cr_store_credit           decimal(7,2)                  ,
     cr_net_loss               decimal(7,2)                  ,
     primary key (cr_item_sk, cr_order_number)
-) location (&apos;${tpcds_data_url}/catalog_returns&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_returns1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table web_returns1
+) location (&apos;${tpcds_data_url}/catalog_returns&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_web_returns
 (
     wr_returned_date_sk       integer                       ,
     wr_returned_time_sk       integer                       ,
@@ -906,19 +728,9 @@ drop table store_sales if exists cascade;
     wr_account_credit         decimal(7,2)                  ,
     wr_net_loss               decimal(7,2)                  ,
     primary key (wr_item_sk, wr_order_number)
-) location (&apos;${tpcds_data_url}/web_returns&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table web_sales1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table web_sales1
+) location (&apos;${tpcds_data_url}/web_returns&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_web_sales
 (
     ws_sold_date_sk           integer                       ,
     ws_sold_time_sk           integer                       ,
@@ -955,19 +767,9 @@ drop table store_sales if exists cascade;
     ws_net_paid_inc_ship_tax  decimal(7,2)                  ,
     ws_net_profit             decimal(7,2)                  ,
     primary key (ws_item_sk, ws_order_number)
-) location (&apos;${tpcds_data_url}/web_sales&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table catalog_sales1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table catalog_sales1
+) location (&apos;${tpcds_data_url}/web_sales&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_catalog_sales
 (
     cs_sold_date_sk           integer                       ,
     cs_sold_time_sk           integer                       ,
@@ -1004,19 +806,9 @@ drop table store_sales if exists cascade;
     cs_net_paid_inc_ship_tax  decimal(7,2)                  ,
     cs_net_profit             decimal(7,2)                  ,
     primary key (cs_item_sk, cs_order_number)
-) location (&apos;${tpcds_data_url}/catalog_sales&apos;) format &apos;parquet&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create external table store_sales1" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">create external table store_sales1
+) location (&apos;${tpcds_data_url}/catalog_sales&apos;) format &apos;parquet&apos;;
+
+create external table ex_parquet_store_sales
 (
     ss_sold_date_sk           integer                       ,
     ss_sold_time_sk           integer                       ,
@@ -1052,9 +844,553 @@ drop table store_sales if exists cascade;
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE customer_address AS (SELECT * FROM customer_address1) WITH DATA;" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create pallas table" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE customer_address AS (SELECT * FROM customer_address1) WITH DATA ENGINE PALLAS;</stringProp>
+            <stringProp name="query">create table customer_address
+(
+    ca_address_sk             integer               not null,
+    ca_address_id             char(16)              not null,
+    ca_street_number          char(10)                      ,
+    ca_street_name            varchar(60)                   ,
+    ca_street_type            char(15)                      ,
+    ca_suite_number           char(10)                      ,
+    ca_city                   varchar(60)                   ,
+    ca_county                 varchar(30)                   ,
+    ca_state                  char(2)                       ,
+    ca_zip                    char(10)                      ,
+    ca_country                varchar(20)                   ,
+    ca_gmt_offset             decimal(5,2)                  ,
+    ca_location_type          char(20)                      ,
+    primary key (ca_address_sk)
+) engine pallas; 
+
+create table customer_demographics
+(
+    cd_demo_sk                integer               not null,
+    cd_gender                 char(1)                       ,
+    cd_marital_status         char(1)                       ,
+    cd_education_status       char(20)                      ,
+    cd_purchase_estimate      integer                       ,
+    cd_credit_rating          char(10)                      ,
+    cd_dep_count              integer                       ,
+    cd_dep_employed_count     integer                       ,
+    cd_dep_college_count      integer                       ,
+    primary key (cd_demo_sk)
+) engine pallas; 
+
+create table date_dim
+(
+    d_date_sk                 integer               not null,
+    d_date_id                 char(16)              not null,
+    d_date                    date                          ,
+    d_month_seq               integer                       ,
+    d_week_seq                integer                       ,
+    d_quarter_seq             integer                       ,
+    d_year                    integer                       ,
+    d_dow                     integer                       ,
+    d_moy                     integer                       ,
+    d_dom                     integer                       ,
+    d_qoy                     integer                       ,
+    d_fy_year                 integer                       ,
+    d_fy_quarter_seq          integer                       ,
+    d_fy_week_seq             integer                       ,
+    d_day_name                char(9)                       ,
+    d_quarter_name            char(6)                       ,
+    d_holiday                 char(1)                       ,
+    d_weekend                 char(1)                       ,
+    d_following_holiday       char(1)                       ,
+    d_first_dom               integer                       ,
+    d_last_dom                integer                       ,
+    d_same_day_ly             integer                       ,
+    d_same_day_lq             integer                       ,
+    d_current_day             char(1)                       ,
+    d_current_week            char(1)                       ,
+    d_current_month           char(1)                       ,
+    d_current_quarter         char(1)                       ,
+    d_current_year            char(1)                       ,
+    primary key (d_date_sk)
+) engine pallas; 
+
+create table warehouse
+(
+    w_warehouse_sk            integer               not null,
+    w_warehouse_id            char(16)              not null,
+    w_warehouse_name          varchar(20)                   ,
+    w_warehouse_sq_ft         integer                       ,
+    w_street_number           char(10)                      ,
+    w_street_name             varchar(60)                   ,
+    w_street_type             char(15)                      ,
+    w_suite_number            char(10)                      ,
+    w_city                    varchar(60)                   ,
+    w_county                  varchar(30)                   ,
+    w_state                   char(2)                       ,
+    w_zip                     char(10)                      ,
+    w_country                 varchar(20)                   ,
+    w_gmt_offset              decimal(5,2)                  ,
+    primary key (w_warehouse_sk)
+) engine pallas; 
+
+
+create table ship_mode
+(
+    sm_ship_mode_sk           integer               not null,
+    sm_ship_mode_id           char(16)              not null,
+    sm_type                   char(30)                      ,
+    sm_code                   char(10)                      ,
+    sm_carrier                char(20)                      ,
+    sm_contract               char(20)                      ,
+    primary key (sm_ship_mode_sk)
+) engine pallas; 
+
+create table time_dim
+(
+    t_time_sk                 integer               not null,
+    t_time_id                 char(16)              not null,
+    t_time                    integer                       ,
+    t_hour                    integer                       ,
+    t_minute                  integer                       ,
+    t_second                  integer                       ,
+    t_am_pm                   char(2)                       ,
+    t_shift                   char(20)                      ,
+    t_sub_shift               char(20)                      ,
+    t_meal_time               char(20)                      ,
+    primary key (t_time_sk)
+) engine pallas; 
+
+create table reason
+(
+    r_reason_sk               integer               not null,
+    r_reason_id               char(16)              not null,
+    r_reason_desc             char(100)                     ,
+    primary key (r_reason_sk)
+) engine pallas; 
+
+create table income_band
+(
+    ib_income_band_sk         integer               not null,
+    ib_lower_bound            integer                       ,
+    ib_upper_bound            integer                       ,
+    primary key (ib_income_band_sk)
+) engine pallas; 
+
+create table item
+(
+    i_item_sk                 integer               not null,
+    i_item_id                 char(16)              not null,
+    i_rec_start_date          date                          ,
+    i_rec_end_date            date                          ,
+    i_item_desc               varchar(200)                  ,
+    i_current_price           decimal(7,2)                  ,
+    i_wholesale_cost          decimal(7,2)                  ,
+    i_brand_id                integer                       ,
+    i_brand                   char(50)                      ,
+    i_class_id                integer                       ,
+    i_class                   char(50)                      ,
+    i_category_id             integer                       ,
+    i_category                char(50)                      ,
+    i_manufact_id             integer                       ,
+    i_manufact                char(50)                      ,
+    i_size                    char(20)                      ,
+    i_formulation             char(20)                      ,
+    i_color                   char(20)                      ,
+    i_units                   char(10)                      ,
+    i_container               char(10)                      ,
+    i_manager_id              integer                       ,
+    i_product_name            char(50)                      ,
+    primary key (i_item_sk)
+) engine pallas; 
+
+create table store
+(
+    s_store_sk                integer               not null,
+    s_store_id                char(16)              not null,
+    s_rec_start_date          date                          ,
+    s_rec_end_date            date                          ,
+    s_closed_date_sk          integer                       ,
+    s_store_name              varchar(50)                   ,
+    s_number_employees        integer                       ,
+    s_floor_space             integer                       ,
+    s_hours                   char(20)                      ,
+    s_manager                 varchar(40)                   ,
+    s_market_id               integer                       ,
+    s_geography_class         varchar(100)                  ,
+    s_market_desc             varchar(100)                  ,
+    s_market_manager          varchar(40)                   ,
+    s_division_id             integer                       ,
+    s_division_name           varchar(50)                   ,
+    s_company_id              integer                       ,
+    s_company_name            varchar(50)                   ,
+    s_street_number           varchar(10)                   ,
+    s_street_name             varchar(60)                   ,
+    s_street_type             char(15)                      ,
+    s_suite_number            char(10)                      ,
+    s_city                    varchar(60)                   ,
+    s_county                  varchar(30)                   ,
+    s_state                   char(2)                       ,
+    s_zip                     char(10)                      ,
+    s_country                 varchar(20)                   ,
+    s_gmt_offset              decimal(5,2)                  ,
+    s_tax_precentage          decimal(5,2)                  ,
+    primary key (s_store_sk)
+) engine pallas; 
+
+create table call_center
+(
+    cc_call_center_sk         integer               not null,
+    cc_call_center_id         char(16)              not null,
+    cc_rec_start_date         date                          ,
+    cc_rec_end_date           date                          ,
+    cc_closed_date_sk         integer                       ,
+    cc_open_date_sk           integer                       ,
+    cc_name                   varchar(50)                   ,
+    cc_class                  varchar(50)                   ,
+    cc_employees              integer                       ,
+    cc_sq_ft                  integer                       ,
+    cc_hours                  char(20)                      ,
+    cc_manager                varchar(40)                   ,
+    cc_mkt_id                 integer                       ,
+    cc_mkt_class              char(50)                      ,
+    cc_mkt_desc               varchar(100)                  ,
+    cc_market_manager         varchar(40)                   ,
+    cc_division               integer                       ,
+    cc_division_name          varchar(50)                   ,
+    cc_company                integer                       ,
+    cc_company_name           char(50)                      ,
+    cc_street_number          char(10)                      ,
+    cc_street_name            varchar(60)                   ,
+    cc_street_type            char(15)                      ,
+    cc_suite_number           char(10)                      ,
+    cc_city                   varchar(60)                   ,
+    cc_county                 varchar(30)                   ,
+    cc_state                  char(2)                       ,
+    cc_zip                    char(10)                      ,
+    cc_country                varchar(20)                   ,
+    cc_gmt_offset             decimal(5,2)                  ,
+    cc_tax_percentage         decimal(5,2)                  ,
+    primary key (cc_call_center_sk)
+) engine pallas; 
+
+create table customer
+(
+    c_customer_sk             integer               not null,
+    c_customer_id             char(16)              not null,
+    c_current_cdemo_sk        integer                       ,
+    c_current_hdemo_sk        integer                       ,
+    c_current_addr_sk         integer                       ,
+    c_first_shipto_date_sk    integer                       ,
+    c_first_sales_date_sk     integer                       ,
+    c_salutation              char(10)                      ,
+    c_first_name              char(20)                      ,
+    c_last_name               char(30)                      ,
+    c_preferred_cust_flag     char(1)                       ,
+    c_birth_day               integer                       ,
+    c_birth_month             integer                       ,
+    c_birth_year              integer                       ,
+    c_birth_country           varchar(20)                   ,
+    c_login                   char(13)                      ,
+    c_email_address           char(50)                      ,
+    c_last_review_date        char(10)                      ,
+    primary key (c_customer_sk)
+) engine pallas; 
+
+create table web_site
+(
+    web_site_sk               integer               not null,
+    web_site_id               char(16)              not null,
+    web_rec_start_date        date                          ,
+    web_rec_end_date          date                          ,
+    web_name                  varchar(50)                   ,
+    web_open_date_sk          integer                       ,
+    web_close_date_sk         integer                       ,
+    web_class                 varchar(50)                   ,
+    web_manager               varchar(40)                   ,
+    web_mkt_id                integer                       ,
+    web_mkt_class             varchar(50)                   ,
+    web_mkt_desc              varchar(100)                  ,
+    web_market_manager        varchar(40)                   ,
+    web_company_id            integer                       ,
+    web_company_name          char(50)                      ,
+    web_street_number         char(10)                      ,
+    web_street_name           varchar(60)                   ,
+    web_street_type           char(15)                      ,
+    web_suite_number          char(10)                      ,
+    web_city                  varchar(60)                   ,
+    web_county                varchar(30)                   ,
+    web_state                 char(2)                       ,
+    web_zip                   char(10)                      ,
+    web_country               varchar(20)                   ,
+    web_gmt_offset            decimal(5,2)                  ,
+    web_tax_percentage        decimal(5,2)                  ,
+    primary key (web_site_sk)
+) engine pallas; 
+
+create table store_returns
+(
+    sr_returned_date_sk       integer                       ,
+    sr_return_time_sk         integer                       ,
+    sr_item_sk                integer               not null,
+    sr_customer_sk            integer                       ,
+    sr_cdemo_sk               integer                       ,
+    sr_hdemo_sk               integer                       ,
+    sr_addr_sk                integer                       ,
+    sr_store_sk               integer                       ,
+    sr_reason_sk              integer                       ,
+    sr_ticket_number          bigint               not null,
+    sr_return_quantity        integer                       ,
+    sr_return_amt             decimal(7,2)                  ,
+    sr_return_tax             decimal(7,2)                  ,
+    sr_return_amt_inc_tax     decimal(7,2)                  ,
+    sr_fee                    decimal(7,2)                  ,
+    sr_return_ship_cost       decimal(7,2)                  ,
+    sr_refunded_cash          decimal(7,2)                  ,
+    sr_reversed_charge        decimal(7,2)                  ,
+    sr_store_credit           decimal(7,2)                  ,
+    sr_net_loss               decimal(7,2)                  ,
+    primary key (sr_item_sk, sr_ticket_number)
+) engine pallas; 
+
+create table household_demographics
+(
+    hd_demo_sk                integer               not null,
+    hd_income_band_sk         integer                       ,
+    hd_buy_potential          char(15)                      ,
+    hd_dep_count              integer                       ,
+    hd_vehicle_count          integer                       ,
+    primary key (hd_demo_sk)
+) engine pallas; 
+
+create table web_page
+(
+    wp_web_page_sk            integer               not null,
+    wp_web_page_id            char(16)              not null,
+    wp_rec_start_date         date                          ,
+    wp_rec_end_date           date                          ,
+    wp_creation_date_sk       integer                       ,
+    wp_access_date_sk         integer                       ,
+    wp_autogen_flag           char(1)                       ,
+    wp_customer_sk            integer                       ,
+    wp_url                    varchar(100)                  ,
+    wp_type                   char(50)                      ,
+    wp_char_count             integer                       ,
+    wp_link_count             integer                       ,
+    wp_image_count            integer                       ,
+    wp_max_ad_count           integer                       ,
+    primary key (wp_web_page_sk)
+) engine pallas; 
+
+create table promotion
+(
+    p_promo_sk                integer               not null,
+    p_promo_id                char(16)              not null,
+    p_start_date_sk           integer                       ,
+    p_end_date_sk             integer                       ,
+    p_item_sk                 integer                       ,
+    p_cost                    decimal(15,2)                 ,
+    p_response_target         integer                       ,
+    p_promo_name              char(50)                      ,
+    p_channel_dmail           char(1)                       ,
+    p_channel_email           char(1)                       ,
+    p_channel_catalog         char(1)                       ,
+    p_channel_tv              char(1)                       ,
+    p_channel_radio           char(1)                       ,
+    p_channel_press           char(1)                       ,
+    p_channel_event           char(1)                       ,
+    p_channel_demo            char(1)                       ,
+    p_channel_details         varchar(100)                  ,
+    p_purpose                 char(15)                      ,
+    p_discount_active         char(1)                       ,
+    primary key (p_promo_sk)
+) engine pallas; 
+
+create table catalog_page
+(
+    cp_catalog_page_sk        integer               not null,
+    cp_catalog_page_id        char(16)              not null,
+    cp_start_date_sk          integer                       ,
+    cp_end_date_sk            integer                       ,
+    cp_department             varchar(50)                   ,
+    cp_catalog_number         integer                       ,
+    cp_catalog_page_number    integer                       ,
+    cp_description            varchar(100)                  ,
+    cp_type                   varchar(100)                  ,
+    primary key (cp_catalog_page_sk)
+) engine pallas; (&apos;${tpcds_data_url}/catalog_page&apos;) format &apos;parquet&apos;;
+
+create table inventory
+(
+    inv_date_sk               integer               not null,
+    inv_item_sk               integer               not null,
+    inv_warehouse_sk          integer               not null,
+    inv_quantity_on_hand      integer                       ,
+    primary key (inv_date_sk, inv_item_sk, inv_warehouse_sk)
+) engine pallas; 
+
+create table catalog_returns
+(
+    cr_returned_date_sk       integer                       ,
+    cr_returned_time_sk       integer                       ,
+    cr_item_sk                integer               not null,
+    cr_refunded_customer_sk   integer                       ,
+    cr_refunded_cdemo_sk      integer                       ,
+    cr_refunded_hdemo_sk      integer                       ,
+    cr_refunded_addr_sk       integer                       ,
+    cr_returning_customer_sk  integer                       ,
+    cr_returning_cdemo_sk     integer                       ,
+    cr_returning_hdemo_sk     integer                       ,
+    cr_returning_addr_sk      integer                       ,
+    cr_call_center_sk         integer                       ,
+    cr_catalog_page_sk        integer                       ,
+    cr_ship_mode_sk           integer                       ,
+    cr_warehouse_sk           integer                       ,
+    cr_reason_sk              integer                       ,
+    cr_order_number           bigint               not null,
+    cr_return_quantity        integer                       ,
+    cr_return_amount          decimal(7,2)                  ,
+    cr_return_tax             decimal(7,2)                  ,
+    cr_return_amt_inc_tax     decimal(7,2)                  ,
+    cr_fee                    decimal(7,2)                  ,
+    cr_return_ship_cost       decimal(7,2)                  ,
+    cr_refunded_cash          decimal(7,2)                  ,
+    cr_reversed_charge        decimal(7,2)                  ,
+    cr_store_credit           decimal(7,2)                  ,
+    cr_net_loss               decimal(7,2)                  ,
+    primary key (cr_item_sk, cr_order_number)
+) engine pallas;
+
+create table web_returns
+(
+    wr_returned_date_sk       integer                       ,
+    wr_returned_time_sk       integer                       ,
+    wr_item_sk                integer               not null,
+    wr_refunded_customer_sk   integer                       ,
+    wr_refunded_cdemo_sk      integer                       ,
+    wr_refunded_hdemo_sk      integer                       ,
+    wr_refunded_addr_sk       integer                       ,
+    wr_returning_customer_sk  integer                       ,
+    wr_returning_cdemo_sk     integer                       ,
+    wr_returning_hdemo_sk     integer                       ,
+    wr_returning_addr_sk      integer                       ,
+    wr_web_page_sk            integer                       ,
+    wr_reason_sk              integer                       ,
+    wr_order_number           bigint               not null,
+    wr_return_quantity        integer                       ,
+    wr_return_amt             decimal(7,2)                  ,
+    wr_return_tax             decimal(7,2)                  ,
+    wr_return_amt_inc_tax     decimal(7,2)                  ,
+    wr_fee                    decimal(7,2)                  ,
+    wr_return_ship_cost       decimal(7,2)                  ,
+    wr_refunded_cash          decimal(7,2)                  ,
+    wr_reversed_charge        decimal(7,2)                  ,
+    wr_account_credit         decimal(7,2)                  ,
+    wr_net_loss               decimal(7,2)                  ,
+    primary key (wr_item_sk, wr_order_number)
+) engine pallas;
+
+create table web_sales
+(
+    ws_sold_date_sk           integer                       ,
+    ws_sold_time_sk           integer                       ,
+    ws_ship_date_sk           integer                       ,
+    ws_item_sk                integer               not null,
+    ws_bill_customer_sk       integer                       ,
+    ws_bill_cdemo_sk          integer                       ,
+    ws_bill_hdemo_sk          integer                       ,
+    ws_bill_addr_sk           integer                       ,
+    ws_ship_customer_sk       integer                       ,
+    ws_ship_cdemo_sk          integer                       ,
+    ws_ship_hdemo_sk          integer                       ,
+    ws_ship_addr_sk           integer                       ,
+    ws_web_page_sk            integer                       ,
+    ws_web_site_sk            integer                       ,
+    ws_ship_mode_sk           integer                       ,
+    ws_warehouse_sk           integer                       ,
+    ws_promo_sk               integer                       ,
+    ws_order_number           bigint               not null,
+    ws_quantity               integer                       ,
+    ws_wholesale_cost         decimal(7,2)                  ,
+    ws_list_price             decimal(7,2)                  ,
+    ws_sales_price            decimal(7,2)                  ,
+    ws_ext_discount_amt       decimal(7,2)                  ,
+    ws_ext_sales_price        decimal(7,2)                  ,
+    ws_ext_wholesale_cost     decimal(7,2)                  ,
+    ws_ext_list_price         decimal(7,2)                  ,
+    ws_ext_tax                decimal(7,2)                  ,
+    ws_coupon_amt             decimal(7,2)                  ,
+    ws_ext_ship_cost          decimal(7,2)                  ,
+    ws_net_paid               decimal(7,2)                  ,
+    ws_net_paid_inc_tax       decimal(7,2)                  ,
+    ws_net_paid_inc_ship      decimal(7,2)                  ,
+    ws_net_paid_inc_ship_tax  decimal(7,2)                  ,
+    ws_net_profit             decimal(7,2)                  ,
+    primary key (ws_item_sk, ws_order_number)
+) engine pallas; 
+
+create table catalog_sales
+(
+    cs_sold_date_sk           integer                       ,
+    cs_sold_time_sk           integer                       ,
+    cs_ship_date_sk           integer                       ,
+    cs_bill_customer_sk       integer                       ,
+    cs_bill_cdemo_sk          integer                       ,
+    cs_bill_hdemo_sk          integer                       ,
+    cs_bill_addr_sk           integer                       ,
+    cs_ship_customer_sk       integer                       ,
+    cs_ship_cdemo_sk          integer                       ,
+    cs_ship_hdemo_sk          integer                       ,
+    cs_ship_addr_sk           integer                       ,
+    cs_call_center_sk         integer                       ,
+    cs_catalog_page_sk        integer                       ,
+    cs_ship_mode_sk           integer                       ,
+    cs_warehouse_sk           integer                       ,
+    cs_item_sk                integer               not null,
+    cs_promo_sk               integer                       ,
+    cs_order_number           bigint               not null,
+    cs_quantity               integer                       ,
+    cs_wholesale_cost         decimal(7,2)                  ,
+    cs_list_price             decimal(7,2)                  ,
+    cs_sales_price            decimal(7,2)                  ,
+    cs_ext_discount_amt       decimal(7,2)                  ,
+    cs_ext_sales_price        decimal(7,2)                  ,
+    cs_ext_wholesale_cost     decimal(7,2)                  ,
+    cs_ext_list_price         decimal(7,2)                  ,
+    cs_ext_tax                decimal(7,2)                  ,
+    cs_coupon_amt             decimal(7,2)                  ,
+    cs_ext_ship_cost          decimal(7,2)                  ,
+    cs_net_paid               decimal(7,2)                  ,
+    cs_net_paid_inc_tax       decimal(7,2)                  ,
+    cs_net_paid_inc_ship      decimal(7,2)                  ,
+    cs_net_paid_inc_ship_tax  decimal(7,2)                  ,
+    cs_net_profit             decimal(7,2)                  ,
+    primary key (cs_item_sk, cs_order_number)
+) engine pallas;
+
+create table store_sales
+(
+    ss_sold_date_sk           integer                       ,
+    ss_sold_time_sk           integer                       ,
+    ss_item_sk                integer               not null,
+    ss_customer_sk            integer                       ,
+    ss_cdemo_sk               integer                       ,
+    ss_hdemo_sk               integer                       ,
+    ss_addr_sk                integer                       ,
+    ss_store_sk               integer                       ,
+    ss_promo_sk               integer                       ,
+    ss_ticket_number          bigint               not null,
+    ss_quantity               integer                       ,
+    ss_wholesale_cost         decimal(7,2)                  ,
+    ss_list_price             decimal(7,2)                  ,
+    ss_sales_price            decimal(7,2)                  ,
+    ss_ext_discount_amt       decimal(7,2)                  ,
+    ss_ext_sales_price        decimal(7,2)                  ,
+    ss_ext_wholesale_cost     decimal(7,2)                  ,
+    ss_ext_list_price         decimal(7,2)                  ,
+    ss_ext_tax                decimal(7,2)                  ,
+    ss_coupon_amt             decimal(7,2)                  ,
+    ss_net_paid               decimal(7,2)                  ,
+    ss_net_paid_inc_tax       decimal(7,2)                  ,
+    ss_net_profit             decimal(7,2)                  ,
+    primary key (ss_item_sk, ss_ticket_number)
+) engine pallas;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1064,9 +1400,13 @@ drop table store_sales if exists cascade;
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE customer_demographics AS (SELECT * FROM customer_demographics1) WITH DATA" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into pallas table1" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE customer_demographics AS (SELECT * FROM customer_demographics1) WITH DATA ENGINE PALLAS;</stringProp>
+            <stringProp name="query">insert into call_center             select * from ex_parquet_call_center                   ;
+insert into catalog_page            select * from ex_parquet_catalog_page                  ;
+insert into catalog_returns         select * from ex_parquet_catalog_returns               ;
+insert into catalog_sales           select * from ex_parquet_catalog_sales                 ;
+</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1076,9 +1416,13 @@ drop table store_sales if exists cascade;
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE date_dim AS (SELECT * FROM date_dim1) WITH DATA" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into pallas table2" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE date_dim AS (SELECT * FROM date_dim1) WITH DATA ENGINE PALLAS;</stringProp>
+            <stringProp name="query">insert into customer                select * from ex_parquet_customer                      ;
+insert into customer_address        select * from ex_parquet_customer_address              ;
+insert into customer_demographics   select * from ex_parquet_customer_demographics         ;
+insert into date_dim                select * from ex_parquet_date_dim                      ;
+</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1088,9 +1432,16 @@ drop table store_sales if exists cascade;
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE warehouse AS (SELECT * FROM warehouse1) WITH DATA" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into pallas table3" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE warehouse AS (SELECT * FROM warehouse1) WITH DATA ENGINE PALLAS;</stringProp>
+            <stringProp name="query">insert into household_demographics  select * from ex_parquet_household_demographics        ;
+insert into income_band             select * from ex_parquet_income_band                   ;
+insert into inventory               select * from ex_parquet_inventory                     ;
+insert into item                    select * from ex_parquet_item                          ;
+insert into promotion               select * from ex_parquet_promotion                     ;
+insert into reason                  select * from ex_parquet_reason                        ;
+insert into ship_mode               select * from ex_parquet_ship_mode                     ;
+</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1100,9 +1451,15 @@ drop table store_sales if exists cascade;
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE ship_mode AS (SELECT * FROM ship_mode1) WITH DATA" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into pallas table4" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE ship_mode AS (SELECT * FROM ship_mode1) WITH DATA ENGINE PALLAS;</stringProp>
+            <stringProp name="query">insert into store                   select * from ex_parquet_store                         ;
+insert into store_returns           select * from ex_parquet_store_returns                 ;
+insert into time_dim                select * from ex_parquet_time_dim                      ;
+insert into warehouse               select * from ex_parquet_warehouse                     ;
+insert into web_page                select * from ex_parquet_web_page                      ;
+insert into web_returns             select * from ex_parquet_web_returns                   ;
+</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1112,9 +1469,11 @@ drop table store_sales if exists cascade;
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE time_dim AS (SELECT * FROM time_dim1) WITH DATA" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into pallas table5" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE time_dim AS (SELECT * FROM time_dim1) WITH DATA ENGINE PALLAS;</stringProp>
+            <stringProp name="query">insert into web_sales               select * from ex_parquet_web_sales                     ;
+insert into web_site                select * from ex_parquet_web_site                      ;
+</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1124,213 +1483,9 @@ drop table store_sales if exists cascade;
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE reason AS (SELECT * FROM reason1) WITH DATA" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into pallas table6" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE reason AS (SELECT * FROM reason1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE income_band AS (SELECT * FROM income_band1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE income_band AS (SELECT * FROM income_band1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE item AS (SELECT * FROM item1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE item AS (SELECT * FROM item1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE store AS (SELECT * FROM store1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE store AS (SELECT * FROM store1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE call_center AS (SELECT * FROM call_center1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE call_center AS (SELECT * FROM call_center1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE customer AS (SELECT * FROM customer1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE customer AS (SELECT * FROM customer1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE web_site AS (SELECT * FROM web_site1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE web_site AS (SELECT * FROM web_site1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE promotion AS (SELECT * FROM promotion1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE promotion AS (SELECT * FROM promotion1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE catalog_page AS (SELECT * FROM catalog_page1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE catalog_page AS (SELECT * FROM catalog_page1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE inventory AS (SELECT * FROM inventory1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE inventory AS (SELECT * FROM inventory1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE catalog_returns AS (SELECT * FROM catalog_returns1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE catalog_returns AS (SELECT * FROM catalog_returns1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE store_sales AS (SELECT * FROM store_sales1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE store_sales AS (SELECT * FROM store_sales1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE web_returns AS (SELECT * FROM web_returns1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE web_returns AS (SELECT * FROM web_returns1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE web_sales AS (SELECT * FROM web_sales1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE web_sales AS (SELECT * FROM web_sales1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE catalog_sales AS (SELECT * FROM catalog_sales1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE catalog_sales AS (SELECT * FROM catalog_sales1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE store_returns AS (SELECT * FROM store_returns1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE store_returns AS (SELECT * FROM store_returns1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE household_demographics AS (SELECT * FROM household_demographics1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE household_demographics AS (SELECT * FROM household_demographics1) WITH DATA ENGINE PALLAS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE web_page AS (SELECT * FROM web_page1) WITH DATA" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="query">CREATE TABLE web_page AS (SELECT * FROM web_page1) WITH DATA ENGINE PALLAS;</stringProp>
+            <stringProp name="query">insert into store_sales             select * from ex_parquet_store_sales                   ;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1341,7 +1496,7 @@ drop table store_sales if exists cascade;
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="analyze" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="analyze" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="analyze table customer_address compute statistics;" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -1632,7 +1787,7 @@ drop table store_sales if exists cascade;
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CHANGE AUTHORIZATION" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CHANGE AUTHORIZATION" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user ${b} if exists cascade;" enabled="false">
             <stringProp name="dataSource">${a}</stringProp>
@@ -1683,7 +1838,7 @@ drop table store_sales if exists cascade;
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="sql" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="sql" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;tpcds_1&apos;;" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
