@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="node" elementType="Argument">
+            <stringProp name="Argument.name">node</stringProp>
+            <stringProp name="Argument.value">192.168.1.79</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">linkoopdb host</stringProp>
+          </elementProp>
+          <elementProp name="a" elementType="Argument">
+            <stringProp name="Argument.name">a</stringProp>
+            <stringProp name="Argument.value">admin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">dba user</stringProp>
+          </elementProp>
+          <elementProp name="a_password" elementType="Argument">
+            <stringProp name="Argument.name">a_password</stringProp>
+            <stringProp name="Argument.value">123456</stringProp>
+            <stringProp name="Argument.desc">dba user password</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="tpcds_1t_url" elementType="Argument">
+            <stringProp name="Argument.name">tpcds_1t_url</stringProp>
+            <stringProp name="Argument.value">hdfs://node1:8020/node3/linkoopdb/gloway/tpcds-1t</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">data url on hdfs</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="admin" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">${a}</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">${a}</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="线程组" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="compact.degree=4" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP  USER test_degree_u1 IF EXISTS CASCADE;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP  USER test_degree_u1 IF EXISTS CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE USER test_degree_u1 PASSWORD &apos;123456&apos;;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE USER test_degree_u1 PASSWORD &apos;123456&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table test_degree_u1.catalog_returns if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop table test_degree_u1.catalog_returns if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table test_degree_u1.catalog_returns (     cr_returned_date_sk       integer                       ,     cr_returned_time_sk       integer                       ,     cr_item_sk                integer               not null,     cr_refunded_customer_sk   integer                       ,     cr_refunded_cdemo_sk      integer                       ,     cr_refunded_hdemo_sk      integer                       ,     cr_refunded_addr_sk       integer                       ,     cr_returning_customer_sk  integer                       ,     cr_returning_cdemo_sk     integer                       ,     cr_returning_hdemo_sk     integer                       ,     cr_returning_addr_sk      integer                       ,     cr_call_center_sk         integer                       ,     cr_catalog_page_sk        integer                       ,     cr_ship_mode_sk           integer                       ,     cr_warehouse_sk           integer                       ,     cr_reason_sk              integer                       ,     cr_order_number           bigint               not null,     cr_return_quantity        integer                       ,     cr_return_amount          decimal(7,2)                  ,     cr_return_tax             decimal(7,2)                  ,     cr_return_amt_inc_tax     decimal(7,2)                  ,     cr_fee                    decimal(7,2)                  ,     cr_return_ship_cost       decimal(7,2)                  ,     cr_refunded_cash          decimal(7,2)                  ,     cr_reversed_charge        decimal(7,2)                  ,     cr_store_credit           decimal(7,2)                  ,     cr_net_loss               decimal(7,2)                   );" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table test_degree_u1.catalog_returns
+(
+    cr_returned_date_sk       integer                       ,
+    cr_returned_time_sk       integer                       ,
+    cr_item_sk                integer               not null,
+    cr_refunded_customer_sk   integer                       ,
+    cr_refunded_cdemo_sk      integer                       ,
+    cr_refunded_hdemo_sk      integer                       ,
+    cr_refunded_addr_sk       integer                       ,
+    cr_returning_customer_sk  integer                       ,
+    cr_returning_cdemo_sk     integer                       ,
+    cr_returning_hdemo_sk     integer                       ,
+    cr_returning_addr_sk      integer                       ,
+    cr_call_center_sk         integer                       ,
+    cr_catalog_page_sk        integer                       ,
+    cr_ship_mode_sk           integer                       ,
+    cr_warehouse_sk           integer                       ,
+    cr_reason_sk              integer                       ,
+    cr_order_number           bigint               not null,
+    cr_return_quantity        integer                       ,
+    cr_return_amount          decimal(7,2)                  ,
+    cr_return_tax             decimal(7,2)                  ,
+    cr_return_amt_inc_tax     decimal(7,2)                  ,
+    cr_fee                    decimal(7,2)                  ,
+    cr_return_ship_cost       decimal(7,2)                  ,
+    cr_refunded_cash          decimal(7,2)                  ,
+    cr_reversed_charge        decimal(7,2)                  ,
+    cr_store_credit           decimal(7,2)                  ,
+    cr_net_loss               decimal(7,2)                  
+);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns SELECT * FROM TPCDS1T.CATALOG_RETURNS;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns SELECT * FROM TPCDS1T.CATALOG_RETURNS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT COUNT(*) FROM test_degree_u1.catalog_returns;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT COUNT(*) FROM test_degree_u1.catalog_returns;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="ALTER TABLE test_degree_u1.catalog_returns SET PROPERTIES (&apos;compact.degree&apos;:&apos;4&apos;);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">ALTER TABLE test_degree_u1.catalog_returns SET PROPERTIES (&apos;compact.degree&apos;:&apos;4&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns  VALUES(21,32,45,3,56,8787,34,321,12,7676,        546,767,3,434,54,65,43,434,54.546,65.343,        7.343,43.56,86.67,123.323,324.45,8653.435,54.45);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns 
+VALUES(21,32,45,3,56,8787,34,321,12,7676,
+       546,767,3,434,54,65,43,434,54.546,65.343,
+       7.343,43.56,86.67,123.323,324.45,8653.435,54.45);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="commit;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">commit;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="compact.degree=8" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table test_degree_u1.catalog_returns1 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop table test_degree_u1.catalog_returns1 if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table test_degree_u1.catalog_returns1 (     cr_returned_date_sk       integer                       ,     cr_returned_time_sk       integer                       ,     cr_item_sk                integer               not null,     cr_refunded_customer_sk   integer                       ,     cr_refunded_cdemo_sk      integer                       ,     cr_refunded_hdemo_sk      integer                       ,     cr_refunded_addr_sk       integer                       ,     cr_returning_customer_sk  integer                       ,     cr_returning_cdemo_sk     integer                       ,     cr_returning_hdemo_sk     integer                       ,     cr_returning_addr_sk      integer                       ,     cr_call_center_sk         integer                       ,     cr_catalog_page_sk        integer                       ,     cr_ship_mode_sk           integer                       ,     cr_warehouse_sk           integer                       ,     cr_reason_sk              integer                       ,     cr_order_number           bigint               not null,     cr_return_quantity        integer                       ,     cr_return_amount          decimal(7,2)                  ,     cr_return_tax             decimal(7,2)                  ,     cr_return_amt_inc_tax     decimal(7,2)                  ,     cr_fee                    decimal(7,2)                  ,     cr_return_ship_cost       decimal(7,2)                  ,     cr_refunded_cash          decimal(7,2)                  ,     cr_reversed_charge        decimal(7,2)                  ,     cr_store_credit           decimal(7,2)                  ,     cr_net_loss               decimal(7,2)                   );" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table test_degree_u1.catalog_returns1
+(
+    cr_returned_date_sk       integer                       ,
+    cr_returned_time_sk       integer                       ,
+    cr_item_sk                integer               not null,
+    cr_refunded_customer_sk   integer                       ,
+    cr_refunded_cdemo_sk      integer                       ,
+    cr_refunded_hdemo_sk      integer                       ,
+    cr_refunded_addr_sk       integer                       ,
+    cr_returning_customer_sk  integer                       ,
+    cr_returning_cdemo_sk     integer                       ,
+    cr_returning_hdemo_sk     integer                       ,
+    cr_returning_addr_sk      integer                       ,
+    cr_call_center_sk         integer                       ,
+    cr_catalog_page_sk        integer                       ,
+    cr_ship_mode_sk           integer                       ,
+    cr_warehouse_sk           integer                       ,
+    cr_reason_sk              integer                       ,
+    cr_order_number           bigint               not null,
+    cr_return_quantity        integer                       ,
+    cr_return_amount          decimal(7,2)                  ,
+    cr_return_tax             decimal(7,2)                  ,
+    cr_return_amt_inc_tax     decimal(7,2)                  ,
+    cr_fee                    decimal(7,2)                  ,
+    cr_return_ship_cost       decimal(7,2)                  ,
+    cr_refunded_cash          decimal(7,2)                  ,
+    cr_reversed_charge        decimal(7,2)                  ,
+    cr_store_credit           decimal(7,2)                  ,
+    cr_net_loss               decimal(7,2)                  
+);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns1 SELECT * FROM TPCDS1T.CATALOG_RETURNS;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns1 SELECT * FROM TPCDS1T.CATALOG_RETURNS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT COUNT(*) FROM test_degree_u1.catalog_returns1;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT COUNT(*) FROM test_degree_u1.catalog_returns1;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="ALTER TABLE test_degree_u1.catalog_returns1 SET PROPERTIES (&apos;compact.degree&apos;:&apos;8&apos;);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">ALTER TABLE test_degree_u1.catalog_returns1 SET PROPERTIES (&apos;compact.degree&apos;:&apos;8&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns1  VALUES(21,32,45,3,56,8787,34,321,12,7676,        546,767,3,434,54,65,43,434,54.546,65.343,        7.343,43.56,86.67,123.323,324.45,8653.435,54.45);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns1 
+VALUES(21,32,45,3,56,8787,34,321,12,7676,
+       546,767,3,434,54,65,43,434,54.546,65.343,
+       7.343,43.56,86.67,123.323,324.45,8653.435,54.45);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="commit;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">commit;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="compact.degree=16" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table test_degree_u1.catalog_returns2 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop table test_degree_u1.catalog_returns2 if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table test_degree_u1.catalog_returns2 (     cr_returned_date_sk       integer                       ,     cr_returned_time_sk       integer                       ,     cr_item_sk                integer               not null,     cr_refunded_customer_sk   integer                       ,     cr_refunded_cdemo_sk      integer                       ,     cr_refunded_hdemo_sk      integer                       ,     cr_refunded_addr_sk       integer                       ,     cr_returning_customer_sk  integer                       ,     cr_returning_cdemo_sk     integer                       ,     cr_returning_hdemo_sk     integer                       ,     cr_returning_addr_sk      integer                       ,     cr_call_center_sk         integer                       ,     cr_catalog_page_sk        integer                       ,     cr_ship_mode_sk           integer                       ,     cr_warehouse_sk           integer                       ,     cr_reason_sk              integer                       ,     cr_order_number           bigint               not null,     cr_return_quantity        integer                       ,     cr_return_amount          decimal(7,2)                  ,     cr_return_tax             decimal(7,2)                  ,     cr_return_amt_inc_tax     decimal(7,2)                  ,     cr_fee                    decimal(7,2)                  ,     cr_return_ship_cost       decimal(7,2)                  ,     cr_refunded_cash          decimal(7,2)                  ,     cr_reversed_charge        decimal(7,2)                  ,     cr_store_credit           decimal(7,2)                  ,     cr_net_loss               decimal(7,2)                   );" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table test_degree_u1.catalog_returns2
+(
+    cr_returned_date_sk       integer                       ,
+    cr_returned_time_sk       integer                       ,
+    cr_item_sk                integer               not null,
+    cr_refunded_customer_sk   integer                       ,
+    cr_refunded_cdemo_sk      integer                       ,
+    cr_refunded_hdemo_sk      integer                       ,
+    cr_refunded_addr_sk       integer                       ,
+    cr_returning_customer_sk  integer                       ,
+    cr_returning_cdemo_sk     integer                       ,
+    cr_returning_hdemo_sk     integer                       ,
+    cr_returning_addr_sk      integer                       ,
+    cr_call_center_sk         integer                       ,
+    cr_catalog_page_sk        integer                       ,
+    cr_ship_mode_sk           integer                       ,
+    cr_warehouse_sk           integer                       ,
+    cr_reason_sk              integer                       ,
+    cr_order_number           bigint               not null,
+    cr_return_quantity        integer                       ,
+    cr_return_amount          decimal(7,2)                  ,
+    cr_return_tax             decimal(7,2)                  ,
+    cr_return_amt_inc_tax     decimal(7,2)                  ,
+    cr_fee                    decimal(7,2)                  ,
+    cr_return_ship_cost       decimal(7,2)                  ,
+    cr_refunded_cash          decimal(7,2)                  ,
+    cr_reversed_charge        decimal(7,2)                  ,
+    cr_store_credit           decimal(7,2)                  ,
+    cr_net_loss               decimal(7,2)                  
+);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns2 SELECT * FROM TPCDS1T.CATALOG_RETURNS;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns2 SELECT * FROM TPCDS1T.CATALOG_RETURNS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT COUNT(*) FROM test_degree_u1.catalog_returns2;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT COUNT(*) FROM test_degree_u1.catalog_returns2;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="ALTER TABLE test_degree_u1.catalog_returns2 SET PROPERTIES (&apos;compact.degree&apos;:&apos;16&apos;);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">ALTER TABLE test_degree_u1.catalog_returns2 SET PROPERTIES (&apos;compact.degree&apos;:&apos;16&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns2  VALUES(21,32,45,3,56,8787,34,321,12,7676,        546,767,3,434,54,65,43,434,54.546,65.343,        7.343,43.56,86.67,123.323,324.45,8653.435,54.45);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns2 
+VALUES(21,32,45,3,56,8787,34,321,12,7676,
+       546,767,3,434,54,65,43,434,54.546,65.343,
+       7.343,43.56,86.67,123.323,324.45,8653.435,54.45);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="commit;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">commit;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="compact.degree=32" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table test_degree_u1.catalog_returns3 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop table test_degree_u1.catalog_returns3 if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table test_degree_u1.catalog_returns3 (     cr_returned_date_sk       integer                       ,     cr_returned_time_sk       integer                       ,     cr_item_sk                integer               not null,     cr_refunded_customer_sk   integer                       ,     cr_refunded_cdemo_sk      integer                       ,     cr_refunded_hdemo_sk      integer                       ,     cr_refunded_addr_sk       integer                       ,     cr_returning_customer_sk  integer                       ,     cr_returning_cdemo_sk     integer                       ,     cr_returning_hdemo_sk     integer                       ,     cr_returning_addr_sk      integer                       ,     cr_call_center_sk         integer                       ,     cr_catalog_page_sk        integer                       ,     cr_ship_mode_sk           integer                       ,     cr_warehouse_sk           integer                       ,     cr_reason_sk              integer                       ,     cr_order_number           bigint               not null,     cr_return_quantity        integer                       ,     cr_return_amount          decimal(7,2)                  ,     cr_return_tax             decimal(7,2)                  ,     cr_return_amt_inc_tax     decimal(7,2)                  ,     cr_fee                    decimal(7,2)                  ,     cr_return_ship_cost       decimal(7,2)                  ,     cr_refunded_cash          decimal(7,2)                  ,     cr_reversed_charge        decimal(7,2)                  ,     cr_store_credit           decimal(7,2)                  ,     cr_net_loss               decimal(7,2)                   );" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table test_degree_u1.catalog_returns3
+(
+    cr_returned_date_sk       integer                       ,
+    cr_returned_time_sk       integer                       ,
+    cr_item_sk                integer               not null,
+    cr_refunded_customer_sk   integer                       ,
+    cr_refunded_cdemo_sk      integer                       ,
+    cr_refunded_hdemo_sk      integer                       ,
+    cr_refunded_addr_sk       integer                       ,
+    cr_returning_customer_sk  integer                       ,
+    cr_returning_cdemo_sk     integer                       ,
+    cr_returning_hdemo_sk     integer                       ,
+    cr_returning_addr_sk      integer                       ,
+    cr_call_center_sk         integer                       ,
+    cr_catalog_page_sk        integer                       ,
+    cr_ship_mode_sk           integer                       ,
+    cr_warehouse_sk           integer                       ,
+    cr_reason_sk              integer                       ,
+    cr_order_number           bigint               not null,
+    cr_return_quantity        integer                       ,
+    cr_return_amount          decimal(7,2)                  ,
+    cr_return_tax             decimal(7,2)                  ,
+    cr_return_amt_inc_tax     decimal(7,2)                  ,
+    cr_fee                    decimal(7,2)                  ,
+    cr_return_ship_cost       decimal(7,2)                  ,
+    cr_refunded_cash          decimal(7,2)                  ,
+    cr_reversed_charge        decimal(7,2)                  ,
+    cr_store_credit           decimal(7,2)                  ,
+    cr_net_loss               decimal(7,2)                  
+);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns3 SELECT * FROM TPCDS1T.CATALOG_RETURNS;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns3 SELECT * FROM TPCDS1T.CATALOG_RETURNS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT COUNT(*) FROM test_degree_u1.catalog_returns3;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT COUNT(*) FROM test_degree_u1.catalog_returns3;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="ALTER TABLE test_degree_u1.catalog_returns3 SET PROPERTIES (&apos;compact.degree&apos;:&apos;32&apos;);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">ALTER TABLE test_degree_u1.catalog_returns3 SET PROPERTIES (&apos;compact.degree&apos;:&apos;32&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns3  VALUES(21,32,45,3,56,8787,34,321,12,7676,        546,767,3,434,54,65,43,434,54.546,65.343,        7.343,43.56,86.67,123.323,324.45,8653.435,54.45);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns3 
+VALUES(21,32,45,3,56,8787,34,321,12,7676,
+       546,767,3,434,54,65,43,434,54.546,65.343,
+       7.343,43.56,86.67,123.323,324.45,8653.435,54.45);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="commit;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">commit;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="compact.degree=64" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table test_degree_u1.catalog_returns4 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop table test_degree_u1.catalog_returns4 if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table test_degree_u1.catalog_returns4 (     cr_returned_date_sk       integer                       ,     cr_returned_time_sk       integer                       ,     cr_item_sk                integer               not null,     cr_refunded_customer_sk   integer                       ,     cr_refunded_cdemo_sk      integer                       ,     cr_refunded_hdemo_sk      integer                       ,     cr_refunded_addr_sk       integer                       ,     cr_returning_customer_sk  integer                       ,     cr_returning_cdemo_sk     integer                       ,     cr_returning_hdemo_sk     integer                       ,     cr_returning_addr_sk      integer                       ,     cr_call_center_sk         integer                       ,     cr_catalog_page_sk        integer                       ,     cr_ship_mode_sk           integer                       ,     cr_warehouse_sk           integer                       ,     cr_reason_sk              integer                       ,     cr_order_number           bigint               not null,     cr_return_quantity        integer                       ,     cr_return_amount          decimal(7,2)                  ,     cr_return_tax             decimal(7,2)                  ,     cr_return_amt_inc_tax     decimal(7,2)                  ,     cr_fee                    decimal(7,2)                  ,     cr_return_ship_cost       decimal(7,2)                  ,     cr_refunded_cash          decimal(7,2)                  ,     cr_reversed_charge        decimal(7,2)                  ,     cr_store_credit           decimal(7,2)                  ,     cr_net_loss               decimal(7,2)                   );" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table test_degree_u1.catalog_returns4
+(
+    cr_returned_date_sk       integer                       ,
+    cr_returned_time_sk       integer                       ,
+    cr_item_sk                integer               not null,
+    cr_refunded_customer_sk   integer                       ,
+    cr_refunded_cdemo_sk      integer                       ,
+    cr_refunded_hdemo_sk      integer                       ,
+    cr_refunded_addr_sk       integer                       ,
+    cr_returning_customer_sk  integer                       ,
+    cr_returning_cdemo_sk     integer                       ,
+    cr_returning_hdemo_sk     integer                       ,
+    cr_returning_addr_sk      integer                       ,
+    cr_call_center_sk         integer                       ,
+    cr_catalog_page_sk        integer                       ,
+    cr_ship_mode_sk           integer                       ,
+    cr_warehouse_sk           integer                       ,
+    cr_reason_sk              integer                       ,
+    cr_order_number           bigint               not null,
+    cr_return_quantity        integer                       ,
+    cr_return_amount          decimal(7,2)                  ,
+    cr_return_tax             decimal(7,2)                  ,
+    cr_return_amt_inc_tax     decimal(7,2)                  ,
+    cr_fee                    decimal(7,2)                  ,
+    cr_return_ship_cost       decimal(7,2)                  ,
+    cr_refunded_cash          decimal(7,2)                  ,
+    cr_reversed_charge        decimal(7,2)                  ,
+    cr_store_credit           decimal(7,2)                  ,
+    cr_net_loss               decimal(7,2)                  
+);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns4 SELECT * FROM TPCDS1T.CATALOG_RETURNS;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns4 SELECT * FROM TPCDS1T.CATALOG_RETURNS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT COUNT(*) FROM test_degree_u1.catalog_returns4;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT COUNT(*) FROM test_degree_u1.catalog_returns4;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="ALTER TABLE test_degree_u1.catalog_returns4 SET PROPERTIES (&apos;compact.degree&apos;:&apos;4&apos;);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">ALTER TABLE test_degree_u1.catalog_returns4 SET PROPERTIES (&apos;compact.degree&apos;:&apos;64&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO test_degree_u1.catalog_returns4  VALUES(21,32,45,3,56,8787,34,321,12,7676,        546,767,3,434,54,65,43,434,54.546,65.343,        7.343,43.56,86.67,123.323,324.45,8653.435,54.45);" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO test_degree_u1.catalog_returns4 
+VALUES(21,32,45,3,56,8787,34,321,12,7676,
+       546,767,3,434,54,65,43,434,54.546,65.343,
+       7.343,43.56,86.67,123.323,324.45,8653.435,54.45);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="commit;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">commit;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="察看结果树" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="聚合报告" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
