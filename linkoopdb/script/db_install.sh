@@ -47,6 +47,10 @@ wget http://192.168.1.133:12345/dist/spark/2.4.0/2018-12-04/spark-2.4.0-bin-data
 
 wget http://192.168.1.133:12345/tools/kafka_2.10-0.10.0.1.tgz
 
+wget http://192.168.1.133:12345/dist/flink/flink-1.7.0-datapps-20190108.tar.gz
+
+wget http://192.168.1.133:12345/dist/pallas/pallas.zip
+
 chown -R $USER_NAME:$USER_NAME /home/$USER_NAME/linkoopdb
 
 sleep 4
@@ -72,7 +76,13 @@ sleep 20s
 ln -s /home/$USER_NAME/linkoopdb/linkoopdb_current/ldb-server/repository/* /home/$USER_NAME/linkoopdb/others/solr-5.3.2/server/solr/configsets
 
 
+#安装flink
+cd /home/$USER_NAME/linkoopdb/others
+tar -zxvf flink-1.7.0-datapps-20190108.tar.gz
 
+#安装pallas
+cd /home/$USER_NAME/linkoopdb/others
+tar -zxvf pallas.zip
 
 #安装spark
 cd /home/$USER_NAME/linkoopdb/others
