@@ -105,6 +105,11 @@
             <stringProp name="Argument.value">node6</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="u3" elementType="Argument">
+            <stringProp name="Argument.name">u3</stringProp>
+            <stringProp name="Argument.value">mysql</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -121,6 +126,22 @@
         <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <stringProp name="username">${user}</stringProp>
+        <stringProp name="password">123456</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="mysql" enabled="true">
+        <stringProp name="dataSource">${u3}</stringProp>
+        <stringProp name="poolMax">20</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="dbUrl">jdbc:mysql://${node}:3306/jmeter_istreamsql</stringProp>
+        <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
+        <stringProp name="username">${umysql}</stringProp>
         <stringProp name="password">123456</stringProp>
       </JDBCDataSource>
       <hashTree/>
@@ -201,7 +222,7 @@
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB Worker 支持 RPC的 AI服务" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB Worker 支持 RPC的 AI服务" enabled="true"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB EXTERNAL_MODEL" enabled="true"/>
           <hashTree>
@@ -1203,6 +1224,30 @@ scaledFeatures double ARRAY
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-acos-atan-005" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop stream if exists t_jdbcsource_acos_bch002;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-acos-atan-006" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop stream if exists t_jdbcSINK_acos_bch0116;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -ST-JDBCSOURCE-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -1218,10 +1263,11 @@ scaledFeatures double ARRAY
               <stringProp name="TestPlan.comments">id类型为int</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -ST-JDBCSINK-001" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -ST-JDBCSOURCE-002" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM t_jdbcSINK_acos_bch002 (id double) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;,&apos;batchSize&apos;:&apos;2&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;acos_positive&apos;);
+              <stringProp name="query"> CREATE STREAM t_jdbcsource_acos_bch002 (id integer) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;acos_id&apos;);
+
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1232,10 +1278,38 @@ scaledFeatures double ARRAY
               <stringProp name="TestPlan.comments">id类型为int</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-acos-001" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -ST-JDBCSINK-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query"> insert into t_jdbcSINK_acos_bch002 select acos(id) from t_jdbcsource_acos_bch001;</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query"> CREATE STREAM t_jdbcSINK_acos_bch002 (data double,data1 bigint) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;,&apos;batchSize&apos;:&apos;2&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;acos_positive&apos;);
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">id类型为int</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -ST-JDBCSINK-002" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query"> CREATE STREAM t_jdbcSINK_acos_bch0116 (data double) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;,&apos;batchSize&apos;:&apos;2&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;acos_sink&apos;);
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">id类型为int</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-delete from acos_positive;" enabled="true">
+              <stringProp name="dataSource">${u3}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">delete from acos_positive;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1244,10 +1318,27 @@ scaledFeatures double ARRAY
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-atan-002" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-atan,HOUR-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query"> select atan(id) from t_jdbcsource_acos_bch001;</stringProp>
+              <stringProp name="query"> insert into t_jdbcSINK_acos_bch002 select  atan(id),HOUR(TIMESTAMP &apos;1994-09-27 13:14:15&apos;) from t_jdbcsource_acos_bch001;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -select * from acos_positive;" enabled="true">
+              <stringProp name="dataSource">${u3}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from acos_positive;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1258,11 +1349,11 @@ scaledFeatures double ARRAY
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-681648857">-0.7853981633974483</stringProp>
-                  <stringProp name="47602">0.0</stringProp>
-                  <stringProp name="-1335120326">0.7853981633974483</stringProp>
-                  <stringProp name="47602">0.0</stringProp>
-                  <stringProp name="3392903">null</stringProp>
+                  <stringProp name="-1565256763">-1.0	13</stringProp>
+                  <stringProp name="1418121401">0.0	13</stringProp>
+                  <stringProp name="1446750552">1.0	13</stringProp>
+                  <stringProp name="1418121401">0.0	13</stringProp>
+                  <stringProp name="-2001231612">null	13</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1271,7 +1362,63 @@ scaledFeatures double ARRAY
               </ResponseAssertion>
               <hashTree/>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-delete from acos_sink;" enabled="true">
+              <stringProp name="dataSource">${u3}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">delete from acos_sink;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-acos-001" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query"> insert into t_jdbcSINK_acos_bch0116 select acos(0) from t_jdbcsource_acos_bch002;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
                 <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -select * from acos_sink;" enabled="true">
+              <stringProp name="dataSource">${u3}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from acos_sink</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49524">2.0</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -1792,6 +1939,10 @@ scaledFeatures double ARRAY
                 <intProp name="Assertion.test_type">16</intProp>
               </ResponseAssertion>
               <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-acos-atan-004" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -1821,6 +1972,30 @@ scaledFeatures double ARRAY
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">drop stream if exists t_jdbcsink_atan_bch001;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-acos-atan-007" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop stream if exists t_jdbcsource_acos_bch002;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-acos-atan-008" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop stream if exists t_jdbcSINK_acos_bch0116;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -4615,42 +4790,6 @@ scaledFeatures double ARRAY
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-            <boolProp name="ResultCollector.error_logging">false</boolProp>
-            <objProp>
-              <name>saveConfig</name>
-              <value class="SampleSaveConfiguration">
-                <time>true</time>
-                <latency>true</latency>
-                <timestamp>true</timestamp>
-                <success>true</success>
-                <label>true</label>
-                <code>true</code>
-                <message>true</message>
-                <threadName>true</threadName>
-                <dataType>true</dataType>
-                <encoding>false</encoding>
-                <assertions>true</assertions>
-                <subresults>true</subresults>
-                <responseData>false</responseData>
-                <samplerData>false</samplerData>
-                <xml>false</xml>
-                <fieldNames>true</fieldNames>
-                <responseHeaders>false</responseHeaders>
-                <requestHeaders>false</requestHeaders>
-                <responseDataOnError>false</responseDataOnError>
-                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                <assertionsResultsToSave>0</assertionsResultsToSave>
-                <bytes>true</bytes>
-                <sentBytes>true</sentBytes>
-                <threadCounts>true</threadCounts>
-                <idleTime>true</idleTime>
-                <connectTime>true</connectTime>
-              </value>
-            </objProp>
-            <stringProp name="filename"></stringProp>
-          </ResultCollector>
-          <hashTree/>
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1156 where 子句使用列的别名报错" enabled="true"/>
         <hashTree>
