@@ -11,10 +11,10 @@
                 <style type="text/css"><![CDATA[
 
                 * { margin: 0; padding: 0 }
-                html, body { width: 100%; height: 100%; background: #b4b4b4; font-size: 12px }
+                html, body { width: 100%; height: 100%; background: #dddddd; font-size: 12px }
                 table { border: none; border-collapse: collapse; table-layout: fixed }
                 td { vertical-align: baseline; font-size: 12px }
-                #left-panel { position: absolute; left: 0; top: 0; bottom: 0; width: 300px; overflow: auto; background: #dee4ea }
+                #left-panel { position: absolute; left: 0; top: 30px; bottom: 0; width: 300px; overflow: auto; background: #dee4ea }
                 #left-panel li.navigation { font-weight: bold; cursor: default; color: #9da8b2; line-height: 18px; background-position: 12px 5px; background-repeat: no-repeat; padding: 0 0 0 25px; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAICAYAAAArzdW1AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBQqGbO7BEcAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAKRJREFUGNN1zM0KgkAYheF3RvtXSsGyWhRNaILS7bdt11W0KgJvoPwZp0UlBPUtz3nOJw7Hk7necv5dOA2Qaazo2vZP0LEt9olCVtqQROufKNmuqBuBNAYW4QzXGX6B0bDPcjGnMQYJ8Cg12U59oSzaUJQa4IUAXMclDHwAAn/MxPMw765FZd2QRgopBWmsKCrdfhXnS/4ZYElBXdyxewN008Y8AephLAkqz613AAAAAElFTkSuQmCC) }
                 #left-panel li.success { color: #565b60 }
                 #left-panel li.failure { color: red }
@@ -24,7 +24,7 @@
                 #left-panel div.success { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAOCAYAAADwikbvAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBULEEc6wzcAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAiNJREFUKM99kktIVGEYhp/jzJl08lI6logp2Y2EFkbtaqlFROsWrlq4ioJWQRs37VoUVItWkYEVRGSBlhleCpywDEWxTEuxcURTZ6YzxzP/5WshCOHUt36f93kXnyMi5Lsnb4clI4s4fhkXzp5w8mWcfHBvfEpUxVdCUUU6lUPNHuD86cYtBQX5GhPrM7hRg7GaSDRg2vuUd90WuOPVsOyqy6FFo2yOQHlU1S9z9dZT+S/8I7GCLlkAN4eyAf56mnT6Fy1HLnGuuYa++MS/4e74qMRqfXLaJ9BpfnsrLC0m2BYuoqwUbj/+274JD43OEqmexwvW8NUKXnaZtVSS1pNtAAyOvyC6v48HnUNb4Z7PH8UtTlIQWA5tb2RhYY7kz3l2FleytJYg/qWb8t2KZ/0PN+1hgI6uEUr2jpHKpGlquExVaS0VbjUZL7WxaqIXK6ADQ0n9GNfv9XCttWnD/O57t0TKFklnF3g5fJ/seoaa2D4O1x0F4PlgO9oIftbgFgYMfLgjACGqj0vlsddoUnj+Kt/mxunq72RP+UGqYjWMTA7R+b6dUCSEGEF5hoJQip6BaFs4HJtCyRrKs6wHCovDip/kys0WWpovMpOYBCtoT2N9B5uzWG0Zid8gnFrVFEQDtBaUrxEgXBimaEeER2/uIiK4roPOaMRYjBKsFly3fOO3G06dETGCWIsYjckprMphtEKMAQtgsMYi1mJMQHJ6xvkDKQoyphCzkl0AAAAASUVORK5CYII=) }
                 #left-panel div.failure { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAOCAYAAADwikbvAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBUJOEC5CU8AAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAeVJREFUKM+NkDtok2EUhp8vl9ZLo/EyKI6KFgqCKC4OClrBWUQEcRRx1cGpk3WyInWrgoMZKkW8thYaEYQ0i7WC2ngrNDTERHJvkv/L/3//dxwc7F8jeOAsh/c973OOEhG61aPnaen7maXYt4MLZ4+pbppQt+F06jNH3QWOb8pxUs+SmJzjv83hxY8SVy3wNdtVneiHqe54IhLoB4/TUkyMyOrKj5yXoVtPZK02kLyYK7OnlqFWzgcCGtUC/YUJ3n5a/jd28tU7ORTN0myUA6Jms8bpWIa798elqzn1fokjThrpVBC3ETzNbYAuca59j/Hp+b/N869Tsk8tgVMCXQk+RlfQuk1/tMLMwzsSMCcm5zjhvoR2AdpF0GuwO4aqttS05ZSbZHhsBoAIwI83Cdkd/460XDAOG02d24MxvlR8dsUUh3f2UHaEtgdbWCHz4oZwcVCp66PP5FLhKjEc8DXaCMsNy8DYn/SnZ+L0hhWOb/F8yLs9fDtwk8j+VpqwrlC34PrgGEu2bhlYhZ1b8dncq3AMeBaUr/k6NUyk4ChKzu+N2hc6Bqody+WDG8g2fLatD7F3axjPgmvAtYJvIbouhhIRrl0ZktnkBGIt1gqeMXQ8D2MMiCIUCqFEsFhEQMSykCuqX0MzLAUJTzRsAAAAAElFTkSuQmCC) }
                 #left-panel div.detail { display: none }
-                #right-panel { position: absolute; right: 0; top: 0; bottom: 0; left: 301px; overflow: auto; background: white }
+                #right-panel { position: absolute; right: 0; top: 30px; bottom: 0; left: 301px; overflow: auto; background: white }
                 #right-panel .group { font-size: 12px; font-weight: bold; line-height: 16px; padding: 0 0 0 18px; counter-reset: assertion; background-repeat: repeat-x; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAQCAYAAADXnxW3AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBUkDq8pxjkAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAADdJREFUCNdVxrERwDAMAzGK0v47eS6Z927SpMFBAAbkvSvnRk5+7K5cVfLMyN39bWakJAjA5xw9R94jN3tVhVEAAAAASUVORK5CYII=) }
                 #right-panel .zebra { background-repeat: repeat; padding: 0 0 0 18px; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAmCAYAAAAFvPEHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sDEBYWFlNztEcAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAABdJREFUCNdjYKAtePv5338mBgYGBpoQAGy1BAJlb/y6AAAAAElFTkSuQmCC) }
                 #right-panel .data { line-height: 19px; white-space: nowrap }
@@ -36,6 +36,8 @@
                 #right-panel td.assertion { color: black }
                 #right-panel .trail { border-top: 1px solid #b4b4b4 }
 
+                #summary-panel {text-align: center}
+                table#summary {padding-left: 20px; padding-right:20px}
 				table#summary tr th { color: #ffffff; font-weight: bold; text-align:center; background:#2674a6; white-space: nowrap; }
 				table#summary tr td { background:#eeeee0; white-space: nowrap; }
 				.failure { font-weight:bold; color:red;	}
@@ -105,194 +107,201 @@
                 window.onload = function() {
                     patch_timestamp();
                     patch_navigation_class();
-                    var o = document.getElementById("result-list");
-                    o = o ? o.firstChild : null;
-                    o = o ? o.nextSibling : null;
-                    if(o)
-                        onclick_li(o);
+                    //var o = document.getElementById("result-list");
+                    //o = o ? o.firstChild : null;
+                    //o = o ? o.nextSibling : null;
+                    //if(o)
+                    //    onclick_li(o);
                 };
 
             ]]></script>
             </head>
             <body>
+                <div id="summary-panel">
+                    <xsl:call-template name="summary"/>
+                </div>
                 <div id="left-panel">
                     <ol id="result-list">
                         <xsl:for-each select="*">
-                            <!-- group with the previous sibling -->
-                            <xsl:if test="position() = 1 or @tn != preceding-sibling::*[1]/@tn">
-                                <li class="navigation">Thread:
-                                    <xsl:value-of select="@tn"/>
-                                </li>
-                            </xsl:if>
                             <xsl:choose>
                                 <xsl:when test="@s = 'false'">
-                                    <li onclick="return onclick_li(this);">
-                                        <div>
-                                            <xsl:attribute name="class">
-                                                <xsl:choose>
-                                                    <xsl:when test="@s = 'true'">success</xsl:when>
-                                                    <xsl:otherwise>failure</xsl:otherwise>
-                                                </xsl:choose>
-                                            </xsl:attribute>
-                                            <xsl:value-of select="@lb"/>
-                                        </div>
-                                        <div class="detail">
-                                            <div class="group">Sampler</div>
-                                            <div class="zebra">
-                                                <table>
-                                                    <tr>
-                                                        <td class="data key">Thread Name</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <xsl:value-of select="@tn"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="data key">Timestamp</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <span class="patch_timestamp">
-                                                                <xsl:value-of select="@ts"/>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="data key">Time</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <xsl:value-of select="@t"/> ms
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="data key">Latency</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <xsl:value-of select="@lt"/> ms
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="data key">Bytes</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <xsl:value-of select="@by"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="data key">Sample Count</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <xsl:value-of select="@sc"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="data key">Error Count</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <xsl:value-of select="@ec"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="data key">Response Code</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <xsl:value-of select="@rc"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="data key">Response Message</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <xsl:value-of select="@rm"/>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="trail"></div>
-                                            <xsl:if test="count(assertionResult) &gt; 0">
-                                                <div class="group">Assertion</div>
-                                                <div class="zebra">
-                                                    <table>
-                                                        <xsl:for-each select="assertionResult">
-                                                            <tbody>
-                                                                <xsl:attribute name="class">
-                                                                    <xsl:choose>
-                                                                        <xsl:when test="failure = 'true'">failure
-                                                                        </xsl:when>
-                                                                        <xsl:when test="error = 'true'">failure
-                                                                        </xsl:when>
-                                                                    </xsl:choose>
-                                                                </xsl:attribute>
-                                                                <tr>
-                                                                    <td class="data assertion" colspan="3">
-                                                                        <xsl:value-of select="name"/>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="data key">Failure</td>
-                                                                    <td class="data delimiter">:</td>
-                                                                    <td class="data">
-                                                                        <xsl:value-of select="failure"/>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="data key">Error</td>
-                                                                    <td class="data delimiter">:</td>
-                                                                    <td class="data">
-                                                                        <xsl:value-of select="error"/>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="data key">Failure Message</td>
-                                                                    <td class="data delimiter">:</td>
-                                                                    <td class="data">
-                                                                        <xsl:value-of select="failureMessage"/>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </xsl:for-each>
-                                                    </table>
+                                    <!-- group with the previous sibling -->
+                                    <!--<xsl:if test="position() = 1 or @tn != preceding-sibling::*[1]/@tn">-->
+                                        <li class="navigation">Thread:
+                                            <xsl:value-of select="@tn"/>
+                                        </li>
+                                    <!--</xsl:if>-->
+                                    <xsl:choose>
+                                        <xsl:when test="@s = 'false'">
+                                            <li onclick="return onclick_li(this);">
+                                                <div>
+                                                    <xsl:attribute name="class">
+                                                        <xsl:choose>
+                                                            <xsl:when test="@s = 'true'">success</xsl:when>
+                                                            <xsl:otherwise>failure</xsl:otherwise>
+                                                        </xsl:choose>
+                                                    </xsl:attribute>
+                                                    <xsl:value-of select="@lb"/>
                                                 </div>
-                                                <div class="trail"></div>
-                                            </xsl:if>
-                                            <div class="group">Request</div>
-                                            <div class="zebra">
-                                                <table>
-                                                    <tr>
-                                                        <td class="data key">SQL Query</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <pre class="data">
-                                                                <xsl:value-of select="samplerData"/>
-                                                            </pre>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="trail"></div>
-                                            <div class="group">Response</div>
-                                            <div class="zebra">
-                                                <table>
-                                                    <tr>
-                                                        <td class="data key">Response Data</td>
-                                                        <td class="data delimiter">:</td>
-                                                        <td class="data">
-                                                            <pre class="data">
-                                                                <xsl:value-of select="responseData"/>
-                                                            </pre>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="trail"></div>
-                                        </div>
-                                    </li>
+                                                <div class="detail">
+                                                    <div class="group">Sampler</div>
+                                                    <div class="zebra">
+                                                        <table>
+                                                            <tr>
+                                                                <td class="data key">Thread Name</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <xsl:value-of select="@tn"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="data key">Timestamp</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <span class="patch_timestamp">
+                                                                        <xsl:value-of select="@ts"/>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="data key">Time</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <xsl:value-of select="@t"/> ms
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="data key">Latency</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <xsl:value-of select="@lt"/> ms
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="data key">Bytes</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <xsl:value-of select="@by"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="data key">Sample Count</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <xsl:value-of select="@sc"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="data key">Error Count</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <xsl:value-of select="@ec"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="data key">Response Code</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <xsl:value-of select="@rc"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="data key">Response Message</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <xsl:value-of select="@rm"/>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="trail"></div>
+                                                    <xsl:if test="count(assertionResult) &gt; 0">
+                                                        <div class="group">Assertion</div>
+                                                        <div class="zebra">
+                                                            <table>
+                                                                <xsl:for-each select="assertionResult">
+                                                                    <tbody>
+                                                                        <xsl:attribute name="class">
+                                                                            <xsl:choose>
+                                                                                <xsl:when test="failure = 'true'">
+                                                                                    failure
+                                                                                </xsl:when>
+                                                                                <xsl:when test="error = 'true'">failure
+                                                                                </xsl:when>
+                                                                            </xsl:choose>
+                                                                        </xsl:attribute>
+                                                                        <tr>
+                                                                            <td class="data assertion" colspan="3">
+                                                                                <xsl:value-of select="name"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="data key">Failure</td>
+                                                                            <td class="data delimiter">:</td>
+                                                                            <td class="data">
+                                                                                <xsl:value-of select="failure"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="data key">Error</td>
+                                                                            <td class="data delimiter">:</td>
+                                                                            <td class="data">
+                                                                                <xsl:value-of select="error"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="data key">Failure Message</td>
+                                                                            <td class="data delimiter">:</td>
+                                                                            <td class="data">
+                                                                                <xsl:value-of select="failureMessage"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </xsl:for-each>
+                                                            </table>
+                                                        </div>
+                                                        <div class="trail"></div>
+                                                    </xsl:if>
+                                                    <div class="group">Request</div>
+                                                    <div class="zebra">
+                                                        <table>
+                                                            <tr>
+                                                                <td class="data key">SQL Query</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <pre class="data">
+                                                                        <xsl:value-of select="samplerData"/>
+                                                                    </pre>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="trail"></div>
+                                                    <div class="group">Response</div>
+                                                    <div class="zebra">
+                                                        <table>
+                                                            <tr>
+                                                                <td class="data key">Response Data</td>
+                                                                <td class="data delimiter">:</td>
+                                                                <td class="data">
+                                                                    <pre class="data">
+                                                                        <xsl:value-of select="responseData"/>
+                                                                    </pre>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="trail"></div>
+                                                </div>
+                                            </li>
+                                        </xsl:when>
+                                    </xsl:choose>
                                 </xsl:when>
                             </xsl:choose>
                         </xsl:for-each>
                     </ol>
                 </div>
                 <div id="right-panel">
-                    <xsl:call-template name="summary"/>
                     <div id="info-panel"></div>
                 </div>
             </body>
@@ -300,8 +309,8 @@
     </xsl:template>
 
     <xsl:template name="summary">
-        <h2>Summary</h2>
-        <table id="summary" align="center" class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+        <!--<h2>Summary</h2>-->
+        <table id="summary" align="center" class="details" border="0" cellpadding="5" cellspacing="2" width="100%">
             <tr valign="top">
                 <th># Samples</th>
                 <th>Failures</th>
