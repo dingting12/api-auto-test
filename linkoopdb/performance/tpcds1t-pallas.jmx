@@ -34,7 +34,7 @@
           </elementProp>
           <elementProp name="b" elementType="Argument">
             <stringProp name="Argument.name">b</stringProp>
-            <stringProp name="Argument.value">TPCDS1TPALLAS</stringProp>
+            <stringProp name="Argument.value">TPCDS1GPALLAS</stringProp>
             <stringProp name="Argument.desc">dba user2</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -50,9 +50,15 @@
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">data url on hdfs</stringProp>
           </elementProp>
+          <elementProp name="tpcds_data_url2" elementType="Argument">
+            <stringProp name="Argument.name">tpcds_data_url2</stringProp>
+            <stringProp name="Argument.value">hdfs://node1:8020/node3/linkoopdb/gloway/tpcds-1t</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           <elementProp name="tpcds_data_url" elementType="Argument">
             <stringProp name="Argument.name">tpcds_data_url</stringProp>
-            <stringProp name="Argument.value">hdfs://node1:8020/node3/linkoopdb/gloway/tpcds-1t</stringProp>
+            <stringProp name="Argument.value">hdfs://node1:8020/tpcdsdata/tpcds1g</stringProp>
+            <stringProp name="Argument.desc">/tpcdsdata/tpcds1g</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -1538,6 +1544,57 @@ insert into web_returns             select * from ex_parquet_web_returns        
           </JDBCSampler>
           <hashTree/>
         </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CHANGE AUTHORIZATION" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user ${b} if exists cascade;" enabled="false">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop user ${b} if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;" enabled="false">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="grant change_authorization to ${b};" enabled="false">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">grant change_authorization to ${b};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="connect user ${b} password &apos;${b_password}&apos;;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">connect user ${b} password &apos;${b_password}&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="set spark para" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session work &apos;spark.sql.shuffle.partitions&apos; 300" enabled="true">
@@ -1835,57 +1892,6 @@ insert into web_returns             select * from ex_parquet_web_returns        
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">analyze table store_sales compute statistics;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-        </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CHANGE AUTHORIZATION" enabled="true"/>
-        <hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user ${b} if exists cascade;" enabled="false">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">drop user ${b} if exists cascade;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;" enabled="false">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="grant change_authorization to ${b};" enabled="false">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">grant change_authorization to ${b};</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="connect user ${b} password &apos;${b_password}&apos;;" enabled="true">
-            <stringProp name="dataSource">${a}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">connect user ${b} password &apos;${b_password}&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
