@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="LDB_EXT_资源管控" enabled="true">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
@@ -364,8 +364,10 @@
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">--worker.spark.total-memory=20G
 --worker.spark.total-cores=10
-drop resource group resource_group_1 if exists;
-drop resource group resource_group_2 if exists;
+drop resource group resource_group_wr_1 if exists;
+drop resource group resource_group_wr_2 if exists;
+drop resource group resource_group_wr_3 if exists;
+drop resource group resource_group_wr_4 if exists;
 drop resource group ${resource_group_1} if exists;
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -391,7 +393,7 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-001E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT -1;</stringProp>
+              <stringProp name="query">create resource group resource_group_wr_1 GLOBAL PERCENT -1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -414,7 +416,7 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-002E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT 0;</stringProp>
+              <stringProp name="query">create resource group resource_group_wr_1 GLOBAL PERCENT 0;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -437,7 +439,7 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-003E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT 1;</stringProp>
+              <stringProp name="query">create resource group resource_group_wr_1 GLOBAL PERCENT 1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -460,7 +462,7 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-004E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT 100;</stringProp>
+              <stringProp name="query">create resource group resource_group_wr_1 GLOBAL PERCENT 100;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -483,7 +485,7 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-005E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT 101;</stringProp>
+              <stringProp name="query">create resource group resource_group_wr_1 GLOBAL PERCENT 101;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -506,7 +508,32 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-006E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY 127M, CPU 1;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 0, GLOBAL MIN PERCENT 0;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1404093240">some options are not defined:</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-007E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 90, GLOBAL MIN PERCENT 0;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -526,33 +553,11 @@ drop resource group ${resource_group_1} if exists;
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-007E" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY 127M;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1404093240">some options are not defined:</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-008E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY &apos;200&apos;, EXECUTOR MEMORY &apos;200&apos;;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 20, GLOBAL MIN PERCENT -10;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -563,7 +568,7 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1197856141">the argument must be greater than zero:</stringProp>
+                  <stringProp name="1106637840">unexpected token:</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -575,76 +580,8 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-009E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY &apos;xxx&apos;, EXECUTOR MEMORY &apos;zzz&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="577876644">For input string: &quot;xx&quot;</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-010E" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY -1M, EXECUTOR MEMORY -1M;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="80929623">unexpected token: - in statement</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-011E" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY 0M, EXECUTOR MEMORY 0M;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1404093240">some options are not defined:</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-012E" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY 127M, EXECUTOR MEMORY 127M;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 20, GLOBAL MIN PERCENT 90;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -664,10 +601,83 @@ drop resource group ${resource_group_1} if exists;
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-010E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 20, GLOBAL MIN PERCENT 25;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1521165325">the argument must be greater than zero: </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-011E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 19.99, GLOBAL MIN PERCENT 19.99;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-726765714">insufficient resources: </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-012E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 90, GLOBAL MIN PERCENT 90;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1824559374">insufficient resources:</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-013E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY 127M, EXECUTOR MEMORY 127M,EXECUTOR NUMBER 2;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 101, GLOBAL MIN PERCENT 20;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -690,7 +700,8 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-014E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MANAGER CPU &apos;2&apos;, EXECUTOR CPU &apos;2&apos;;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 55, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 50;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -701,7 +712,7 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1945710959">incompatible data type in operation in statement</stringProp>
+                  <stringProp name="-1197856141">the argument must be greater than zero:</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -713,7 +724,8 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-015E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MANAGER CPU &apos;asd&apos;, EXECUTOR CPU &apos;qqq&apos;;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 55, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 110;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -724,7 +736,7 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1945710959">incompatible data type in operation in statement</stringProp>
+                  <stringProp name="-1197856141">the argument must be greater than zero:</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -736,7 +748,8 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-016E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MANAGER CPU -1, EXECUTOR CPU -1;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 30, GLOBAL MIN PERCENT 0, GLOBAL MAX PERCENT 100;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -747,7 +760,7 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1197856141">the argument must be greater than zero:</stringProp>
+                  <stringProp name="577217512">some options are not defined: </stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -759,7 +772,8 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-017E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MANAGER CPU 0, EXECUTOR CPU 0;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 55, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 10;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -770,7 +784,7 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1404093240">some options are not defined:</stringProp>
+                  <stringProp name="1521165325">the argument must be greater than zero: </stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -779,10 +793,38 @@ drop resource group ${resource_group_1} if exists;
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-018E" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MANAGER CPU 5, EXECUTOR CPU 2;</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2 if exists;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP RESOURCE_GROUP_WR_2 GLOBAL PERCENT 100, GLOBAL MIN PERCENT 20; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 100, GLOBAL MIN PERCENT 20;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-018" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -793,19 +835,22 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1404093240">some options are not defined:</stringProp>
+                  <stringProp name="363756082">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE
+RESOURCE_GROUP_WR_2	3.07692307	2	100.0	20.0
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">true</boolProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
                 <intProp name="Assertion.test_type">16</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-019E" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MANAGER CPU 5, EXECUTOR CPU 2,EXECUTOR NUMBER 2;</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -816,7 +861,7 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1404093240">some options are not defined:</stringProp>
+                  <stringProp name="0"></stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -825,10 +870,24 @@ drop resource group ${resource_group_1} if exists;
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-020E" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP RESOURCE_GROUP_WR_2 GLOBAL PERCENT 100, GLOBAL MIN PERCENT 0.001; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MANAGER CPU 1, EXECUTOR CPU 1,MANAGER MEMORY 512M, EXECUTOR MEMORY 512M,EXECUTOR NUMBER 1;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 100, GLOBAL MIN PERCENT 0.001;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-019" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -839,7 +898,33 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1197856141">the argument must be greater than zero:</stringProp>
+                  <stringProp name="-1667507889">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE
+RESOURCE_GROUP_WR_2	3.07692307	2	100.0	0.001
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -848,10 +933,75 @@ drop resource group ${resource_group_1} if exists;
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_1 GLOBAL PERCENT 50,DYNAMIC ALLOCATE true;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP RESOURCE_GROUP_WR_2 GLOBAL PERCENT 20, GLOBAL MIN PERCENT 0; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT 50,DYNAMIC ALLOCATE true;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP RESOURCE_GROUP_WR_2 GLOBAL PERCENT 20, GLOBAL MIN PERCENT 0;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-020" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1052601023">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE
+RESOURCE_GROUP_WR_2	3.07692307	2	20.0	0.0
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP RESOURCE_GROUP_WR_2 GLOBAL PERCENT 89.99, GLOBAL MIN PERCENT 89.99; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 89.99, GLOBAL MIN PERCENT 89.99;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -863,7 +1013,8 @@ drop resource group ${resource_group_1} if exists;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-021" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -874,8 +1025,8 @@ drop resource group ${resource_group_1} if exists;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="221148687">RESOURCE_GROUP_NAME	C2	CPU_USED
-RESOURCE_GROUP_1	10.00000000	5
+                  <stringProp name="-1294398427">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE
+RESOURCE_GROUP_WR_2	12.30769230	8	89.99	89.99
 </stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -885,10 +1036,11 @@ RESOURCE_GROUP_1	10.00000000	5
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-022E" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_2 GLOBAL PERCENT 50;</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -899,7 +1051,7 @@ RESOURCE_GROUP_1	10.00000000	5
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1824559374">insufficient resources:</stringProp>
+                  <stringProp name="0"></stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -908,10 +1060,11 @@ RESOURCE_GROUP_1	10.00000000	5
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 drop resource group resource_group_1 if exists;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 100, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 0; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop resource group resource_group_1 if exists;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 100, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 0;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -920,10 +1073,62 @@ RESOURCE_GROUP_1	10.00000000	5
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_1 GLOBAL PERCENT 50,DYNAMIC ALLOCATE true;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-022" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="363905037">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE
+RESOURCE_GROUP_WR_2	3.07692307	2	100.0	25.0
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT 50,DYNAMIC ALLOCATE true;</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 0, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 100; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 0, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 100;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -935,7 +1140,8 @@ RESOURCE_GROUP_1	10.00000000	5
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-023" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -946,8 +1152,8 @@ RESOURCE_GROUP_1	10.00000000	5
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="221148687">RESOURCE_GROUP_NAME	C2	CPU_USED
-RESOURCE_GROUP_1	10.00000000	5
+                  <stringProp name="1878373068">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE
+RESOURCE_GROUP_WR_2	3.07692307	2	0.0	25.0
 </stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -957,10 +1163,11 @@ RESOURCE_GROUP_1	10.00000000	5
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 drop resource group resource_group_1 if exists;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop resource group resource_group_1 if exists;</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -968,12 +1175,23 @@ RESOURCE_GROUP_1	10.00000000	5
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_1 MANAGER CPU 1, EXECUTOR CPU 1,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1,DYNAMIC ALLOCATE true;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 30, GLOBAL MIN PERCENT 0, GLOBAL MAX PERCENT 0; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">-- min value
-create resource group resource_group_1 MANAGER CPU 1, EXECUTOR CPU 1,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1,DYNAMIC ALLOCATE true;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 30, GLOBAL MIN PERCENT 0, GLOBAL MAX PERCENT 0;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -985,7 +1203,9 @@ create resource group resource_group_1 MANAGER CPU 1, EXECUTOR CPU 1,MANAGER MEM
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-024" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -996,8 +1216,8 @@ create resource group resource_group_1 MANAGER CPU 1, EXECUTOR CPU 1,MANAGER MEM
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1228879611">RESOURCE_GROUP_NAME	C2	CPU_USED
-RESOURCE_GROUP_1	2.00000000	2
+                  <stringProp name="957553886">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE
+RESOURCE_GROUP_WR_2	4.61538461	3	30.0	0.0
 </stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -1007,10 +1227,11 @@ RESOURCE_GROUP_1	2.00000000	2
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 drop resource group resource_group_1 if exists;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop resource group resource_group_1 if exists;</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1018,11 +1239,23 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_1 GLOBAL PERCENT 50,MANAGER CPU 1, EXECUTOR CPU 5,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1,DYNAMIC ALLOCATE true;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 0.02, GLOBAL MIN PERCENT 0.01, GLOBAL MAX PERCENT 100; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT 50,MANAGER CPU 1, EXECUTOR CPU 1,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1,DYNAMIC ALLOCATE true;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 0.02, GLOBAL MIN PERCENT 0.01, GLOBAL MAX PERCENT 100;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1034,7 +1267,8 @@ RESOURCE_GROUP_1	2.00000000	2
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-025" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1045,9 +1279,7 @@ RESOURCE_GROUP_1	2.00000000	2
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1228879611">RESOURCE_GROUP_NAME	C2	CPU_USED
-RESOURCE_GROUP_1	2.00000000	2
-</stringProp>
+                  <stringProp name="-1172285569">RESOURCE_GROUP_WR_2	3.07692307	2	0.02	0.01</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1056,10 +1288,10 @@ RESOURCE_GROUP_1	2.00000000	2
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 drop resource group resource_group_1 if exists;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop resource group resource_group_1 if exists;</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1068,10 +1300,11 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_1 MEMORY 50G, CPU 15,MANAGER CPU 1, EXECUTOR CPU 5,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1,DYNAMIC ALLOCATE true;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP RESOURCE_GROUP_WR_2 GLOBAL PERCENT 50, GLOBAL MIN PERCENT 20; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 MEMORY 10G, CPU 6,MANAGER CPU 1, EXECUTOR CPU 1,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1,DYNAMIC ALLOCATE true;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 50, GLOBAL MIN PERCENT 20;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1083,7 +1316,8 @@ RESOURCE_GROUP_1	2.00000000	2
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-026" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1094,8 +1328,8 @@ RESOURCE_GROUP_1	2.00000000	2
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1228879611">RESOURCE_GROUP_NAME	C2	CPU_USED
-RESOURCE_GROUP_1	2.00000000	2
+                  <stringProp name="1978226016">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE
+RESOURCE_GROUP_WR_2	3.07692307	2	50.0	20.0
 </stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -1105,10 +1339,10 @@ RESOURCE_GROUP_1	2.00000000	2
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 drop resource group resource_group_1 if exists;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL PERCENT 30,GLOBAL MIN PERCENT 0;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop resource group resource_group_1 if exists;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 30,GLOBAL MIN PERCENT 0;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1117,10 +1351,36 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_1 GLOBAL PERCENT 50,DYNAMIC ALLOCATE true;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-027" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL PERCENT 60; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group resource_group_1 GLOBAL PERCENT 50,DYNAMIC ALLOCATE true;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 60;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1129,10 +1389,12 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 6" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-028" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1140,11 +1402,22 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set GLOBAL PERCENT 40;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL PERCENT 30,GLOBAL MIN PERCENT 0;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set GLOBAL PERCENT 40;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 30,GLOBAL MIN PERCENT 0;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1153,10 +1426,12 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 7" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-029" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1164,11 +1439,23 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02] alter resource group resource_group_1 set MEMORY PERCENT 80;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL MIN PERCENT 50; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set MEMORY PERCENT 80;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL MIN PERCENT 30;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1177,10 +1464,12 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 8" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-030" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1188,11 +1477,23 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set CPU PERCENT 80;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL PERCENT 30,GLOBAL MIN PERCENT 0;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set CPU PERCENT 80;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL MIN PERCENT 0;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1201,10 +1502,12 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 9" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-031" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1212,11 +1515,23 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set MEMORY 16G;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-032E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set MEMORY 16G;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 0,GLOBAL MIN PERCENT 0;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1224,23 +1539,21 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 10" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set CPU 7;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-033E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set CPU 7;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 0,GLOBAL MIN PERCENT 40;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1248,23 +1561,21 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 11" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set MANAGER MEMORY 1G;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-034E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set MANAGER MEMORY 1G;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 40,GLOBAL MIN PERCENT -1;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1272,23 +1583,21 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 12" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set MANAGER CPU 2;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-035E" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set MANAGER CPU 2;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 0;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1296,47 +1605,22 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 13" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set EXECUTOR MEMORY 1G;" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set EXECUTOR MEMORY 1G;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 14" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set EXECUTOR CPU 2;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set EXECUTOR CPU 2;</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1345,22 +1629,11 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 15" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set EXECUTOR NUMBER 2;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 55, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 100; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set EXECUTOR NUMBER 2;</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 55, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 100;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1369,10 +1642,11 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 16" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-036" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,RESOURCE_GLOBAL_MAX_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1380,11 +1654,25 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set GLOBAL PERCENT 60, MEMORY PERCENT 60, CPU PERCENT 60, MEMORY 10G, CPU 6, MANAGER MEMORY 2G, MANAGER CPU 1, EXECUTOR MEMORY 2G, EXECUTOR CPU 1,EXECUTOR NUMBER 2;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1227850823">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	RESOURCE_GLOBAL_MAX_PERCENTAGE
+RESOURCE_GROUP_WR_2	3.07692307	2	55.0	25.0	100.0
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL MAX PERCENT 90; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">alter resource group resource_group_1 set GLOBAL PERCENT 60, MEMORY PERCENT 60, CPU PERCENT 60, MEMORY 10G, CPU 6, MANAGER MEMORY 2G, MANAGER CPU 1, EXECUTOR MEMORY 2G, EXECUTOR CPU 1,EXECUTOR NUMBER 2;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL MAX PERCENT 90;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1393,10 +1681,11 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 17" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-037" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,RESOURCE_GLOBAL_MAX_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1404,11 +1693,25 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="[398] drop resource group resource_group_1 if exists;" enabled="false">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-331381407">RESOURCE_GROUP_NAME	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	RESOURCE_GLOBAL_MAX_PERCENTAGE
+RESOURCE_GROUP_WR_2	55.0	25.0	90.0
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL PERCENT 0,GLOBAL MIN PERCENT 25,GLOBAL MAX PERCENT 90; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop resource group resource_group_1 if exists;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 0,GLOBAL MIN PERCENT 25,GLOBAL MAX PERCENT 90;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1417,11 +1720,11 @@ RESOURCE_GROUP_1	2.00000000	2
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set MANAGER MEMORY 1G,EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-038" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">--修改多个参数
-alter resource group resource_group_1 set MANAGER MEMORY 1G,EXECUTOR MEMORY 1G,EXECUTOR NUMBER 2;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,RESOURCE_GLOBAL_MAX_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1429,100 +1732,23 @@ alter resource group resource_group_1 set MANAGER MEMORY 1G,EXECUTOR MEMORY 1G,E
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 18" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set MANAGER MEMORY 1G,EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1;" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">--修改多个参数
-alter resource group resource_group_1 set MANAGER MEMORY 1G,EXECUTOR MEMORY 1G;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 19" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set MANAGER MEMORY 1G,EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1;" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">--修改多个参数
-alter resource group resource_group_1 set MANAGER CPU 1,EXECUTOR CPU 1;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 20" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 set MANAGER MEMORY 1G,EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1;" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">--修改多个参数
-alter resource group resource_group_1 set MANAGER CPU 1,EXECUTOR CPU 1,EXECUTOR NUMBER 2;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 21" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_1 SET GLOBAL PERCENT 20, MEMORY PERCENT 0, CPU PERCENT 0, MEMORY 0, CPU 0, MANAGER MEMORY 0, MANAGER CPU 0, EXECUTOR  MEMORY 0, EXECUTOR CPU 0, EXECUTOR NUMBER 0, DYNAMIC ALLOCATE TRUE;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL PERCENT 55,GLOBAL MIN PERCENT 25,GLOBAL MAX PERCENT 0; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">--同时修改高级参数和低级参数
-alter resource group resource_group_1 SET GLOBAL PERCENT 20, MEMORY PERCENT 0, CPU PERCENT 0, MEMORY 0, CPU 0, MANAGER MEMORY 0, MANAGER CPU 0, EXECUTOR  MEMORY 0, EXECUTOR CPU 0,
-EXECUTOR NUMBER 0, DYNAMIC ALLOCATE TRUE;</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 55,GLOBAL MIN PERCENT 25,GLOBAL MAX PERCENT 0;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1531,10 +1757,1019 @@ EXECUTOR NUMBER 0, DYNAMIC ALLOCATE TRUE;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 select information_schema.SYSTEM_RESOURCE_GROUP 21" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-039" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select resource_group_name,memory_used/1024/1024/1024,cpu_used from information_schema.SYSTEM_RESOURCE_GROUP where RESOURCE_GROUP_NAME = &apos;RESOURCE_GROUP_1&apos;;</stringProp>
+              <stringProp name="query">SELECT resource_group_name,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,RESOURCE_GLOBAL_MAX_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_2 SET GLOBAL PERCENT 55,GLOBAL MIN PERCENT 0,GLOBAL MAX PERCENT 0; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 55,GLOBAL MIN PERCENT 0,GLOBAL MAX PERCENT 0;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-040" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,RESOURCE_GLOBAL_MAX_PERCENTAGE
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_2&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="580872803">RESOURCE_GROUP_NAME	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	RESOURCE_GLOBAL_MAX_PERCENTAGE
+RESOURCE_GROUP_WR_2	55.0	0.0	0.0
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 55, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 100; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_2 GLOBAL PERCENT 55, GLOBAL MIN PERCENT 25, GLOBAL MAX PERCENT 100;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-041E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 0,GLOBAL MIN PERCENT 0,GLOBAL MAX PERCENT 90;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-042E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 0,GLOBAL MIN PERCENT 0,GLOBAL MAX PERCENT 0;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-043E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_2 SET GLOBAL PERCENT 55,GLOBAL MIN PERCENT 0,GLOBAL MAX PERCENT 90;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="0"></stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP resource group resource_group_wr_2;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP resource group resource_group_wr_2;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP RESOURCE GROUP resource_group_wr_3 ; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP RESOURCE GROUP resource_group_wr_3 IF EXISTS; </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-044E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_3 MANAGER MEMORY 1g, EXECUTOR MEMORY 1g, EXECUTOR CPU 1, EXECUTOR NUMBER 1 ,DYNAMIC ALLOCATE true;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1714857125">unexpected token: DYNAMIC in statement</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-045E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">create resource group resource_group_wr_3 MANAGER CPU 1, EXECUTOR CPU 1,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1429737766">unexpected token: CPU required: MEMORY in statement</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP RESOURCE GROUP resource_group_wr_3" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP RESOURCE GROUP resource_group_wr_3 if exists;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_wr_3 EXECUTOR CPU 1,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">create resource group resource_group_wr_3 EXECUTOR CPU 1,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-046" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES,RESOURCE_NUMEXECUTORS
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_3&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1515483111">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES	RESOURCE_NUMEXECUTORS
+RESOURCE_GROUP_WR_3	2.00000000	2	0.0	0.0	1.00000000	1.00000000	1	1
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_wr_3 set MANAGER MEMORY 2g, EXECUTOR MEMORY 2g; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">alter resource group resource_group_wr_3 set MANAGER MEMORY 2g, EXECUTOR MEMORY 2g;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-047" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES,RESOURCE_NUMEXECUTORS
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_3&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1594000951">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES	RESOURCE_NUMEXECUTORS
+RESOURCE_GROUP_WR_3	4.00000000	2	0.0	0.0	2.00000000	2.00000000	1	1
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP RESOURCE GROUP resource_group_wr_3 ; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP RESOURCE GROUP resource_group_wr_3;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_wr_3 MANAGER MEMORY 2G, EXECUTOR MEMORY 2G, EXECUTOR CPU 1,EXECUTOR NUMBER 2; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">--EXECUTOR CPU,MANAGER MEMORY, EXECUTOR MEMORY,EXECUTOR NUMBER这四项优先级是最高的,如果这四个都配全了其他的参数就无效了 
+create resource group resource_group_wr_3 MANAGER MEMORY 2G, EXECUTOR MEMORY 2G, EXECUTOR CPU 1,EXECUTOR NUMBER 2;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-048" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES,RESOURCE_NUMEXECUTORS
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_3&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="3210953">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES	RESOURCE_NUMEXECUTORS
+RESOURCE_GROUP_WR_3	6.00000000	3	0.0	0.0	2.00000000	2.00000000	1	2
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group resource_group_wr_3 set GLOBAL PERCENT 40; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">alter resource group resource_group_wr_3 set GLOBAL PERCENT 40;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-049" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES,RESOURCE_NUMEXECUTORS
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_3&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-318693113">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES	RESOURCE_NUMEXECUTORS
+RESOURCE_GROUP_WR_3	6.00000000	3	40.0	0.0	2.00000000	2.00000000	1	2
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_3 SET GLOBAL PERCENT 20, GLOBAL MIN PERCENT 20; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_3 SET GLOBAL PERCENT 20, GLOBAL MIN PERCENT 20;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-050" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES,RESOURCE_NUMEXECUTORS
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_3&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="833756667">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES	RESOURCE_NUMEXECUTORS
+RESOURCE_GROUP_WR_3	6.00000000	3	20.0	20.0	2.00000000	2.00000000	1	2
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 alter resource group RESOURCE_GROUP_WR_3 set MANAGER MEMORY 3G, EXECUTOR MEMORY 2G, EXECUTOR CPU 1,EXECUTOR NUMBER 2; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">alter resource group resource_group_wr_3 set MANAGER MEMORY 3G, EXECUTOR MEMORY 2G, EXECUTOR CPU 1,EXECUTOR NUMBER 2;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-051" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES,RESOURCE_NUMEXECUTORS
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_3&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="857017115">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES	RESOURCE_NUMEXECUTORS
+RESOURCE_GROUP_WR_3	7.00000000	3	20.0	20.0	3.00000000	2.00000000	1	2
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP RESOURCE GROUP resource_group_wr_3 ; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP RESOURCE GROUP resource_group_wr_3 IF EXISTS; </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP RESOURCE GROUP resource_group_wr_4" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP RESOURCE GROUP resource_group_wr_4 if exists;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-052E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_4 GLOBAL PERCENT 50, GLOBAL MIN PERCENT 10, MANAGER MEMORY 1g, EXECUTOR MEMORY 1g, EXECUTOR CPU 40;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1824559374">insufficient resources:</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-053E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_4 GLOBAL PERCENT 0, GLOBAL MIN PERCENT 0, MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="577217512">some options are not defined: </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-054E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_4 GLOBAL PERCENT 0, GLOBAL MIN PERCENT 10, MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="577217512">some options are not defined: </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP RESOURCE GROUP resource_group_wr_4" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP RESOURCE GROUP resource_group_wr_4 if exists;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP resource_group_wr_4 GLOBAL PERCENT 50, GLOBAL MIN PERCENT 10, MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_4 GLOBAL PERCENT 50, GLOBAL MIN PERCENT 10, MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-055" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_4&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1569364792">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES
+RESOURCE_GROUP_WR_4	3.00000000	4	50.0	10.0	2.00000000	1.00000000	3
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_4 SET GLOBAL PERCENT 50,GLOBAL MIN PERCENT 10; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET GLOBAL PERCENT 50,GLOBAL MIN PERCENT 10;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-056" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_4&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1569364792">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES
+RESOURCE_GROUP_WR_4	3.00000000	4	50.0	10.0	2.00000000	1.00000000	3
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP resource_group_wr_4 SET MANAGER MEMORY 1g, EXECUTOR MEMORY 2g; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET MANAGER MEMORY 1g, EXECUTOR MEMORY 2g;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-057" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_4&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1342968538">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES
+RESOURCE_GROUP_WR_4	3.00000000	4	50.0	10.0	1.00000000	2.00000000	3
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_4 SET EXECUTOR CPU 1; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET EXECUTOR CPU 1;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-058" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_4&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1737335262">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES
+RESOURCE_GROUP_WR_4	3.00000000	2	50.0	10.0	1.00000000	2.00000000	1
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_3 SET GLOBAL PERCENT 80 ,MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET GLOBAL PERCENT 80 ,MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-059" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_4&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="350873493">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES
+RESOURCE_GROUP_WR_4	3.00000000	4	80.0	10.0	2.00000000	1.00000000	3
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_4 SET MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-060" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_4&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="350873493">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES
+RESOURCE_GROUP_WR_4	3.00000000	4	80.0	10.0	2.00000000	1.00000000	3
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP RESOURCE GROUP resource_group_wr_4" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP RESOURCE GROUP resource_group_wr_4
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 CREATE RESOURCE GROUP resource_group_wr_4 GLOBAL PERCENT 50, GLOBAL MIN PERCENT 10, MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE RESOURCE GROUP resource_group_wr_4 GLOBAL PERCENT 50, GLOBAL MIN PERCENT 10, MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_4 SET GLOBAL PERCENT 100, GLOBAL MIN PERCENT 10, MANAGER MEMORY 0g, EXECUTOR MEMORY 0g, EXECUTOR CPU 0; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET GLOBAL PERCENT 100, GLOBAL MIN PERCENT 10, MANAGER MEMORY 0g, EXECUTOR MEMORY 0g, EXECUTOR CPU 0;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-061" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_4&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1748571254">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES
+RESOURCE_GROUP_WR_4	3.07692307	2	100.0	10.0	0E-8	0E-8	0
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 ALTER RESOURCE GROUP RESOURCE_GROUP_WR_4 SET GLOBAL PERCENT 20, GLOBAL MIN PERCENT 0, MANAGER MEMORY 0g, EXECUTOR MEMORY 0g, EXECUTOR CPU 0; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET GLOBAL PERCENT 20, GLOBAL MIN PERCENT 0, MANAGER MEMORY 0g, EXECUTOR MEMORY 0g, EXECUTOR CPU 0;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-062" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME=&apos;RESOURCE_GROUP_WR_4&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1291557508">RESOURCE_GROUP_NAME	C2	CPU_USED	RESOURCE_GLOBAL_PRECENT	RESOURCE_GLOBAL_MIN_PERCENTAGE	C6	C7	RESOURCE_EXECUTORCORES
+RESOURCE_GROUP_WR_4	3.07692307	2	20.0	0.0	0E-8	0E-8	0
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-063E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET GLOBAL PERCENT 0, GLOBAL MIN PERCENT 0, MANAGER MEMORY 0g, EXECUTOR MEMORY 0g, EXECUTOR CPU 0;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="577217512">some options are not defined: </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-064E" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">ALTER RESOURCE GROUP resource_group_wr_4 SET GLOBAL PERCENT 0, GLOBAL MIN PERCENT 20, MANAGER MEMORY 1g, EXECUTOR MEMORY 1g, EXECUTOR CPU 2;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="577217512">some options are not defined: </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 DROP RESOURCE GROUP resource_group_wr_4 ; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP RESOURCE GROUP resource_group_wr_4 IF EXISTS; </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1555,7 +2790,7 @@ EXECUTOR NUMBER 0, DYNAMIC ALLOCATE TRUE;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-027" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-065" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select resource_group from information_schema.SYSTEM_USERS where user_name = &apos;${u3}&apos;;</stringProp>
@@ -1581,7 +2816,7 @@ EXECUTOR NUMBER 0, DYNAMIC ALLOCATE TRUE;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 create resource group resource_group_1 GLOBAL PERCENT 50,DYNAMIC ALLOCATE true;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create resource group ${resource_group_1} GLOBAL PERCENT 50,DYNAMIC ALLOCATE true;</stringProp>
+              <stringProp name="query">create resource group ${resource_group_1} GLOBAL PERCENT 50;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1602,7 +2837,7 @@ EXECUTOR NUMBER 0, DYNAMIC ALLOCATE TRUE;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-028" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 TC-066" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select resource_group from information_schema.SYSTEM_USERS where user_name = &apos;${u3}&apos;;</stringProp>
@@ -1629,8 +2864,12 @@ TEST1</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="398 LDBX033-02 drop resource group resource_group_1 if exists;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop resource group resource_group_1 if exists;
-drop resource group resource_group_2 if exists;
+              <stringProp name="query">--worker.spark.total-memory=20G
+--worker.spark.total-cores=10
+drop resource group resource_group_wr_1 if exists;
+drop resource group resource_group_wr_2 if exists;
+drop resource group resource_group_wr_3 if exists;
+drop resource group resource_group_wr_4 if exists;
 drop resource group ${resource_group_1} if exists;
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
