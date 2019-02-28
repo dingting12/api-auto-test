@@ -1,12 +1,9 @@
 #!/bin/bash
 workdir=$(cd $(dirname $0); pwd)
 source $workdir/install.properties
-
-
 #check if user is root  
-
 if [ $(id -u) != "0" ];then  
-   echo "Error: You must be root to run this script	  
+   echo "Error: You must be root to run this script"	  
    exit 1  
 fi
 
@@ -42,20 +39,20 @@ function db_install {
 	#修改db配置文件
 
     # 1.ldb-env.sh
-    sed -i "s/${linkoop.feature}/ldb/g" $db_home/linkoopdb_current/conf/ldb-env.sh 
-    sed -i "s/hdfs:\/\/node1\/node4\/linkoopdb\//$LINKOOPDB_BASE/g" $db_home/linkoopdb_current/conf/ldb-env.sh
-	sed -i "s/\/home\/litianqi\/linkoopdb\/others\/spark-2.3.1-bin-datapps-dev/$db_home\/others\/$SPARK_VERSION-bin-datapps-dev/g" $db_home/linkoopdb_current/conf/ldb-env.sh
-	sed -i "s/litianqi/linkoopdb/g" $db_home/linkoopdb_current/conf/ldb-env
-	sed -i "s/spark-1.2.0/spark-2.0.0/g" $db_home/linkoopdb_current/conf/ldb-env.sh
-	sed -i "s/hdfs:\/\/node4\/linkoopdb\/litianqi\/spark-2.3.1\/jars\/*.jar/$LINKOOPDB_BASE\/linkoopdb\/$SPARK_VERSION\/jars\/*.jar/g" $db_home/linkoopdb_current/conf/ldb-env.sh
-	sed -i "s/node4:8984/$node:$solr_port/g" $db_home/linkoopdb_current/conf/ldb-env.sh 
-
+sed -i "s/\${linkoop.feature}/ldb/g" $db_home/linkoopdb_current/conf/ldb-env.sh 
+sed -i "s?hdfs:\/\/node1\/node4\/linkoopdb\/litianqi\/dist?hdfs:\/\/$LINKOOPDB_BASE?g" $db_home/linkoopdb_current/conf/ldb-env.sh
+sed -i "s?\/home\/litianqi\/linkoopdb\/others\/spark-2.3.1-bin-datapps-dev?$db_home\/others\/$SPARK_VERSION-bin-datapps-dev?g" $db_home/linkoopdb_current/conf/ldb-env.sh
+#sed -i "s/litianqi/linkoopdb/g" $db_home/linkoopdb_current/conf/ldb-env
+sed -i "s/spark-1.2.0/spark-2.0.0/g" $db_home/linkoopdb_current/conf/ldb-env.sh
+sed -i "s?hdfs:\/\/node4\/linkoopdb\/litianqi\/spark-2.3.1\/jars\/\*.jar?hdfs:\/\/$LINKOOPDB_BASE\/$USER_NAME\/$SPARK_VERSION\/jars\/\*.jar?g" $db_home/linkoopdb_current/conf/ldb-env.sh
+sed -i "s/node4:8984/$node:$solr_port/g" $db_home/linkoopdb_current/conf/ldb-env.sh 
+sed -i "s?litianqi?$USER_NAME?g" $db_home/linkoopdb_current/conf/ldb-env.sh
     # 2.ldb.properties
-    sed -i "s/worker.queue=linkoopdb/worker.queue=default/g" $db_home/linkoopdb_current/conf/ldb.properties
-    sed -i "s/localhost/$node/g" $db_home/linkoopdb_current/conf/ldb.properties
+sed -i "s/worker.queue=linkoopdb/worker.queue=default/g" $db_home/linkoopdb_current/conf/ldb.properties
+sed -i "s/localhost/$node/g" $db_home/linkoopdb_current/conf/ldb.properties
 
     # 3.ldb-env-client.sh
-    sed -i "s/\/home\/wangd\/software\/jdk1.8.0_172/$JAVA_HOME/g" $db_home/linkoopdb_current/conf/ldb-env-client.sh
+sed -i "s?\/home\/wangd\/software\/jdk1.8.0_172?$JAVA_HOME?g" $db_home/linkoopdb_current/conf/ldb-env-client.sh
 
 }
 
@@ -68,29 +65,28 @@ function kafka_install {
 	cd $db_home/others/$kafka_dirname/config
     mv server.properties server.properties_bak
     cat > server.properties << EOF
-    broker.id=0
-    listeners=PLAINTEXT://:9092
-    port=29092
-    host.name=$node
-    advertised.host.name=$node
-    advertised.port=29093
-    num.network.threads=3
-    num.io.threads=8
-    socket.send.buffer.bytes=102400
-    socket.receive.buffer.bytes=102400
-    socket.request.max.bytes=104857600
-    log.dirs=/tmp/kafka-logs
-    num.partitions=1
-    num.recovery.threads.per.data.dir=1
-    log.retention.hours=48
-    log.segment.bytes=1073741824
-    log.retention.check.interval.ms=300000
-    zookeeper.connect=${zklist}/linkoopdb/kafka
-    zookeeper.connection.timeout.ms=6000
-    delete.topic.enable=true
-    EOF
+broker.id=0
+listeners=PLAINTEXT://:9092
+port=29092
+host.name=$node
+advertised.host.name=$node
+advertised.port=29093
+num.network.threads=3
+num.io.threads=8
+socket.send.buffer.bytes=102400
+socket.receive.buffer.bytes=102400
+socket.request.max.bytes=104857600
+log.dirs=/tmp/kafka-logs
+num.partitions=1
+num.recovery.threads.per.data.dir=1
+log.retention.hours=48
+log.segment.bytes=1073741824
+log.retention.check.interval.ms=300000
+zookeeper.connect=${zklist}/linkoopdb/kafka
+zookeeper.connection.timeout.ms=6000
+delete.topic.enable=true
+EOF
     cd -
-
 }
 
 
@@ -99,9 +95,9 @@ function spark_install {
 	tar -zxvf $spark_loc -C $db_home/others
 	#创建spark依赖的LinkoopDB jar包链接。
     ln -s $db_home/linkoopdb_current/ldb-worker/lib/* $db_home/others/$SPARK_VERSION-bin-datapps-dev/jars
-    sudo -u hdfs hadoop fs -mkdir -p /app/linkoopdb/$USER_NAME/$SPARK_VERSION
-    sudo -u hdfs hadoop fs -chown -R $USER_NAME:hdfs /app/linkoopdb/
-    su - $USER_NAME -c "hadoop fs -put $db_home/others/$SPARK_VERSION-bin-datapps-dev/jars /app/linkoopdb/$USER_NAME/$SPARK_VERSION"
+    sudo -u hdfs hadoop fs -mkdir -p $LINKOOPDB_BASE/$USER_NAME/$SPARK_VERSION
+    sudo -u hdfs hadoop fs -chown -R $USER_NAME:hdfs $LINKOOPDB_BASE
+    su - $USER_NAME -c "hadoop fs -put $db_home/others/$SPARK_VERSION-bin-datapps-dev/jars $LINKOOPDB_BASE/$USER_NAME/$SPARK_VERSION"
     sleep 30
 
     #配置spark配置文件
@@ -148,11 +144,11 @@ if [ -d "./$dirname" ];then
    read -n1 -p "当前linkoopDB版本已经存在,确定重新安装么[y/n]?" answer
    case $answer in   
  Y | y)  
-       echo   
-       echo "开始重新安装linkoopDB....";;
+       echo  
        rm -f linkoopdb_current
        rm -rf$dirname
-	   db_install
+       db_install 
+       echo "安装linkoopDB成功....";;
  N | n)  
        echo   
        echo "忽略重新安装linkoopDB...."  
@@ -198,9 +194,9 @@ else
 tar -zxvf $flink_loc -C $db_home/others
 fi
 
-echo "flink安装成功。"
+#echo "flink安装成功。"
 
-#安装pallas
+安装pallas
 cd $db_home/others
 tar -zxvf $pallas_loc
 
@@ -258,24 +254,5 @@ cd $db_home
 su - $USER_NAME -c "bin/ldb-server.sh start"
 echo "linkoopdb启动成功。"
 
-echo "安装成功。"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+echo "安装完成"
