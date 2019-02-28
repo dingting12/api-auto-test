@@ -42,20 +42,20 @@ function db_install {
 	#修改db配置文件
 
     # 1.ldb-env.sh
-    sed -i "s/${linkoop.feature}/ldb/g" $db_home/conf/ldb-env.sh 
-    sed -i "s/hdfs:\/\/node1\/node4\/linkoopdb\//$LINKOOPDB_BASE/g" $db_home/conf/ldb-env.sh
-	sed -i "s/\/home\/litianqi\/linkoopdb\/others\/spark-2.3.1-bin-datapps-dev/$db_home\/others\/$SPARK_VERSION-bin-datapps-dev/g" $db_home/conf/ldb-env.sh
-	sed -i "s/litianqi/linkoopdb/g" $db_home/conf/ldb-env
-	sed -i "s/spark-1.2.0/spark-2.0.0/g" $db_home/conf/ldb-env.sh
-	sed -i "s/hdfs:\/\/node4\/linkoopdb\/litianqi\/spark-2.3.1\/jars\/*.jar/$LINKOOPDB_BASE\/linkoopdb\/$SPARK_VERSION\/jars\/*.jar/g" $db_home/conf/ldb-env.sh
-	sed -i "s/node4:8984/$node:$solr_port/g" $db_home/conf/ldb-env.sh 
+    sed -i "s/${linkoop.feature}/ldb/g" $db_home/linkoopdb_current/conf/ldb-env.sh 
+    sed -i "s/hdfs:\/\/node1\/node4\/linkoopdb\//$LINKOOPDB_BASE/g" $db_home/linkoopdb_current/conf/ldb-env.sh
+	sed -i "s/\/home\/litianqi\/linkoopdb\/others\/spark-2.3.1-bin-datapps-dev/$db_home\/others\/$SPARK_VERSION-bin-datapps-dev/g" $db_home/linkoopdb_current/conf/ldb-env.sh
+	sed -i "s/litianqi/linkoopdb/g" $db_home/linkoopdb_current/conf/ldb-env
+	sed -i "s/spark-1.2.0/spark-2.0.0/g" $db_home/linkoopdb_current/conf/ldb-env.sh
+	sed -i "s/hdfs:\/\/node4\/linkoopdb\/litianqi\/spark-2.3.1\/jars\/*.jar/$LINKOOPDB_BASE\/linkoopdb\/$SPARK_VERSION\/jars\/*.jar/g" $db_home/linkoopdb_current/conf/ldb-env.sh
+	sed -i "s/node4:8984/$node:$solr_port/g" $db_home/linkoopdb_current/conf/ldb-env.sh 
 
     # 2.ldb.properties
-    sed -i "s/worker.queue=linkoopdb/worker.queue=default/g" $db_home/conf/ldb.properties
-    sed -i "s/localhost/$node/g" $db_home/conf/ldb.properties
+    sed -i "s/worker.queue=linkoopdb/worker.queue=default/g" $db_home/linkoopdb_current/conf/ldb.properties
+    sed -i "s/localhost/$node/g" $db_home/linkoopdb_current/conf/ldb.properties
 
     # 3.ldb-env-client.sh
-    sed -i "s/\/home\/wangd\/software\/jdk1.8.0_172/$JAVA_HOME/g" $db_home/conf/ldb-env-client.sh
+    sed -i "s/\/home\/wangd\/software\/jdk1.8.0_172/$JAVA_HOME/g" $db_home/linkoopdb_current/conf/ldb-env-client.sh
 
 }
 
@@ -134,7 +134,7 @@ function install_solr {
 
 
 
-chown -R $USER_NAME:$USER_NAME $db_home
+chown -R $USER_NAME:$USER_NAME $db_home 
 
 sleep 4
 
@@ -151,7 +151,7 @@ if [ -d "./$dirname" ];then
        echo   
        echo "开始重新安装linkoopDB....";;
        rm -f linkoopdb_current
-       rm -rf $dirname
+       rm -rf$dirname
 	   db_install
  N | n)  
        echo   
