@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="LDB_EXT_机器学习基本算子2" enabled="false">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="LDB_EXT_机器学习基本算子2" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
@@ -1007,7 +1007,7 @@ drop model ${als_model_2} if exists;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="326 LDBX004-01 create table ${TEST_AI_4} (c1 double, c2 double);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table ${TEST_AI_4} (c1 double, c2 double);</stringProp>
+              <stringProp name="query">create table ${TEST_AI_4} (c1 float, c2 double);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1019,7 +1019,7 @@ drop model ${als_model_2} if exists;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="326 LDBX004-01 insert into ${TEST_AI_4} select * from als_predict(${ALS_MODEL_1},(select * from ${ALS_1}));" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_4} select * from als_predict(${als_model_1},(select * from ${als_1}));</stringProp>
+              <stringProp name="query">insert into ${TEST_AI_4} select rating,prediction  from als_predict(${als_model_1},(select * from ${als_1}));</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1089,7 +1089,7 @@ drop model ${als_model_2} if exists;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="326 LDBX004-01 insert into ${TEST_AI_4} select * from als_predict(${ALS_MODEL_1},${ALS_1});" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_4} select * from als_predict(${als_model_1},${als_1});</stringProp>
+              <stringProp name="query">insert into ${TEST_AI_4} select rating,prediction from als_predict(${als_model_1},${als_1});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1159,7 +1159,7 @@ drop model ${als_model_2} if exists;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="326 LDBX004-01 insert into ${TEST_AI_4} select * from als_predict(als_train(${ALS_1}),(select * from ${ALS_1}));" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_4} select * from als_predict(als_train(${als_1}),(select * from ${als_1}));</stringProp>
+              <stringProp name="query">insert into ${TEST_AI_4} select rating,prediction from als_predict(als_train(${als_1}),(select * from ${als_1}));</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2900,7 +2900,7 @@ drop model ${linear_regression_model} if EXISTS ;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="603 LDBX003-01 insert into ${TEST_AI_2} select * from linear_regression_predict(${linear_regression_model}, ${linear_regression_2});" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_2} select * from linear_regression_predict(${linear_regression_model}, ${linear_regression_2});</stringProp>
+              <stringProp name="query">insert into ${TEST_AI_2} select FEATURES,PREDICTION from linear_regression_predict(${linear_regression_model}, ${linear_regression_2});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -5300,7 +5300,7 @@ drop model ${gbtclassifier_model} if EXISTS ;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="608 LDBX002-06 insert into ${TEST_AI_1} select * from gbtclassifier_predict(${gbtclassifier_model}, ${gbtclassifier_predict_2});" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_1} select * from gbtclassifier_predict(${gbtclassifier_model}, ${gbtclassifier_predict_2});</stringProp>
+              <stringProp name="query">insert into ${TEST_AI_1} select FEATURES,PREDICTION from gbtclassifier_predict(${gbtclassifier_model}, ${gbtclassifier_predict_2});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -6048,7 +6048,7 @@ drop model ${multilayer_model} if EXISTS;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="609 LDBX002-07 insert into ${TEST_AI_1} select * from multilayer_perceptron_classifier_predict(${multilayer_model}, ${multilayer_perceptron_classifier_2});" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_1} select * from multilayer_perceptron_classifier_predict(${multilayer_model}, ${multilayer_perceptron_classifier_2});</stringProp>
+              <stringProp name="query">insert into ${TEST_AI_1} select FEATURES,PREDICTION from multilayer_perceptron_classifier_predict(${multilayer_model}, ${multilayer_perceptron_classifier_2});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -7257,7 +7257,7 @@ drop model ${linearsvc_model} if EXISTS ;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="610 LDBX002-08 insert into ${TEST_AI_4} select * from linearsvc_predict(${linearsvc_model},${linearsvc_1});" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_4} select * from linearsvc_predict(${linearsvc_model},${linearsvc_1});</stringProp>
+              <stringProp name="query">insert into ${TEST_AI_4} select FEATURES,PREDICTION from linearsvc_predict(${linearsvc_model},${linearsvc_1});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -7383,13 +7383,17 @@ drop model ${onevsrest_model} if EXISTS ;</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-2036997741">0.0	ARRAY[10.0E0,10.0E0]	0.0
+
+</stringProp>
+                  <stringProp name="-1289123788">0.0	ARRAY[10.0E0,-10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7408,7 +7412,7 @@ ARRAY[</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="611 LDBX002-09 insert into ${TEST_AI_4} select * from onevsrest_predict(${onevsrest_model},${onevsrest_1});" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_4} select * from onevsrest_predict(${onevsrest_model},${onevsrest_1});</stringProp>
+              <stringProp name="query">insert into ${TEST_AI_4} select FEATURES,PREDICTION from onevsrest_predict(${onevsrest_model},${onevsrest_1});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -7490,13 +7494,17 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-2036997741">0.0	ARRAY[10.0E0,10.0E0]	0.0
+
+</stringProp>
+                  <stringProp name="-1289123788">0.0	ARRAY[10.0E0,-10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7535,13 +7543,17 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-2036997741">0.0	ARRAY[10.0E0,10.0E0]	0.0
+
+</stringProp>
+                  <stringProp name="-1289123788">0.0	ARRAY[10.0E0,-10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7580,13 +7592,17 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-2036997741">0.0	ARRAY[10.0E0,10.0E0]	0.0
+
+</stringProp>
+                  <stringProp name="-1289123788">0.0	ARRAY[10.0E0,-10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7616,13 +7632,17 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-2036997741">0.0	ARRAY[10.0E0,10.0E0]	0.0
+
+</stringProp>
+                  <stringProp name="-1289123788">0.0	ARRAY[10.0E0,-10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7652,13 +7672,18 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="1277579479">0.0	ARRAY[10.0E0,10.0E0]	0.0
+
+
+</stringProp>
+                  <stringProp name="-1289123788">0.0	ARRAY[10.0E0,-10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7688,13 +7713,17 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-2036997741">0.0	ARRAY[10.0E0,10.0E0]	0.0
+
+</stringProp>
+                  <stringProp name="-1289123788">0.0	ARRAY[10.0E0,-10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7724,13 +7753,17 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-2036997741">0.0	ARRAY[10.0E0,10.0E0]	0.0
+
+</stringProp>
+                  <stringProp name="-1289123788">0.0	ARRAY[10.0E0,-10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
+                  <stringProp name="824695059">0.0	ARRAY[10.0E0,10.0E0]	0.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7790,13 +7823,19 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-487886187">0.0	ARRAY[1.2E0,1.3E0,3.1E0]	0.0
+</stringProp>
+                  <stringProp name="1441069844">1.0	ARRAY[2.2E0,2.3E0,2.1E0]	1.0</stringProp>
+                  <stringProp name="-1969036457">0.0	ARRAY[1.0E0,1.3E0,3.1E0]	0.0</stringProp>
+                  <stringProp name="-748628618">0.0	ARRAY[0.2E0,1.3E0,3.1E0]	0.0</stringProp>
+                  <stringProp name="1609992341">0.0	ARRAY[1.3E0,0.3E0,3.1E0]	0.0</stringProp>
+                  <stringProp name="-1107158221">1.0	ARRAY[1.3E0,1.3E0,4.1E0]	1.0</stringProp>
+                  <stringProp name="1929741970">1.0	ARRAY[1.8E0,1.3E0,0.1E0]	1.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
@@ -7862,13 +7901,37 @@ ARRAY[</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1417661553">FEATURES	PREDICTION
-ARRAY[</stringProp>
+                  <stringProp name="-1513409116">LABEL	FEATURES	PREDICTION
+</stringProp>
+                  <stringProp name="-1045679349">0	ARRAY[1.0E0,0.0E0,0.0E0]	0
+</stringProp>
+                  <stringProp name="-834328436">0	ARRAY[2.0E0,0.0E0,0.0E0]	0
+</stringProp>
+                  <stringProp name="-622977523">0	ARRAY[3.0E0,0.0E0,0.0E0]	0
+</stringProp>
+                  <stringProp name="-411626610">0	ARRAY[4.0E0,0.0E0,0.0E0]	0
+</stringProp>
+                  <stringProp name="943623275">1	ARRAY[0.0E0,1.0E0,0.0E0]	1
+</stringProp>
+                  <stringProp name="-1843792212">1	ARRAY[0.0E0,2.0E0,0.0E0]	1
+</stringProp>
+                  <stringProp name="-336240403">1	ARRAY[0.0E0,3.0E0,0.0E0]	1
+</stringProp>
+                  <stringProp name="1171311406">1	ARRAY[0.0E0,4.0E0,0.0E0]	1
+</stringProp>
+                  <stringProp name="-1678281269">2	ARRAY[0.0E0,0.0E0,1.0E0]	2
+</stringProp>
+                  <stringProp name="809231564">2	ARRAY[0.0E0,0.0E0,2.0E0]	2
+</stringProp>
+                  <stringProp name="-998222899">2	ARRAY[0.0E0,0.0E0,3.0E0]	2
+</stringProp>
+                  <stringProp name="1489289934">2	ARRAY[0.0E0,0.0E0,4.0E0]	2
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">48</intProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
