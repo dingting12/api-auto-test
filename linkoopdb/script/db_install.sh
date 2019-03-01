@@ -106,7 +106,7 @@ function spark_install {
     echo "spark.driver.extraJavaOptions -Dhdp.version=$hdp_version
     spark.yarn.am.extraJavaOptions -Dhdp.version=$hdp_version
     spark.hadoop.yarn.timeline-service.enabled=false
-    spark.yarn.jars=hdfs:///app/linkoopdb/$USER_NAME/$SPARK_VERSION/jars/*.jar" >> spark-defaults.conf
+    spark.yarn.jars=hdfs://$LINKOOPDB_BASE/$USER_NAME/$SPARK_VERSION/jars/*.jar" >> spark-defaults.conf
 
     cd $db_home/others/$SPARK_VERSION-bin-datapps-dev/conf/
     cp spark-env.sh.template spark-env.sh
@@ -232,6 +232,7 @@ sleep 20s
 echo "开始启动服务。。。"
 
 chown -R $USER_NAME:$USER_NAME $db_home
+chown -R $USER_NAME:$USER_NAME /tmp/kafka-logs
 
 #启动solr
 
@@ -240,7 +241,7 @@ su - $USER_NAME -c "$db_home/others/solr-5.3.2/bin/solr start -p $solr_port -a \
 echo "solr启动成功。"
 #启动kafka
 cd $db_home/others/kafka_2.10-0.10.0.1/
-su - $USER_NAME -c "nohup $db_home/others/kafka_2.10-0.10.0.1/bin/kafka-server-start.sh config/server.properties &"
+su - $USER_NAME -c "nohup $db_home/others/kafka_2.10-0.10.0.1/bin/kafka-server-start.sh $db_home/others/kafka_2.10-0.10.0.1/config/server.properties &"
 echo "kafka启动成功。"
 #创建topic
 cd $db_home/others/kafka_2.10-0.10.0.1/
@@ -250,8 +251,8 @@ su - $USER_NAME -c "$db_home/others/kafka_2.10-0.10.0.1/bin/kafka-topics.sh -cre
 
 
 # 启动linkoopdb
-cd $db_home
-su - $USER_NAME -c "bin/ldb-server.sh start"
+cd $db_home/linkoopdb_current
+su - $USER_NAME -c "$db_home/linkoopdb_current/	bin/ldb-server.sh start"
 echo "linkoopdb启动成功。"
 
 
