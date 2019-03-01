@@ -252,7 +252,7 @@ su - $USER_NAME -c "$db_home/others/kafka_2.10-0.10.0.1/bin/kafka-topics.sh -cre
 
 # 启动linkoopdb
 cd $db_home/linkoopdb_current
-su - $USER_NAME -c "$db_home/linkoopdb_current/	bin/ldb-server.sh start"
+su - $USER_NAME -c "$db_home/linkoopdb_current/bin/ldb-server.sh start"
 echo "linkoopdb启动成功。"
 
 
