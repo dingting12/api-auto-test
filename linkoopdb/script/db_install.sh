@@ -40,7 +40,7 @@ function db_install {
 
     # 1.ldb-env.sh
 sed -i "s/\${linkoop.feature}/ldb/g" $db_home/linkoopdb_current/conf/ldb-env.sh 
-sed -i "s?hdfs:\/\/node1\/node4\/linkoopdb\/litianqi\/dist?hdfs:\/\/$LINKOOPDB_BASE?g" $db_home/linkoopdb_current/conf/ldb-env.sh
+sed -i "s?hdfs:\/\/node1\/node4\/linkoopdb\/litianqi\/dist?hdfs:\/\/$namenode$LINKOOPDB_BASE?g" $db_home/linkoopdb_current/conf/ldb-env.sh
 sed -i "s?\/home\/litianqi\/linkoopdb\/others\/spark-2.3.1-bin-datapps-dev?$db_home\/others\/$SPARK_VERSION-bin-datapps-dev?g" $db_home/linkoopdb_current/conf/ldb-env.sh
 #sed -i "s/litianqi/linkoopdb/g" $db_home/linkoopdb_current/conf/ldb-env
 sed -i "s/spark-1.2.0/spark-2.0.0/g" $db_home/linkoopdb_current/conf/ldb-env.sh
