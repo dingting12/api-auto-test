@@ -419,7 +419,7 @@
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDB EXT:postgres" enabled="true"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="560 limit push down for tables on db link" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="560 limit push down for tables on db link" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="560 LDBX021-16 drop database link ${postgres_link} if exists cascade;" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
@@ -831,8 +831,142 @@ drop table ${postgres_link}.&quot;Test_DBLink_1&quot; if exists cascade;</string
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 DROP database link POSTGRES_LINK2 IF EXISTS CASCADE;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP database link POSTGRES_LINK2 IF EXISTS CASCADE;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 create database link POSTGRES_LINK2 connect to &apos;postgres&apos; identified by &apos;linkoopdb&apos; using &apos;jdbc:postgresql://192.168.1.73:5432/test&apos;properties (&apos;schema&apos;:&apos;s_wangyu&apos;,&apos;caseSensitive&apos;:&apos;true&apos;); " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">create database link POSTGRES_LINK2 connect to &apos;postgres&apos; identified by &apos;linkoopdb&apos; using &apos;jdbc:postgresql://192.168.1.73:5432/test&apos;properties (&apos;schema&apos;:&apos;s_wangyu&apos;,&apos;caseSensitive&apos;:&apos;true&apos;);
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 select * from POSTGRES_LINK2.&quot;t_pslink_wy_1&quot; order by id;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select * from POSTGRES_LINK2.&quot;t_pslink_wy_1&quot; order by id;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="789674376">ID	NAME	DATES
+1	qwe	2015-4-3
+2	err	2019-12-26</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 select * from POSTGRES_LINK2.&quot;t_pslink_wy_2&quot; order by id;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select * from POSTGRES_LINK2.&quot;t_pslink_wy_2&quot; order by id;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-2213864">user lacks privilege or object not found: t_pslink_wy_2 in statement [select * from POSTGRES_LINK2.&quot;t_pslink_wy_2&quot; order by id;]</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 select * from POSTGRES_LINK2.&quot;t_pslink_wy_3&quot; order by id;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select * from POSTGRES_LINK2.&quot;t_pslink_wy_3&quot; order by id;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1289898110">ID	NAME	DATES
+1	qwe	2015-4-3
+2	err	2019-12-26
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 select * from POSTGRES_LINK2.&quot;t_pslink_wy_4&quot; order by id;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select * from POSTGRES_LINK2.&quot;t_pslink_wy_4&quot; order by id;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-136059372">user lacks privilege or object not found: t_pslink_wy_4 in statement [select * from POSTGRES_LINK2.&quot;t_pslink_wy_4&quot; order by id;]</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="125 LDBX021-01 DROP database link POSTGRES_LINK2 IF EXISTS CASCADE;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP database link POSTGRES_LINK2 IF EXISTS CASCADE;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
               </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="126 LDBX021-02 GRANT postgres database link" enabled="true"/>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="126 LDBX021-02 GRANT postgres database link" enabled="false"/>
               <hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="126 LDBX021-02 drop database link ${postgres_link} if exists cascade;" enabled="true">
                   <stringProp name="dataSource">${a}</stringProp>
@@ -1029,7 +1163,7 @@ drop table ${postgres_link}.&quot;Test_DBLink_1&quot; if exists cascade;</string
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="127 LDBX021-03 CREATE TABLE " enabled="true"/>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="127 LDBX021-03 CREATE TABLE " enabled="false"/>
               <hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="127 LDBX021-03 drop database link ${postgres_link} if exists cascade;" enabled="true">
                   <stringProp name="dataSource">${a}</stringProp>
@@ -1137,7 +1271,7 @@ tBlob Blob);</stringProp>
                 </JDBCSampler>
                 <hashTree/>
               </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="128 LDBX021-04 CREATE VIEW " enabled="true"/>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="128 LDBX021-04 CREATE VIEW " enabled="false"/>
               <hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="128 LDBX021-04 drop database link ${postgres_link} if exists cascade;" enabled="true">
                   <stringProp name="dataSource">${a}</stringProp>
@@ -1518,7 +1652,7 @@ drop view ${postgres_link}.&quot;${V1}&quot; if exists;
                 </JDBCSampler>
                 <hashTree/>
               </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="129 LDBX021-05 GRANT TABLE/VIEW " enabled="true"/>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="129 LDBX021-05 GRANT TABLE/VIEW " enabled="false"/>
               <hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="129 LDBX021-05 TC-POSTGRES-e001" enabled="true">
                   <stringProp name="dataSource">${a}</stringProp>
@@ -2928,7 +3062,7 @@ drop view ${postgres_link}.&quot;${V1}&quot; if exists;
                 </JDBCSampler>
                 <hashTree/>
               </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="195 LDBX021-11 196 LDBX021-12 Delete/Update " enabled="true"/>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="195 LDBX021-11 196 LDBX021-12 Delete/Update " enabled="false"/>
               <hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="195 LDBX021-11 drop database link ${postgres_link} if exists cascade;" enabled="true">
                   <stringProp name="dataSource">${a}</stringProp>
@@ -3175,7 +3309,7 @@ drop database link ${postgres_link} if exists cascade;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="postgres db link LOWER" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="postgres db link LOWER" enabled="false"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="125 LDBX021-postgres- link LOWER-01 CREATE postgres database link" enabled="true"/>
               <hashTree>
@@ -5317,7 +5451,7 @@ drop view ${postgres_link}.&quot;${V1}&quot; if exists;
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="340 postgres 中文 UPPER" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="340 postgres 中文 UPPER" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="340 LDBX021 drop table Test_DBLink_10 if exists cascade;" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
@@ -5511,7 +5645,7 @@ drop view ${postgres_link}.&quot;${V1}&quot; if exists;
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="340 postgres 中文 LOWER" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="340 postgres 中文 LOWER" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="340 LDBX021 drop table Test_DBLink_10 if exists cascade;" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
@@ -5705,7 +5839,7 @@ drop view ${postgres_link}.&quot;${V1}&quot; if exists;
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="533 schema caseSensitive" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="533 schema caseSensitive" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="533 F021 drop database link ${postgres_link} if exists cascade;" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
