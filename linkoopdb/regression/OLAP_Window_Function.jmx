@@ -5062,7 +5062,7 @@ REGR_SLOPE(sals,sal) OVER (PARTITION BY DEPTNO ORDER BY SAL ROWS between current
 REGR_SLOPE(sals,sals)OVER (PARTITION BY DEPTNO ORDER BY SAL range between 5 preceding and unbounded following) slope2,
 REGR_INTERCEPT(sal,sals) OVER (PARTITION BY DEPTNO ORDER BY SAL ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) intercept1,
 REGR_INTERCEPT(sal,sal)OVER (PARTITION BY DEPTNO ORDER BY SAL range between 5 preceding and unbounded following) intercept2
-FROM t_regr_wr;</stringProp>
+FROM t_regr_wr  order by SAL;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -5073,21 +5073,23 @@ FROM t_regr_wr;</stringProp>
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="1233838024">ENAME	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
-MITH	1.1974842767295597	1.0	-5.02100840336135	0.0
-SMTH	0.4507042253521127	1.0	-47.4375	0.0
-JAKE	null	null	null	null
-TOM	null	null	null	null
-BOB	null	null	null	null
-</stringProp>
-                <stringProp name="151487773">DEPTNO	ENAME	SAL	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
+                <stringProp name="1535289001">DEPTNO	ENAME	SAL	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
+20	MITH	5	0.574468085106383	1.0	null	0.0
+30	SMTH	28	1.2046632124352332	1.0	null	0.0
+20	SMTH	99	null	null	-15.888888888888886	null
+10	JAKE	310	null	null	null	null
+30	MITH	800	null	null	-0.22365591397846174	null
 60	BOB	800	-0.13941480206540446	1.0	null	0.0
 60	TOM	58900	null	null	65814.61728395062	null
-30	SMTH	28	1.2046632124352332	1.0	null	0.0
-30	MITH	800	null	null	-0.22365591397846174	null
-10	JAKE	310	null	null	null	null
+</stringProp>
+                <stringProp name="980602103">DEPTNO	ENAME	SAL	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
 20	MITH	5	0.574468085106383	1.0	null	0.0
+30	SMTH	28	1.2046632124352332	1.0	null	0.0
 20	SMTH	99	null	null	-15.888888888888886	null
+10	JAKE	310	null	null	null	null
+60	BOB	800	-0.13941480206540446	1.0	null	0.0
+30	MITH	800	null	null	-0.22365591397846174	null
+60	TOM	58900	null	null	65814.61728395062	null
 </stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
@@ -5142,7 +5144,7 @@ REGR_SLOPE(sals,sal) OVER (PARTITION BY DEPTNO,ENAME ORDER BY SAL ) slope1,
 REGR_SLOPE(sals,sals)OVER (PARTITION BY DEPTNO,ENAME ORDER BY SAL range between 5 preceding and unbounded following) slope2,
 REGR_INTERCEPT(sal,sals) OVER (PARTITION BY DEPTNO,ENAME ORDER BY SAL ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) intercept1,
 REGR_INTERCEPT(sal,sal)OVER (PARTITION BY DEPTNO,ENAME ORDER BY SAL) intercept2
-FROM t_regr_wr;
+FROM t_regr_wr order by sal;
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -5154,20 +5156,29 @@ FROM t_regr_wr;
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="910677546">DEPTNO	ENAME	SAL	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
-30	SMTH	28	null	null	null	null
-30	MITH	800	null	null	null	null
+                <stringProp name="-761010792">DEPTNO	ENAME	SAL	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
 20	MITH	5	null	null	null	null
-60	BOB	800	null	null	null	null
-10	JAKE	310	null	null	null	null
-60	TOM	58900	null	null	null	null
+30	SMTH	28	null	null	null	null
 20	SMTH	99	null	null	null	null
+10	JAKE	310	null	null	null	null
+30	MITH	800	null	null	null	null
+60	BOB	800	null	null	null	null
+60	TOM	58900	null	null	null	null
+</stringProp>
+                <stringProp name="-1503047814">DEPTNO	ENAME	SAL	SLOPE1	SLOPE2	INTERCEPT1	INTERCEPT2
+20	MITH	5	null	null	null	null
+30	SMTH	28	null	null	null	null
+20	SMTH	99	null	null	null	null
+10	JAKE	310	null	null	null	null
+60	BOB	800	null	null	null	null
+30	MITH	800	null	null	null	null
+60	TOM	58900	null	null	null	null
 </stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
+              <intProp name="Assertion.test_type">48</intProp>
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
@@ -5240,8 +5251,8 @@ REGR_COUNT(sals,sal) OVER (PARTITION BY DEPTNO ORDER BY SAL ROWS BETWEEN UNBOUND
 REGR_COUNT(sals,sals)OVER (PARTITION BY DEPTNO ORDER BY SAL range between 5 preceding and unbounded following) REGR_COUNT2,
 REGR_COUNT(sal,sals) OVER (PARTITION BY DEPTNO ORDER BY SAL ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) REGR_COUNT3,
 REGR_COUNT(sal,sal)OVER (PARTITION BY DEPTNO ORDER BY SAL range between 5 preceding and unbounded following) REGR_COUNT4
-FROM t_regr_wr)
-GROUP BY DEPTNO;</stringProp>
+FROM t_regr_wr order by sal)
+GROUP BY DEPTNO order by DEPTNO;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -5252,11 +5263,11 @@ GROUP BY DEPTNO;</stringProp>
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-563992344">C1	DEPTNO
-2	60
-2	30
+                <stringProp name="-177226930">C1	DEPTNO
 1	10
 2	20
+2	30
+2	60
 </stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
