@@ -1174,7 +1174,7 @@ scaledFeatures double ARRAY
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 Streaming SQL: Extra Build-in Functions" enabled="true"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -001" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -001" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-acos-atan-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -1251,7 +1251,10 @@ scaledFeatures double ARRAY
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -ST-JDBCSOURCE-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM t_jdbcsource_acos_bch001 (id integer,data varchar(20), id1 decimal,name string,degree double,data1 varchar(20)) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;acos&apos;);
+              <stringProp name="query"> CREATE STREAM t_jdbcsource_acos_bch001 (id integer,data varchar(20), id1 decimal,name string,degree double,data1 varchar(20),time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;acos&apos;,
+ &apos;rowtime&apos;:&apos;time1.myrowtime1&apos;,
+ &apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
+ &apos;watermarksDelay&apos;:&apos;60000&apos;);
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1422,37 +1425,6 @@ scaledFeatures double ARRAY
               </ConstantTimer>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-space-003 " enabled="true">
-              <stringProp name="dataSource">${u1}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query"> select concat (&apos;a&apos;,space(id),&apos;b&apos;) from t_jdbcsource_acos_bch001;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="3105">ab</stringProp>
-                  <stringProp name="3105">ab</stringProp>
-                  <stringProp name="94307">a b</stringProp>
-                  <stringProp name="3105">ab</stringProp>
-                  <stringProp name="3392903">null</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">20000</stringProp>
-              </ConstantTimer>
-              <hashTree/>
-            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-positive-004E" enabled="false">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -1473,64 +1445,6 @@ scaledFeatures double ARRAY
                   <stringProp name="49">1</stringProp>
                   <stringProp name="48">0</stringProp>
                   <stringProp name="3392903">null</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-log1p-005" enabled="true">
-              <stringProp name="dataSource">${u1}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select log1p(id) from t_jdbcsource_acos_bch001;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="506745205">-Infinity</stringProp>
-                  <stringProp name="47602">0.0</stringProp>
-                  <stringProp name="546540715">0.6931471805599453</stringProp>
-                  <stringProp name="47602">0.0</stringProp>
-                  <stringProp name="3392903">null</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">20000</stringProp>
-              </ConstantTimer>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-ifnull-006" enabled="true">
-              <stringProp name="dataSource">${u1}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select ifnull(data,67) from t_jdbcsource_acos_bch001;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1569">12</stringProp>
-                  <stringProp name="113">q</stringProp>
-                  <stringProp name="1729">67</stringProp>
-                  <stringProp name="1729">67</stringProp>
-                  <stringProp name="1729">67</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1863,10 +1777,140 @@ scaledFeatures double ARRAY
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-set-stream_async_query_enable(设置异步查询)" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">set session stream_async_query_enable TRUE;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="65916">C1
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-ifnull-006" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select ifnull(data,67) from t_jdbcsource_acos_bch001;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
+                <stringProp name="RegexExtractor.regex">(.+?)	true</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default"></stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-ifnull-006-call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 10);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;,10);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-ifnull-006-call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1569">12</stringProp>
+                  <stringProp name="113">q</stringProp>
+                  <stringProp name="1729">67</stringProp>
+                  <stringProp name="1729">67</stringProp>
+                  <stringProp name="1729">67</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-  GET_JSON_OBJECT-019" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">SELECT GET_JSON_OBJECT(&apos;{&quot;a&quot;:&quot;id1&quot;}&apos;, &apos;$.a&apos;) from t_jdbcsource_acos_bch001;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
+                <stringProp name="RegexExtractor.regex">(.+?)	true</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default"></stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-  GET_JSON_OBJECT-019-call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 10);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;,10);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-  GET_JSON_OBJECT-019-call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1902,6 +1946,45 @@ scaledFeatures double ARRAY
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
+                <stringProp name="RegexExtractor.regex">(.+?)	true</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default"></stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-space-003-call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 10);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;,10);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-space-003-call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="3105">ab</stringProp>
@@ -1929,6 +2012,45 @@ scaledFeatures double ARRAY
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
+                <stringProp name="RegexExtractor.regex">(.+?)	true</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default"></stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-  JSON_PATH-020-call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 10);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;,10);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-  JSON_PATH-020-call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="-1730795558">[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
@@ -1943,9 +2065,71 @@ scaledFeatures double ARRAY
                 <intProp name="Assertion.test_type">16</intProp>
               </ResponseAssertion>
               <hashTree/>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-log1p-005" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select log1p(id) from t_jdbcsource_acos_bch001;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
+                <stringProp name="RegexExtractor.regex">(.+?)	true</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default"></stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-log1p-005-TC-  JSON_PATH-020-call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 10);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;,10);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
               </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-log1p-005-TC-  JSON_PATH-020-call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="506745205">-Infinity</stringProp>
+                  <stringProp name="47602">0.0</stringProp>
+                  <stringProp name="546540715">0.6931471805599453</stringProp>
+                  <stringProp name="47602">0.0</stringProp>
+                  <stringProp name="3392903">null</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-acos-atan-004" enabled="true">
@@ -2045,7 +2229,7 @@ scaledFeatures double ARRAY
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -002" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -002" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-multi-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -2185,7 +2369,7 @@ scaledFeatures double ARRAY
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -003" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -003" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -DT-time-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -2537,7 +2721,7 @@ scaledFeatures double ARRAY
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -004" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -004" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-DT-datediff-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -2781,7 +2965,7 @@ scaledFeatures double ARRAY
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -005" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -005" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-DT-ucase-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -3196,7 +3380,7 @@ scaledFeatures double ARRAY
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -006" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -006" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-DT-chr-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -3333,7 +3517,7 @@ scaledFeatures double ARRAY
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -007" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -007" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-DT-round-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -3543,7 +3727,7 @@ scaledFeatures double ARRAY
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -008" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -008" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-DT-regexp_extract-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -3714,7 +3898,9 @@ scaledFeatures double ARRAY
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02 -ST-JDBCSOURCE-pow-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM t_jdbcsource_pow_bch001 (id int,id1 string,id2 double,id3 string,time1 timestamp,id4 bigint) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;tableName&apos;: &apos;pow&apos;);
+              <stringProp name="query"> CREATE STREAM t_jdbcsource_pow_bch001 (id int,id1 string,id2 double,id3 string,time1 timestamp,id4 bigint) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;tableName&apos;: &apos;pow&apos;,&apos;rowtime&apos;:&apos;time1.myrowtime1&apos;,
+ &apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
+ &apos;watermarksDelay&apos;:&apos;60000&apos;);
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3743,7 +3929,7 @@ scaledFeatures double ARRAY
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-to_date" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">INSERT INTO t_jdbcSINK_to_date_bch002 select to_date(cast (time1 as string),&apos;yyyy-mm-dd hh24:mi:ss&apos;) from t_jdbcsource_pow_bch001;
+              <stringProp name="query">INSERT INTO t_jdbcSINK_to_date_bch002 select to_date(cast (myrowtime1 as string),&apos;yyyy-mm-dd hh24:mi:ss&apos;) from t_jdbcsource_pow_bch001;
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3755,33 +3941,6 @@ scaledFeatures double ARRAY
               <stringProp name="TestPlan.comments">db支持date、timestamp</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-from_utc_timestamp-011" enabled="true">
-              <stringProp name="dataSource">${u1}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">SELECT from_utc_timestamp(time1,&apos;PST&apos;)from t_jdbcsource_pow_bch001;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1103804907">2018-12-26 05:08:44</stringProp>
-                  <stringProp name="-1103804906">2018-12-26 05:08:45</stringProp>
-                  <stringProp name="-1103804905">2018-12-26 05:08:46</stringProp>
-                  <stringProp name="-1103804904">2018-12-26 05:08:47</stringProp>
-                  <stringProp name="-1103804880">2018-12-26 05:08:50</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-pow-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -4411,7 +4570,7 @@ scaledFeatures double ARRAY
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-to_char-033" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query"> select to_char(time1,&apos;yyyy-mm-dd hh24:mi:ss&apos;) from t_jdbcsource_pow_bch001;</stringProp>
+              <stringProp name="query"> select to_char(myrowtime1,&apos;yyyy-mm-dd hh24:mi:ss&apos;) from t_jdbcsource_pow_bch001;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -4554,7 +4713,7 @@ scaledFeatures double ARRAY
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-to_timestamp-001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select to_timestamp(time1,&apos;yyyy-mm-dd hh24:mi:ss&apos;) from t_jdbcsource_pow_bch001;
+              <stringProp name="query">select to_timestamp(myrowtime1,&apos;yyyy-mm-dd hh24:mi:ss&apos;) from t_jdbcsource_pow_bch001;
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -4715,6 +4874,97 @@ scaledFeatures double ARRAY
                   <stringProp name="51259354">6-100</stringProp>
                   <stringProp name="51259354">6-100</stringProp>
                   <stringProp name="51259354">6-100</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-set-stream_async_query_enable(设置异步查询)" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">set session stream_async_query_enable TRUE;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="65916">C1
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-from_utc_timestamp-011" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT from_utc_timestamp(myrowtime1,&apos;PST&apos;)from t_jdbcsource_pow_bch001;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
+                <stringProp name="RegexExtractor.regex">(.+?)	true</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default"></stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-from_utc_timestamp-011-call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 10);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;,10);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02  -TC-from_utc_timestamp-011-call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1103804907">2018-12-26 05:08:44</stringProp>
+                  <stringProp name="-1103804906">2018-12-26 05:08:45</stringProp>
+                  <stringProp name="-1103804905">2018-12-26 05:08:46</stringProp>
+                  <stringProp name="-1103804904">2018-12-26 05:08:47</stringProp>
+                  <stringProp name="-1103804880">2018-12-26 05:08:50</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
