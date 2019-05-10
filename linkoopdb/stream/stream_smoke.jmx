@@ -198,6 +198,7 @@
           </value>
         </objProp>
         <stringProp name="filename"></stringProp>
+        <boolProp name="ResultCollector.success_only_logging">true</boolProp>
       </ResultCollector>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
@@ -213,6 +214,25 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="kafka start" enabled="true"/>
+        <hashTree>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="startzk" enabled="true">
+            <stringProp name="hostname">192.168.1.75</stringProp>
+            <intProp name="port">22</intProp>
+            <stringProp name="username">luyao</stringProp>
+            <stringProp name="password">123456</stringProp>
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/startzk.sh</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+          <hashTree/>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="startkafka" enabled="true">
+            <stringProp name="hostname">192.168.1.75</stringProp>
+            <intProp name="port">22</intProp>
+            <stringProp name="username">luyao</stringProp>
+            <stringProp name="password">123456</stringProp>
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/startkfk.sh</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+          <hashTree/>
+        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="648 SQL008-05 create  linkoopdb source" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-T_冒烟_dbsource_001" enabled="true">
@@ -242,7 +262,7 @@
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-create-T_冒烟_dbsource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM &quot;T_冒烟_dbsource_001&quot; (R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP) Properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:9105/ldb&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;SMOKE_SOURCE&apos;,
+            <stringProp name="query"> CREATE STREAM &quot;T_冒烟_dbsource_001&quot; (R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP) Properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:9105/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;SMOKE_SOURCE&apos;,
  &apos;rowtime&apos;:&apos;R_TIME.myrowtime1&apos;,
  &apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
  &apos;watermarksDelay&apos;:&apos;60000&apos;);
@@ -366,6 +386,10 @@
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+              <stringProp name="ConstantTimer.delay">100000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
             <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
               <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
@@ -381,10 +405,6 @@
               <boolProp name="displaySamplerProperties">true</boolProp>
               <boolProp name="displaySystemProperties">true</boolProp>
             </DebugPostProcessor>
-            <hashTree/>
-            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">100000</stringProp>
-            </ConstantTimer>
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 50);" enabled="true">
@@ -417,7 +437,7 @@
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">100000</stringProp>
             </ConstantTimer>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
@@ -466,7 +486,7 @@
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-SMOKE_SOURCE" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-SMOKE_SOURCE" enabled="false">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">DROP table IF EXISTS SMOKE_SOURCE;</stringProp>
@@ -478,7 +498,7 @@
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-T_冒烟_dbsource_001" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-T_冒烟_dbsource_001" enabled="false">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">DROP STREAM IF EXISTS &quot;T_冒烟_dbsource_001&quot;;</stringProp>
@@ -3713,7 +3733,7 @@ PREDICTION double
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB OTHERS_MODEL" enabled="true"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_regression_predict" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_regression_predict" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL DECISION_TREE_REGRESSION_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
@@ -6333,6 +6353,60 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="912 ISQL003 watermark策略设置" enabled="true"/>
         <hashTree>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="SSH Command" enabled="true">
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node1:2181/linkoopdb/luyao --topic decision_tree_sink1</stringProp>
+            <stringProp name="hostname">192.168.1.75</stringProp>
+            <stringProp name="password">123456</stringProp>
+            <intProp name="port">22</intProp>
+            <stringProp name="username">luyao</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+          <hashTree/>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="SSH Command" enabled="true">
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-producer.sh  --broker-list node6:29093 --topic decision_tree_sink1&lt; /home/luyao/912ksource2.txt </stringProp>
+            <stringProp name="hostname">192.168.1.75</stringProp>
+            <stringProp name="password">123456</stringProp>
+            <intProp name="port">22</intProp>
+            <stringProp name="username">luyao</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1326 LDBX081-09 show jobs" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SHOW JOBS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">jobid</stringProp>
+              <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">20000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1326 LDBX081-09 cancel job &quot;${jobid_1}&quot;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003-watermark策略设置-drop-T_smoke_watermark_ksource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
@@ -6370,14 +6444,15 @@ PROPERTIES    (
  &apos;type&apos;: &apos;source&apos;,    
  &apos;connector&apos;: &apos;kafka&apos;,    
  &apos;version&apos;: &apos;0.10&apos;,    
- &apos;topic&apos;: &apos;${topic}&apos;,    
- &apos;zookeeper.connect&apos;: &apos;node1:2181 node2:2181 node3:2181/istream/node6/kafka&apos;,    
- &apos;group.id&apos;: &apos;0222&apos;,    
- &apos;bootstrap.servers&apos;: &apos;node6:9096&apos;,    
+ &apos;topic&apos;: &apos;decision_tree_sink1&apos;,    
+ &apos;zookeeper.connect&apos;: &apos;node1:2181 node2:2181 node3:2181/linkoopdb/luyao&apos;,    
+ &apos;group.id&apos;: &apos;${__Random(1,9999999,group_id)}&apos;,    
+ &apos;bootstrap.servers&apos;: &apos;node6:29093&apos;,    
  &apos;format&apos;: &apos;csv&apos; , 
   &apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
   &apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;,
- &apos;separator&apos;:&apos;,&apos; );
+ &apos;separator&apos;:&apos;,&apos; 
+ );
  
 
 
@@ -6395,7 +6470,7 @@ PROPERTIES    (
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003-watermark策略设置-create-T_smoke_watermark_jsink_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM T_smoke_watermark_jsink_001 (time1 timestamp,time2 timestamp,users varchar(20),id INT) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://${node}:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;updateMode&apos;:&apos;retract&apos;, &apos;tableName&apos;: &apos;win11&apos;);
+            <stringProp name="query"> CREATE STREAM T_smoke_watermark_jsink_001 (time1 timestamp,time2 timestamp,id int,users varchar(20)) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://${node}:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;updateMode&apos;:&apos;append&apos;, &apos;tableName&apos;: &apos;win11&apos;);
 
 
 
@@ -6429,7 +6504,8 @@ PROPERTIES    (
             <stringProp name="query">insert into T_smoke_watermark_jsink_001 SELECT
 TUMBLE_START(myrowtime, INTERVAL &apos;1&apos; HOUR),
 TUMBLE_END(myrowtime, INTERVAL &apos;1&apos; HOUR),
-users,SUM(id)
+sum(id),
+users
 FROM T_smoke_watermark_ksource_001
 GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
 
@@ -6458,21 +6534,24 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">20000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="1042413806">2018-12-09 19:00:00.0	2018-12-09 20:00:00.0	e	4</stringProp>
-                <stringProp name="54884867">2018-12-09 20:00:00.0	2018-12-09 21:00:00.0	e	2</stringProp>
-                <stringProp name="1486962759">2018-12-09 21:00:00.0	2018-12-09 22:00:00.0	e	4</stringProp>
+                <stringProp name="-1102445968">time1	time2	id	users
+2018-12-09 00:00:00.0	2018-12-09 01:00:00.0	6	e
+2018-12-09 19:00:00.0	2018-12-09 20:00:00.0	1	a
+2018-12-09 20:00:00.0	2018-12-09 21:00:00.0	2	b
+2018-12-09 21:00:00.0	2018-12-09 22:00:00.0	3	c
+2018-12-09 22:00:00.0	2018-12-09 23:00:00.0	4	e</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">true</boolProp>
               <intProp name="Assertion.test_type">16</intProp>
             </ResponseAssertion>
-            <hashTree/>
-            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-              <stringProp name="ConstantTimer.delay">20000</stringProp>
-            </ConstantTimer>
             <hashTree/>
           </hashTree>
           <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
