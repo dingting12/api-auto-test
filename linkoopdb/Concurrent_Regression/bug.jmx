@@ -1885,6 +1885,203 @@ to_timestamp(&apos;2021-04-04 09:23:20.123456789&apos;,&apos;yyyy-mm-dd hh24:mi:
             <hashTree/>
           </hashTree>
         </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1631 oracle dblink中不支持nvarchar2类型" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE T_DC_SYSTEMDEFINITION" enabled="true">
+            <stringProp name="dataSource">oracle</stringProp>
+            <stringProp name="query">declare
+      num   number;
+begin
+    select count(1) into num from user_tables where table_name = upper(&apos;T_DC_SYSTEMDEFINITION&apos;) ;
+    if num &gt; 0 then
+        execute immediate &apos;drop table T_DC_SYSTEMDEFINITION&apos; ;
+    end if;
+end;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP VIEW VW_DC_SYSTEMDEFINITION" enabled="true">
+            <stringProp name="dataSource">oracle</stringProp>
+            <stringProp name="query">declare
+      num   number;
+begin
+    select count(1) into num from User_Views  where VIEW_NAME  = upper(&apos;VW_DC_SYSTEMDEFINITION&apos;) ;
+    if num &gt; 0 then
+        execute immediate &apos;drop view VW_DC_SYSTEMDEFINITION&apos; ;
+    end if;
+end;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP DATABASE LINK ORACLEDBLINK_TIMESTAMP_MY1;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">DROP DATABASE LINK ORACLELINK_MY_1 IF EXISTS CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table T_DC_SYSTEMDEFINITION" enabled="true">
+            <stringProp name="dataSource">oracle</stringProp>
+            <stringProp name="query">  CREATE TABLE &quot;T_DC_SYSTEMDEFINITION&quot; 
+   (  &quot;ID&quot; VARCHAR2(38 BYTE) NOT NULL ENABLE, 
+  &quot;NAME&quot; NVARCHAR2(100), 
+  &quot;PARENTID&quot; NVARCHAR2(38), 
+  &quot;APPLYMODEL&quot; NUMBER(*,0), 
+  &quot;VERSIONMODEL&quot; NUMBER(*,0), 
+  &quot;STATEMODEL&quot; NUMBER(*,0), 
+  &quot;DESCRIPTION&quot; NVARCHAR2(255), 
+  &quot;SYSTEMIMAGE&quot; VARCHAR2(50 BYTE), 
+  &quot;FOLDERIMAGE&quot; VARCHAR2(50 BYTE), 
+  &quot;CONFIGFILE&quot; BLOB, 
+   PRIMARY KEY (&quot;ID&quot;)
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+   ) 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 
+ NOCOMPRESS LOGGING</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create view VW_DC_SYSTEMDEFINITION" enabled="true">
+            <stringProp name="dataSource">oracle</stringProp>
+            <stringProp name="query"> CREATE  VIEW &quot;VW_DC_SYSTEMDEFINITION&quot; 
+  (&quot;ID&quot;, &quot;NAME&quot;, &quot;PARENTID&quot;, &quot;APPLYMODEL&quot;, &quot;VERSIONMODEL&quot;, &quot;STATEMODEL&quot;, &quot;DESCRIPTION&quot;, &quot;CONFIGFILE&quot;, &quot;PARENTNAME&quot;, &quot;SYSTEMIMAGE&quot;, &quot;FOLDERIMAGE&quot;) AS 
+  SELECT T_DC_SYSTEMDEFINITION.ID, T_DC_SYSTEMDEFINITION.NAME,          
+  T_DC_SYSTEMDEFINITION.PARENTID, T_DC_SYSTEMDEFINITION.APPLYMODEL,         
+  T_DC_SYSTEMDEFINITION.VERSIONMODEL, T_DC_SYSTEMDEFINITION.STATEMODEL,      
+  T_DC_SYSTEMDEFINITION.DESCRIPTION,     T_DC_SYSTEMDEFINITION.CONFIGFILE,      
+  T_DC_SYSTEMDEFINITION_1.NAME PARENTNAME,       
+  T_DC_SYSTEMDEFINITION.SYSTEMIMAGE, T_DC_SYSTEMDEFINITION.FOLDERIMAGE  
+  FROM T_DC_SYSTEMDEFINITION LEFT JOIN T_DC_SYSTEMDEFINITION T_DC_SYSTEMDEFINITION_1  
+  ON T_DC_SYSTEMDEFINITION.PARENTID = T_DC_SYSTEMDEFINITION_1.ID</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into T_DC_SYSTEMDEFINITION" enabled="true">
+            <stringProp name="dataSource">oracle</stringProp>
+            <stringProp name="query">INSERT INTO T_DC_SYSTEMDEFINITION VALUES (2,&apos;LISI&apos;,&apos;PARENTID2&apos;,432,421,41,&apos;DESCRIPTION2&apos;,&apos;SYSTEMIMAGE2&apos;,&apos;FOLDERIMAGE2&apos;,&apos;101010110101&apos;)</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create oracle database link" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">CREATE DATABASE LINK ORACLELINK_MY_1 CONNECT TO &apos;linkoopdb&apos; IDENTIFIED BY &apos;123456&apos; USING &apos;jdbc:oracle:thin:@192.168.1.73:1521:xe&apos; </stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM ORACLELINK_MY_1.T_DC_SYSTEMDEFINITION" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">SELECT * FROM ORACLELINK_MY_1.T_DC_SYSTEMDEFINITION</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1814330010">ID	NAME	PARENTID	APPLYMODEL	VERSIONMODEL	STATEMODEL	DESCRIPTION	SYSTEMIMAGE	FOLDERIMAGE	CONFIGFILE
+2	LISI	PARENTID2	432	421	41	DESCRIPTION2	SYSTEMIMAGE2	FOLDERIMAGE2	com.datapps.linkoopdb.jdbc.impl.JDBCBlobClient@</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM ORACLELINK_MY_1.VW_DC_SYSTEMDEFINITION" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">SELECT * FROM ORACLELINK_MY_1.VW_DC_SYSTEMDEFINITION</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1204268139">ID	NAME	PARENTID	APPLYMODEL	VERSIONMODEL	STATEMODEL	DESCRIPTION	CONFIGFILE	PARENTNAME	SYSTEMIMAGE	FOLDERIMAGE
+2	LISI	PARENTID2	432	421	41	DESCRIPTION2	com.datapps.linkoopdb.jdbc.impl.JDBCBlobClient</stringProp>
+                <stringProp name="1771539567">	null	SYSTEMIMAGE2	FOLDERIMAGE2</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP DATABASE LINK ORACLELINK_MY_1 CASCADE;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="query">DROP DATABASE LINK ORACLELINK_MY_1 CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="2126">C1</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
         <Summariser guiclass="SummariserGui" testclass="Summariser" testname="Generate Summary Results" enabled="true"/>
         <hashTree/>
         <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
