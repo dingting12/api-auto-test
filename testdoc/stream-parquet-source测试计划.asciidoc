@@ -1,0 +1,154 @@
+## 编写时间
+2019-05-20
+
+## 测试版本
+2.0.0.192-20190521
+
+## 测试时间
+2019-5-21至2019-5-24
+
+## 测试内容
+支持Parquet文件作为数据来源创建流表，查看流表中的内容应该与该parquet文件一致。 +
+issue： https://github.com/datapps/linkoopdb/issues/1580
+
+## 测试思路
+### 功能测试
+1.以parquet文件为数据源，insert into到其他类型的sink中，验证输出的结果是否正确 +
+2.以parquet文件为数据源，insert into到其他类型的sink中，判断通过窗口函数输出的数据是否符合过滤条件 +
+3.以parquet文件为数据源，insert into到其他类型的sink中，复杂事件处理语句能否输出符合规则的数据 +
+4.使用ldb全部支持的数据类型都存在的表作为parquet source，insert into到其他类型的sink中，验证输出的结果是否正确
+
+### 性能测试
+1.在相同资源相同并发数的情况下，使用parquet格式100G的数据文件，ldb和parquet为stream source，insert into到不同的sink（ldb和pallas），统计每个数据导入所需要的时间 +
+
+## 测试内容
+### 检测基本语法内容
+```
+create stream par_test1(id bigint, name string) 
+properties(
+    'type':'source',
+    'connector':'filesystem',
+    'path':'file:///Users/user/Desktop/test.parquet',
+    'format':'parquet'
+)
+```
+
+### 必选属性的测试
+
+1.type可选source或sink
+ 
+* 填写source
+
+* 填写sink时会报错不支持 
+
+2.path属性写parquet文件的路径 
+
+* HDFS路径
+
+** 正确路径 
+
+** 存放其他文件的错误路径 
+
+** 不存在的路径 
+
+* 本地路径（暂不测试）
+
+** 正确路径 
+
+** 存放其他文件的错误路径 
+
+** 不存在的路径
+
+3.流表的字段类型和个数要与parquet文件一致 
+
+* 个数相同字段类型不同 
+
+* 字段类型相同，个数比parquet文件少一个 
+
+* 字段类型相同，个数比parquet文件多一个 
+
+* 字段类型和字段类型都相同
+
+4.通过sink流表接收数据,并且通过select语句查看对应sink流表中的内容和source表是否一致 
+
+* kafka sink流表 
+
+* jdbc sink流表 
+
+* pallas sink流表 
+
+5.可选属性的测试 
+
+* rowtime属性
+
+** 在字段中添加timestamp类型的字段，指定别名
+
+** 字段个数不添加，直接设置，会报错找不到事件时间
+
+* rowtime.watermarks.type属性在有rowtime属性时必须有
+
+** 不设置该属性
+
+** 设置该属性为periodic-ascending
+
+** 设置该属性为periodic-bounded
+
+** 设置该属性为custom(现在不支持)
+
+* watermarksDelay属性，periodic-bounded 存在时必填
+
+** 设置为0
+
+** 设置为1分钟
+
+** 在 rowtime.watermarks.type为periodic-bounded时不填写
+
+* proctime属性
+
+** 添加该属性
+
+** 不添加该属性
+
+6.窗口函数测试
+
+* 在select语句中添加starttime
+
+* 在select语句中添加endtime
+
+* 不添加starttime和endtime
+
+7.cep函数的测试
+
+* cep编写规则中使用rowtime排序，需要在可选属性中设置rowtime
+
+** 字段中有timestamp类型，即parquet文件中需要有timestamp类型字段
+
+** 不设置timestamp类型字段，报错
+
+* cep编写规则中使用Protime排序
+
+8.性能测试
+
+* 数据量为100G，比较时间
+
+** 以parquet文件为数据源，以ldb作为sink接收数据并且读取数据所需的时间
+
+** 以parquet文件为数据源，以pallas作为sink接收数据并且读取数据所需的时间
+
+** 以ldb中的表为数据源，以ldb作为sink接收数据并且读取数据所需的时间
+
+* parquet文件的路径位置
+
+** 在HDFS的目录下
+
+** 在本地目录下（暂不测试）
+
+
+## 测试可能遇到的问题
+
+1.在窗口函数测试时，可能因为watermark的原因导致断言和结果不一致 +
+
+2.使用系统时间窗口函数时，由于网络或者数据量导致断言和结果不一致 +
+
+
+
