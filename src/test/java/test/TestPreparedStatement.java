@@ -1,8 +1,9 @@
 package test;
 
-import com.testjdbc.util.JdbcUtil;
+
 import org.junit.Before;
 import org.junit.Test;
+import util.JdbcUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
