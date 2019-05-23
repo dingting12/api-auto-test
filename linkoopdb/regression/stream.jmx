@@ -228,6 +228,22 @@
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 model_em_predict " enabled="true"/>
             <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 DB kafka topic delete" enabled="true">
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic model_em_predict</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1326 LDBX081-09 kafka producer" enabled="true">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-producer.sh  --broker-list node6:29093 --topic model_em_predict&lt; /home/luyao/1034array.txt</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop stream if exists model_em_predict;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -295,8 +311,8 @@ features double ARRAY
 &apos;version&apos;:&apos;0.10&apos;,
 &apos;topic&apos;:&apos;model_em_predict&apos;,
 &apos;bootstrap.servers&apos;:&apos;node6:9096&apos;,
-&apos;zookeeper.connect&apos;:&apos;node1:2181 node2:2181 node3:2181/istream/node6/kafka&apos;,
-&apos;group.id&apos;:&apos;model_em_predict_010&apos;,
+&apos;zookeeper.connect&apos;:&apos;node1:2181 node2:2181 node3:2181/linkoopdb/luyao&apos;,
+&apos;group.id&apos;:&apos;${__Random(0,35465786,)}&apos;,
 &apos;format&apos;:&apos;json&apos;
 );
 
