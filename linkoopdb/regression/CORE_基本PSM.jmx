@@ -1440,6 +1440,25 @@ drop function function_test23 if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="上传function.jar到hdfs上 " enabled="false"/>
+            <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="Download function. jar from GitHub" enabled="true">
+                <stringProp name="command">/home/testdb/linkoopdb/others/wget https://github.com/datapps/linkoop-auto-test/blob/master/linkoopdb/externaldata/function.jar</stringProp>
+                <stringProp name="hostname">192.168.1.73</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">testdb</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="Upload function. jar to HDFS" enabled="true">
+                <stringProp name="command">hdfs dfs -put -f /home/testdb/linkoopdb/others/function.jar  /node4/linkoopdb2/testdb/main/linkoopdb/home/PUBLIC/uploads/jars</stringProp>
+                <stringProp name="hostname">192.168.1.73</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">testdb</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="263 T321-05 drop table Test_PSM_11 if exists cascade;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
