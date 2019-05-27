@@ -52,14 +52,14 @@ public class TestBlob2 {
 
             Statement st = connection.createStatement();
 
-            int flag1=st.executeUpdate("DROP TABLE t_blob_wy2 IF EXISTS");
+            int flag1=st.executeUpdate("DROP TABLE t_blobjdbc_wy2 IF EXISTS");
 
             if(flag1==0) System.out.println("drop table succeed");
 
-            int flag2=st.executeUpdate("CREATE TABLE t_blob_wy2 (id INTEGER, b blob(100)) engine pallas");
+            int flag2=st.executeUpdate("CREATE TABLE t_blobjdbc_wy2 (id INTEGER, b blob(100)) engine pallas");
             if(flag2==0) System.out.println("create table succeed");
 
-             ps = connection.prepareStatement("INSERT INTO t_blob_wy2 values(2, ?)");
+             ps = connection.prepareStatement("INSERT INTO t_blobjdbc_wy2 values(2, ?)");
 
 
             ps.setBlob(1, new SerialBlob(baR1));
@@ -67,7 +67,7 @@ public class TestBlob2 {
             if(flag3==1) System.out.println("insert succeed");
             else System.out.println("insert failed");
 
-            rs = st.executeQuery("SELECT b FROM t_blob_wy2 WHERE id = 2");
+            rs = st.executeQuery("SELECT b FROM t_blobjdbc_wy2 WHERE id = 2");
 
             if (!rs.next()) {
                 assertTrue("No row with id 2", false);
@@ -94,7 +94,7 @@ public class TestBlob2 {
 
             rs.close();
 
-            rs = st.executeQuery("SELECT b FROM t_blob_wy2 WHERE id = 2");
+            rs = st.executeQuery("SELECT b FROM t_blobjdbc_wy2 WHERE id = 2");
 
             if (!rs.next()) {
                 assertTrue("No row with id 2", false);
@@ -122,7 +122,7 @@ public class TestBlob2 {
                     baR1.length);
             ps.executeUpdate();
 
-            rs = st.executeQuery("SELECT b FROM t_blob_wy2 WHERE id = 2");
+            rs = st.executeQuery("SELECT b FROM t_blobjdbc_wy2 WHERE id = 2");
 
             if (!rs.next()) {
                 assertTrue("No row with id 2", false);

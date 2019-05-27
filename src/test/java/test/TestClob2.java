@@ -36,9 +36,9 @@ public class TestClob2 {
     public void testClobB() {
 
         try {
-            String ddl0 = "DROP TABLE t_clob_wy2 IF EXISTS";
+            String ddl0 = "DROP TABLE t_clobjdbc_wy2 IF EXISTS";
             String ddl1 =
-                    "CREATE TABLE t_clob_wy2(ID int, V VARCHAR(10), I INT, CLOBFIELD CLOB(100000)) engine pallas";
+                    "CREATE TABLE t_clobjdbc_wy2(ID int, V VARCHAR(10), I INT, CLOBFIELD CLOB(100000)) engine pallas";
 
             statement.execute(ddl0);
             boolean flag1= statement.execute(ddl1);
@@ -47,8 +47,8 @@ public class TestClob2 {
 
 
             connection.setAutoCommit(false);
-            String dml0 = "insert into t_clob_wy2 values(1, ?, ?, ?)";
-            String dql0 = "select * from t_clob_wy2";
+            String dml0 = "insert into t_clobjdbc_wy2 values(1, ?, ?, ?)";
+            String dql0 = "select * from t_clobjdbc_wy2";
             ps = connection.prepareStatement(dml0);
             String data = "Testing clob insert and select ops";
             Clob clob = new JDBCClob(data);

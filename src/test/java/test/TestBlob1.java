@@ -32,9 +32,9 @@ public class TestBlob1 {
     public void testBlobA() {
 
         try {
-            String ddl0 = "DROP TABLE t_blob_wy1 IF EXISTS";
+            String ddl0 = "DROP TABLE t_blobjdbc_wy1 IF EXISTS";
             String ddl1 =
-                    "CREATE TABLE t_blob_wy1(ID int, BLOBFIELD1 BLOB(100000), BLOBFIELD2 BLOB(100000)) engine pallas";
+                    "CREATE TABLE t_blobjdbc_wy1(ID int, BLOBFIELD1 BLOB(100000), BLOBFIELD2 BLOB(100000)) engine pallas";
 
             boolean flag1= statement.execute(ddl0);
             if(flag1==false) System.out.println("drop table succeed");
@@ -47,8 +47,8 @@ public class TestBlob1 {
 
         try {
             connection.setAutoCommit(false);
-            String dml0 = "insert into t_blob_wy1 values(?,?,?)";
-            String dql0 = "select * from t_blob_wy1 order by ID";
+            String dml0 = "insert into t_blobjdbc_wy1 values(?,?,?)";
+            String dql0 = "select * from t_blobjdbc_wy1 order by ID";
             ps = connection.prepareStatement(dml0);
             byte[] data1 = new byte[]{
                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10
@@ -103,7 +103,7 @@ public class TestBlob1 {
                 System.out.println("no");
 
 
-            String deltab="delete from t_blob_wy1";
+            String deltab="delete from t_blobjdbc_wy1";
 
 
 

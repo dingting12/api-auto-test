@@ -37,9 +37,9 @@ public class TestClob3 {
     public void testClobD() {
 
         try {
-            String ddl0 = "DROP TABLE t_clob_wy3 IF EXISTS";
+            String ddl0 = "DROP TABLE t_clobjdbc_wy3 IF EXISTS";
             String ddl1 =
-                    "CREATE TABLE t_clob_wy3 (stateid varchar(128), varid numeric(16,0), "
+                    "CREATE TABLE t_clobjdbc_wy3 (stateid varchar(128), varid numeric(16,0), "
                             + "scalabilitypassivated char(1) DEFAULT 'N', value clob(20000), scopeguid varchar(128),"
                             + "primary key (stateid, scalabilitypassivated, scopeguid))engine pallas";
 
@@ -51,9 +51,9 @@ public class TestClob3 {
 
             connection.setAutoCommit(false);
 
-            String dml0 = "INSERT INTO t_clob_wy3 VALUES (?, ?, 'N', ?, ?)";
+            String dml0 = "INSERT INTO t_clobjdbc_wy3 VALUES (?, ?, 'N', ?, ?)";
             String dml1 =
-                    "UPDATE t_clob_wy3 SET value = ? WHERE stateid = ? AND "
+                    "UPDATE t_clobjdbc_wy3 SET value = ? WHERE stateid = ? AND "
                             + "varid = ? AND scalabilitypassivated = 'N' AND scopeguid = ?";
             PreparedStatement ps = connection.prepareStatement(dml0);
 
@@ -82,7 +82,7 @@ public class TestClob3 {
             ps = connection.prepareStatement(dml1);
 
             sw.zero();
-            sw.start();
+/*            sw.start();
 
             for (int i = 100; i < 200; i++) {
                 reader = dataClob.getCharacterStream();
@@ -99,7 +99,7 @@ public class TestClob3 {
 
 
             sw.stop();
-            System.out.println(sw.elapsedTimeToMessage("Time for updates"));
+            System.out.println(sw.elapsedTimeToMessage("Time for updates"));*/
             connection.commit();
 //            rs.close();
             ps.close();

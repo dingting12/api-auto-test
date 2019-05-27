@@ -34,9 +34,9 @@ public class TestClob4 {
     public void testClobE() {
 
         try {
-            String ddl0 = "DROP TABLE t_clob_wy4 IF EXISTS";
+            String ddl0 = "DROP TABLE t_clobjdbc_wy4 IF EXISTS";
             String ddl1 =
-                    "CREATE TABLE t_clob_wy4 (stateid varchar(128),varid numeric(16,0),  "
+                    "CREATE TABLE t_clobjdbc_wy4 (stateid varchar(128),varid numeric(16,0),  "
                             + "scalabilitypassivated char(1) DEFAULT 'N', value1 clob(2000), scopeguid varchar(128),"
                             + "primary key (stateid, scalabilitypassivated, scopeguid)) engine pallas";
 
@@ -51,9 +51,9 @@ public class TestClob4 {
         }
 
         try {
-            String dml0 = "INSERT INTO t_clob_wy4 VALUES (?, ?, 'N', ?, ?)";
+            String dml0 = "INSERT INTO t_clobjdbc_wy4 VALUES (?, ?, 'N', ?, ?)";
             String dml1 =
-                    "UPDATE t_clob_wy4 SET varid = varid + 1 WHERE stateid = ? AND "
+                    "UPDATE t_clobjdbc_wy4 SET varid = varid + 1 WHERE stateid = ? AND "
                             + "varid = ? AND scalabilitypassivated = 'N' AND scopeguid = ?";
             PreparedStatement ps = connection.prepareStatement(dml0);
 
@@ -95,7 +95,7 @@ public class TestClob4 {
 
             connection.commit();
 
-            ResultSet rs = statement.executeQuery("SELECT value1 FROM t_clob_wy4");
+            ResultSet rs = statement.executeQuery("SELECT value1 FROM t_clobjdbc_wy4");
 
             Clob clob = null;
 
@@ -117,7 +117,7 @@ public class TestClob4 {
 
             rs = statement.executeQuery(
                     "SELECT CAST(SUBSTRING(value1 FROM 19) AS VARCHAR(100)),STATEID,"
-                            + "CHARACTER_LENGTH(value1),CAST(value1 AS VARCHAR(100)) FROM t_clob_wy4 "
+                            + "CHARACTER_LENGTH(value1),CAST(value1 AS VARCHAR(100)) FROM t_clobjdbc_wy4 "
                             + "WHERE STATEID>'TEST-ID-197'");
 
             while (rs.next()) {

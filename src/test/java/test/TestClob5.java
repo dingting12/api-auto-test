@@ -38,9 +38,9 @@ public class TestClob5 {
     public void testClobF() {
 
         try {
-            String ddl0 = "DROP TABLE t_clob_wy5 IF EXISTS";
+            String ddl0 = "DROP TABLE t_clobjdbc_wy5 IF EXISTS";
             String ddl1 =
-                    "CREATE TABLE t_clob_wy5(ID int, CLOBFIELD CLOB(100000)) engine pallas";
+                    "CREATE TABLE t_clobjdbc_wy5(ID int, CLOBFIELD CLOB(100000)) engine pallas";
 
             statement.execute(ddl0);
             statement.execute(ddl1);
@@ -50,13 +50,13 @@ public class TestClob5 {
         try {
 
             connection.setAutoCommit(false);
-            String dml0 = "insert into t_clob_wy5 values(1,?)";
+            String dml0 = "insert into t_clobjdbc_wy5 values(1,?)";
             String value = "0123456789";
             PreparedStatement ps = connection.prepareStatement(dml0);
             ps.setString(1, value);
             ps.executeUpdate();
 
-            String dq1 = "select CHARACTER_LENGTH(clobfield) from t_clob_wy5;";
+            String dq1 = "select CHARACTER_LENGTH(clobfield) from t_clobjdbc_wy5;";
 
             ResultSet rs = statement.executeQuery(dq1);
 
@@ -70,7 +70,7 @@ public class TestClob5 {
 
             rs.close();
 
-            String dq3 = "delete from t_clob_wy5;";
+            String dq3 = "delete from t_clobjdbc_wy5;";
 
             statement.execute(dq3);
 
@@ -90,7 +90,7 @@ public class TestClob5 {
 
             ps.executeUpdate();
 
-            String dq2 = "select clobfield from t_clob_wy5;";
+            String dq2 = "select clobfield from t_clobjdbc_wy5;";
 
             rs = statement.executeQuery(dq2);
 

@@ -42,12 +42,12 @@ public class TestBlob3 {
 
             Statement st = connection.createStatement();
 
-            st.executeUpdate("DROP TABLE t_blob_wy3 IF EXISTS");
+            st.executeUpdate("DROP TABLE t_blobjdbc_wy3 IF EXISTS");
 
-            st.executeUpdate("CREATE TABLE t_blob_wy3 (id INTEGER, b blob(100),name varchar(200)) engine pallas");
+            st.executeUpdate("CREATE TABLE t_blobjdbc_wy3 (id INTEGER, b blob(100),name varchar(200)) engine pallas");
 
             ps = connection.prepareStatement(
-                    "INSERT INTO t_blob_wy3 values(1, ?,\'vffg\')");
+                    "INSERT INTO t_blobjdbc_wy3 values(1, ?,\'vffg\')");
 
 
             FileInputStream fileInputStream = new FileInputStream("./src/test/java/img/123.jpg");
@@ -55,7 +55,7 @@ public class TestBlob3 {
             ps.setBinaryStream(1, fileInputStream);
             ps.executeUpdate();
 
-            rs = st.executeQuery("SELECT * FROM t_blob_wy3 WHERE name = \'vffg\'");
+            rs = st.executeQuery("SELECT * FROM t_blobjdbc_wy3 WHERE name = \'vffg\'");
 
             if (rs.next()) {
                 //assertTrue("No row with id 2", false);
@@ -72,13 +72,13 @@ public class TestBlob3 {
             ps=null;
             rs=null;
 
-            ps=connection.prepareStatement("update t_blob_wy3 set id=2 where name=?");
+            ps=connection.prepareStatement("update t_blobjdbc_wy3 set id=2 where name=?");
             ps.setString(1, "vffg");
             int flag=ps.executeUpdate();
             if(flag==1) System.out.println("update succeed");
             else System.out.println("update failed");
 
-            rs = st.executeQuery("SELECT * FROM t_blob_wy3 WHERE id = 2");
+            rs = st.executeQuery("SELECT * FROM t_blobjdbc_wy3 WHERE id = 2");
 
             if (rs.next()) {
                 System.out.println("ID: "+rs.getInt("id")+", B: "+rs.getBlob("b"));
