@@ -1506,7 +1506,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="647 SQL008-02 TC-002-insert" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">insert into &quot;T_冒烟_jsink_647_002&quot; select * from &quot;T_冒烟_jsource_647_001&quot;
+            <stringProp name="query">insert into &quot;T_冒烟_jsink_647_001&quot; select * from &quot;T_冒烟_jsource_647_001&quot;
 
 
 
@@ -4700,22 +4700,6 @@ MATCH_RECOGNIZE (
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 model_em_predict " enabled="true"/>
             <hashTree>
-              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 DB kafka topic delete" enabled="true">
-                <stringProp name="hostname">192.168.1.75</stringProp>
-                <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
-                <stringProp name="password">123456</stringProp>
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic model_em_predict</stringProp>
-              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
-              <hashTree/>
-              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1326 LDBX081-09 kafka producer" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-producer.sh  --broker-list node6:29093 --topic model_em_predict&lt; /home/luyao/1034array.txt</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
-                <stringProp name="password">123456</stringProp>
-                <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
-              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
-              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop stream if exists model_em_predict;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -4822,7 +4806,7 @@ PREDICTION double
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-insert into model_em_predict_sink SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict);" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-insert into model_em_predict_sink" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
                 <stringProp name="query">insert into model_em_predict_sink SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict);</stringProp>
@@ -4839,7 +4823,7 @@ PREDICTION double
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB SHOW JOBS;" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB SHOW JOBS" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
                 <stringProp name="query">SHOW JOBS;</stringProp>
@@ -7607,44 +7591,6 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
             <stringProp name="username">luyao</stringProp>
           </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003 show jobs" enabled="true">
-            <stringProp name="dataSource">${u1}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">SHOW JOBS;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-              <stringProp name="RegexExtractor.refname">jobid</stringProp>
-              <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.default"></stringProp>
-              <stringProp name="RegexExtractor.match_number">-1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-              <stringProp name="ConstantTimer.delay">20000</stringProp>
-            </ConstantTimer>
-            <hashTree/>
-          </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003 cancel job &quot;${jobid_1}&quot;" enabled="true">
-            <stringProp name="dataSource">${u1}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003-watermark策略设置-drop-T_smoke_watermark_ksource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
@@ -7792,6 +7738,44 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003 show jobs" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SHOW JOBS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">jobid</stringProp>
+              <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">20000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003 cancel job &quot;${jobid_1}&quot;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
           <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
@@ -8708,7 +8692,9 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
             <stringProp name="query">CREATE STREAM T_PALLAS_psource_1326_004(
   ID INT primary key,NAME STRING
 ) PROPERTIES (
-  &apos;connector&apos;:&apos;pallas&apos;
+  &apos;connector&apos;:&apos;pallas&apos;,
+   &apos;linkoopdb.pallas.shard_number&apos; : &apos;1&apos;,
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos;
 );
 
 </stringProp>
@@ -8726,7 +8712,9 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
             <stringProp name="query">CREATE STREAM T_PALLAS_sink_1326_004(
   ID INT primary key,NAME STRING
 ) PROPERTIES (
-  &apos;connector&apos;:&apos;pallas&apos;
+  &apos;connector&apos;:&apos;pallas&apos;,
+    &apos;linkoopdb.pallas.shard_number&apos; : &apos;1&apos;,
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos;
 );</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
