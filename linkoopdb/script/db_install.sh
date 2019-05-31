@@ -95,6 +95,8 @@ function spark_install {
 	tar -zxvf $spark_loc -C $db_home/others
 	#创建spark依赖的LinkoopDB jar包链接。
     ln -s $db_home/linkoopdb_current/ldb-worker/lib/* $db_home/others/$SPARK_VERSION-bin-datapps-dev/jars
+    sudo -u hdfs hadoop fs -mkdir -p /user/$USER_NAME
+    sudo -u hdfs hadoop fs -chown -R $USER_NAME:hdfs /user/$USER_NAME
     sudo -u hdfs hadoop fs -mkdir -p $LINKOOPDB_BASE/$USER_NAME/$SPARK_VERSION
     sudo -u hdfs hadoop fs -chown -R $USER_NAME:hdfs $LINKOOPDB_BASE
     su - $USER_NAME -c "hadoop fs -put $db_home/others/$SPARK_VERSION-bin-datapps-dev/jars $LINKOOPDB_BASE/$USER_NAME/$SPARK_VERSION"
