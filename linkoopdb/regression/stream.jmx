@@ -110,6 +110,12 @@
             <stringProp name="Argument.value">mysql</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="port" elementType="Argument">
+            <stringProp name="Argument.name">port</stringProp>
+            <stringProp name="Argument.value">9105</stringProp>
+            <stringProp name="Argument.desc">db</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -123,7 +129,7 @@
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="checkQuery"></stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:${port}/ldb</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <stringProp name="username">${user}</stringProp>
         <stringProp name="password">123456</stringProp>
@@ -139,7 +145,7 @@
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="checkQuery"></stringProp>
-        <stringProp name="dbUrl">jdbc:mysql://${node}:3306/jmeter_istreamsql</stringProp>
+        <stringProp name="dbUrl">jdbc:mysql://node4:3306/jmeter_istreamsql</stringProp>
         <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
         <stringProp name="username">${umysql}</stringProp>
         <stringProp name="password">123456</stringProp>
@@ -5359,9 +5365,19 @@ TO_TIMESTAMP(&apos;2016-12-31 03:12:50&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;)
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">CREATE STREAM T_Asynchronous_jdbc_source(id bigint,tfloat float ARRAY,tvarchar varchar(20) ARRAY,tboolean boolean ARRAY,tdouble double ARRAY,
 TINYINTs TINYINT,SMALLINTs SMALLINT,BIGINTs BIGINT,FLOATs FLOAT,DOUBLEs DOUBLE,DECIMALs DECIMAL(4,2),DATEs DATE,TIMESTAMPs TIMESTAMP,VARCHARs VARCHAR(100),BOOLEANs BOOLEAN) 
-properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node4:9105/ldb&apos;,&apos;username&apos;: &apos;admin&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;t_istream_wr&apos;,&apos;increaseColumn&apos;: &apos;id&apos;,&apos;rowtime&apos;:&apos;TIMESTAMPs.myrowtime1&apos;,
- &apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
- &apos;watermarksDelay&apos;:&apos;60000&apos;);
+properties (
+&apos;type&apos;: &apos;source&apos;, 
+&apos;connector&apos;: &apos;jdbc&apos;, 
+&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+&apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;,
+&apos;username&apos;: &apos;admin&apos;,
+&apos;password&apos;: &apos;123456&apos;,
+&apos;tableName&apos;: &apos;t_istream_wr&apos;,
+&apos;increaseColumn&apos;: &apos;id&apos;,
+&apos;rowtime&apos;:&apos;TIMESTAMPs.myrowtime1&apos;,
+&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
+&apos;watermarksDelay&apos;:&apos;60000&apos;
+ );
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
