@@ -1,1 +1,69 @@
 
+= Bulk load on pallas测试计划
+:doctype: article
+:encoding: utf-8
+:lang: zh
+:toc:
+:numbered:
+
+
+## 编写时间
+
+2019-06-13
+
+## 测试版本
+
+linkoopdb-2.0.0.236-20190613
+
+## 测试时间
+
+2019-06-13至2019-06-14
+
+## 测试内容
+
+测试pallas存储的load into语法，且在加载大量数据时是否比insert into 快 +
+https://github.com/datapps/linkoopdb/issues/1314
+
+## 测试思路
+
+### 准备工作
+
+1.创建一张全数据类型的pallas表且有大量数据（通过存储过程插入大量数据，其中包括中英文和特殊字符）作为pallas源表t_test_pallas_bulk_wy1 +
+
+2.创建一张跟pallas源表t_test_pallas_bulk_wy1相同表结构的pallas表t_test_pallas_bulk_wy2且不插入数据 +
+
+3.创建一张跟pallas源表t_test_pallas_bulk_wy1相同表结构的hdfs表t_test_hdfs_bulk_wy1且插入大量数据作为hdfs源表 +
+
+4.创建一张跟hdfs源表hdfs表t_test_hdfs_bulk_wy1相同表结构的hdfs表hdfs表t_test_hdfs_bulk_wy2且不插入数据 +
+
+5.创建一张tpcds1T数据中的store-sales表（28亿行）的外部表t_extern_store_sales_wy1 +
+
+6.创建一张store-sales的pallas内部表t_innerpallas_store_sales_wy1且包含store-sales的所有数据 +
+
+7.创建两张与t_innerpallas_store_sales_wy1相同表结构的pallas空表t_innerpallas_store_sales_wy2，t_innerpallas_store_sales_wy3
+
+
+### 测试过程
+
+1.源表为t_test_pallas_bulk_wy1，被插入数据的表为t_test_pallas_bulk_wy2，结束后查看数据是否正确且正常 +
+
+2.源表为t_test_pallas_bulk_wy1，被插入数据的表为t_test_hdfs_bulk_wy2，查看是否能插入 +
+
+3.源表为t_test_hdfs_bulk_wy1，被插入数据的表为t_test_hdfs_bulk_wy2，查看是否能插入 +
+
+4.源表为t_test_hdfs_bulk_wy1，被插入数据的表为t_test_pallas_bulk_wy2，查看是否能插入 +
+
+5.源表为t_innerpallas_store_sales_wy1，被插入数据的表为t_test_pallas_bulk_wy2，用load into语法实现插入数据，统计时间并查看数据是否正确
+
+6.源表为t_innerpallas_store_sales_wy1，被插入数据的表为t_test_pallas_bulk_wy3，用insert into语法实现插入数据，统计时间并查看数据是否正确
+
+7.比较两表插入数据的时间，且两表插入时使用相同资源
+
+[TIP]
+====
+每次执行插入前需要清空被插入数据的表的数据
+====
+
+## 测试可能遇到的问题
+
+* 创建store-sales内部表时比较慢
