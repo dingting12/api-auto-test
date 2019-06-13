@@ -1,0 +1,52 @@
+= DB Storage Node deployment mode using k8s 测试计划
+:doctype: article
+:encoding: utf-8
+:lang: zh
+:toc:
+:numbered:
+
+
+## 编写时间
+
+2019-06-13
+
+## 测试版本
+
+192.168.1.78:5000/linkoopdb:jx6
+
+## 测试时间
+
+2019-06-11至2019-06-13
+
+## 测试内容
+
+测试pallas的node节点在k8s集群中是否正确运行 +
+https://github.com/datapps/linkoopdb/issues/1293
+
+## 测试思路
+
+* delete 元数据库的pallas pod（包括1个或多个节点），然后查看是否重启pod，存储的数据是否能正常使用 +
+
+* delete 元数据库的pallas pod（包括1个或多个节点），然后重启DB，查看pallas pod是否自启动且存储的数据是否能正常使用 +
+
+* delete db的pallas节点的pod，查看是否重启pod，若不行，则再次创建完全相同的节点，查看存储的数据是否能正常使用 +
+
+* 通过SQL删除pallas节点，查看是否重启pod，若不行，则再次创建完全相同的节点，查看存储的数据是否能正常使用 +
+
+* delete db的pallas节点的pod，查看是否重启pod，若不行，重启db，查看pallas节点是否正常且存储的数据是否能正常使用 +
+
+* 通过SQL删除pallas节点，查看是否重启pod，若不行，重启db，查看pallas节点是否正常且存储的数据是否能正常使用 +
+
+* 重启DB集群后，查看pallas数据是否丢失 +
+
+* delete 元数据库的pallas pod（包括1个节点和多个节点），然后对数据库进行操作，查看是否正常 +
+
+* delete db的pallas节点的pod（包括1个节点和多个节点），然后对数据库进行操作，查看是否正常 +
+
+* 将pallas节点的数据存放目录进行重命名，查看pod是否挂了，是否重启，然后重启db，查看是否自动创建新的数据目录，数据是否能正常使用 +
+
+* pallas节点意外停止，pallas节点会自启动
+
+## 测试可能遇到的问题
+
+* 无法重现pallas节点意外停止的情况
