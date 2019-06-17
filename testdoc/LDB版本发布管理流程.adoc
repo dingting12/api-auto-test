@@ -19,37 +19,53 @@ manyi
 
 === 每日构建版本
 
-通过定时构建LinkoopDB-2.0项目，将每天最新的版本发布到http://192.168.1.133:12345/dev/product/version/ +
-文件命名为：产品名称-主版本号.子版本号.阶段版本号.构建序号-构建日期.tar.gz +
+通过构建LinkoopDB-2.0项目，将每天最新的版本发布到http://192.168.1.133:12345/dev/linkoopdb/version/ +
+文件命名为：产品名称-主版本号.子版本号.修正版本号.构建序号-构建日期.tar.gz +
 例如：linkoopdb-2.0.0.132-20190418.tar.gz
 
 
 === 阶段性构建版本
 
-通过手动触发构建，将Milestone版本发布到http://192.168.1.133:12345/dev/product/version/
-文件命名为：产品名称-主版本号.子版本号.阶段版本号.XX.tar.gz +
-其中XX代表各个阶段的简称，可以为M1,M2,RC,GA等 +
-例如：linkoopdb-studio-1.1.0-RC1.tar.gz
+jenkins中的LinkoopDB-STAGE项目用来构建发布linkoopdb阶段性版本，包括Milestone版本，RC版本，GA版本 +
+1. 发布目录：http://192.168.1.133:12345/dev/linkoopdb/version-XX[N]/ +
+2. version：即将发布的版本号，由主版本号.子版本号.修正版本号组成 +
+3. 文件命名：产品名称-主版本号.子版本号.修正版本号-XX[N].tar.gz +
+4. XX：为版本阶段标识，可以为m,rc,ga +
+5. [N]：版本的编号，从1开始依次增加 +
+例如：linkoopdb-1.1.0-rc1.tar.gz +
+
+[TIP]
+====
+发布阶段性版本时必须在代码仓库中增加对应的tag，例如：1.1.0-rc1
+====
+
+
+
+参考：
+https://guacamole.apache.org/release-procedures-part2/[Apache Producing a release candidate]
 
 === 正式版本
 
 ==== 安装包
 
-通过手动触发构建，将正式版本发布到http://192.168.1.133:12345/release/product/version/
-文件命名为：产品名称-主版本号.子版本号.构建序号.tar.gz +
-例如：linkoopdb-2.0.0-18.tar.gz +
-发布正式版本必须要在代码仓库中新建一个分支用来保存这个版本的代码 +
+jenkins中的LinkoopDB-RELEASE项目用来构建发布linkoopdb正式版本 +
+1. 发布目录：http://192.168.1.133:12345/release/linkoopdb/version/ +
+2. version：即将发布的版本号，由主版本号.子版本号.修正版本号组成 +
+3. 文件命名：产品名称-主版本号.子版本号.修正版本号.tar.gz +
 
-编写RELEASENOTES放到和正式版本文件相同目录下。 +
-功能性能等测试报告存放在对应发布版本的report目录下 +
-
+例如：linkoopdb-2.0.0.tar.gz +
+[TIP]
+====
+发布正式版本必须要在代码仓库中新建一个分支用来保存这个版本的代码，例如：branch-2.0.0
+====
 
 ==== 依赖包
-
-产品依赖的组件也需要通过手动触发构建，将依赖组件的安装包发布到和产品相同的目录。 +
+jenkins中的LinkoopDB-SPARK-RELEASE项目用来构建发布linkoopdb依赖的spark版本 +
+jenkins中的LinkoopDB-FLINK-RELEASE项目用来构建发布linkoopdb依赖的flink版本 +
+将依赖组件的安装包发布到和产品相同的目录。 +
 文件命名为：组件名称-组件版本号-datapps-适用产品版本号.tar.gz +
-例如：spark-2.4.0-datapps-2.0.0.tar.gz
-
-
-
-
+例如：spark-2.4.0-datapps-2.0.0.tar.gz，flink-1.7.0-datapps-2.0.0.tar.gz
+[TIP]
+====
+组件名称中不允许出现带有dev的命名
+====
