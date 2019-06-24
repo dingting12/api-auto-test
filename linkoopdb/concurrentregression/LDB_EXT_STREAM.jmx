@@ -61,8 +61,8 @@
           </elementProp>
           <elementProp name="node" elementType="Argument">
             <stringProp name="Argument.name">node</stringProp>
-            <stringProp name="Argument.value">${__P(host,192.168.1.73)}</stringProp>
-            <stringProp name="Argument.desc">node4</stringProp>
+            <stringProp name="Argument.value">${__P(host,192.168.1.71)}</stringProp>
+            <stringProp name="Argument.desc">node2</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="filePath" elementType="Argument">
@@ -73,6 +73,11 @@
           <elementProp name="topic" elementType="Argument">
             <stringProp name="Argument.name">topic</stringProp>
             <stringProp name="Argument.value">decision_tree_sink1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="node4" elementType="Argument">
+            <stringProp name="Argument.name">node4</stringProp>
+            <stringProp name="Argument.value">${__P(host,192.168.1.73)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -139,7 +144,7 @@
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="checkQuery"></stringProp>
-        <stringProp name="dbUrl">jdbc:mysql://${node}:3306/jmeter_istreamsql</stringProp>
+        <stringProp name="dbUrl">jdbc:mysql://${node4}:3306/jmeter_istreamsql</stringProp>
         <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
         <stringProp name="username">${umysql}</stringProp>
         <stringProp name="password">123456</stringProp>
@@ -266,10 +271,10 @@
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 drop-table-T_UDF_jsink_001" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 drop-table-udf_test" enabled="false">
                 <stringProp name="dataSource">${u3}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> drop table if exists T_UDF_jsink_001;</stringProp>
+                <stringProp name="query"> drop table if exists udf_test;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -314,6 +319,18 @@
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 create-table-udf_test" enabled="false">
+                <stringProp name="dataSource">${u3}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query"> create table udf_test(data varchar(20));</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 create-stream-T_UDF_jsink_001 " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -323,27 +340,15 @@
 	 &apos;type&apos;: &apos;sink&apos;,
 	 &apos;connector&apos;: &apos;jdbc&apos;, 
 	 &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
-	 &apos;dbUrl&apos;: &apos;jdbc:mysql://${node}:3306/jmeter_istreamsql&apos;,
+	 &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
 	 &apos;username&apos;: &apos;${umysql}&apos;,
 	 &apos;password&apos;: &apos;${umysql_password}&apos;,
 	 &apos;batchSize&apos;:&apos;1&apos;,
-	 &apos;tableName&apos;: &apos;T_UDF_jsink_001&apos;
+	 &apos;tableName&apos;: &apos;udf_test&apos;
  );
 
 
 </stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 create-table-T_UDF_jsink_001" enabled="true">
-                <stringProp name="dataSource">${u3}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> create table T_UDF_jsink_001(data varchar(20));</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -396,10 +401,10 @@ LANGUAGE JAVA NOT DETERMINISTIC EXTERNAL NAME &apos;CLASSPATH:org.apache.TestUDF
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 TC-TEST_STRING-001" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 TC-TEST_STRING-001" enabled="false">
                 <stringProp name="dataSource">${u3}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from T_UDF_jsink_001;
+                <stringProp name="query">select * from bbbbb;
 
                     </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -698,10 +703,10 @@ LANGUAGE JAVA NOT DETERMINISTIC EXTERNAL NAME &apos;CLASSPATH:org.apache.ShortDo
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 drop-table-T_UDF_jsink_001" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08 drop-table-udf_test" enabled="false">
                 <stringProp name="dataSource">${u3}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> drop table if exists T_UDF_jsink_001;</stringProp>
+                <stringProp name="query"> drop table if exists udf_test;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
