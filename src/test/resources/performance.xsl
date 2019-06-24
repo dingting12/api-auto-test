@@ -4,9 +4,9 @@
                 doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />
 
     <!-- Defined parameters (overrideable) -->
-    <xsl:param    name="showData" select="'N'"/>
+    <xsl:param    name="showData" select="'Y'"/>
 
-    <xsl:template match="testResults">
+    <xsl:template match="/testResults">
         <html>
             <head>
                 <title>Performance Test Results (Jmeter/XSLT)</title>
