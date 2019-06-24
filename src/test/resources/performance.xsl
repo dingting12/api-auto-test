@@ -114,15 +114,23 @@
     </xsl:template>
 
     <xsl:template name="pageHeader">
-        <h1>Performance Test Results (Jmeter/XSLT)</h1>
-        <table width="100%">
-            <tr>
-                <td align="left"></td>
-                <td align="right">Designed for use with <a href="http://jakarta.apache.org/jmeter">JMeter</a> and <a href="http://ant.apache.org">Ant</a>.</td>
-            </tr>
-        </table>
-        <hr size="1" />
-    </xsl:template>
+    <h1>Performance Test Results (Jmeter/XSLT)</h1>
+        <h3>LinkoopDB Version:2.0.0</h3>
+        <h4>资源配置说明：</h4>
+    <body>
+        服务器个数：7台 <br />
+        manager-memory=24G <br />
+        executor-memory=12G <br />
+        executor-cores=5  <br />
+        num-executors=19  <br />
+    </body>
+    <table width="100%">
+        <tr>
+            <td align="right">Designed for use with <a href="http://jakarta.apache.org/jmeter">JMeter</a> and <a href="http://ant.apache.org">Ant</a>.</td>
+        </tr>
+    </table>
+    <hr size="1" />
+</xsl:template>
 
     <xsl:template name="summary">
         <h2>Summary</h2>
@@ -136,9 +144,9 @@
                 <th>Max Time</th>
             </tr>
             <tr valign="top">
-                <xsl:variable name="allCount" select="count(/testResults/sampleResult)" />
-                <xsl:variable name="allFailureCount" select="count(/testResults/sampleResult[attribute::success='false'])" />
-                <xsl:variable name="allSuccessCount" select="count(/testResults/sampleResult[attribute::success='true'])" />
+                <xsl:variable name="allCount" select="count(/testResults/*)" />
+                <xsl:variable name="allFailureCount" select="count(/testResults/*[attribute::s='false'])" />
+                <xsl:variable name="allSuccessCount" select="count(/testResults/*[attribute::s='true'])" />
                 <xsl:variable name="allSuccessPercent" select="$allSuccessCount div $allCount" />
                 <xsl:variable name="allTotalTime" select="sum(/testResults/sampleResult/@time)" />
                 <xsl:variable name="allAverageTime" select="$allTotalTime div $allCount" />
