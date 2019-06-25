@@ -259,7 +259,7 @@
                     </td>-->
                 </tr>
 
-                <tr class="page_details">
+<!--                <tr class="page_details">
                     <xsl:attribute name="id"><xsl:text/>page_details_<xsl:value-of select="position()" /></xsl:attribute>
                     <td colspan="8" bgcolor="#FF0000">
                         <div align="center">
@@ -270,7 +270,7 @@
                                     <th>Iteration</th>
                                     <th>Time</th>
                                     <th>Success</th>
-                                    <!--
+                                    &lt;!&ndash;
                                     itterations = position() - thread stuff
                                     time="312"
                                     timeStamp="1053622047640"
@@ -279,7 +279,7 @@
                                     dataType="text"
                                     label="/CansysAandA/processAuthentication.do"
                                     success="true"
-                                    -->
+                                    &ndash;&gt;
                                 </tr>
 
                                 <xsl:for-each select="../sampleResult[@label = $label and @threadName != $label]">
@@ -294,7 +294,7 @@
                             </table>
                         </div>
                     </td>
-                </tr>
+                </tr>-->
 
             </xsl:for-each>
         </table>
