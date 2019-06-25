@@ -136,30 +136,19 @@
         <h2>Summary</h2>
         <table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
             <tr valign="top">
-                <th>Tests</th>
+                <th>Tests Count</th>
                 <th>Failures</th>
                 <th>Success Rate</th>
-                <th>Average Time</th>
-                <th>Min Time</th>
-                <th>Max Time</th>
+                <th>TPCDS Test Time</th>
+                <th>Total Time</th>
             </tr>
             <tr valign="top">
                 <xsl:variable name="allCount" select="count(/testResults/*)" />
                 <xsl:variable name="allFailureCount" select="count(/testResults/*[attribute::s='false'])" />
                 <xsl:variable name="allSuccessCount" select="count(/testResults/*[attribute::s='true'])" />
                 <xsl:variable name="allSuccessPercent" select="$allSuccessCount div $allCount" />
-                <xsl:variable name="allTotalTime" select="sum(/testResults/sampleResult/@time)" />
-                <xsl:variable name="allAverageTime" select="$allTotalTime div $allCount" />
-                <xsl:variable name="allMinTime">
-                    <xsl:call-template name="min">
-                        <xsl:with-param name="nodes" select="/testResults/sampleResult/@time" />
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="allMaxTime">
-                    <xsl:call-template name="max">
-                        <xsl:with-param name="nodes" select="/testResults/sampleResult/@time" />
-                    </xsl:call-template>
-                </xsl:variable>
+                <xsl:variable name="allTpcdsTestTime" select="sum(/testResults/*/@t)" />
+                <xsl:variable name="allTotalTime" select="sum(/testResults/*/@t)" />
                 <xsl:attribute name="class">
                     <xsl:choose>
                         <xsl:when test="$allFailureCount &gt; 0">Failure</xsl:when>
@@ -176,19 +165,15 @@
                         <xsl:with-param name="value" select="$allSuccessPercent" />
                     </xsl:call-template>
                 </td>
+
                 <td>
-                    <xsl:call-template name="display-time">
-                        <xsl:with-param name="value" select="$allAverageTime" />
+                    <xsl:call-template name="display-hour">
+                        <xsl:with-param name="value" select="$allTpcdsTestTime" />
                     </xsl:call-template>
                 </td>
                 <td>
-                    <xsl:call-template name="display-time">
-                        <xsl:with-param name="value" select="$allMinTime" />
-                    </xsl:call-template>
-                </td>
-                <td>
-                    <xsl:call-template name="display-time">
-                        <xsl:with-param name="value" select="$allMaxTime" />
+                    <xsl:call-template name="display-hour">
+                        <xsl:with-param name="value" select="$allTotalTime" />
                     </xsl:call-template>
                 </td>
             </tr>
@@ -199,81 +184,79 @@
         <h2>Pages</h2>
         <table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
             <tr valign="top">
-                <th>URL</th>
-                <th>Tests</th>
-                <th>Failures</th>
-                <th>Success Rate</th>
-                <th>Average Time</th>
-                <th>Min Time</th>
-                <th>Max Time</th>
-                <th></th>
+                <th>Test SQL</th>
+                <th>Success</th>
+                <th>Time</th>
+                <th>ErrorMessage</th>
             </tr>
-            <xsl:for-each select="/testResults/sampleResult[not(@label = preceding::*/@label)]">
-                <xsl:variable name="label" select="@label" />
-                <xsl:variable name="count" select="count(../sampleResult[@label = current()/@label])" />
-                <xsl:variable name="failureCount" select="count(../sampleResult[@label = current()/@label][attribute::success='false'])" />
-                <xsl:variable name="successCount" select="count(../sampleResult[@label = current()/@label][attribute::success='true'])" />
-                <xsl:variable name="successPercent" select="$successCount div $count" />
-                <xsl:variable name="totalTime" select="sum(../sampleResult[@label = current()/@label]/@time)" />
-                <xsl:variable name="averageTime" select="$totalTime div $count" />
-                <xsl:variable name="minTime">
-                    <xsl:call-template name="min">
-                        <xsl:with-param name="nodes" select="../sampleResult[@label = current()/@label]/@time" />
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="maxTime">
-                    <xsl:call-template name="max">
-                        <xsl:with-param name="nodes" select="../sampleResult[@label = current()/@label]/@time" />
-                    </xsl:call-template>
-                </xsl:variable>
+            <xsl:for-each select="*">
+                <xsl:variable name="sql" select="@lb"/>
+                <xsl:variable name="success" select="@s" />
+                <xsl:variable name="time" select="@t" />
+                <xsl:variable name="rm" select="@rm" />
                 <tr valign="top">
-                    <xsl:attribute name="class">
+<!--                <xsl:attribute name="class">
                         <xsl:choose>
                             <xsl:when test="$failureCount &gt; 0">Failure</xsl:when>
                         </xsl:choose>
-                    </xsl:attribute>
+                    </xsl:attribute>-->
                     <td>
-                        <xsl:if test="$failureCount > 0">
-                            <a><xsl:attribute name="href">#<xsl:value-of select="$label" /></xsl:attribute>
-                                <xsl:value-of select="$label" />
-                            </a>
-                        </xsl:if>
-                        <xsl:if test="0 >= $failureCount">
-                            <xsl:value-of select="$label" />
-                        </xsl:if>
+                        <xsl:value-of select="$sql" />
                     </td>
                     <td>
-                        <xsl:value-of select="$count" />
+                        <xsl:value-of select="$success" />
                     </td>
+
                     <td>
-                        <xsl:value-of select="$failureCount" />
-                    </td>
-                    <td>
-                        <xsl:call-template name="display-percent">
-                            <xsl:with-param name="value" select="$successPercent" />
+                        <xsl:call-template name="display-hour">
+                            <xsl:with-param name="value" select="$time" />
                         </xsl:call-template>
                     </td>
                     <td>
-                        <xsl:call-template name="display-time">
-                            <xsl:with-param name="value" select="$averageTime" />
-                        </xsl:call-template>
+                        <xsl:with-param name="value" select="$rm" />
                     </td>
-                    <td>
-                        <xsl:call-template name="display-time">
-                            <xsl:with-param name="value" select="$minTime" />
-                        </xsl:call-template>
-                    </td>
-                    <td>
-                        <xsl:call-template name="display-time">
-                            <xsl:with-param name="value" select="$maxTime" />
-                        </xsl:call-template>
-                    </td>
-                    <td align="center">
+                    <!--<td>-->
+                        <!--<xsl:if test="$failureCount > 0">-->
+                            <!--<a><xsl:attribute name="href">#<xsl:value-of select="$label" /></xsl:attribute>-->
+                                <!--<xsl:value-of select="$label" />-->
+                            <!--</a>-->
+                        <!--</xsl:if>-->
+                        <!--<xsl:if test="0 >= $failureCount">-->
+                            <!--<xsl:value-of select="$label" />-->
+                        <!--</xsl:if>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<xsl:value-of select="$count" />-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<xsl:value-of select="$failureCount" />-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<xsl:call-template name="display-percent">-->
+                            <!--<xsl:with-param name="value" select="$successPercent" />-->
+                        <!--</xsl:call-template>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<xsl:call-template name="display-time">-->
+                            <!--<xsl:with-param name="value" select="$averageTime" />-->
+                        <!--</xsl:call-template>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<xsl:call-template name="display-time">-->
+                            <!--<xsl:with-param name="value" select="$minTime" />-->
+                        <!--</xsl:call-template>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<xsl:call-template name="display-time">-->
+                            <!--<xsl:with-param name="value" select="$maxTime" />-->
+                        <!--</xsl:call-template>-->
+                    <!--</td>-->
+                  <!--  <td align="center">
                         <a href="">
                             <xsl:attribute name="href"><xsl:text/>javascript:change('page_details_<xsl:value-of select="position()" />')</xsl:attribute>
                             <img src="expand.jpg" alt="expand/collapse"><xsl:attribute name="id"><xsl:text/>page_details_<xsl:value-of select="position()" />_image</xsl:attribute></img>
                         </a>
-                    </td>
+                    </td>-->
                 </tr>
 
                 <tr class="page_details">
@@ -394,6 +377,11 @@
     <xsl:template name="display-time">
         <xsl:param name="value" />
         <xsl:value-of select="format-number($value,'0 ms')" />
+    </xsl:template>
+
+    <xsl:template name="display-hour">
+        <xsl:param name="value" />
+        <xsl:value-of select="format-number($value,'0 h')" />
     </xsl:template>
 
 </xsl:stylesheet>
