@@ -120,9 +120,9 @@
     <body>
         服务器个数：7台 <br />
         manager-memory=24G <br />
-        executor-memory=12G <br />
-        executor-cores=5  <br />
-        num-executors=19  <br />
+        executor-memory=20G <br />
+        executor-cores=6  <br />
+        num-executors=12  <br />
     </body>
     <table width="100%">
         <tr>
@@ -149,6 +149,10 @@
                 <xsl:variable name="allSuccessPercent" select="$allSuccessCount div $allCount" />
                 <xsl:variable name="allTpcdsTestTime" select="sum(/testResults/*/@t)" />
                 <xsl:variable name="allTotalTime" select="sum(/testResults/*/@t)" />
+                <xsl:variable name="allTotalTimeWithHour" select="$allTotalTime div 3600000 "/>
+                <xsl:variable name="allTpcdsTestTimeWithHour" select="$allTpcdsTestTime div 3600000 "/>
+
+
                 <xsl:attribute name="class">
                     <xsl:choose>
                         <xsl:when test="$allFailureCount &gt; 0">Failure</xsl:when>
@@ -168,12 +172,12 @@
 
                 <td>
                     <xsl:call-template name="display-hour">
-                        <xsl:with-param name="value" select="$allTpcdsTestTime" />
+                        <xsl:with-param name="value" select="$allTpcdsTestTimeWithHour" />
                     </xsl:call-template>
                 </td>
                 <td>
                     <xsl:call-template name="display-hour">
-                        <xsl:with-param name="value" select="$allTotalTime" />
+                        <xsl:with-param name="value" select="$allTotalTimeWithHour" />
                     </xsl:call-template>
                 </td>
             </tr>
@@ -193,6 +197,7 @@
                 <xsl:variable name="sql" select="@lb"/>
                 <xsl:variable name="success" select="@s" />
                 <xsl:variable name="time" select="@t" />
+                <xsl:variable name="timeWithSecond" select="@t div 1000" />
                 <xsl:variable name="rm" select="@rm" />
                 <tr valign="top">
 <!--                <xsl:attribute name="class">
@@ -208,8 +213,8 @@
                     </td>
 
                     <td>
-                        <xsl:call-template name="display-hour">
-                            <xsl:with-param name="value" select="$time" />
+                        <xsl:call-template name="display-second">
+                            <xsl:with-param name="value" select="$timeWithSecond" />
                         </xsl:call-template>
                     </td>
                     <td>
@@ -377,6 +382,11 @@
     <xsl:template name="display-time">
         <xsl:param name="value" />
         <xsl:value-of select="format-number($value,'0 ms')" />
+    </xsl:template>
+
+    <xsl:template name="display-second">
+        <xsl:param name="value" />
+        <xsl:value-of select="format-number($value,'0 s')" />
     </xsl:template>
 
     <xsl:template name="display-hour">
