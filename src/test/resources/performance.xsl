@@ -213,7 +213,7 @@
                         </xsl:call-template>
                     </td>
                     <td>
-                        <xsl:with-param name="value" select="$rm" />
+                        <xsl:value-of select="$rm" />
                     </td>
                     <!--<td>-->
                         <!--<xsl:if test="$failureCount > 0">-->
