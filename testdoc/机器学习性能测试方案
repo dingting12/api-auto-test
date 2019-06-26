@@ -1,0 +1,111 @@
+= 机器学习性能测试方案
+:doctype: article
+:encoding: utf-8
+:lang: zh
+:toc:
+:numbered:
+
+==  编写时间
+2019-06-26
+
+== 测试版本
+2.0.0.M4
+
+==  测试时间
+2019-6-25至2019-6-26
+
+==  测试内容
+AI模型的性能指标，包括： +
+数据导入性能 +
+查询性能 +
+
+== 测试思路
+
+测试用特征工程算法进行数据处理的时间
+
+测试不同数据量（20万条、100万条、200万条.....）训练模型的时间
+
+测试不同数据量（20万条、100万条、200万条.....）进行模型预测的时间
+
+测试同一算法不同参数值的情况下进行模型训练、预测的时间（如：maxIter迭代次数，subsamplingRate每次迭代过程中使用的训练数据集的比列）
+
+测试用同一数据不同算法进行模型训练、预测的时间
+
+== 测试内容
+
+测试时间、温度、湿度等因素不同的情况下空气中的co的含量
+
+--导入原始数据集
+
+[source,shell]
+----
+DROP TABLE xingneng_trst IF EXISTS;
+CREATE EXTERNAL TABLE xingneng_trst(
+Times  FLOAT,
+CO  FLOAT,	
+Humidity DOUBLE,
+Temperature DOUBLE ,
+Flowrate  DOUBLE ,
+Heatervoltage DOUBLE ,
+r1 DOUBLE,
+r2 DOUBLE ,
+r3 DOUBLE ,	
+r4 DOUBLE ,	
+r5 DOUBLE,	
+r6 DOUBLE ,	
+r7 DOUBLE,
+r8 DOUBLE ,	
+r9 DOUBLE ,	
+r10 DOUBLE ,	
+r11 DOUBLE ,	
+r12 DOUBLE ,	
+r13 DOUBLE ,	
+r14 DOUBLE
+)  LOCATION ('ldbdist://192.168.1.79:54322/xingn.csv') FORMAT 'csv' (DELIMITER ',');
+
+
+SELECT * FROM xingneng_trst LIMIT 100;
+
+DROP TABLE xingneng_trst_wr
+CREATE TABLE xingneng_trst_wr AS (SELECT * FROM xingneng_trst) WITH DATA;
+
+SELECT * FROM xingneng_trst_wr LIMIT 100;
+
+
+create MODEL XN_RFORMULA_MODEL AS RFORMULA_TRANSFORMER((SELECT TIMES,CO,TEMPERATURE,FLOWRATE,HEATERVOLTAGE,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14 
+FROM xingneng_trst),'CO ~ TIMES + TEMPERATURE+FLOWRATE+HEATERVOLTAGE+R1+R2+R3+R4+R5+R6+R7+R8+R9+R10+R11+R12+R13+R14','error',false,'frequencyDesc');
+
+SELECT * FROM RFORMULA(XN_RFORMULA_MODEL,xingneng_trst_wr) WHERE LABEL>0;
+
+
+DROP  MODEL XN_CHISQSELECTOR_MODEL
+
+--特征选择（5万条数据量报错）
+
+CREATE MODEL XN_CHISQSELECTOR_MODEL AS CHISQSELECTOR_TRANSFORMER((SELECT * FROM RFORMULA(XN_RFORMULA_MODEL,(SELECT TIMES,CO,TEMPERATURE,FLOWRATE,HEATERVOLTAGE,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14 
+FROM xingneng_trst_wr))LIMIT 10000));
+
+
+--标准化处理
+CREATE MODEL XN_STANDARD_SCALER_MODEL AS  STANDARD_SCALER_TRANSFORMER((SELECT LABEL,FEATURES FROM RFORMULA(XN_RFORMULA_MODEL,(SELECT TIMES,CO,TEMPERATURE,FLOWRATE,HEATERVOLTAGE,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14 
+FROM xingneng_trst_wr))));
+
+SELECT * FROM STANDARD_SCALER(XN_STANDARD_SCALER_MODEL,(SELECT LABEL,FEATURES FROM RFORMULA(XN_RFORMULA_MODEL,(SELECT TIMES,CO,TEMPERATURE,FLOWRATE,HEATERVOLTAGE,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14 
+FROM xingneng_trst_wr))));
+
+--创建训练模型数据集
+CREATE TABLE XN_GBTCLASSIFIER_TRAIN_DATA(LABEL DOUBLE, FEATURES DOUBLE ARRAY);
+INSERT INTO XN_GBTCLASSIFIER_TRAIN_DATA SELECT LABEL,SCALEDFEATURES FROM STANDARD_SCALER(XN_STANDARD_SCALER_MODEL,(SELECT LABEL,FEATURES FROM RFORMULA(XN_RFORMULA_MODEL,(SELECT TIMES,CO,TEMPERATURE,FLOWRATE,HEATERVOLTAGE,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,R12,R13,R14 
+FROM xingneng_trst_wr))));
+
+SELECT * FROM XN_GBTCLASSIFIER_TRAIN_DATA
+
+--训练梯度提升树模型
+DROP model XN_gbtregression_model
+CREATE MODEL XN_gbtregression_model AS gbtregression_train(XN_GBTCLASSIFIER_TRAIN_DATA);(20miao)
+select  * from gbtregression_predict(XN_gbtregression_model, XN_GBTCLASSIFIER_TRAIN_DATA);
+
+--模型评估
+select * from auroc((SELECT LABEL,PREDICTION FROM gbtregression_predict(XN_gbtregression_model, XN_GBTCLASSIFIER_TRAIN_DATA)));
+
+----
