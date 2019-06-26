@@ -114,22 +114,36 @@
     </xsl:template>
 
     <xsl:template name="pageHeader">
-    <h1>Performance Test Results (Jmeter/XSLT)</h1>
-        <h3>LinkoopDB Version:2.0.0</h3>
-        <h3 id="test_date"></h3>
-
-        <script type="text/javascript">
-            var myDate = new Date();
-            document.getElementById("test_date").innerText(myDate.toLocaleString())
-        </script>
-        <h4>资源配置说明：</h4>
-    <body>
-        服务器个数：7台 <br />
-        manager-memory=24G <br />
-        executor-memory=20G <br />
-        executor-cores=6  <br />
-        num-executors=12  <br />
-    </body>
+        <h1>Performance Test Results (Jmeter/XSLT)</h1>
+        <h2>LinkoopDB Version:2.0.0 </h2>
+        <br />
+        <table border="1" align="left" width="95%">
+            <tr>
+                <td><h4>硬件配置说明</h4></td>
+                <td><h4>LinkoopDB配置说明</h4></td>
+                <td><h4>SPARK配置说明</h4></td>
+            </tr>
+            <tr>
+                <td>服务器：7台</td>
+                <td>manager-memory=24G</td>
+                <td>shuffle.partitions=500</td>
+            </tr>
+            <tr>
+                <td>CPU：12 cores</td>
+                <td>executor-memory=20G</td>
+                <td>maxResultSize=10737418240</td>
+            </tr>
+            <tr>
+                <td>内存：64G</td>
+                <td>executor-cores=6</td>
+                <td>autoBroadcastJoinThreshold=1048576000</td>
+            </tr>
+            <tr>
+                <td>硬盘：1T</td>
+                <td>num-executors=12</td>
+                <td>adaptiveBroadcastJoinThreshold=104857600</td>
+            </tr>
+        </table>
     <table width="100%">
         <tr>
             <td align="right">Designed for use with <a href="http://jakarta.apache.org/jmeter">JMeter</a> and <a href="http://ant.apache.org">Ant</a>.</td>
