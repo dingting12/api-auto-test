@@ -116,6 +116,12 @@
     <xsl:template name="pageHeader">
     <h1>Performance Test Results (Jmeter/XSLT)</h1>
         <h3>LinkoopDB Version:2.0.0</h3>
+        <h3 id="test_date"></h3>
+
+        <script type="text/javascript">
+            var myDate = new Date();
+            document.getElementById("test_date").innerText(myDate.toLocaleString())
+        </script>
         <h4>资源配置说明：</h4>
     <body>
         服务器个数：7台 <br />
