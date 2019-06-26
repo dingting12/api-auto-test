@@ -152,6 +152,16 @@
                 <xsl:variable name="allTotalTimeWithHour" select="$allTotalTime div 3600000 "/>
                 <xsl:variable name="allTpcdsTestTimeWithHour" select="$allTpcdsTestTime div 3600000 "/>
 
+                <xsl:variable name="sumTime" select="0" />
+                <xsl:variable name="b" select="0" />
+                <xsl:for-each select="*">
+                    <xsl:if test="starts-with(@lb,'q')">
+                        <tr>
+                            <xsl:variable name="sumTime" select="@t + $sumTime" />
+                        </tr>
+                    </xsl:if>
+                </xsl:for-each>
+
                 <xsl:attribute name="class">
                     <xsl:choose>
                         <xsl:when test="$allFailureCount &gt; 0">Failure</xsl:when>
@@ -171,7 +181,7 @@
 
                 <td>
                     <xsl:call-template name="display-time">
-                        <xsl:with-param name="value" select="$allTpcdsTestTime" />
+                        <xsl:with-param name="value" select="$sumTime" />
                     </xsl:call-template>
                 </td>
                 <td>
