@@ -147,20 +147,10 @@
                 <xsl:variable name="allFailureCount" select="count(/testResults/*[attribute::s='false'])" />
                 <xsl:variable name="allSuccessCount" select="count(/testResults/*[attribute::s='true'])" />
                 <xsl:variable name="allSuccessPercent" select="$allSuccessCount div $allCount" />
-                <xsl:variable name="allTpcdsTestTime" select="sum(/testResults/*/@t)" />
+                <xsl:variable name="allTpcdsTestTime" select="sum(/testResults/*[starts-with(@lb,'q')]/@t)" />
                 <xsl:variable name="allTotalTime" select="sum(/testResults/*/@t)" />
                 <xsl:variable name="allTotalTimeWithHour" select="$allTotalTime div 3600000 "/>
                 <xsl:variable name="allTpcdsTestTimeWithHour" select="$allTpcdsTestTime div 3600000 "/>
-
-                <xsl:variable name="sumTime" select="0" />
-                <xsl:variable name="b" select="0" />
-                <xsl:for-each select="*">
-                    <xsl:if test="starts-with(@lb,'q')">
-                        <tr>
-                            <xsl:variable name="sumTime" select="@t + $sumTime" />
-                        </tr>
-                    </xsl:if>
-                </xsl:for-each>
 
                 <xsl:attribute name="class">
                     <xsl:choose>
@@ -181,7 +171,7 @@
 
                 <td>
                     <xsl:call-template name="display-time">
-                        <xsl:with-param name="value" select="$sumTime" />
+                        <xsl:with-param name="value" select="$allTpcdsTestTime" />
                     </xsl:call-template>
                 </td>
                 <td>
@@ -209,11 +199,11 @@
                 <xsl:variable name="timeWithSecond" select="@t div 1000" />
                 <xsl:variable name="rm" select="@rm" />
                 <tr valign="top">
-<!--                <xsl:attribute name="class">
-                        <xsl:choose>
-                            <xsl:when test="$failureCount &gt; 0">Failure</xsl:when>
-                        </xsl:choose>
-                    </xsl:attribute>-->
+                <!--<xsl:attribute name="class">-->
+                        <!--<xsl:choose>-->
+                            <!--<xsl:when test="$failureCount &gt; 0">Failure</xsl:when>-->
+                        <!--</xsl:choose>-->
+                    <!--</xsl:attribute>-->
                     <td>
                         <xsl:value-of select="$sql" />
                     </td>
