@@ -136,7 +136,7 @@
         <h2>Summary</h2>
         <table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
             <tr valign="top">
-                <th>Tests Count</th>
+                <th>SQL Count</th>
                 <th>Failures</th>
                 <th>Success Rate</th>
                 <th>TPCDS Test Time</th>
@@ -151,7 +151,6 @@
                 <xsl:variable name="allTotalTime" select="sum(/testResults/*/@t)" />
                 <xsl:variable name="allTotalTimeWithHour" select="$allTotalTime div 3600000 "/>
                 <xsl:variable name="allTpcdsTestTimeWithHour" select="$allTpcdsTestTime div 3600000 "/>
-
 
                 <xsl:attribute name="class">
                     <xsl:choose>
@@ -171,13 +170,13 @@
                 </td>
 
                 <td>
-                    <xsl:call-template name="display-hour">
-                        <xsl:with-param name="value" select="$allTpcdsTestTimeWithHour" />
+                    <xsl:call-template name="display-time">
+                        <xsl:with-param name="value" select="$allTpcdsTestTime" />
                     </xsl:call-template>
                 </td>
                 <td>
-                    <xsl:call-template name="display-hour">
-                        <xsl:with-param name="value" select="$allTotalTimeWithHour" />
+                    <xsl:call-template name="display-time">
+                        <xsl:with-param name="value" select="$allTotalTime" />
                     </xsl:call-template>
                 </td>
             </tr>
@@ -213,8 +212,8 @@
                     </td>
 
                     <td>
-                        <xsl:call-template name="display-second">
-                            <xsl:with-param name="value" select="$timeWithSecond" />
+                        <xsl:call-template name="display-time">
+                            <xsl:with-param name="value" select="$time" />
                         </xsl:call-template>
                     </td>
                     <td>
