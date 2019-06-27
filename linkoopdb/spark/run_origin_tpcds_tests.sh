@@ -18,4 +18,4 @@ nohup $1/bin/spark-submit --class com.datapps.hgw.tpcs.TpcdsTests \
 --executor-memory 20G \
 --executor-cores 6 \
 --num-executors 12 \
-@2/packageTests-1.4.jar $3 $4/result.xml $5 $6
+@2 $3 $4/result.xml $5 $6
