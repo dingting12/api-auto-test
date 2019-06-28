@@ -246,7 +246,6 @@
 
                 <xsl:if test="$failureCount > 0">
                     <h3><xsl:value-of select="@label" /><a><xsl:attribute name="name"><xsl:value-of select="@label" /></xsl:attribute></a></h3>
-
                     <table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
                         <tr valign="top">
                             <th>Response</th>
