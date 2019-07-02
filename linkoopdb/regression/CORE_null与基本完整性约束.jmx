@@ -2465,6 +2465,99 @@ tbinaryv binary varying(100) default &apos;0x10110110&apos; NOT NULL
               </hashTree>
             </hashTree>
           </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="144 E131 Null value support (nulls in lieu of values)" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="144 E131 Null value support drop table if exists t_testnull_144;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop table if exists t_testnull_144;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="144 E131 Null value support create table t_testnull_144;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">create table t_testnull_144(id int,name char(255),age int,account double,ttime timestamp,class char);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="144 E131 Null value support insert into t_testnull_144" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">insert into t_testnull_144 values (1,&apos;纸蜘蛛&apos;,18,null,&apos;2019-04-03 11:11:11&apos;,&apos;a&apos;),(2,null,43,21334.2,&apos;2018-03-03 22:44:44&apos;,&apos;b&apos;);
+insert into t_testnull_144 (id,name) values (2,&apos;螳螂&apos;),(4,&apos;张三&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="144 E131 Null value support select * from t_testnull_144 where account is null;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from t_testnull_144 where account is null;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1915659293">ID	NAME	AGE	ACCOUNT	TTIME	CLASS
+2	螳螂                                                                                                                                                                                                                                                             	null	null	null	null
+4	张三                                                                                                                                                                                                                                                             	null	null	null	null
+1	纸蜘蛛                                                                                                                                                                                                                                                            	18	null	2019-04-03 11:11:11.0	a
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="144 E131 Null value support select count(*),class from t_testnull_144 group by class;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select count(*),class from t_testnull_144 group by class;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1188825974">C1	CLASS
+2	null
+1	b
+1	a</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
         </hashTree>
       </hashTree>
       <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="聚合报告" enabled="true">
