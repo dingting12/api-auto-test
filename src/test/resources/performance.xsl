@@ -125,17 +125,17 @@
             </tr>
             <tr>
                 <td>服务器：7台</td>
-                <td>manager-memory=24G</td>
+                <td>manager-memory=20G</td>
                 <td>shuffle.partitions=500</td>
             </tr>
             <tr>
                 <td>CPU：12 cores</td>
-                <td>executor-memory=20G</td>
+                <td>executor-memory=17G</td>
                 <td>maxResultSize=10737418240</td>
             </tr>
             <tr>
                 <td>内存：64G</td>
-                <td>executor-cores=6</td>
+                <td>executor-cores=5</td>
                 <td>autoBroadcastJoinThreshold=1048576000</td>
             </tr>
             <tr>

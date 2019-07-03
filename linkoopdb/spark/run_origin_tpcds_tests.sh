@@ -14,8 +14,8 @@ nohup $1/bin/spark-submit --class com.datapps.hgw.tpcs.TpcdsTests \
 --master yarn \
 --deploy-mode client \
 --queue default \
---driver-memory 24G \
---executor-memory 20G \
---executor-cores 6 \
+--driver-memory 20G \
+--executor-memory 17G \
+--executor-cores 5 \
 --num-executors 12 \
 $2 $3 $4 $5 $6
