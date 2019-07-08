@@ -682,7 +682,7 @@
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${a}</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:30121/ldb</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -698,7 +698,7 @@
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${u1}</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:30121/ldb</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -5302,6 +5302,480 @@ drop model ${random_forest_classifier_model} if EXISTS ;</stringProp>
               </JDBCSampler>
               <hashTree/>
             </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="613 LDBX005-02 Latent Dirichlet allocation" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop table t_lda_train_data_wr if EXISTS cascade;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop table t_lda_train_data_wr if EXISTS cascade;
+drop table t_lda_predict_data_wr if EXISTS cascade;
+drop model m_lda_model_wr if EXISTS ;
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create table t_lda_train_data_wr (features double array);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_lda_train_data_wr (features double array);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 insert into t_lda_train_data_wr VALUES   (array[0.4314975441651938,0.23556758034173494,0.3329348754930712]),   (array[0.4102948931589844,0.24776090803928308,0.34194419880173255]),   (array[0.2097946758876284,0.45373753641180287,0.3364677877005687]),   (array[0.2979553770395886,0.3739169154377782,0.3281277075226332]),   (array[0.27280146347774675,0.3908486412393842,0.336349895282869]),   (array[0.5316139195059199,0.20597059190339642,0.2624154885906837]),   (array[0.424646102395855,0.23807706795712158,0.3372768296470235]);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_lda_train_data_wr VALUES
+  (array[0.4314975441651938,0.23556758034173494,0.3329348754930712]),
+  (array[0.4102948931589844,0.24776090803928308,0.34194419880173255]),
+  (array[0.2097946758876284,0.45373753641180287,0.3364677877005687]),
+  (array[0.2979553770395886,0.3739169154377782,0.3281277075226332]),
+  (array[0.27280146347774675,0.3908486412393842,0.336349895282869]),
+  (array[0.5316139195059199,0.20597059190339642,0.2624154885906837]),
+  (array[0.424646102395855,0.23807706795712158,0.3372768296470235]);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create table t_lda_predict_data_wr(features double array);  " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_lda_predict_data_wr(features double array);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 insert into t_lda_predict_data_wr VALUES (array[0.23953838371693498 ,0.4115439191094815,0.3489176971735836]),(array[0.424646102395855,0.23807706795712158,0.3372768296470235]); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">
+insert into t_lda_predict_data_wr VALUES (array[0.23953838371693498 ,0.4115439191094815,0.3489176971735836]),(array[0.424646102395855,0.23807706795712158,0.3372768296470235]);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create model m_lda_model_wr as lda_train(t_lda_train_data_wr,20,2,&apos;online&apos;,10,1024,0.51,0.05,true,true);  " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test create model
+create model m_lda_model_wr as lda_train(t_lda_train_data_wr,20,2,&apos;online&apos;,10,1024.0,0.51,0.05,true,true);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 select * from m_lda_model_wr;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test create model
+desc model m_lda_model_wr;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop model m_lda_model_wr if exists;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+drop model m_lda_model_wr if exists;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create model m_lda_model_wr as lda_train(t_lda_train_data_wr); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+create model m_lda_model_wr as lda_train(t_lda_train_data_wr);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 update model m_lda_model_wr as lda_train(t_lda_train_data_wr,2); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+update model m_lda_model_wr as lda_train(t_lda_train_data_wr,2);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 select * from m_lda_model_wr;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">desc model m_lda_model_wr;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 update model m_lda_model_wr as lda_predict(t_lda_train_data_wr,20,10,&apos;online&apos;,10,1024,0.51,0.05,false,true);  " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+update model m_lda_model_wr as lda_train(t_lda_train_data_wr,20,10,&apos;online&apos;,10,1024.0,0.51,0.05,false,true); 
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-001" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test update model
+select  * from lda_predict(m_lda_model_wr, t_lda_predict_data_wr);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="750062422">FEATURES	PREDICTION
+ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.05002262504343903E0,0.050023003104936035E0,0.05002296522946358E0,0.0500224362677654E0,0.5497994901401093E0,0.050023516578809685E0,0.05002231716460646E0,0.05002227118163835E0,0.05002140567238756E0,0.050019969616844635E0]
+ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.05002197824788311E0,0.05002192058983035E0,0.05002065311961178E0,0.050023328969185106E0,0.549796257124304E0,0.05002944902135531E0,0.05002177757727571E0,0.050022509578356605E0,0.05002153668854918E0,0.05002058908364897E0]
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 UPDATE MODEL m_lda_model_wr AS lda_train((SELECT * FROM t_lda_predict_data_wr));  " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+UPDATE MODEL m_lda_model_wr AS lda_train((SELECT * FROM t_lda_predict_data_wr));
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 select  * from m_lda_model_wr;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test update model
+desc model m_lda_model_wr;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop model m_lda_model_wr if exists;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test simple predict
+drop model m_lda_model_wr if exists;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create model m_lda_model_wr as lda_train(t_lda_predict_data_wr); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+create model m_lda_model_wr as lda_train(t_lda_predict_data_wr);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-002" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test simple predict
+select  * from lda_predict(m_lda_model_wr,t_lda_predict_data_wr);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="389837402">FEATURES	PREDICTION
+ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
+ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 UPDATE MODEL m_lda_model_wr AS lda_train((SELECT * FROM t_lda_predict_data_wr)); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+UPDATE MODEL m_lda_model_wr AS lda_train((SELECT * FROM t_lda_predict_data_wr));
+
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-003" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test simple predict
+select  * from lda_predict(m_lda_model_wr,t_lda_predict_data_wr);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="389837402">FEATURES	PREDICTION
+ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
+ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop model m_lda_model_wr if exists;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">--- sub-query as table reference
+drop model m_lda_model_wr if exists;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create model m_lda_model_wr as lda_train(t_lda_predict_data_wr); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">--- sub-query as table reference
+create model m_lda_model_wr as lda_train(t_lda_predict_data_wr);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-004" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">--- sub-query as table reference
+select * from lda_predict(m_lda_model_wr,(select features from t_lda_predict_data_wr));
+
+
+
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="389837402">FEATURES	PREDICTION
+ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
+ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-005" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- table expression
+select  * from table(lda_predict(m_lda_model_wr,t_lda_predict_data_wr));
+
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="389837402">FEATURES	PREDICTION
+ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
+ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-006" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test predict with direct model training
+select prediction from lda_predict(lda_train(t_lda_predict_data_wr),(select * features from t_lda_predict_data_wr));
+
+
+
+
+
+
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1871203015">PREDICTION
+ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
+ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">48</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop table t_lda_train_data_wr if EXISTS cascade;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop table t_lda_train_data_wr if EXISTS cascade;
+drop table t_lda_predict_data_wr if EXISTS cascade;
+drop model m_lda_model_wr if EXISTS ;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="614 LDBX005-03 Bisecting k-means" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="614 LDBX005-03 drop table t_bisecting_kmeans_train_data_wr if EXISTS cascade; " enabled="true">
@@ -5867,6 +6341,499 @@ drop model m_bisecting_kmeans_model_wr if EXISTS ;
 
 
 
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="615 LDBX005-04 Gaussian Mixture Model (GMM)" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 drop TABLE  t_gaussian_mixture_train_data_wr if exists;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop TABLE  t_gaussian_mixture_train_data_wr if exists;
+drop table  t_gaussian_mixture_predict_data_wr if Exists;
+drop model m_gaussian_mixture_model_wr if exists;
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create table t_gaussian_mixture_train_data_wr (features double array); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_gaussian_mixture_train_data_wr (features double array); 
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 insert into t_gaussian_mixture_train_data_wr VALUES   (array[1.2,1.3,3.1]),   (array[2.2,2.3,2.1]),   (array[1.0,1.3,3.1]),   (array[0.2,1.3,3.1]),   (array[1.3,0.3,3.1]),   (array[1.3,1.3,4.1]),   (array[1.8,1.3,0.1]);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_gaussian_mixture_train_data_wr VALUES   (array[1.2,1.3,3.1]),   (array[2.2,2.3,2.1]),   (array[1.0,1.3,3.1]),   (array[0.2,1.3,3.1]),   (array[1.3,0.3,3.1]),   (array[1.3,1.3,4.1]),   (array[1.8,1.3,0.1]);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create table t_gaussian_mixture_predict_data_wr(features double array); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_gaussian_mixture_predict_data_wr(features double array); 
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 insert into t_gaussian_mixture_predict_data_wr VALUES (array[0.2, 0.4, 3.0]),(array[4.0, 1.0, 0.0]); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_gaussian_mixture_predict_data_wr VALUES (array[0.2, 0.4, 3.0]),(array[4.0, 1.0, 0.0]); </stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,2,100,0.01); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test create model
+create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,2,100,0.01);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 select * from  m_gaussian_mixture_model_wr; " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test create model
+desc model m_gaussian_mixture_model_wr;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04  drop model m_gaussian_mixture_model_wr if exists;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+drop model m_gaussian_mixture_model_wr if exists;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 update model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,2); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+update model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,2);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 select * from m_gaussian_mixture_model_wr;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">desc model m_gaussian_mixture_model_wr;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04  update model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,3); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+update model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,3); 
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-001" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test update model
+select  * from gaussian_mixture_predict(m_gaussian_mixture_model_wr,t_gaussian_mixture_predict_data_wr);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1933809536">ARRAY[0.2E0,0.4E0,3.0E0]	0.0</stringProp>
+                    <stringProp name="-1933808575">ARRAY[0.2E0,0.4E0,3.0E0]	1.0</stringProp>
+                    <stringProp name="-1933807614">ARRAY[0.2E0,0.4E0,3.0E0]	2.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">48</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04  update model m_gaussian_mixture_model_wr as gaussian_mixture_train((select * from t_gaussian_mixture_train_data_wr));" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+update model m_gaussian_mixture_model_wr as gaussian_mixture_train((select * from t_gaussian_mixture_train_data_wr));
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04  select  * from m_gaussian_mixture_model_wr;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test update model
+desc model m_gaussian_mixture_model_wr;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 drop model m_gaussian_mixture_model_wr if exists;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test simple predict
+drop model m_gaussian_mixture_model_wr if exists;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-002" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test simple predict
+select  * from gaussian_mixture_predict(m_gaussian_mixture_model_wr, t_gaussian_mixture_train_data_wr);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="2060936254">ARRAY[1.2E0,1.3E0,3.1E0]	0.0</stringProp>
+                    <stringProp name="-291139746">ARRAY[2.2E0,2.3E0,2.1E0]	1.0</stringProp>
+                    <stringProp name="-1416382592">ARRAY[1.0E0,1.3E0,3.1E0]	0.0</stringProp>
+                    <stringProp name="-195973792">ARRAY[0.2E0,1.3E0,3.1E0]	1.0</stringProp>
+                    <stringProp name="-2132321090">ARRAY[1.3E0,0.3E0,3.1E0]	0.0</stringProp>
+                    <stringProp name="1455598524">ARRAY[1.3E0,1.3E0,4.1E0]	0.0</stringProp>
+                    <stringProp name="197532380">ARRAY[1.8E0,1.3E0,0.1E0]	1.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">48</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 update model m_gaussian_mixture_model_wr as gaussian_mixture_train((select * from t_gaussian_mixture_train_data_wr));" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">-- test update model
+update model m_gaussian_mixture_model_wr as gaussian_mixture_train((select * from t_gaussian_mixture_train_data_wr));
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-003" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test simple predict
+ select  * from gaussian_mixture_predict(m_gaussian_mixture_model_wr, t_gaussian_mixture_train_data_wr);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-535485556">ARRAY[1.2E0,1.3E0,3.1E0]	0.0
+</stringProp>
+                    <stringProp name="-435397524">ARRAY[2.2E0,2.3E0,2.1E0]	1.0
+</stringProp>
+                    <stringProp name="-958187382">ARRAY[1.0E0,1.3E0,3.1E0]	0.0
+</stringProp>
+                    <stringProp name="-1780220246">ARRAY[0.2E0,1.3E0,3.1E0]	1.0
+</stringProp>
+                    <stringProp name="-1677444340">ARRAY[1.3E0,0.3E0,3.1E0]	0.0
+</stringProp>
+                    <stringProp name="-2121086002">ARRAY[1.3E0,1.3E0,4.1E0]	0.0
+</stringProp>
+                    <stringProp name="1828536494">ARRAY[1.8E0,1.3E0,0.1E0]	1.0
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">48</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 drop model m_gaussian_mixture_model_wr if exists;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">--- sub-query as table reference
+drop model m_gaussian_mixture_model_wr if exists;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr); " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">--- sub-query as table reference
+create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-004" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">--- sub-query as table reference
+select  * from gaussian_mixture_predict(m_gaussian_mixture_model_wr, (select features from t_gaussian_mixture_predict_data_wr));
+-- table expression
+
+
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="181446538">ARRAY[0.2E0,0.4E0,3.0E0]	0.0
+</stringProp>
+                    <stringProp name="1156791878">ARRAY[4.0E0,1.0E0,0.0E0]	0.0
+</stringProp>
+                    <stringProp name="181476329">ARRAY[0.2E0,0.4E0,3.0E0]	1.0
+</stringProp>
+                    <stringProp name="1422790149">ARRAY[4.0E0,1.0E0,0.0E0]	1.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">48</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-005" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- table expression
+select  * from table(gaussian_mixture_predict(m_gaussian_mixture_model_wr, t_gaussian_mixture_predict_data_wr));
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="808046191">FEATURES	PREDICTION
+</stringProp>
+                    <stringProp name="1156791878">ARRAY[4.0E0,1.0E0,0.0E0]	0.0
+</stringProp>
+                    <stringProp name="-1933808575">ARRAY[0.2E0,0.4E0,3.0E0]	1.0</stringProp>
+                    <stringProp name="1422790149">ARRAY[4.0E0,1.0E0,0.0E0]	1.0</stringProp>
+                    <stringProp name="-1933809536">ARRAY[0.2E0,0.4E0,3.0E0]	0.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">48</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-006" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">-- test predict with direct model training
+select  prediction from gaussian_mixture_predict(gaussian_mixture_train(t_gaussian_mixture_train_data_wr),
+ (select * from t_gaussian_mixture_predict_data_wr));
+
+
+
+
+
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-144155670">PREDICTION
+1.0
+0.0
+</stringProp>
+                    <stringProp name="-1723437857">PREDICTION
+0.0
+0.0</stringProp>
+                    <stringProp name="-1723436896">PREDICTION
+0.0
+1.0</stringProp>
+                    <stringProp name="-835933215">PREDICTION
+1.0
+1.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">48</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 drop TABLE  t_gaussian_mixture_train_data_wr if exists;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop TABLE  t_gaussian_mixture_train_data_wr if exists;
+drop table  t_gaussian_mixture_predict_data_wr if Exists;
+drop model m_gaussian_mixture_model_wr if exists;
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -10739,973 +11706,6 @@ drop model m_trainValidationSplit_model_wr if EXISTS ;
                 </hashTree>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="613 LDBX005-02 Latent Dirichlet allocation" enabled="true"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop table t_lda_train_data_wr if EXISTS cascade;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table t_lda_train_data_wr if EXISTS cascade;
-drop table t_lda_predict_data_wr if EXISTS cascade;
-drop model m_lda_model_wr if EXISTS ;
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create table t_lda_train_data_wr (features double array);" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table t_lda_train_data_wr (features double array);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 insert into t_lda_train_data_wr VALUES   (array[0.4314975441651938,0.23556758034173494,0.3329348754930712]),   (array[0.4102948931589844,0.24776090803928308,0.34194419880173255]),   (array[0.2097946758876284,0.45373753641180287,0.3364677877005687]),   (array[0.2979553770395886,0.3739169154377782,0.3281277075226332]),   (array[0.27280146347774675,0.3908486412393842,0.336349895282869]),   (array[0.5316139195059199,0.20597059190339642,0.2624154885906837]),   (array[0.424646102395855,0.23807706795712158,0.3372768296470235]);" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">insert into t_lda_train_data_wr VALUES
-  (array[0.4314975441651938,0.23556758034173494,0.3329348754930712]),
-  (array[0.4102948931589844,0.24776090803928308,0.34194419880173255]),
-  (array[0.2097946758876284,0.45373753641180287,0.3364677877005687]),
-  (array[0.2979553770395886,0.3739169154377782,0.3281277075226332]),
-  (array[0.27280146347774675,0.3908486412393842,0.336349895282869]),
-  (array[0.5316139195059199,0.20597059190339642,0.2624154885906837]),
-  (array[0.424646102395855,0.23807706795712158,0.3372768296470235]);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create table t_lda_predict_data_wr(features double array);  " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table t_lda_predict_data_wr(features double array);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 insert into t_lda_predict_data_wr VALUES (array[0.23953838371693498 ,0.4115439191094815,0.3489176971735836]),(array[0.424646102395855,0.23807706795712158,0.3372768296470235]); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">
-insert into t_lda_predict_data_wr VALUES (array[0.23953838371693498 ,0.4115439191094815,0.3489176971735836]),(array[0.424646102395855,0.23807706795712158,0.3372768296470235]);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create model m_lda_model_wr as lda_train(t_lda_train_data_wr,20,2,&apos;online&apos;,10,1024,0.51,0.05,true,true);  " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test create model
-create model m_lda_model_wr as lda_train(t_lda_train_data_wr,20,2,&apos;online&apos;,10,1024.0,0.51,0.05,true,true);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 select * from m_lda_model_wr;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test create model
-desc model m_lda_model_wr;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop model m_lda_model_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-drop model m_lda_model_wr if exists;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create model m_lda_model_wr as lda_train(t_lda_train_data_wr); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-create model m_lda_model_wr as lda_train(t_lda_train_data_wr);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 update model m_lda_model_wr as lda_train(t_lda_train_data_wr,2); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-update model m_lda_model_wr as lda_train(t_lda_train_data_wr,2);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 select * from m_lda_model_wr;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">desc model m_lda_model_wr;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 update model m_lda_model_wr as lda_predict(t_lda_train_data_wr,20,10,&apos;online&apos;,10,1024,0.51,0.05,false,true);  " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-update model m_lda_model_wr as lda_train(t_lda_train_data_wr,20,10,&apos;online&apos;,10,1024.0,0.51,0.05,false,true); 
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-001" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test update model
-select  * from lda_predict(m_lda_model_wr, t_lda_predict_data_wr);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="750062422">FEATURES	PREDICTION
-ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.05002262504343903E0,0.050023003104936035E0,0.05002296522946358E0,0.0500224362677654E0,0.5497994901401093E0,0.050023516578809685E0,0.05002231716460646E0,0.05002227118163835E0,0.05002140567238756E0,0.050019969616844635E0]
-ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.05002197824788311E0,0.05002192058983035E0,0.05002065311961178E0,0.050023328969185106E0,0.549796257124304E0,0.05002944902135531E0,0.05002177757727571E0,0.050022509578356605E0,0.05002153668854918E0,0.05002058908364897E0]
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 UPDATE MODEL m_lda_model_wr AS lda_train((SELECT * FROM t_lda_predict_data_wr));  " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-UPDATE MODEL m_lda_model_wr AS lda_train((SELECT * FROM t_lda_predict_data_wr));
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 select  * from m_lda_model_wr;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test update model
-desc model m_lda_model_wr;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop model m_lda_model_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test simple predict
-drop model m_lda_model_wr if exists;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create model m_lda_model_wr as lda_train(t_lda_predict_data_wr); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-create model m_lda_model_wr as lda_train(t_lda_predict_data_wr);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-002" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test simple predict
-select  * from lda_predict(m_lda_model_wr,t_lda_predict_data_wr);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="389837402">FEATURES	PREDICTION
-ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
-ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 UPDATE MODEL m_lda_model_wr AS lda_train((SELECT * FROM t_lda_predict_data_wr)); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-UPDATE MODEL m_lda_model_wr AS lda_train((SELECT * FROM t_lda_predict_data_wr));
-
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-003" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test simple predict
-select  * from lda_predict(m_lda_model_wr,t_lda_predict_data_wr);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="389837402">FEATURES	PREDICTION
-ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
-ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop model m_lda_model_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">--- sub-query as table reference
-drop model m_lda_model_wr if exists;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 create model m_lda_model_wr as lda_train(t_lda_predict_data_wr); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">--- sub-query as table reference
-create model m_lda_model_wr as lda_train(t_lda_predict_data_wr);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-004" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">--- sub-query as table reference
-select * from lda_predict(m_lda_model_wr,(select features from t_lda_predict_data_wr));
-
-
-
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="389837402">FEATURES	PREDICTION
-ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
-ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-005" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- table expression
-select  * from table(lda_predict(m_lda_model_wr,t_lda_predict_data_wr));
-
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="389837402">FEATURES	PREDICTION
-ARRAY[0.23953838371693498E0,0.4115439191094815E0,0.3489176971735836E0]	ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
-ARRAY[0.424646102395855E0,0.23807706795712158E0,0.3372768296470235E0]	ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 TC-006" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test predict with direct model training
-select prediction from lda_predict(lda_train(t_lda_predict_data_wr),(select * features from t_lda_predict_data_wr));
-
-
-
-
-
-
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1871203015">PREDICTION
-ARRAY[0.049879761333947656E0,0.04988016512789067E0,0.04987956634234748E0,0.04987904063059477E0,0.5496376240428893E0,0.04988742735807941E0,0.04987855869154114E0,0.05132211746746194E0,0.04987856490557282E0,0.049877174099674855E0]
-ARRAY[0.04987884470298958E0,0.04987881833278398E0,0.04987720226707814E0,0.04987902512942672E0,0.5496487192262376E0,0.04988206105102021E0,0.0498778237692065E0,0.051321627182537834E0,0.049878398280516496E0,0.04987748005820296E0]
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">48</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="613 LDBX005-02 drop table t_lda_train_data_wr if EXISTS cascade;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table t_lda_train_data_wr if EXISTS cascade;
-drop table t_lda_predict_data_wr if EXISTS cascade;
-drop model m_lda_model_wr if EXISTS ;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="615 LDBX005-04 Gaussian Mixture Model (GMM)" enabled="true"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 drop TABLE  t_gaussian_mixture_train_data_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop TABLE  t_gaussian_mixture_train_data_wr if exists;
-drop table  t_gaussian_mixture_predict_data_wr if Exists;
-drop model m_gaussian_mixture_model_wr if exists;
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create table t_gaussian_mixture_train_data_wr (features double array); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table t_gaussian_mixture_train_data_wr (features double array); 
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 insert into t_gaussian_mixture_train_data_wr VALUES   (array[1.2,1.3,3.1]),   (array[2.2,2.3,2.1]),   (array[1.0,1.3,3.1]),   (array[0.2,1.3,3.1]),   (array[1.3,0.3,3.1]),   (array[1.3,1.3,4.1]),   (array[1.8,1.3,0.1]);" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">insert into t_gaussian_mixture_train_data_wr VALUES   (array[1.2,1.3,3.1]),   (array[2.2,2.3,2.1]),   (array[1.0,1.3,3.1]),   (array[0.2,1.3,3.1]),   (array[1.3,0.3,3.1]),   (array[1.3,1.3,4.1]),   (array[1.8,1.3,0.1]);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create table t_gaussian_mixture_predict_data_wr(features double array); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table t_gaussian_mixture_predict_data_wr(features double array); 
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 insert into t_gaussian_mixture_predict_data_wr VALUES (array[0.2, 0.4, 3.0]),(array[4.0, 1.0, 0.0]); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">insert into t_gaussian_mixture_predict_data_wr VALUES (array[0.2, 0.4, 3.0]),(array[4.0, 1.0, 0.0]); </stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,2,100,0.01); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test create model
-create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,2,100,0.01);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 select * from  m_gaussian_mixture_model_wr; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test create model
-desc model m_gaussian_mixture_model_wr;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04  drop model m_gaussian_mixture_model_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-drop model m_gaussian_mixture_model_wr if exists;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr);" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 update model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,2); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-update model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,2);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 select * from m_gaussian_mixture_model_wr;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">desc model m_gaussian_mixture_model_wr;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04  update model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,3); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-update model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr,3); 
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-001" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test update model
-select  * from gaussian_mixture_predict(m_gaussian_mixture_model_wr,t_gaussian_mixture_predict_data_wr);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1933809536">ARRAY[0.2E0,0.4E0,3.0E0]	0.0</stringProp>
-                    <stringProp name="-1933808575">ARRAY[0.2E0,0.4E0,3.0E0]	1.0</stringProp>
-                    <stringProp name="-1933807614">ARRAY[0.2E0,0.4E0,3.0E0]	2.0</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">48</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04  update model m_gaussian_mixture_model_wr as gaussian_mixture_train((select * from t_gaussian_mixture_train_data_wr));" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-update model m_gaussian_mixture_model_wr as gaussian_mixture_train((select * from t_gaussian_mixture_train_data_wr));
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04  select  * from m_gaussian_mixture_model_wr;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test update model
-desc model m_gaussian_mixture_model_wr;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 drop model m_gaussian_mixture_model_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test simple predict
-drop model m_gaussian_mixture_model_wr if exists;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-002" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test simple predict
-select  * from gaussian_mixture_predict(m_gaussian_mixture_model_wr, t_gaussian_mixture_train_data_wr);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="2060936254">ARRAY[1.2E0,1.3E0,3.1E0]	0.0</stringProp>
-                    <stringProp name="-291139746">ARRAY[2.2E0,2.3E0,2.1E0]	1.0</stringProp>
-                    <stringProp name="-1416382592">ARRAY[1.0E0,1.3E0,3.1E0]	0.0</stringProp>
-                    <stringProp name="-195973792">ARRAY[0.2E0,1.3E0,3.1E0]	1.0</stringProp>
-                    <stringProp name="-2132321090">ARRAY[1.3E0,0.3E0,3.1E0]	0.0</stringProp>
-                    <stringProp name="1455598524">ARRAY[1.3E0,1.3E0,4.1E0]	0.0</stringProp>
-                    <stringProp name="197532380">ARRAY[1.8E0,1.3E0,0.1E0]	1.0</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">48</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 update model m_gaussian_mixture_model_wr as gaussian_mixture_train((select * from t_gaussian_mixture_train_data_wr));" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">-- test update model
-update model m_gaussian_mixture_model_wr as gaussian_mixture_train((select * from t_gaussian_mixture_train_data_wr));
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-003" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test simple predict
- select  * from gaussian_mixture_predict(m_gaussian_mixture_model_wr, t_gaussian_mixture_train_data_wr);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-535485556">ARRAY[1.2E0,1.3E0,3.1E0]	0.0
-</stringProp>
-                    <stringProp name="-435397524">ARRAY[2.2E0,2.3E0,2.1E0]	1.0
-</stringProp>
-                    <stringProp name="-958187382">ARRAY[1.0E0,1.3E0,3.1E0]	0.0
-</stringProp>
-                    <stringProp name="-1780220246">ARRAY[0.2E0,1.3E0,3.1E0]	1.0
-</stringProp>
-                    <stringProp name="-1677444340">ARRAY[1.3E0,0.3E0,3.1E0]	0.0
-</stringProp>
-                    <stringProp name="-2121086002">ARRAY[1.3E0,1.3E0,4.1E0]	0.0
-</stringProp>
-                    <stringProp name="1828536494">ARRAY[1.8E0,1.3E0,0.1E0]	1.0
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">48</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 drop model m_gaussian_mixture_model_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">--- sub-query as table reference
-drop model m_gaussian_mixture_model_wr if exists;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">--- sub-query as table reference
-create model m_gaussian_mixture_model_wr as gaussian_mixture_train(t_gaussian_mixture_train_data_wr);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-004" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">--- sub-query as table reference
-select  * from gaussian_mixture_predict(m_gaussian_mixture_model_wr, (select features from t_gaussian_mixture_predict_data_wr));
--- table expression
-
-
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="181446538">ARRAY[0.2E0,0.4E0,3.0E0]	0.0
-</stringProp>
-                    <stringProp name="1156791878">ARRAY[4.0E0,1.0E0,0.0E0]	0.0
-</stringProp>
-                    <stringProp name="181476329">ARRAY[0.2E0,0.4E0,3.0E0]	1.0
-</stringProp>
-                    <stringProp name="1422790149">ARRAY[4.0E0,1.0E0,0.0E0]	1.0</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">48</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-005" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- table expression
-select  * from table(gaussian_mixture_predict(m_gaussian_mixture_model_wr, t_gaussian_mixture_predict_data_wr));
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="808046191">FEATURES	PREDICTION
-</stringProp>
-                    <stringProp name="1156791878">ARRAY[4.0E0,1.0E0,0.0E0]	0.0
-</stringProp>
-                    <stringProp name="-1933808575">ARRAY[0.2E0,0.4E0,3.0E0]	1.0</stringProp>
-                    <stringProp name="1422790149">ARRAY[4.0E0,1.0E0,0.0E0]	1.0</stringProp>
-                    <stringProp name="-1933809536">ARRAY[0.2E0,0.4E0,3.0E0]	0.0</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">48</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 TC-006" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">-- test predict with direct model training
-select  prediction from gaussian_mixture_predict(gaussian_mixture_train(t_gaussian_mixture_train_data_wr),
- (select * from t_gaussian_mixture_predict_data_wr));
-
-
-
-
-
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-144155670">PREDICTION
-1.0
-0.0
-</stringProp>
-                    <stringProp name="-1723437857">PREDICTION
-0.0
-0.0</stringProp>
-                    <stringProp name="-1723436896">PREDICTION
-0.0
-1.0</stringProp>
-                    <stringProp name="-835933215">PREDICTION
-1.0
-1.0</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">48</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="615 LDBX005-04 drop TABLE  t_gaussian_mixture_train_data_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop TABLE  t_gaussian_mixture_train_data_wr if exists;
-drop table  t_gaussian_mixture_predict_data_wr if Exists;
-drop model m_gaussian_mixture_model_wr if exists;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="857 LDBX009-03 ML/AI Extension API for Python/Tensorflow (外部模型)" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="857 LDBX009-03 DROP table em_predict_data;" enabled="true">
@@ -14764,6 +14764,226 @@ drop table t_generalized_linear_regression_train_data if EXISTS ;
 drop table t_generalized_linear_regression_predict_data if EXISTS ;
 drop model m_generalized_linear_regression_model if EXISTS ;
 </stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="530 LDBX009-02 Triangle count" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 DROP TABLE t_cvertices_wy1 IF EXISTS CASCADE;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DROP TABLE t_cvertices_wy1 IF EXISTS CASCADE;
+DROP TABLE t_cedges_wy1 IF EXISTS CASCADE;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 create table t_cvertices_wy1 (id bigint, name varchar(32));" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_cvertices_wy1 (id bigint, name varchar(32));</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 insert into t_cvertices_wy1 values (1, &apos;A&apos;), (2, &apos;B&apos;), (3, &apos;C&apos;), (4, &apos;D&apos;);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_cvertices_wy1 values (1, &apos;A&apos;), (2, &apos;B&apos;), (3, &apos;C&apos;), (4, &apos;D&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 create table t_cedges_wy1 (src bigint, dst bigint);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_cedges_wy1 (src bigint, dst bigint);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 insert into t_cedges_wy1 values (1, 2), (2, 3), (1, 3), (3, 2);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_cedges_wy1 values (1, 2), (2, 3), (1, 3), (3, 2);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 create graph t_cgraph_wy1 as graph_build(t_cvertices_wy1, t_cedges_wy1);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create graph t_cgraph_wy1 as graph_build(t_cvertices_wy1, t_cedges_wy1);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 TC-001" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from graph_triangle_count(t_cgraph_wy1) ORDER BY id;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1171324566">COUNT	ID
+1	1
+1	2
+1	3
+0	4</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 DROP TABLE t_cvertices_wy2 IF EXISTS CASCADE;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DROP TABLE t_cvertices_wy2 IF EXISTS CASCADE;
+DROP TABLE t_cedges_wy2 IF EXISTS CASCADE;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 create table t_cvertices_wy2 (id bigint, name varchar(32));" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_cvertices_wy2 (id bigint, name varchar(32));</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 insert into t_cvertices_wy2 values (1, &apos;A&apos;), (2, &apos;B&apos;), (3, &apos;C&apos;), (4, &apos;D&apos;),(5,&apos;E&apos;),(6,&apos;F&apos;);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_cvertices_wy2 values (1, &apos;A&apos;), (2, &apos;B&apos;), (3, &apos;C&apos;), (4, &apos;D&apos;),(5,&apos;E&apos;),(6,&apos;F&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 create table t_cedges_wy2 (src bigint, dst bigint);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_cedges_wy2 (src bigint, dst bigint);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 insert into t_cedges_wy2 values (1,3),(1,4),(1,5),(2,3),(2,4),(2,6),(3,4),(3,5),(4,5);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_cedges_wy2 values (1,3),(1,4),(1,5),(2,3),(2,4),(2,6),(3,4),(3,5),(4,5);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 create graph t_cgraph_wy2 as graph_build(t_cvertices_wy2, t_cedges_wy2);" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create graph t_cgraph_wy2 as graph_build(t_cvertices_wy2, t_cedges_wy2);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 TC-002" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from graph_triangle_count(t_cgraph_wy2) ORDER BY id;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-594964473">COUNT	ID
+3	1
+1	2
+4	3
+4	4
+3	5
+0	6</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 DROP TABLE t_cvertices_wy1 IF EXISTS CASCADE;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DROP TABLE t_cvertices_wy1 IF EXISTS CASCADE;
+DROP TABLE t_cedges_wy1 IF EXISTS CASCADE;
+DROP TABLE t_cvertices_wy2 IF EXISTS CASCADE;
+DROP TABLE t_cedges_wy2 IF EXISTS CASCADE;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
