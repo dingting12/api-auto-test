@@ -730,6 +730,232 @@ LANGUAGE JAVA NOT DETERMINISTIC EXTERNAL NAME &apos;CLASSPATH:org.apache.ShortDo
             </hashTree>
           </hashTree>
         </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="750 LDBX081-07 CEP in SQL" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 drop STREAM test_jdbcsource_cep_bch_001" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists test_jdbcsource_cep_bch_001;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 drop STREAM test_jdbcsink_cep_bch_001" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists test_jdbcsink_cep_bch_001;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 CREATE STREAM test_jdbcsource_cep_bch_001" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM test_jdbcsource_cep_bch_001 (id Int, name String, key1 String, key2 String) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;proctime&apos;:&apos;proctime&apos;, &apos;tableName&apos;: &apos;cep11&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 CREATE STREAM test_jdbcsink_cep_bch_001" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM test_jdbcsink_cep_bch_001 (KEY1 String, KEY2 String, AID int , AKEY1 String, BID Integer, CID Integer, CKEY2 String) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;cep0311_sink&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 insert into" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">insert into test_jdbcsink_cep_bch_001 SELECT *
+FROM test_jdbcsource_cep_bch_001
+MATCH_RECOGNIZE (
+PARTITION BY key1, key2
+ORDER BY proctime
+MEASURES
+A.id AS aid,
+A.key1 AS akey1,
+LAST(B.id) AS bid,
+C.id AS cid,
+C.key2 AS ckey2
+PATTERN (A B C)
+DEFINE
+A AS name = &apos;a&apos; AND key1 LIKE &apos;%key%&apos; AND id &gt; 0,
+B AS name = &apos;b&apos; AND LAST(A.name, 2) IS NULL,
+C AS name = &apos;c&apos; AND LAST(A.name) = &apos;a&apos;
+) AS T;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="749 LDBX081-04 与DB深度整合" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="749 LDBX081-04 drop STREAM test_stream_749" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists test_stream_749;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="749 LDBX081-04 CREATE STREAM test_jdbcsource_cep_bch_001" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM test_stream_749 (id Int, name String, key1 String, key2 String) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;proctime&apos;:&apos;proctime&apos;, &apos;tableName&apos;: &apos;cep11&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1030 LDBX081-09 DB Worker 兼容Istream" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 drop-stream-T_jsource_1030" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists T_jsource_1030;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 drop-stream-T_jsink_1030" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists T_jsink_1030;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 create-stream-T_jsink_1030" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM T_jsink_1030 (
+ 	data varchar(20)
+ ) properties (
+	 &apos;type&apos;: &apos;sink&apos;,
+	 &apos;connector&apos;: &apos;jdbc&apos;, 
+	 &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+	 &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+	 &apos;username&apos;: &apos;${umysql}&apos;,
+	 &apos;password&apos;: &apos;${umysql_password}&apos;,
+	 &apos;batchSize&apos;:&apos;1&apos;,
+	 &apos;tableName&apos;: &apos;udf_test&apos;
+ );
+
+
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 create-stream-T_jsource1030" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">CREATE STREAM T_jsource_1030 (
+	 id Int
+ ) properties (
+	 &apos;type&apos;: &apos;source&apos;, 
+	 &apos;connector&apos;: &apos;jdbc&apos;, 
+	 &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+	 &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+	 &apos;username&apos;: &apos;test&apos;, 
+	 &apos;password&apos;: &apos;123456&apos;,
+	 &apos;tableName&apos;: &apos;aaaaa&apos; 
+ );
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 insert into-T_jsink_1030  " enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">insert into T_UDF_jsink_001 select TEST_STRING(2,19)  from T_UDF_jsource_001;
+
+                    </stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1031  LDBX081-10 DB 兼容Istream sql " enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1031  LDBX081-10 DESC JOB" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DESC JOB 1031;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1149 LDBX081-12 add syntax about DESC JOB" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1149 LDBX081-12 DESC JOB" enabled="true">
+            <stringProp name="dataSource"></stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DESC JOB 1031;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
       </hashTree>
     </hashTree>
   </hashTree>
