@@ -1,0 +1,147 @@
+项目进展情况：
+1、按沟通确认的指标公式完成一期和二期已有流程修改；
+请评审下，看看数据结果是否正确；
+
+特殊说明：一期区域担保规模无法计算 xiaqucode 为null
+
+后续工作安排：
+如果结果正确，那么后续实现承做笔数，担保规模，（日，周，月，年）等 
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.自营非自营担保规模对比
+
+SELECT sum1 as 公共资源交易中心担保规模,sum2 as 自营担保规模,name,code from (SELECT SUM(BZJAMOUNT) as sum1,
+ loadtime, SUBSTR(datamonth,5,2) as month FROM PRD_ZTB_DB_1.GGZYJYPT_GENERATEBAOHAN where dataday< '20181129' 
+ and datamonth>= '201801' and datamonth<= '201901' GROUP BY loadtime, datamonth) a 
+ full join PLATEFORMCODE.MONTHTABLE b on a.month = b.name full join (SELECT SUM(BZJAMOUNT) as sum2, 
+ loadtime, SUBSTR(datamonth,5,2) as month FROM PRD_ZTB_DB_1.ZYYW_GENERATEBAOHAN where dataday< '20181129' 
+ and datamonth>= '201801' and datamonth<= '201901' GROUP BY loadtime, datamonth) c on b.name = c.month
+ 
+ #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}
+ 
+ select NAME as "月份", JGBSVALUE as "公共资源交易中心笔数", ZYBSVALUE as "自营笔数" 
+ from PRD_ZTB_DB_1.VIEWZYJGBSB where LOADTIME = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} order by NAME
+
+
+2.自营非自营担保笔数对比
+SELECT cou1 as 公共资源交易中心笔数,cou2 as 自营担保笔数,name,code from (SELECT COUNT(BAOHANNO) as cou1, 
+loadtime, SUBSTR(datamonth,5,2) as month FROM PRD_ZTB_DB_1.GGZYJYPT_GENERATEBAOHAN where 
+dataday< #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} and datamonth>= '201801' 
+and datamonth<= '201901' GROUP BY loadtime, datamonth) a full join PLATEFORMCODE.MONTHTABLE b 
+on a.month = b.name full join (SELECT COUNT(BAOHANNO) as cou2, loadtime, SUBSTR(datamonth,5,2) as month 
+FROM PRD_ZTB_DB_1.ZYYW_GENERATEBAOHAN where dataday< #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} 
+and datamonth>= '201801' and datamonth<= '201901' GROUP BY loadtime, datamonth) c on b.name = c.month order by name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# eg1:
+SELECT dataday,COUNT(BAOHANNO)  FROM PRD_ZTB_DB_1.HUIYUAN_GENERATEBAOHAN GROUP BY dataday HAVING dataday > DATE_FORMAT('2018-11','yyyyMMdd')
+
+# 1.保函承做笔数
+SELECT COUNT(BAOHANNO) FROM PRD_ZTB_DB_1.HUIYUAN_GENERATEBAOHAN WHERE dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}
+
+# 2.担保规模
+SELECT CAST(SUM(BZJAMOUNT/10000) as NUMERIC(18,2)) FROM PRD_ZTB_DB_1.HUIYUAN_GENERATEBAOHAN WHERE dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}
+
+# 3.担保余额
+SELECT CAST(SUM(BZJAMOUNT/10000) as NUMERIC(18,2)) FROM PRD_ZTB_DB_1.HUIYUAN_GENERATEBAOHAN WHERE dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} and BAOHANENDDATE >= CURRENT_TIMESTAMP
+
+# 4.保费收入
+SELECT CAST(SUM(DANBAOPRICE/10000) as NUMERIC(18,2)) FROM PRD_ZTB_DB_1.HUIYUAN_GENERATEBAOHAN WHERE dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}
+
+# 5.服务企业
+select sum(cou) from ((SELECT COUNT(DISTINCT DANWEINAME) as cou FROM PRD_ZTB_DB_1.ZFCG_BAOHANAPPLY WHERE AuditStatus = 3 and dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}) 
+UNION (SELECT COUNT(DISTINCT DANWEINAME) as cou FROM PRD_ZTB_DB_1.HUIYUAN_SHOUXINSHENQING WHERE AuditStatus = 3 and dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}))
+
+二期
+
+# 1.保函承做笔数
+SELECT COUNT(DISTINCT GUARANTEE_NO, VALIDATE_CODE) FROM PRD_ZTB_DB.T_GUARANTEE_INFO WHERE dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}
+
+# 2.担保规模
+SELECT cast(SUM(deposit_sum/10000) as NUMERIC(18,2)) FROM PRD_ZTB_DB.T_GUARANTEE_INFO a JOIN PRD_ZTB_DB.T_APPLY_PROJECT_SECT_INFO b on a.APPLY_PROJECT_SECT_ID = b.APPLY_PROJECT_SECT_ID WHERE dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}
+
+# 3.担保余额
+SELECT cast(SUM(deposit_sum/10000) as NUMERIC(18,2)) FROM PRD_ZTB_DB.T_GUARANTEE_INFO a JOIN PRD_ZTB_DB.T_APPLY_PROJECT_SECT_INFO b on a.APPLY_PROJECT_SECT_ID = b.APPLY_PROJECT_SECT_ID WHERE dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} and VALID_END_DATE >= CURRENT_TIMESTAMP
+
+# 4.保费收入
+SELECT cast(SUM(prem/10000) as NUMERIC(18,2)) FROM PRD_ZTB_DB.T_GUARANTEE_INFO a JOIN PRD_ZTB_DB.T_APPLY_PROJECT_SECT_INFO b on a.APPLY_PROJECT_SECT_ID = b.APPLY_PROJECT_SECT_ID WHERE dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}
+
+# 5.服务企业
+SELECT COUNT(DISTINCT enterprice_id) FROM PRD_ZTB_DB.T_ENTERPRICE_ADMITENCE_INFO WHERE admit_status = 2 and dataday = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')} OR datamonth = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}  OR datayear = #{时间:DATE_FORMAT(DATE_SUB(CURRENT_DATE,1),'yyyyMMdd')}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
