@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="TPCDSTEST" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="node" elementType="Argument">
+            <stringProp name="Argument.name">node</stringProp>
+            <stringProp name="Argument.value">${__P(host,192.168.1.77)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">linkoopdb host</stringProp>
+          </elementProp>
+          <elementProp name="a" elementType="Argument">
+            <stringProp name="Argument.name">a</stringProp>
+            <stringProp name="Argument.value">admin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">dba user</stringProp>
+          </elementProp>
+          <elementProp name="a_password" elementType="Argument">
+            <stringProp name="Argument.name">a_password</stringProp>
+            <stringProp name="Argument.value">123456</stringProp>
+            <stringProp name="Argument.desc">dba user password</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="tpcds_data_url" elementType="Argument">
+            <stringProp name="Argument.name">tpcds_data_url</stringProp>
+            <stringProp name="Argument.value">${__P(dataurl,hdfs://node3:8020/node7/linkoopdb/testdb7/tpcds-1g-parquet)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port" elementType="Argument">
+            <stringProp name="Argument.name">port</stringProp>
+            <stringProp name="Argument.value">${__P(port,9105)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="admin" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">${a}</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:${port}/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">${a}</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>false</assertions>
+            <subresults>false</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="PERFORMANCE" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="INSERT" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop parquet external table" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop table ex_parquet_store_sales if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create parquet external table" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create external table ex_parquet_store_sales
+(
+    ss_sold_date_sk           integer                       ,
+    ss_sold_time_sk           integer                       ,
+    ss_item_sk                integer               not null,
+    ss_customer_sk            integer                       ,
+    ss_cdemo_sk               integer                       ,
+    ss_hdemo_sk               integer                       ,
+    ss_addr_sk                integer                       ,
+    ss_store_sk               integer                       ,
+    ss_promo_sk               integer                       ,
+    ss_ticket_number          bigint               not null,
+    ss_quantity               integer                       ,
+    ss_wholesale_cost         decimal(7,2)                  ,
+    ss_list_price             decimal(7,2)                  ,
+    ss_sales_price            decimal(7,2)                  ,
+    ss_ext_discount_amt       decimal(7,2)                  ,
+    ss_ext_sales_price        decimal(7,2)                  ,
+    ss_ext_wholesale_cost     decimal(7,2)                  ,
+    ss_ext_list_price         decimal(7,2)                  ,
+    ss_ext_tax                decimal(7,2)                  ,
+    ss_coupon_amt             decimal(7,2)                  ,
+    ss_net_paid               decimal(7,2)                  ,
+    ss_net_paid_inc_tax       decimal(7,2)                  ,
+    ss_net_profit             decimal(7,2)                  
+) location (&apos;${tpcds_data_url}/store_sales&apos;) FORMAT &apos;parquet&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="HDFS" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop hdfs table" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop table insert_hdfs_store_sales if exists cascade;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table insert_hdfs_store_sales" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">create table insert_hdfs_store_sales
+(
+    ss_sold_date_sk           integer                       ,
+    ss_sold_time_sk           integer                       ,
+    ss_item_sk                integer               not null,
+    ss_customer_sk            integer                       ,
+    ss_cdemo_sk               integer                       ,
+    ss_hdemo_sk               integer                       ,
+    ss_addr_sk                integer                       ,
+    ss_store_sk               integer                       ,
+    ss_promo_sk               integer                       ,
+    ss_ticket_number          bigint               not null,
+    ss_quantity               integer                       ,
+    ss_wholesale_cost         decimal(7,2)                  ,
+    ss_list_price             decimal(7,2)                  ,
+    ss_sales_price            decimal(7,2)                  ,
+    ss_ext_discount_amt       decimal(7,2)                  ,
+    ss_ext_sales_price        decimal(7,2)                  ,
+    ss_ext_wholesale_cost     decimal(7,2)                  ,
+    ss_ext_list_price         decimal(7,2)                  ,
+    ss_ext_tax                decimal(7,2)                  ,
+    ss_coupon_amt             decimal(7,2)                  ,
+    ss_net_paid               decimal(7,2)                  ,
+    ss_net_paid_inc_tax       decimal(7,2)                  ,
+    ss_net_profit             decimal(7,2)                  ,
+    primary key (ss_item_sk, ss_ticket_number)
+)</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into insert_hdfs_store_sales SELECT * FROM ex_parquet_store_sales;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">insert into insert_hdfs_store_sales SELECT * FROM ex_parquet_store_sales;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop pallas table" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop table insert_pallas_store_sales if exists cascade;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table insert_pallas_store_sales" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">create table insert_pallas_store_sales
+(
+    ss_sold_date_sk           integer                       ,
+    ss_sold_time_sk           integer                       ,
+    ss_item_sk                integer               not null,
+    ss_customer_sk            integer                       ,
+    ss_cdemo_sk               integer                       ,
+    ss_hdemo_sk               integer                       ,
+    ss_addr_sk                integer                       ,
+    ss_store_sk               integer                       ,
+    ss_promo_sk               integer                       ,
+    ss_ticket_number          bigint               not null,
+    ss_quantity               integer                       ,
+    ss_wholesale_cost         decimal(7,2)                  ,
+    ss_list_price             decimal(7,2)                  ,
+    ss_sales_price            decimal(7,2)                  ,
+    ss_ext_discount_amt       decimal(7,2)                  ,
+    ss_ext_sales_price        decimal(7,2)                  ,
+    ss_ext_wholesale_cost     decimal(7,2)                  ,
+    ss_ext_list_price         decimal(7,2)                  ,
+    ss_ext_tax                decimal(7,2)                  ,
+    ss_coupon_amt             decimal(7,2)                  ,
+    ss_net_paid               decimal(7,2)                  ,
+    ss_net_paid_inc_tax       decimal(7,2)                  ,
+    ss_net_profit             decimal(7,2)                  ,
+    primary key (ss_item_sk, ss_ticket_number)
+) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;1024&apos;) engine pallas;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into insert_pallas_store_sales SELECT * FROM ex_parquet_store_sales;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">load into insert_pallas_store_sales SELECT * FROM ex_parquet_store_sales;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SELECT" enabled="true"/>
+        <hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="简单查询" enabled="true"/>
+          <hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="HDFS" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM insert_hdfs_store_sales WHERE SS_CUSTOMER_SK = &apos;7322472&apos;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT * FROM insert_hdfs_store_sales WHERE SS_CUSTOMER_SK = &apos;7322472&apos;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM insert_pallas_store_sales WHERE SS_CUSTOMER_SK = &apos;7322472&apos;" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT * FROM insert_pallas_store_sales WHERE SS_CUSTOMER_SK = &apos;7322472&apos;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="统计查询" enabled="true"/>
+          <hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="HDFS" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT SS_CUSTOMER_SK,count(1) FROM insert_hdfs_store_sales GROUP BY SS_CUSTOMER_SK " enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT SS_CUSTOMER_SK,count(1) FROM insert_hdfs_store_sales GROUP BY SS_CUSTOMER_SK
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT SS_CUSTOMER_SK,count(1) FROM insert_pallas_store_sales GROUP BY SS_CUSTOMER_SK" enabled="true">
+                <stringProp name="dataSource">${a}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT SS_CUSTOMER_SK,count(1) FROM insert_pallas_store_sales GROUP BY SS_CUSTOMER_SK</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
