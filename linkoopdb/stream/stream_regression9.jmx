@@ -12989,7 +12989,7 @@ FROM t_kafkasource_cep_bch001
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07 TC-between and kafka-01" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 20000;
+              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 120000;
 select * from  streamsql.WINJOIN_SINK_004;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -13023,7 +13023,7 @@ select * from  streamsql.WINJOIN_SINK_004;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07 TC-and kafka-02" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 20000;
+              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 120000;
 select * from  streamsql.WINJOIN_SINK_006;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -13054,7 +13054,7 @@ select * from  streamsql.WINJOIN_SINK_006;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07 TC-&gt;= and &lt;kafka-03" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 20000;
+              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 120000;
 select * from streamsql.WINJOIN_SINK_005;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -49790,6 +49790,426 @@ select * from T_jsource_PARALLELISM_1522;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1269 DISQL-CONNECTOR-200-6 kafka Table Sink support max.request.size" enabled="true"/>
+        <hashTree>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1269 DISQL-CONNECTOR-200-6 kafka topic delete" enabled="true">
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --topic kafkasize  --zookeeper node2:2181/linkoopdb/luyao</stringProp>
+            <stringProp name="hostname">192.168.1.75</stringProp>
+            <stringProp name="password">123456</stringProp>
+            <intProp name="port">22</intProp>
+            <stringProp name="username">luyao</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 drop table if exists t_kafkasize_db;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">drop table if exists t_kafkasize_db;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 create table t_kafkasize_db" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table t_kafkasize_db (id int, name string, create_timestamp timestamp);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 INSERT INTO t_kafkasize_db " enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO t_kafkasize_db VALUES 
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 drop stream " enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop stream if exists t_kafkasize_kafkasink_001;
+drop stream if exists t_kafkasize_kafkasink_002;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 CREATE STREAM t_kafkasize_kafkasink_001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM t_kafkasize_kafkasink_001
+(id int, name string, create_timestamp timestamp)
+PROPERTIES(
+ &apos;type&apos;: &apos;sink&apos;,
+ &apos;connector&apos;: &apos;kafka&apos;,
+ &apos;version&apos;: &apos;0.10&apos;,
+ &apos;topic&apos;: &apos;kafkasize&apos;,
+ &apos;zookeeper.connect&apos;: &apos;node2:2181/linkoopdb/luyao&apos;,
+ &apos;group.id&apos;: &apos;${__Random(1,53467,group.id)}&apos;,
+ &apos;bootstrap.servers&apos;: &apos;node6:29093&apos;,
+ &apos;format&apos;: &apos;csv&apos;,
+ &apos;separator&apos;:&apos;,&apos;,
+ &apos;max.request.size&apos;: &apos;1&apos; 
+);
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 insert into t_kafkasize_kafkasink_001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">insert into t_kafkasize_kafkasink_001 select * from t_kafkasize_db;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1269 DISQL-CONNECTOR-200-6 TC-kafka consumer" enabled="true">
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-consumer.sh --zookeeper node2:2181/linkoopdb/luyao --topic  kafkasize --from-beginning --timeout-ms 10000</stringProp>
+            <stringProp name="hostname">192.168.1.75</stringProp>
+            <stringProp name="password">123456</stringProp>
+            <intProp name="port">22</intProp>
+            <stringProp name="username">luyao</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 CREATE STREAM t_kafkasize_kafkasink_002" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM t_kafkasize_kafkasink_002
+(id int, name string, create_timestamp timestamp)
+PROPERTIES(
+ &apos;type&apos;: &apos;sink&apos;,
+ &apos;connector&apos;: &apos;kafka&apos;,
+ &apos;version&apos;: &apos;0.10&apos;,
+ &apos;topic&apos;: &apos;kafkasize&apos;,
+ &apos;zookeeper.connect&apos;: &apos;node2:2181/linkoopdb/luyao&apos;,
+ &apos;group.id&apos;: &apos;${__Random(1,53467,group.id)}&apos;,
+ &apos;bootstrap.servers&apos;: &apos;node6:29093&apos;,
+ &apos;format&apos;: &apos;csv&apos;,
+ &apos;separator&apos;:&apos;,&apos;,
+ &apos;max.request.size&apos;: &apos;1024&apos; 
+);
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 insert into t_kafkasize_kafkasink_001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">insert into t_kafkasize_kafkasink_002 select * from t_kafkasize_db;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1269 DISQL-CONNECTOR-200-6 TC-kafka consumer" enabled="true">
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-consumer.sh --zookeeper node2:2181/linkoopdb/luyao --topic kafkasize --from-beginning --timeout-ms 10000</stringProp>
+            <stringProp name="hostname">192.168.1.75</stringProp>
+            <stringProp name="password">123456</stringProp>
+            <intProp name="port">22</intProp>
+            <stringProp name="username">luyao</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-825460278">1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0
+1,name,2019-02-11 11:11:11.0</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1269 DISQL-CONNECTOR-200-6 kafka topic delete" enabled="true">
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --topic kafkasize  --zookeeper node2:2181/linkoopdb/luyao</stringProp>
+            <stringProp name="hostname">192.168.1.75</stringProp>
+            <stringProp name="password">123456</stringProp>
+            <intProp name="port">22</intProp>
+            <stringProp name="username">luyao</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 drop stream " enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop stream if exists t_kafkasize_kafkasink_001;
+drop stream if exists t_kafkasize_kafkasink_002;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 drop table if exists t_kafkasize_db;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">drop table if exists t_kafkasize_db;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 show jobs" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SHOW JOBS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">jobid</stringProp>
+              <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">20000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1269 DISQL-CONNECTOR-200-6 cancel job &quot;${jobid_1}&quot;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings"/>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">true</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1167 DISQL-CONNECTOR-200-5 Linkoop Table Source sink" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 drop table" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">drop table if exists t_testdb_dbsource;
+drop table if exists t_testdb_dbsink;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 create table t_testdb_dbsource" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table t_testdb_dbsource (id int, name string, create_timestamp timestamp);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 INSERT INTO t_testdb_dbsource" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO t_testdb_dbsource VALUES 
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;),
+(1,&apos;name&apos;,&apos;2019-02-11 11:11:11&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 drop stream if exists t_testdb_pallassink;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop stream if exists t_testdb_pallassink;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 CREATE STREAM t_testdb_pallassink" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM t_testdb_pallassink
+(id int , name string, create_timestamp timestamp)
+PROPERTIES(
+&apos;connector&apos;:&apos;pallas&apos;
+);
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 insert into t_testdb_pallassink" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">insert into t_testdb_pallassink select * from t_testdb_dbsource;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 TC-001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from t_testdb_pallassink;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1091715530">1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0
+1	name	2019-02-11 11:11:11.0</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 drop stream if exists t_testdb_pallassink;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop stream if exists t_testdb_pallassink;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1167 DISQL-CONNECTOR-200-5 drop table" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">drop table if exists t_testdb_dbsource;
+drop table if exists t_testdb_dbsink;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
         </hashTree>
       </hashTree>
     </hashTree>
