@@ -1,0 +1,51 @@
+= Stream性能测试方案
+:doctype: article
+:encoding: utf-8
+:lang: zh
+:toc:
+:numbered:
+
+
+
+==  编写时间
+2019-07-23
+
+== 测试版本
+2.0.0
+
+==  测试时间
+2019-07-24至2019-07-26
+
+==  测试内容
+测试Stream的性能指标包括： +
+数据的输入输出性能 +
+数据的查找统计性能 +
+外部模型的性能 +
+特征工程的性能 +
+
+
+== 测试思路
+=== 数据输入输出性能
+1.jdbc source流表
+* 数据准备：使用第四范式的数据创建外部表导入数据 +
+* 创建jdbc sink流表接收外部表的数据，统计时间 +
+* 通过jdbc sink流表相关联的内部表创建jdbc source表，统计时间 +
+* 利用jdbc source表分别输出到kafka/linkoopdb/pallas sink流表中，统计数据输出的时间 +
+
+2.parquet流表
+* 数据准备：使用第四范式的数据创建外部表导入数据，得到表的字段及数据类型 +
+* 创建parquet source流表，统计创建时间 +
+* 利用parquet source流表分别输出到kafka/linkoopdb/pallas sink流表中，统计数据输出的时间 +
+
+=== 数据查找统计性能
+对已经创建好的source及sink表进行查询 +
+* select * from table; +
+* select count(*) from table; +
+
+=== 外部模型的性能
+1.创建外部模型的时间 +
+2.得到预测数据的时间 +
+
+=== 特征工程的性能
+1.创建模型的时间 +
+2.得到处理后的数据的时间 +
