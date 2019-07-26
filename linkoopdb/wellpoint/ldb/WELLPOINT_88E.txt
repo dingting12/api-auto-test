@@ -1,0 +1,204 @@
+SELECT  /*WELLPOINT_88E --  qryid:1039831*/
+CASE    WHEN ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 199 
+        AND     SUBSTR ( ( ges.cov_serv_id ) , 1 , 2 ) = 'RM' THEN 'MO DUPLICATED DRUG' 
+ELSE    ( 
+CASE    ( ges.hlth_cov_cls_cd ) 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ( ges.hlth_cov_typ_rollup_cd ) 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ( ges.medcr_rel_cov_cd ) 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    ( ges.oth_carr_prim_ind ) 
+        WHEN    'Y' THEN ( 
+CASE    ( ges.oth_carr_ins_cd ) 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     , 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN ( ges.grp_id ) 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> ( gdc.src_sys_key ) THEN ( ges.grp_id )
+        WHEN
+        -- ( gdc.eff_dt ) < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN MOWI_gid.grp_id
+ELSE    ges.grp_id 
+END     ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( ges.grp_acct_id ) 
+END     , GCD.gndr_cd_desc , ges.rpt_prd_mbr_age_rng_cd , ges.rpt_prd ,
+                ges.rel_typ_cd , ges.gndr_cd , SUM ( ZEROIFNULL ( CAST( ges.expos_sum_cnt AS FLOAT ) / CAST( ges.rpt_day_cnt AS FLOAT ) ) ) ,
+                SUM ( 
+CASE    WHEN ges.rel_typ_cd = 'SB' THEN ZEROIFNULL ( CAST( ges.expos_sum_cnt AS FLOAT ) / CAST( ges.rpt_day_cnt AS FLOAT ) ) 
+ELSE    0 
+END     ) , SUM ( ges.expos_sum_cnt ) , SUM ( ges.ACCUM_EXPOS_AGE_CNT ) 
+FROM    GNDR_CD_DOM GCD RIGHT JOIN grp_expos_sum ges 
+        ON      GCD.gndr_cd = ges.gndr_cd LEFT JOIN grp_div_curr gdc 
+        ON      gdc.grp_div_key = ges.grp_div_key LEFT JOIN Grp_assn GA 
+        ON      ges.GRP_DIV_KEY = GA.GRP_DIV_KEY 
+        AND     ges.rpt_prd BETWEEN SUBSTR ( ga.eff_dt , 1 , 6 ) 
+        AND     SUBSTR ( ga.canc_dt , 1 , 6 ) 
+        AND     ga.clos_dt = '20991231' 
+        AND     ga.src_sys_key = ( 167 ) LEFT JOIN ( 
+SELECT  gdc.grp_id , gdc.src_sys_key 
+FROM    grp_div gdc 
+WHERE   gdc.src_sys_key IN ( 
+CASE    WHEN 'FACETS' = 'MO LEGACY AND FACETS' THEN 199 
+        WHEN    'FACETS' = 'WI LEGACY AND FACETS' THEN 202 
+END     ) 
+        AND     1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gdc.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY 1 , 2 ) MOWI_gid 
+        ON      ges.GRP_ID = MOWI_gid.grp_id 
+WHERE   ( ( ( ( ges.grp_id ) IN ( 
+SELECT  gd.grp_id 
+FROM    grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gd.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    grp_assn AS ga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Association ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND ga.assn_id IN ( '00009835' , '00009836' ) 
+        AND     ga.grp_div_key = gd.grp_div_key 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    site_grp_acct AS sga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Account ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND sga.grp_acct_id IN ( '00009835' , '00009836' ) 
+        AND     sga.grp_acct_key = gd.grp_acct_key 
+GROUP   BY gd.grp_id ) ) 
+        AND     ( 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( ges.grp_id ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( ges.grp_acct_id ) 
+END     ) IN ( '00009835' , '00009836' ) 
+        AND     ( ( ( 'FACETS' ) = 'NASCO' 
+        AND     ( gdc.src_sys_key ) IN ( 153 , 154 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 167 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'NASCO/FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 153 , 154 , 167 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'MO LEGACY AND FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN gdc.src_sys_key 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN gdc.src_sys_key
+        WHEN
+        -- gdc.eff_dt < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN ( MOWI_gid.src_sys_key )
+ELSE    gdc.src_sys_key 
+END     ) 
+        OR      ( gdc.src_sys_key ) IN ( 203 ) ) 
+        AND     ( gdc.src_sys_key ) NOT IN ( 202 ) 
+        OR      ( ( 'FACETS' ) = 'WI LEGACY AND FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN gdc.src_sys_key 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN gdc.src_sys_key
+        WHEN
+        -- gdc.eff_dt < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN ( MOWI_gid.src_sys_key )
+ELSE    gdc.src_sys_key 
+END     ) 
+        OR      ( gdc.src_sys_key ) IN ( 203 ) 
+        AND     ( gdc.src_sys_key ) NOT IN ( 199 ) ) ) ) ) 
+        AND     ( ges.prod_cd <> '221' ) 
+        AND     ( ( 
+CASE    WHEN ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 199 
+        AND     SUBSTR ( ( ges.cov_serv_id ) , 1 , 2 ) = 'RM' THEN 'MO DUPLICATED DRUG' 
+ELSE    ( 
+CASE    ( ges.hlth_cov_cls_cd ) 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ( ges.hlth_cov_typ_rollup_cd ) 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ( ges.medcr_rel_cov_cd ) 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    ( ges.oth_carr_prim_ind ) 
+        WHEN    'Y' THEN ( 
+CASE    ( ges.oth_carr_ins_cd ) 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) IN ( 'HOTT' , 'MEDICAL' , 'MEDICARE CARVEOUT' ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      ges.pkg_nbr IN ( 'All' ) ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      ges.subgrp_id IN ( 'All' ) ) ) 
+        AND     ges.hlth_cov_cls_cd NOT IN ( 'DG' , 'DN' , 'MH' , 'MS' , 'SA' ,
+                'HE' , 'VI' ) 
+        AND     ( ( ges.rpt_prd ) BETWEEN ( 
+CASE    WHEN ( ( 'N' ) = 'N' ) THEN SUBSTR ( ( '20060101' ) , 1 ,
+                6 ) 
+        WHEN    ( ( 'N' ) = 'Y' 
+        AND     ( '19900101' ) = '17770707' ) THEN SUBSTR ( ( '20060101' ) ,
+                1 , 6 ) 
+ELSE    SUBSTR ( ( '19900101' ) , 1 , 6 ) 
+END     ) 
+        AND     ( 
+CASE    WHEN ( ( 'N' ) = 'N' ) THEN SUBSTR ( ( '20061231' ) , 1 ,
+                6 ) 
+        WHEN    ( ( 'N' ) = 'Y' 
+        AND     ( '20061231' ) = '20991231' ) THEN SUBSTR ( ( '20061231' ) ,
+                1 , 6 ) 
+ELSE    SUBSTR ( ( '20061231' ) , 1 , 6 ) 
+END     ) ) 
+GROUP   BY 1 , 2 , 3 , 4 , 5 , 6 , 7 
+;
