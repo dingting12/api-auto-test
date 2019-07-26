@@ -1,0 +1,64 @@
+SELECT  /*WELLPOINT_214E --  qryid:1181412*/
+'All' ,
+-- SUBSTR ( ( ADD_MONTHS( ( ( (
+CASE    WHEN ( '200612' ) < '200312' THEN '200312' 
+ELSE    ( '200612' ) 
+END ,
+-- ) || '01' ) ( DATE , FORMAT 'yyyymmdd' ) ) , - 11 ) ( FORMAT 'yyyymmdd' ) ) ,  1 , 6 ) ,
+CASE    WHEN ( '200612' ) < '200312' THEN '200312' 
+ELSE    ( '200612' ) 
+END     ,
+SUM ( gpus.PRSCRP_CNT ) ,
+SUM ( gpus.SERV_PD_AMT )
+FROM    GRP_PHAR_UTIL_SUM gpus 
+WHERE   ( ( gpus.PD_PRD ) BETWEEN (
+-- SUBSTR ( ( ADD_MONTHS( ( ( (
+CASE    WHEN ( '200612' ) < '200312' THEN '200312' 
+ELSE    ( '200612' ) 
+END
+-- ) || '01' ) ( DATE , FORMAT 'yyyymmdd' ) ) , - 11 ) ( FORMAT 'yyyymmdd' ) ) ,  1 , 6 )
+                )
+        AND     ( 
+CASE    WHEN ( '200612' ) < '200312' THEN '200312' 
+ELSE    ( '200612' ) 
+END     ) 
+        AND     ( ( ( 'All' ) = 'All' ) 
+        OR      ( ( 'All' ) = 'HMO & POS' 
+        AND     ( gpus.prod_typ_cd ) IN ( 2 , 3 , 9 , 10 , 11 ) ) 
+        OR      ( ( 'All' ) = 'PPO' 
+        AND     ( gpus.prod_typ_cd ) IN ( 4 , 6 , 7 , 8 ) ) 
+        OR      ( ( 'All' ) = 'Traditional' 
+        AND     ( gpus.prod_typ_cd ) = 5 ) ) 
+        AND     ( ( ( 'Central Region Indiana' ) = 'Central Region' 
+        AND     ( gpus.bob_cd ) IN ( 6 , 18 , 19 , 20 , 21 , 22 ) 
+        AND     ( gpus.gl_bus_unit_cd ) IN ( 'AICI' , 'G2001' , 'CIC' , 'G1728' ,
+                'SGI' , 'G1700' , 'SUMI' , 'G0261' , 'G0262' , 'G0263' , 'G0422' ,
+                'G0423' , 'G0424' ) ) 
+        OR      ( ( 'Central Region Indiana' ) = 'Central Region Indiana' 
+        AND     ( gpus.bob_cd ) IN ( 6 , 18 , 19 , 20 , 21 , 22 ) 
+        AND     ( gpus.gl_bus_unit_cd ) IN ( 'AICI' , 'G2001' ) ) 
+        OR      ( ( 'Central Region Indiana' ) = 'Central Region Kentucky' 
+        AND     ( gpus.bob_cd ) IN ( 6 , 18 , 19 , 20 , 21 , 22 ) 
+        AND     ( gpus.gl_bus_unit_cd ) IN ( 'SGI' , 'G1700' , 'SUMI' ) ) 
+        OR      ( ( 'Central Region Indiana' ) = 'Central Region Ohio' 
+        AND     ( gpus.bob_cd ) IN ( 6 , 18 , 19 , 20 , 21 , 22 ) 
+        AND     ( gpus.gl_bus_unit_cd ) IN ( 'CIC' , 'G1728' ) ) 
+        OR      ( ( 'Central Region Indiana' ) = 'Central Region Missouri' 
+        AND     ( gpus.bob_cd ) IN ( 6 , 18 , 19 , 20 , 21 , 22 ) 
+        AND     ( gpus.gl_bus_unit_cd ) IN ( 'G0261' , 'G0262' , 'G0263' ) ) 
+        OR      ( ( 'Central Region Indiana' ) = 'Central Region Wisconsin' 
+        AND     ( gpus.bob_cd ) IN ( 6 , 18 , 19 , 20 , 21 , 22 ) 
+        AND     ( gpus.gl_bus_unit_cd ) IN ( 'G0422' , 'G0423' , 'G0424' ) ) 
+        OR      ( ( 'Central Region Indiana' ) = 'National' 
+        AND     ( gpus.bob_cd ) = ( 3 ) ) ) 
+        AND     ( gpus.prod_typ_cd ) <> 1
+        AND     ( ( gpus.mbr_src_sys_key ) IN ( 167 , 199 , 202 ) 
+        OR      ( ( gpus.mbr_src_sys_key ) = 153 
+        AND     ( gpus.grp_id ) LIKE ANY ( '0000332%' , '000___834%' , '00332%' ,
+                '00834%' , '00851%' ) ) ) 
+        AND     ( gpus.medcr_rel_cov_cd ) NOT IN ( 'R' , 'S' ) 
+        AND     ( NOT ( ( gpus.oth_carr_prim_ind ) = 'Y'
+        AND     ( gpus.oth_carr_ins_cd ) = 'M' ) ) 
+        AND     ( gpus.mbr_src_sys_key ) IN ( 153 , 167 , 199 , 202 ) ) 
+GROUP   BY 1 , 2 , 3 
+;

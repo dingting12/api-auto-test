@@ -1,0 +1,410 @@
+SELECT  /*WELLPOINT_142E --  qryid:1166709*/
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     , 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     , 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     , 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN ( ges.grp_id ) 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> ( gdc.src_sys_key ) THEN ( ges.grp_id )
+        WHEN
+        -- ( gdc.eff_dt ) < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN MOWI_gid.grp_id
+ELSE    ges.grp_id 
+END     ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( ges.grp_acct_id ) 
+END     , 'austin powder' , 
+CASE    'None' 
+        WHEN    'Group' THEN ges.grp_id 
+        WHEN    'Group - Subgroup' THEN ges.grp_id || '-' || ges.subgrp_id 
+        WHEN    'Group - Package' THEN ges.grp_id || '-' || ges.pkg_nbr 
+        WHEN    'Group - Subgroup - Package' THEN ges.grp_id || '-' || ges.subgrp_id || '-' || ges.pkg_nbr 
+ELSE    'All' 
+END     , ges.rpt_prd , 
+CASE    WHEN 'No' = 'Yes' THEN ( 
+CASE    WHEN ges.hlth_cov_cls_cd = 'DG' 
+        AND     ges.src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 199 
+        AND     SUBSTR ( ( ges.cov_serv_id ) , 1 , 2 ) = 'RM' THEN 'MO DUPLICATED DRUG' 
+ELSE    ( 
+CASE    ges.hlth_cov_cls_cd 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ges.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ges.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    ges.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    ges.oth_carr_ins_cd 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    WHEN ges.hlth_cov_cls_cd = 'DG' 
+        AND     ges.src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 199 
+        AND     SUBSTR ( ( ges.cov_serv_id ) , 1 , 2 ) = 'RM' THEN 'MO DUPLICATED DRUG' 
+ELSE    ( 
+CASE    ges.hlth_cov_cls_cd 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ges.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ges.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     , SUM ( 
+CASE    WHEN ges.rel_typ_cd = 'SB' THEN ZEROIFNULL ( CAST( ges.expos_sum_cnt AS FLOAT ) / CAST( ges.rpt_day_cnt AS FLOAT ) ) 
+ELSE    0 
+END     ) 
+FROM    grp_div_curr gdc RIGHT JOIN grp_expos_sum ges 
+        ON      gdc.grp_div_key = ges.grp_div_key LEFT JOIN segm s 
+        ON      CASE 
+        WHEN    'No Segment Selected' = 'No Segment Selected' 
+        AND     'No Segment Selected' = 'No Segment Selected' 
+        AND     'No Segment Selected' = 'No Segment Selected' THEN 'a' 
+ELSE    'b' 
+END     = 'b' 
+        AND     ges.grp_div_key = s.GRP_DIV_KEY 
+        AND     ges.dept_nbr = s.DEPT_NBR 
+        AND     ges.pkg_nbr = s.PKG_NBR 
+        AND     ges.par_plan_id = s.PLAN_ID 
+        -- AND     ( ges.rpt_prd || TRIM ( ges.rpt_day_cnt ) ) ( DATE , FORMAT 'YYYYMMDD' ) BETWEEN s.eff_dt AND     s.canc_dt
+        -- AND     s.clos_dt = '20991231'
+LEFT JOIN Grp_assn GA
+        ON      ges.GRP_DIV_KEY = GA.GRP_DIV_KEY 
+        AND     ges.rpt_prd BETWEEN SUBSTR ( ga.eff_dt , 1 , 6 ) 
+        AND     SUBSTR ( ga.canc_dt , 1 , 6 ) 
+        AND     ga.clos_dt = '20991231' 
+        AND     ga.src_sys_key = ( 167 ) LEFT JOIN ( 
+SELECT  gdc.grp_id , gdc.src_sys_key 
+FROM    grp_div gdc 
+WHERE   gdc.src_sys_key IN ( 
+CASE    WHEN 'NASCO' = 'MO LEGACY AND FACETS' THEN 199 
+        WHEN    'NASCO' = 'WI LEGACY AND FACETS' THEN 202 
+END     ) 
+        AND     1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gdc.grp_id IN ( '003323990' ) 
+GROUP   BY 1 , 2 ) MOWI_gid 
+        ON      ges.GRP_ID = MOWI_gid.grp_id 
+WHERE   ( ( 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     ) IN ( 'All' ) 
+        OR      'All' IN ( 'All' ) ) 
+        AND     ( ( 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     ) IN ( 'All' ) 
+        OR      'All' IN ( 'All' ) ) 
+        AND     ( ( 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     ) IN ( 'All' ) 
+        OR      'All' IN ( 'All' ) ) 
+        AND     ( ( ( ( ges.grp_id ) IN ( 
+SELECT  gd.grp_id 
+FROM    grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gd.grp_id IN ( '003323990' ) 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    grp_assn AS ga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Association ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND ga.assn_id IN ( '003323990' ) 
+        AND     ga.grp_div_key = gd.grp_div_key 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    site_grp_acct AS sga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Account ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND sga.grp_acct_id IN ( '003323990' ) 
+        AND     sga.grp_acct_key = gd.grp_acct_key 
+GROUP   BY gd.grp_id ) ) 
+        AND     ( 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( ges.grp_id ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( ges.grp_acct_id ) 
+END     ) IN ( '003323990' ) 
+        AND     ( ( ( 'NASCO' ) = 'NASCO' 
+        AND     ( gdc.src_sys_key ) IN ( 153 , 154 , 203 ) ) 
+        OR      ( ( 'NASCO' ) = 'FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 167 , 203 ) ) 
+        OR      ( ( 'NASCO' ) = 'NASCO/FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 153 , 154 , 167 , 203 ) ) 
+        OR      ( ( 'NASCO' ) = 'MO LEGACY AND FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN gdc.src_sys_key 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN gdc.src_sys_key
+        WHEN
+        -- gdc.eff_dt < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN ( MOWI_gid.src_sys_key )
+ELSE    gdc.src_sys_key 
+END     ) 
+        OR      ( gdc.src_sys_key ) IN ( 203 ) ) 
+        AND     ( gdc.src_sys_key ) NOT IN ( 202 ) 
+        OR      ( ( 'NASCO' ) = 'WI LEGACY AND FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN gdc.src_sys_key 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN gdc.src_sys_key
+        WHEN
+        -- gdc.eff_dt < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN ( MOWI_gid.src_sys_key )
+ELSE    gdc.src_sys_key 
+END     ) 
+        OR      ( gdc.src_sys_key ) IN ( 203 ) 
+        AND     ( gdc.src_sys_key ) NOT IN ( 199 ) ) ) ) ) 
+        AND     ( ges.rpt_prd BETWEEN '200601' 
+        AND     '200612' ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      ges.subgrp_id IN ( 'All' ) ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      ges.pkg_nbr IN ( 'All' ) ) ) 
+        AND     ( ges.prod_cd <> '221' ) 
+        AND     CASE 
+        WHEN    'No' = 'Yes' THEN ( 
+CASE    WHEN ges.hlth_cov_cls_cd = 'DG' 
+        AND     ges.src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 199 
+        AND     SUBSTR ( ( ges.cov_serv_id ) , 1 , 2 ) = 'RM' THEN 'MO DUPLICATED DRUG' 
+ELSE    ( 
+CASE    ges.hlth_cov_cls_cd 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ges.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ges.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    ges.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    ges.oth_carr_ins_cd 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    WHEN ges.hlth_cov_cls_cd = 'DG' 
+        AND     ges.src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 199 
+        AND     SUBSTR ( ( ges.cov_serv_id ) , 1 , 2 ) = 'RM' THEN 'MO DUPLICATED DRUG' 
+ELSE    ( 
+CASE    ges.hlth_cov_cls_cd 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ges.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ges.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     NOT IN ( 'MENTAL HEALTH' ) 
+        AND     ( NOT ( ( ges.src_sys_key ) = 132
+        AND     ( ges.hlth_cov_cls_cd ) = 'YY' ) ) 
+        AND     ( ( 
+CASE    WHEN 'No' = 'Yes' THEN ( 
+CASE    WHEN ges.hlth_cov_cls_cd = 'DG' 
+        AND     ges.src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 199 
+        AND     SUBSTR ( ( ges.cov_serv_id ) , 1 , 2 ) = 'RM' THEN 'MO DUPLICATED DRUG' 
+ELSE    ( 
+CASE    ges.hlth_cov_cls_cd 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ges.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ges.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    ges.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    ges.oth_carr_ins_cd 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    WHEN ges.hlth_cov_cls_cd = 'DG' 
+        AND     ges.src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ges.hlth_cov_cls_cd ) = 'DG' 
+        AND     ges.src_sys_key = 199 
+        AND     SUBSTR ( ( ges.cov_serv_id ) , 1 , 2 ) = 'RM' THEN 'MO DUPLICATED DRUG' 
+ELSE    ( 
+CASE    ges.hlth_cov_cls_cd 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ges.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ges.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) IN ( 'DENTAL' , 'DRUG' , 'HOTT' , 'MEDICAL' , 'MEDICARE CARVEOUT' ,
+                'MEDICARE HMO' , 'MEDICARE SUPP' , 'MENTAL HEALTH' , 'VISION' ) ) 
+GROUP   BY 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 
+;

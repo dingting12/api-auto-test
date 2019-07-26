@@ -1,0 +1,310 @@
+SELECT  /*WELLPOINT_20E --  qryid:809798*/ 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( gmus.grp_id ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( gmus.grp_acct_id ) 
+END     AS grpid , 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN ( gmus.grp_id ) 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> ( gdc.src_sys_key ) THEN ( gmus.grp_id )
+        WHEN
+        -- ( gdc.eff_dt ) < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN MOWI_gid.grp_id
+ELSE    gmus.grp_id 
+END     ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( gmus.grp_acct_id ) 
+END     AS grp_id2 , 
+CASE    WHEN ( gmus.clm_src_sys_key ) = 161 
+        AND     gmus.mbr_src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( gmus.clm_src_sys_key ) = 161 THEN 'DRUG' 
+        WHEN    ( gmus.clm_src_sys_key ) = 201 THEN 'DRUG' 
+        WHEN    ( gmus.clm_src_sys_key ) = 160 THEN ( 
+CASE    ( gmus.hlth_cov_cls_cd ) 
+        WHEN    'VI' THEN 'VISION' 
+ELSE    'DENTAL' 
+END     ) 
+        WHEN    ( gmus.clm_src_sys_key ) = 184 THEN 'VISION' 
+        WHEN    ( gmus.clm_src_sys_key ) = 200 THEN 'DENTAL' 
+        WHEN    ( gmus.clm_src_sys_key ) = 159 THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ( gmus.hlth_cov_cls_cd ) 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+ELSE    ( 
+CASE    ( gmus.medcr_rel_cov_cd ) 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    WHEN gmus.inpat_ind = 'Y' 
+        AND     gmus.ipp_cd = 1 THEN 'FACILITY INPATIENT' 
+        WHEN    gmus.inpat_ind = 'N' 
+        AND     gmus.ipp_cd = 1 THEN 'FACILITY OUTPATIENT' 
+        WHEN    gmus.ipp_cd <> 1 THEN 'PROFESSIONAL SERVICES' 
+END     ) 
+END     ) 
+END     ) 
+END     AS prod , SUM ( 
+CASE    WHEN gmus.clm_src_sys_key = 153 THEN ( gmus.serv_pd_amt + gmus.surchrg_amt ) 
+ELSE    gmus.serv_pd_amt 
+END     ) AS pd_amt 
+FROM    grp_med_util_sum gmus LEFT JOIN Grp_assn GA 
+        ON      gmus.grp_div_key = GA.GRP_DIV_KEY 
+        AND     gmus.serv_strt_prd BETWEEN SUBSTR ( ga.eff_dt , 1 , 6 ) 
+        AND     SUBSTR ( ga.canc_dt , 1 , 6 ) 
+        AND     ga.clos_dt = '20991231' 
+        AND     ga.src_sys_key IN ( 167 ) LEFT JOIN grp_div_curr gdc 
+        ON      gdc.grp_div_key = gmus.grp_div_key LEFT JOIN ( 
+SELECT  gdc.grp_id , gdc.src_sys_key 
+FROM    grp_div gdc 
+WHERE   gdc.src_sys_key IN ( 
+CASE    WHEN 'FACETS' = 'MO LEGACY AND FACETS' THEN 199 
+        WHEN    'FACETS' = 'WI LEGACY AND FACETS' THEN 202 
+END     ) 
+        AND     1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gdc.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY 1 , 2 ) MOWI_gid 
+        ON      gmus.grp_id = MOWI_gid.grp_id 
+WHERE   ( ( ( ( gmus.grp_id ) IN ( 
+SELECT  gd.grp_id 
+FROM    grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gd.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    grp_assn AS ga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Association ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND ga.assn_id IN ( '00009835' , '00009836' ) 
+        AND     ga.grp_div_key = gd.grp_div_key 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    site_grp_acct AS sga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Account ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND sga.grp_acct_id IN ( '00009835' , '00009836' ) 
+        AND     sga.grp_acct_key = gd.grp_acct_key 
+GROUP   BY gd.grp_id ) ) 
+        AND     ( 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( grp_id2 ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( gmus.grp_acct_id ) 
+END     ) IN ( '00009835' , '00009836' ) 
+        AND     ( ( 'FACETS' = 'NASCO' 
+        AND     gmus.mbr_src_sys_key IN ( 153 , 154 , 203 ) ) 
+        OR      ( 'FACETS' = 'FACETS' 
+        AND     gmus.mbr_src_sys_key IN ( 167 , 203 ) ) 
+        OR      ( 'FACETS' = 'NASCO/FACETS' 
+        AND     gmus.mbr_src_sys_key IN ( 153 , 154 , 167 , 203 ) ) 
+        OR      ( 'FACETS' = 'MO LEGACY AND FACETS' 
+        AND     gmus.mbr_src_sys_key IN ( 167 , 199 , 203 ) ) 
+        OR      ( 'FACETS' = 'WI LEGACY AND FACETS' 
+        AND     gmus.mbr_src_sys_key IN ( 167 , 202 , 203 ) ) ) ) ) 
+        AND     ( ( gmus.pd_prd ) BETWEEN SUBSTR ( TRIM ( ( '20060101' ) ) ,
+                1 , 6 ) 
+        AND     SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) ) 
+        AND     gmus.clm_src_sys_key NOT IN ( 159 , 160 , 161 , 184 , 200 ,
+                201 ) 
+        AND     gmus.hlth_cov_cls_cd NOT IN ( 'DN' , 'VI' ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      gmus.pkg_nbr IN ( 'All' ) ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      gmus.subgrp_id IN ( 'All' ) ) ) 
+        AND     ( ( 
+CASE    WHEN gmus.clm_src_sys_key IN ( 161 , 201 ) 
+        AND     gmus.mbr_src_sys_key = 203 THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    ( gmus.clm_src_sys_key ) 
+        WHEN    161 THEN 'DRUG' 
+        WHEN    160 THEN ( 
+CASE    ( gmus.hlth_cov_cls_cd ) 
+        WHEN    'VI' THEN 'VISION' 
+ELSE    'DENTAL' 
+END     ) 
+        WHEN    184 THEN 'VISION' 
+        WHEN    159 THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ( gmus.hlth_cov_cls_cd ) 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+ELSE    ( 
+CASE    ( gmus.hlth_cov_typ_rollup_cd ) 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ( gmus.medcr_rel_cov_cd ) 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    ( gmus.oth_carr_prim_ind ) 
+        WHEN    'Y' THEN ( 
+CASE    ( gmus.oth_carr_ins_cd ) 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) IN ( 'HOTT' , 'MEDICAL' , 'MEDICARE CARVEOUT' ) ) 
+GROUP   BY 1 , 2 , 3 
+UNION
+ 
+SELECT  CASE 'Group Number' 
+        WHEN    'Group Number' THEN ( ghs.grp_id ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( ghs.grp_acct_id ) 
+END     AS grpid , 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN ( ghs.grp_id ) 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> ( gdc.src_sys_key ) THEN ( ghs.grp_id )
+        WHEN
+        -- ( gdc.eff_dt ) < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN MOWI_gid.grp_id
+ELSE    ghs.grp_id 
+END     ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( ghs.grp_acct_id ) 
+END     AS grp_id2 , 
+CASE    WHEN ( ghs.clm_src_sys_key ) = 161 
+        AND     ghs.mbr_src_sys_key = 203 THEN 'MEDICARE PART D' 
+        WHEN    ( ghs.clm_src_sys_key ) = 161 THEN 'DRUG' 
+        WHEN    ( ghs.clm_src_sys_key ) = 201 THEN 'DRUG' 
+        WHEN    ( ghs.clm_src_sys_key ) = 160 THEN ( 
+CASE    ( ghs.hlth_cov_cls_cd ) 
+        WHEN    'VI' THEN 'VISION' 
+ELSE    'DENTAL' 
+END     ) 
+        WHEN    ( ghs.clm_src_sys_key ) = 184 THEN 'VISION' 
+        WHEN    ( ghs.clm_src_sys_key ) = 200 THEN 'DENTAL' 
+        WHEN    ( ghs.clm_src_sys_key ) = 159 THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ( ghs.hlth_cov_cls_cd ) 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+ELSE    ( 
+CASE    ( ghs.hlth_cov_typ_rollup_cd ) 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ( ghs.medcr_rel_cov_cd ) 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    ( ghs.oth_carr_prim_ind ) 
+        WHEN    'Y' THEN ( 
+CASE    ( ghs.oth_carr_ins_cd ) 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     AS prod , SUM ( 
+CASE    WHEN ghs.clm_src_sys_key = 153 THEN ( ghs.serv_pd_amt + ghs.surchrg_amt ) 
+ELSE    ghs.serv_pd_amt 
+END     ) AS pd_amt 
+FROM    PROD_TYP_CD_DOM PTCD RIGHT JOIN grp_hcs_sum ghs 
+        ON      PTCD.prod_typ_cd = ghs.prod_typ_cd LEFT JOIN Grp_assn GA 
+        ON      ghs.grp_div_key = GA.GRP_DIV_KEY 
+        AND     ghs.serv_strt_prd BETWEEN SUBSTR ( ga.eff_dt , 1 , 6 ) 
+        AND     SUBSTR ( ga.canc_dt , 1 , 6 ) 
+        AND     ga.clos_dt = '20991231' 
+        AND     ga.src_sys_key IN ( 167 ) LEFT JOIN grp_div_curr gdc 
+        ON      gdc.grp_div_key = ghs.grp_div_key LEFT JOIN ( 
+SELECT  gdc.grp_id , gdc.src_sys_key 
+FROM    grp_div gdc 
+WHERE   gdc.src_sys_key IN ( 
+CASE    WHEN 'FACETS' = 'MO LEGACY AND FACETS' THEN 199 
+        WHEN    'FACETS' = 'WI LEGACY AND FACETS' THEN 202 
+END     ) 
+        AND     1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gdc.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY 1 , 2 ) MOWI_gid 
+        ON      ghs.grp_id = MOWI_gid.grp_id 
+WHERE   ( ( ( ( ghs.grp_id ) IN ( 
+SELECT  gd.grp_id 
+FROM    grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gd.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    grp_assn AS ga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Association ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND ga.assn_id IN ( '00009835' , '00009836' ) 
+        AND     ga.grp_div_key = gd.grp_div_key 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    site_grp_acct AS sga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Account ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND sga.grp_acct_id IN ( '00009835' , '00009836' ) 
+        AND     sga.grp_acct_key = gd.grp_acct_key 
+GROUP   BY gd.grp_id ) ) 
+        AND     ( 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( grp_id2 ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( ghs.grp_acct_id ) 
+END     ) IN ( '00009835' , '00009836' ) 
+        AND     ( ( 'FACETS' = 'NASCO' 
+        AND     ghs.mbr_src_sys_key IN ( 153 , 154 , 203 ) ) 
+        OR      ( 'FACETS' = 'FACETS' 
+        AND     ghs.mbr_src_sys_key IN ( 167 , 203 ) ) 
+        OR      ( 'FACETS' = 'NASCO/FACETS' 
+        AND     ghs.mbr_src_sys_key IN ( 153 , 154 , 167 , 203 ) ) 
+        OR      ( 'FACETS' = 'MO LEGACY AND FACETS' 
+        AND     ghs.mbr_src_sys_key IN ( 167 , 199 , 203 ) ) 
+        OR      ( 'FACETS' = 'WI LEGACY AND FACETS' 
+        AND     ghs.mbr_src_sys_key IN ( 167 , 202 , 203 ) ) ) ) ) 
+        AND     ( ( ( ghs.pd_prd ) BETWEEN SUBSTR ( ( '20060101' ) , 1 , 6 ) 
+        AND     SUBSTR ( ( '20061231' ) , 1 , 6 ) ) 
+        AND     ( ghs.serv_strt_prd ) BETWEEN ( 
+CASE    WHEN ( 'N' ) = 'Y' THEN SUBSTR ( ( '19900101' ) , 1 , 6 ) 
+ELSE    '177707' 
+END     ) 
+        AND     ( 
+CASE    WHEN ( 'N' ) = 'Y' THEN SUBSTR ( ( '20061231' ) , 1 , 6 ) 
+ELSE    '209912' 
+END     ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      ghs.pkg_nbr IN ( 'All' ) ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      ghs.subgrp_id IN ( 'All' ) ) ) 
+        AND     prod IN ( 'DRUG' , 'DENTAL' , 'VISION' ) 
+GROUP   BY 1 , 2 , 3 
+;

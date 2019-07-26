@@ -1,0 +1,56 @@
+SELECT  /*WELLPOINT_137E --  qryid:1149337*/ s.EMP_CLS_CD AS emp_cls ,
+                'National' AS region , 'All' AS prod_typ , 
+CASE    WHEN SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) < '200312' THEN '200312' 
+ELSE    SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) 
+END     (NAMED end_mt ) , SUBSTR ( ( ADD_MONTHS( ( ( ( 
+CASE    WHEN SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) < '200312' THEN '200312' 
+ELSE    SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) 
+END     ) || '01' ) ( DATE , FORMAT 'yyyymmdd' ) ) , - 11 ) ( FORMAT 'yyyymmdd' ) ) ,
+                1 , 6 ) AS begin_mt , ges.gndr_cd , ges.grp_id , ges.src_sys_key ,
+                ges.rel_typ_cd , ges.rpt_day_cnt AS rpt_day_cnt , ges.rpt_prd ,
+                SUM ( ges.ACCUM_EXPOS_AGE_CNT ) AS tot_age , SUM ( ges.expos_sum_cnt ) AS expos_sum 
+FROM    grp_expos_sum ges
+LEFT JOIN segm s
+        ON      ges.grp_div_key = s.GRP_DIV_KEY 
+        AND     ges.dept_nbr = s.DEPT_NBR 
+        AND     ges.pkg_nbr = s.PKG_NBR 
+        AND     ges.par_plan_id = s.PLAN_ID 
+        -- AND     ( ges.rpt_prd || TRIM ( ges.rpt_day_cnt ) ) ( DATE , FORMAT 'YYYYMMDD' ) BETWEEN s.eff_dt AND     s.canc_dt
+        -- AND     s.clos_dt = '20991231'
+WHERE   ( ( ( ges.rpt_prd ) BETWEEN ( SUBSTR ( ( ADD_MONTHS( ( ( ( 
+CASE    WHEN SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) < '200312' THEN '200312' 
+ELSE    SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) 
+END     ) || '01' ) ( DATE , FORMAT 'yyyymmdd' ) ) , - 11 ) ( FORMAT 'yyyymmdd' ) ) ,
+                1 , 6 ) ) 
+        AND     ( 
+CASE    WHEN SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) < '200312' THEN '200312' 
+ELSE    SUBSTR ( TRIM ( ( '20061231' ) ) , 1 , 6 ) 
+END     ) 
+        AND     ( ( ( 'All' ) = 'All' ) 
+        OR      ( ( 'All' ) = 'HMO & POS' 
+        AND     ( ges.prod_typ_cd ) IN ( 2 , 3 ) ) 
+        OR      ( ( 'All' ) = 'PPO' 
+        AND     ( ges.prod_typ_cd ) = 4 ) 
+        OR      ( ( 'All' ) = 'Traditional' 
+        AND     ( ges.prod_typ_cd ) = 5 ) ) 
+        AND     ges.bob_cd IN ( 3 ) 
+        AND     ( ( ( 'All' ) = 'Active' 
+        AND     ( s.emp_cls_cd ) IN ( 'AA' , 'CO' , 'LD' ) ) 
+        OR      ( ( 'All' ) = 'Retiree (Non-Medicare)' 
+        AND     ( s.emp_cls_cd ) IN ( 'RC' , 'RU' , 'RE' , 'RO' , 'SS' ) ) 
+        OR      ( ( 'All' ) = 'All' ) ) 
+        AND     ( ges.src_sys_key IN ( 199 , 202 , 167 ) 
+        OR      ( ges.src_sys_key = 153 
+        AND     ( SUBSTR ( ges.grp_id , 1 , 5 ) IN ( '00332' , '00851' ) 
+        OR      SUBSTR ( ges.grp_id , 1 , 5 ) = '00834' 
+        OR      SUBSTR ( ges.grp_id , 1 , 7 ) = '0000332' 
+        OR      ( SUBSTR ( ges.grp_id , 1 , 3 ) = '000' 
+        AND     SUBSTR ( ges.grp_id , 7 , 3 ) = '834' ) ) ) ) 
+        AND     ges.prod_typ_cd <> 1 
+        AND     ( ges.medcr_rel_cov_cd ) NOT IN ( 'R' , 'S' ) 
+        AND     ( NOT ( ( ges.oth_carr_prim_ind ) = 'Y'
+        AND     ( ges.oth_carr_ins_cd ) = 'M' ) ) 
+        AND     ( ges.hlth_cov_cls_cd ) = 'MD' 
+        AND     ( ges.src_sys_key ) IN ( 153 , 167 , 199 , 202 ) ) ) 
+GROUP   BY 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 
+;
