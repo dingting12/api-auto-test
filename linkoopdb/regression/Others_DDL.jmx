@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="false">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
@@ -2659,7 +2659,7 @@ INSERT INTO t_wr VALUES(1, 50);
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table like *不支持*" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table like *不支持*" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
@@ -2716,14 +2716,20 @@ promo_begin_date DATE
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-169342219">PROMO_ID	PROMO_NAME	PROMO_CATEGORY	PROMO_COST	PROMO_BEGIN_DATE
+1	ss	ff	88.88	2018-1-1
+1	ss	ff	88.88	2018-1-1
+1	ss	ff	88.88	2018-1-1
+</stringProp>
+                </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
@@ -2731,7 +2737,7 @@ promo_begin_date DATE
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_unique_wr" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/TC-002" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">CREATE TABLE t_test_like_wr1 like t_test_like_wr0;
 </stringProp>
@@ -2743,25 +2749,38 @@ promo_begin_date DATE
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-001" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="342084088">unexpected token: LIKE required</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/TC-003" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">select * from  t_test_like_wr1;
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                <collectionProp name="Asserion.test_strings"/>
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="904744141">user lacks privilege or object not found: T_TEST_LIKE_WR1 in statement</stringProp>
+                </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
                 <intProp name="Assertion.test_type">16</intProp>
               </ResponseAssertion>
               <hashTree/>
