@@ -119,7 +119,7 @@
           </elementProp>
           <elementProp name="port" elementType="Argument">
             <stringProp name="Argument.name">port</stringProp>
-            <stringProp name="Argument.value">9105</stringProp>
+            <stringProp name="Argument.value">${__P(port,9105)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -279,7 +279,7 @@
 	 &apos;type&apos;: &apos;source&apos;, 
 	 &apos;connector&apos;: &apos;jdbc&apos;,
 	 &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
-	 &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;,
+	 &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;,
 	 &apos;username&apos;: &apos;${udb}&apos;,
 	 &apos;password&apos;: &apos;${udb_password}&apos;,
 	 &apos;tableName&apos;: &apos;SMOKE_SOURCE&apos;,
@@ -371,7 +371,7 @@
           <hashTree/>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-set-stream_async_query_enable " enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">set session stream_async_query_enable TRUE;
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
@@ -383,10 +383,7 @@
           </JDBCSampler>
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="65916">C1
-</stringProp>
-              </collectionProp>
+              <collectionProp name="Asserion.test_strings"/>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">true</boolProp>
@@ -397,7 +394,7 @@
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-select-T_冒烟_dbsource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">SELECT * FROM &quot;T_冒烟_dbsource_001&quot; order by myrowtime1;
+            <stringProp name="query">SELECT * FROM &quot;T_冒烟_dbsource_001&quot; where 1=1 order by myrowtime1;
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -688,7 +685,7 @@
  &apos;type&apos;: &apos;source&apos;,
  &apos;connector&apos;: &apos;jdbc&apos;,
  &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
- &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;,
+ &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;,
  &apos;username&apos;: &apos;${udb}&apos;,
  &apos;password&apos;: &apos;${udb_password}&apos;,
  &apos;tableName&apos;: &apos;smoke_source_649&apos;,
@@ -727,7 +724,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
 &apos;type&apos;: &apos;sink&apos;,
 &apos;connector&apos;: &apos;jdbc&apos;, 
 &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
-&apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;,
+&apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;,
 &apos;username&apos;: &apos;${udb}&apos;, 
 &apos;password&apos;: &apos;${udb_password}&apos;,
 &apos;batchSize&apos;: &apos;1&apos;, 
@@ -847,6 +844,34 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="2031372962">1	AAAAAAAAKBAAAAAA	reason 1	2016-12-31 00:12:01.0
+</stringProp>
+                <stringProp name="1454537768">2	AAAAAAAABBAAAAAA	reason 2	2016-12-31 00:12:02.0
+</stringProp>
+                <stringProp name="531726285">5	AAAAAAAASAAAAAAA	reason 5	2016-12-31 00:12:05.0
+</stringProp>
+                <stringProp name="-763683037">3	AAAAAAAACAAAAAAA	reason 3	2016-12-31 00:12:03.0
+</stringProp>
+                <stringProp name="390379871">4	AAAAAAAADAAAAAAA	reason 4	2016-12-31 00:12:04.0
+</stringProp>
+                <stringProp name="1685789193">6	AAAAAAAATAAAAAAA	reason 6	2016-12-31 00:12:06.0
+</stringProp>
+                <stringProp name="2083471505">8	AAAAAAAAFAAAAAAA	reason 8	2016-12-31 00:12:08.0
+</stringProp>
+                <stringProp name="1052135049">10	AAAAAAAAWBBBBCDF	reason 10	2016-12-31 00:12:10.0
+</stringProp>
+                <stringProp name="-1993751401">7	AAAAAAAACAAAAAAA	reason 7	2016-12-31 00:12:07.0
+</stringProp>
+                <stringProp name="2147082408">9	AAAAAAAARAAAAAAA	reason 9	2016-12-31 00:12:09.0</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
               <stringProp name="ConstantTimer.delay">60000</stringProp>
             </ConstantTimer>
@@ -1056,10 +1081,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
           </JDBCSampler>
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="65916">C1
-</stringProp>
-              </collectionProp>
+              <collectionProp name="Asserion.test_strings"/>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">true</boolProp>
@@ -1070,7 +1092,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="646 SQL008-04-select-T_冒烟_jsource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">SELECT * FROM &quot;T_冒烟_jsource_001&quot; order by myrowtime1;
+            <stringProp name="query">SELECT * FROM &quot;T_冒烟_jsource_001&quot; where 1=1 order by myrowtime1;
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1584,7 +1606,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="647 SQL008-02 TC-select-T_冒烟_jsource_647_002" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">SELECT * FROM &quot;T_冒烟_jsource_647_002&quot; order by myrowtime1;
+            <stringProp name="query">SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1801,7 +1823,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502 -001-create-T_smoke_dbsource_735_101" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_101 (booleanvarchar varchar(20),tvarchar varchar(20),datavarchar varchar(20),floatvarhcar varchar(20),timevarchar varchar(20),timestampvarchar varchar(20),datevarchar varchar(20)) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_tvarchar&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_101 (booleanvarchar varchar(20),tvarchar varchar(20),datavarchar varchar(20),floatvarhcar varchar(20),timevarchar varchar(20),timestampvarchar varchar(20),datevarchar varchar(20)) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_tvarchar&apos;);
 
 
 </stringProp>
@@ -1919,7 +1941,12 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-001-drop-T_smoke_jsink_735_101" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -2028,7 +2055,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-002-create-T_smoke_dbsource_735_201" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_201 (booleanboolean boolean,datatinyint tinyint,datasmallint smallint,tinysmallint smallint) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_tbootiny&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_201 (booleanboolean boolean,datatinyint tinyint,datasmallint smallint,tinysmallint smallint) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_tbootiny&apos;);
 
 
 </stringProp>
@@ -2145,7 +2172,12 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-002-drop-T_smoke_jsink_735_201" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -2242,7 +2274,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-003-create-T_smoke_dbsource_735_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_301 (dataint int,databigint bigint) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_intbigint&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_301 (dataint int,databigint bigint) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_intbigint&apos;);
 
 
 </stringProp>
@@ -2361,7 +2393,12 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-003-drop-T_smoke_jsink_735_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -2459,7 +2496,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-004-create-T_smoke_dbsource_735_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_401 (datafloat float,datadouble double) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_floatdou&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_401 (datafloat float,datadouble double) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_floatdou&apos;);
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2552,7 +2589,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">40000</stringProp>
+                <stringProp name="ConstantTimer.delay">50000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -2577,7 +2614,12 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-004-drop-T_smoke_jsink_735_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -2676,7 +2718,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-005-create-T_smoke_dbsource_735_501" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_501 (datadate date,datatimestamp timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_timedata&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_501 (datadate date,datatimestamp timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_timedata&apos;);
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2794,7 +2836,12 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">20000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-005-drop-T_smoke_jsink_735_501" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -2921,7 +2968,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1963742784">3.141592653589793	-0.7853981633974483	ab	-Infinity	12	-1	4	12	1	-2.356194490192345	12	null	-7.320510347335801E-8	-7.320510347335821E-8	123.0	0.9171523472945567	2.301299085991971	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
+                  <stringProp name="1048788716">3.141592653589793	-0.7853981633974483	ab	null	12	-1	4	12	1	-2.356194490192345	12	null	-7.320510347335801E-8	-7.320510347335821E-8	123.0	0.9171523472945567	2.301299085991971	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
                   <stringProp name="691975700">1.5707963267948966	0.0	ab	0.0	q	0	5	q	1	0.0	q	0	0.4999999577350132	0.5773502041184245	123.0	0.7807144544162621	1.24936712862342	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
                   <stringProp name="2133020338">0.0	0.7853981633974483	a b	0.6931471805599453	67	1	null	null	1	0.7853981633974483	-1	1	0.8660253915835878	1.732050709962077	123.0	0.48047279692492	0.5478535017117947	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
                   <stringProp name="232659109">1.5707963267948966	0.0	ab	0.0	67	0	null	null	1	0.0	-1	0	1.0	Infinity	123.0	0.0	0.0	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
@@ -3051,9 +3098,10 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-11349814">0	2019-01-29 19:57:53.0	2019-01-15 00:00:00.0	0.0	2019-01-31 00:00:00.0	2019-01-31 19:57:53.0</stringProp>
-                  <stringProp name="-979627664">14	2019-02-05 19:57:59.0	2019-01-29 00:00:00.0	0.45161290322580644	2019-01-31 00:00:00.0	2019-02-28 19:57:59.0</stringProp>
-                  <stringProp name="-1673979436">3	2019-01-15 19:58:02.0	2019-01-15 00:00:00.0	0.0967741935483871	2019-01-31 00:00:00.0	2019-01-31 19:58:02.0</stringProp>
+                  <stringProp name="-171479038">0	2019-01-29 00:00:00.0	2019-01-15 00:00:00.0	0.0	2019-01-31 00:00:00.0	2019-01-31 00:00:00.0</stringProp>
+                  <stringProp name="-1815882128">14	2019-02-05 00:00:00.0	2019-01-29 00:00:00.0	0.4516129	2019-01-31 00:00:00.0	2019-02-28 00:00:00.0</stringProp>
+                  <stringProp name="1782522203">3	2019-01-15 00:00:00.0	2019-01-15 00:00:00.0	0.09677419	2019-01-31 00:00:00.0	2019-01-31 00:00:00.0
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -5733,7 +5781,7 @@ Prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08-create-T_smoke_jsource_932_001" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM T_smoke_jsource_932_001 (id Int) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;,&apos;tableName&apos;: &apos;aaaaa&apos; );
+                <stringProp name="query"> CREATE STREAM T_smoke_jsource_932_001 (id Int,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;,&apos;tableName&apos;: &apos;aaaaa&apos; );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -6179,7 +6227,7 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
                 </ResponseAssertion>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">20000</stringProp>
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -7271,6 +7319,19 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
               <stringProp name="TestPlan.comments">double</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1075 DISQL-CONNECTOR-130-2-drop-T_smoke_kafkasink_1075_01" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop stream if exists T_smoke_kafkasource_1075_01;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">double</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1075 DISQL-CONNECTOR-130-2-drop-T_smoke_dbsource_1075_01" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -7375,7 +7436,7 @@ tfloat float array
 &apos;connector&apos;:&apos;kafka&apos;,
 &apos;version&apos;:&apos;0.10&apos;,
 &apos;topic&apos;:&apos;arraydb_sink&apos;,
-&apos;bootstrap.servers&apos;:&apos;node6:29093&apos;,
+&apos;bootstrap.servers&apos;:&apos;node6:29096&apos;,
 &apos;zookeeper.connect&apos;:&apos;node1:2181,node2:2181,node3:2181/linkoopdb/luyao&apos;,
 &apos;group.id&apos;:&apos;${__Random(0,6746554322,group.id)}&apos;,
 &apos;format&apos;:&apos;json&apos;
@@ -7406,7 +7467,67 @@ tfloat float array
               <stringProp name="TestPlan.comments">double</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1075 DISQL-CONNECTOR-130-2-kafka consumer" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1075 DISQL-CONNECTOR-130-2-create-T_smoke_kafkasink_1075_01" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">create stream T_smoke_kafkasource_1075_01(
+tbigint bigint ARRAY,
+tsmallint smallint ARRAY,
+tdate date ARRAY,
+ttimestamp timestamp ARRAY,
+tdecimal decimal ARRAY,
+tvarchar varchar(20) array,
+tboolean boolean array,
+tdouble double array,
+tfloat float array
+) properties(
+&apos;type&apos;:&apos;source&apos;,
+&apos;connector&apos;:&apos;kafka&apos;,
+&apos;version&apos;:&apos;0.10&apos;,
+&apos;topic&apos;:&apos;arraydb_sink&apos;,
+&apos;bootstrap.servers&apos;:&apos;node6:29096&apos;,
+&apos;zookeeper.connect&apos;:&apos;node1:2181,node2:2181,node3:2181/linkoopdb/luyao&apos;,
+&apos;group.id&apos;:&apos;${__Random(0,6746554322,group.id)}&apos;,
+&apos;format&apos;:&apos;json&apos;
+);
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">double</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1075 DISQL-CONNECTOR-130-2 TC-001-将dbsource中的数据插入到kafka中" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from T_smoke_kafkasource_1075_01;
+
+                    </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">double</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1780260634">{&quot;TBIGINT&quot;:[-9223372036854775808,9223372036854775807],&quot;TSMALLINT&quot;:[-32768,32767],&quot;TDATE&quot;:[&quot;2019-09-08&quot;,&quot;2019-04-08&quot;],&quot;TTIMESTAMP&quot;:[1567904888000,1554664149000],&quot;TDECIMAL&quot;:[23877,98757],&quot;TVARCHAR&quot;:[&quot;jejj43&quot;,&quot;98756.78&quot;],&quot;TBOOLEAN&quot;:[true,false],&quot;TDOUBLE&quot;:[0.765,-0.978],&quot;TFLOAT&quot;:[0.765,-0.978]}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1075 DISQL-CONNECTOR-130-2-kafka consumer" enabled="false">
               <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-consumer.sh   --zookeeper  node2:2181/linkoopdb/luyao  --topic arraydb_sink  --timeout-ms 10000 --from-beginning</stringProp>
               <stringProp name="hostname">192.168.1.75</stringProp>
               <stringProp name="password">123456</stringProp>
@@ -7971,7 +8092,7 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
           </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
           <hashTree/>
           <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="912 ISQL003-kafka-producer" enabled="true">
-            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-producer.sh  --broker-list node6:29093 --topic decision_tree_sink1&lt; /home/luyao/912ksource2.txt </stringProp>
+            <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-producer.sh  --broker-list node6:29096 --topic decision_tree_sink1&lt; /home/luyao/912ksource2.txt </stringProp>
             <stringProp name="hostname">192.168.1.75</stringProp>
             <stringProp name="password">123456</stringProp>
             <intProp name="port">22</intProp>
@@ -8018,7 +8139,7 @@ PROPERTIES    (
  &apos;topic&apos;: &apos;decision_tree_sink1&apos;,    
  &apos;zookeeper.connect&apos;: &apos;node1:2181 node2:2181 node9:2181/linkoopdb/luyao&apos;,    
  &apos;group.id&apos;: &apos;${__Random(1,9999999,group_id)}&apos;,    
- &apos;bootstrap.servers&apos;: &apos;node6:29093&apos;,    
+ &apos;bootstrap.servers&apos;: &apos;node6:29096&apos;,    
  &apos;format&apos;: &apos;csv&apos; , 
   &apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
   &apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;,
@@ -8118,7 +8239,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-              <stringProp name="ConstantTimer.delay">20000</stringProp>
+              <stringProp name="ConstantTimer.delay">40000</stringProp>
             </ConstantTimer>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -10222,42 +10343,6 @@ select *  from T_冒烟_String_631;</stringProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>true</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>true</code>
-                  <message>true</message>
-                  <threadName>true</threadName>
-                  <dataType>true</dataType>
-                  <encoding>false</encoding>
-                  <assertions>true</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <bytes>true</bytes>
-                  <sentBytes>true</sentBytes>
-                  <threadCounts>true</threadCounts>
-                  <idleTime>true</idleTime>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename"></stringProp>
-            </ResultCollector>
-            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 show jobs" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -10340,6 +10425,42 @@ select *  from T_冒烟_String_631;</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
+            <hashTree/>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <sentBytes>true</sentBytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
             <hashTree/>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1580 LDBX081-23 kafka sink" enabled="true"/>
@@ -10440,7 +10561,7 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
 	&apos;topic&apos;: &apos;1580parquet&apos;,
 	&apos;zookeeper.connect&apos;: &apos;node1:2181,node2:2181,node9:2181/linkoopdb/luyao&apos;,
 	&apos;group.id&apos;: &apos;${__Random(0,999999999,group_id)}&apos;,
-	&apos;bootstrap.servers&apos;: &apos;node6:29093&apos;,
+	&apos;bootstrap.servers&apos;: &apos;node6:29096&apos;,
 	&apos;format&apos;: &apos;csv&apos; ,
 	&apos;separator&apos;:&apos;,&apos;
 )</stringProp>
@@ -10525,7 +10646,7 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
 	&apos;topic&apos;: &apos;1580parquet&apos;,
 	&apos;zookeeper.connect&apos;: &apos;node1:2181,node2:2181,node9:2181/linkoopdb/luyao&apos;,
 	&apos;group.id&apos;: &apos;${__Random(0,999999999,group_id)}&apos;,
-	&apos;bootstrap.servers&apos;: &apos;node6:29093&apos;,
+	&apos;bootstrap.servers&apos;: &apos;node6:29096&apos;,
 	&apos;format&apos;: &apos;csv&apos; ,
 	&apos;separator&apos;:&apos;,&apos;
 )</stringProp>
