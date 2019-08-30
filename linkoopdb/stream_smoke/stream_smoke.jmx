@@ -122,6 +122,17 @@
             <stringProp name="Argument.value">${__P(port,9105)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="dburl" elementType="Argument">
+            <stringProp name="Argument.name">dburl</stringProp>
+            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.78:9205/ldb</stringProp>
+            <stringProp name="Argument.desc">db的url</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="mysql_url" elementType="Argument">
+            <stringProp name="Argument.name">mysql_url</stringProp>
+            <stringProp name="Argument.value">jdbc:mysql://192.168.1.73:3306/jmeter_istreamsql?useSSL=false</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -135,7 +146,7 @@
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="checkQuery"></stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">${dburl}</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <stringProp name="username">${u1}</stringProp>
         <stringProp name="password">123456</stringProp>
@@ -151,7 +162,7 @@
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="checkQuery"></stringProp>
-        <stringProp name="dbUrl">jdbc:mysql://192.168.1.73:3306/jmeter_istreamsql?useSSL=false</stringProp>
+        <stringProp name="dbUrl">${mysql_url}</stringProp>
         <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
         <stringProp name="username">${umysql}</stringProp>
         <stringProp name="password">123456</stringProp>
@@ -244,7 +255,7 @@
           </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="648 SQL008-05 create  linkoopdb source" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="648 SQL008-05 create  linkoopdb source" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-T_冒烟_dbsource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -279,7 +290,7 @@
 	 &apos;type&apos;: &apos;source&apos;, 
 	 &apos;connector&apos;: &apos;jdbc&apos;,
 	 &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
-	 &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;,
+	 &apos;dbUrl&apos;: &apos;${dburl}&apos;,
 	 &apos;username&apos;: &apos;${udb}&apos;,
 	 &apos;password&apos;: &apos;${udb_password}&apos;,
 	 &apos;tableName&apos;: &apos;SMOKE_SOURCE&apos;,
@@ -369,32 +380,11 @@
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-set-stream_async_query_enable " enabled="true">
-            <stringProp name="dataSource">${u1}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">set session stream_async_query_enable TRUE;
-</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings"/>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-              <boolProp name="Assertion.assume_success">true</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-          </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-select-T_冒烟_dbsource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">SELECT * FROM &quot;T_冒烟_dbsource_001&quot; where 1=1 order by myrowtime1;
+            <stringProp name="query">set session stream_async_query_enable TRUE;
+SELECT * FROM &quot;T_冒烟_dbsource_001&quot; where 1=1 order by myrowtime1;
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -459,7 +449,9 @@
             </ConstantTimer>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-              <collectionProp name="Asserion.test_strings"/>
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="342622824">1	AAAAAAAAKBAAAAAA	reason 1	2016-12-31 00:12:01.0</stringProp>
+              </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">false</boolProp>
@@ -529,7 +521,7 @@
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="649 SQL008-06 create  linkoopdb sink" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="649 SQL008-06 create  linkoopdb sink" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-drop-T_冒烟_dbsource_649_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -555,7 +547,7 @@
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-smoke_source_649" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-drop-smoke_source_649" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">DROP table IF EXISTS smoke_source_649;</stringProp>
@@ -567,7 +559,7 @@
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-smoke_out_649" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-drop-smoke_out_649" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">DROP table IF EXISTS smoke_out_649;</stringProp>
@@ -579,19 +571,7 @@
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-drop-T_冒烟_dbsource_649_002" enabled="true">
-            <stringProp name="dataSource">${u1}</stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">DROP STREAM IF EXISTS &quot;T_冒烟_dbsource_649_002&quot;;</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-create-smoke_source_649" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-create-smoke_source_649" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query"> CREATE table smoke_source_649 (R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP) 
@@ -616,7 +596,7 @@
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-insert into-smoke_source_649" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-insert into-smoke_source_649" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">insert into smoke_source_649 values 
@@ -651,7 +631,7 @@
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-create-smoke_out_649" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-create-smoke_out_649" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query"> CREATE table smoke_out_649 (R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP) 
@@ -685,7 +665,7 @@
  &apos;type&apos;: &apos;source&apos;,
  &apos;connector&apos;: &apos;jdbc&apos;,
  &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
- &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;,
+ &apos;dbUrl&apos;: &apos;${dburl}&apos;,
  &apos;username&apos;: &apos;${udb}&apos;,
  &apos;password&apos;: &apos;${udb_password}&apos;,
  &apos;tableName&apos;: &apos;smoke_source_649&apos;,
@@ -724,7 +704,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
 &apos;type&apos;: &apos;sink&apos;,
 &apos;connector&apos;: &apos;jdbc&apos;, 
 &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
-&apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;,
+&apos;dbUrl&apos;: &apos;${dburl}&apos;,
 &apos;username&apos;: &apos;${udb}&apos;, 
 &apos;password&apos;: &apos;${udb_password}&apos;,
 &apos;batchSize&apos;: &apos;1&apos;, 
@@ -877,7 +857,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             </ConstantTimer>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-smoke_out_649" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-drop-smoke_out_649" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">DROP table IF EXISTS smoke_out_649;</stringProp>
@@ -889,7 +869,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-smoke_source_649" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="649 SQL008-06-drop-smoke_source_649" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">DROP table IF EXISTS smoke_source_649;</stringProp>
@@ -926,7 +906,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="646 SQL008-04 create  jdbc source" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="646 SQL008-04 create  jdbc source" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="646 SQL008-04-drop -T_冒烟_jsource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -1041,7 +1021,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
  &apos;type&apos;: &apos;source&apos;,
  &apos;connector&apos;: &apos;jdbC&apos;,
  &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
- &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ &apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
  &apos;username&apos;: &apos;${umysql}&apos;, 
  &apos;password&apos;: &apos;${umysql_password}&apos;,
  &apos;tableName&apos;: &apos;SMOKE_SOURCE&apos;,
@@ -1067,32 +1047,11 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="646 SQL008-04-set-stream_async_query_enable " enabled="true">
-            <stringProp name="dataSource">${u1}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">set session stream_async_query_enable TRUE;
-</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings"/>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-              <boolProp name="Assertion.assume_success">true</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-          </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="646 SQL008-04-select-T_冒烟_jsource_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">SELECT * FROM &quot;T_冒烟_jsource_001&quot; where 1=1 order by myrowtime1;
+            <stringProp name="query">set session stream_async_query_enable TRUE;
+SELECT * FROM &quot;T_冒烟_jsource_001&quot; where 1=1 order by myrowtime1;
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1239,7 +1198,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="647 SQL008-02 create  jdbc sink" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="647 SQL008-02 create  jdbc sink" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="647 SQL008-02-drop-T_冒烟_jsource_647_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -1408,7 +1367,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
  &apos;type&apos;: &apos;source&apos;, 
  &apos;connector&apos;: &apos;jdbC&apos;,
  &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
- &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ &apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
  &apos;username&apos;: &apos;${umysql}&apos;,
  &apos;password&apos;: &apos;${umysql_password}&apos;, 
  &apos;tableName&apos;: &apos;SMOKE_SOURCE_1&apos;
@@ -1440,7 +1399,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
  &apos;type&apos;: &apos;source&apos;,
  &apos;connector&apos;: &apos;jdbC&apos;,
  &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
- &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ &apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
  &apos;username&apos;: &apos;${umysql}&apos;, 
  &apos;password&apos;: &apos;${umysql_password}&apos;, 
  &apos;tableName&apos;: &apos;SMOKE_OUT_1&apos;,
@@ -1475,7 +1434,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
  &apos;type&apos;: &apos;sinK&apos;, 
  &apos;connector&apos;: &apos;jdbc&apos;,
  &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
- &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ &apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
  &apos;username&apos;: &apos;${umysql}&apos;,
  &apos;password&apos;: &apos;${umysql_password}&apos;,
  &apos;batchSize&apos;: &apos;1&apos;, 
@@ -1574,39 +1533,11 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="647 SQL008-02-set-stream_async_query_enable " enabled="true">
-            <stringProp name="dataSource">${u1}</stringProp>
-            <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">set session stream_async_query_enable TRUE;
-</stringProp>
-            <stringProp name="queryArguments"></stringProp>
-            <stringProp name="queryArgumentsTypes"></stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="65916">C1
-</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-              <boolProp name="Assertion.assume_success">true</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">60000</stringProp>
-            </ConstantTimer>
-            <hashTree/>
-          </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="647 SQL008-02 TC-select-T_冒烟_jsource_647_002" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
+            <stringProp name="query">set session stream_async_query_enable TRUE;
+SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1752,7 +1683,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="735 SQL502 datatype" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="735 SQL502 datatype" enabled="false"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="735 SQL502-001-varchar cast others" enabled="true"/>
           <hashTree>
@@ -1796,7 +1727,15 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-001-create-streamsql_tvarchar" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table streamsql_tvarchar(booleanvarchar varchar(20),tvarchar varchar(20),datavarchar varchar(20),floatvarhcar varchar(20),timevarchar varchar(20),timestampvarchar varchar(20),datevarchar varchar(20));
+              <stringProp name="query">create table streamsql_tvarchar(
+	booleanvarchar varchar(20),
+	tvarchar varchar(20),
+	datavarchar varchar(20),
+	floatvarhcar varchar(20),
+	timevarchar varchar(20),
+	timestampvarchar varchar(20),
+	datevarchar varchar(20)
+);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1823,7 +1762,23 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502 -001-create-T_smoke_dbsource_735_101" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_101 (booleanvarchar varchar(20),tvarchar varchar(20),datavarchar varchar(20),floatvarhcar varchar(20),timevarchar varchar(20),timestampvarchar varchar(20),datevarchar varchar(20)) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_tvarchar&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_101 (
+ 	booleanvarchar varchar(20),
+ 	tvarchar varchar(20),
+ 	datavarchar varchar(20),
+ 	floatvarhcar varchar(20),
+ 	timevarchar varchar(20),
+ 	timestampvarchar varchar(20),
+ 	datevarchar varchar(20)
+ ) properties (
+ &apos;type&apos;: &apos;source&apos;, 
+ &apos;connector&apos;: &apos;jdbc&apos;, 
+ &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+ &apos;dbUrl&apos;: &apos;${dburl}&apos;, 
+ &apos;username&apos;: &apos;${udb}&apos;, 
+ &apos;password&apos;: &apos;${udb_password}&apos;, 
+ &apos;tableName&apos;: &apos;streamsql_tvarchar&apos;
+ );
 
 
 </stringProp>
@@ -1850,7 +1805,19 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-001-create-smoke_varchar" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table smoke_varchar(tboolean boolean,tvarchar varchar(20),ttinyint tinyint,tsmallint smallint,tINT INT,tbigint bigint,tFLOAT FLOAT,tdouble double,ttime time,ttimestamp timestamp,tdate date);
+              <stringProp name="query">create table smoke_varchar(
+	tboolean boolean,
+	tvarchar varchar(20),
+	ttinyint tinyint,
+	tsmallint smallint,
+	tINT INT,
+	tbigint bigint,
+	tFLOAT FLOAT,
+	tdouble double,
+	ttime time,
+	ttimestamp timestamp,
+	tdate date
+);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1863,7 +1830,28 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-001-create-T_smoke_jsink_735_101" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsink_735_101 (tboolean boolean,tvarchar varchar(20),ttinyint tinyint,tsmallint smallint,tINT INT,tbigint bigint,tFLOAT FLOAT,tdouble double,ttime time,ttimestamp timestamp,tdate date) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_varchar&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsink_735_101 (
+ 	tboolean boolean,
+ 	tvarchar varchar(20),
+ 	ttinyint tinyint,
+ 	tsmallint smallint,
+ 	tINT INT,
+ 	tbigint bigint,
+ 	tFLOAT FLOAT,
+ 	tdouble double,
+	 ttime time,
+ 	ttimestamp timestamp,
+	 tdate date
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_varchar&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1878,7 +1866,19 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-001 TC-001-往sink中插入数据" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into T_smoke_jsink_735_101 select cast(booleanvarchar as Boolean),cast(tvarchar as varchar),cast(datavarchar as tinyint),cast(datavarchar as smallint),cast(datavarchar as INT),cast(datavarchar as bigint), cast(floatvarhcar as FLOAT),cast(floatvarhcar as double),cast(timevarchar as time),cast(timestampvarchar as timestamp),cast(datevarchar as date)from T_smoke_dbsource_735_101;
+              <stringProp name="query">insert into T_smoke_jsink_735_101 select 
+	cast(booleanvarchar as Boolean),
+	cast(tvarchar as varchar),
+	cast(datavarchar as tinyint),
+	cast(datavarchar as smallint),
+	cast(datavarchar as INT),
+	cast(datavarchar as bigint), 
+	cast(floatvarhcar as FLOAT),
+	cast(floatvarhcar as double),
+	cast(timevarchar as time),
+	cast(timestampvarchar as timestamp),
+	cast(datevarchar as date)
+	from T_smoke_dbsource_735_101;
 
 
  
@@ -2027,7 +2027,12 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-002-create-streamsql_tbootiny" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table streamsql_tbootiny(booleanboolean boolean,datatinyint tinyint,datasmallint smallint,tinysmallint smallint);
+              <stringProp name="query">create table streamsql_tbootiny(
+	booleanboolean boolean,
+	datatinyint tinyint,
+	datasmallint smallint,
+	tinysmallint smallint
+);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2055,7 +2060,20 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-002-create-T_smoke_dbsource_735_201" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_201 (booleanboolean boolean,datatinyint tinyint,datasmallint smallint,tinysmallint smallint) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_tbootiny&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_201 (
+ 	booleanboolean boolean,
+ 	datatinyint tinyint,
+ 	datasmallint smallint,
+ 	tinysmallint smallint
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${dburl}&apos;, 
+ 	&apos;username&apos;: &apos;${udb}&apos;, 
+ 	&apos;password&apos;: &apos;${udb_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;streamsql_tbootiny&apos;
+ );
 
 
 </stringProp>
@@ -2082,7 +2100,24 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" 735 SQL502-002-create-smoke_tbootiny" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table smoke_tbootiny(booleanboolean boolean,varcharboolean varchar(20),varchartinyint varchar(20),tinyinttinyint tinyint,tinyintsmallint smallint,tinyintint int,tinyintbig bigint,tinyintfloat float,tinyintdouble double,smallintvarchar varchar(20),smallinttinyint tinyint,smallintsmallint smallint,smallintint int,smallintbigint bigint,smallintfloat float,smallintdouble double);
+              <stringProp name="query">create table smoke_tbootiny(
+	booleanboolean boolean,
+	varcharboolean varchar(20),
+	varchartinyint varchar(20),
+	tinyinttinyint tinyint,
+	tinyintsmallint smallint,
+	tinyintint int,
+	tinyintbig bigint,
+	tinyintfloat float,
+	tinyintdouble double,
+	smallintvarchar varchar(20),
+	smallinttinyint tinyint,
+	smallintsmallint smallint,
+	smallintint int,
+	smallintbigint bigint,
+	smallintfloat float,
+	smallintdouble double
+);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2095,7 +2130,33 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-002-create-T_smoke_jsink_735_201" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsink_735_201 (booleanboolean boolean,varcharboolean varchar(20),varchartinyint varchar(20),tinyinttinyint tinyint,tinyintsmallint smallint,tinyintint int,tinyintbig bigint,tinyintfloat float,tinyintdouble double,smallintvarchar varchar(20),smallinttinyint tinyint,smallintsmallint smallint,smallintint int,smallintbigint bigint,smallintfloat float,smallintdouble double) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_tbootiny&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsink_735_201 (
+ 	booleanboolean boolean,
+ 	varcharboolean varchar(20),
+ 	varchartinyint varchar(20),
+ 	tinyinttinyint tinyint,
+ 	tinyintsmallint smallint,
+ 	tinyintint int,
+ 	tinyintbig bigint,
+ 	tinyintfloat float,
+ 	tinyintdouble double,
+ 	smallintvarchar varchar(20),
+ 	smallinttinyint tinyint,
+ 	smallintsmallint smallint,
+ 	smallintint int,
+ 	smallintbigint bigint,
+ 	smallintfloat float,
+ 	smallintdouble double
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_tbootiny&apos;
+ );
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2109,7 +2170,24 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" 735 SQL502-002 TC-001-往sink中插入数据" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into T_smoke_jsink_735_201 select cast(booleanboolean as Boolean),cast(booleanboolean as varchar),cast(datatinyint as VARCHAR),cast(datatinyint as tinyint),cast(datatinyint as smallint),cast(datatinyint as INT),cast(datatinyint as bigint), cast(datatinyint as FLOAT),cast(datatinyint as double),cast(datasmallint as varchar),cast(tinysmallint as tinyint),cast(datasmallint as smallint),cast(datasmallint as INT),cast(datasmallint as bigint),cast(datasmallint as FLOAT),cast(datasmallint as double)from T_smoke_dbsource_735_201;
+              <stringProp name="query">insert into T_smoke_jsink_735_201 select 
+	cast(booleanboolean as Boolean),
+	cast(booleanboolean as varchar),
+	cast(datatinyint as VARCHAR),
+	cast(datatinyint as tinyint),
+	cast(datatinyint as smallint),
+	cast(datatinyint as INT),
+	cast(datatinyint as bigint), 
+	cast(datatinyint as FLOAT),
+	cast(datatinyint as double),
+	cast(datasmallint as varchar),
+	cast(tinysmallint as tinyint),
+	cast(datasmallint as smallint),
+	cast(datasmallint as INT),
+	cast(datasmallint as bigint),
+	cast(datasmallint as FLOAT),
+	cast(datasmallint as double
+)from T_smoke_dbsource_735_201;
 
 
  
@@ -2274,7 +2352,18 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-003-create-T_smoke_dbsource_735_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_301 (dataint int,databigint bigint) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_intbigint&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_301 (
+ 	dataint int,
+ 	databigint bigint
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${dburl}&apos;,
+ 	&apos;username&apos;: &apos;${udb}&apos;, 
+ 	&apos;password&apos;: &apos;${udb_password}&apos;,
+ 	&apos;tableName&apos;: &apos;streamsql_intbigint&apos;
+ );
 
 
 </stringProp>
@@ -2301,7 +2390,22 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" 735 SQL502-003-create-smoke_intbigint" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table smoke_intbigint(intvarchar varchar(20),inttinyint tinyint,intsmallint smallint, intint int,intbig bigint,intfloat float,intdouble double,bigintvarchar varchar(20),bigtinyint tinyint,bigsmallint smallint,biginting int,bigbigint bigint,bigfloat float,bigdouble double);
+              <stringProp name="query">create table smoke_intbigint(
+	intvarchar varchar(20),
+	inttinyint tinyint,
+	intsmallint smallint,
+	intint int,
+	intbig bigint,
+	intfloat float,
+	intdouble double,
+	bigintvarchar varchar(20),
+	bigtinyint tinyint,
+	bigsmallint smallint,
+	biginting int,
+	bigbigint bigint,
+	bigfloat float,
+	bigdouble double
+);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2314,7 +2418,31 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-003-create-T_smoke_jsink_735_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">CREATE STREAM T_smoke_jsink_735_301 (intvarchar varchar(20),inttinyint tinyint,intsmallint smallint, intint int,intbig bigint,intfloat float,intdouble double,bigintvarchar varchar(20),bigtinyint tinyint,bigsmallint smallint,biginting int,bigbigint bigint,bigfloat float,bigdouble double) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_intbigint&apos;);
+              <stringProp name="query">CREATE STREAM T_smoke_jsink_735_301 (
+	intvarchar varchar(20),
+	inttinyint tinyint,
+	intsmallint smallint, 
+	intint int,
+	intbig bigint,
+	intfloat float,
+	intdouble double,
+	bigintvarchar varchar(20),
+	bigtinyint tinyint,
+	bigsmallint smallint,
+	biginting int,
+	bigbigint bigint,
+	bigfloat float,
+	bigdouble double
+) properties (
+    &apos;type&apos;: &apos;sink&apos;, 
+    &apos;connector&apos;: &apos;jdbc&apos;, 
+    &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+    &apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+    &apos;username&apos;: &apos;${umysql}&apos;, 
+    &apos;password&apos;: &apos;${umysql_password}&apos;,
+    &apos;batchSize&apos;: &apos;1&apos;, 
+    &apos;tableName&apos;: &apos;smoke_intbigint&apos;
+ );
 
 
 </stringProp>
@@ -2496,7 +2624,18 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-004-create-T_smoke_dbsource_735_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_401 (datafloat float,datadouble double) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_floatdou&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_401 (
+ 	datafloat float,
+ 	datadouble double
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${dburl}&apos;, 
+ 	&apos;username&apos;: &apos;${udb}&apos;, 
+ 	&apos;password&apos;: &apos;${udb_password}&apos;,
+ 	&apos;tableName&apos;: &apos;streamsql_floatdou&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2522,7 +2661,22 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" 735 SQL502-004-create-smoke_floatdou" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table smoke_floatdou(floatvarchar varchar(20),floattinyint tinyint,floatsmallint smallint, floatint int,floatbig bigint,floatfloat float,floatdouble double,doublevarchar varchar(20),doubletinyint tinyint,dousmallint smallint,doubleint int,doubigint bigint,doufloat float,doudouble double);
+              <stringProp name="query">create table smoke_floatdou(
+	floatvarchar varchar(20),
+	floattinyint tinyint,
+	floatsmallint smallint,
+	floatint int,
+	floatbig bigint,
+	floatfloat float,
+	floatdouble double,
+	doublevarchar varchar(20),
+	doubletinyint tinyint,
+	dousmallint smallint,
+	doubleint int,
+	doubigint bigint,
+	doufloat float,
+	doudouble double
+);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2535,7 +2689,31 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-004-create-T_smoke_jsink_735_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">CREATE STREAM T_smoke_jsink_735_401 (floatvarchar varchar(20),floattinyint tinyint,floatsmallint smallint, floatint int,floatbig bigint,floatfloat float,floatdouble double,doublevarchar varchar(20),doubletinyint tinyint,dousmallint smallint,doubleint int,doubigint bigint,doufloat float,doudouble double) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_floatdou&apos;);
+              <stringProp name="query">CREATE STREAM T_smoke_jsink_735_401 (
+	floatvarchar varchar(20),
+	floattinyint tinyint,
+	floatsmallint smallint, 
+	floatint int,
+	floatbig bigint,
+	floatfloat float,
+	floatdouble double,
+	doublevarchar varchar(20),
+	doubletinyint tinyint,
+	dousmallint smallint,
+	doubleint int,
+	doubigint bigint,
+	doufloat float,
+	doudouble double
+) properties (
+	&apos;type&apos;: &apos;sink&apos;,
+	&apos;connector&apos;: &apos;jdbc&apos;, 
+	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+	&apos;username&apos;: &apos;${umysql}&apos;,
+	&apos;password&apos;: &apos;${umysql_password}&apos;,
+	&apos;batchSize&apos;: &apos;1&apos;, 
+	&apos;tableName&apos;: &apos;smoke_floatdou&apos;
+);
 
 
 </stringProp>
@@ -2551,7 +2729,22 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" 735 SQL502-004 TC-001-往sink中插入数据" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into T_smoke_jsink_735_401 select cast(datafloat as varchar),cast(datafloat as tinyint),cast(datafloat as smallint),cast(datafloat as int),cast(datafloat as bigint),cast(datafloat as float),cast(datafloat as double),cast(datadouble as varchar),cast(datadouble as tinyint),cast(datadouble as smallint),cast(datadouble as int),cast(datadouble as bigint),cast(datadouble as float),cast(datadouble as double) from T_smoke_dbsource_735_401;
+              <stringProp name="query">insert into T_smoke_jsink_735_401 select 
+	cast(datafloat as varchar),
+	cast(datafloat as tinyint),
+	cast(datafloat as smallint),
+	cast(datafloat as int),
+	cast(datafloat as bigint),
+	cast(datafloat as float),
+	cast(datafloat as double),
+	cast(datadouble as varchar),
+	cast(datadouble as tinyint),
+	cast(datadouble as smallint),
+	cast(datadouble as int),
+	cast(datadouble as bigint),
+	cast(datadouble as float),
+	cast(datadouble as double
+) from T_smoke_dbsource_735_401;
 
 
  
@@ -2718,7 +2911,18 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-005-create-T_smoke_dbsource_735_501" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_501 (datadate date,datatimestamp timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;, &apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_timedata&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_735_501 (
+	 datadate date,
+ 	 datatimestamp timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;,
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${dburl}&apos;,
+ 	&apos;username&apos;: &apos;${udb}&apos;,
+ 	&apos;password&apos;: &apos;${udb_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;streamsql_timedata&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2744,7 +2948,15 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" 735 SQL502-005-create-smoke_timedata" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table smoke_timedata(datevarchar varchar(20),datedate date,datetimestamp timestamp,timestampvarchar varchar(50),timestampdate date,timestampstamp1 timestamp DEFAULT &apos;2019-09-08 09:08:09&apos;,time1 time);
+              <stringProp name="query">create table smoke_timedata(
+	datevarchar varchar(20),
+	datedate date,
+	datetimestamp timestamp,
+	timestampvarchar varchar(50),
+	timestampdate date,
+	timestampstamp1 timestamp DEFAULT &apos;2019-09-08 09:08:09&apos;,
+	time1 time
+);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2757,7 +2969,24 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-005-create-T_smoke_jsink_735_501" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">CREATE STREAM T_smoke_jsink_735_501 (datevarchar varchar(20),datedate date,datetimestamp timestamp,timestampvarchar varchar(50),timestampdate date,timestampstamp1 timestamp,time1 time) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_timedata&apos;);
+              <stringProp name="query">CREATE STREAM T_smoke_jsink_735_501 (
+	datevarchar varchar(20),
+	datedate date,
+	datetimestamp timestamp,
+	timestampvarchar varchar(50),
+	timestampdate date,
+	timestampstamp1 timestamp,
+	time1 time
+) properties (
+	&apos;type&apos;: &apos;sink&apos;, 
+	&apos;connector&apos;: &apos;jdbc&apos;, 
+	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+	&apos;username&apos;: &apos;${umysql}&apos;, 
+	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+	&apos;batchSize&apos;: &apos;1&apos;, 
+	&apos;tableName&apos;: &apos;smoke_timedata&apos;
+);
 
 
 </stringProp>
@@ -2773,7 +3002,15 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" 735 SQL502-005 TC-001-往sink中插入数据" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into T_smoke_jsink_735_501 select cast(datadate as varchar),cast(datadate as date),cast(datadate as timestamp),cast(datatimestamp as varchar),cast(datatimestamp as date),cast(datatimestamp as timestamp),cast(datatimestamp as time)from T_smoke_dbsource_735_501;
+              <stringProp name="query">insert into T_smoke_jsink_735_501 select 
+	cast(datadate as varchar),
+	cast(datadate as date),
+	cast(datadate as timestamp),
+	cast(datatimestamp as varchar),
+	cast(datatimestamp as date),
+	cast(datatimestamp as timestamp),
+	cast(datatimestamp as time
+)from T_smoke_dbsource_735_501;
 
 
  
@@ -2869,7 +3106,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 Streaming SQL: Extra Build-in Functions" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 Streaming SQL: Extra Build-in Functions" enabled="false"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -001" enabled="true"/>
           <hashTree>
@@ -2937,7 +3174,22 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-001-create-T_冒烟_jsource_655_101" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_101&quot; (id integer,data varchar(20), id1 decimal,name string,degree double,data1 varchar(20)) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;smoke_655_01&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_101&quot; (
+ 	id integer,
+ 	data varchar(20), 
+ 	id1 decimal,
+ 	name string,
+ 	degree double,
+ 	data1 varchar(20)
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;,
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;tableName&apos;: &apos;smoke_655_01&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3068,7 +3320,20 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-002-create-T_冒烟_jsource_655_201" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_201&quot; (time1 string,time2 string,time3 date,time4 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;,&apos;tableName&apos;: &apos;smoke_655_02&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_201&quot; (
+ 	time1 string,
+ 	time2 string,
+ 	time3 date,
+ 	time4 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;,
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;tableName&apos;: &apos;smoke_655_02&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3280,7 +3545,17 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-003-create-T_冒烟_jsource_655_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_301&quot; (id int)properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;smoke_655_03&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_301&quot; (
+ 	id int
+ )properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_655_03&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3295,7 +3570,31 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-003-create-T_冒烟_jsink_655_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsink_655_301&quot; (tABS int,tASIN double,tBIN string,tDAYOFMONTH bigint,tDAYOFYEAR bigint, tELTt string,tFLOOR decimal, tINITCAP string,tIFNULL int,tISNOTNULL boolean,tMINUTE bigint,tMONTH bigint,tPMOD double, tYEAR bigint ) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_655_04&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsink_655_301&quot; (
+ 	tABS int,
+ 	tASIN double,
+ 	tBIN string,
+ 	tDAYOFMONTH bigint,
+ 	tDAYOFYEAR bigint, 
+ 	tELTt string,
+ 	tFLOOR decimal, 
+ 	tINITCAP string,
+ 	tIFNULL int,
+ 	tISNOTNULL boolean,
+ 	tMINUTE bigint,
+ 	tMONTH bigint,
+ 	tPMOD double, 
+ 	tYEAR bigint 
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_655_04&apos;
+ );
 
 
  </stringProp>
@@ -3528,7 +3827,17 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-004-create-T_冒烟_jsource_655_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_401&quot; (id int)properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;smoke_655_05&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_401&quot; (
+ 	id int
+ )properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_655_05&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3543,7 +3852,24 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-004-create-T_冒烟_jsink_655_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsink_655_401&quot; (data1 string, tCHAR_LENGTH int,tCHARACTER_LENGTH int,tDATE date,tTIME time,tTIMESTAMP timestamp,tQUARTER bigint) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_655_06&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsink_655_401&quot; (
+ 	data1 string,
+ 	tCHAR_LENGTH int,
+ 	tCHARACTER_LENGTH int,
+ 	tDATE date,
+ 	tTIME time,
+ 	tTIMESTAMP timestamp,
+ 	tQUARTER bigint
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+ 	&apos;username&apos;: &apos;test&apos;,
+ 	&apos;password&apos;: &apos;123456&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_655_06&apos;
+ );
 
 
 </stringProp>
@@ -3785,7 +4111,17 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-005-create-T_冒烟_jsource_655_501" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_501&quot; (id int)properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;smoke_655_07&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_655_501&quot; (
+ 	id int
+ )properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_655_07&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3800,7 +4136,33 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-005-create-T_冒烟_jsink_655_501" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsink_655_501&quot; (tDISTINCT Boolean,tnotDISTINCTtDATE Boolean,tboolean boolean,tboolean1 boolean,tin boolean,tnotin boolean,tor boolean,tisnot boolean,tand boolean,tunknown boolean,tSUBSTRING string,tNULLIF int,te double,tSIGN int,tceiling decimal,tRAND double) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_655_08&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsink_655_501&quot; (
+ 	tDISTINCT Boolean,
+ 	tnotDISTINCTtDATE Boolean,
+ 	tboolean boolean,
+ 	tboolean1 boolean,
+ 	tin boolean,
+ 	tnotin boolean,
+ 	tor boolean,
+ 	tisnot boolean,
+ 	tand boolean,
+ 	tunknown boolean,
+ 	tSUBSTRING string,
+ 	tNULLIF int,
+ 	te double,
+ 	tSIGN int,
+ 	tceiling decimal,
+ 	tRAND double
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_655_08&apos;
+ );
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -3933,7 +4295,7 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="895 ISQL600 CEP SQL支持" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="895 ISQL600 CEP SQL支持" enabled="false"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="895 ISQL600-001-order by proctime  and partition by key1, key2" enabled="true"/>
           <hashTree>
@@ -4054,7 +4416,21 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-001-create-T_smoke_jsource_895_101" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsource_895_101 (id Int, name String, key1 String, key2 String) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;proctime&apos;:&apos;proctime&apos;, &apos;tableName&apos;: &apos;smoke_895_01&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsource_895_101 (
+ 	id Int, 
+ 	name String, 
+ 	key1 String, 
+ 	key2 String
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;,
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;,
+ 	&apos;proctime&apos;:&apos;proctime&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_895_01&apos;
+ );
 
 
  
@@ -4072,7 +4448,24 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-001-create-T_smoke_jsink_895_101" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsink_895_101 (KEY1 String, KEY2 String, AID int , AKEY1 String, BID Integer, CID Integer, CKEY2 String) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_895_02&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsink_895_101 (
+ 	KEY1 String,
+ 	KEY2 String,
+ 	AID int , 
+ 	AKEY1 String, 
+ 	BID Integer,
+ 	CID Integer, 
+ 	CKEY2 String
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_895_02&apos;
+ );
 
 
 
@@ -4340,8 +4733,23 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-002-create-T_smoke_jsource_895_201" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsource_895_201 (symbol varchar(20), tstamp bigint,price int,tax int,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
- &apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;, &apos;tableName&apos;: &apos;smoke_895_03&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsource_895_201 (
+ 	symbol varchar(20), 
+ 	tstamp bigint,
+ 	price int,
+ 	tax int,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;,
+ 	&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
+     &apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;,
+	&apos;tableName&apos;: &apos;smoke_895_03&apos;
+);
 
 
  
@@ -4359,7 +4767,21 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-002-create-T_smoke_jsink_895_201" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsink_895_201 (symbol int, tax int,price int,nullPrice int) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_895_04&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsink_895_201 (
+ 	symbol int, 
+ 	tax int,
+ 	price int,
+ 	nullPrice int
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_895_04&apos;
+ );
 
 
 
@@ -4612,8 +5034,23 @@ MATCH_RECOGNIZE (
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-003-create-T_smoke_jsource_895_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsource_895_301 (symbol varchar(20), tstamp bigint,price int,tax int,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
- &apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;, &apos;tableName&apos;: &apos;smoke_895_05&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsource_895_301 (
+ 	symbol varchar(20), 
+ 	tstamp bigint,
+ 	price int,
+ 	tax int,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;,
+ 	&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
+ 	&apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_895_05&apos;
+ );
 
 
  
@@ -4631,7 +5068,21 @@ MATCH_RECOGNIZE (
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-003-create-T_smoke_jsink_895_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsink_895_301 (symbol int, tax int,price int,nullPrice int) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_895_06&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsink_895_301 (
+ 	symbol int,
+ 	tax int,
+ 	price int,
+ 	nullPrice int
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;batchSize&apos;: &apos;1&apos;,
+ 	&apos;tableName&apos;: &apos;smoke_895_06&apos;
+ );
 
 
 
@@ -4884,8 +5335,23 @@ MATCH_RECOGNIZE (
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-004-create-T_smoke_jsource_895_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsource_895_401 (symbol varchar(20), tstamp bigint,price int,tax int,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
- &apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;, &apos;tableName&apos;: &apos;smoke_895_07&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsource_895_401 (
+ 	symbol varchar(20), 
+ 	tstamp bigint,
+ 	price int,
+ 	tax int,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;test&apos;, 
+ 	&apos;password&apos;: &apos;123456&apos;,
+ 	&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
+ 	&apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;,
+ 	&apos;tableName&apos;: &apos;smoke_895_07&apos;
+ );
 
 
  
@@ -4903,7 +5369,21 @@ MATCH_RECOGNIZE (
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-004-create-T_smoke_jsink_895_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsink_895_401 (symbol int, tax int,price int,nullPrice int) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_895_08&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsink_895_401 (
+ 	symbol int, 
+ 	tax int,
+ 	price int,
+ 	nullPrice int
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${mysql_url}&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_895_08&apos;
+ );
 
 
 
@@ -5077,10 +5557,10 @@ MATCH_RECOGNIZE (
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-DROP MODEL ex_model_dt IF EXISTS;" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop model ex_model_dt IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP MODEL ex_model_dt IF EXISTS;</stringProp>
+                <stringProp name="query">drop model ex_model_dt IF EXISTS;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -5093,7 +5573,7 @@ MATCH_RECOGNIZE (
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create model ex_model_dt as load_external_model( 
- &apos;hdfs:///node5/studio/gengchenyu/file/m1&apos;, 
+ &apos;hdfs:///192.168.1.74/studio/gengchenyu/file/m1&apos;, 
  &apos;python&apos;, 
  &apos;tf_decision_tree&apos;, 
  &apos;dnn.alg&apos;, 
@@ -5424,7 +5904,17 @@ PREDICTION double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-CREATE STREAM gaussian_mixture_dbsource " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE STREAM decision_tree_regression_dbsource (FEATURES double ARRAY) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_decision_tree_regression&apos;);</stringProp>
+                <stringProp name="query">CREATE STREAM decision_tree_regression_dbsource (
+	FEATURES double ARRAY
+) properties (
+	&apos;type&apos;: &apos;source&apos;, 
+	&apos;connector&apos;: &apos;jdbc&apos;,
+	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+	&apos;dbUrl&apos;: &apos;${dbUrl}&apos;,
+	&apos;username&apos;: &apos;${udb}&apos;,
+	&apos;password&apos;: &apos;${udb_password}&apos;,
+	&apos;tableName&apos;: &apos;streamsql_decision_tree_regression&apos;
+);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -5437,17 +5927,17 @@ PREDICTION double
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create stream decision_tree_sink(
-FEATURES double ARRAY,
-prediction double
+	FEATURES double ARRAY,
+	prediction double
 ) properties(
-&apos;type&apos;:&apos;sink&apos;,
-&apos;connector&apos;:&apos;kafka&apos;,
-&apos;version&apos;:&apos;0.10&apos;,
-&apos;topic&apos;:&apos;decision_tree_sink&apos;,
-&apos;bootstrap.servers&apos;:&apos;node6:9096&apos;,
-&apos;zookeeper.connect&apos;:&apos;node1:2181,node2:2181,node3:2181/istream/node6/kafka&apos;,
-&apos;group.id&apos;:&apos;decision_tree_sink_001&apos;,
-&apos;format&apos;:&apos;json&apos;
+	&apos;type&apos;:&apos;sink&apos;,
+	&apos;connector&apos;:&apos;kafka&apos;,
+	&apos;version&apos;:&apos;0.10&apos;,
+	&apos;topic&apos;:&apos;decision_tree_sink&apos;,
+	&apos;bootstrap.servers&apos;:&apos;node6:9096&apos;,
+	&apos;zookeeper.connect&apos;:&apos;node1:2181,node2:2181,node3:2181/istream/node6/kafka&apos;,
+	&apos;group.id&apos;:&apos;decision_tree_sink_001&apos;,
+	&apos;format&apos;:&apos;json&apos;
 );
 
 </stringProp>
@@ -5648,7 +6138,17 @@ prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11-decision_tree_predict-create-T_smoke_dbsource_1034_01" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE STREAM T_smoke_dbsource_1034_01 (features double array) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_decision_tree&apos;);</stringProp>
+                <stringProp name="query">CREATE STREAM T_smoke_dbsource_1034_01 (
+	features double array
+) properties (
+	&apos;type&apos;: &apos;source&apos;,
+	&apos;connector&apos;: &apos;jdbc&apos;, 
+	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+	&apos;dbUrl&apos;: &apos;${dbUrl}&apos;,
+	&apos;username&apos;: &apos;${udb}&apos;, 
+	&apos;password&apos;: &apos;${udb_password}&apos;,
+	&apos;tableName&apos;: &apos;streamsql_decision_tree&apos;
+);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -5781,7 +6281,18 @@ Prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="932 LDBX081-08-create-T_smoke_jsource_932_001" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM T_smoke_jsource_932_001 (id Int,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;,&apos;tableName&apos;: &apos;aaaaa&apos; );
+                <stringProp name="query"> CREATE STREAM T_smoke_jsource_932_001 (
+ 	id Int,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;tableName&apos;: &apos;aaaaa&apos; 
+ );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -5959,7 +6470,23 @@ select F_smoke_no_inherit_001(2,19) from T_smoke_jsource_932_001;
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-tumble-create-T_smoke_dbsource_930_101" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM T_smoke_dbsource_930_101 (id integer,users string, amount double,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;rowtime&apos;:&apos;time1.myrowtime&apos;,&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;, &apos;watermarksDelay&apos;:&apos;0&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_ROWTIME&apos;);
+                <stringProp name="query"> CREATE STREAM T_smoke_dbsource_930_101 (
+ 	id integer,
+ 	users string, 
+ 	amount double,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+ 	&apos;dbUrl&apos;: &apos;${dbUrl}&apos;,
+ 	&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
+ 	&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;, 
+ 	&apos;watermarksDelay&apos;:&apos;0&apos;,
+ 	&apos;username&apos;: &apos;${udb}&apos;, 
+ 	&apos;password&apos;: &apos;${udb_password}&apos;,
+ 	&apos;tableName&apos;: &apos;streamsql_ROWTIME&apos;
+ );
 
 
 
@@ -5976,7 +6503,20 @@ select F_smoke_no_inherit_001(2,19) from T_smoke_jsource_932_001;
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-tumble-create-T_smoke_jsink_930_101" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM T_smoke_jsink_930_101 (sta_time timestamp,end_time timestamp, users varchar(20)) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_tumblesink&apos;);
+                <stringProp name="query"> CREATE STREAM T_smoke_jsink_930_101 (
+ 	sta_time timestamp,
+ 	end_time timestamp, 
+ 	users varchar(20)
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;,
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;,
+ 	&apos;tableName&apos;: &apos;smoke_tumblesink&apos;
+ );
 
 
 
@@ -6137,7 +6677,23 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; DAY), users;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-hop-create-T_smoke_dbsource_930_201" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM T_smoke_dbsource_930_201 (id integer,users string, amount double,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;,&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;, &apos;watermarksDelay&apos;:&apos;0&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_HOP&apos;);
+                <stringProp name="query"> CREATE STREAM T_smoke_dbsource_930_201 (
+ 	id integer,
+ 	users string, 
+ 	amount double,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${dbUrl}&apos;,
+ 	&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
+ 	&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;, 
+ 	&apos;watermarksDelay&apos;:&apos;0&apos;,
+ 	&apos;username&apos;: &apos;${udb}&apos;,
+ 	&apos;password&apos;: &apos;${udb_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;streamsql_HOP&apos;
+ );
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -6151,7 +6707,21 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; DAY), users;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-hop-create-T_smoke_jsink_930_201" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM T_smoke_jsink_930_201 (sta_time timestamp,end_time timestamp, users string,amount double) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_hopsink&apos;);
+                <stringProp name="query"> CREATE STREAM T_smoke_jsink_930_201 (
+ 	sta_time timestamp,
+ 	end_time timestamp,
+ 	users string,
+ 	amount double
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_hopsink&apos;
+ );
 
 
 
@@ -6362,7 +6932,20 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-session-create-T_smoke_jsink_930_301" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM T_smoke_jsink_930_301 (sta_time timestamp,end_time timestamp, users VARCHAR(20),amount BIGINT) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_session&apos;);
+                <stringProp name="query"> CREATE STREAM T_smoke_jsink_930_301 (
+ 	sta_time timestamp,
+ 	end_time timestamp,
+ 	users VARCHAR(20),
+ 	amount BIGINT
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_session&apos;);
 
 
 
@@ -6382,7 +6965,20 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-session-create-T_smoke_dbsource_930_301" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM T_smoke_dbsource_930_301 (users string, clicks string,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;rowtime&apos;:&apos;time1.myrowtime&apos;,&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;, &apos;watermarksDelay&apos;:&apos;0&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_SESSION&apos;);
+                <stringProp name="query"> CREATE STREAM T_smoke_dbsource_930_301 (
+ users string, clicks string,time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${dburl}&apos;, 
+ 	&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
+ 	&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
+ 	&apos;watermarksDelay&apos;:&apos;0&apos;,
+ 	&apos;username&apos;: &apos;${udb}&apos;, 
+ 	&apos;password&apos;: &apos;${udb_password}&apos;,
+ 	&apos;tableName&apos;: &apos;streamsql_SESSION&apos;
+ );
 
 
 
@@ -6468,21 +7064,21 @@ GROUP BY SESSION(myrowtime, INTERVAL &apos;30&apos; SECOND), users;
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">create stream T_smoke_ksource_929_101(
- name string, 
- id int, 
- time1 timestamp
+ 	name string, 
+ 	id int, 
+ 	time1 timestamp
 )    PROPERTIES    (   
- &apos;type&apos;: &apos;source&apos;,    
- &apos;connector&apos;: &apos;kafka&apos;,   
- &apos;version&apos;: &apos;0.10&apos;,    
- &apos;topic&apos;: &apos;watermark&apos;,   
- &apos;zookeeper.connect&apos;: &apos;node1:2181 node2:2181 node3:2181/istream/node6/kafka&apos;,  
- &apos;group.id&apos;: &apos;121001&apos;,   
- &apos;bootstrap.servers&apos;: &apos;node6:9096&apos;,   
- &apos;format&apos;: &apos;csv&apos; , 
- &apos;separator&apos;:&apos;,&apos;,
- &apos;rowtime&apos;:&apos;time1.myrowtime1&apos;,
- &apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;
+ 	&apos;type&apos;: &apos;source&apos;,    
+ 	&apos;connector&apos;: &apos;kafka&apos;,   
+	 &apos;version&apos;: &apos;0.10&apos;,    
+	 &apos;topic&apos;: &apos;watermark&apos;,   
+	 &apos;zookeeper.connect&apos;: &apos;node1:2181 node2:2181 node3:2181/istream/node6/kafka&apos;,  
+	 &apos;group.id&apos;: &apos;121001&apos;,   
+	 &apos;bootstrap.servers&apos;: &apos;node6:9096&apos;,   
+	 &apos;format&apos;: &apos;csv&apos; , 
+	 &apos;separator&apos;:&apos;,&apos;,
+	 &apos;rowtime&apos;:&apos;time1.myrowtime1&apos;,
+	 &apos;rowtime.watermarks.type&apos;:&apos;periodic-ascending&apos;
  );</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -6537,7 +7133,18 @@ GROUP BY SESSION(myrowtime, INTERVAL &apos;30&apos; SECOND), users;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="929 LDBX081-05-show create streams-create-T_smoke_jsource_929_201" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_smoke_jsource_929_201&quot; (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;test_002&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_smoke_jsource_929_201&quot; (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;test_002&apos;
+ );
 
 
 
@@ -6768,7 +7375,18 @@ separator	,
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="929 LDBX081-05-desc view-create-T_smoke_jsource_929_501" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_smoke_jsource_929_501&quot;  (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;test_002&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_smoke_jsource_929_501&quot;  (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;tableName&apos;: &apos;test_002&apos;
+ );
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -6844,7 +7462,18 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="929 LDBX081-05-show jobs-create-T_smoke_jsource_929_601" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsource_929_601 (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;test_005_bch&apos;);</stringProp>
+              <stringProp name="query"> CREATE STREAM T_smoke_jsource_929_601 (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;test_005_bch&apos;
+ );</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -6856,7 +7485,19 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="929 LDBX081-05-show jobs-create-T_smoke_jsink_929_601" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsink_929_601 (id integer,name string) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;showjobs1&apos;,&apos;batchSize&apos;:&apos;1&apos;);</stringProp>
+              <stringProp name="query"> CREATE STREAM T_smoke_jsink_929_601 (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;showjobs1&apos;,
+ 	&apos;batchSize&apos;:&apos;1&apos;
+ );</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -6930,7 +7571,18 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="929 LDBX081-05-show views-create-T_smoke_jsource_929_701" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_smoke_jsource_929_701&quot;  (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;test_002&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_smoke_jsource_929_701&quot;  (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;test_002&apos;
+ );
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -7007,7 +7659,17 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="929 LDBX081-05-desc function/show functions-create-T_smoke_jsource_929_801" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsource_929_801 (id Int) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;,&apos;tableName&apos;: &apos;aaaaa&apos; );
+              <stringProp name="query"> CREATE STREAM T_smoke_jsource_929_801 (
+ 	id Int
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;tableName&apos;: &apos;aaaaa&apos; 
+ );
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -7160,7 +7822,19 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="913 ISQL005-JDBC upsert模式支持 -create-T_smoke_jsource_913_01" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM T_smoke_jsource_913_01 (id INT,users varchar(20)) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;upsertsource&apos;);
+            <stringProp name="query"> CREATE STREAM T_smoke_jsource_913_01 (
+ 	id INT,
+ 	users varchar(20)
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;upsertsource&apos;
+ );
 
 
 
@@ -7177,7 +7851,20 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="913 ISQL005-JDBC upsert模式支持 -create-T_smoke_jsink_913_01" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM T_smoke_jsink_913_01 (id INT primary key,users varchar(20)) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;updateMode&apos;:&apos;upsert&apos;, &apos;tableName&apos;: &apos;upsert&apos;);
+            <stringProp name="query"> CREATE STREAM T_smoke_jsink_913_01 (
+ 	id INT primary key,
+ 	users varchar(20)
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;updateMode&apos;:&apos;upsert&apos;, 
+ 	&apos;tableName&apos;: &apos;upsert&apos;
+ );
 
 
 
@@ -7294,7 +7981,7 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
           </ResultCollector>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1075 DISQL-CONNECTOR-130-2 部分connector增加ARRAY类型支持" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1075 DISQL-CONNECTOR-130-2 部分connector增加ARRAY类型支持" enabled="false"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1075 dbsource KAFKASINK" enabled="true"/>
           <hashTree>
@@ -7398,15 +8085,23 @@ tfloat float array
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">CREATE STREAM T_smoke_dbsource_1075_01 (tbigint bigint ARRAY,
-tsmallint smallint ARRAY,
-tdate date ARRAY,
-ttimestamp timestamp ARRAY,
-tdecimal decimal ARRAY,
-tvarchar varchar(20) array,
-tboolean boolean array,
-tdouble double array,
-tfloat float array
-) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;,&apos;username&apos;: &apos;admin&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;tableName&apos;: &apos;streamsql_istream_array_0121&apos;);
+	tsmallint smallint ARRAY,
+	tdate date ARRAY,
+	ttimestamp timestamp ARRAY,
+	tdecimal decimal ARRAY,
+	tvarchar varchar(20) array,
+	tboolean boolean array,
+	tdouble double array,
+	tfloat float array
+) properties (
+	&apos;type&apos;: &apos;source&apos;,
+	&apos;connector&apos;: &apos;jdbc&apos;, 
+	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+	&apos;dbUrl&apos;: &apos;${dbUrl}&apos;,
+	&apos;username&apos;: &apos;admin&apos;, 
+	&apos;password&apos;: &apos;123456&apos;, 
+	&apos;tableName&apos;: &apos;streamsql_istream_array_0121&apos;
+);
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -7591,7 +8286,7 @@ tfloat float array
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="931 LDBX081-07 兼容istream语法 join(time window) " enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="931 LDBX081-07 兼容istream语法 join(time window) " enabled="false"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="931 LDBX081-07 DB 数据源" enabled="true"/>
           <hashTree>
@@ -7682,7 +8377,16 @@ tfloat float array
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-insert-streamsql_joinwintime" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into  streamsql_joinwintime values(32, &apos;dengchao&apos;,  3456.0E0 ,&apos;2018-11-22 09:42:18&apos;),(12, &apos;lichen&apos;,  1234.0E0 ,&apos;2018-11-21 09:41:54&apos;),(45, &apos;chenhe&apos;, 4567.0E0 ,&apos;2018-11-26 01:44:33&apos;),(23, &apos;lichen&apos;,  4578.0E0 ,&apos;2018-11-25 09:43:25&apos;),(67, &apos;lichen&apos;,  2390.0E0 ,&apos;2018-11-25 09:56:58&apos;),( 9, &apos;lichen&apos;, 76.0E0 ,&apos;2018-11-26 08:57:39&apos;),(34, &apos;lily&apos;, 2345.0E0 ,&apos;2018-11-23 09:42:47&apos;),(11, &apos;dog&apos;, 76.0E0 ,&apos;2018-11-26 08:50:39&apos;);</stringProp>
+              <stringProp name="query">insert into  streamsql_joinwintime values
+(32, &apos;dengchao&apos;,  3456.0E0 ,&apos;2018-11-22 09:42:18&apos;),
+(12, &apos;lichen&apos;,  1234.0E0 ,&apos;2018-11-21 09:41:54&apos;),
+(45, &apos;chenhe&apos;, 4567.0E0 ,&apos;2018-11-26 01:44:33&apos;),
+(23, &apos;lichen&apos;,  4578.0E0 ,&apos;2018-11-25 09:43:25&apos;),
+(67, &apos;lichen&apos;,  2390.0E0 ,&apos;2018-11-25 09:56:58&apos;),
+( 9, &apos;lichen&apos;, 76.0E0 ,&apos;2018-11-26 08:57:39&apos;),
+(34, &apos;lily&apos;, 2345.0E0 ,&apos;2018-11-23 09:42:47&apos;),
+(11, &apos;dog&apos;, 76.0E0 ,&apos;2018-11-26 08:50:39&apos;);
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -7706,7 +8410,15 @@ tfloat float array
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-insert-streamsql_joinwintime1" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into  streamsql_joinwintime1 values(32, &apos;dengchao&apos;,  3456.0E0 ,&apos;2018-11-22 09:42:18&apos;),(12, &apos;lichen&apos;,  1234.0E0 ,&apos;2018-11-21 09:41:54&apos;),(45, &apos;chenhe&apos;, 4567.0E0 ,&apos;2018-11-26 01:44:33&apos;),(23, &apos;lichen&apos;,  4578.0E0 ,&apos;2018-11-25 09:43:25&apos;),(67, &apos;lichen&apos;,  2390.0E0 ,&apos;2018-11-25 09:56:58&apos;),( 9, &apos;lichen&apos;, 76.0E0 ,&apos;2018-11-26 08:57:39&apos;),(34, &apos;lily&apos;, 2345.0E0 ,&apos;2018-11-23 09:42:47&apos;),(11, &apos;dog&apos;, 76.0E0 ,&apos;2018-11-26 08:50:39&apos;);</stringProp>
+              <stringProp name="query">insert into  streamsql_joinwintime1 values
+(32, &apos;dengchao&apos;,  3456.0E0 ,&apos;2018-11-22 09:42:18&apos;),
+(12, &apos;lichen&apos;,  1234.0E0 ,&apos;2018-11-21 09:41:54&apos;),
+(45, &apos;chenhe&apos;, 4567.0E0 ,&apos;2018-11-26 01:44:33&apos;),
+(23, &apos;lichen&apos;,  4578.0E0 ,&apos;2018-11-25 09:43:25&apos;),
+(67, &apos;lichen&apos;,  2390.0E0 ,&apos;2018-11-25 09:56:58&apos;),
+( 9, &apos;lichen&apos;, 76.0E0 ,&apos;2018-11-26 08:57:39&apos;),
+(34, &apos;lily&apos;, 2345.0E0 ,&apos;2018-11-23 09:42:47&apos;),
+(11, &apos;dog&apos;, 76.0E0 ,&apos;2018-11-26 08:50:39&apos;);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -7730,7 +8442,23 @@ tfloat float array
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-create-T_smoke_dbsource_931_01" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_931_01 (id integer,users VARCHAR(20), amount double,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;rowtime&apos;:&apos;time1.myrowtime&apos;,&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;, &apos;watermarksDelay&apos;:&apos;0&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_joinwintime&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_931_01 (
+ 	id integer,
+ 	users VARCHAR(20),
+ 	amount double,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${dbUrl}&apos;, 
+ 	&apos;rowtime&apos;:&apos;time1.myrowtime&apos;,
+ 	&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
+ 	&apos;watermarksDelay&apos;:&apos;0&apos;,
+ 	&apos;username&apos;: &apos;${udb}&apos;, 
+ 	&apos;password&apos;: &apos;${udb_password}&apos;,
+ 	&apos;tableName&apos;: &apos;streamsql_joinwintime&apos;
+ );
 
 
 </stringProp>
@@ -7745,7 +8473,23 @@ tfloat float array
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-create-T_smoke_dbsource_931_02" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_931_02 (id integer,users VARCHAR(20), amount double,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://node2:9105/ldb&apos;, &apos;rowtime&apos;:&apos;time1.myrowtime1&apos;,&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;, &apos;watermarksDelay&apos;:&apos;0&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql_joinwintime1&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_dbsource_931_02 (
+ 	id integer,
+ 	users VARCHAR(20), 
+ 	amount double,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;${dburl}&apos;,
+ 	&apos;rowtime&apos;:&apos;time1.myrowtime1&apos;,
+ 	&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
+ 	&apos;watermarksDelay&apos;:&apos;0&apos;,
+ 	&apos;username&apos;: &apos;${udb}&apos;,
+ 	&apos;password&apos;: &apos;${udb_password}&apos;,
+ 	&apos;tableName&apos;: &apos;streamsql_joinwintime1&apos;
+ );
 
 
 
@@ -7762,7 +8506,25 @@ tfloat float array
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-create-T_smoke_jsink_931_01" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM T_smoke_jsink_931_01 (id integer,users VARCHAR(20), amount double,time1 timestamp,id1 integer,users1 VARCHAR(20), amount1 double) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;updateMode&apos;:&apos;retract&apos;, &apos;tableName&apos;: &apos;winjoin_sink_001&apos;);
+              <stringProp name="query"> CREATE STREAM T_smoke_jsink_931_01 (
+ 	id integer,
+ 	users VARCHAR(20), 
+ 	amount double,
+ 	time1 timestamp,
+ 	id1 integer,
+ 	users1 VARCHAR(20), 
+ 	amount1 double
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;updateMode&apos;:&apos;retract&apos;,
+ 	&apos;tableName&apos;: &apos;winjoin_sink_001&apos;
+ );
 
 
 </stringProp>
@@ -7899,7 +8661,7 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="501 ISQL306 Stream Table join cache type " enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="501 ISQL306 Stream Table join cache type " enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="501 ISQL306-drop-T_smoke_jsource_501_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -7940,7 +8702,23 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="501 ISQL306-create-T_smoke_jsource_501_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM T_smoke_jsource_501_001 (id Int, name String, key1 String, key2 String,time1 timestamp) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;,&apos;tableName&apos;: &apos;smoke_501_001&apos;,&apos;cacheType&apos;:&apos;memory&apos;,&apos;dataType&apos;:&apos;static&apos; );
+            <stringProp name="query"> CREATE STREAM T_smoke_jsource_501_001 (
+ 	id Int, 
+ 	name String, 
+ 	key1 String, 
+ 	key2 String,
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;tableName&apos;: &apos;smoke_501_001&apos;,
+ 	&apos;cacheType&apos;:&apos;memory&apos;,
+ 	&apos;dataType&apos;:&apos;static&apos;
+ );
 
 
  </stringProp>
@@ -7955,7 +8733,20 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="501 ISQL306-create-T_smoke_jsource_501_002" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM T_smoke_jsource_501_002 (id Int, name String, key1 String, key2 String) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;,&apos;tableName&apos;: &apos;smoke_501_002&apos;);
+            <stringProp name="query"> CREATE STREAM T_smoke_jsource_501_002 (
+ 	id Int, 
+ 	name String, 
+ 	key1 String,
+ 	key2 String
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;tableName&apos;: &apos;smoke_501_002&apos;
+ );
 
 
  </stringProp>
@@ -7970,7 +8761,27 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="501 ISQL306-create-T_smoke_jsink_501_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM T_smoke_jsink_501_001 (id int, name string, key1 string, key2 string, id0 int, name0 string, key10 string, key20 string, time1 timestamp) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;smoke_501_003&apos;,&apos;updateMode&apos;:&apos;retract&apos;);</stringProp>
+            <stringProp name="query"> CREATE STREAM T_smoke_jsink_501_001 (
+ 	id int, 
+ 	name string,
+ 	key1 string,
+ 	key2 string,
+ 	id0 int, 
+ 	name0 string, 
+ 	key10 string, 
+ 	key20 string, 
+ 	time1 timestamp
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_501_003&apos;,
+ 	&apos;updateMode&apos;:&apos;retract&apos;
+ );</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -8081,7 +8892,7 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="912 ISQL003 watermark策略设置" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="912 ISQL003 watermark策略设置" enabled="false"/>
         <hashTree>
           <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="912 ISQL003-topic delete" enabled="true">
             <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node1:2181/linkoopdb/luyao --topic decision_tree_sink1</stringProp>
@@ -8162,7 +8973,22 @@ PROPERTIES    (
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003-watermark策略设置-create-T_smoke_watermark_jsink_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM T_smoke_watermark_jsink_001 (time1 timestamp,time2 timestamp,id int,users varchar(20)) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;updateMode&apos;:&apos;append&apos;, &apos;tableName&apos;: &apos;win11&apos;);
+            <stringProp name="query"> CREATE STREAM T_smoke_watermark_jsink_001 (
+   time1 timestamp,
+   time2 timestamp,
+   id int,
+   users varchar(20)
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;,
+ 	&apos;updateMode&apos;:&apos;append&apos;, 
+ 	&apos;tableName&apos;: &apos;win11&apos;
+ );
 
 
 
@@ -8333,7 +9159,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
           </ResultCollector>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="631 SQL201 Streaming SQL: DQL select " enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="631 SQL201 Streaming SQL: DQL select " enabled="false"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="631 SQL201 test aggregate function" enabled="true"/>
           <hashTree>
@@ -8406,7 +9232,18 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-test aggregate function-create-T_冒烟_jsource_631_001" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_631_001&quot; (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;smoke_631_01&apos;);
+              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_631_001&quot; (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_631_01&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -8519,10 +9356,21 @@ select max(id),min(id),sum(id),count(id),avg(id),stddev_pop(id),var_pop(id) from
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-test  aggregate function CREATE STREAM &quot;T_冒烟_jsource_631_002&quot;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-test  aggregate function  create stream &quot;T_冒烟_jsource_631_002&quot;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_631_002&quot;(id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;smoke_631_02&apos;);
+              <stringProp name="query"> create stream &quot;T_冒烟_jsource_631_002&quot;(
+   id integer,
+   name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_631_02&apos;
+ );
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -8688,7 +9536,18 @@ select * from &quot;T_冒烟_jsource_631_002&quot;;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-Comparison functions-create-T_冒烟_Comparison_jsource_631_003" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Comparison_jsource_631_003&quot; (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;smoke_631_02&apos;);
+                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Comparison_jsource_631_003&quot; (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;tableName&apos;: &apos;smoke_631_02&apos;
+ );
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -8702,7 +9561,21 @@ select * from &quot;T_冒烟_jsource_631_002&quot;;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-Comparison functions-create-T_冒烟_Comparison_sink_631_003" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Comparison_sink_631_003&quot; (data1 boolean,data2 boolean,data3 boolean,data4 boolean) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;T_冒烟_Comparison_sink_631&apos;);
+                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Comparison_sink_631_003&quot; (
+ 	data1 boolean,
+ 	data2 boolean,
+ 	data3 boolean,
+ 	data4 boolean
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;,
+ 	&apos;connector&apos;: &apos;jdbc&apos;,
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;batchSize&apos;: &apos;1&apos;,
+ 	&apos;tableName&apos;: &apos;T_冒烟_Comparison_sink_631&apos;
+ );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -8911,7 +9784,18 @@ select * from &quot;T_冒烟_jsource_631_002&quot;;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-Arithmetic functions-create-T_冒烟_jsource_Arithmetic_631_004" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Arithmetic_jsource_631_004&quot;(id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;smoke_631_02&apos;);
+                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Arithmetic_jsource_631_004&quot;(
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;,
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_631_02&apos;
+ );
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -8925,7 +9809,21 @@ select * from &quot;T_冒烟_jsource_631_002&quot;;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-Arithmetic functions-create-T_冒烟_Arithmetic_sink_631_004" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Arithmetic_sink_631_004&quot; (data1 int,data2 double,data3 double,data4 Decimal) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;T_冒烟_Arithmetic_sink_631&apos;);
+                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Arithmetic_sink_631_004&quot; (
+ 	data1 int,
+ 	data2 double,
+ 	data3 double,
+ 	data4 Decimal
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;,
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;T_冒烟_Arithmetic_sink_631&apos;
+ );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9098,7 +9996,18 @@ select * from &quot;T_冒烟_jsource_631_002&quot;;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-String functions-create-T_冒烟_String_jsource_631_005" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_String_jsource_631_005&quot; (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;smoke_631_02&apos;);
+                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_String_jsource_631_005&quot; (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_631_02&apos;
+ );
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -9112,7 +10021,21 @@ select * from &quot;T_冒烟_jsource_631_002&quot;;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-String functions-create-T_冒烟_String_sink_631_005" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_String_sink_631_005&quot; (data1 varchar(20),data2 varchar(20),data3 varchar(20),data4 int) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;T_冒烟_String_631&apos;);
+                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_String_sink_631_005&quot; (
+ 	data1 varchar(20),
+ 	data2 varchar(20),
+ 	data3 varchar(20),
+ 	data4 int
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;, 
+ 	&apos;tableName&apos;: &apos;T_冒烟_String_631&apos;
+ );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9286,7 +10209,21 @@ select *  from T_冒烟_String_631;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-Temporal functions-create-T_冒烟_Temporal_sink_631_006" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Temporal_sink_631_006&quot; (data1 date,data2 time,data3 timestamp,data4 bigint) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;T_冒烟_Temporal_631&apos;);
+                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Temporal_sink_631_006&quot; (
+ 	data1 date,
+ 	data2 time,
+ 	data3 timestamp,
+ 	data4 bigint
+ ) properties (
+ 	&apos;type&apos;: &apos;sink&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;batchSize&apos;: &apos;1&apos;,
+ 	&apos;tableName&apos;: &apos;T_冒烟_Temporal_631&apos;
+ );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9299,7 +10236,18 @@ select *  from T_冒烟_String_631;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-Temporal functions-create-T_冒烟_Temporal_jsource_631_006" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Temporal_jsource_631_006&quot; (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;smoke_631_02&apos;);
+                <stringProp name="query"> CREATE STREAM &quot;T_冒烟_Temporal_jsource_631_006&quot; (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;, 
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_631_02&apos;
+ );
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -9376,7 +10324,7 @@ select *  from T_冒烟_String_631;</stringProp>
             </hashTree>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="803 SQL105 create view" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="803 SQL105 create view" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="803 SQL105-drop-V_冒烟_jsource_803_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -9405,7 +10353,18 @@ select *  from T_冒烟_String_631;</stringProp>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="803 SQL105 -creat-T_冒烟_jsource_803_001" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_803_001&quot; (id integer,name string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;tableName&apos;: &apos;smoke_jsource_803&apos;);
+            <stringProp name="query"> CREATE STREAM &quot;T_冒烟_jsource_803_001&quot; (
+ 	id integer,
+ 	name string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;,
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, 
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;tableName&apos;: &apos;smoke_jsource_803&apos;
+ );
 
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
@@ -9451,10 +10410,10 @@ select *  from T_冒烟_String_631;</stringProp>
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="803 SQL105-drop-VIEW IF EXISTS v_jdbcsource_smint3_bch;" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="803 SQL105-drop-view if exists v_jdbcsource_smint3_bch" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">DROP VIEW IF EXISTS v_jdbcsource_smint3_bch;</stringProp>
+            <stringProp name="query">drop view if exists v_jdbcsource_smint3_bch;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -9464,7 +10423,7 @@ select *  from T_冒烟_String_631;</stringProp>
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1326 LDBX081-09 pallas pallas" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1326 LDBX081-09 pallas pallas" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1326 LDBX081-09 show jobs" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -9576,7 +10535,19 @@ select *  from T_冒烟_String_631;</stringProp>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1326 LDBX081-09 create-T_PALLAS_psource_jsource_1326" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query"> CREATE STREAM T_PALLAS_psource_jsource_1326 (ID INT primary key,NAME string) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;${umysql}&apos;, &apos;password&apos;: &apos;${umysql_password}&apos;, &apos;fetchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;T_PALLAS_psource_jsource_1326&apos;);
+            <stringProp name="query"> CREATE STREAM T_PALLAS_psource_jsource_1326 (
+ 	ID INT primary key,
+ 	NAME string
+ ) properties (
+ 	&apos;type&apos;: &apos;source&apos;, 
+ 	&apos;connector&apos;: &apos;jdbc&apos;, 
+ 	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+ 	&apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+ 	&apos;username&apos;: &apos;${umysql}&apos;,
+ 	&apos;password&apos;: &apos;${umysql_password}&apos;, 
+ 	&apos;fetchSize&apos;: &apos;1&apos;,
+ 	&apos;tableName&apos;: &apos;T_PALLAS_psource_jsource_1326&apos;
+ );
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9789,7 +10760,7 @@ select *  from T_冒烟_String_631;</stringProp>
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1613 LDBX081-26 Stream Pallas insert into values" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1613 LDBX081-26 Stream Pallas insert into values" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1613 LDBX081-26 drop stream if exists T_PALLAS_source_1613;" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -9831,8 +10802,15 @@ select *  from T_冒烟_String_631;</stringProp>
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">create stream T_PALLAS_source_1613(
-  ID INT PRIMARY KEY, NAME VARCHAR(255), ACCOUNT BIGINT, AVERAGE DECIMAL(15,3), INCOME DOUBLE,
-  byteField tinyint, shortField smallint, floatField float, dateField date,
+  ID INT PRIMARY KEY, 
+  NAME VARCHAR(255), 
+  ACCOUNT BIGINT, 
+  AVERAGE DECIMAL(15,3),
+  INCOME DOUBLE,
+  byteField tinyint, 
+  shortField smallint, 
+  floatField float, 
+  dateField date,
   timestampField timestamp
 ) PROPERTIES (
   &apos;connector&apos;:&apos;pallas&apos;,
@@ -9847,7 +10825,7 @@ select *  from T_冒烟_String_631;</stringProp>
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1613 LDBX081-26 INSERT INTO T_PALLAS_source_1613 " enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1613 LDBX081-26 insert into T_PALLAS_source_1613 " enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">INSERT INTO T_PALLAS_source_1613 VALUES 
@@ -9880,11 +10858,18 @@ select *  from T_冒烟_String_631;</stringProp>
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">create stream T_PALLAS_jsink_1613(
-  ID INT PRIMARY KEY, NAME VARCHAR(255), ACCOUNT BIGINT, AVERAGE DECIMAL(15,3), INCOME DOUBLE,
-  byteField tinyint, shortField smallint, floatField float, dateField date,
+  ID INT PRIMARY KEY,
+  NAME VARCHAR(255), 
+  ACCOUNT BIGINT, 
+  AVERAGE DECIMAL(15,3), 
+  INCOME DOUBLE,
+  byteField tinyint,
+  shortField smallint,
+  floatField float, 
+  dateField date,
   timestampField timestamp
 ) PROPERTIES (
-       &apos;type&apos;: &apos;sink&apos;,
+      &apos;type&apos;: &apos;sink&apos;,
  	&apos;connector&apos;: &apos;jdbc&apos;,
  	&apos;tableName&apos;: &apos;T_parquet_jsink_1613&apos;,
  	&apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
@@ -10010,7 +10995,7 @@ select *  from T_冒烟_String_631;</stringProp>
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1580 LDBX081-23 parquet source" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1580 LDBX081-23 parquet source" enabled="false"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1580 LDBX081-23 pallas sink" enabled="true"/>
           <hashTree>
@@ -10041,13 +11026,20 @@ select *  from T_冒烟_String_631;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="query">create stream T_parquet_1580(
- ID INT PRIMARY KEY, NAME VARCHAR(255), ACCOUNT BIGINT, AVERAGE DECIMAL(15,3), INCOME DOUBLE,
-  byteField tinyint, shortField smallint, floatField float, dateField date,
+  ID INT PRIMARY KEY, 
+  NAME VARCHAR(255), 
+  ACCOUNT BIGINT, 
+  AVERAGE DECIMAL(15,3), 
+  INCOME DOUBLE,
+  byteField tinyint, 
+  shortField smallint,
+  floatField float, 
+  dateField date,
   timestampField timestamp
 )properties(
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
-    &apos;path&apos;:&apos;hdfs:///node4/linkoopdb2/testdb/main/linkoopdb/home/PUBLIC/tables/PUBLIC/ab393ecb-5218-4a9c-9a36-f3ef084d4cfd/02a92169-aef3-4d9e-8ab1-5257afc08346&apos;,
+    &apos;path&apos;:  &apos;hdfs:///node4/linkoopdb2/testdb/main/linkoopdb/home/PUBLIC/tables/PUBLIC/ab393ecb-5218-4a9c-9a36-f3ef084d4cfd/02a92169-aef3-4d9e-8ab1-5257afc08346&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
