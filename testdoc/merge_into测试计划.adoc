@@ -19,7 +19,8 @@ merge into功能测试
 
 == 测试思路
 
-** update和insert into组合
+=== update和insert into组合
+
 MERGE INTO emp AS e
  USING (SELECT * FROM new_hire) AS n
  ON e.empno = n.empno
@@ -33,7 +34,8 @@ WHEN NOT MATCHED THEN
  INSERT ( e.empno, e.ename, e.sal, e.mgr, e.deptno )
  VALUES ( n.empno, n.ename, n.sal, n.mgr, n.deptno );
 
-** delete和insert into组合
+=== delete和insert into组合
+
 MERGE INTO emp AS e
  USING (SELECT * FROM new_hire) AS n
  ON e.empno = n.empno
@@ -43,7 +45,8 @@ WHEN NOT MATCHED THEN
  INSERT ( e.empno, e.ename, e.sal, e.mgr, e.deptno )
  VALUES ( n.empno, n.ename, n.sal, n.mgr, n.deptno );
 
-** 省略update或delete字句
+=== 省略update或delete字句
+
 MERGE INTO emp AS e
  USING (SELECT * FROM new_hire) AS n
  ON e.empno = n.empno
@@ -51,14 +54,16 @@ WHEN NOT MATCHED THEN
  INSERT ( e.empno, e.ename, e.sal, e.mgr, e.deptno )
  VALUES ( n.empno, n.ename, n.sal, n.mgr, n.deptno );
 
-** 省略insert into字句
+=== 省略insert into字句
+
 MERGE INTO emp AS e
  USING (SELECT * FROM new_hire) AS n
  ON e.empno = n.empno
 WHEN MATCHED THEN
  delete 
  
-或
+** 或
+
 MERGE INTO emp AS e
  USING (SELECT * FROM new_hire) AS n
  ON e.empno = n.empno
@@ -69,7 +74,8 @@ WHEN MATCHED THEN
  e.mgr = n.mgr,
  e.deptno = n.deptno
 
-** UPDATE后面接delete字句
+=== UPDATE后面接delete字句
+
 MERGE INTO emp AS e
  USING (SELECT * FROM new_hire) AS n
  ON e.empno = n.empno
@@ -84,19 +90,23 @@ WHEN NOT MATCHED THEN
  INSERT ( e.empno, e.ename, e.sal, e.mgr, e.deptno )
  VALUES ( n.empno, n.ename, n.sal, n.mgr, n.deptno );
  
-** 表和表
+=== 表和表
+
 MERGE INTO table A
 USING table B
 
-** 表和QUERY
+=== 表和QUERY
+
 MERGE INTO table A
 USING QUERY
 
-** QUERY和表
+=== QUERY和表
+
 MERGE INTO table QUERY
 USING table B
 
-** QUERY和QUERY
+=== QUERY和QUERY
+
 MERGE INTO  QUERY
 USING QUERY
 
