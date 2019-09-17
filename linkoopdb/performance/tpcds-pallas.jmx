@@ -264,7 +264,7 @@
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CREATE USER" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user ${b} if exists cascade;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user ${b} if exists cascade;" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">drop user ${b} if exists cascade;</stringProp>
@@ -276,7 +276,7 @@
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">CREATE USER ${b} PASSWORD &apos;${b_password}&apos;;</stringProp>
@@ -315,7 +315,7 @@
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas table" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">drop table ex_csv_customer_address if exists cascade;
 drop table ex_csv_customer_demographics if exists cascade;
@@ -375,7 +375,21 @@ drop table store_sales if exists cascade;</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create parquet external table" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="query">drop table ex_parquet_web_returns if exists cascade;
+drop table web_returns if exists cascade;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create parquet external table" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">create external table ex_parquet_customer_address
 (
@@ -906,7 +920,47 @@ create external table ex_parquet_store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create pallas table" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create parquet ex_parquet_web_returns" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="query">create external table ex_parquet_web_returns
+(
+    wr_returned_date_sk       integer                       ,
+    wr_returned_time_sk       integer                       ,
+    wr_item_sk                integer               not null,
+    wr_refunded_customer_sk   integer                       ,
+    wr_refunded_cdemo_sk      integer                       ,
+    wr_refunded_hdemo_sk      integer                       ,
+    wr_refunded_addr_sk       integer                       ,
+    wr_returning_customer_sk  integer                       ,
+    wr_returning_cdemo_sk     integer                       ,
+    wr_returning_hdemo_sk     integer                       ,
+    wr_returning_addr_sk      integer                       ,
+    wr_web_page_sk            integer                       ,
+    wr_reason_sk              integer                       ,
+    wr_order_number           bigint               not null,
+    wr_return_quantity        integer                       ,
+    wr_return_amt             decimal(7,2)                  ,
+    wr_return_tax             decimal(7,2)                  ,
+    wr_return_amt_inc_tax     decimal(7,2)                  ,
+    wr_fee                    decimal(7,2)                  ,
+    wr_return_ship_cost       decimal(7,2)                  ,
+    wr_refunded_cash          decimal(7,2)                  ,
+    wr_reversed_charge        decimal(7,2)                  ,
+    wr_account_credit         decimal(7,2)                  ,
+    wr_net_loss               decimal(7,2)                  
+) location (&apos;${tpcds_data_url}/web_returns&apos;) FORMAT &apos;parquet&apos;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create pallas table" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">create table customer_address
 (
@@ -1462,7 +1516,46 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas call_center" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create pallas web_returns" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="query">create table web_returns
+(
+    wr_returned_date_sk       integer                       ,
+    wr_returned_time_sk       integer                       ,
+    wr_item_sk                integer               not null,
+    wr_refunded_customer_sk   integer                       ,
+    wr_refunded_cdemo_sk      integer                       ,
+    wr_refunded_hdemo_sk      integer                       ,
+    wr_refunded_addr_sk       integer                       ,
+    wr_returning_customer_sk  integer                       ,
+    wr_returning_cdemo_sk     integer                       ,
+    wr_returning_hdemo_sk     integer                       ,
+    wr_returning_addr_sk      integer                       ,
+    wr_web_page_sk            integer                       ,
+    wr_reason_sk              integer                       ,
+    wr_order_number           bigint               not null,
+    wr_return_quantity        integer                       ,
+    wr_return_amt             decimal(7,2)                  ,
+    wr_return_tax             decimal(7,2)                  ,
+    wr_return_amt_inc_tax     decimal(7,2)                  ,
+    wr_fee                    decimal(7,2)                  ,
+    wr_return_ship_cost       decimal(7,2)                  ,
+    wr_refunded_cash          decimal(7,2)                  ,
+    wr_reversed_charge        decimal(7,2)                  ,
+    wr_account_credit         decimal(7,2)                  ,
+    wr_net_loss               decimal(7,2)                  ,
+    primary key (wr_item_sk, wr_order_number)
+) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;32&apos;) engine pallas;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas call_center" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into call_center             select * from ex_parquet_call_center                   ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1474,7 +1567,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas catalog_page" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas catalog_page" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into catalog_page            select * from ex_parquet_catalog_page                  ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1486,7 +1579,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into customer                select * from ex_parquet_customer                      ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1498,7 +1591,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer_address" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer_address" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into customer_address        select * from ex_parquet_customer_address              ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1510,7 +1603,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer_demographics" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer_demographics" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into customer_demographics   select * from ex_parquet_customer_demographics         ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1522,7 +1615,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas date_dim" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas date_dim" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into date_dim                select * from ex_parquet_date_dim                      ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1534,7 +1627,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas web_site" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas web_site" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into web_site                select * from ex_parquet_web_site                      ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1546,7 +1639,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas household_demographics" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas household_demographics" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into household_demographics  select * from ex_parquet_household_demographics        ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1558,7 +1651,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas income_band" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas income_band" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into income_band             select * from ex_parquet_income_band                   ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1570,7 +1663,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas item" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas item" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into item                    select * from ex_parquet_item                          ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1582,7 +1675,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas promotion" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas promotion" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into promotion               select * from ex_parquet_promotion                     ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1594,7 +1687,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas reason" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas reason" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into reason                  select * from ex_parquet_reason                        ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1606,7 +1699,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas ship_mode" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas ship_mode" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into ship_mode               select * from ex_parquet_ship_mode                     ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1618,7 +1711,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas store" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas store" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into store                   select * from ex_parquet_store                         ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1630,7 +1723,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas time_dim" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas time_dim" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into time_dim                select * from ex_parquet_time_dim                      ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1642,7 +1735,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas warehouse" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas warehouse" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into warehouse               select * from ex_parquet_warehouse                     ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1654,7 +1747,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas web_page" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas web_page" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into web_page                select * from ex_parquet_web_page                      ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1678,7 +1771,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas catalog_returns" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas catalog_returns" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into catalog_returns         select * from ex_parquet_catalog_returns               ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1690,7 +1783,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas inventory" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas inventory" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into inventory               select * from ex_parquet_inventory                     ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1702,7 +1795,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas store_returns" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas store_returns" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into store_returns           select * from ex_parquet_store_returns                 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1714,7 +1807,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas web_sales" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas web_sales" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into web_sales               select * from ex_parquet_web_sales                     ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1726,7 +1819,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas catalog_sales " enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas catalog_sales " enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into catalog_sales           select * from ex_parquet_catalog_sales                 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1738,7 +1831,7 @@ create table store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas store_sales    " enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas store_sales    " enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into store_sales             select * from ex_parquet_store_sales                   ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
