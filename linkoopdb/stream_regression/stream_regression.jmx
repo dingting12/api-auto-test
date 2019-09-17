@@ -52237,6 +52237,825 @@ drop table if exists t_testdb_dbsink;</stringProp>
           </JDBCSampler>
           <hashTree/>
         </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1156 where 子句使用列的别名报错" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1156-DROP TABLE st_kafka_source_test_my IF EXISTS CASCADE" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP TABLE st_kafka_source_test_my IF EXISTS CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1156-CREATE STREAM st_kafka_source_test_my" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM st_kafka_source_test_my
+(name STRING, id int, ctime timestamp)
+PROPERTIES (
+  &apos;type&apos;: &apos;source&apos;,
+  &apos;connector&apos;: &apos;kafka&apos;,
+  &apos;bootstrap.servers&apos;: &apos;node2:9092&apos;,
+  &apos;zookeeper.connect&apos;: &apos;node1:2181,node2:2181,node3:2181/istream/node6/kafka&apos;,
+  &apos;group.id&apos;: &apos;ice_kafka_test2&apos;,
+  &apos;topic&apos;: &apos;ice_kafka_test2&apos;,
+  &apos;format&apos;: &apos;json&apos;,
+  &apos;rowtime&apos;: &apos;ctime.rowtime&apos;,
+  &apos;version&apos;: &apos;0.10&apos;,
+  &apos;watermarksDelay&apos;: &apos;1000&apos;
+);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1156-WITH source_0 AS" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">WITH source_0 AS (SELECT &quot;NAME&quot;,&quot;ID&quot;,&quot;ROWTIME&quot; FROM st_kafka_source_test_my),  
+validate_0_ok AS (SELECT &quot;NAME&quot;,&quot;ID&quot;,&quot;ROWTIME&quot; FROM (SELECT &quot;NAME&quot;,&quot;ID&quot;,&quot;ROWTIME&quot; FROM (SELECT &quot;NAME&quot;,&quot;ID&quot;,&quot;ROWTIME&quot; FROM source_0) WHERE ((&quot;ID&quot; &gt; 1)))) ,
+transform_0 AS (SELECT &quot;NAME&quot;,&quot;ID&quot;,&quot;ROWTIME&quot;,&quot;ID2&quot; FROM (SELECT &quot;NAME&quot;,&quot;ID&quot;,&quot;ROWTIME&quot;, &quot;ID&quot; -1 AS &quot;ID2&quot; FROM ((SELECT &quot;NAME&quot;,&quot;ID&quot;,&quot;ROWTIME&quot; FROM validate_0_ok))))
+SELECT &quot;NAME&quot;,&quot;ID&quot;,&quot;ROWTIME&quot;,&quot;ID2&quot; FROM transform_0 WHERE &quot;ID2&quot; &gt; 2;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1156-DROP TABLE st_kafka_source_test_my IF EXISTS CASCADE" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP TABLE st_kafka_source_test_my IF EXISTS CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="757 LDBX032-01 Handle Asynchronous Resultsets for Stream" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01-drop-t_istream_wr和T_Asynchronous_jdbc_source" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP TABLE t_istream_wr if exists;
+DROP TABLE T_Asynchronous_jdbc_source if exists;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01-create-t_istream_wr" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table t_istream_wr(
+id bigint,tfloat float ARRAY,tvarchar varchar(20) ARRAY,tboolean boolean ARRAY,tdouble double ARRAY,
+TINYINTs TINYINT,SMALLINTs SMALLINT,BIGINTs BIGINT,FLOATs FLOAT,DOUBLEs DOUBLE,
+DECIMALs DECIMAL(4,2),DATEs DATE,TIMESTAMPs TIMESTAMP,VARCHARs VARCHAR(100),BOOLEANs BOOLEAN); 
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01-insert-t_istream_wr" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">insert into t_istream_wr VALUES
+(1,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:01&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(2,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:02&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(3,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:03&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(4,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:04&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(5,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:05&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(6,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:06&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(7,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:07&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(8,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:08&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(9,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:09&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(10,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:10&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(11,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:11&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(12,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:12&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(13,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:13&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(14,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:14&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(15,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:15&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(16,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:16&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(17,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:17&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(18,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:18&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(19,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:19&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(20,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:20&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(21,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:21&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(22,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:22&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(23,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:23&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(24,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:24&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(25,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:25&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(26,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:26&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(27,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:27&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(28,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:28&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(29,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:29&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(30,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:30&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(31,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:31&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(32,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:32&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(33,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:33&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(34,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:34&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(35,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:35&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(36,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:36&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(37,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:37&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(38,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:38&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(39,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:39&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(40,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:40&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(41,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:41&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(42,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:42&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(43,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:43&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(44,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:44&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(45,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:45&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(46,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:46&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(47,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:47&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(48,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:48&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(49,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:49&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(50,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 00:12:50&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE),
+(51,ARRAY[1.1,2.2,3.3],ARRAY[&apos;aa&apos;,&apos;ttttt&apos;],ARRAY[true,false],ARRAY[555.99,2222.999],28,15,18,16.66,18.999,16.88,TO_DATE(&apos;1980-12-17&apos;,&apos;yyyy-mm-dd&apos;),
+TO_TIMESTAMP(&apos;2016-12-31 03:12:50&apos;, &apos;yyyy-mm-dd hh24:mi:ss&apos;),&apos;dfdsf&apos;,FALSE);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01-select(count)-t_istream_wr; " enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT count(*) FROM t_istream_wr;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="63346968">C1
+51</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">true</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01-create-T_Asynchronous_jdbc_source" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM T_Asynchronous_jdbc_source(id bigint,tfloat float ARRAY,tvarchar varchar(20) ARRAY,tboolean boolean ARRAY,tdouble double ARRAY,
+TINYINTs TINYINT,SMALLINTs SMALLINT,BIGINTs BIGINT,FLOATs FLOAT,DOUBLEs DOUBLE,DECIMALs DECIMAL(4,2),DATEs DATE,TIMESTAMPs TIMESTAMP,VARCHARs VARCHAR(100),BOOLEANs BOOLEAN) 
+properties (
+&apos;type&apos;: &apos;source&apos;, 
+&apos;connector&apos;: &apos;jdbc&apos;, 
+&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, 
+&apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:${port}/ldb&apos;,
+&apos;username&apos;: &apos;admin&apos;,
+&apos;password&apos;: &apos;123456&apos;,
+&apos;tableName&apos;: &apos;t_istream_wr&apos;,
+&apos;increaseColumn&apos;: &apos;id&apos;,
+&apos;rowtime&apos;:&apos;TIMESTAMPs.myrowtime1&apos;,
+&apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
+&apos;watermarksDelay&apos;:&apos;60000&apos;
+ );
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="false">
+              <stringProp name="ConstantTimer.delay">10000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 set-stream_async_query_enable " enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">set session stream_async_query_enable TRUE;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="65916">C1
+</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">true</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01-select-T_Asynchronous_jdbc_source" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM T_Asynchronous_jdbc_source order by myrowtime1;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
+              <stringProp name="RegexExtractor.regex">(.+?)	true</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <DebugPostProcessor guiclass="TestBeanGUI" testclass="DebugPostProcessor" testname="Debug PostProcessor" enabled="true">
+              <boolProp name="displayJMeterProperties">true</boolProp>
+              <boolProp name="displayJMeterVariables">true</boolProp>
+              <boolProp name="displaySamplerProperties">true</boolProp>
+              <boolProp name="displaySystemProperties">true</boolProp>
+            </DebugPostProcessor>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="false">
+              <stringProp name="ConstantTimer.delay">100000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 10);" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;,10);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+              <stringProp name="ConstantTimer.delay">100000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1527402171">ID	TFLOAT	TVARCHAR	TBOOLEAN	TDOUBLE	TINYINTS	SMALLINTS	BIGINTS	FLOATS	DOUBLES	DECIMALS	DATES	MYROWTIME1	VARCHARS	BOOLEANS
+1	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:01.0	dfdsf	false
+2	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:02.0	dfdsf	false
+3	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:03.0	dfdsf	false
+4	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:04.0	dfdsf	false
+5	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:05.0	dfdsf	false
+6	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:06.0	dfdsf	false
+7	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:07.0	dfdsf	false
+8	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:08.0	dfdsf	false
+9	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:09.0	dfdsf	false
+10	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:10.0	dfdsf	false
+</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="false">
+              <stringProp name="ConstantTimer.delay">10000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,2);" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,2);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="456319469">ID	TFLOAT	TVARCHAR	TBOOLEAN	TDOUBLE	TINYINTS	SMALLINTS	BIGINTS	FLOATS	DOUBLES	DECIMALS	DATES	MYROWTIME1	VARCHARS	BOOLEANS
+11	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:11.0	dfdsf	false
+12	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:12.0	dfdsf	false
+13	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:13.0	dfdsf	false
+14	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:14.0	dfdsf	false
+15	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:15.0	dfdsf	false
+16	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:16.0	dfdsf	false
+17	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:17.0	dfdsf	false
+18	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:18.0	dfdsf	false
+19	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:19.0	dfdsf	false
+20	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:20.0	dfdsf	false</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="false">
+              <stringProp name="ConstantTimer.delay">10000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,3);" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,3);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1176932819">ID	TFLOAT	TVARCHAR	TBOOLEAN	TDOUBLE	TINYINTS	SMALLINTS	BIGINTS	FLOATS	DOUBLES	DECIMALS	DATES	MYROWTIME1	VARCHARS	BOOLEANS
+21	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:21.0	dfdsf	false
+22	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:22.0	dfdsf	false
+23	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:23.0	dfdsf	false
+24	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:24.0	dfdsf	false
+25	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:25.0	dfdsf	false
+26	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:26.0	dfdsf	false
+27	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:27.0	dfdsf	false
+28	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:28.0	dfdsf	false
+29	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:29.0	dfdsf	false
+30	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:30.0	dfdsf	false</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="false">
+              <stringProp name="ConstantTimer.delay">100000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,4);" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,4);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1216392387">ID	TFLOAT	TVARCHAR	TBOOLEAN	TDOUBLE	TINYINTS	SMALLINTS	BIGINTS	FLOATS	DOUBLES	DECIMALS	DATES	MYROWTIME1	VARCHARS	BOOLEANS
+31	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:31.0	dfdsf	false
+32	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:32.0	dfdsf	false
+33	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:33.0	dfdsf	false
+34	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:34.0	dfdsf	false
+35	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:35.0	dfdsf	false
+36	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:36.0	dfdsf	false
+37	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:37.0	dfdsf	false
+38	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:38.0	dfdsf	false
+39	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:39.0	dfdsf	false
+40	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:40.0	dfdsf	false
+</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="false">
+              <stringProp name="ConstantTimer.delay">10000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,5);" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,5);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-307605763">ID	TFLOAT	TVARCHAR	TBOOLEAN	TDOUBLE	TINYINTS	SMALLINTS	BIGINTS	FLOATS	DOUBLES	DECIMALS	DATES	MYROWTIME1	VARCHARS	BOOLEANS
+41	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:41.0	dfdsf	false
+42	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:42.0	dfdsf	false
+43	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:43.0	dfdsf	false
+44	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:44.0	dfdsf	false
+45	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:45.0	dfdsf	false
+46	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:46.0	dfdsf	false
+47	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:47.0	dfdsf	false
+48	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:48.0	dfdsf	false
+49	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:49.0	dfdsf	false
+50	ARRAY[1.1E0,2.2E0,3.3E0]	ARRAY[&apos;aa&apos;,&apos;ttttt&apos;]	ARRAY[TRUE,FALSE]	ARRAY[555.99E0,2222.999E0]	28	15	18	16.66	18.999	17	1980-12-17	2016-12-31 00:12:50.0	dfdsf	false
+</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 CANCEL JOB_ID" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CANCEL JOB &apos;${JOB_ID_g1}&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="757 LDBX032-01 drop-t_istream_wr和T_Asynchronous_jdbc_source" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP TABLE t_istream_wr if exists;
+DROP TABLE T_Asynchronous_jdbc_source if exists;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="750 LDBX081-07 CEP in SQL" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 drop STREAM test_jdbcsource_cep_bch_001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists test_jdbcsource_cep_bch_001;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 drop STREAM test_jdbcsink_cep_bch_001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists test_jdbcsink_cep_bch_001;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 TC-001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM test_jdbcsource_cep_bch_001 (id Int, name String, key1 String, key2 String) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;proctime&apos;:&apos;proctime&apos;, &apos;tableName&apos;: &apos;cep11&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 TC-002" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM test_jdbcsink_cep_bch_001 (KEY1 String, KEY2 String, AID int , AKEY1 String, BID Integer, CID Integer, CKEY2 String) properties (&apos;type&apos;: &apos;sink&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;, &apos;batchSize&apos;: &apos;1&apos;, &apos;tableName&apos;: &apos;cep0311_sink&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="750 LDBX081-07 TC-003" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">insert into test_jdbcsink_cep_bch_001 SELECT *
+FROM test_jdbcsource_cep_bch_001
+MATCH_RECOGNIZE (
+PARTITION BY key1, key2
+ORDER BY proctime
+MEASURES
+A.id AS aid,
+A.key1 AS akey1,
+LAST(B.id) AS bid,
+C.id AS cid,
+C.key2 AS ckey2
+PATTERN (A B C)
+DEFINE
+A AS name = &apos;a&apos; AND key1 LIKE &apos;%key%&apos; AND id &gt; 0,
+B AS name = &apos;b&apos; AND LAST(A.name, 2) IS NULL,
+C AS name = &apos;c&apos; AND LAST(A.name) = &apos;a&apos;
+) AS T;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="749 LDBX081-04 与DB深度整合" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="749 LDBX081-04 drop STREAM test_stream_749" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists test_stream_749;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="749 LDBX081-04 TC-001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM test_stream_749 (id Int, name String, key1 String, key2 String) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;, &apos;username&apos;: &apos;test&apos;, &apos;password&apos;: &apos;123456&apos;,&apos;proctime&apos;:&apos;proctime&apos;, &apos;tableName&apos;: &apos;cep11&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1030 LDBX081-09 DB Worker 兼容Istream" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 drop-stream-T_jsource_1030" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists T_jsource_1030;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 drop-stream-T_jsink_1030" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query"> drop STREAM if exists T_jsink_1030;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 TC-001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE STREAM T_jsink_1030 (
+ 	data varchar(20)
+ ) properties (
+	 &apos;type&apos;: &apos;sink&apos;,
+	 &apos;connector&apos;: &apos;jdbc&apos;, 
+	 &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;,
+	 &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+	 &apos;username&apos;: &apos;${umysql}&apos;,
+	 &apos;password&apos;: &apos;${umysql_password}&apos;,
+	 &apos;batchSize&apos;:&apos;1&apos;,
+	 &apos;tableName&apos;: &apos;udf_test&apos;
+ );
+
+
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 TC-002" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">CREATE STREAM T_jsource_1030 (
+	 id Int
+ ) properties (
+	 &apos;type&apos;: &apos;source&apos;, 
+	 &apos;connector&apos;: &apos;jdbc&apos;, 
+	 &apos;driver&apos;: &apos;com.mysql.jdbc.Driver&apos;, 
+	 &apos;dbUrl&apos;: &apos;jdbc:mysql://node4:3306/jmeter_istreamsql&apos;,
+	 &apos;username&apos;: &apos;test&apos;, 
+	 &apos;password&apos;: &apos;123456&apos;,
+	 &apos;tableName&apos;: &apos;aaaaa&apos; 
+ );
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1030 LDBX081-09 TC-003" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">insert into T_jsink_1030 select TEST_STRING(2,19)  from T_jsource_1030;
+
+                    </stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1031  LDBX081-10 DB 兼容Istream sql " enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1031  LDBX081-10 TC-001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DESC JOB 1031;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1149 LDBX081-12 add syntax about DESC JOB" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1149 LDBX081-12 TC-001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DESC JOB 1031;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
       </hashTree>
     </hashTree>
   </hashTree>
