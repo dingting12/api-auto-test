@@ -1,73 +1,507 @@
-
-= Bulk load on pallas测试计划
-:doctype: article
-:encoding: utf-8
-:lang: zh
-:toc:
 :numbered:
+:toc:
+
+= Hadoop安装文档
 
 
-## 编写时间
+== 背景
 
-2019-06-13
+假设现在有三台物理服务器；每台都安装了Centos7.4操作系统，三台机器的主机名分别是node1，node2和node3；
 
-## 测试版本
+== 网络配置
 
-linkoopdb-2.0.0.236-20190613
-
-## 测试时间
-
-2019-06-13至2019-06-14
-
-## 测试内容
-
-测试pallas存储的load into语法，且在加载大量数据时是否比insert into 快 +
-https://github.com/datapps/linkoopdb/issues/1314
-
-## 测试思路
-
-### 准备工作
-
-1.创建一张全数据类型的pallas表且有大量数据（通过存储过程插入大量数据，其中包括中英文和特殊字符）作为pallas源表t_test_pallas_bulk_wy1 +
-
-2.创建一张跟pallas源表t_test_pallas_bulk_wy1相同表结构的pallas表t_test_pallas_bulk_wy2且不插入数据 +
-
-3.创建一张跟pallas源表t_test_pallas_bulk_wy1相同表结构的hdfs表t_test_hdfs_bulk_wy1且插入大量数据作为hdfs源表 +
-
-4.创建一张跟hdfs源表hdfs表t_test_hdfs_bulk_wy1相同表结构的hdfs表hdfs表t_test_hdfs_bulk_wy2且不插入数据 +
-
-5.创建一张tpcds1T数据中的store-sales表（28亿行）的外部表t_extern_store_sales_wy1 +
-
-6.创建一张store-sales的pallas内部表t_innerpallas_store_sales_wy1且包含store-sales的所有数据 +
-
-7.创建两张与t_innerpallas_store_sales_wy1相同表结构的pallas空表t_innerpallas_store_sales_wy2，t_innerpallas_store_sales_wy3
+=== 设置ip
+编辑/etc/sysconfig/network-scripts/ifcfg-网卡名
 
 
+.ip configation
+[source,shell]
+----
+BOOTPROTO=static   #启用静态IP地址
+ONBOOT=yes  #开启自动启用网络连接
+IPADDR=192.168.2.51  #设置IP地址
+NETMASK=255.255.255.0  #设置子网掩码
+GATEWAY=192.168.2.1   #设置网关
+DNS1=8.8.8.8 #设置主DNS
+IPV6INIT=no  #禁止IPV6
+----
+
+重启网络服务
 
 
-### 测试过程
+[source,shell]
+----
+service network restart
+----
 
-1.源表为t_test_pallas_bulk_wy1，被插入数据的表为t_test_pallas_bulk_wy2，结束后查看数据是否正确且正常 +
+=== 设置hostname
 
-2.源表为t_test_pallas_bulk_wy1，被插入数据的表为t_test_hdfs_bulk_wy2，查看是否能插入 +
 
-3.源表为t_test_hdfs_bulk_wy1，被插入数据的表为t_test_hdfs_bulk_wy2，查看是否能插入 +
+[source,shell]
+----
+hostnamectl set-hostname node1
+----
 
-4.源表为t_test_hdfs_bulk_wy1，被插入数据的表为t_test_pallas_bulk_wy2，查看是否能插入 +
+编辑/etc/hosts,增加一下内容
 
-5.源表为t_innerpallas_store_sales_wy1，被插入数据的表为t_innerpallas_store_sales_wy2，用load into语法实现插入数据，统计时间并查看数据是否正确
-
-6.源表为t_innerpallas_store_sales_wy1，被插入数据的表为t_innerpallas_store_sales_wy3，用insert into语法实现插入数据，统计时间并查看数据是否正确
-
-7.比较两表插入数据的时间，且两表插入时使用相同资源
-
-8.源表为t_innerpallas_store_sales_wy1，被插入数据的表为t_test_pallas_bulk_wy2，用load into语法实现插入数据，在中途取消插入操作，查看表中是否有数据，是否进行回滚
+[source,shell]
+----
+192.168.2.51  node1
+192.168.2.52  node2
+192.168.2.53  node3
+----
 
 [TIP]
 ====
-每次执行插入前需要清空被插入数据的表的数据
+集群中所有服务器都需要配置
 ====
 
-## 测试可能遇到的问题
+编辑/etc/sysconfig/network,增加一下内容
 
-* 创建store-sales内部表时比较慢
+[source,shell]
+----
+NETWORKING=yes
+HOSTNAME=node1
+GATEWAY=192.168.2.1
+----
+
+== 环境准备
+
+在实际的部署中，由于HDP的软件比较大，下载缓慢，故采用离线安装的方式进行。以下面组网为例进行讲解。
+
+.ENV
+[options="header"]
+|=================================================
+|主机IP|主机名|作用
+|192.168.2.51|node1|部署Ambari
+|192.168.2.52|node2|数据节点
+|192.168.2.53|node3|数据节点
+|=================================================
+
+=== 配置本地源
+
+将CentOS-7-x86_64-DVD-1708.iso拷贝到node1机器的/opt目录下；
+
+备份原yum.repos.d
+
+[source,shell]
+----
+cd /etc/yum.repos.d
+mkdir bak
+mv *.repo bak/
+----
+
+添加linkoop-yum-file.repo
+
+[source,shell]
+----
+echo "[linkoop-yum-file]
+name=linkoop-yum-file
+baseurl=file:///opt/centos
+enabled=1
+gpgcheck=0
+" > /etc/yum.repos.d/linkoop-yum-file.repo
+----
+
+在/opt下创建centos目录，并将centos的镜像mount到指定文件夹
+
+[source,shell]
+----
+cd /opt
+mkdir centos
+mount -o loop CentOS-7-x86_64-DVD-1708.iso centos/
+----
+
+验证本地yum源是否生效，没有error且state非0，则表示正确
+
+[source,shell]
+----
+yum repolist
+----
+
+=== 安装httpd服务
+
+[source,shell]
+----
+yum install httpd -y
+systemctl start httpd.service
+systemctl enable httpd.service
+systemctl status httpd.service
+----
+[TIP]
+====
+只在node1中安装httpd服务即可
+====
+
+
+=== 配置局域网yum源
+
+[source,shell]
+----
+mkdir /var/www/html/centos
+mount -o loop /opt/CentOS-7-x86_64-DVD-1708.iso /var/www/html/centos/
+echo "mount -o loop /opt/CentOS-7-x86_64-DVD-1708.iso /var/www/html/centos/" >> /etc/rc.local
+
+chmod +x /etc/rc.local
+
+echo "[linkoop-yum-http]
+name=linkoop-yum-http
+baseurl=http://node1/centos/
+gpgcheck=0
+enabled=1
+priority=1
+" > /etc/yum.repos.d/linkoop-yum-http.repo
+rm -rf /etc/yum.repos.d/linkoop-yum-file.repo
+yum repolist
+----
+
+在其他机器(node2,node3)上进行yum源的设置
+
+将node1上的/etc/yum.repos.d/linkoop-yum-http.repo文件拷贝到
+每台机器的/etc/yum.repos.d/目录下，同时删除该目录下的其他文件。
+
+机器所有机器(node1,node2,node3)都要执行下面的命令；
+[source,shell]
+----
+[root@node1 ~]# yum install openssh-clients -y
+[root@node1 ~]# yum install wget -y
+[root@node1 ~]# yum install unzip -y
+[root@node1 ~]# yum install ntp -y
+----
+
+=== 配置ssh无密码登录
+
+因为在ambari和hdp部署过程中，ambari和hdp部署的节点都有可能互相访问，所以建议四个节点中的每个节点之间都可以ssh无密码登录，包括它们自己登录到自己。
+
+[source,shell]
+----
+[root@node1 ~]# ssh-keygen
+[root@node1 ~]# cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+[root@node1 ~]# chmod 700 ~/.ssh
+[root@node1 ~]# chmod 600 ~/.ssh/authorized_keys
+----
+注：上述部署node2和node3上也要操作，都操作完成后，执行下面步骤
+
+2、	设置多台机器相互之间免密登陆
+
+[source,shell]
+----
+在node1机器上执行如下将命令：
+[root@node1 ~]# for host in node{1,2,3};do echo $host; ssh-copy-id -i /root/.ssh/id_rsa root@$host;done
+在node2机器上执行如下将命令：
+[root@node2 ~]# for host in node{1,2,3};do echo $host; ssh-copy-id -i /root/.ssh/id_rsa root@$host;done
+在node3机器上执行如下将命令：
+[root@node3 ~]# for host in node{1,2,3};do echo $host; ssh-copy-id -i /root/.ssh/id_rsa root@$host;done
+----
+
+至此ssh免密设置完毕；
+
+=== 关闭防火墙服务
+
+[source,shell]
+----
+[root@node1 ~]# systemctl stop firewalld
+[root@node1 ~]# systemctl disable firewalld
+----
+注意：每台机器上（node1,node2,node3）都执行上面四条命令
+
+=== 配置selinux安全策略
+
+在每台机器(node1,node2,node3)上执行下面的命令
+
+[source,shell]
+----
+[root@node1 ~]# sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+[root@node1 ~]# setenforce 0
+[root@node2 ~]# sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+[root@node2 ~]# setenforce 0
+[root@node3 ~]# sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+[root@node3 ~]# setenforce 0
+----
+
+=== 配置ntp服务
+
+less /etc/localtime看最后一行是否是CST-8
+
+如果不是，执行以下命令修改
+
+cp -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+因为hdp中有服务需要集群的时间同步，所以集群中的每一个机器需要安装启动ntp服务保证集群时间的一致，安装启动如下所示
+
+[source,shell]
+----
+for host in node{1,2,3};do ssh root@$host yum install ntp -y; ssh root@$host; done
+----
+
+配置NTP服务端
+
+[source,shell]
+----
+node1作为ntp server，其他节点与其同步
+修改时间：date  -s "2017-3-13 09:58:00"
+写入硬件：clock -w
+配置服务端：
+vi /etc/ntp.conf
+在# Please consider joining the pool (http://www.pool.ntp.org/join.html)后添加两行：
+server 127.127.1.0
+fudge 127.127.1.0 stratum 10
+systemctl start ntpd.service
+systemctl enable ntpd.service  #设置为自启动
+
+检查端口是否开启：如果正常可以看见123端口
+netstat -unlnp
+----
+
+配置NTP客户端
+
+[source,shell]
+----
+vi /etc/ntp.conf
+在# Please consider joining the pool (http://www.pool.ntp.org/join.html)  后面添加：
+server node1
+保存
+ntpdate node1   #client端ntp服务未启动时执行
+service ntpd start    或者  /etc/init.d/ntpd start
+chkconfig ntpd on   #设置为自启动
+----
+
+=== 关闭THP
+在node1、node2、node3机器上均执行如下命令
+
+[source,shell]
+----
+echo 'echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled' >> /etc/rc.d/rc.local
+echo 'echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag' >> /etc/rc.d/rc.local
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
+----
+
+=== 调整Linux交换分区
+在node1、node2、node3机器上均执行如下命令
+
+[source,shell]
+----
+echo 'vm.swappiness=10' >> /etc/sysctl.conf
+----
+
+=== 修改Linux资源限制配置
+在node1、node2、node3机器上均修改/etc/security/limits.conf配置文件，执行命令如下：
+[source,shell]
+----
+echo "hadoop    -    nofile          32768" >> /etc/security/limits.conf
+echo "hadoop    -    nproc           32000" >> /etc/security/limits.conf
+----
+
+=== 安装java环境
+
+在node1、node2和node3上都要进行JDK安装部署。以node1机器为例，进行安装步骤讲解。
+
+[source,shell]
+----
+1、在node1服务器上创建目录/usr/java
+[root@node1 ~]# mkdir -p /usr/java
+2、将下载的jdk-8u60-linux-x64.tar.gz上传至/usr/java目录；
+3、解压jdk-8u60-linux-x64.tar.gz
+[root@node1 java]# tar -zxvf jdk-8u60-linux-x64.tar.gz
+4、解压生成后，设置环境变量，具体命令如下
+[root@node1 ~]# echo "export JAVA_HOME=/usr/java/jdk1.8.0_60" >> /etc/profile
+[root@node1 ~]# echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /etc/profile
+[root@node1 ~]# source /etc/profile
+[root@node1 ~]# java -version
+----
+
+=== 重启集群
+
+建议整个集群机器全部重启；重启后检查防火墙，系统时间以及selinux是否正确
+
+== Hadoop安装
+
+现在开始安装hadoop集群，我们使用的是HDP的发布版本。
+
+=== Ambari和HDP安装准备
+
+[source,shell]
+----
+该章操作只在node1的机器上进行；
+1、将ambari-2.6.2.0-centos7.tar.gz上传到/opt下，上层成功后，解压到/var/www/html目录下，具体操作命令如下：
+[root@node1 ~]# tar -zxvf /opt/ambari-2.6.2.0-centos7.tar.gz -C /var/www/html/
+2、将HDP-2.6.5.0-centos7-rpm.tar.gz 上传到/opt下，上层成功后，解压到/var/www/html目录下，具体操作命令如下：
+[root@node1 ~]# tar -zxvf /opt/HDP-2.6.5.0-centos7-rpm.tar.gz -C /var/www/html/
+3、在/var/www/html/目录下，创建HDP-UTILS文件夹，将HDP-UTILS-1.1.0.22-centos7.tar.gz上传到/opt下，上层成功后，解压到/var/www/html目录下，具体操作命令如下：
+[root@node1 ~]# mkdir /var/www/html/HDP-UTILS
+[root@node1 ~]# tar -zxvf /opt/HDP-UTILS-1.1.0.22-centos7.tar.gz -C /var/www/html/HDP-UTILS
+4、将HDP-GPL-2.6.5.0-centos7-gpl.tar.gz 上传到/opt下，上层成功后，解压到/var/www/html目录下，具体操作命令如下：
+ [root@node1 ~]# tar -zxvf /opt/HDP-GPL-2.6.5.0-centos7-gpl.tar.gz -C /var/www/html/
+5、创建安装ambari使用的yum源，具体操作就是在/etc/yum.repos.d/创建四个.repo文件（ambari.repo、HDP.repo、HDP-GPL.repo），具体执行命令如下：
+[root@node1 ~]# echo "[ambari-2.6.2.0]
+name= ambari-2.6.2.0
+baseurl=http://192.168.117.134/ambari/centos7/2.6.2.0-155/
+gpgcheck=0
+enabled=1
+priority=1
+" >/etc/yum.repos.d/ambari.repo
+
+[root@node1 ~]# echo "[HDP-2.6.5.0]
+name=HDP-2.6.5.0
+baseurl=http://192.168.117.134/HDP/centos7/2.6.5.0-292/
+gpgcheck=0
+enabled=1
+priority=1
+
+[HDP-UTILS-1.1.0.21]
+name=HDP-UTILS-1.1.0.21
+baseurl=http://192.168.117.134/HDP-UTILS/
+gpgcheck=0
+enabled=1
+priority=1
+" >/etc/yum.repos.d/HDP.repo
+
+[root@node1 ~]# echo "[HDP-GPL-2.6.5.0]
+name= HDP-GPL-2.6.5.0
+baseurl=http://192.168.117.134/HDP-GPL/centos7/2.6.5.0-292
+gpgcheck=0
+enabled=1
+priority=1
+" >/etc/yum.repos.d/HDP-GPL.repo
+----
+
+注意：用实际的node1的ip地址进行替换；
+
+访问地址为http://192.168.117.134/ambari/centos7/2.6.2.0-155/，如果可以看到对应内容表示设置成功。
+
+=== HDP系统补丁包安装
+
+该操作集群中的每台集群都要进行操作，即node1、node2、node3，本章节以node1为例进行安装演示。具体操作步骤如下。
+
+[source,shell]
+----
+1、将libtirpc-0.2.4-0.10.el7.x86_64.rpm和libtirpc-devel-0.2.4-0.10.el7.x86_64.rpm上传到/opt下，执行命令进行安装，具体操作如下：
+[root@node1 ~]# yum install /opt/libtirpc-devel-0.2.4-0.10.el7.x86_64.rpm -y
+[root@node1 ~]# rpm -qa | grep libtirpc
+----
+
+== Ambari安装部署
+
+该章操作仅在node1上进行，具体步骤如下：
+
+通过yum安装方式安装ambari
+
+[source,shell]
+----
+[root@node1 ~]# yum install ambari-server -y
+[root@node1 ~]# ambari-server setup -j /usr/java/jdk1.8.0_60
+----
+
+image::images/install.png[]
+
+[source,shell]
+----
+[root@node1 ~]# service ambari-server start
+----
+
+验证ambari是否安装成功的方法，在PC的浏览器执行http://192.168.117.134:8080出现下面页面表示安装成功，ip根据实际部署的ip地址进行调整。
+
+image::images/page.png[]
+
+用户名admin，密码admin点击sign in，出现下面界面，就可以进行HDP安装部署操作步骤了；
+
+image::images/views.png[]
+
+== 安装HDP
+
+点击“Launch Install Wizard”，接下来可以安装hdp，首先命名集群，选择下一步
+
+image::images/getstart.png[]
+
+
+然后选择安装的hdp的版本，首先加载版本配置文件进来，具体步骤如下：
+
+
+image::images/hdpselectversion1.png[]
+
+点击选择文件
+
+image::images/hdpselectversion2.png[]
+
+选择HDP-2.6.5.0-292.xml
+
+image::images/hdpselectversion3.png[]
+
+点击红框按钮
+
+image::images/hdpselectversion4.png[]
+
+版本加载完毕
+
+image::images/hdpselectversion5.png[]
+
+版本配置文件选择完毕后，点击下面的“Use Local Repository”，选择操作系统对应的选项，下表为举例，假设node1的ip地址是192.168.2.51。
+
+.HDP
+[options="header"]
+|=================================================
+|系统|组件|地址|说明
+|Redhat7|HDP-2.6|http://192.168.2.51/HDP/centos7/2.6.5.0-292|地址要与HDP.repo文件中baseurl字段一致
+||HDP-UTILS-1.1.0.22|http://192.168.2.51/HDP-UTILS|地址要与HDP-UTILS.repo文件中baseurl字段一致
+|=================================================
+
+image::images/localrepository.png[]
+
+然后在“Target Hosts”方框中填写部署hdp的集群物理机的hostname，本次部署填写如下参见截图；
+
+“SSH Private Key”填写的值
+
+
+[source,shell]
+----
+[root@node1 ~]# cat ~/.ssh/id_ras
+----
+将全部内容拷贝到下图key的区域
+
+image::images/key.png[]
+
+接下来会进行集群的注册和验证，出现下述画面代表成功，可以点击“Status”栏中的“Success”或者“Failed”查看日志，如下图所示
+
+
+image::images/confirm.png[]
+
+接下来下一步，显示“选择服务”界面，默认是全选，可以根据自己机器的配置和需要选择服务，以后还可以安装，故建议安装下图显示组件：
+
+image::images/service.png[]
+
+然后点击下一步，中间会弹出一些界面不用理会，直接弹出页面的右下角的按钮即可，接下来显示的是“指定主节点”的界面，这个根据实际情况在下拉菜单中选择，尽可能均匀分配，如下图所示
+
+image::images/assignmasters.png[]
+
+各节点的配置样例（实际配置情况以自己实际需要为准）：
+样例中node1是NameNode，node2是SecondNameNode，node1-3是datanode。
+然后点击下一步，接下来显示的是“指定从节点和客户端”的界面，这个根据实际情况选择服务，尽可能均匀分配，如下图所示：注，忽略图中Host列，以实际安装为准
+
+image::images/assignslaves.png[]
+
+然后点击下一步，接下来显示的是“配置服务选项”的界面，这个根据机器性能配置，如下图所示：注意，以实际出现界面为准，如果按本文档配置应该不会出现“Oozie”和“Nagios”项。
+
+image::images/customize.png[]
+
+
+其中旁边显示红色小圆圈带数字的表示此项服务中的某些项必须配置，其中的“Hive”项中需要设置密码，点开进行配置，操作如下：
+
+image::images/customizeservices.png[]
+
+然后点击下一步，接下来显示的是“复查”界面，显示了集群配置服务的情况，没有问题，点击“部署”按钮，如下图所示
+
+image::images/review.png[]
+
+接下来进入“安装、启动、测试”界面，如下图所示：
+
+image::images/installstart.png[]
+
+然后点击下一步，显示的是“部署情况”界面（hive没有起来也没关系，稍等可以在ambari界面重新启动），如下图所示：
+
+image::images/summary.png[]
+
+
+然后点击“完成”按钮，进入ambari管理界面，如下图所示:
+
+image::images/dashboard.png[]
