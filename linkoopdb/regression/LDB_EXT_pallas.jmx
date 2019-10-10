@@ -227,6 +227,57 @@
         <stringProp name="username">${u1}</stringProp>
       </JDBCDataSource>
       <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="linkoopdb_ip" elementType="Argument">
+            <stringProp name="Argument.name">linkoopdb_ip</stringProp>
+            <stringProp name="Argument.value">192.168.1.71</stringProp>
+            <stringProp name="Argument.desc">linkoopdb_ip</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="linkoopdb_port" elementType="Argument">
+            <stringProp name="Argument.name">linkoopdb_port</stringProp>
+            <stringProp name="Argument.value">9105</stringProp>
+            <stringProp name="Argument.desc">linkoopdb_port</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="linkoopdb_user" elementType="Argument">
+            <stringProp name="Argument.name">linkoopdb_user</stringProp>
+            <stringProp name="Argument.value">admin</stringProp>
+            <stringProp name="Argument.desc">linkoopdb_user</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="linkoopdb_engine" elementType="Argument">
+            <stringProp name="Argument.name">linkoopdb_engine</stringProp>
+            <stringProp name="Argument.value">engine pallas</stringProp>
+            <stringProp name="Argument.desc">linkoopdb_engine</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="linkoopdb_external_url1" elementType="Argument">
+            <stringProp name="Argument.name">linkoopdb_external_url1</stringProp>
+            <stringProp name="Argument.value">hdfs:///node2/linkoopdb/testdb2/test_split/diffengine_test1.csv</stringProp>
+            <stringProp name="Argument.desc">linkoopdb_external_url1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="linkoopdb" enabled="true">
+        <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${linkoopdb_ip}:${linkoopdb_port}/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <stringProp name="username">${linkoopdb_user}</stringProp>
+        <stringProp name="password">123456</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
@@ -57497,6 +57548,761 @@ T_META_TABLE_GCY
               <intProp name="Assertion.test_type">16</intProp>
             </ResponseAssertion>
             <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2003 LDBX101-19 Create schema using pallas engine" enabled="true"/>
+        <hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create schema" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP SCHEMA sc_diffengineschema_wy1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP SCHEMA sc_diffengineschema_wy1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE SCHEMA sc_diffengineschema_wy1 engine pallas;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE SCHEMA sc_diffengineschema_wy1 ${linkoopdb_engine};</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table" enabled="true"/>
+          <hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="创建除lob与binary类型外的所有数据类型的表，检查是否为pallas表" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy1 IF EXISTS CASCADE;" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy1 IF EXISTS CASCADE;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy1(tid SMALLINT,eid INTEGER,tbigint BIGINT,treal REAL,tdouble DOUBLE,                                                             tfloat FLOAT,tdecimal DECIMAL(20,2),tnumeric NUMERIC(38,30),tdate DATE,                                                             ttimestamp TIMESTAMP,tvarchar VARCHAR(200),tchar CHAR(200),tboolean BOOLEAN,PRIMARY KEY(tid,eid,tvarchar));" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy1(tid SMALLINT,eid INTEGER,tbigint BIGINT,treal REAL,tdouble DOUBLE,
+                                                            tfloat FLOAT,tdecimal DECIMAL(20,2),tnumeric NUMERIC(38,30),tdate DATE,
+                                                            ttimestamp TIMESTAMP,tvarchar VARCHAR(200),tchar CHAR(200),tboolean BOOLEAN,PRIMARY KEY(tid,eid,tvarchar));</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE INDEX test_index1 ON sc_diffengineschema_wy1.t_diffengineschema_wy1(tid,eid);" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CREATE INDEX test_index1 ON sc_diffengineschema_wy1.t_diffengineschema_wy1(tid,eid);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-001" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">show CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="683635727">TABLE	CREATE_TABLE
+T_DIFFENGINESCHEMA_WY1	CREATE TABLE IF NOT EXISTS SC_DIFFENGINESCHEMA_WY1.T_DIFFENGINESCHEMA_WY1(TID SMALLINT,EID INTEGER,TBIGINT BIGINT,TREAL DOUBLE,TDOUBLE DOUBLE,TFLOAT DOUBLE,TDECIMAL DECIMAL(20,2),TNUMERIC NUMERIC(38,30),TDATE DATE,TTIMESTAMP TIMESTAMP,TVARCHAR VARCHAR(200),TCHAR CHAR(200),TBOOLEAN BOOLEAN,PRIMARY KEY(TID,EID,TVARCHAR)) ENGINE PALLAS</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 INSERT INTO sc_diffengineschema_wy1.t_diffengineschema_wy1 VALUES(1,1,1,1.234,1.23456,                                                                   1.234567,123456789012345678.12,12345678901234567890.123456,&apos;2010-08-07&apos;,                                                                   &apos;1999-09-09 11:11:11&apos;,&apos;才能到交付给dsbjbdu%^&amp;$^的保时捷的csdjhk&apos;,&apos;ddsajk打算北京你78678^&amp;**第三年 dsda sd&apos;,true);" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">INSERT INTO sc_diffengineschema_wy1.t_diffengineschema_wy1 VALUES(1,1,1,1.234,1.23456,
+                                                                  1.234567,123456789012345678.12,12345678.123456,&apos;2010-08-07&apos;,
+                                                                  &apos;1999-09-09 11:11:11&apos;,&apos;才能到交付给dsbjbdu%^&amp;$^的保时捷的csdjhk&apos;,&apos;ddsajk打算北京你78678^&amp;**第三年 dsda sd&apos;,true);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-002" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT * FROM  sc_diffengineschema_wy1.t_diffengineschema_wy1 ORDER BY tid; </stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1627310316">TID	EID	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR	TBOOLEAN
+1	1	1	1.234	1.23456	1.234567	123456789012345678.12	12345678.123456000000000000000000000000	2010-8-7	1999-09-09 11:11:11.0	才能到交付给dsbjbdu%^&amp;$^的保时捷的csdjhk	ddsajk打算北京你78678^&amp;**第三年 dsda sd                                                                                                                                                                         	true</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="查看create table as创建的表是否为pallas表" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy2 IF EXISTS CASCADE;" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy2 IF EXISTS CASCADE;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy2 AS(SELECT * FROM sc_diffengineschema_wy1.t_diffengineschema_wy1) WITH DATA;" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy2 AS(SELECT * FROM sc_diffengineschema_wy1.t_diffengineschema_wy1) WITH DATA;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-003" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT * FROM sc_diffengineschema_wy1.t_diffengineschema_wy2;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1627310316">TID	EID	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR	TBOOLEAN
+1	1	1	1.234	1.23456	1.234567	123456789012345678.12	12345678.123456000000000000000000000000	2010-8-7	1999-09-09 11:11:11.0	才能到交付给dsbjbdu%^&amp;$^的保时捷的csdjhk	ddsajk打算北京你78678^&amp;**第三年 dsda sd                                                                                                                                                                         	true</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-004" enabled="true">
+                <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">show CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy2;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1734825359">TABLE	CREATE_TABLE
+T_DIFFENGINESCHEMA_WY2	CREATE TABLE IF NOT EXISTS SC_DIFFENGINESCHEMA_WY1.T_DIFFENGINESCHEMA_WY2(TID SMALLINT,EID INTEGER,TBIGINT BIGINT,TREAL DOUBLE,TDOUBLE DOUBLE,TFLOAT DOUBLE,TDECIMAL DECIMAL(20,2),TNUMERIC NUMERIC(38,30),TDATE DATE,TTIMESTAMP TIMESTAMP,TVARCHAR VARCHAR(200),TCHAR CHAR(200),TBOOLEAN BOOLEAN) ENGINE PALLAS</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create view" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP VIEW sc_diffengineschema_wy1.v_diffengineschema_wy1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP VIEW sc_diffengineschema_wy1.v_diffengineschema_wy1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE VIEW sc_diffengineschema_wy1.v_diffengineschema_wy1  AS SELECT tid,tfloat,tvarchar,tboolean FROM sc_diffengineschema_wy1.t_diffengineschema_wy1 WHERE tid&gt;=0 AND eid&lt;=10 OR eid&gt;=10;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE VIEW sc_diffengineschema_wy1.v_diffengineschema_wy1 
+AS SELECT tid,tfloat,tvarchar,tboolean FROM sc_diffengineschema_wy1.t_diffengineschema_wy1
+WHERE tid&gt;=0 AND eid&lt;=10 OR eid&gt;=10;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-005" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT * FROM  sc_diffengineschema_wy1.v_diffengineschema_wy1 ORDER BY tid;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1761705784">TID	TFLOAT	TVARCHAR	TBOOLEAN
+1	1.234567	才能到交付给dsbjbdu%^&amp;$^的保时捷的csdjhk	true</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create dblink" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP DATABASE link link_diffengineschema_wy1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP DATABASE link link_diffengineschema_wy1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE DATABASE LINK link_diffengineschema_wy1 CONNECT TO &apos;linkoopdb&apos; IDENTIFIED BY &apos;123456&apos; USING &apos;jdbc:oracle:thin:@192.168.1.73:1521:xe&apos; properties (&apos;maxActive&apos;:&apos;5&apos;);" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE DATABASE LINK link_diffengineschema_wy1 CONNECT TO &apos;linkoopdb&apos; IDENTIFIED BY &apos;123456&apos; USING &apos;jdbc:oracle:thin:@192.168.1.73:1521:xe&apos; properties (&apos;maxActive&apos;:&apos;5&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP DATABASE link link_diffengineschema_wy1.t_testdiffengine_wy1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP table link_diffengineschema_wy1.t_testdiffengine_wy1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE TABLE link_diffengineschema_wy1.t_testdiffengine_wy1(id INT,name VARCHAR(200),sal NUMERIC(10,2));" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE TABLE link_diffengineschema_wy1.t_testdiffengine_wy1(id INT,name VARCHAR(200),sal NUMERIC(10,2));</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 INSERT INTO link_diffengineschema_wy1.t_testdiffengine_wy1 VALUES(1,&apos;qqq&apos;,122.323),(2,&apos;www&apos;,344.454),(3,&apos;cnkh&apos;,349854.545);" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">INSERT INTO link_diffengineschema_wy1.t_testdiffengine_wy1 VALUES(1,&apos;qqq&apos;,122.323),(2,&apos;www&apos;,344.454),(3,&apos;cnkh&apos;,349854.545);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-006" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">show CREATE TABLE link_diffengineschema_wy1.t_testdiffengine_wy1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-2086707459">TABLE	CREATE_TABLE
+T_TESTDIFFENGINE_WY1	CREATE TABLE LINK_DIFFENGINESCHEMA_WY1.T_TESTDIFFENGINE_WY1(ID INTEGER,NAME VARCHAR(200),SAL NUMERIC(10,2)</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-007" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT * FROM link_diffengineschema_wy1.t_testdiffengine_wy1 ORDER BY id;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-487231065">ID	NAME	SAL
+1	qqq	122.32
+2	www	344.45
+3	cnkh	349854.55</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy3 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy3 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy3 AS (SELECT * FROM link_diffengineschema_wy1.t_testdiffengine_wy1) WITH DATA;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy3 AS (SELECT * FROM link_diffengineschema_wy1.t_testdiffengine_wy1) WITH DATA;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-008" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">show CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy3;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="2097249529">TABLE	CREATE_TABLE
+T_DIFFENGINESCHEMA_WY3	CREATE TABLE IF NOT EXISTS SC_DIFFENGINESCHEMA_WY1.T_DIFFENGINESCHEMA_WY3(ID INTEGER,NAME VARCHAR(200),SAL NUMERIC(10,2)) ENGINE PALLAS</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-009" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT * FROM sc_diffengineschema_wy1.t_diffengineschema_wy3 ORDER BY id;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-487231065">ID	NAME	SAL
+1	qqq	122.32
+2	www	344.45
+3	cnkh	349854.55</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4 AS (SELECT name,sal FROM link_diffengineschema_wy1.t_testdiffengine_wy1) WITH DATA;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4 AS (SELECT name,sal FROM link_diffengineschema_wy1.t_testdiffengine_wy1) WITH DATA;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-010" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">show CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-348472728">TABLE	CREATE_TABLE
+T_DIFFENGINESCHEMA_WY4	CREATE TABLE IF NOT EXISTS SC_DIFFENGINESCHEMA_WY1.T_DIFFENGINESCHEMA_WY4(NAME VARCHAR(200),SAL NUMERIC(10,2)) ENGINE PALLAS</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-011" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT * FROM sc_diffengineschema_wy1.t_diffengineschema_wy4 ORDER BY name;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-224036110">NAME	SAL
+cnkh	349854.55
+qqq	122.32
+www	344.45</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create external table" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP TABLE sc_diffengineschema_wy1.t_diff_external_wy1 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP TABLE sc_diffengineschema_wy1.t_diff_external_wy1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE EXTERNAL TABLE sc_diffengineschema_wy1.t_diff_external_wy1(    id INT,    name VARCHAR(200),    desc1 VARCHAR(200),    desc2 VARCHAR(200) )location (&apos;${linkoopdb_external_url1}&apos;) format &apos;csv&apos; (delimiter &apos;|&apos;);" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE EXTERNAL TABLE sc_diffengineschema_wy1.t_diff_external_wy1(
+   id INT,
+   name VARCHAR(200),
+   desc1 VARCHAR(200),
+   desc2 VARCHAR(200)
+)location (&apos;${linkoopdb_external_url1}&apos;) format &apos;csv&apos; (delimiter &apos;|&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-012" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">show CREATE TABLE sc_diffengineschema_wy1.t_diff_external_wy1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-675397112">TABLE	CREATE_TABLE
+T_DIFF_EXTERNAL_WY1	CREATE EXTERNAL TABLE IF NOT EXISTS SC_DIFFENGINESCHEMA_WY1.T_DIFF_EXTERNAL_WY1(ID INTEGER,NAME VARCHAR(200),DESC1 VARCHAR(200),DESC2 VARCHAR(200)) LOCATION (&apos;hdfs:///node2/linkoopdb/testdb2/test_split/diffengine_test1.csv&apos;) FORMAT &apos;csv&apos; (DELIMITER &apos;|&apos; )</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-013" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT * FROM sc_diffengineschema_wy1.t_diff_external_wy1 ORDER BY id;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1517383044">ID	NAME	DESC1	DESC2
+1	dsd	第十三届	多少年
+2	csd	第十名吗	充电宝你
+3	ncmxh	下半年名称	聪明你看了</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4 AS (SELECT * FROM sc_diffengineschema_wy1.t_diff_external_wy1) WITH DATA;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4 AS (SELECT * FROM sc_diffengineschema_wy1.t_diff_external_wy1) WITH DATA;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-014" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT * FROM sc_diffengineschema_wy1.t_diffengineschema_wy4 ORDER BY id;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1517383044">ID	NAME	DESC1	DESC2
+1	dsd	第十三届	多少年
+2	csd	第十名吗	充电宝你
+3	ncmxh	下半年名称	聪明你看了</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-015" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">show CREATE TABLE sc_diffengineschema_wy1.t_diffengineschema_wy4;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-755360201">TABLE	CREATE_TABLE
+T_DIFFENGINESCHEMA_WY4	CREATE TABLE IF NOT EXISTS SC_DIFFENGINESCHEMA_WY1.T_DIFFENGINESCHEMA_WY4(ID INTEGER,NAME VARCHAR(200),DESC1 VARCHAR(200),DESC2 VARCHAR(200)) ENGINE PALLAS</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 DROP TABLE public.t_diffengine_wy2 IF EXISTS CASCADE;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP TABLE public.t_diffengine_wy2 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 CREATE TABLE public.t_diffengine_wy2 AS (SELECT * FROM sc_diffengineschema_wy1.t_diffengineschema_wy4) WITH DATA;" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE TABLE public.t_diffengine_wy2 AS (SELECT * FROM sc_diffengineschema_wy1.t_diffengineschema_wy4) WITH DATA;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-016" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">show CREATE TABLE public.t_diffengine_wy2;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="965199262">TABLE	CREATE_TABLE
+T_DIFFENGINE_WY2	CREATE TABLE IF NOT EXISTS PUBLIC.T_DIFFENGINE_WY2(ID INTEGER,NAME VARCHAR(200),DESC1 VARCHAR(200),DESC2 VARCHAR(200))</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2003 LDBX101-19 TC-017" enabled="true">
+              <stringProp name="dataSource">${linkoopdb_user}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT * FROM public.t_diffengine_wy2 ORDER BY id;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1517383044">ID	NAME	DESC1	DESC2
+1	dsd	第十三届	多少年
+2	csd	第十名吗	充电宝你
+3	ncmxh	下半年名称	聪明你看了</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
           </hashTree>
         </hashTree>
       </hashTree>
