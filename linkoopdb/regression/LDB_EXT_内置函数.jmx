@@ -19094,6 +19094,283 @@ dsdswe	sdscvfrefv	true
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2113  LDBX070-09 GROUP_TO_ARRAY aggregation function" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08  DROP TABLE test_olap_wr IF EXISTS;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP TABLE test_olap_wr IF EXISTS;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08  create table test_olap_wr (id varchar(10), group_id varchar(10), column_id int, column_value int);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">create table test_olap_wr (id varchar(10), group_id varchar(10), column_id int, column_value int);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08 insert into test_olap_wr VALUES" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">insert into test_olap_wr VALUES
+(&apos;a&apos;,&apos;2019-01-01&apos;, 1, 360),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 1, 360),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 2, 360),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 2, 373),
+(&apos;b&apos;,&apos;2019-01-01&apos;, 3, 345),
+(&apos;a&apos;,&apos;2019-01-02&apos;, 4, 370),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 5, 371),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 6, 381),
+(&apos;b&apos;,&apos;2019-01-01&apos;, 6, 382),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 6, 383),
+(&apos;a&apos;,&apos;2019-01-02&apos;, 7, 420),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 8, 430),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 9, 410),
+(&apos;b&apos;,&apos;2019-01-01&apos;, 10, 330),
+(&apos;a&apos;,&apos;2019-01-01&apos;, 11, null),
+        (&apos;a&apos;,null,  1, 222),
+        (&apos;a&apos;,null,  1, 352),
+        (&apos;a&apos;,null,  2, 352),
+        (&apos;a&apos;,null,  2, 353),
+        (&apos;a&apos;,null,  3, 452),
+          (&apos;a&apos;,&apos;&apos;,  1, 330),
+(&apos;a&apos;,&apos;2019-01-01&apos;,  1,null),
+(&apos;b&apos;,&apos;2019-01-02&apos;,  null,330),
+(&apos;a&apos;,&apos;2019-01-02&apos;,  null,350);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08 TC-001" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select group_id, GROUP_TO_ARRAY(column_value order by column_value) from test_olap_wr group by group_id;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-849221277">GROUP_ID	C2
+2019-01-01	ARRAY[330,345,360,360,360,371,373,381,382,383,410,430]
+null	ARRAY[222,352,352,353,452]
+	ARRAY[330]
+2019-01-02	ARRAY[330,350,370,420]
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08 TC-002" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select group_id, GROUP_TO_ARRAY(column_value order by column_id desc) from test_olap_wr group by group_id;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1971429277">GROUP_ID	C2
+2019-01-01	ARRAY[330,410,430,383,381,382,371,345,360,373,360,360]
+null	ARRAY[452,352,353,222,352]
+	ARRAY[330]
+2019-01-02	ARRAY[420,370,330,350]
+</stringProp>
+                  <stringProp name="-1660833437">GROUP_ID	C2
+2019-01-01	ARRAY[330,410,430,381,382,383,371,345,360,373,360,360]
+null	ARRAY[452,353,352,222,352]
+	ARRAY[330]
+2019-01-02	ARRAY[420,370,330,350]
+</stringProp>
+                  <stringProp name="136321507">GROUP_ID	C2
+2019-01-01	ARRAY[330,410,430,381,382,383,371,345,360,373,360,360]
+null	ARRAY[452,352,353,222,352]
+	ARRAY[330]
+2019-01-02	ARRAY[420,370,330,350]
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">48</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08 TC-003" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select group_id, GROUP_TO_ARRAY(DISTINCT column_value order by column_value desc) from test_olap_wr group by group_id;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="374879485">GROUP_ID	C2
+2019-01-01	ARRAY[430,410,383,382,381,373,371,360,345,330]
+null	ARRAY[452,353,352,222]
+	ARRAY[330]
+2019-01-02	ARRAY[420,370,350,330]
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08 TC-004" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select id,group_id, GROUP_TO_ARRAY(column_value order by column_id desc) from test_olap_wr group by id,group_id order by id,group_id;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="155143975">ID	GROUP_ID	C3
+a	null	ARRAY[452,352,353,222,352]
+a		ARRAY[330]
+a	2019-01-01	ARRAY[410,430,381,383,371,360,373,360,360]
+a	2019-01-02	ARRAY[420,370,350]
+b	2019-01-01	ARRAY[330,382,345]
+b	2019-01-02	ARRAY[330]
+</stringProp>
+                  <stringProp name="-563528153">ID	GROUP_ID	C3
+a	null	ARRAY[452,352,353,222,352]
+a		ARRAY[330]
+a	2019-01-01	ARRAY[410,430,383,381,371,360,373,360,360]
+a	2019-01-02	ARRAY[420,370,350]
+b	2019-01-01	ARRAY[330,382,345]
+b	2019-01-02	ARRAY[330]
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">48</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/2113  LDBX070-08 TC-005" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select group_id, GROUP_TO_ARRAY(DISTINCT column_value order by column_value desc separator &apos;_&apos;) from test_olap_wr group by group_id;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1407015813">Response message: java.sql.SQLSyntaxErrorException: unexpected token: SEPARATOR required: ) in statement </stringProp>
+                  <stringProp name="1592628251">unexpected token: SEPARATOR required: ) in statement</stringProp>
+                  <stringProp name="-331576821">SEPARATOR required: ) in statement</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">48</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08  TC-006" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select id,group_id, GROUP_TO_ARRAY(column_value order by column_id desc) from test_olap_wr group by id,group_id order by id,group_id;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="155143975">ID	GROUP_ID	C3
+a	null	ARRAY[452,352,353,222,352]
+a		ARRAY[330]
+a	2019-01-01	ARRAY[410,430,381,383,371,360,373,360,360]
+a	2019-01-02	ARRAY[420,370,350]
+b	2019-01-01	ARRAY[330,382,345]
+b	2019-01-02	ARRAY[330]
+</stringProp>
+                  <stringProp name="-1773672793">ID	GROUP_ID	C3
+a	null	ARRAY[452,353,352,222,352]
+a		ARRAY[330]
+a	2019-01-01	ARRAY[410,430,381,383,371,360,373,360,360]
+a	2019-01-02	ARRAY[420,370,350]
+b	2019-01-01	ARRAY[330,382,345]
+b	2019-01-02	ARRAY[330]
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">48</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2113  LDBX070-08  DROP TABLE test_olap_wr IF EXISTS;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">DROP TABLE test_olap_wr IF EXISTS;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1970  LDBX070-08 GROUP_CANCAT aggregation function" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1970  LDBX070-08  DROP TABLE test_olap_wr IF EXISTS;" enabled="true">
