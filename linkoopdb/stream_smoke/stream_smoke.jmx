@@ -124,7 +124,7 @@
           </elementProp>
           <elementProp name="dburl" elementType="Argument">
             <stringProp name="Argument.name">dburl</stringProp>
-            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.77:9205/ldb</stringProp>
+            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.78:9205/ldb</stringProp>
             <stringProp name="Argument.desc">db的url</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -152,7 +152,7 @@
           </elementProp>
           <elementProp name="zoo1_connect" elementType="Argument">
             <stringProp name="Argument.name">zoo1_connect</stringProp>
-            <stringProp name="Argument.value">node1:2181,node2:2181,node3:2181/linkoopdb/luyao</stringProp>
+            <stringProp name="Argument.value">node1:2181,node2:2181,node9:2181/linkoopdb/luyao</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="T_parquet_1580_path1" elementType="Argument">
@@ -169,7 +169,7 @@
           </elementProp>
           <elementProp name="ex_model_dt_path1" elementType="Argument">
             <stringProp name="Argument.name">ex_model_dt_path1</stringProp>
-            <stringProp name="Argument.value">hdfs:////node8/linkoopdb/manyi/data/m1</stringProp>
+            <stringProp name="Argument.value">file:/fsshare/m1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">1034 LDBX081-11的node8集群</stringProp>
           </elementProp>
@@ -3146,6 +3146,18 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 Streaming SQL: Extra Build-in Functions" enabled="true"/>
         <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session stream_async_query_enable true;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">set session stream_async_query_enable false;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="655 SQL501-02 -001" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-001-drop -smoke_655_01" enabled="true">
@@ -3242,8 +3254,8 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-001 TC-001-测试第一部分函数" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 120000;
-select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(id), ifnull(data,67),ifnull(id,67), find_in_set(data,&apos;a,b,c,12,q&apos;), COALESCE(NULL, NULL, data),COALESCE(NULL, 1, null),atan2(id, id),NVL(data,-1) ,NULLIF(ID,-1) , cos(degree),cot(degree) ,NANVL(CAST(&apos;NaN&apos; AS DOUBLE), 123), tanh(degree),sinh(degree),GET_JSON_OBJECT(&apos;{&quot;a&quot;:&quot;id1&quot;}&apos;, &apos;$.a&apos;),JSON_PATH(&apos;[{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;12321312321&quot;,&quot;codetag&quot;:&quot;1&quot;},{&quot;snumber&quot;:&quot;18600010011&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;0&quot;},{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;2&quot;},{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;3&quot;}]&apos;,&apos;$[?(@.snumber == &quot;13011560889&quot;)].codetag&apos;)  from &quot;T_冒烟_jsource_655_101&quot;;</stringProp>
+              <stringProp name="query">set session stream_async_query_enable false;
+select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(id), ifnull(data,67),ifnull(id,67), find_in_set(data,&apos;a,b,c,12,q&apos;), COALESCE(NULL, NULL, data),COALESCE(NULL, 1, null),atan2(id, id),NVL(data,-1) ,NULLIF(ID,-1) , cos(degree),cot(degree) ,NANVL(CAST(&apos;NaN&apos; AS DOUBLE), 123), tanh(degree),sinh(degree),GET_JSON_OBJECT(&apos;{&quot;a&quot;:&quot;id1&quot;}&apos;, &apos;$.a&apos;),JSON_PATH(&apos;[{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;12321312321&quot;,&quot;codetag&quot;:&quot;1&quot;},{&quot;snumber&quot;:&quot;18600010011&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;0&quot;},{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;2&quot;},{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;3&quot;}]&apos;,&apos;$[?(@.snumber == &quot;13011560889&quot;)].codetag&apos;)  from &quot;T_冒烟_jsource_655_101&quot; where 1=1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -3258,7 +3270,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1048788716">3.141592653589793	-0.7853981633974483	ab	null	12	-1	4	12	1	-2.356194490192345	12	null	-7.320510347335801E-8	-7.320510347335821E-8	123.0	0.9171523472945567	2.301299085991971	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
+                  <stringProp name="-1963742784">3.141592653589793	-0.7853981633974483	ab	-Infinity	12	-1	4	12	1	-2.356194490192345	12	null	-7.320510347335801E-8	-7.320510347335821E-8	123.0	0.9171523472945567	2.301299085991971	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
                   <stringProp name="691975700">1.5707963267948966	0.0	ab	0.0	q	0	5	q	1	0.0	q	0	0.4999999577350132	0.5773502041184245	123.0	0.7807144544162621	1.24936712862342	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
                   <stringProp name="2133020338">0.0	0.7853981633974483	a b	0.6931471805599453	67	1	null	null	1	0.7853981633974483	-1	1	0.8660253915835878	1.732050709962077	123.0	0.48047279692492	0.5478535017117947	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
                   <stringProp name="232659109">1.5707963267948966	0.0	ab	0.0	67	0	null	null	1	0.0	-1	0	1.0	Infinity	123.0	0.0	0.0	id1	[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]</stringProp>
@@ -3386,8 +3398,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-002 TC-001-测试第二部分函数" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 60000;
-select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;),next_day(time3,&apos;TU&apos;),months_between(time3,DATE &apos;2019-01-08&apos;),last_day( time3),last_day( time4) from &quot;T_冒烟_jsource_655_201&quot;;
+              <stringProp name="query">select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;),next_day(time3,&apos;TU&apos;),months_between(time3,DATE &apos;2019-01-08&apos;),last_day( time3),last_day( time4) from &quot;T_冒烟_jsource_655_201&quot; where 1=1;
 
  </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3401,10 +3412,9 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-171479038">0	2019-01-29 00:00:00.0	2019-01-15 00:00:00.0	0.0	2019-01-31 00:00:00.0	2019-01-31 00:00:00.0</stringProp>
-                  <stringProp name="-1815882128">14	2019-02-05 00:00:00.0	2019-01-29 00:00:00.0	0.4516129	2019-01-31 00:00:00.0	2019-02-28 00:00:00.0</stringProp>
-                  <stringProp name="1782522203">3	2019-01-15 00:00:00.0	2019-01-15 00:00:00.0	0.09677419	2019-01-31 00:00:00.0	2019-01-31 00:00:00.0
-</stringProp>
+                  <stringProp name="1595657966">0	2019-01-29 19:57:53.0	2019-01-15 00:00:00.0	0.0	2019-01-31 00:00:00.0	2019-01-31 19:57:53.0
+14	2019-02-05 19:57:59.0	2019-01-29 00:00:00.0	0.45161290322580644	2019-01-31 00:00:00.0	2019-02-28 19:57:59.0
+3	2019-01-15 19:58:02.0	2019-01-15 00:00:00.0	0.0967741935483871	2019-01-31 00:00:00.0	2019-01-31 19:58:02.0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3659,7 +3669,7 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-003-insert" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query"> insert into &quot;T_冒烟_jsink_655_301&quot;  select ABS(-1),ASIN(0),BIN(13),DAYOFMONTH(DATE &apos;2009-07-30&apos;),DAYOFYEAR(DATE &apos;2016-04-09&apos;), ELT(1, &apos;scala&apos;, &apos;java&apos;),FLOOR(-0.1), INITCAP(&apos;LINKOOPDB&apos;),IFNULL(NULL, 1),ISNOTNULL(123),MINUTE(TIMESTAMP &apos;1994-09-27 13:14:15&apos;),MONTH(DATE &apos;1994-09-27&apos;),PMOD(-10, 3), YEAR(DATE &apos;1994-09-27&apos;)from &quot;T_冒烟_jsource_655_301&quot;;
+              <stringProp name="query"> insert into &quot;T_冒烟_jsink_655_301&quot;  select ABS(-1),ASIN(0),BIN(13),DAYOFMONTH(DATE &apos;2009-07-30&apos;),DAYOFYEAR(DATE &apos;2016-04-09&apos;), ELT(1, &apos;scala&apos;, &apos;java&apos;),FLOOR(-0.1), INITCAP(&apos;LINKOOPDB&apos;),IFNULL(NULL, 1),ISNOTNULL(123),MINUTE(TIMESTAMP &apos;1994-09-27 13:14:15&apos;),MONTH(DATE &apos;1994-09-27&apos;),PMOD(-10, 3), YEAR(DATE &apos;1994-09-27&apos;)from &quot;T_冒烟_jsource_655_301&quot; where 1=1;
 
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -4000,6 +4010,23 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-004-drop-T_冒烟_jsink_655_401" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop stream if exists &quot;T_冒烟_jsink_655_401&quot;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-004-drop -smoke_655_06" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
@@ -4017,18 +4044,6 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">drop table if exists smoke_655_05;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-004-drop-T_冒烟_jsink_655_401" enabled="true">
-              <stringProp name="dataSource">${u1}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop stream if exists &quot;T_冒烟_jsink_655_401&quot;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -4294,7 +4309,12 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-005-drop -smoke_655_07" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -4619,7 +4639,12 @@ select DATEDIFF(time3,DATE &apos;2019-01-08&apos;),next_day(time4,&apos;TU&apos;
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-001-drop -smoke_895_02" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -4920,7 +4945,12 @@ MATCH_RECOGNIZE (
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-002-drop -smoke_895_04" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -5223,7 +5253,12 @@ MATCH_RECOGNIZE (
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="TestPlan.comments">data值为float</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-003-drop-T_smoke_jsource_895_301" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -5524,7 +5559,12 @@ MATCH_RECOGNIZE (
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="TestPlan.comments">data值为float</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="895 ISQL600-004-drop-T_smoke_jsource_895_401" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -5565,9 +5605,9 @@ MATCH_RECOGNIZE (
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB Worker 支持 RPC的 AI服务" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB Worker 支持 RPC的 AI服务" enabled="false"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB EXTERNAL_MODEL" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB EXTERNAL_MODEL" enabled="false"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 model_em_predict " enabled="true"/>
             <hashTree>
@@ -5802,9 +5842,310 @@ PREDICTION double
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB OTHERS_MODEL" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB EXTERNAL_MODEL" enabled="false"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_regression_predict" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 model_em_predict " enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop stream if exists model_em_predict;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop stream if exists model_em_predict;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop stream if exists model_em_predict_sink;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop stream if exists model_em_predict_sink;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop model ex_model_dt IF EXISTS;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop model ex_model_dt IF EXISTS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop model MODEL_EM_PREDICT_SOURCE IF EXISTS;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop model MODEL_EM_PREDICT_SOURCE IF EXISTS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create model model_em_predict as load_external_model" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create model ex_model_dt as load_external_model( 
+ &apos;${ex_model_dt_path1}&apos;, 
+ &apos;python&apos;, 
+ &apos;tf_decision_tree&apos;, 
+ &apos;dnn.alg&apos;, 
+ &apos;dnn.alg.load&apos;, 
+ &apos;dnn.alg.predict&apos; 
+ )engine pallas;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create stream model_em_predict" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create stream model_em_predict(
+features double ARRAY
+) properties(
+&apos;type&apos;:&apos;source&apos;,
+&apos;connector&apos;:&apos;kafka&apos;,
+&apos;version&apos;:&apos;0.10&apos;,
+&apos;topic&apos;:&apos;model_em_predict&apos;,
+&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
+&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
+&apos;group.id&apos;:&apos;${__Random(0,35465786,)}&apos;,
+&apos;format&apos;:&apos;json&apos;
+);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create stream model_em_predict_sink" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create stream model_em_predict_sink(
+PREDICTION double 
+) properties(
+&apos;type&apos;:&apos;sink&apos;,
+&apos;connector&apos;:&apos;kafka&apos;,
+&apos;version&apos;:&apos;0.10&apos;,
+&apos;topic&apos;:&apos;model_em_predict_sink&apos;,
+&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
+&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
+&apos;group.id&apos;:&apos;model_em_predict_sink_001&apos;,
+&apos;format&apos;:&apos;json&apos;
+);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-insert into model_em_predict_sink" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">insert into model_em_predict_sink SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create stream model_em_predict_sink" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create stream model_em_predict_source(
+PREDICTION double 
+) properties(
+&apos;type&apos;:&apos;source&apos;,
+&apos;connector&apos;:&apos;kafka&apos;,
+&apos;version&apos;:&apos;0.10&apos;,
+&apos;topic&apos;:&apos;model_em_predict_sink&apos;,
+&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
+&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
+&apos;group.id&apos;:&apos;model_em_predict_sink_001&apos;,
+&apos;format&apos;:&apos;json&apos;
+);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-alter stream model_em_predict_sink_001 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">alter stream model_em_predict_source set properties(&apos;group.id&apos;:&apos;12${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB TC-select * from model_em_predict_sink;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from model_em_predict_source;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">20000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">20000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB cancel job &quot;${jobid_1}&quot;;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">2</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB show  jobs  E" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1434314148">insert into model_em_predict_sink SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict)</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">6</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+                <boolProp name="ResultCollector.error_logging">false</boolProp>
+                <objProp>
+                  <name>saveConfig</name>
+                  <value class="SampleSaveConfiguration">
+                    <time>true</time>
+                    <latency>true</latency>
+                    <timestamp>true</timestamp>
+                    <success>true</success>
+                    <label>true</label>
+                    <code>true</code>
+                    <message>true</message>
+                    <threadName>true</threadName>
+                    <dataType>true</dataType>
+                    <encoding>false</encoding>
+                    <assertions>true</assertions>
+                    <subresults>true</subresults>
+                    <responseData>false</responseData>
+                    <samplerData>false</samplerData>
+                    <xml>false</xml>
+                    <fieldNames>true</fieldNames>
+                    <responseHeaders>false</responseHeaders>
+                    <requestHeaders>false</requestHeaders>
+                    <responseDataOnError>false</responseDataOnError>
+                    <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                    <assertionsResultsToSave>0</assertionsResultsToSave>
+                    <bytes>true</bytes>
+                    <sentBytes>true</sentBytes>
+                    <threadCounts>true</threadCounts>
+                    <idleTime>true</idleTime>
+                    <connectTime>true</connectTime>
+                  </value>
+                </objProp>
+                <stringProp name="filename"></stringProp>
+              </ResultCollector>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB OTHERS_MODEL" enabled="true"/>
+          <hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_regression_predict" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL DECISION_TREE_REGRESSION_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
@@ -5834,6 +6175,18 @@ PREDICTION double
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">drop stream if exists decision_tree_sink;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop stream if exists decision_tree_source;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">drop stream if exists decision_tree_source;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -5927,8 +6280,7 @@ PREDICTION double
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">INSERT INTO streamsql_decision_tree_regression VALUES
- (ARRAY
-[0.2,0.4,3]), (ARRAY[4,1,0]);
+ (ARRAY[0.2,0.4,3]), (ARRAY[4,1,0]);
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -5972,8 +6324,8 @@ PREDICTION double
 	&apos;connector&apos;:&apos;kafka&apos;,
 	&apos;version&apos;:&apos;0.10&apos;,
 	&apos;topic&apos;:&apos;decision_tree_sink&apos;,
-	&apos;bootstrap.servers&apos;:&apos;node6:9096&apos;,
-	&apos;zookeeper.connect&apos;:&apos;node1:2181,node2:2181,node3:2181/istream/node6/kafka&apos;,
+	&apos;bootstrap.servers&apos;:&apos;${kafka1_server}&apos;,
+	&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
 	&apos;group.id&apos;:&apos;decision_tree_sink_001&apos;,
 	&apos;format&apos;:&apos;json&apos;
 );
@@ -5991,6 +6343,47 @@ PREDICTION double
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
                 <stringProp name="query">insert into decision_tree_sink SELECT * from decision_tree_regression_predict(DECISION_TREE_REGRESSION_MODEL,decision_tree_regression_dbsource);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create stream decision_tree_source" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create stream decision_tree_source(
+	FEATURES double ARRAY,
+	prediction double
+) properties(
+	&apos;type&apos;:&apos;source&apos;,
+	&apos;connector&apos;:&apos;kafka&apos;,
+	&apos;version&apos;:&apos;0.10&apos;,
+	&apos;topic&apos;:&apos;decision_tree_sink&apos;,
+	&apos;bootstrap.servers&apos;:&apos;${kafka1_server}&apos;,
+	&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
+	&apos;group.id&apos;:&apos;${__Random(0,6746554322,group.id)}&apos;,
+	&apos;format&apos;:&apos;json&apos;
+);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB TC-001" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 20000;
+select * from decision_tree_source;
+
+</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -6036,7 +6429,7 @@ PREDICTION double
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_predict" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_predict" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11-decision_tree_predict-drop- M_smoke_model_1034_01" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
@@ -8328,8 +8721,8 @@ tfloat float array
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1075 DISQL-CONNECTOR-130-2 TC-002-查询kafka中的数据" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 200000;
-select * from T_smoke_kafkasource_1075_01;
+              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 20000;
+select * from T_smoke_kafkasource_1075_01 where 1=1;
 
                     </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -9226,8 +9619,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003-watermark策略设置 TC-002-查询sink中的表数据" enabled="true">
             <stringProp name="dataSource">${u3}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">
-select * from win11;
+            <stringProp name="query">select * from win11;
 
 </stringProp>
             <stringProp name="queryArguments"></stringProp>
@@ -9511,7 +9903,7 @@ select max(id),min(id),sum(id),count(id),avg(id),stddev_pop(id),var_pop(id) from
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 60000;
-select * from &quot;T_冒烟_jsource_631_002&quot;;</stringProp>
+select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -10204,8 +10596,7 @@ select * from &quot;T_冒烟_jsource_631_002&quot;;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="631 SQL201-String functions TC-002-查询sink中的表数据" enabled="true">
                 <stringProp name="dataSource">${u3}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">
-select *  from T_冒烟_String_631;</stringProp>
+                <stringProp name="query">select *  from T_冒烟_String_631;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -10761,7 +11152,7 @@ select *  from T_冒烟_String_631;</stringProp>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1326 LDBX081-09 TC-select-T_PALLAS_sink_1326_004" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">select * from T_PALLAS_sink_1326_004;</stringProp>
+            <stringProp name="query">select * from T_PALLAS_sink_1326_004 where 1=1;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -11209,10 +11600,11 @@ select *  from T_冒烟_String_631;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 TC-select * from T_parquet_psink_1580" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 TC001-select * from T_parquet_psink_1580" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select * from T_parquet_psink_1580;</stringProp>
+              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 20000;
+select * from T_parquet_psink_1580 where 1=1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -11427,7 +11819,7 @@ select *  from T_冒烟_String_631;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 TC-select * from T_parquet_jsink_1580" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 TC002-select * from T_parquet_jsink_1580" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select * from T_parquet_jsink_1580;</stringProp>
@@ -11814,7 +12206,7 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 TC-select * from T_parquet_jsink_15801" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 TC003-select * from T_parquet_jsink_15801" enabled="true">
               <stringProp name="dataSource">${u3}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select * from T_parquet_jsink_15801 order by id;</stringProp>
