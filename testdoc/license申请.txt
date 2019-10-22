@@ -1,0 +1,49 @@
+测试license申请步骤
+
+1.查看网卡配置
+   ifconfig
+   找到使用ip对应的网卡名
+   复制这个名字
+2.编辑ldb-env.sh
+   
+   // node9表示licenseserver启动的主机名，7706表示licenseserver启动的端口
+   // bond0表示使用iptable得到的ip 192.168.1.79对应的网卡名
+export LDB_LNS_HOST=${LDB_LNS_HOST:-'node9'}
+export LDB_LNS_PORT=${LDB_LNS_PORT:-'7706'}
+export LDB_LNS_INTF_NAME=bond0
+
+
+3. 获取sid
+   sid是申请license所使用的key
+   执行./bin/ldb-license-server.sh start
+   查看cat ldb-license-server/license.log-20191022
+   这里日期20191022请换成当天日期
+   可以看到第一行中
+   [10/22/2019 11:08:19]:[8396e7a5]: starting http license server ...
+   其中sid就是8396e7a5
+4.申请license
+   访问http://192.168.1.133:7788/
+   在页面左边创建许可证下填入必要信息
+   SID，这里应该填8396e7a5
+   用户，写自己的名字
+   经销商，选择inner-test
+   产品，选择linkoopdb200
+   cpu 16
+   mem 32
+   并发数 10
+   有效期天数 90
+   备注，写清楚是在哪台机器上，申请license的目的是什么
+   比如，node2上测试使用
+   secret，填写internaluseonly
+   点击create，生成的license会在许可证下显示出来，复制这个license内容
+5. 在./ldb-license-server目录下新建一个license.key文件
+   将复制的内容粘贴进去，保存退出
+   
+6. 重启license server服务
+   ./bin/ldb-license-server.sh stop
+   ./bin/ldb-license-server.sh start
+   
+7. 查看license log文件
+   [10/22/2019 11:17:21]:["return " {:last-tm 1571714241876, :status :ok, :ln 0, :license {"mem" "16", "iat" "20191022", "cpu" "16", "vd" "inner-test", "exp" "20200120", "prd" "linkoopdb200", "desc" "node9上阮娜
+测试使用license", "jobs" "10", "usr" "满意", "sid" "8396e7a5"}}]
+   有类似上述内容表示license启动成功。
