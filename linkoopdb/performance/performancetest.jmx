@@ -33,7 +33,7 @@
           </elementProp>
           <elementProp name="b" elementType="Argument">
             <stringProp name="Argument.name">b</stringProp>
-            <stringProp name="Argument.value">TPCDS1T</stringProp>
+            <stringProp name="Argument.value">PALLASTPCDS1000G</stringProp>
             <stringProp name="Argument.desc">dba user2</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -98,7 +98,7 @@
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${b}</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9205/ldb</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -261,7 +261,7 @@
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table " enabled="true"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据准备" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据准备" enabled="false"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table(hdfs)" enabled="true"/>
               <hashTree>
@@ -1452,7 +1452,7 @@ engine pallas;</stringProp>
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table as select(无主键)" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create table as select(无主键)" enabled="true"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="false"/>
               <hashTree>
@@ -1525,10 +1525,8 @@ drop table cap_date_dim_hdfs_copy if exists cascade;</stringProp>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-drop-create  as select(无主键)" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">drop table cap_store_sales_pallas_copy if exists cascade;
-drop table cap_web_sales_pallas_copy if exists cascade;
-drop table cap_web_returns_pallas_copy if exists cascade;
-drop table cap_date_dim_pallas_copy if exists cascade;</stringProp>
+                  <stringProp name="query">drop table web_returns_copy if exists cascade;
+</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -1564,7 +1562,7 @@ drop table cap_date_dim_pallas_copy if exists cascade;</stringProp>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-create  as select(无主键)-cap_web_returns_pallas_copy-7千万" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">CREATE TABLE cap_web_returns_pallas_copy AS (SELECT * FROM web_returns) WITH DATA properties (&apos;perinsertnum&apos;:&apos;100000&apos;, &apos;txnnum&apos;:&apos;200000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;) engine pallas;</stringProp>
+                  <stringProp name="query">CREATE TABLE web_returns_copy AS (SELECT * FROM web_returns) WITH DATA properties (&apos;perinsertnum&apos;:&apos;100000&apos;, &apos;txnnum&apos;:&apos;200000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;32&apos;) engine pallas;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -1573,7 +1571,7 @@ drop table cap_date_dim_pallas_copy if exists cascade;</stringProp>
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-create  as select(无主键)-cap_date_dim_pallas_copy-7万" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-create  as select(无主键)-cap_date_dim_pallas_copy-7万" enabled="false">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">CREATE TABLE cap_date_dim_pallas_copy AS (SELECT * FROM date_dim) WITH DATA properties (&apos;perinsertnum&apos;:&apos;100000&apos;, &apos;txnnum&apos;:&apos;200000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;) engine pallas;</stringProp>
@@ -1588,7 +1586,7 @@ drop table cap_date_dim_pallas_copy if exists cascade;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="insert into table" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="insert into table" enabled="true"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="插入一条多次" enabled="true"/>
             <hashTree>
@@ -1839,7 +1837,7 @@ drop table cap_date_dim_pallas_copy if exists cascade;</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">create table cap_insert_pallas_0004
 (
-     ws_sold_date_sk           integer                       ,
+    ws_sold_date_sk           integer                       ,
     ws_sold_time_sk           integer                       ,
     ws_ship_date_sk           integer                       ,
     ws_item_sk                integer               not null,
@@ -1960,7 +1958,7 @@ engine pallas; </stringProp>
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="HDFS导入到PALLAS-千万级数据" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="HDFS导入到PALLAS-千万级数据" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-insert-HDFS导入到PALLAS-drop" enabled="true">
                 <stringProp name="dataSource">${b}</stringProp>
@@ -2031,7 +2029,7 @@ engine pallas;</stringProp>
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS导入到HDFS-千万级数据" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS导入到HDFS-千万级数据" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-HDFS表-insert-PALLAS导入到HDFS-drop" enabled="true">
                 <stringProp name="dataSource">${b}</stringProp>
@@ -2098,7 +2096,7 @@ engine pallas;</stringProp>
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS导入到PALLAS-千万级数据" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PALLAS导入到PALLAS-千万级数据" enabled="false"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-insert-PALLAS导入到PALLAS-drop" enabled="true">
                 <stringProp name="dataSource">${b}</stringProp>
@@ -2366,7 +2364,7 @@ engine dfs;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="select" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="select" enabled="true"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="false"/>
             <hashTree>
@@ -2922,10 +2920,10 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
               <hashTree>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为千万级" enabled="true"/>
                 <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-精确查询,1个key-表数据为万级" enabled="true">
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-精确查询,1个key-表数据为万级" enabled="false">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_date_dim_pallas WHERE D_DATE_SK=2415033</stringProp>
+                    <stringProp name="query">SELECT * FROM date_dim WHERE D_DATE_SK=2415033</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -2937,7 +2935,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-精确查询,2个key-表数据为千万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE wr_item_sk=124348 and wr_order_number=57252535</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE wr_item_sk=124348 and wr_order_number=57252535</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -2949,7 +2947,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(like)-表数据为千万级,返回结果为千万" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK like &apos;%24%&apos;;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK like &apos;%24%&apos;;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -2961,7 +2959,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(like),order by-表数据为千万级,返回结果为千万" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK like &apos;%24%&apos; ORDER BY WR_RETURNED_TIME_SK;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK like &apos;%24%&apos; ORDER BY WR_RETURNED_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -2973,7 +2971,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件=)-表数据为千万级,返回结果为万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK =2451913 ;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK =2451913 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -2985,7 +2983,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件=),order by-表数据为千万级,返回结果为万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK =2451913 order by WR_RETURNED_TIME_SK;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK =2451913 order by WR_RETURNED_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -2997,7 +2995,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条&gt;)-表数据为千万级,返回结果为千万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK &gt;2451913 ;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK &gt;2451913 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3009,7 +3007,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条&gt;),order by-表数据为千万级,返回结果为千万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK &gt;2451913 order by WR_RETURNED_TIME_SK;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK &gt;2451913 order by WR_RETURNED_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3024,7 +3022,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-精确查询,2个key-表数据为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE ws_item_sk=206885 and ws_order_number=51911444</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE ws_item_sk=206885 and ws_order_number=51911444</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3036,7 +3034,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(like)-表数据为亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK like &apos;%45%&apos;;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK like &apos;%45%&apos;;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3048,7 +3046,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(like),order by-表数据为亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK like &apos;%45%&apos; ORDER BY WS_SOLD_TIME_SK;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK like &apos;%45%&apos; ORDER BY WS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3060,7 +3058,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件=)-表数据为亿级,返回结果为十万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK = 2452230 ;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK = 2452230 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3072,7 +3070,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件=),order by-表数据为亿级,返回结果为十万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK = 2452230 ORDER BY WS_SOLD_TIME_SK;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK = 2452230 ORDER BY WS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3084,7 +3082,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件&gt;)-表数据为亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK &gt;2452230  ;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK &gt;2452230  ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3096,7 +3094,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件&gt;),order by-表数据为亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK &gt;2452230 ORDER BY WS_SOLD_TIME_SK ;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK &gt;2452230 ORDER BY WS_SOLD_TIME_SK ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3111,7 +3109,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-精确查询,2个key-表数据为十亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE ss_item_sk=256471 AND ss_ticket_number=5673435</stringProp>
+                    <stringProp name="query">SELECT * FROM store_sales WHERE ss_item_sk=256471 AND ss_ticket_number=5673435</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3123,7 +3121,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(like)-表数据为十亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK like &apos;%45%&apos;;</stringProp>
+                    <stringProp name="query">SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK like &apos;%45%&apos;;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3135,7 +3133,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(like),order by-表数据为十亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK like &apos;%45%&apos; ORDER BY SS_SOLD_TIME_SK;</stringProp>
+                    <stringProp name="query">SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK like &apos;%45%&apos; ORDER BY SS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3147,7 +3145,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件=)-表数据为十亿级,返回结果为百万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK=2451897 ;</stringProp>
+                    <stringProp name="query">SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK=2451897 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3159,7 +3157,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件=),order by-表数据为十亿级,返回结果为百万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK=2451897 order by SS_SOLD_TIME_SK;</stringProp>
+                    <stringProp name="query">SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK=2451897 order by SS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3171,7 +3169,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件&gt;)-表数据为十亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK&gt;2451897 ;</stringProp>
+                    <stringProp name="query">SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK&gt;2451897 ;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3183,7 +3181,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-简单查询-where(1个条件&gt;),order by-表数据为十亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK&gt;2451897 order by SS_SOLD_TIME_SK;</stringProp>
+                    <stringProp name="query">SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK&gt;2451897 order by SS_SOLD_TIME_SK;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3201,7 +3199,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件)-表数据为千万级,返回结果为万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK = 2451564 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK&gt;61487</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK = 2451564 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK&gt;61487</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3213,7 +3211,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件),order by-表数据为千万级,返回结果为万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK = 2451564 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK&gt;61487 ORDER BY WR_RETURN_SHIP_COST</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK = 2451564 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK&gt;61487 ORDER BY WR_RETURN_SHIP_COST</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3225,7 +3223,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件)-表数据为千万级,返回结果为千万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK between 2451191 AND 2452988 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK &gt;22087 </stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK between 2451191 AND 2452988 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK &gt;22087 </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3237,7 +3235,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件),order by-表数据为千万级,返回结果为千万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_returns_pallas WHERE WR_RETURNED_DATE_SK between 2451191 AND 2452988 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK &gt;22087 ORDER BY WR_RETURN_SHIP_COST;</stringProp>
+                    <stringProp name="query">SELECT * FROM web_returns WHERE WR_RETURNED_DATE_SK between 2451191 AND 2452988 AND WR_REFUNDED_ADDR_SK&gt;10000 AND WR_RETURNED_TIME_SK &gt;22087 ORDER BY WR_RETURN_SHIP_COST;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3252,7 +3250,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件)-表数据为亿级,返回结果为十万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK=2451761 AND (WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 ) 
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK=2451761 AND (WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 ) 
 </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
@@ -3265,7 +3263,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件),order by-表数据为亿级,返回结果为十万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK=2451761 AND (WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 )   ORDER BY WS_SOLD_DATE_SK</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK=2451761 AND (WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 )   ORDER BY WS_SOLD_DATE_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3277,7 +3275,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件)-表数据为亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK=2451761 AND WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK=2451761 AND WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3289,7 +3287,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件),order by-表数据为亿级,返回结果为亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_web_sales_pallas WHERE WS_SOLD_DATE_SK=2451761 AND WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 ORDER BY WS_SOLD_DATE_SK</stringProp>
+                    <stringProp name="query">SELECT * FROM web_sales WHERE WS_SOLD_DATE_SK=2451761 AND WS_SOLD_TIME_SK&gt;45000 OR WS_SHIP_DATE_SK&gt;2451502 ORDER BY WS_SOLD_DATE_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3304,7 +3302,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件)-表数据为十亿级,返回结果为百万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK=2451167 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )
+                    <stringProp name="query">SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK=2451167 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )
 </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
@@ -3317,7 +3315,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-多条件查询-where(三个条件),order by-表数据为十亿级,返回结果为百万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK=2451167 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )  order by SS_CUSTOMER_SK
+                    <stringProp name="query">SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK=2451167 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )  order by SS_CUSTOMER_SK
 </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
@@ -3331,7 +3329,7 @@ SELECT * FROM cap_store_sales_hdfs WHERE SS_SOLD_DATE_SK between 2451167 and 245
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">
-SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2452900 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )</stringProp>
+SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK between 2451167 and 2452900 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  )</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3344,7 +3342,7 @@ SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">
-SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2452900 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  ) order by SS_CUSTOMER_SK</stringProp>
+SELECT * FROM store_sales WHERE SS_SOLD_DATE_SK between 2451167 and 2452900 AND (SS_SOLD_TIME_SK&gt;45000 OR SS_CUSTOMER_SK&gt;40000  ) order by SS_CUSTOMER_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3362,7 +3360,7 @@ SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-统计查询-1个聚合和group by-表数据为千万级,返回结果为千级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT WR_RETURNED_DATE_SK,count(*) FROM cap_web_returns_pallas GROUP BY WR_RETURNED_DATE_SK </stringProp>
+                    <stringProp name="query">SELECT WR_RETURNED_DATE_SK,count(*) FROM web_returns GROUP BY WR_RETURNED_DATE_SK </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3374,7 +3372,7 @@ SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-统计查询-多个聚合和group by-表数据为千万级,返回结果为千级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT WR_RETURNED_DATE_SK,count(*),avg(WR_RETURNED_TIME_SK),SUM(WR_REFUNDED_CUSTOMER_SK),MAX(WR_REFUNDED_CDEMO_SK) FROM cap_web_returns_pallas GROUP BY WR_RETURNED_DATE_SK </stringProp>
+                    <stringProp name="query">SELECT WR_RETURNED_DATE_SK,count(*),avg(WR_RETURNED_TIME_SK),SUM(WR_REFUNDED_CUSTOMER_SK),MAX(WR_REFUNDED_CDEMO_SK) FROM web_returns GROUP BY WR_RETURNED_DATE_SK </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3413,7 +3411,7 @@ SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-统计查询-1个聚合和group by-表数据为亿级,返回结果为千级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT WS_SHIP_DATE_SK, count(*) AS result1 FROM cap_web_sales_pallas  GROUP BY WS_SHIP_DATE_SK</stringProp>
+                    <stringProp name="query">SELECT WS_SHIP_DATE_SK, count(*) AS result1 FROM web_sales  GROUP BY WS_SHIP_DATE_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3425,7 +3423,7 @@ SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-统计查询-多个聚合和group by-表数据为亿级,返回结果为千级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT WS_SHIP_DATE_SK, count(*) AS result1,sum(WS_SHIP_ADDR_SK) AS result2,avg(WS_SHIP_CDEMO_SK) AS result3,max(WS_SHIP_CUSTOMER_SK) AS result4 FROM cap_web_sales_pallas  GROUP BY WS_SHIP_DATE_SK </stringProp>
+                    <stringProp name="query">SELECT WS_SHIP_DATE_SK, count(*) AS result1,sum(WS_SHIP_ADDR_SK) AS result2,avg(WS_SHIP_CDEMO_SK) AS result3,max(WS_SHIP_CUSTOMER_SK) AS result4 FROM web_sales  GROUP BY WS_SHIP_DATE_SK </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3440,7 +3438,7 @@ SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-统计查询-1个聚合和group by-表数据为十亿级,返回结果为百万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT SS_CDEMO_SK,count(*) AS result1 FROM cap_store_sales_pallas  GROUP BY SS_CDEMO_SK</stringProp>
+                    <stringProp name="query">SELECT SS_CDEMO_SK,count(*) AS result1 FROM store_sales  GROUP BY SS_CDEMO_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3452,7 +3450,7 @@ SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-select-统计查询-多个聚合和group by-表数据为十亿级,返回结果为百万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">SELECT SS_CDEMO_SK,count(*) AS result1,sum(SS_PROMO_SK) AS result2,avg(SS_QUANTITY) AS result3,max(SS_SALES_PRICE) AS result4 FROM cap_store_sales_pallas GROUP BY SS_CDEMO_SK </stringProp>
+                    <stringProp name="query">SELECT SS_CDEMO_SK,count(*) AS result1,sum(SS_PROMO_SK) AS result2,avg(SS_QUANTITY) AS result3,max(SS_SALES_PRICE) AS result4 FROM store_sales GROUP BY SS_CDEMO_SK </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3465,9 +3463,9 @@ SELECT * FROM cap_store_sales_pallas WHERE SS_SOLD_DATE_SK between 2451167 and 2
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="update" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="update" enabled="true"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="false"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据准备" enabled="true"/>
               <hashTree>
@@ -3627,9 +3625,8 @@ drop table cap_store_sales_update if exists cascade;</stringProp>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-update-drop table" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">drop table cap_store_sales_update_pallas if exists cascade;
-drop table cap_web_sales_update_pallas_1 if exists cascade;
-drop table cap_web_returns_update_pallas_1 if exists cascade;</stringProp>
+                  <stringProp name="query">drop table web_returns_update_1 if exists cascade;
+</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -3729,7 +3726,7 @@ drop table cap_web_returns_update_pallas_1 if exists cascade;</stringProp>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-update-create table-cap_web_returns_update_pallas_1-7千万" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">create  table cap_web_returns_update_pallas_1
+                  <stringProp name="query">create table web_returns_update_1
 (
     wr_returned_date_sk       integer                       ,
     wr_returned_time_sk       integer                       ,
@@ -3755,10 +3752,8 @@ drop table cap_web_returns_update_pallas_1 if exists cascade;</stringProp>
     wr_reversed_charge        decimal(7,2)                  ,
     wr_account_credit         decimal(7,2)                  ,
     wr_net_loss               decimal(7,2)                  ,
-   primary key (wr_item_sk, wr_order_number)
-) 
-properties (&apos;perinsertnum&apos;:&apos;100000&apos;, &apos;txnnum&apos;:&apos;200000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;)
-engine pallas;</stringProp>
+    primary key (wr_item_sk, wr_order_number)
+) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;128&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;2&apos;) engine pallas;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -3794,7 +3789,7 @@ engine pallas;</stringProp>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-update-insert table-cap_web_returns_update_pallas_1-7千万" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">insert into cap_web_returns_update_pallas_1 SELECT * FROM web_returns;</stringProp>
+                  <stringProp name="query">insert into web_returns_update_1 SELECT * FROM web_returns;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -3811,7 +3806,7 @@ engine pallas;</stringProp>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-update-100%更新-更新3个字段-表数据为千万级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">update cap_web_returns_update_pallas_1 set wr_net_loss=12981.12,wr_return_quantity=123,wr_returning_cdemo_sk=891;</stringProp>
+                    <stringProp name="query">update web_returns_update_1 set wr_net_loss=12981.12,wr_return_quantity=123,wr_returning_cdemo_sk=891;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3860,7 +3855,7 @@ engine pallas;</stringProp>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-update-50%查询50%更新-更新3个字段-表数据为7千万,更新一半数据" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">update cap_web_returns_update_pallas_1 set WR_REFUNDED_CDEMO_SK=229,WR_RETURNED_TIME_SK=153,WR_REFUNDED_CUSTOMER_SK=1367 where wr_returned_date_sk&gt;2451700;</stringProp>
+                    <stringProp name="query">update web_returns_update_1 set WR_REFUNDED_CDEMO_SK=229,WR_RETURNED_TIME_SK=153,WR_REFUNDED_CUSTOMER_SK=1367 where wr_returned_date_sk&gt;2451700;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3905,7 +3900,7 @@ engine pallas;</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="join" enabled="true"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="false"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="两张表join" enabled="true"/>
               <hashTree>
@@ -4064,7 +4059,7 @@ WHERE C_CURRENT_CDEMO_SK&gt;39000 GROUP BY C_FIRST_SALES_DATE_SK</stringProp>
                 </hashTree>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为pallas引擎" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为pallas引擎" enabled="true"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="两张表join" enabled="true"/>
               <hashTree>
@@ -4103,17 +4098,17 @@ WHERE C_CURRENT_CDEMO_SK&gt;39000 GROUP BY C_FIRST_SALES_DATE_SK</stringProp>
                   </JDBCSampler>
                   <hashTree/>
                 </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="一张大表一张小表" enabled="false"/>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="一张大表一张小表" enabled="true"/>
                 <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-join-两张表join-1张大表(cap_store_sales_pallas)和1张小表(cap_date_dim_pallas_join)-join,查询几个字段-返回结果十亿级" enabled="true">
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-join-两张表join-1张大表(store_sales)和1张小表(date_dim)-join,查询几个字段-返回结果十亿级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">select SS_COUPON_AMT,d_dow,
      ss_sold_date_sk,
     ss_sold_time_sk,
     ss_item_sk    
-    from cap_store_sales_pallas
-      JOIN cap_date_dim_pallas_join on cap_store_sales_pallas.ss_sold_date_sk = cap_date_dim_pallas_join.d_date_sk
+    from store_sales
+      JOIN date_dim on store_sales.ss_sold_date_sk = date_dim.d_date_sk
      </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
@@ -4123,13 +4118,13 @@ WHERE C_CURRENT_CDEMO_SK&gt;39000 GROUP BY C_FIRST_SALES_DATE_SK</stringProp>
                     <stringProp name="resultSetHandler">Store as String</stringProp>
                   </JDBCSampler>
                   <hashTree/>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-join-两张表join-1张大表(cap_store_sales_pallas)和1张小表(cap_date_dim_pallas_join)-join,where,group和聚合函数-返回结果千级" enabled="true">
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-join-两张表join-1张大表(store_sales)和1张小表(date_dim)-join,where,group和聚合函数-返回结果千级" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">select sum(SS_COUPON_AMT),avg(cap_date_dim_join.d_dow)
-    from cap_store_sales_pallas
-      JOIN cap_date_dim_pallas_join on cap_store_sales_pallas.ss_sold_date_sk = cap_date_dim_pallas_join.d_date_sk
-      WHERE SS_ITEM_SK&gt;3500 GROUP BY cap_date_dim_pallas_join.D_DATE_SK</stringProp>
+    from store_sales
+      JOIN date_dim on store_sales.ss_sold_date_sk = date_dim.d_date_sk
+      WHERE SS_ITEM_SK&gt;3500 GROUP BY date_dim.D_DATE_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4141,11 +4136,11 @@ WHERE C_CURRENT_CDEMO_SK&gt;39000 GROUP BY C_FIRST_SALES_DATE_SK</stringProp>
                 </hashTree>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="两张小表" enabled="true"/>
                 <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-join-两张表join-2张小表(cap_customer_address_pallas_join和cap_customer_pallas_join)-join,查询几个字段-返回结果" enabled="true">
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-join-两张表join-2张小表(customer_address和customer)-join,查询几个字段-返回结果" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">select CA_CITY,CA_STREET_NAME,CA_STREET_TYPE,C_CURRENT_CDEMO_SK,C_CURRENT_HDEMO_SK from 
-cap_customer_address_pallas_join join cap_customer_pallas_join on ca_address_sk = c_current_addr_sk
+customer_address join customer on ca_address_sk = c_current_addr_sk
 </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
@@ -4155,11 +4150,11 @@ cap_customer_address_pallas_join join cap_customer_pallas_join on ca_address_sk 
                     <stringProp name="resultSetHandler">Store as String</stringProp>
                   </JDBCSampler>
                   <hashTree/>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-join-两张表join-2张小表(cap_customer_address_pallas_join和cap_customer_pallas_join)-join,where,group和聚合函数,查询几个字段-返回结果" enabled="true">
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-join-两张表join-2张小表(customer_address和customer)-join,where,group和聚合函数,查询几个字段-返回结果" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
                     <stringProp name="query">select C_FIRST_SALES_DATE_SK,AVG(C_CURRENT_CDEMO_SK),COUNT(C_CURRENT_HDEMO_SK),sum(C_CURRENT_ADDR_SK) from 
-cap_customer_address_pallas_join join cap_customer_pallas_join on ca_address_sk = c_current_addr_sk
+customer_address join customer on ca_address_sk = c_current_addr_sk
 WHERE C_CURRENT_CDEMO_SK&gt;39000 GROUP BY C_FIRST_SALES_DATE_SK</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
@@ -4224,9 +4219,9 @@ WHERE C_CURRENT_CDEMO_SK&gt;39000 GROUP BY C_FIRST_SALES_DATE_SK</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="delete" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="delete" enabled="true"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储为HDFS引擎" enabled="false"/>
             <hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据准备" enabled="true"/>
               <hashTree>
@@ -4511,15 +4506,8 @@ drop table cap_store_sales_delete_2 if exists cascade;</stringProp>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-drop table" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">drop table cap_store_sales_delete_pallas if exists cascade;
-drop table cap_web_sales_delete_pallas if exists cascade;
-drop table cap_web_returns_delete_pallas if exists cascade;
-drop table cap_store_sales_delete_pallas_1 if exists cascade;
-drop table cap_web_sales_delete_pallas_1 if exists cascade;
-drop table cap_web_returns_delete_pallas_1 if exists cascade;
-drop table cap_store_sales_delete_pallas_2 if exists cascade;
-drop table cap_web_sales_delete_pallas_2 if exists cascade;
-drop table cap_web_returns_delete_pallas_2 if exists cascade;</stringProp>
+                  <stringProp name="query">drop table web_returns_update_1 if exists cascade;
+drop table web_returns_update_2 if exists cascade;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -4616,10 +4604,10 @@ drop table cap_web_returns_delete_pallas_2 if exists cascade;</stringProp>
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-create table-cap_web_returns_delete_pallas-7千万" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-create table-web_returns_delete_1-7千万" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">create  table cap_web_returns_delete_pallas
+                  <stringProp name="query">create table web_returns_delete_1
 (
     wr_returned_date_sk       integer                       ,
     wr_returned_time_sk       integer                       ,
@@ -4645,10 +4633,8 @@ drop table cap_web_returns_delete_pallas_2 if exists cascade;</stringProp>
     wr_reversed_charge        decimal(7,2)                  ,
     wr_account_credit         decimal(7,2)                  ,
     wr_net_loss               decimal(7,2)                  ,
-    
-) 
-properties (&apos;perinsertnum&apos;:&apos;100000&apos;, &apos;txnnum&apos;:&apos;200000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;)
-engine pallas;</stringProp>
+    primary key (wr_item_sk, wr_order_number)
+) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;32&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;2&apos;) engine pallas;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -4744,10 +4730,10 @@ engine pallas;</stringProp>
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-create table-cap_web_returns_delete_pallas_1-7千万" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-create table-web_returns_delete_2_1-7千万" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">create  table cap_web_returns_delete_pallas_1
+                  <stringProp name="query">create table web_returns_delete_2
 (
     wr_returned_date_sk       integer                       ,
     wr_returned_time_sk       integer                       ,
@@ -4773,10 +4759,8 @@ engine pallas;</stringProp>
     wr_reversed_charge        decimal(7,2)                  ,
     wr_account_credit         decimal(7,2)                  ,
     wr_net_loss               decimal(7,2)                  ,
-    
-)
-properties (&apos;perinsertnum&apos;:&apos;100000&apos;, &apos;txnnum&apos;:&apos;200000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;)
-engine pallas;</stringProp>
+    primary key (wr_item_sk, wr_order_number)
+) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;32&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;2&apos;) engine pallas;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -4872,7 +4856,7 @@ engine pallas;</stringProp>
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-create table-cap_web_returns_delete_pallas_2-7千万" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-create table-cap_web_returns_delete_pallas_2-7千万" enabled="false">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">create  table cap_web_returns_delete_pallas_2
@@ -4940,7 +4924,7 @@ engine pallas;</stringProp>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-insert table-cap_web_returns_delete_pallas-7千万" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">insert into cap_web_returns_delete_pallas SELECT * FROM web_returns ;</stringProp>
+                  <stringProp name="query">insert into web_returns_delete_1 SELECT * FROM web_returns ;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -4976,7 +4960,7 @@ engine pallas;</stringProp>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-insert table-cap_web_returns_delete_pallas_1-7千万" enabled="true">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="query">insert into cap_web_returns_delete_pallas_1 SELECT * FROM web_returns ;</stringProp>
+                  <stringProp name="query">insert into web_returns_delete_2 SELECT * FROM web_returns ;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -5009,7 +4993,7 @@ engine pallas;</stringProp>
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-insert table-cap_web_returns_delete_pallas_2-7千万" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="数据准备-PALLAS表-delete-insert table-cap_web_returns_delete_pallas_2-7千万" enabled="false">
                   <stringProp name="dataSource">${b}</stringProp>
                   <stringProp name="queryType">Select Statement</stringProp>
                   <stringProp name="query">insert into cap_web_returns_delete_pallas_2 SELECT * FROM web_returns;</stringProp>
@@ -5029,7 +5013,7 @@ engine pallas;</stringProp>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-delete-50%查询50%删除-1个条件-表数据为7千万,删掉一半数据" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">delete from cap_web_returns_delete_pallas WHERE wr_returned_date_sk&gt;2451700;</stringProp>
+                    <stringProp name="query">delete from web_returns_delete_1 WHERE wr_returned_date_sk&gt;2451700;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -5077,7 +5061,7 @@ engine pallas;</stringProp>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="PALLAS表-delete-100%删除-表数据为7千万" enabled="true">
                     <stringProp name="dataSource">${b}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">delete from cap_web_returns_delete_pallas_1</stringProp>
+                    <stringProp name="query">delete from web_returns_update_2</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -5118,7 +5102,7 @@ engine pallas;</stringProp>
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="truncate删除" enabled="true"/>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="truncate删除" enabled="false"/>
               <hashTree>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="数据为千万级" enabled="true"/>
                 <hashTree>
