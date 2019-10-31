@@ -377,21 +377,8 @@ drop table store_sales if exists cascade;</stringProp>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop  some table" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="query">drop table ex_csv_customer_address if exists cascade;
-drop table ex_csv_date_dim if exists cascade;
-drop table ex_csv_customer if exists cascade;
-drop table ex_csv_web_returns if exists cascade;
-drop table ex_csv_web_sales if exists cascade;
-drop table ex_csv_store_sales if exists cascade;
-
-
-
-drop table customer_address if exists cascade;
-drop table date_dim if exists cascade;
-drop table customer if exists cascade;
-drop table web_returns if exists cascade;
-drop table web_sales if exists cascade;
-drop table store_sales if exists cascade;</stringProp>
+              <stringProp name="query">drop table web_sales ;
+drop table store_sales;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -932,7 +919,7 @@ create external table ex_parquet_store_sales
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create some parquet external table" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create some parquet external table" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">create external table ex_parquet_customer_address
 (
@@ -1667,36 +1654,7 @@ create table store_sales
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create pallas  some table" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="query">create table web_returns
-(
-    wr_returned_date_sk       integer                       ,
-    wr_returned_time_sk       integer                       ,
-    wr_item_sk                integer               not null,
-    wr_refunded_customer_sk   integer                       ,
-    wr_refunded_cdemo_sk      integer                       ,
-    wr_refunded_hdemo_sk      integer                       ,
-    wr_refunded_addr_sk       integer                       ,
-    wr_returning_customer_sk  integer                       ,
-    wr_returning_cdemo_sk     integer                       ,
-    wr_returning_hdemo_sk     integer                       ,
-    wr_returning_addr_sk      integer                       ,
-    wr_web_page_sk            integer                       ,
-    wr_reason_sk              integer                       ,
-    wr_order_number           bigint               not null,
-    wr_return_quantity        integer                       ,
-    wr_return_amt             decimal(7,2)                  ,
-    wr_return_tax             decimal(7,2)                  ,
-    wr_return_amt_inc_tax     decimal(7,2)                  ,
-    wr_fee                    decimal(7,2)                  ,
-    wr_return_ship_cost       decimal(7,2)                  ,
-    wr_refunded_cash          decimal(7,2)                  ,
-    wr_reversed_charge        decimal(7,2)                  ,
-    wr_account_credit         decimal(7,2)                  ,
-    wr_net_loss               decimal(7,2)                  ,
-    primary key (wr_item_sk, wr_order_number)
-) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;32&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
-
-create table web_sales
+              <stringProp name="query">create table web_sales
 (
     ws_sold_date_sk           integer                       ,
     ws_sold_time_sk           integer                       ,
@@ -1733,7 +1691,7 @@ create table web_sales
     ws_net_paid_inc_ship_tax  decimal(7,2)                  ,
     ws_net_profit             decimal(7,2)                  ,
     primary key (ws_item_sk, ws_order_number)
-) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;64&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
+) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;100000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;64&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
 
 create table store_sales
 (
@@ -1761,82 +1719,11 @@ create table store_sales
     ss_net_paid_inc_tax       decimal(7,2)                  ,
     ss_net_profit             decimal(7,2)                  ,
     primary key (ss_item_sk, ss_ticket_number)
-) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;256&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
-
-create table date_dim
-(
-    d_date_sk                 integer               not null,
-    d_date_id                 char(16)              not null,
-    d_date                    date                          ,
-    d_month_seq               integer                       ,
-    d_week_seq                integer                       ,
-    d_quarter_seq             integer                       ,
-    d_year                    integer                       ,
-    d_dow                     integer                       ,
-    d_moy                     integer                       ,
-    d_dom                     integer                       ,
-    d_qoy                     integer                       ,
-    d_fy_year                 integer                       ,
-    d_fy_quarter_seq          integer                       ,
-    d_fy_week_seq             integer                       ,
-    d_day_name                char(9)                       ,
-    d_quarter_name            char(6)                       ,
-    d_holiday                 char(1)                       ,
-    d_weekend                 char(1)                       ,
-    d_following_holiday       char(1)                       ,
-    d_first_dom               integer                       ,
-    d_last_dom                integer                       ,
-    d_same_day_ly             integer                       ,
-    d_same_day_lq             integer                       ,
-    d_current_day             char(1)                       ,
-    d_current_week            char(1)                       ,
-    d_current_month           char(1)                       ,
-    d_current_quarter         char(1)                       ,
-    d_current_year            char(1)                       ,
-    primary key (d_date_sk)
-) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;16&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
+) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;100000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;256&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
 
 
-create table customer_address
-(
-    ca_address_sk             integer               not null,
-    ca_address_id             char(16)              not null,
-    ca_street_number          char(10)                      ,
-    ca_street_name            varchar(60)                   ,
-    ca_street_type            char(15)                      ,
-    ca_suite_number           char(10)                      ,
-    ca_city                   varchar(60)                   ,
-    ca_county                 varchar(30)                   ,
-    ca_state                  char(2)                       ,
-    ca_zip                    char(10)                      ,
-    ca_country                varchar(20)                   ,
-    ca_gmt_offset             decimal(5,2)                  ,
-    ca_location_type          char(20)                      ,
-    primary key (ca_address_sk)
-) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;16&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas; 
 
-create table customer
-(
-    c_customer_sk             integer               not null,
-    c_customer_id             char(16)              not null,
-    c_current_cdemo_sk        integer                       ,
-    c_current_hdemo_sk        integer                       ,
-    c_current_addr_sk         integer                       ,
-    c_first_shipto_date_sk    integer                       ,
-    c_first_sales_date_sk     integer                       ,
-    c_salutation              char(10)                      ,
-    c_first_name              char(20)                      ,
-    c_last_name               char(30)                      ,
-    c_preferred_cust_flag     char(1)                       ,
-    c_birth_day               integer                       ,
-    c_birth_month             integer                       ,
-    c_birth_year              integer                       ,
-    c_birth_country           varchar(20)                   ,
-    c_login                   char(13)                      ,
-    c_email_address           char(50)                      ,
-    c_last_review_date        char(10)                      ,
-    primary key (c_customer_sk)
-) properties (&apos;perinsertnum&apos;:&apos;10000&apos;, &apos;peringestnum&apos;:&apos;500000&apos;,&apos;linkoopdb.pallas.shard_number&apos;:&apos;16&apos;,&apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
+
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1871,7 +1758,7 @@ create table customer
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into customer                select * from ex_parquet_customer                      ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1883,7 +1770,7 @@ create table customer
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer_address" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas customer_address" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into customer_address        select * from ex_parquet_customer_address              ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1907,7 +1794,7 @@ create table customer
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas date_dim" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas date_dim" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into date_dim                select * from ex_parquet_date_dim                      ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2051,7 +1938,7 @@ create table customer
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas web_returns" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="load into pallas web_returns" enabled="false">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="query">load into web_returns             select * from ex_parquet_web_returns                   ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
