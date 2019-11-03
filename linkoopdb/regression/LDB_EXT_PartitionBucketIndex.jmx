@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="LDB_EXT_PartitionBucketIndex" enabled="false">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="LDB_EXT_PartitionBucketIndex" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
@@ -140,10 +140,20 @@
             <stringProp name="Argument.value">${__P(engine,)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="mainurl" elementType="Argument">
+            <stringProp name="Argument.name">mainurl</stringProp>
+            <stringProp name="Argument.value">${__P(mainurl,jdbc:linkoopdb:tcp://192.168.1.71:9105/ldb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="metaurl" elementType="Argument">
+            <stringProp name="Argument.name">metaurl</stringProp>
+            <stringProp name="Argument.value">${__P(metaurl,jdbc:linkoopdb:tcp://192.168.1.71:9108/ldb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="ldbdist所需变量" enabled="true">
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="ldbdist所需变量" enabled="false">
         <collectionProp name="Arguments.arguments">
           <elementProp name="ldbdist://192.168.1.70:54321/single/singles.csv" elementType="Argument">
             <stringProp name="Argument.name">ldbdist://192.168.1.70:54321/single/singles.csv</stringProp>
@@ -228,7 +238,7 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="stream所需变量" enabled="true">
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="stream所需变量" enabled="false">
         <collectionProp name="Arguments.arguments">
           <elementProp name="stream_u1" elementType="Argument">
             <stringProp name="Argument.name">stream_u1</stringProp>
@@ -243,7 +253,7 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="bigdata" enabled="true">
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="bigdata" enabled="false">
         <boolProp name="autocommit">true</boolProp>
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
@@ -264,7 +274,7 @@
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${a}</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">${mainurl}</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -275,12 +285,28 @@
         <stringProp name="username">${a}</stringProp>
       </JDBCDataSource>
       <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="meta-admin" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">meta_admin</stringProp>
+        <stringProp name="dbUrl">${metaurl}</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">admin</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
       <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="${u1}" enabled="true">
         <boolProp name="autocommit">true</boolProp>
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${u1}</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">${mainurl}</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -296,7 +322,7 @@
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">u_authorization_user1</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">${mainurl}</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -312,7 +338,7 @@
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${basic_data_manipulation_u1}</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">${mainurl}</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -328,7 +354,7 @@
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${t_ddl_user1}</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">${mainurl}</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -344,7 +370,7 @@
         <stringProp name="checkQuery"></stringProp>
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${a}</stringProp>
-        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="dbUrl">${mainurl}</stringProp>
         <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">123456</stringProp>
@@ -421,6 +447,42 @@
         <stringProp name="username">admin</stringProp>
       </JDBCDataSource>
       <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="察看结果树" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Partition_Bucket_Index" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
@@ -475,7 +537,7 @@
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDB EXT: Partition/Bucket/Index " enabled="true"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="597 LDBX062-01  Basic bucket" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="597 LDBX062-01  Basic bucket" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="597 LDBX062-01   drop table t_PartitionBucketIndex_wy_5 if exists cascade;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
@@ -771,44 +833,1183 @@ drop table t_PartitionBucketIndex_wy_8 if exists cascade;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2540 Table function about repartition &amp; repartition_by_count" enabled="true"/>
+          <hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540  drop table Test_repartition if exists cascade; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop table Test_repartition if exists cascade;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540  create table Test_repartition  (depname varchar(100), empno int, salary double);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">create table Test_repartition  (depname varchar(100), empno int, salary double);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540  insert into Test_re2540  partition values(  (&apos;develop&apos; , 11 , 5200),  (&apos;develop&apos; , 7 , 4200),  (&apos;develop&apos; , 9 , 4500),  (&apos;develop&apos; , 8 , 6000),  (&apos;develop&apos; , 10 , 5200),  (&apos;personnel&apos; , 5 , 3500),  (&apos;personnel&apos; , 2 , 3900),  (&apos;sales&apos; , 3 , 4800),  (&apos;sales&apos; , 1 , 5000),  (&apos;sales&apos; , 4 , 4800));" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">insert into Test_repartition values(
+ (&apos;develop&apos; , 11 , 5200),
+ (&apos;develop&apos; , 7 , 4200),
+ (&apos;develop&apos; , 9 , 4500),
+ (&apos;develop&apos; , 8 , 6000),
+ (&apos;develop&apos; , 10 , 5200),
+ (&apos;personnel&apos; , 5 , 3500),
+ (&apos;personnel&apos; , 2 , 3900),
+ (&apos;sales&apos; , 3 , 4800),
+ (&apos;sales&apos; , 1 , 5000),
+ (&apos;sales&apos; , 4 , 4800));</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-001" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition((select * from Test_repartition), 9) order by EMPNO;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-002" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1418867353">Exchange RoundRobinPartitioning(9)</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_-1&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_-1&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-003" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition((select * from Test_repartition),-1) order by EMPNO;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="734995569">Number of partitions (-1) must be positive.</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-004" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_-1&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_-1&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-813752845">java.lang.IllegalArgumentException: requirement failed: Number of partitions (-1) must be positive</stringProp>
+                  <stringProp name="-1778029513">T_REPARTITION_-1</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.request_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">34</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_0&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_0&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-005" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition((select * from Test_repartition),0) order by EMPNO;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="77230276">Worker execution: ldb worker caused error: requirement failed: Number of partitions (0) must be positive.</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-006" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_0&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_0&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1858471107">T_REPARTITION_0</stringProp>
+                  <stringProp name="643023651">requirement failed: Number of partitions (0) must be positive</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">34</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_100&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_100&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-007" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition((select * from Test_repartition),100) order by EMPNO;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1815255116">DEPNAME	EMPNO	SALARY
+sales	1	5000.0
+personnel	2	3900.0
+sales	3	4800.0
+sales	4	4800.0
+personnel	5	3500.0
+develop	7	4200.0
+develop	8	6000.0
+develop	9	4500.0
+develop	10	5200.0
+develop	11	5200.0
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-008" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_100&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_100&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-2027123473">Exchange RoundRobinPartitioning(100)</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_$&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_$&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-009" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition((select * from Test_repartition),$) order by EMPNO;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-626808193">user lacks privilege or object not found: $ in statement [select * from repartition((select * from Test_repartition),$) order by EMPNO;]</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-010" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_$&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_$&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-608979741">java.lang.ClassCastException: java.math.BigDecimal cannot be cast to java.lang.Integer</stringProp>
+                  <stringProp name="-262297795">		java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Integer</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">34</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_$&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_$&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-011" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition((select * from Test_repartition),&apos;$&apos;) order by EMPNO;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-536142844">Worker execution: ldb worker caused error: java.lang.String cannot be cast to java.lang.Integer</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-012" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_$&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_$&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-608979741">java.lang.ClassCastException: java.math.BigDecimal cannot be cast to java.lang.Integer</stringProp>
+                  <stringProp name="-262297795">		java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Integer</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">34</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_5.6&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_5.6&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-013" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition((select * from Test_repartition),5.6) order by EMPNO;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-014" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_5.6&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_5.6&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-608979741">java.lang.ClassCastException: java.math.BigDecimal cannot be cast to java.lang.Integer</stringProp>
+                  <stringProp name="715667594">T_REPARTITION_5.6</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_4&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_4&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-015" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition((select * from Test_repartition),4) order by EMPNO;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-016" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_4&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_4&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1418867508">Exchange RoundRobinPartitioning(4)</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540  drop table Test_repartition if exists cascade; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop table Test_repartition if exists cascade;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540  drop table Test_repartition_by_count if exists cascade; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop table Test_repartition_by_count if exists cascade;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540  create table Test_repartition_by_count (tinteger integer, tsmallint smallint, tbigint bigint, treal real,tdouble double, tfloat float, tdecimal decimal(10,2), tnumberic numeric(10, 4), tdate date, ttimestamp timestamp, tchar char(255), tvarchar varchar(8000));" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">create table Test_repartition_by_count (tinteger integer, tsmallint smallint, tbigint bigint, treal real,tdouble double,
+tfloat float, tdecimal decimal(10,2), tnumberic numeric(10, 4), tdate date, ttimestamp timestamp,
+tchar char(255), tvarchar varchar(8000),tfloat_ARRAY FLOAT ARRAY,tnumeric_ARRAY NUMERIC(6,2) ARRAY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540  insert into Test_repartition values(  (&apos;develop&apos; , 11 , 5200),  (&apos;develop&apos; , 7 , 4200),  (&apos;develop&apos; , 9 , 4500),  (&apos;develop&apos; , 8 , 6000),  (&apos;develop&apos; , 10 , 5200),  (&apos;personnel&apos; , 5 , 3500),  (&apos;personnel&apos; , 2 , 3900),  (&apos;sales&apos; , 3 , 4800),  (&apos;sales&apos; , 1 , 5000),  (&apos;sales&apos; , 4 , 4800));" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">insert into Test_repartition_by_count values (1,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);
+insert into Test_repartition_by_count values (2,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);
+insert into Test_repartition_by_count values (3,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);
+insert into Test_repartition_by_count values (4,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);
+insert into Test_repartition_by_count values (5,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);
+insert into Test_repartition_by_count values (6,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);
+insert into Test_repartition_by_count values (7,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);
+insert into Test_repartition_by_count values (8,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);
+insert into Test_repartition_by_count values (9,32767,9223,1.797693,1.7308,3.40238,1000.27,2000,DATE &apos;9999-12-31&apos;,TIMESTAMP &apos;9999-12-31 23:59:59&apos;,&apos;verygood8&apos;,&apos;long char haha8&apos;,ARRAY[1.1,2.2,3.3,4.4],ARRAY[1.1,2.2,3.3,4.4]);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_BY_COUNT_10&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_BY_COUNT_10&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-017" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition_by_count((select * from Test_repartition_by_count),10) order by tinteger;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="756844218">TINTEGER	TSMALLINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMBERIC	TDATE	TTIMESTAMP	TCHAR	TVARCHAR	TFLOAT_ARRAY	TNUMERIC_ARRAY
+1	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+2	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+3	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+4	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+5	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+6	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+7	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-018" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_10&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_10&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1418867601">Exchange RoundRobinPartitioning(1)</stringProp>
+                  <stringProp name="1463197988">T_REPARTITION_BY_COUNT_10</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">34</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_BY_COUNT_-1&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_BY_COUNT_-1&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-019" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition_by_count((select * from Test_repartition_by_count),-1) order by tinteger;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="675575760">Worker execution: ldb worker caused error: requirement failed: Number of partitions (-9) must be positive.</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-020" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_-1&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_-1&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-813752845">java.lang.IllegalArgumentException: requirement failed: Number of partitions (-1) must be positive</stringProp>
+                  <stringProp name="1463197865">T_REPARTITION_BY_COUNT_-1</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.request_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">34</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_BY_COUNT_0&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_BY_COUNT_0&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-021" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition_by_count((select * from Test_repartition_by_count),0) order by tinteger;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-156236569">Worker execution: ldb worker caused error: / by zero</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-022" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_0&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_0&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="110979049">java.lang.ArithmeticException: / by zero</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">2</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_BY_COUNT_100&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_BY_COUNT_100&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-023" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition_by_count((select * from Test_repartition_by_count),100) order by tinteger;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="756844218">TINTEGER	TSMALLINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMBERIC	TDATE	TTIMESTAMP	TCHAR	TVARCHAR	TFLOAT_ARRAY	TNUMERIC_ARRAY
+1	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+2	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+3	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+4	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+5	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+6	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+7	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-024" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_100&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_100&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1418867601">Exchange RoundRobinPartitioning(1)</stringProp>
+                  <stringProp name="1121137645">+- Exchange RoundRobinPartitioning(1)</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">48</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_BY_COUNT_$&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_BY_COUNT_$&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-025" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition_by_count((select * from Test_repartition_by_count),$) order by tinteger;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-244982932">user lacks privilege or object not found: $ in statement [select * from repartition_by_count((select * from Test_repartition_by_count),$) order by tinteger;]</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+                <stringProp name="Assertion.scope">all</stringProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-026" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_$&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_$&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_BY_COUNT_&amp;&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_BY_COUNT_&amp;&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-027" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition_by_count((select * from Test_repartition_by_count),&apos;&amp;&apos;) order by tinteger;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-536142844">Worker execution: ldb worker caused error: java.lang.String cannot be cast to java.lang.Integer</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-028" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_&amp;&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_&amp;&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="798145863">ava.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Integer</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_5.6&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_BY_COUNT_5.6&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-029" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition_by_count((select * from Test_repartition_by_count),5.6) order by tinteger;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-227616950">Worker execution: ldb worker caused error: java.math.BigDecimal cannot be cast to java.lang.Integer</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-030" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_5.6&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_5.6&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-608979741">java.lang.ClassCastException: java.math.BigDecimal cannot be cast to java.lang.Integer</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="set session task_group_id &apos;T_REPARTITION_BY_COUNT_4&apos;; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">set session task_group_id &apos;T_REPARTITION_BY_COUNT_4&apos;;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-031" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from repartition_by_count((select * from Test_repartition_by_count),4) order by tinteger;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="756844218">TINTEGER	TSMALLINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMBERIC	TDATE	TTIMESTAMP	TCHAR	TVARCHAR	TFLOAT_ARRAY	TNUMERIC_ARRAY
+1	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+2	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+3	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+4	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+5	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+6	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+7	32767	9223	1.797693	1.7308	3.40238	1000.27	2000.0000	9999-12-31	9999-12-31 23:59:59.0	verygood8                                                                                                                                                                                                                                                      	long char haha8	ARRAY[1.1E0,2.2E0,3.3E0,4.4E0]	ARRAY[1.10,2.20,3.30,4.40]
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540 TC-032" enabled="true">
+              <stringProp name="dataSource">meta_admin</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from  SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_4&apos; AND ID&gt;=(SELECT MAX(ID) FROM SQL_HISTORY WHERE TASKGROUPID=&apos;T_REPARTITION_BY_COUNT_4&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-2038053714"> Exchange RoundRobinPartitioning(2)</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                <stringProp name="ConstantTimer.delay">6000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2540  drop table Test_repartition if exists cascade; " enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop table Test_repartition_by_count if exists cascade;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
         </hashTree>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="察看结果树" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <sentBytes>true</sentBytes>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
-            <connectTime>true</connectTime>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-      </ResultCollector>
-      <hashTree/>
       <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="聚合报告" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
