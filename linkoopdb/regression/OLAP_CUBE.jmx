@@ -444,7 +444,7 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP SCHEMA" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -483,7 +483,7 @@
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="OLAP: CUBE" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="OLAP: CUBE" enabled="false"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="652 T431 Extended grouping capabilities (previously &quot;CUBE and ROLLUP operations&quot;)" enabled="true"/>
           <hashTree>
@@ -1997,6 +1997,827 @@ drop table t_olap_cube_wy_2 if exists cascade;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="OLAP: CUBE and ROLLUP" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table t_olap_dimension_tab if exists cascade; " enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop table t_olap_dimension_tab if exists cascade;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_olap_dimension_tab (   fact_1_id   int,   fact_2_id   int,   fact_3_id   int,   fact_4_id   int,   sales_value double NOT NULL );" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE TABLE t_olap_dimension_tab (
+  fact_1_id   int,
+  fact_2_id   int,
+  fact_3_id   int,
+  fact_4_id   int,
+  sales_value numeric(5,2) NOT NULL
+);
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_olap_dimension_tab values (2,3,5,4,50.19), (1,5,10,2,58.51), (2,2,1,9,18.09), (1,1,6,3,55.05), (1,5,10,5,79.51), (1,3,8,9,49.28), (2,3,1,7,25.2), (1,5,10,7,49.32), (2,5,7,7,68.4), (1,3,10,10,57.7); " enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">insert into t_olap_dimension_tab values (2,3,5,4,50.19),
+(1,5,10,2,58.51),
+(2,2,1,9,18.09),
+(1,1,6,3,55.05),
+(1,5,10,5,79.51),
+(1,3,8,9,49.28),
+(2,3,1,7,25.2),
+(1,5,10,7,49.32),
+(2,5,7,7,68.4),
+(1,3,10,10,57.7);
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY ROLLUP (fact_1_id, fact_2_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY ROLLUP (fact_1_id, fact_2_id)
+ORDER BY fact_1_id, fact_2_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1045560317">null	null	511.25
+1	null	349.37
+1	1	55.05
+1	3	106.98
+1	5	187.34
+2	null	161.88
+2	2	18.09
+2	3	75.39
+2	5	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY ROLLUP (fact_1_id, fact_2_id, fact_3_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY ROLLUP (fact_1_id, fact_2_id, fact_3_id)
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1783418530">null	null	null	511.25
+1	null	null	349.37
+1	1	null	55.05
+1	1	6	55.05
+1	3	null	106.98
+1	3	8	49.28
+1	3	10	57.70
+1	5	null	187.34
+1	5	10	187.34
+2	null	null	161.88
+2	2	null	18.09
+2	2	1	18.09
+2	3	null	75.39
+2	3	1	25.20
+2	3	5	50.19
+2	5	null	68.40
+2	5	7	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY fact_1_id, ROLLUP (fact_2_id, fact_3_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY fact_1_id, ROLLUP (fact_2_id, fact_3_id)
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-800161994">1	null	null	349.37
+1	1	null	55.05
+1	1	6	55.05
+1	3	null	106.98
+1	3	8	49.28
+1	3	10	57.70
+1	5	null	187.34
+1	5	10	187.34
+2	null	null	161.88
+2	2	null	18.09
+2	2	1	18.09
+2	3	null	75.39
+2	3	1	25.20
+2	3	5	50.19
+2	5	null	68.40
+2	5	7	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY CUBE (fact_1_id, fact_2_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY CUBE (fact_1_id, fact_2_id)
+ORDER BY fact_1_id, fact_2_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1367920411">null	null	511.25
+null	1	55.05
+null	2	18.09
+null	3	182.37
+null	5	255.74
+1	null	349.37
+1	1	55.05
+1	3	106.98
+1	5	187.34
+2	null	161.88
+2	2	18.09
+2	3	75.39
+2	5	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY CUBE (fact_1_id, fact_2_id, fact_3_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY CUBE (fact_1_id, fact_2_id, fact_3_id)
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1052337566">null	null	null	511.25
+null	null	1	43.29
+null	null	5	50.19
+null	null	6	55.05
+null	null	7	68.40
+null	null	8	49.28
+null	null	10	245.04
+null	1	null	55.05
+null	1	6	55.05
+null	2	null	18.09
+null	2	1	18.09
+null	3	null	182.37
+null	3	1	25.20
+null	3	5	50.19
+null	3	8	49.28
+null	3	10	57.70
+null	5	null	255.74
+null	5	7	68.40
+null	5	10	187.34
+1	null	null	349.37
+1	null	6	55.05
+1	null	8	49.28
+1	null	10	245.04
+1	1	null	55.05
+1	1	6	55.05
+1	3	null	106.98
+1	3	8	49.28
+1	3	10	57.70
+1	5	null	187.34
+1	5	10	187.34
+2	null	null	161.88
+2	null	1	43.29
+2	null	5	50.19
+2	null	7	68.40
+2	2	null	18.09
+2	2	1	18.09
+2	3	null	75.39
+2	3	1	25.20
+2	3	5	50.19
+2	5	null	68.40
+2	5	7	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY fact_1_id, CUBE (fact_2_id, fact_3_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY fact_1_id, CUBE (fact_2_id, fact_3_id)
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="795418321">1	null	null	349.37
+1	null	6	55.05
+1	null	8	49.28
+1	null	10	245.04
+1	1	null	55.05
+1	1	6	55.05
+1	3	null	106.98
+1	3	8	49.28
+1	3	10	57.70
+1	5	null	187.34
+1	5	10	187.34
+2	null	null	161.88
+2	null	1	43.29
+2	null	5	50.19
+2	null	7	68.40
+2	2	null	18.09
+2	2	1	18.09
+2	3	null	75.39
+2	3	1	25.20
+2	3	5	50.19
+2	5	null	68.40
+2	5	7	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUPING(fact_1_id) AS f1g,GROUPING(fact_2_id) AS f2g GROUP BY CUBE (fact_1_id, fact_2_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       SUM(sales_value) AS sales_value,
+       GROUPING(fact_1_id) AS f1g, 
+       GROUPING(fact_2_id) AS f2g
+FROM   t_olap_dimension_tab
+GROUP BY CUBE (fact_1_id, fact_2_id)
+ORDER BY fact_1_id, fact_2_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="274513471">null	null	511.25	1	1
+null	1	55.05	1	0
+null	2	18.09	1	0
+null	3	182.37	1	0
+null	5	255.74	1	0
+1	null	349.37	0	1
+1	1	55.05	0	0
+1	3	106.98	0	0
+1	5	187.34	0	0
+2	null	161.88	0	1
+2	2	18.09	0	0
+2	3	75.39	0	0
+2	5	68.40	0	0</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY CUBE (fact_1_id, fact_2_id) HAVING GROUPING(fact_1_id) = 1 OR GROUPING(fact_2_id) = 1" enabled="false">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       SUM(sales_value) AS sales_value,
+       GROUPING(fact_1_id) AS f1g, 
+       GROUPING(fact_2_id) AS f2g
+FROM   t_olap_dimension_tab
+GROUP BY CUBE (fact_1_id, fact_2_id)
+HAVING GROUPING(fact_1_id) = 1 OR GROUPING(fact_2_id) = 1
+ORDER BY GROUPING(fact_1_id), GROUPING(fact_2_id);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1309262167">1	null	349.37	0	1
+2	null	161.88	0	1
+null	5	255.74	1	0
+null	2	18.09	1	0
+null	1	55.05	1	0
+null	3	182.37	1	0
+null	null	511.25	1	1</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY CUBE (fact_1_id, fact_2_id) HAVING GROUPING(fact_1_id) = 1 OR GROUPING(fact_2_id) = 1" enabled="false">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY CUBE (fact_1_id, fact_2_id)
+HAVING fact_1_id = 1
+ORDER BY fact_1_id, fact_2_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="807358020">1	1	55.05
+1	3	106.98
+1	5	187.34
+1	null	349.37</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY GROUPING SETS((fact_1_id, fact_2_id), (fact_1_id, fact_3_id))" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY GROUPING SETS((fact_1_id, fact_2_id), (fact_1_id, fact_3_id))
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="865817823">1	null	6	55.05
+1	null	8	49.28
+1	null	10	245.04
+1	1	null	55.05
+1	3	null	106.98
+1	5	null	187.34
+2	null	1	43.29
+2	null	5	50.19
+2	null	7	68.40
+2	2	null	18.09
+2	3	null	75.39
+2	5	null	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY CUBE((fact_1_id, fact_2_id), fact_3_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY CUBE((fact_1_id, fact_2_id), fact_3_id)
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="57771375">null	null	null	511.25
+null	null	1	43.29
+null	null	5	50.19
+null	null	6	55.05
+null	null	7	68.40
+null	null	8	49.28
+null	null	10	245.04
+1	1	null	55.05
+1	1	6	55.05
+1	3	null	106.98
+1	3	8	49.28
+1	3	10	57.70
+1	5	null	187.34
+1	5	10	187.34
+2	2	null	18.09
+2	2	1	18.09
+2	3	null	75.39
+2	3	1	25.20
+2	3	5	50.19
+2	5	null	68.40
+2	5	7	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY GROUPING SETS((fact_1_id, fact_2_id)),ROLLUP(fact_3_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY GROUPING SETS((fact_1_id, fact_2_id)),ROLLUP(fact_3_id)
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1745857769">1	1	null	55.05
+1	1	6	55.05
+1	3	null	106.98
+1	3	8	49.28
+1	3	10	57.70
+1	5	null	187.34
+1	5	10	187.34
+2	2	null	18.09
+2	2	1	18.09
+2	3	null	75.39
+2	3	1	25.20
+2	3	5	50.19
+2	5	null	68.40
+2	5	7	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY GROUPING SETS((fact_1_id, fact_2_id),ROLLUP(fact_3_id))" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY GROUPING SETS((fact_1_id, fact_2_id),ROLLUP(fact_3_id))
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1608508164">null	null	null	511.25
+null	null	1	43.29
+null	null	5	50.19
+null	null	6	55.05
+null	null	7	68.40
+null	null	8	49.28
+null	null	10	245.04
+1	1	null	55.05
+1	3	null	106.98
+1	5	null	187.34
+2	2	null	18.09
+2	3	null	75.39
+2	5	null	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY GROUPING SETS((fact_1_id, fact_2_id)) ,CUBE(fact_3_id)" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY GROUPING SETS((fact_1_id, fact_2_id)) ,CUBE(fact_3_id)
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1745857769">1	1	null	55.05
+1	1	6	55.05
+1	3	null	106.98
+1	3	8	49.28
+1	3	10	57.70
+1	5	null	187.34
+1	5	10	187.34
+2	2	null	18.09
+2	2	1	18.09
+2	3	null	75.39
+2	3	1	25.20
+2	3	5	50.19
+2	5	null	68.40
+2	5	7	68.40</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY GROUPING SETS((fact_1_id, fact_2_id),CUBE(fact_3_id))" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY GROUPING SETS((fact_1_id, fact_2_id),CUBE(fact_3_id))
+ORDER BY fact_1_id, fact_2_id, fact_3_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1675854458">null	null	null	511.25
+null	null	1	43.29
+null	null	5	50.19
+null	null	6	55.05
+null	null	7	68.40
+null	null	8	49.28
+null	null	10	245.04
+1	1	null	55.05
+1	3	null	106.98
+1	5	null	187.34
+2	2	null	18.09
+2	3	null	75.39
+2	5	null	68.40
+</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="TC-GROUP BY GROUPING SETS((fact_1_id, fact_2_id),CUBE(fact_3_id))" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT fact_1_id,
+       fact_2_id,
+       fact_3_id,
+	   fact_4_id,
+       SUM(sales_value) AS sales_value
+FROM   t_olap_dimension_tab
+GROUP BY GROUPING SETS((fact_1_id, fact_2_id)),ROLLUP(fact_3_id),CUBE(fact_4_id,fact_3_id)
+ORDER BY fact_1_id, fact_2_id, fact_3_id,fact_4_id;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="2074252935">1	1	null	null	55.05
+1	1	null	3	55.05
+1	1	6	null	55.05
+1	1	6	null	55.05
+1	1	6	null	55.05
+1	1	6	3	55.05
+1	1	6	3	55.05
+1	1	6	3	55.05
+1	3	null	null	106.98
+1	3	null	9	49.28
+1	3	null	10	57.70
+1	3	8	null	49.28
+1	3	8	null	49.28
+1	3	8	null	49.28
+1	3	8	9	49.28
+1	3	8	9	49.28
+1	3	8	9	49.28
+1	3	10	null	57.70
+1	3	10	null	57.70
+1	3	10	null	57.70
+1	3	10	10	57.70
+1	3	10	10	57.70
+1	3	10	10	57.70
+1	5	null	null	187.34
+1	5	null	2	58.51
+1	5	null	5	79.51
+1	5	null	7	49.32
+1	5	10	null	187.34
+1	5	10	null	187.34
+1	5	10	null	187.34
+1	5	10	2	58.51
+1	5	10	2	58.51
+1	5	10	2	58.51
+1	5	10	5	79.51
+1	5	10	5	79.51
+1	5	10	5	79.51
+1	5	10	7	49.32
+1	5	10	7	49.32
+1	5	10	7	49.32
+2	2	null	null	18.09
+2	2	null	9	18.09
+2	2	1	null	18.09
+2	2	1	null	18.09
+2	2	1	null	18.09
+2	2	1	9	18.09
+2	2	1	9	18.09
+2	2	1	9	18.09
+2	3	null	null	75.39
+2	3	null	4	50.19
+2	3	null	7	25.20
+2	3	1	null	25.20
+2	3	1	null	25.20
+2	3	1	null	25.20
+2	3	1	7	25.20
+2	3	1	7	25.20
+2	3	1	7	25.20
+2	3	5	null	50.19
+2	3	5	null	50.19
+2	3	5	null	50.19
+2	3	5	4	50.19
+2	3	5	4	50.19
+2	3	5	4	50.19
+2	5	null	null	68.40
+2	5	null	7	68.40
+2	5	7	null	68.40
+2	5	7	null	68.40
+2	5	7	null	68.40
+2	5	7	7	68.40
+2	5	7	7	68.40
+2	5	7	7	68.40
+</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop table t_olap_dimension_tab if exists cascade; " enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop table t_olap_dimension_tab if exists cascade;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
         </hashTree>
       </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
