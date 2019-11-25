@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="a" elementType="Argument">
+            <stringProp name="Argument.name">a</stringProp>
+            <stringProp name="Argument.value">admin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">dba user</stringProp>
+          </elementProp>
+          <elementProp name="mainurl" elementType="Argument">
+            <stringProp name="Argument.name">mainurl</stringProp>
+            <stringProp name="Argument.value">${__P(mainurl,jdbc:linkoopdb:tcp://192.168.1.73:9205/ldb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">主DB的URL</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="admin" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">${a}</stringProp>
+        <stringProp name="dbUrl">${mainurl}</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">${a}</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="setup" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE SC_TEST_PALLAS.T_TARGET_STORE_SALES2 IF EXISTS CASCADE;" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="query">DROP TABLE SC_TEST_PALLAS.T_TARGET_STORE_SALES2 IF EXISTS CASCADE;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE IF NOT EXISTS SC_TEST_PALLAS.T_TARGET_STORE_SALES2(SS_SOLD_DATE_SK INTEGER,SS_SOLD_TIME_SK INTEGER,SS_ITEM_SK INTEGER NOT NULL,SS_CUSTOMER_SK INTEGER,SS_CDEMO_SK INTEGER,SS_HDEMO_SK INTEGER,SS_ADDR_SK INTEGER,SS_STORE_SK INTEGER,SS_PROMO_SK INTEGER,SS_TICKET_NUMBER BIGINT NOT NULL,SS_QUANTITY INTEGER,SS_WHOLESALE_COST DECIMAL(7,2),SS_LIST_PRICE DECIMAL(7,2),SS_SALES_PRICE DECIMAL(7,2),SS_EXT_DISCOUNT_AMT DECIMAL(7,2),SS_EXT_SALES_PRICE DECIMAL(7,2),SS_EXT_WHOLESALE_COST DECIMAL(7,2),SS_EXT_LIST_PRICE DECIMAL(7,2),SS_EXT_TAX DECIMAL(7,2),SS_COUPON_AMT DECIMAL(7,2),SS_NET_PAID DECIMAL(7,2),SS_NET_PAID_INC_TAX DECIMAL(7,2),SS_NET_PROFIT DECIMAL(7,2))  properties(&apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;) ENGINE PALLAS;" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="query">CREATE TABLE IF NOT EXISTS SC_TEST_PALLAS.T_TARGET_STORE_SALES2(SS_SOLD_DATE_SK INTEGER,SS_SOLD_TIME_SK INTEGER,SS_ITEM_SK INTEGER NOT NULL,SS_CUSTOMER_SK INTEGER,SS_CDEMO_SK INTEGER,SS_HDEMO_SK INTEGER,SS_ADDR_SK INTEGER,SS_STORE_SK INTEGER,SS_PROMO_SK INTEGER,SS_TICKET_NUMBER BIGINT NOT NULL,SS_QUANTITY INTEGER,SS_WHOLESALE_COST DECIMAL(7,2),SS_LIST_PRICE DECIMAL(7,2),SS_SALES_PRICE DECIMAL(7,2),SS_EXT_DISCOUNT_AMT DECIMAL(7,2),SS_EXT_SALES_PRICE DECIMAL(7,2),SS_EXT_WHOLESALE_COST DECIMAL(7,2),SS_EXT_LIST_PRICE DECIMAL(7,2),SS_EXT_TAX DECIMAL(7,2),SS_COUPON_AMT DECIMAL(7,2),SS_NET_PAID DECIMAL(7,2),SS_NET_PAID_INC_TAX DECIMAL(7,2),SS_NET_PROFIT DECIMAL(7,2)) 
+properties(&apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;) ENGINE PALLAS;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO SC_TEST_PALLAS.T_TARGET_STORE_SALES2 VALUES(9999,9999,9999,9999,9999,9999,9999,9999,9999,9999 ,9999,9999,9999,9999,9999,9999,9999,9999,9999,9999,9999,9999,9999);" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="query">INSERT INTO SC_TEST_PALLAS.T_TARGET_STORE_SALES2 VALUES(9999,9999,9999,9999,9999,9999,9999,9999,9999,9999
+,9999,9999,9999,9999,9999,9999,9999,9999,9999,9999,9999,9999,9999);
+
+INSERT INTO SC_TEST_PALLAS.T_TARGET_STORE_SALES2 VALUES(8888,8888,8888,8888,8888,8888,8888,8888,8888,8888
+,8888,8888,8888,8888,8888,8888,8888,8888,8888,8888,8888,8888,8888);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="select" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM SC_TEST_PALLAS.T_TARGET_STORE_SALES2 ORDER BY SS_SOLD_DATE_SK;" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">SELECT * FROM SC_TEST_PALLAS.T_TARGET_STORE_SALES2 ORDER BY SS_SOLD_DATE_SK;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="loop" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">10</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="query">INSERT INTO SC_TEST_PALLAS.T_TARGET_STORE_SALES2 SELECT * FROM SC_TEST_PALLAS.T_TARGET_STORE_SALES;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="update" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="query">UPDATE SC_TEST_PALLAS.T_TARGET_STORE_SALES2
+SET SS_CDEMO_SK = 11111 
+WHERE SS_SOLD_DATE_SK IS NULL;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="delete" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="query">DELETE FROM SC_TEST_PALLAS.T_TARGET_STORE_SALES2
+WHERE SS_SOLD_DATE_SK IS NULL;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="query">INSERT INTO SC_TEST_PALLAS.T_TARGET_STORE_SALES2 SELECT * FROM SC_TEST_PALLAS.T_TARGET_STORE_SALES;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="select" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM SC_TEST_PALLAS.T_TARGET_STORE_SALES2 ORDER BY SS_SOLD_DATE_SK;" enabled="true">
+          <stringProp name="dataSource">${a}</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">SELECT * FROM SC_TEST_PALLAS.T_TARGET_STORE_SALES2 ORDER BY SS_SOLD_DATE_SK;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="察看结果树" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
