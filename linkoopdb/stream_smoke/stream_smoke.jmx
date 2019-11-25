@@ -179,6 +179,12 @@
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">1034 LDBX081-11的node1集群</stringProp>
           </elementProp>
+          <elementProp name="T_parquet_1580_path3" elementType="Argument">
+            <stringProp name="Argument.name">T_parquet_1580_path3</stringProp>
+            <stringProp name="Argument.value">file:///fsshare/ldb-server/home/PUBLIC/tables/PUBLIC/c6f7440e-c841-4e3e-9ae2-01f8a244e592</stringProp>
+            <stringProp name="Argument.desc">存储路径为本地时的parquet文件路径</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -282,25 +288,6 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="kafka start" enabled="true"/>
-        <hashTree>
-          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="startzk" enabled="true">
-            <stringProp name="hostname">192.168.1.75</stringProp>
-            <intProp name="port">22</intProp>
-            <stringProp name="username">luyao</stringProp>
-            <stringProp name="password">123456</stringProp>
-            <stringProp name="command">/home/luyao/startzk.sh</stringProp>
-          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
-          <hashTree/>
-          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="startkafka" enabled="true">
-            <stringProp name="hostname">192.168.1.75</stringProp>
-            <intProp name="port">22</intProp>
-            <stringProp name="username">luyao</stringProp>
-            <stringProp name="password">123456</stringProp>
-            <stringProp name="command">/home/luyao/startkfk.sh</stringProp>
-          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
-          <hashTree/>
-        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="648 SQL008-05 create  linkoopdb source" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-T_冒烟_dbsource_001" enabled="true">
@@ -11284,7 +11271,7 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="false">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="query">create stream T_parquet_1580(
   ID INT PRIMARY KEY, 
@@ -11301,6 +11288,34 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
     &apos;path&apos;:  &apos;${T_parquet_1580_path2}&apos;,
+    &apos;format&apos;:&apos;parquet&apos;
+)</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="query">create stream T_parquet_1580(
+  ID INT PRIMARY KEY, 
+  NAME VARCHAR(255), 
+  ACCOUNT BIGINT, 
+  AVERAGE DECIMAL(15,3), 
+  INCOME DOUBLE,
+  byteField tinyint, 
+  shortField smallint,
+  floatField float, 
+  dateField date,
+  timestampField timestamp
+)properties(
+    &apos;type&apos;:&apos;source&apos;,
+    &apos;connector&apos;:&apos;filesystem&apos;,
+    &apos;path&apos;: &apos;${T_parquet_1580_path3}&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -11363,10 +11378,10 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1953036159">ID	NAME	ACCOUNT	AVERAGE	INCOME	BYTEFIELD	SHORTFIELD	FLOATFIELD	DATEFIELD	TIMESTAMPFIELD
-1	zhangsan	123456	165243.210	8000.0	-128	-32768	129.8	2019-8-22	2019-05-20 00:00:00.0
+                  <stringProp name="898632355">ID	NAME	ACCOUNT	AVERAGE	INCOME	BYTEFIELD	SHORTFIELD	FLOATFIELD	DATEFIELD	TIMESTAMPFIELD
+1	zhangsan	123456	165243.210	8000.0	-128	-327	129.8	2019-8-22	2019-05-20 00:00:00.0
 2	lisi	123458	165543.210	8880.0	-128	-9	21.8	2019-8-23	2019-05-20 00:00:10.0
-3	wangwu	12987654	165223.210	8800.0	127	-3276	120.8	2019-8-24	2019-05-20 00:01:00.0
+3	wangwu	12987654	165223.210	8800.0	127	-327	120.8	2019-8-24	2019-05-20 00:01:00.0
 4	zhaoliu	1236	16543.210	8008.0	111	1111	159.8	2019-8-25	2019-05-20 00:02:00.0
 6	shenqi	18372	1652413.210	8010.0	0	768	111.8	2019-8-25	2019-05-20 00:02:10.0
 7	哈巴	123322256	165242.210	8200.0	112	8	122.8	2019-8-27	2019-05-20 00:03:00.0
@@ -11498,7 +11513,7 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
 )properties(
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
-    &apos;path&apos;:&apos;${T_parquet_1580_path2}&apos;,
+    &apos;path&apos;:&apos;${T_parquet_1580_path3}&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -11581,9 +11596,10 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="2094431827">1	zhangsan	123456	165243.210	8000.0	-128	-32768	129.8	2019-08-22	2019-05-20 00:00:00.0
+                  <stringProp name="-1567001343">ID	NAME	ACCOUNT	AVERAGE	INCOME	byteField	shortField	floatField	dateField	timestampField
+1	zhangsan	123456	165243.210	8000.0	-128	-327	129.8	2019-08-22	2019-05-20 00:00:00.0
 2	lisi	123458	165543.210	8880.0	-128	-9	21.8	2019-08-23	2019-05-20 00:00:10.0
-3	wangwu	12987654	165223.210	8800.0	127	-3276	120.8	2019-08-24	2019-05-20 00:01:00.0
+3	wangwu	12987654	165223.210	8800.0	127	-327	120.8	2019-08-24	2019-05-20 00:01:00.0
 4	zhaoliu	1236	16543.210	8008.0	111	1111	159.8	2019-08-25	2019-05-20 00:02:00.0
 6	shenqi	18372	1652413.210	8010.0	0	768	111.8	2019-08-25	2019-05-20 00:02:10.0
 7	哈巴	123322256	165242.210	8200.0	112	8	122.8	2019-08-27	2019-05-20 00:03:00.0
@@ -11790,7 +11806,7 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
 )properties(
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
-    &apos;path&apos;:&apos;${T_parquet_1580_path2}&apos;,
+    &apos;path&apos;:&apos;${T_parquet_1580_path3}&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -11968,13 +11984,15 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1733553001">1	zhangsan	123456	165243.210	8000.0	-128	-32768	129.8	2019-08-22	2019-05-20 00:00:00.0
+                  <stringProp name="-1567001343">ID	NAME	ACCOUNT	AVERAGE	INCOME	byteField	shortField	floatField	dateField	timestampField
+1	zhangsan	123456	165243.210	8000.0	-128	-327	129.8	2019-08-22	2019-05-20 00:00:00.0
 2	lisi	123458	165543.210	8880.0	-128	-9	21.8	2019-08-23	2019-05-20 00:00:10.0
-3	wangwu	12987654	165223.210	8800.0	127	-3276	120.8	2019-08-24	2019-05-20 00:01:00.0
+3	wangwu	12987654	165223.210	8800.0	127	-327	120.8	2019-08-24	2019-05-20 00:01:00.0
 4	zhaoliu	1236	16543.210	8008.0	111	1111	159.8	2019-08-25	2019-05-20 00:02:00.0
 6	shenqi	18372	1652413.210	8010.0	0	768	111.8	2019-08-25	2019-05-20 00:02:10.0
 7	哈巴	123322256	165242.210	8200.0	112	8	122.8	2019-08-27	2019-05-20 00:03:00.0
-8	金毛	12343456	1653.210	8004.0	28	2768	124.8	2019-08-02	2019-05-20 00:04:00.0</stringProp>
+8	金毛	12343456	1653.210	8004.0	28	2768	124.8	2019-08-02	2019-05-20 00:04:00.0
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
