@@ -170,6 +170,16 @@
             <stringProp name="Argument.value">node2_ldb</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="hive_jdbc_db_link_name" elementType="Argument">
+            <stringProp name="Argument.name">hive_jdbc_db_link_name</stringProp>
+            <stringProp name="Argument.value">hive_jdbc_db_link</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="hive_spark_db_link_name" elementType="Argument">
+            <stringProp name="Argument.name">hive_spark_db_link_name</stringProp>
+            <stringProp name="Argument.value">hive_spark_db_link</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -3472,95 +3482,16 @@ tvarchar varchar(200)
                 </JDBCSampler>
                 <hashTree/>
               </hashTree>
-              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2566 JDBC on Hive database link" enabled="true">
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2566 JDBC/SPARK on Hive database link" enabled="true">
                 <stringProp name="TestPlan.comments">Hive database link通过hive jdbc连接方式，dblink创建表、表的插入、查询 truncate ；创建视图，视图查询</stringProp>
               </GenericController>
               <hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 create table in HIVE CLI" enabled="false">
-                  <stringProp name="dataSource">hivedb</stringProp>
-                  <stringProp name="queryType">Update Statement</stringProp>
-                  <stringProp name="query">create  table default.Test_DBLink_Numeric_Type(
-    id int,
-    t_int int,
-    t_tinyint  tinyint,  
-    t_smallint smallint,
-    t_bigint bigint,
-    t_float float,
-    t_double double,
-    t_decimal decimal(8,4)
-);</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                </JDBCSampler>
-                <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
-                    <stringProp name="Assertion.custom_message">0 updates</stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">8</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
-                </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="false"/>
-                <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 Drop database link if exists" enabled="true">
-                    <stringProp name="dataSource">node5_db</stringProp>
-                    <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop database link hive_jdbc_db_link if exists cascade;</stringProp>
-                    <stringProp name="queryArguments"></stringProp>
-                    <stringProp name="queryArgumentsTypes"></stringProp>
-                    <stringProp name="variableNames"></stringProp>
-                    <stringProp name="resultVariable"></stringProp>
-                    <stringProp name="queryTimeout"></stringProp>
-                    <stringProp name="resultSetHandler">Store as String</stringProp>
-                  </JDBCSampler>
-                  <hashTree>
-                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                      <collectionProp name="Asserion.test_strings">
-                        <stringProp name="-1157542694">0 updates</stringProp>
-                      </collectionProp>
-                      <stringProp name="Assertion.custom_message"></stringProp>
-                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                      <boolProp name="Assertion.assume_success">false</boolProp>
-                      <intProp name="Assertion.test_type">8</intProp>
-                    </ResponseAssertion>
-                    <hashTree/>
-                  </hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 Create database link" enabled="true">
-                    <stringProp name="dataSource">node5_db</stringProp>
-                    <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">CREATE DATABASE LINK hive_jdbc_db_link CONNECT TO &apos;${hive_jdbc_db_link_test_user}&apos; IDENTIFIED by &apos;${hive_jdbc_db_link_pwd}&apos; using &apos;${hive_jdbc_db_link_url}&apos; PROPERTIES(&apos;schema&apos;:&apos;default&apos;);</stringProp>
-                    <stringProp name="queryArguments"></stringProp>
-                    <stringProp name="queryArgumentsTypes"></stringProp>
-                    <stringProp name="variableNames"></stringProp>
-                    <stringProp name="resultVariable"></stringProp>
-                    <stringProp name="queryTimeout"></stringProp>
-                    <stringProp name="resultSetHandler">Store as String</stringProp>
-                  </JDBCSampler>
-                  <hashTree>
-                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                      <collectionProp name="Asserion.test_strings">
-                        <stringProp name="-1157542694">0 updates</stringProp>
-                      </collectionProp>
-                      <stringProp name="Assertion.custom_message"></stringProp>
-                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                      <boolProp name="Assertion.assume_success">false</boolProp>
-                      <intProp name="Assertion.test_type">8</intProp>
-                    </ResponseAssertion>
-                    <hashTree/>
-                  </hashTree>
-                </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scnarios-001-Database Link test cases" enabled="true"/>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-01-JDBC-Database Link test cases" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SD-S1-Drop database link if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop database link hive_jdbc_db_link if exists cascade;</stringProp>
+                    <stringProp name="query">drop database link ${hive_jdbc_db_link_name} if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3583,7 +3514,7 @@ tvarchar varchar(200)
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S1-01-hive_jdbc_db_link-create database link" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">CREATE DATABASE LINK hive_jdbc_db_link CONNECT TO &apos;${hive_jdbc_db_link_test_user}&apos; IDENTIFIED by &apos;${hive_jdbc_db_link_pwd}&apos; using &apos;${hive_jdbc_db_link_url}&apos; PROPERTIES(&apos;schema&apos;:&apos;default&apos;);</stringProp>
+                    <stringProp name="query">CREATE DATABASE LINK ${hive_jdbc_db_link_name} CONNECT TO &apos;${hive_jdbc_db_link_test_user}&apos; IDENTIFIED by &apos;${hive_jdbc_db_link_pwd}&apos; using &apos;${hive_jdbc_db_link_url}&apos; PROPERTIES(&apos;schema&apos;:&apos;default&apos;);</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3604,7 +3535,7 @@ tvarchar varchar(200)
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S1-02-hive_jdbc_db_link-reload database link" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">RELOAD DATABASE LINK hive_jdbc_db_link;</stringProp>
+                    <stringProp name="query">RELOAD DATABASE LINK ${hive_jdbc_db_link_name};</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3625,7 +3556,7 @@ tvarchar varchar(200)
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S1-03-hive_jdbc_db_link-drop database link" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop database link hive_jdbc_db_link if exists cascade;</stringProp>
+                    <stringProp name="query">drop database link ${hive_jdbc_db_link_name} if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3667,7 +3598,7 @@ tvarchar varchar(200)
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-S1-Create database link" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">CREATE DATABASE LINK hive_jdbc_db_link CONNECT TO &apos;${hive_jdbc_db_link_test_user}&apos; IDENTIFIED by &apos;${hive_jdbc_db_link_pwd}&apos; using &apos;${hive_jdbc_db_link_url}&apos; PROPERTIES(&apos;schema&apos;:&apos;default&apos;);</stringProp>
+                    <stringProp name="query">CREATE DATABASE LINK ${hive_jdbc_db_link_name} CONNECT TO &apos;${hive_jdbc_db_link_test_user}&apos; IDENTIFIED by &apos;${hive_jdbc_db_link_pwd}&apos; using &apos;${hive_jdbc_db_link_url}&apos; PROPERTIES(&apos;schema&apos;:&apos;default&apos;);</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3688,12 +3619,12 @@ tvarchar varchar(200)
                     <hashTree/>
                   </hashTree>
                 </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scnarios-002-Database Link Table test cases" enabled="true"/>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-02-JDBC-Database Link Table test cases" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Table if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Table if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Table if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3716,7 +3647,7 @@ tvarchar varchar(200)
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S2-01-hive_jdbc_db_link-check [create table] syntax" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">create  table hive_jdbc_db_link.Test_DBLink_Table(
+                    <stringProp name="query">create  table ${hive_jdbc_db_link_name}.Test_DBLink_Table(
     id int,
     t_int int,
     t_tinyint  tinyint,  
@@ -3748,7 +3679,7 @@ tvarchar varchar(200)
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S2-02-hive_jdbc_db_link-check [insert into table] syntax" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">INSERT INTO hive_jdbc_db_link.Test_DBLink_Table VALUES 
+                    <stringProp name="query">INSERT INTO ${hive_jdbc_db_link_name}.Test_DBLink_Table VALUES 
 (1,-2147483648,-128,-32768,-9223372036854775808,-3.4E38,-1.79E308,100.88),
 (2,2147483647,127,32767,9223372036854775807,3.4E38,1.79E308,10.88),
 (3,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -3775,7 +3706,7 @@ tvarchar varchar(200)
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S2-03-hive_jdbc_db_link-check [select from table] syntax" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select count(*) from hive_jdbc_db_link.Test_DBLink_Table;</stringProp>
+                    <stringProp name="query">select count(*) from ${hive_jdbc_db_link_name}.Test_DBLink_Table;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3807,7 +3738,7 @@ if(actual_table_count.equals(expected_table_count)){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_Table if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Table if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Table if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3828,12 +3759,12 @@ if(actual_table_count.equals(expected_table_count)){
                     <hashTree/>
                   </hashTree>
                 </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scnarios-003-Database Link View test scenarios" enabled="true"/>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-03-JDBC-Database Link View test scenarios" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Table if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Table if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Table if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3856,7 +3787,7 @@ if(actual_table_count.equals(expected_table_count)){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop view Test_DBLink_View" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop view hive_jdbc_db_link.Test_DBLink_View;</stringProp>
+                    <stringProp name="query">drop view ${hive_jdbc_db_link_name}.Test_DBLink_View if exists;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3879,7 +3810,7 @@ if(actual_table_count.equals(expected_table_count)){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-create table Test_DBLink_Table" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">create  table hive_jdbc_db_link.Test_DBLink_Table(
+                    <stringProp name="query">create  table ${hive_jdbc_db_link_name}.Test_DBLink_Table(
     id int,
     name varchar(10),
     sex varchar(2)
@@ -3906,7 +3837,7 @@ if(actual_table_count.equals(expected_table_count)){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-prepare data in table Test_DBLink_Table" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">insert into hive_jdbc_db_link.Test_DBLink_Table values
+                    <stringProp name="query">insert into ${hive_jdbc_db_link_name}.Test_DBLink_Table values
 (1,&apos;Tom&apos;,&apos;f&apos;),
 (2,&apos;Jerry&apos;,&apos;f&apos;),
 (3,&apos;Lily&apos;,&apos;m&apos;),
@@ -3934,7 +3865,7 @@ if(actual_table_count.equals(expected_table_count)){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S3-01-hive_jdbc_db_link-create view Test_DBLink_View" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">create  view hive_jdbc_db_link.Test_DBLink_View as select * from hive_jdbc_db_link.Test_DBLink_Table where hive_jdbc_db_link.Test_DBLink_Table.id &lt;3;</stringProp>
+                    <stringProp name="query">create  view ${hive_jdbc_db_link_name}.Test_DBLink_View as select * from ${hive_jdbc_db_link_name}.Test_DBLink_Table where ${hive_jdbc_db_link_name}.Test_DBLink_Table.id &lt;3;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -3957,7 +3888,7 @@ if(actual_table_count.equals(expected_table_count)){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S3-02-hive_jdbc_db_link-select count(*) from view Test_DBLink_View" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select count(*) as total_count from hive_jdbc_db_link.Test_DBLink_View;
+                    <stringProp name="query">select count(*) as total_count from ${hive_jdbc_db_link_name}.Test_DBLink_View;
 </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
@@ -3991,7 +3922,7 @@ if(Result.get(0).get(&quot;TOTAL_COUNT&quot;) != expect_count){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S3-03-hive_jdbc_db_link-drop view Test_DBLink_View" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop view hive_jdbc_db_link.Test_DBLink_View;</stringProp>
+                    <stringProp name="query">drop view ${hive_jdbc_db_link_name}.Test_DBLink_View;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4014,7 +3945,7 @@ if(Result.get(0).get(&quot;TOTAL_COUNT&quot;) != expect_count){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_Table if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Table if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Table if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4035,12 +3966,12 @@ if(Result.get(0).get(&quot;TOTAL_COUNT&quot;) != expect_count){
                     <hashTree/>
                   </hashTree>
                 </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scnarios-004-Database Link Numeric Type test cases" enabled="true"/>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-04-JDBC-Database Link Numeric Type test cases" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Numeric_Type if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Numeric_Type if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Numeric_Type if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4063,7 +3994,7 @@ if(Result.get(0).get(&quot;TOTAL_COUNT&quot;) != expect_count){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-hive_jdbc_db_link-create table Test_DBLink_Numeric_Type" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">create  table hive_jdbc_db_link.Test_DBLink_Numeric_Type(
+                    <stringProp name="query">create  table ${hive_jdbc_db_link_name}.Test_DBLink_Numeric_Type(
     id int,
     t_int int,
     t_tinyint  tinyint,  
@@ -4095,7 +4026,7 @@ if(Result.get(0).get(&quot;TOTAL_COUNT&quot;) != expect_count){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-hive_jdbc_db_link-prepare test data in table Test_DBLink_Numeric_Type" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">INSERT INTO hive_jdbc_db_link.Test_DBLink_Numeric_Type VALUES 
+                    <stringProp name="query">INSERT INTO ${hive_jdbc_db_link_name}.Test_DBLink_Numeric_Type VALUES 
 (1,-2147483648,-128,-32768,-9223372036854775808,-3.4E38,-1.79E308,100.88),
 (2,2147483647,127,32767,9223372036854775807,3.4E38,1.79E308,10.88),
 (3,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -4122,7 +4053,7 @@ if(Result.get(0).get(&quot;TOTAL_COUNT&quot;) != expect_count){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S4-01-hive_jdbc_db_link-check [Numeric Types] create by db link" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select * from hive_jdbc_db_link.Test_DBLink_Numeric_Type order by hive_jdbc_db_link.Test_DBLink_Numeric_Type.id asc;</stringProp>
+                    <stringProp name="query">select * from ${hive_jdbc_db_link_name}.Test_DBLink_Numeric_Type order by ${hive_jdbc_db_link_name}.Test_DBLink_Numeric_Type.id asc;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4341,7 +4272,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-S4-02-drop table Test_DBLink_Numeric_Type if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Numeric_Type if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Numeric_Type if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4362,12 +4293,12 @@ for(int i=0;i&lt;count;i++){
                     <hashTree/>
                   </hashTree>
                 </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scnarios-005-Database Link String Type test cases" enabled="true"/>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-05-JDBC-Database Link String Type test cases" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_String_Type if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_String_Type if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_String_Type if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4390,7 +4321,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-create table Test_DBLink_String_Type" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">create  table hive_jdbc_db_link.Test_DBLink_String_Type(
+                    <stringProp name="query">create  table ${hive_jdbc_db_link_name}.Test_DBLink_String_Type(
     id int, 
     t_char char(6), 
     t_varchar varchar(10), 
@@ -4418,7 +4349,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-prepare test data in table Test_DBLink_String_Type" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">INSERT INTO hive_jdbc_db_link.Test_DBLink_String_Type VALUES 
+                    <stringProp name="query">INSERT INTO ${hive_jdbc_db_link_name}.Test_DBLink_String_Type VALUES 
 (1,&apos;aaa&apos;,&apos;bbccc&apos;,&apos;ddddddd&apos;),
 (2,&apos;&apos;,&apos;&apos;,&apos;&apos;),
 (3,NULL,NULL,NULL),
@@ -4445,7 +4376,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S5-01-hive_jdbc_db_link-check [String Types] create by db link" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select * from hive_jdbc_db_link.Test_DBLink_String_Type order by hive_jdbc_db_link.Test_DBLink_String_Type.id asc;</stringProp>
+                    <stringProp name="query">select * from ${hive_jdbc_db_link_name}.Test_DBLink_String_Type order by ${hive_jdbc_db_link_name}.Test_DBLink_String_Type.id asc;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4560,7 +4491,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_String_Type if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_String_Type if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_String_Type if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4581,12 +4512,12 @@ for(int i=0;i&lt;count;i++){
                     <hashTree/>
                   </hashTree>
                 </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scnarios-006-Database Link Datetime Type test cases" enabled="true"/>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-06-JDBC-Database Link Datetime Type test cases" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Datetime_Type if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Datetime_Type if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Datetime_Type if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4609,7 +4540,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-create table Test_DBLink_Datetime_Type" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">create  table hive_jdbc_db_link.Test_DBLink_Datetime_Type(
+                    <stringProp name="query">create  table ${hive_jdbc_db_link_name}.Test_DBLink_Datetime_Type(
     id int, 
     t_date date, 
     t_timestamp timestamp
@@ -4636,7 +4567,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-prepare test data in table Test_DBLink_Datetime_Type" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">INSERT INTO hive_jdbc_db_link.Test_DBLink_Datetime_Type VALUES 
+                    <stringProp name="query">INSERT INTO ${hive_jdbc_db_link_name}.Test_DBLink_Datetime_Type VALUES 
 (1,&apos;&apos;,&apos;&apos;),
 (2,NULL,NULL),
 (3,&apos;1984-9-7&apos;,&apos;2019-11-13 19:38:18&apos;);</stringProp>
@@ -4662,7 +4593,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S6-01-hive_jdbc_db_link-check [Datetime Types] create by db link" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select * from hive_jdbc_db_link.Test_DBLink_Datetime_Type order by hive_jdbc_db_link.Test_DBLink_Datetime_Type.id asc;</stringProp>
+                    <stringProp name="query">select * from ${hive_jdbc_db_link_name}.Test_DBLink_Datetime_Type order by ${hive_jdbc_db_link_name}.Test_DBLink_Datetime_Type.id asc;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4741,7 +4672,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_String_Type if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_String_Type if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_String_Type if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4762,12 +4693,12 @@ for(int i=0;i&lt;count;i++){
                     <hashTree/>
                   </hashTree>
                 </hashTree>
-                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scnarios-007-Database Link Misc Type test cases" enabled="true"/>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-07-JDBC-Database Link Misc Type test cases" enabled="true"/>
                 <hashTree>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Misc_Type if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Misc_Type if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Misc_Type if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4790,7 +4721,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-create table Test_DBLink_Misc_Type" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">create  table hive_jdbc_db_link.Test_DBLink_Misc_Type(
+                    <stringProp name="query">create  table ${hive_jdbc_db_link_name}.Test_DBLink_Misc_Type(
     id int, 
     t_boolean boolean
 );</stringProp>
@@ -4816,7 +4747,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-prepare test data in table Test_DBLink_Misc_Type" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">INSERT INTO hive_jdbc_db_link.Test_DBLink_Misc_Type VALUES 
+                    <stringProp name="query">INSERT INTO ${hive_jdbc_db_link_name}.Test_DBLink_Misc_Type VALUES 
 (1,&apos;&apos;),
 (2,NULL),
 (3,true),
@@ -4847,7 +4778,7 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S7-01-hive_jdbc_db_link-check [Misc Types] create by db link" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Select Statement</stringProp>
-                    <stringProp name="query">select * from hive_jdbc_db_link.Test_DBLink_Misc_Type order by hive_jdbc_db_link.Test_DBLink_Misc_Type.id asc;</stringProp>
+                    <stringProp name="query">select * from ${hive_jdbc_db_link_name}.Test_DBLink_Misc_Type order by ${hive_jdbc_db_link_name}.Test_DBLink_Misc_Type.id asc;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4934,7 +4865,1386 @@ for(int i=0;i&lt;count;i++){
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_Misc_Type if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop table hive_jdbc_db_link.Test_DBLink_Misc_Type if exists cascade;</stringProp>
+                    <stringProp name="query">drop table ${hive_jdbc_db_link_name}.Test_DBLink_Misc_Type if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-08-SPARK-Database Link test cases" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SD-S8-Drop database link if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop database link ${hive_spark_db_link_name} if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S8-01-hive_jdbc_db_link-create database link" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">CREATE DATABASE LINK ${hive_spark_db_link_name} CONNECT TO &apos;hive&apos; IDENTIFIED by &apos;hive&apos; using &apos;hive&apos; PROPERTIES(&apos;database&apos;:&apos;default&apos;);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings"/>
+                      <stringProp name="Assertion.custom_message">0 updates</stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S8-02-hive_jdbc_db_link-reload database link" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">RELOAD DATABASE LINK ${hive_spark_db_link_name};</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings"/>
+                      <stringProp name="Assertion.custom_message">0 updates</stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S8-03-hive_jdbc_db_link-drop database link" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop database link ${hive_spark_db_link_name} if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings"/>
+                      <stringProp name="Assertion.custom_message">0 updates</stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-S8-Create database link" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">CREATE DATABASE LINK ${hive_spark_db_link_name} CONNECT TO &apos;hive&apos; IDENTIFIED by &apos;hive&apos; using &apos;hive&apos; PROPERTIES(&apos;database&apos;:&apos;default&apos;);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-09-SPARK-Database Link Table test cases" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Table if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Table if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S9-01-hive_jdbc_db_link-check [create table] syntax" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">create  table ${hive_spark_db_link_name}.Test_DBLink_Table(
+    id int,
+    t_int int,
+    t_tinyint  tinyint,  
+    t_smallint smallint,
+    t_bigint bigint,
+    t_float float,
+    t_double double,
+    t_decimal decimal(8,4)
+);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S9-02-hive_jdbc_db_link-check [insert into table] syntax" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">INSERT INTO ${hive_spark_db_link_name}.Test_DBLink_Table VALUES 
+(1,-2147483648,-128,-32768,-9223372036854775808,-3.4E38,-1.79E308,100.88),
+(2,2147483647,127,32767,9223372036854775807,3.4E38,1.79E308,10.88),
+(3,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(4,12,-18,368,44,-3.45,1.7965,939.056);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="202574046">4 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S9-03-hive_jdbc_db_link-check [select from table] syntax" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">select count(*) from ${hive_spark_db_link_name}.Test_DBLink_Table;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable">SQL_RESULT</stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as Object</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="判断表Test_DBLink_Numeric_Type的数据是否是4行" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+String actual_table_count = Result.get(0).get(&quot;C1&quot;).toString();
+
+String expected_table_count = &quot;4&quot;;
+
+if(actual_table_count.equals(expected_table_count)){
+	Failure = false;
+}else{
+	Failure = true;
+	FailureMessage = &quot;期望查询到数据行数：4，实际查询到数据行数：&quot; + actual_table_count;
+}
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_Table if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Table if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-10-SPARK-Database Link View test scenarios" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Table if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Table if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop view Test_DBLink_View" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop view ${hive_spark_db_link_name}.Test_DBLink_View  if exists;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="false">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-create table Test_DBLink_Table" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">create  table ${hive_spark_db_link_name}.Test_DBLink_Table(
+    id int,
+    name varchar(10),
+    sex varchar(2)
+);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-prepare data in table Test_DBLink_Table" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">insert into ${hive_spark_db_link_name}.Test_DBLink_Table values
+(1,&apos;Tom&apos;,&apos;f&apos;),
+(2,&apos;Jerry&apos;,&apos;f&apos;),
+(3,&apos;Lily&apos;,&apos;m&apos;),
+(4,&apos;Kathy&apos;,&apos;f&apos;),
+(5,&apos;Chris&apos;,&apos;f&apos;);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1604880417">5 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S10-01-hive_jdbc_db_link-create view Test_DBLink_View" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">create  view ${hive_spark_db_link_name}.Test_DBLink_View as select * from ${hive_spark_db_link_name}.Test_DBLink_Table where ${hive_spark_db_link_name}.Test_DBLink_Table.id &lt;3;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S10-02-hive_jdbc_db_link-select count(*) from view Test_DBLink_View" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">select count(*) as total_count from ${hive_spark_db_link_name}.Test_DBLink_View;
+</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable">SQL_RESULT</stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as Object</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证视图返回的数据行数是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+
+Fialure = false;
+expect_count = 2;
+//log.info(Integer.toString(Result.get(0).get(&quot;TOTAL_COUNT&quot;)));
+
+if(Result.get(0).get(&quot;TOTAL_COUNT&quot;) != expect_count){
+	Failure = true;
+	FailureMessage += &quot;期望数据：&quot;+expect_count+&quot;，实际数据：&quot;+ Result.get(0).get(&quot;TOTAL_COUNT&quot;);
+	
+}
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S10-03-hive_jdbc_db_link-drop view Test_DBLink_View" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop view ${hive_spark_db_link_name}.Test_DBLink_View;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_Table if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Table if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-11-SPARK-Database Link Numeric Type test cases" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Numeric_Type if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Numeric_Type if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-hive_jdbc_db_link-create table Test_DBLink_Numeric_Type" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">create  table ${hive_spark_db_link_name}.Test_DBLink_Numeric_Type(
+    id int,
+    t_int int,
+    t_tinyint  tinyint,  
+    t_smallint smallint,
+    t_bigint bigint,
+    t_float float,
+    t_double double,
+    t_decimal decimal(8,4)
+);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-hive_jdbc_db_link-prepare test data in table Test_DBLink_Numeric_Type" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">INSERT INTO ${hive_spark_db_link_name}.Test_DBLink_Numeric_Type VALUES 
+(1,-2147483648,-128,-32768,-9223372036854775808,-3.4E38,-1.79E308,100.88),
+(2,2147483647,127,32767,9223372036854775807,3.4E38,1.79E308,10.88),
+(3,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(4,12,-18,368,44,-3.45,1.7965,939.056);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="202574046">4 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S11-01-hive_jdbc_db_link-check [Numeric Types] create by db link" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">select * from ${hive_spark_db_link_name}.Test_DBLink_Numeric_Type order by ${hive_spark_db_link_name}.Test_DBLink_Numeric_Type.id asc;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable">SQL_RESULT</stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as Object</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Numeric_Type中INT类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Integer.toString(Result.get(0).get(&quot;T_INT&quot;));
+actual_results[1] = Integer.toString(Result.get(1).get(&quot;T_INT&quot;));
+actual_results[2] = Result.get(2).get(&quot;T_INT&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_INT&quot;);
+actual_results[3] = Integer.toString(Result.get(3).get(&quot;T_INT&quot;));
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;-2147483648&quot;;
+expected_results[1] = &quot;2147483647&quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;12&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：&quot;+expected_results[i]+&quot;，实际数据：&quot;+ actual_results[i];
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Numeric_Type中TINYINT类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_TINYINT&quot;).toString();
+
+actual_results[1] = Result.get(1).get(&quot;T_TINYINT&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_TINYINT&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_TINYINT&quot;);
+actual_results[3] = Result.get(3).get(&quot;T_TINYINT&quot;).toString();
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;-128&quot;;
+expected_results[1] = &quot;127&quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;-18&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：&quot;+expected_results[i]+&quot;，实际数据：&quot;+ actual_results[i];
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Numeric_Type中SMALLINT类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_SMALLINT&quot;).toString();
+
+actual_results[1] = Result.get(1).get(&quot;T_SMALLINT&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_SMALLINT&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_SMALLINT&quot;);
+actual_results[3] = Result.get(3).get(&quot;T_SMALLINT&quot;).toString();
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;-32768&quot;;
+expected_results[1] = &quot;32767&quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;368&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：&quot;+expected_results[i]+&quot;，实际数据：&quot;+ actual_results[i];
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Numeric_Type中BIGINT类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_BIGINT&quot;).toString();
+actual_results[1] = Result.get(1).get(&quot;T_BIGINT&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_BIGINT&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_BIGINT&quot;);
+actual_results[3] = Result.get(3).get(&quot;T_BIGINT&quot;).toString();
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;-9223372036854775808&quot;;
+expected_results[1] = &quot;9223372036854775807&quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;44&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：&quot;+expected_results[i]+&quot;，实际数据：&quot;+ actual_results[i];
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Numeric_Type中DOUBLE类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_DOUBLE&quot;).toString();
+actual_results[1] = Result.get(1).get(&quot;T_DOUBLE&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_DOUBLE&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_DOUBLE&quot;);
+actual_results[3] = Result.get(3).get(&quot;T_DOUBLE&quot;).toString();
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;-1.79E308&quot;;
+expected_results[1] = &quot;1.79E308&quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;1.7965&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：&quot;+expected_results[i]+&quot;，实际数据：&quot;+ actual_results[i];
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Numeric_Type中DECIMAL类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_DECIMAL&quot;).toString();
+actual_results[1] = Result.get(1).get(&quot;T_DECIMAL&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_DECIMAL&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_DECIMAL&quot;);
+actual_results[3] = Result.get(3).get(&quot;T_DECIMAL&quot;).toString();
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;100.8800&quot;;
+expected_results[1] = &quot;10.8800&quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;939.0560&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：&quot;+expected_results[i]+&quot;，实际数据：&quot;+ actual_results[i];
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-S11-02-drop table Test_DBLink_Numeric_Type if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Numeric_Type if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-12-SPARK-Database Link String Type test cases" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_String_Type if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_String_Type if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-create table Test_DBLink_String_Type" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">create  table ${hive_spark_db_link_name}.Test_DBLink_String_Type(
+    id int, 
+    t_char char(6), 
+    t_varchar varchar(10), 
+    t_string string
+);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-prepare test data in table Test_DBLink_String_Type" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">INSERT INTO ${hive_spark_db_link_name}.Test_DBLink_String_Type VALUES 
+(1,&apos;aaa&apos;,&apos;bbccc&apos;,&apos;ddddddd&apos;),
+(2,&apos;&apos;,&apos;&apos;,&apos;&apos;),
+(3,NULL,NULL,NULL),
+(4,&apos;aaaabbbb&apos;,&apos;ccccccccdddd&apos;,&apos;dddddddeeeeeeeeeeee&apos;);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="202574046">4 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S12-01-hive_jdbc_db_link-check [String Types] create by db link" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">select * from ${hive_spark_db_link_name}.Test_DBLink_String_Type order by ${hive_spark_db_link_name}.Test_DBLink_String_Type.id asc;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable">SQL_RESULT</stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as Object</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_String_Type中CHAR类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(1).get(&quot;T_CHAR&quot;) == null? &quot;null&quot; : Result.get(0).get(&quot;T_CHAR&quot;);
+actual_results[1] = Result.get(1).get(&quot;T_CHAR&quot;) == null? &quot;null&quot; : Result.get(1).get(&quot;T_CHAR&quot;);
+actual_results[2] = Result.get(2).get(&quot;T_CHAR&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_CHAR&quot;);
+actual_results[3] = Result.get(3).get(&quot;T_CHAR&quot;) == null? &quot;null&quot; : Result.get(3).get(&quot;T_CHAR&quot;);
+log.info(actual_results[2]);
+
+String[] expected_results = new String[count];
+expected_results[0] = &quot;aaa   &quot;;
+expected_results[1] = &quot;      &quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;aaaabb&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：[&quot;+expected_results[i]+&quot;]，实际数据：[&quot;+ actual_results[i] + &quot;]&quot;;
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_String_Type中VARCHAR类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_VARCHAR&quot;) == null? &quot;null&quot; : Result.get(0).get(&quot;T_VARCHAR&quot;);
+actual_results[1] = Result.get(1).get(&quot;T_VARCHAR&quot;) == null? &quot;null&quot; : Result.get(1).get(&quot;T_VARCHAR&quot;);
+actual_results[2] = Result.get(2).get(&quot;T_VARCHAR&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_VARCHAR&quot;);
+actual_results[3] = Result.get(3).get(&quot;T_VARCHAR&quot;) == null? &quot;null&quot; : Result.get(3).get(&quot;T_VARCHAR&quot;);
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;bbccc&quot;;
+expected_results[1] = &quot;&quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;ccccccccdd&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：[&quot;+expected_results[i]+&quot;]，实际数据：[&quot;+ actual_results[i] + &quot;]&quot;;
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_String_Type中STRING类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 4;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_STRING&quot;) == null? &quot;null&quot; : Result.get(0).get(&quot;T_STRING&quot;);
+actual_results[1] = Result.get(1).get(&quot;T_STRING&quot;) == null? &quot;null&quot; : Result.get(1).get(&quot;T_STRING&quot;);
+actual_results[2] = Result.get(2).get(&quot;T_STRING&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_STRING&quot;);
+actual_results[3] = Result.get(3).get(&quot;T_STRING&quot;) == null? &quot;null&quot; : Result.get(3).get(&quot;T_STRING&quot;);
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;ddddddd&quot;;
+expected_results[1] = &quot;&quot;;
+expected_results[2] = &quot;null&quot;;
+expected_results[3] = &quot;dddddddeeeeeeeeeeee&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：[&quot;+expected_results[i]+&quot;]，实际数据：[&quot;+ actual_results[i] + &quot;]&quot;;
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_String_Type if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_String_Type if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-13-SPARK-Database Link Datetime Type test cases" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Datetime_Type if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Datetime_Type if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-create table Test_DBLink_Datetime_Type" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">create  table ${hive_spark_db_link_name}.Test_DBLink_Datetime_Type(
+    id int, 
+    t_date date, 
+    t_timestamp timestamp
+);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-prepare test data in table Test_DBLink_Datetime_Type" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">INSERT INTO ${hive_spark_db_link_name}.Test_DBLink_Datetime_Type VALUES 
+(1,&apos;&apos;,&apos;&apos;),
+(2,NULL,NULL),
+(3,&apos;1984-9-7&apos;,&apos;2019-11-13 19:38:18&apos;);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="2010028509">3 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S13-01-hive_jdbc_db_link-check [Datetime Types] create by db link" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">select * from ${hive_spark_db_link_name}.Test_DBLink_Datetime_Type order by ${hive_spark_db_link_name}.Test_DBLink_Datetime_Type.id asc;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable">SQL_RESULT</stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as Object</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Datetime_Type中DATE类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 3;
+
+
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_DATE&quot;) == null? &quot;null&quot; : Result.get(0).get(&quot;T_DATE&quot;).toString();
+actual_results[1] = Result.get(1).get(&quot;T_DATE&quot;) == null? &quot;null&quot; : Result.get(1).get(&quot;T_DATE&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_DATE&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_DATE&quot;).toString();
+//log.info(Result.get(2).get(&quot;T_DATE&quot;));
+
+String[] expected_results = new String[count];
+expected_results[0] = &quot;null&quot;;
+expected_results[1] = &quot;null&quot;;
+expected_results[2] = &quot;1984-9-7&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：[&quot;+expected_results[i]+&quot;]，实际数据：[&quot;+ actual_results[i] + &quot;]&quot;;
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Datetime_Type中TIMESTAMP类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 3;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_TIMESTAMP&quot;) == null? &quot;null&quot; : Result.get(0).get(&quot;T_TIMESTAMP&quot;).toString();
+actual_results[1] = Result.get(1).get(&quot;T_TIMESTAMP&quot;) == null? &quot;null&quot; : Result.get(1).get(&quot;T_TIMESTAMP&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_TIMESTAMP&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_TIMESTAMP&quot;).toString();
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;null&quot;;
+expected_results[1] = &quot;null&quot;;
+expected_results[2] = &quot;2019-11-13 19:38:18.0&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：[&quot;+expected_results[i]+&quot;]，实际数据：[&quot;+ actual_results[i] + &quot;]&quot;;
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_String_Type if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_String_Type if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                </hashTree>
+                <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Scenarios-14-SPARK-Database Link Misc Type test cases" enabled="true"/>
+                <hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-drop table Test_DBLink_Misc_Type if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Misc_Type if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-create table Test_DBLink_Misc_Type" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">create  table ${hive_spark_db_link_name}.Test_DBLink_Misc_Type(
+    id int, 
+    t_boolean boolean
+);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 SU-prepare test data in table Test_DBLink_Misc_Type" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">INSERT INTO ${hive_spark_db_link_name}.Test_DBLink_Misc_Type VALUES 
+(1,&apos;&apos;),
+(2,NULL),
+(3,true),
+(4,false),
+(5,0),
+(6,1),
+(7,2),
+(8,&apos;test&apos;);</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="1562690786">8 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TC-S14-01-hive_jdbc_db_link-check [Misc Types] create by db link" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="query">select * from ${hive_spark_db_link_name}.Test_DBLink_Misc_Type order by ${hive_spark_db_link_name}.Test_DBLink_Misc_Type.id asc;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable">SQL_RESULT</stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as Object</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="验证表Test_DBLink_Misc_Type中BOOLEAN类型数据是否正确" enabled="true">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 8;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_BOOLEAN&quot;) == null? &quot;null&quot; : Result.get(0).get(&quot;T_BOOLEAN&quot;).toString();
+actual_results[1] = Result.get(1).get(&quot;T_BOOLEAN&quot;) == null? &quot;null&quot; : Result.get(1).get(&quot;T_BOOLEAN&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_BOOLEAN&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_BOOLEAN&quot;).toString();
+actual_results[3] = Result.get(3).get(&quot;T_BOOLEAN&quot;) == null? &quot;null&quot; : Result.get(3).get(&quot;T_BOOLEAN&quot;).toString();
+actual_results[4] = Result.get(4).get(&quot;T_BOOLEAN&quot;) == null? &quot;null&quot; : Result.get(4).get(&quot;T_BOOLEAN&quot;).toString();
+actual_results[5] = Result.get(5).get(&quot;T_BOOLEAN&quot;) == null? &quot;null&quot; : Result.get(5).get(&quot;T_BOOLEAN&quot;).toString();
+actual_results[6] = Result.get(6).get(&quot;T_BOOLEAN&quot;) == null? &quot;null&quot; : Result.get(6).get(&quot;T_BOOLEAN&quot;).toString();
+actual_results[7] = Result.get(7).get(&quot;T_BOOLEAN&quot;) == null? &quot;null&quot; : Result.get(7).get(&quot;T_BOOLEAN&quot;).toString();
+//log.info(Result.get(2).get(&quot;T_DATE&quot;));
+
+String[] expected_results = new String[count];
+expected_results[0] = &quot;null&quot;;
+expected_results[1] = &quot;null&quot;;
+expected_results[2] = &quot;true&quot;;
+expected_results[3] = &quot;false&quot;;
+expected_results[4] = &quot;false&quot;;
+expected_results[5] = &quot;true&quot;;
+expected_results[6] = &quot;true&quot;;
+expected_results[7] = &quot;null&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：[&quot;+expected_results[i]+&quot;]，实际数据：[&quot;+ actual_results[i] + &quot;]&quot;;
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                    <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="[目前无法验证]验证表Test_DBLink_Misc_Type中BINARY类型数据是否正确" enabled="false">
+                      <stringProp name="BeanShellAssertion.query">Result=vars.getObject(&quot;SQL_RESULT&quot;);
+log.info(Result.toString());
+
+int count = 3;
+
+String[] actual_results = new String[count];
+actual_results[0] = Result.get(0).get(&quot;T_BINARY&quot;) == null? &quot;null&quot; : Result.get(0).get(&quot;T_BINARY&quot;).toString();
+actual_results[1] = Result.get(1).get(&quot;T_BINARY&quot;) == null? &quot;null&quot; : Result.get(1).get(&quot;T_BINARY&quot;).toString();
+actual_results[2] = Result.get(2).get(&quot;T_BINARY&quot;) == null? &quot;null&quot; : Result.get(2).get(&quot;T_BINARY&quot;).toString();
+//log.info(actual_results[2]);
+
+String[] expected_results = new String[count]; 
+expected_results[0] = &quot;null&quot;;
+expected_results[1] = &quot;null&quot;;
+expected_results[2] = &quot;2019-11-13 19:38:18.0&quot;;
+
+Fialure = false;
+
+for(int i=0;i&lt;count;i++){
+	if(!expected_results[i].equals(actual_results[i])){
+		Failure = true;
+		FailureMessage += &quot;\r\n第&quot;+(i+1).toString()+&quot;行的期望数据：[&quot;+expected_results[i]+&quot;]，实际数据：[&quot;+ actual_results[i] + &quot;]&quot;;
+	}
+}
+
+</stringProp>
+                      <stringProp name="BeanShellAssertion.filename"></stringProp>
+                      <stringProp name="BeanShellAssertion.parameters"></stringProp>
+                      <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+                    </BeanShellAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 TD-drop table Test_DBLink_Misc_Type if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop table ${hive_spark_db_link_name}.Test_DBLink_Misc_Type if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
@@ -4957,10 +6267,33 @@ for(int i=0;i&lt;count;i++){
                 </hashTree>
                 <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TearDown" enabled="true"/>
                 <hashTree>
-                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 S1-Drop database link if exists" enabled="true">
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 S1-Drop jdbc database link if exists" enabled="true">
                     <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
                     <stringProp name="queryType">Update Statement</stringProp>
-                    <stringProp name="query">drop database link hive_jdbc_db_link if exists cascade;</stringProp>
+                    <stringProp name="query">drop database link ${hive_jdbc_db_link_name} if exists cascade;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                  </JDBCSampler>
+                  <hashTree>
+                    <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                      <collectionProp name="Asserion.test_strings">
+                        <stringProp name="-1157542694">0 updates</stringProp>
+                      </collectionProp>
+                      <stringProp name="Assertion.custom_message"></stringProp>
+                      <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                      <boolProp name="Assertion.assume_success">false</boolProp>
+                      <intProp name="Assertion.test_type">8</intProp>
+                    </ResponseAssertion>
+                    <hashTree/>
+                  </hashTree>
+                  <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX021-29 S1-Drop spark database link if exists" enabled="true">
+                    <stringProp name="dataSource">${hive_jdbc_db_link_db_config}</stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="query">drop database link ${hive_spark_db_link_name} if exists cascade;</stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
                     <stringProp name="variableNames"></stringProp>
