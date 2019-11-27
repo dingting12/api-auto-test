@@ -124,7 +124,7 @@
           </elementProp>
           <elementProp name="dburl" elementType="Argument">
             <stringProp name="Argument.name">dburl</stringProp>
-            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.78:9205/ldb</stringProp>
+            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.73:9205/ldb</stringProp>
             <stringProp name="Argument.desc">db的url</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -178,6 +178,12 @@
             <stringProp name="Argument.value">hdfs:///node5/studio/gengchenyu/file/m1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">1034 LDBX081-11的node1集群</stringProp>
+          </elementProp>
+          <elementProp name="T_parquet_1580_path3" elementType="Argument">
+            <stringProp name="Argument.name">T_parquet_1580_path3</stringProp>
+            <stringProp name="Argument.value">file:///fsshare/ldb-server/home/PUBLIC/tables/PUBLIC/c6f7440e-c841-4e3e-9ae2-01f8a244e592</stringProp>
+            <stringProp name="Argument.desc">存储路径为本地时的parquet文件路径</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
       </Arguments>
@@ -282,25 +288,6 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="kafka start" enabled="true"/>
-        <hashTree>
-          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="startzk" enabled="true">
-            <stringProp name="hostname">192.168.1.75</stringProp>
-            <intProp name="port">22</intProp>
-            <stringProp name="username">luyao</stringProp>
-            <stringProp name="password">123456</stringProp>
-            <stringProp name="command">/home/luyao/startzk.sh</stringProp>
-          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
-          <hashTree/>
-          <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="startkafka" enabled="true">
-            <stringProp name="hostname">192.168.1.75</stringProp>
-            <intProp name="port">22</intProp>
-            <stringProp name="username">luyao</stringProp>
-            <stringProp name="password">123456</stringProp>
-            <stringProp name="command">/home/luyao/startkfk.sh</stringProp>
-          </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
-          <hashTree/>
-        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="648 SQL008-05 create  linkoopdb source" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-T_冒烟_dbsource_001" enabled="true">
@@ -441,7 +428,7 @@ SELECT * FROM &quot;T_冒烟_dbsource_001&quot; where 1=1 order by myrowtime1;
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
             <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
@@ -474,7 +461,7 @@ SELECT * FROM &quot;T_冒烟_dbsource_001&quot; where 1=1 order by myrowtime1;
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
           </hashTree>
@@ -491,7 +478,7 @@ SELECT * FROM &quot;T_冒烟_dbsource_001&quot; where 1=1 order by myrowtime1;
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
@@ -852,7 +839,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
           </hashTree>
@@ -899,7 +886,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
             </ResponseAssertion>
             <hashTree/>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
           </hashTree>
@@ -1124,7 +1111,7 @@ SELECT * FROM &quot;T_冒烟_jsource_001&quot; where 1=1 order by myrowtime1;
             </DebugPostProcessor>
             <hashTree/>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
           </hashTree>
@@ -1141,7 +1128,7 @@ SELECT * FROM &quot;T_冒烟_jsource_001&quot; where 1=1 order by myrowtime1;
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
           </hashTree>
@@ -1606,7 +1593,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </DebugPostProcessor>
             <hashTree/>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
           </hashTree>
@@ -1623,7 +1610,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
           </hashTree>
@@ -1954,7 +1941,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -1981,7 +1968,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -2263,7 +2250,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -2290,7 +2277,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -2534,7 +2521,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -2561,7 +2548,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -2820,7 +2807,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">50000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -2847,7 +2834,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -3086,7 +3073,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -3113,7 +3100,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -3265,7 +3252,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">50000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -3681,7 +3668,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -3710,7 +3697,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -3956,7 +3943,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -3985,7 +3972,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -4012,7 +3999,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -4255,7 +4242,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -4294,7 +4281,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
               </ResponseAssertion>
               <hashTree/>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -4311,7 +4298,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -4613,7 +4600,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -4641,7 +4628,7 @@ select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -4947,7 +4934,7 @@ MATCH_RECOGNIZE (
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -5255,7 +5242,7 @@ MATCH_RECOGNIZE (
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -5561,7 +5548,7 @@ MATCH_RECOGNIZE (
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -5605,9 +5592,9 @@ MATCH_RECOGNIZE (
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB Worker 支持 RPC的 AI服务" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB Worker 支持 RPC的 AI服务" enabled="true"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB EXTERNAL_MODEL" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB EXTERNAL_MODEL" enabled="true"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 model_em_predict " enabled="true"/>
             <hashTree>
@@ -5635,10 +5622,10 @@ MATCH_RECOGNIZE (
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop model ex_model_dt IF EXISTS;" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-DROP MODEL ex_model_dt IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop model ex_model_dt IF EXISTS;</stringProp>
+                <stringProp name="query">DROP MODEL ex_model_dt IF EXISTS;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -5651,7 +5638,7 @@ MATCH_RECOGNIZE (
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create model ex_model_dt as load_external_model( 
- &apos;${ex_model_dt_path1}&apos;, 
+ &apos;/fsshare/m1&apos;, 
  &apos;python&apos;, 
  &apos;tf_decision_tree&apos;, 
  &apos;dnn.alg&apos;, 
@@ -5677,9 +5664,9 @@ features double ARRAY
 &apos;connector&apos;:&apos;kafka&apos;,
 &apos;version&apos;:&apos;0.10&apos;,
 &apos;topic&apos;:&apos;model_em_predict&apos;,
-&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
-&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
-&apos;group.id&apos;:&apos;${__Random(0,35465786,)}&apos;,
+&apos;bootstrap.servers&apos;:&apos;${kafka1_server}&apos;,
+&apos;zookeeper.connect&apos;:&apos;${zoo1_connect}&apos;,
+&apos;group.id&apos;:&apos;model_em_predict_010&apos;,
 &apos;format&apos;:&apos;json&apos;
 );
 
@@ -5692,35 +5679,24 @@ features double ARRAY
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create stream model_em_predict_sink" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create stream model_em_predict_sink(
-PREDICTION double 
-) properties(
-&apos;type&apos;:&apos;sink&apos;,
-&apos;connector&apos;:&apos;kafka&apos;,
-&apos;version&apos;:&apos;0.10&apos;,
-&apos;topic&apos;:&apos;model_em_predict_sink&apos;,
-&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
-&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
-&apos;group.id&apos;:&apos;model_em_predict_sink_001&apos;,
-&apos;format&apos;:&apos;json&apos;
-);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-insert into model_em_predict_sink" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-alter stream model_em_predict set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">insert into model_em_predict_sink SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict);</stringProp>
+                <stringProp name="query">alter stream model_em_predict set properties(&apos;group.id&apos;:&apos;12${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="TestPlan.comments">data值为float</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB TC-PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict);" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">set session stream_async_query_enable TRUE;
+SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -5730,11 +5706,71 @@ PREDICTION double
               </JDBCSampler>
               <hashTree>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">20000</stringProp>
+                  <stringProp name="ConstantTimer.delay">60000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">JOB_ID</stringProp>
+                  <stringProp name="RegexExtractor.regex">(.+?)	true</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <DebugPostProcessor guiclass="TestBeanGUI" testclass="DebugPostProcessor" testname="Debug PostProcessor" enabled="true">
+                  <boolProp name="displayJMeterProperties">true</boolProp>
+                  <boolProp name="displayJMeterVariables">true</boolProp>
+                  <boolProp name="displaySamplerProperties">true</boolProp>
+                  <boolProp name="displaySystemProperties">true</boolProp>
+                </DebugPostProcessor>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB TC-call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;, 10);" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">call sys_stream_snapshot(&apos;${JOB_ID_g1}&apos;,10);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                  <stringProp name="ConstantTimer.delay">60000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB show jobs" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB TC-call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">call sys_stream_retrieve_result(&apos;${JOB_ID_g1}&apos;,1);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定定时器" enabled="true">
+                  <stringProp name="ConstantTimer.delay">60000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="49524">2.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-SHOW JOBS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
                 <stringProp name="query">SHOW JOBS;</stringProp>
@@ -5756,11 +5792,11 @@ PREDICTION double
                 </RegexExtractor>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">20000</stringProp>
+                  <stringProp name="ConstantTimer.delay">60000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB cancel job &quot;${jobid_1}&quot;;" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-CANCEL JOB &quot;${jobid_1}&quot;;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
@@ -5772,16 +5808,12 @@ PREDICTION double
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings"/>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">2</intProp>
-                </ResponseAssertion>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
+                </ConstantTimer>
                 <hashTree/>
               </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB show  jobs  E" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-SHOW JOBS E;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
                 <stringProp name="query">SHOW JOBS;</stringProp>
@@ -5795,57 +5827,15 @@ PREDICTION double
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1434314148">insert into model_em_predict_sink SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict)</stringProp>
+                    <stringProp name="0"></stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">6</intProp>
+                  <intProp name="Assertion.test_type">2</intProp>
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
-              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-                <boolProp name="ResultCollector.error_logging">false</boolProp>
-                <objProp>
-                  <name>saveConfig</name>
-                  <value class="SampleSaveConfiguration">
-                    <time>true</time>
-                    <latency>true</latency>
-                    <timestamp>true</timestamp>
-                    <success>true</success>
-                    <label>true</label>
-                    <code>true</code>
-                    <message>true</message>
-                    <threadName>true</threadName>
-                    <dataType>true</dataType>
-                    <encoding>false</encoding>
-                    <assertions>true</assertions>
-                    <subresults>true</subresults>
-                    <responseData>false</responseData>
-                    <samplerData>false</samplerData>
-                    <xml>false</xml>
-                    <fieldNames>true</fieldNames>
-                    <responseHeaders>false</responseHeaders>
-                    <requestHeaders>false</requestHeaders>
-                    <responseDataOnError>false</responseDataOnError>
-                    <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                    <assertionsResultsToSave>0</assertionsResultsToSave>
-                    <bytes>true</bytes>
-                    <sentBytes>true</sentBytes>
-                    <threadCounts>true</threadCounts>
-                    <idleTime>true</idleTime>
-                    <connectTime>true</connectTime>
-                  </value>
-                </objProp>
-                <stringProp name="filename"></stringProp>
-              </ResultCollector>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB EXTERNAL_MODEL" enabled="false"/>
-          <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 model_em_predict " enabled="true"/>
-            <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop stream if exists model_em_predict;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -5870,10 +5860,10 @@ PREDICTION double
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop model ex_model_dt IF EXISTS;" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-DROP MODEL ex_model_dt IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop model ex_model_dt IF EXISTS;</stringProp>
+                <stringProp name="query">DROP MODEL ex_model_dt IF EXISTS;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -5881,271 +5871,12 @@ PREDICTION double
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop model MODEL_EM_PREDICT_SOURCE IF EXISTS;" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop model MODEL_EM_PREDICT_SOURCE IF EXISTS;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create model model_em_predict as load_external_model" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create model ex_model_dt as load_external_model( 
- &apos;${ex_model_dt_path1}&apos;, 
- &apos;python&apos;, 
- &apos;tf_decision_tree&apos;, 
- &apos;dnn.alg&apos;, 
- &apos;dnn.alg.load&apos;, 
- &apos;dnn.alg.predict&apos; 
- )engine pallas;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create stream model_em_predict" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create stream model_em_predict(
-features double ARRAY
-) properties(
-&apos;type&apos;:&apos;source&apos;,
-&apos;connector&apos;:&apos;kafka&apos;,
-&apos;version&apos;:&apos;0.10&apos;,
-&apos;topic&apos;:&apos;model_em_predict&apos;,
-&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
-&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
-&apos;group.id&apos;:&apos;${__Random(0,35465786,)}&apos;,
-&apos;format&apos;:&apos;json&apos;
-);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create stream model_em_predict_sink" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create stream model_em_predict_sink(
-PREDICTION double 
-) properties(
-&apos;type&apos;:&apos;sink&apos;,
-&apos;connector&apos;:&apos;kafka&apos;,
-&apos;version&apos;:&apos;0.10&apos;,
-&apos;topic&apos;:&apos;model_em_predict_sink&apos;,
-&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
-&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
-&apos;group.id&apos;:&apos;model_em_predict_sink_001&apos;,
-&apos;format&apos;:&apos;json&apos;
-);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-insert into model_em_predict_sink" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">insert into model_em_predict_sink SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">30000</stringProp>
-                </ConstantTimer>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-create stream model_em_predict_sink" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create stream model_em_predict_source(
-PREDICTION double 
-) properties(
-&apos;type&apos;:&apos;source&apos;,
-&apos;connector&apos;:&apos;kafka&apos;,
-&apos;version&apos;:&apos;0.10&apos;,
-&apos;topic&apos;:&apos;model_em_predict_sink&apos;,
-&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
-&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
-&apos;group.id&apos;:&apos;model_em_predict_sink_001&apos;,
-&apos;format&apos;:&apos;json&apos;
-);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-alter stream model_em_predict_sink_001 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">alter stream model_em_predict_source set properties(&apos;group.id&apos;:&apos;12${number}&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB TC-select * from model_em_predict_sink;" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from model_em_predict_source;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">20000</stringProp>
-                </ConstantTimer>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB show jobs" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SHOW JOBS;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
-                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default"></stringProp>
-                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">20000</stringProp>
-                </ConstantTimer>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB cancel job &quot;${jobid_1}&quot;;" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings"/>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">2</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB show  jobs  E" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SHOW JOBS;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1434314148">insert into model_em_predict_sink SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict)</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">6</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-                <boolProp name="ResultCollector.error_logging">false</boolProp>
-                <objProp>
-                  <name>saveConfig</name>
-                  <value class="SampleSaveConfiguration">
-                    <time>true</time>
-                    <latency>true</latency>
-                    <timestamp>true</timestamp>
-                    <success>true</success>
-                    <label>true</label>
-                    <code>true</code>
-                    <message>true</message>
-                    <threadName>true</threadName>
-                    <dataType>true</dataType>
-                    <encoding>false</encoding>
-                    <assertions>true</assertions>
-                    <subresults>true</subresults>
-                    <responseData>false</responseData>
-                    <samplerData>false</samplerData>
-                    <xml>false</xml>
-                    <fieldNames>true</fieldNames>
-                    <responseHeaders>false</responseHeaders>
-                    <requestHeaders>false</requestHeaders>
-                    <responseDataOnError>false</responseDataOnError>
-                    <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                    <assertionsResultsToSave>0</assertionsResultsToSave>
-                    <bytes>true</bytes>
-                    <sentBytes>true</sentBytes>
-                    <threadCounts>true</threadCounts>
-                    <idleTime>true</idleTime>
-                    <connectTime>true</connectTime>
-                  </value>
-                </objProp>
-                <stringProp name="filename"></stringProp>
-              </ResultCollector>
               <hashTree/>
             </hashTree>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 DB OTHERS_MODEL" enabled="true"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_regression_predict" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_regression_predict" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL DECISION_TREE_REGRESSION_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
@@ -6429,7 +6160,7 @@ select * from decision_tree_source;
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_predict" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="decision_tree_predict" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11-decision_tree_predict-drop- M_smoke_model_1034_01" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
@@ -6805,7 +6536,7 @@ select F_smoke_no_inherit_001(2,19) from T_smoke_jsource_932_001;
               </JDBCSampler>
               <hashTree>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -7056,7 +6787,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; DAY), users;</stringProp>
                 </ResponseAssertion>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -7232,7 +6963,7 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
               </JDBCSampler>
               <hashTree>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -7272,7 +7003,7 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
                 </ResponseAssertion>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -7499,7 +7230,7 @@ GROUP BY SESSION(myrowtime, INTERVAL &apos;30&apos; SECOND), users;
               </JDBCSampler>
               <hashTree>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -8431,7 +8162,7 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="固定计时器" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
           </hashTree>
@@ -8451,7 +8182,7 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+              <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -10394,7 +10125,7 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
               </JDBCSampler>
               <hashTree>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">20000</stringProp>
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -11540,7 +11271,7 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="false">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="query">create stream T_parquet_1580(
   ID INT PRIMARY KEY, 
@@ -11557,6 +11288,34 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
     &apos;path&apos;:  &apos;${T_parquet_1580_path2}&apos;,
+    &apos;format&apos;:&apos;parquet&apos;
+)</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="query">create stream T_parquet_1580(
+  ID INT PRIMARY KEY, 
+  NAME VARCHAR(255), 
+  ACCOUNT BIGINT, 
+  AVERAGE DECIMAL(15,3), 
+  INCOME DOUBLE,
+  byteField tinyint, 
+  shortField smallint,
+  floatField float, 
+  dateField date,
+  timestampField timestamp
+)properties(
+    &apos;type&apos;:&apos;source&apos;,
+    &apos;connector&apos;:&apos;filesystem&apos;,
+    &apos;path&apos;: &apos;${T_parquet_1580_path3}&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -11614,15 +11373,15 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1953036159">ID	NAME	ACCOUNT	AVERAGE	INCOME	BYTEFIELD	SHORTFIELD	FLOATFIELD	DATEFIELD	TIMESTAMPFIELD
-1	zhangsan	123456	165243.210	8000.0	-128	-32768	129.8	2019-8-22	2019-05-20 00:00:00.0
+                  <stringProp name="898632355">ID	NAME	ACCOUNT	AVERAGE	INCOME	BYTEFIELD	SHORTFIELD	FLOATFIELD	DATEFIELD	TIMESTAMPFIELD
+1	zhangsan	123456	165243.210	8000.0	-128	-327	129.8	2019-8-22	2019-05-20 00:00:00.0
 2	lisi	123458	165543.210	8880.0	-128	-9	21.8	2019-8-23	2019-05-20 00:00:10.0
-3	wangwu	12987654	165223.210	8800.0	127	-3276	120.8	2019-8-24	2019-05-20 00:01:00.0
+3	wangwu	12987654	165223.210	8800.0	127	-327	120.8	2019-8-24	2019-05-20 00:01:00.0
 4	zhaoliu	1236	16543.210	8008.0	111	1111	159.8	2019-8-25	2019-05-20 00:02:00.0
 6	shenqi	18372	1652413.210	8010.0	0	768	111.8	2019-8-25	2019-05-20 00:02:10.0
 7	哈巴	123322256	165242.210	8200.0	112	8	122.8	2019-8-27	2019-05-20 00:03:00.0
@@ -11657,7 +11416,7 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
               </RegexExtractor>
               <hashTree/>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -11754,7 +11513,7 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
 )properties(
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
-    &apos;path&apos;:&apos;${T_parquet_1580_path2}&apos;,
+    &apos;path&apos;:&apos;${T_parquet_1580_path3}&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -11832,14 +11591,15 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="2094431827">1	zhangsan	123456	165243.210	8000.0	-128	-32768	129.8	2019-08-22	2019-05-20 00:00:00.0
+                  <stringProp name="-1567001343">ID	NAME	ACCOUNT	AVERAGE	INCOME	byteField	shortField	floatField	dateField	timestampField
+1	zhangsan	123456	165243.210	8000.0	-128	-327	129.8	2019-08-22	2019-05-20 00:00:00.0
 2	lisi	123458	165543.210	8880.0	-128	-9	21.8	2019-08-23	2019-05-20 00:00:10.0
-3	wangwu	12987654	165223.210	8800.0	127	-3276	120.8	2019-08-24	2019-05-20 00:01:00.0
+3	wangwu	12987654	165223.210	8800.0	127	-327	120.8	2019-08-24	2019-05-20 00:01:00.0
 4	zhaoliu	1236	16543.210	8008.0	111	1111	159.8	2019-08-25	2019-05-20 00:02:00.0
 6	shenqi	18372	1652413.210	8010.0	0	768	111.8	2019-08-25	2019-05-20 00:02:10.0
 7	哈巴	123322256	165242.210	8200.0	112	8	122.8	2019-08-27	2019-05-20 00:03:00.0
@@ -11875,7 +11635,7 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
               </RegexExtractor>
               <hashTree/>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -12046,7 +11806,7 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
 )properties(
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
-    &apos;path&apos;:&apos;${T_parquet_1580_path2}&apos;,
+    &apos;path&apos;:&apos;${T_parquet_1580_path3}&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -12219,18 +11979,20 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1733553001">1	zhangsan	123456	165243.210	8000.0	-128	-32768	129.8	2019-08-22	2019-05-20 00:00:00.0
+                  <stringProp name="-1567001343">ID	NAME	ACCOUNT	AVERAGE	INCOME	byteField	shortField	floatField	dateField	timestampField
+1	zhangsan	123456	165243.210	8000.0	-128	-327	129.8	2019-08-22	2019-05-20 00:00:00.0
 2	lisi	123458	165543.210	8880.0	-128	-9	21.8	2019-08-23	2019-05-20 00:00:10.0
-3	wangwu	12987654	165223.210	8800.0	127	-3276	120.8	2019-08-24	2019-05-20 00:01:00.0
+3	wangwu	12987654	165223.210	8800.0	127	-327	120.8	2019-08-24	2019-05-20 00:01:00.0
 4	zhaoliu	1236	16543.210	8008.0	111	1111	159.8	2019-08-25	2019-05-20 00:02:00.0
 6	shenqi	18372	1652413.210	8010.0	0	768	111.8	2019-08-25	2019-05-20 00:02:10.0
 7	哈巴	123322256	165242.210	8200.0	112	8	122.8	2019-08-27	2019-05-20 00:03:00.0
-8	金毛	12343456	1653.210	8004.0	28	2768	124.8	2019-08-02	2019-05-20 00:04:00.0</stringProp>
+8	金毛	12343456	1653.210	8004.0	28	2768	124.8	2019-08-02	2019-05-20 00:04:00.0
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -12261,7 +12023,7 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
               </RegexExtractor>
               <hashTree/>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -12312,6 +12074,53 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 show jobs" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SHOW JOBS;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default"></stringProp>
+                <stringProp name="RegexExtractor.match_number">-1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">30000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 cancel job &quot;${jobid_1}&quot;" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">2</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
           </hashTree>
         </hashTree>
       </hashTree>
