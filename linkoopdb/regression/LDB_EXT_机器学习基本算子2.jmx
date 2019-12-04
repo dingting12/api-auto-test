@@ -1994,17 +1994,17 @@ drop model ${als_model_2} if exists;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="514 LDBX009-01 LDB EXT: 图计算 " enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="514 LDBX009-01 LDB EXT: 图计算 " enabled="false"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 drop table ${TEST_AI_1} if exists cascade;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE t_user_table_wr if exists;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop table ${TEST_AI_1} if exists cascade;
-drop table ${TEST_AI_2} if exists cascade;
-drop table ${TEST_AI_3} if exists cascade;
-drop table ${TEST_AI_4} if exists cascade;
-drop graph ${graph_1} if exists;
-drop graph ${graph_2} if exists;</stringProp>
+              <stringProp name="query">DROP TABLE t_user_table_wr if exists;
+DROP TABLE user_table_vertex if exists;
+DROP TABLE t_follower_followee_table_wr if exists;
+DROP TABLE follower_followee_table_edges if exists;
+DROP graph weibo_graph if exists;
+DROP INDEX index_follower_followee_table_edges_wr if exists;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2013,10 +2013,10 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 create table ${TEST_AI_1} (id bigint, name varchar(32));" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE EXTERNAL TABLE t_user_table_wr (user_id BIGINT) LOCATION (&apos;ldbdist://192.168.1.72:54323/test_graph/vertex/vertex[1-4].csv&apos;) FORMAT &apos;csv&apos; (DELIMITER &apos;,&apos;);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table ${TEST_AI_1} (id bigint, name varchar(32));</stringProp>
+              <stringProp name="query">CREATE EXTERNAL TABLE t_user_table_wr (user_id BIGINT) LOCATION (&apos;ldbdist://192.168.1.72:54323/test_graph/vertex/vertex[1].csv&apos;) FORMAT &apos;csv&apos; (DELIMITER &apos;,&apos;);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2025,10 +2025,10 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 insert into ${TEST_AI_1} values (1, &apos;A&apos;), (2, &apos;B&apos;), (3, &apos;C&apos;), (4, &apos;D&apos;),(5,&apos;E&apos;),(6,&apos;F&apos;);" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE user_table_vertex AS (SELECT user_id AS id  FROM t_user_table_wr WHERE user_id IS NOT null) WITH DATA engine pallas; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_1} values (1, &apos;A&apos;), (2, &apos;B&apos;), (3, &apos;C&apos;), (4, &apos;D&apos;),(5,&apos;E&apos;),(6,&apos;F&apos;);</stringProp>
+              <stringProp name="query">CREATE TABLE user_table_vertex AS (SELECT user_id AS id  FROM t_user_table_wr WHERE user_id IS NOT null) WITH DATA engine pallas; </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2037,10 +2037,10 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 create table ${TEST_AI_2} (src bigint, dst bigint);" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT count(*) FROM t_user_table_wr;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table ${TEST_AI_2} (src bigint, dst bigint);</stringProp>
+              <stringProp name="query">SELECT count(*) FROM t_user_table_wr;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2049,10 +2049,11 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 insert into ${TEST_AI_2} values (1, 2), (2, 3);" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE EXTERNAL TABLE t_follower_followee_table_wr (follower_id BIGINT, followee_id BIGINT) LOCATION (&apos;ldbdist://192.168.1.72:54323/test_graph/edges/edges[0-3].csv&apos;) FORMAT &apos;csv&apos; (DELIMITER &apos;,&apos;);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_2} values (1, 2), (2, 3);</stringProp>
+              <stringProp name="query">CREATE EXTERNAL TABLE t_follower_followee_table_wr (follower_id BIGINT, followee_id BIGINT)
+LOCATION (&apos;ldbdist://192.168.1.72:54323/test_graph/edges/edges[0].csv&apos;) FORMAT &apos;csv&apos; (DELIMITER &apos;,&apos;);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2061,10 +2062,12 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 create graph ${graph_1} as graph_build(${TEST_AI_1}, ${TEST_AI_2},&apos;direct&apos;);" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE follower_followee_table_edges AS (SELECT follower_id AS src, followee_id as dst  FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id IS NOT NULL GROUP BY src,dst)WITH DATA properties (&apos;linkoopdb.pallas.shard_number&apos;:&apos;16&apos;)engine pallas; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create graph ${graph_1} as graph_build(${TEST_AI_1}, ${TEST_AI_2},&apos;direct&apos;);</stringProp>
+              <stringProp name="query">CREATE TABLE follower_followee_table_edges AS (SELECT follower_id AS src, followee_id as dst 
+FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id IS NOT NULL GROUP BY src,dst)WITH DATA properties (&apos;linkoopdb.pallas.shard_number&apos;:&apos;16&apos;)engine pallas;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2073,57 +2076,10 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 TC-001" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT count(*) FROM follower_followee_table_edges" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select component,sort_array(collect_list(id)) from graph_connected_components(${graph_1}) where component = 1 group by component;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1771179161">1	ARRAY[1,2,3]</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 insert into ${TEST_AI_2} values (4, 5), (5, 6);" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_2} values (4, 5), (5, 6);</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 update graph ${graph_1} as graph_build(${TEST_AI_1}, ${TEST_AI_2});" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">update graph ${graph_1} as graph_build(${TEST_AI_1}, ${TEST_AI_2});</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 TC-002" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select component,sort_array(collect_list(id)) from graph_connected_components(${graph_1}) where component = 4 group by component;</stringProp>
+              <stringProp name="query">SELECT count(*) FROM follower_followee_table_edges</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2143,10 +2099,10 @@ drop graph ${graph_2} if exists;</stringProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 insert into ${TEST_AI_2} values (3,4);" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE INDEX index_follower_followee_table_edges_wr ON follower_followee_table_edges(src);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_2} values (3,4);</stringProp>
+              <stringProp name="query">CREATE INDEX index_follower_followee_table_edges_wr ON follower_followee_table_edges(src);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2155,10 +2111,10 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 update graph ${graph_1} as graph_build(${TEST_AI_1}, ${TEST_AI_2});" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE graph weibo_graph(user_table_vertex,follower_followee_table_edges);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">update graph ${graph_1} as graph_build(${TEST_AI_1}, ${TEST_AI_2});</stringProp>
+              <stringProp name="query">CREATE graph weibo_graph(user_table_vertex,follower_followee_table_edges);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2167,10 +2123,64 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 TC-003" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="desc graph weibo_graph;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">desc graph weibo_graph;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from graph_label_propagation(weibo_graph,5);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select component,sort_array(collect_list(id)) from graph_connected_components(${graph_1}) group by component;</stringProp>
+              <stringProp name="query">select * from graph_label_propagation(weibo_graph,5);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from graph_label_propagation(weibo_graph,10);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">select * from graph_label_propagation(weibo_graph,10);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from graph_label_propagation(weibo_graph,1);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from graph_label_propagation(weibo_graph,1);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2190,70 +2200,10 @@ drop graph ${graph_2} if exists;</stringProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 create table ${TEST_AI_3} (id bigint, name varchar(32));" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from graph_label_propagation(weibo_graph,100);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table ${TEST_AI_3} (id bigint, name varchar(32));</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 insert into ${TEST_AI_3} values (1, &apos;A&apos;), (2, &apos;B&apos;), (3, &apos;C&apos;), (4, &apos;D&apos;);" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_3} values (1, &apos;A&apos;), (2, &apos;B&apos;), (3, &apos;C&apos;), (4, &apos;D&apos;);</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 create table ${TEST_AI_4} (src bigint, dst bigint);" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table ${TEST_AI_4} (src bigint, dst bigint);</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 insert into ${TEST_AI_4} values (1, 2), (2, 3), (1, 3), (3, 2);" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into ${TEST_AI_4} values (1, 2), (2, 3), (1, 3), (3, 2);</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 create graph ${graph_1} as graph_build(${TEST_AI_1}, ${TEST_AI_2},&apos;direct&apos;);" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create graph ${graph_2} as graph_build(${TEST_AI_3}, ${TEST_AI_4});</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 TC-004" enabled="true">
-              <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select count from graph_triangle_count(${graph_2}) where id = 1;</stringProp>
+              <stringProp name="query">select * from graph_label_propagation(weibo_graph,100);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2262,10 +2212,8 @@ drop graph ${graph_2} if exists;</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49">1</stringProp>
-                </collectionProp>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
@@ -2273,15 +2221,57 @@ drop graph ${graph_2} if exists;</stringProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX009-01 drop table ${TEST_AI_1} if exists cascade;" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from graph_n_degree_all(weibo_graph,3);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from graph_n_degree_all(weibo_graph,3);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from graph_n_degree(weibo_graph,1000020,3);" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select * from graph_n_degree(weibo_graph,1000020,3);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE t_user_table_wr if exists;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop table ${TEST_AI_1} if exists cascade;
-drop table ${TEST_AI_2} if exists cascade;
-drop table ${TEST_AI_3} if exists cascade;
-drop table ${TEST_AI_4} if exists cascade;
-drop graph ${graph_1} if exists;
-drop graph ${graph_2} if exists;</stringProp>
+              <stringProp name="query">DROP TABLE t_user_table_wr if exists;
+DROP TABLE user_table_vertex if exists;
+DROP TABLE t_follower_followee_table_wr if exists;
+DROP TABLE follower_followee_table_edges if exists;
+DROP graph weibo_graph if exists;
+DROP INDEX index_follower_followee_table_edges_wr if exists;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
