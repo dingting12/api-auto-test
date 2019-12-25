@@ -124,7 +124,7 @@
           </elementProp>
           <elementProp name="dburl" elementType="Argument">
             <stringProp name="Argument.name">dburl</stringProp>
-            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.73:9205/ldb</stringProp>
+            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.77:9117/ldb</stringProp>
             <stringProp name="Argument.desc">db的url</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -178,6 +178,11 @@
             <stringProp name="Argument.value">hdfs:///node5/studio/gengchenyu/file/m1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">1034 LDBX081-11的node1集群</stringProp>
+          </elementProp>
+          <elementProp name="sc_enginepallas" elementType="Argument">
+            <stringProp name="Argument.name">sc_enginepallas</stringProp>
+            <stringProp name="Argument.value">${__P(engine,)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
       </Arguments>
@@ -282,6 +287,45 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP SCHEMA IF EXISTS streamsql CASCADE;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP SCHEMA IF EXISTS streamsql CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE SCHEMA streamsql ${sc_enginepallas};" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE SCHEMA streamsql ${sc_enginepallas};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SET SCHEMA streamsql;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">SET SCHEMA streamsql;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1522 LDBX081-22 SET SESSION支持设置流任务并行度和select同步查询最大等待时间" enabled="true"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1522 LDBX081-22  STREAM_QUERY_LATENCY_MILLS" enabled="true"/>
@@ -556,7 +600,18 @@
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
-              <hashTree/>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-500865864">Parameter not set: parallelism 0 must be generator than 0 in statement</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1522 LDBX081-22 set-session STREAM_EXECUTE_PARALLELISM" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
@@ -658,8 +713,8 @@
                 <stringProp name="query"> CREATE STREAM T_pallas_sink_PARALLELISM_1522 (id int primary key,name varchar(10),age int
  ) properties (
  &apos;connector&apos;: &apos;pallas&apos;,
-  &apos;linkoopdb.pallas.shard_number&apos; : &apos;4&apos;,
-  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;2&apos; 
+  &apos;linkoopdb.pallas.shard_number&apos; : &apos;1&apos;,
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos; 
  );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -832,8 +887,8 @@
                 <stringProp name="query"> CREATE STREAM T_pallas_sink_PARALLELISM_1522 (id int primary key,name varchar(10),age int
  ) properties (
  &apos;connector&apos;: &apos;pallas&apos;,
-  &apos;linkoopdb.pallas.shard_number&apos; : &apos;4&apos;,
-  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;2&apos; 
+  &apos;linkoopdb.pallas.shard_number&apos; : &apos;1&apos;,
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos; 
  );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -1051,8 +1106,8 @@
                 <stringProp name="query"> CREATE STREAM T_pallas_sink_PARALLELISM_1522 (id int primary key,name varchar(10),age int
  ) properties (
  &apos;connector&apos;: &apos;pallas&apos;,
-  &apos;linkoopdb.pallas.shard_number&apos; : &apos;4&apos;,
-  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;2&apos; 
+  &apos;linkoopdb.pallas.shard_number&apos; : &apos;1&apos;,
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos; 
  );
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -3189,7 +3244,7 @@
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1742552957">Client error. parallelism 1000 cannot more than max-parallelism128</stringProp>
+                    <stringProp name="1707323330">Parameter not set: parallelism 1000 cannot more than max-parallelism 128 in statement</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3203,7 +3258,7 @@
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1815 LDBX081-33 linkoopdb内部表转换为流表时batchsize和fetchsize支持session和全局设置" enabled="true"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 1000" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 5000" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 DROP stream IF EXISTS T_batchsize_kafka_source; drop table if exists t_batchsize_db;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -3281,11 +3336,22 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 1000;" enabled="true">
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1507423">1000</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 5000;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">SET SESSION STREAM_INTERNAL_BATCH_SIZE 1000;</stringProp>
+              <stringProp name="query">SET SESSION STREAM_INTERNAL_BATCH_SIZE 5000;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -3360,6 +3426,16 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
                 <stringProp name="ConstantTimer.delay">40000</stringProp>
               </ConstantTimer>
               <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="46730161">10000</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 GET SESSION STREAM_ML_BATCH_SIZE;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -3373,7 +3449,18 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49">1</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 GET SESSION STREAM_ML_WAIT_DELAY;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -3386,7 +3473,18 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="48625">100</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 GET SESSION STREAM_INTERNAL_BATCH_SIZE;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -3399,7 +3497,18 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1626587">5000</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 GET SESSION STREAM_INTERNAL_FETCH_SIZE;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -3412,7 +3521,18 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1507423">1000</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 DROP stream IF EXISTS T_batchsize_kafka_source; drop table if exists t_batchsize_db;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -3518,6 +3638,111 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 TC-INSERT INTO t_batchsize_db SELECT * FROM T_batchsize_kafka_source;" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">INSERT INTO t_batchsize_db2 SELECT * FROM T_batchsize_kafka_source2;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1681461268">Error while setting the default filesystem scheme from configuration. Invalid configuration entry. </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 100;" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SET SESSION STREAM_INTERNAL_BATCH_SIZE 100;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 TC-INSERT INTO t_batchsize_db SELECT * FROM T_batchsize_kafka_source;" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">INSERT INTO t_batchsize_db2 SELECT * FROM T_batchsize_kafka_source2;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1681461268">Error while setting the default filesystem scheme from configuration. Invalid configuration entry. </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 200;" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SET SESSION STREAM_INTERNAL_BATCH_SIZE 200;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 TC-INSERT INTO t_batchsize_db SELECT * FROM T_batchsize_kafka_source;" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">INSERT INTO t_batchsize_db2 SELECT * FROM T_batchsize_kafka_source2;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1681461268">Error while setting the default filesystem scheme from configuration. Invalid configuration entry. </stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 100;" enabled="true">
+              <stringProp name="dataSource">${u1}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SET SESSION STREAM_INTERNAL_BATCH_SIZE 1000;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 INSERT INTO t_batchsize_db SELECT * FROM T_batchsize_kafka_source;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -3584,6 +3809,17 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
                 <stringProp name="ConstantTimer.delay">40000</stringProp>
               </ConstantTimer>
               <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1448635001">10000
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 GET SESSION STREAM_ML_BATCH_SIZE;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
@@ -3597,7 +3833,16 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 GET SESSION STREAM_ML_WAIT_DELAY;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -3610,7 +3855,16 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 GET SESSION STREAM_INTERNAL_BATCH_SIZE;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -3623,7 +3877,16 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 GET SESSION STREAM_INTERNAL_FETCH_SIZE;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
@@ -3636,7 +3899,16 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
-            <hashTree/>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 DROP stream IF EXISTS T_batchsize_kafka_source; drop table if exists t_batchsize_db;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
