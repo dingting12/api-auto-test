@@ -113,7 +113,7 @@
           </elementProp>
           <elementProp name="dburl" elementType="Argument">
             <stringProp name="Argument.name">dburl</stringProp>
-            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.77:9117/ldb</stringProp>
+            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.77:9177/ldb</stringProp>
             <stringProp name="Argument.desc">db的url</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -172,6 +172,16 @@
             <stringProp name="Argument.name">T_parquet_1580_path3</stringProp>
             <stringProp name="Argument.value">file:///fsshare/ldb-server/home/PUBLIC/tables/PUBLIC/c6f7440e-c841-4e3e-9ae2-01f8a244e592</stringProp>
             <stringProp name="Argument.desc">存储路径为本地时的parquet文件路径</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sc_enginepallas" elementType="Argument">
+            <stringProp name="Argument.name">sc_enginepallas</stringProp>
+            <stringProp name="Argument.value">${__P(engine,)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="dburl_ha" elementType="Argument">
+            <stringProp name="Argument.name">dburl_ha</stringProp>
+            <stringProp name="Argument.value">jdbc:linkoopdb:cluster://192.168.1.64:9205|192.168.1.65:9205|192.168.1.66:9205|192.168.1.67:9205/ldb</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -277,6 +287,45 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP SCHEMA IF EXISTS streamsql CASCADE;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP SCHEMA IF EXISTS streamsql CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE SCHEMA streamsql ${sc_enginepallas};" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE SCHEMA streamsql ${sc_enginepallas};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SET SCHEMA streamsql;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">SET SCHEMA streamsql;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="648 SQL008-05 create  linkoopdb source" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="648 SQL008-05-drop-T_冒烟_dbsource_001" enabled="true">
@@ -315,7 +364,7 @@
 	 &apos;dbUrl&apos;: &apos;${dburl}&apos;,
 	 &apos;username&apos;: &apos;${udb}&apos;,
 	 &apos;password&apos;: &apos;${udb_password}&apos;,
-	 &apos;tableName&apos;: &apos;SMOKE_SOURCE&apos;,
+	 &apos;tableName&apos;: &apos;STREAMSQL.SMOKE_SOURCE&apos;,
 	 &apos;rowtime&apos;:&apos;R_TIME.myrowtime1&apos;,
 	 &apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
 	 &apos;watermarksDelay&apos;:&apos;60000&apos;
@@ -690,7 +739,7 @@ SELECT * FROM &quot;T_冒烟_dbsource_001&quot; where 1=1 order by myrowtime1;
  &apos;dbUrl&apos;: &apos;${dburl}&apos;,
  &apos;username&apos;: &apos;${udb}&apos;,
  &apos;password&apos;: &apos;${udb_password}&apos;,
- &apos;tableName&apos;: &apos;smoke_source_649&apos;,
+ &apos;tableName&apos;: &apos;STREAMSQL.smoke_source_649&apos;,
  &apos;rowtime&apos;:&apos;R_TIME.myrowtime1&apos;,
  &apos;rowtime.watermarks.type&apos;:&apos;periodic-bounded&apos;,
  &apos;watermarksDelay&apos;:&apos;60000&apos;
@@ -730,7 +779,7 @@ R_REASON_SK int, R_REASON_ID string, R_REASON_DESC string,R_TIME TIMESTAMP
 &apos;username&apos;: &apos;${udb}&apos;, 
 &apos;password&apos;: &apos;${udb_password}&apos;,
 &apos;batchSize&apos;: &apos;1&apos;, 
-&apos;tableName&apos;: &apos;smoke_out_649&apos;
+&apos;tableName&apos;: &apos;STREAMSQL.smoke_out_649&apos;
 ); 
 
  
@@ -1791,7 +1840,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
  &apos;dbUrl&apos;: &apos;${dburl}&apos;, 
  &apos;username&apos;: &apos;${udb}&apos;, 
  &apos;password&apos;: &apos;${udb_password}&apos;, 
- &apos;tableName&apos;: &apos;streamsql_tvarchar&apos;
+ &apos;tableName&apos;: &apos;STREAMSQL.streamsql_tvarchar&apos;
  );
 
 
@@ -2086,7 +2135,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
  	&apos;dbUrl&apos;: &apos;${dburl}&apos;, 
  	&apos;username&apos;: &apos;${udb}&apos;, 
  	&apos;password&apos;: &apos;${udb_password}&apos;, 
- 	&apos;tableName&apos;: &apos;streamsql_tbootiny&apos;
+ 	&apos;tableName&apos;: &apos;STREAMSQL.streamsql_tbootiny&apos;
  );
 
 
@@ -2376,7 +2425,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
  	&apos;dbUrl&apos;: &apos;${dburl}&apos;,
  	&apos;username&apos;: &apos;${udb}&apos;, 
  	&apos;password&apos;: &apos;${udb_password}&apos;,
- 	&apos;tableName&apos;: &apos;streamsql_intbigint&apos;
+ 	&apos;tableName&apos;: &apos;STREAMSQL.streamsql_intbigint&apos;
  );
 
 
@@ -2648,7 +2697,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
  	&apos;dbUrl&apos;: &apos;${dburl}&apos;, 
  	&apos;username&apos;: &apos;${udb}&apos;, 
  	&apos;password&apos;: &apos;${udb_password}&apos;,
- 	&apos;tableName&apos;: &apos;streamsql_floatdou&apos;
+ 	&apos;tableName&apos;: &apos;STREAMSQL.streamsql_floatdou&apos;
  );
 
 </stringProp>
@@ -2795,19 +2844,19 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">50000</stringProp>
-              </ConstantTimer>
-              <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1941728682">126.98	126	126	126	126	126.98	126.98	-127.97	-127	-127	-127	-127	-127.97	-127.97</stringProp>
+                  <stringProp name="1892696308">126.98	126	126	126	126	126.98	126.9800033569336	-127.97	-127	-127	-127	-127	-127.97	-127.97</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">2</intProp>
+                <intProp name="Assertion.test_type">16</intProp>
               </ResponseAssertion>
+              <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                <stringProp name="ConstantTimer.delay">50000</stringProp>
+              </ConstantTimer>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-004-drop-T_smoke_dbsource_735_401" enabled="true">
@@ -2839,6 +2888,18 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
               <stringProp name="resultSetHandler">Store as String</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname=" 735 SQL502-004-drop-smoke_floatdou" enabled="true">
+              <stringProp name="dataSource">${u3}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">drop table if exists smoke_floatdou;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-004-drop-streamsql_floatdou" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -2858,7 +2919,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-005-drop-streamsql_timedata" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop table if exists streamsql_timedata;
+              <stringProp name="query">drop table if exists  timedata;
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2895,7 +2956,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-005-create-streamsql_timedata" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table streamsql_timedata(datadate date,datatimestamp timestamp);
+              <stringProp name="query">create table timedata(datadate date,datatimestamp timestamp);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2908,7 +2969,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="735 SQL502-005-insert-streamsql_timedata" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into  streamsql_timedata values (&apos;2018-09-07&apos;,&apos;2019-09-08 09:08:09&apos;);
+              <stringProp name="query">insert into  timedata values (&apos;2018-09-07&apos;,&apos;2019-09-08 09:08:09&apos;);
 
 
 
@@ -2935,7 +2996,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
  	&apos;dbUrl&apos;: &apos;${dburl}&apos;,
  	&apos;username&apos;: &apos;${udb}&apos;,
  	&apos;password&apos;: &apos;${udb_password}&apos;, 
- 	&apos;tableName&apos;: &apos;streamsql_timedata&apos;
+ 	&apos;tableName&apos;: &apos;STREAMSQL.timedata&apos;
  );
 
 </stringProp>
@@ -3230,7 +3291,7 @@ SELECT * FROM &quot;T_冒烟_jsource_647_002&quot;where 1=1 order by myrowtime1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="655 SQL501-02-001 TC-001-测试第一部分函数" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">set session stream_async_query_enable false;
+              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 40000;
 select acos(id),atan(id), concat (&apos;a&apos;,space(id),&apos;b&apos;) ,log1p(id), ifnull(data,67),ifnull(id,67), find_in_set(data,&apos;a,b,c,12,q&apos;), COALESCE(NULL, NULL, data),COALESCE(NULL, 1, null),atan2(id, id),NVL(data,-1) ,NULLIF(ID,-1) , cos(degree),cot(degree) ,NANVL(CAST(&apos;NaN&apos; AS DOUBLE), 123), tanh(degree),sinh(degree),GET_JSON_OBJECT(&apos;{&quot;a&quot;:&quot;id1&quot;}&apos;, &apos;$.a&apos;),JSON_PATH(&apos;[{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;12321312321&quot;,&quot;codetag&quot;:&quot;1&quot;},{&quot;snumber&quot;:&quot;18600010011&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;0&quot;},{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;2&quot;},{&quot;snumber&quot;:&quot;13011560889&quot;, &quot;enddate&quot;:&quot;212212222&quot;, &quot;codetag&quot;:&quot;3&quot;}]&apos;,&apos;$[?(@.snumber == &quot;13011560889&quot;)].codetag&apos;)  from &quot;T_冒烟_jsource_655_101&quot; where 1=1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -5202,7 +5263,7 @@ MATCH_RECOGNIZE (
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">20000</stringProp>
+                <stringProp name="ConstantTimer.delay">60000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -5627,7 +5688,7 @@ MATCH_RECOGNIZE (
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create model ex_model_dt as load_external_model( 
- &apos;/fsshare/m1&apos;, 
+ &apos;hdfs://node3/node7/db2.2/model/m1&apos;, 
  &apos;python&apos;, 
  &apos;tf_decision_tree&apos;, 
  &apos;dnn.alg&apos;, 
@@ -6612,7 +6673,7 @@ select F_smoke_no_inherit_001(2,19) from T_smoke_jsource_932_001;
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-tumble-create-streamsql_ROWTIME(DB中的表)" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE table streamsql_ROWTIME (id integer,users string, amount double,time1 timestamp);</stringProp>
+                <stringProp name="query">CREATE table ROWTIME (id integer,users string, amount double,time1 timestamp);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -6624,7 +6685,7 @@ select F_smoke_no_inherit_001(2,19) from T_smoke_jsource_932_001;
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-tumble-insert-streamsql_ROWTIME(DB中的表)" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">INSERT INTO streamsql_ROWTIME VALUES(45,&apos;chenhe&apos;,4567,&apos;2018-11-26 01:44:33&apos;),(23,&apos;lichen&apos;,4578,&apos;2018-11-25 09:43:25&apos;),(67, &apos;lichen &apos; , 2390, &apos;2018-11-25 09:56:58&apos;),( 9, &apos;lichen &apos; ,   76, &apos;2018-11-26 08:57:39&apos;),(34, &apos;lily&apos;, 2345, &apos;2018-11-23 09:42:47&apos;),(32, &apos;dengchao&apos;, 3456, &apos;2018-11-22 09:42:18&apos;),(12, &apos;lichen &apos; , 1234, &apos;2018-11-21 09:41:54&apos;);
+                <stringProp name="query">INSERT INTO ROWTIME VALUES(45,&apos;chenhe&apos;,4567,&apos;2018-11-26 01:44:33&apos;),(23,&apos;lichen&apos;,4578,&apos;2018-11-25 09:43:25&apos;),(67, &apos;lichen &apos; , 2390, &apos;2018-11-25 09:56:58&apos;),( 9, &apos;lichen &apos; ,   76, &apos;2018-11-26 08:57:39&apos;),(34, &apos;lily&apos;, 2345, &apos;2018-11-23 09:42:47&apos;),(32, &apos;dengchao&apos;, 3456, &apos;2018-11-22 09:42:18&apos;),(12, &apos;lichen &apos; , 1234, &apos;2018-11-21 09:41:54&apos;);
 
 
 
@@ -6680,7 +6741,7 @@ select F_smoke_no_inherit_001(2,19) from T_smoke_jsource_932_001;
  	&apos;watermarksDelay&apos;:&apos;0&apos;,
  	&apos;username&apos;: &apos;${udb}&apos;, 
  	&apos;password&apos;: &apos;${udb_password}&apos;,
- 	&apos;tableName&apos;: &apos;streamsql_ROWTIME&apos;
+ 	&apos;tableName&apos;: &apos;streamsql.ROWTIME&apos;
  );
 
 
@@ -6810,7 +6871,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; DAY), users;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-hop-drop-streamsql_HOP(DB中的表)" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql_HOP;</stringProp>
+                <stringProp name="query">drop table if exists HOP;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -6822,7 +6883,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; DAY), users;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-hop-create-streamsql_HOP(DB中的表)" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create  table  streamsql_HOP(id integer,users string, amount double,time1 timestamp);</stringProp>
+                <stringProp name="query">create  table HOP(id integer,users string, amount double,time1 timestamp);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -6834,7 +6895,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; DAY), users;</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-hop-insert-streamsql_HOP(DB中的表)" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">insert into streamsql_HOP values 
+                <stringProp name="query">insert into HOP values 
 (67,&apos;lichen&apos;  ,2390.0E0,&apos;2018-11-25 09:56:58&apos;),(45,&apos;chenhe &apos; ,4567.0E0,&apos;2018-11-26 01:44:33&apos;),(34,&apos;lily &apos;   ,2345.0E0,&apos;2018-11-23 09:42:47&apos;),( 9,&apos;lichen &apos; ,  76.0E0,&apos;2018-11-26 08:57:39&apos;),(23,&apos;lichen&apos;  ,4578.0E0,&apos;2018-11-25 09:43:25&apos;),(32,&apos;dengchao&apos;,3456.0E0,&apos;2018-11-22 09:42:18&apos;),(12,&apos;lichen&apos;  ,1234.0E0,&apos;2018-11-21 09:41:54&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -6887,7 +6948,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; DAY), users;</stringProp>
  	&apos;watermarksDelay&apos;:&apos;0&apos;,
  	&apos;username&apos;: &apos;${udb}&apos;,
  	&apos;password&apos;: &apos;${udb_password}&apos;, 
- 	&apos;tableName&apos;: &apos;streamsql_HOP&apos;
+ 	&apos;tableName&apos;: &apos;streamsql.HOP&apos;
  );
 
 </stringProp>
@@ -7062,7 +7123,7 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-session-drop-streamsql_SESSION(DB中的表)" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql_SESSION;</stringProp>
+                <stringProp name="query">drop table if exists SESSION;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -7074,7 +7135,7 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-session-create-streamsql_SESSION(DB中的表)" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE table streamsql_SESSION (users VARCHAR(20), clicks VARCHAR(20),time1 timestamp);</stringProp>
+                <stringProp name="query">CREATE table SESSION (users VARCHAR(20), clicks VARCHAR(20),time1 timestamp);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -7086,7 +7147,7 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="930 LDBX081-06-session-insert-streamsql_SESSION(DB中的表)" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">INSERT INTO streamsql_SESSION VALUES(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:01:58&apos;),(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:00:10&apos;),(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:00:00&apos;),(&apos;Timo&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:02:10&apos;),(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:01:05&apos;),(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:00:49&apos;);
+                <stringProp name="query">INSERT INTO SESSION VALUES(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:01:58&apos;),(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:00:10&apos;),(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:00:00&apos;),(&apos;Timo&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:02:10&apos;),(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:01:05&apos;),(&apos;Jark&apos;, &apos;http://taobao.com/xxx&apos;,&apos;2017-10-10 10:00:49&apos;);
 
 
 
@@ -7172,7 +7233,7 @@ GROUP BY HOP(myrowtime, INTERVAL &apos;30&apos; SECOND, INTERVAL &apos;1&apos; M
  	&apos;watermarksDelay&apos;:&apos;0&apos;,
  	&apos;username&apos;: &apos;${udb}&apos;, 
  	&apos;password&apos;: &apos;${udb_password}&apos;,
- 	&apos;tableName&apos;: &apos;streamsql_SESSION&apos;
+ 	&apos;tableName&apos;: &apos;streamsql.SESSION&apos;
  );
 
 
@@ -7370,7 +7431,7 @@ GROUP BY SESSION(myrowtime, INTERVAL &apos;30&apos; SECOND), users;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="420693997">&quot;T_smoke_jsource_929_201&quot;	CREATE STREAM IF NOT EXISTS PUBLIC.&quot;T_smoke_jsource_929_201&quot;(ID INTEGER,NAME VARCHAR(16777216))PROPERTIES(&apos;password&apos;:&apos;123456&apos;,&apos;connector&apos;:&apos;jdbc&apos;,&apos;driver&apos;:&apos;com.mysql.jdbc.Driver&apos;,&apos;type&apos;:&apos;source&apos;,&apos;dbUrl&apos;:&apos;jdbc:mysql://192.168.1.73:3306/jmeter_istreamsql?useSSL=false&apos;,&apos;username&apos;:&apos;test&apos;,&apos;tableName&apos;:&apos;test_002&apos;)</stringProp>
+                  <stringProp name="-133232144">&quot;T_smoke_jsource_929_201&quot;	CREATE STREAM IF NOT EXISTS STREAMSQL.&quot;T_smoke_jsource_929_201&quot;(ID INTEGER,NAME VARCHAR(16777216))PROPERTIES(&apos;password&apos;:&apos;123456&apos;,&apos;connector&apos;:&apos;jdbc&apos;,&apos;driver&apos;:&apos;com.mysql.jdbc.Driver&apos;,&apos;type&apos;:&apos;source&apos;,&apos;dbUrl&apos;:&apos;jdbc:mysql://192.168.1.73:3306/jmeter_istreamsql?useSSL=false&apos;,&apos;username&apos;:&apos;test&apos;,&apos;tableName&apos;:&apos;test_002&apos;)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -7726,7 +7787,7 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="763898930">INSERT INTO `PUBLIC$T_SMOKE_JSINK_929_601` SELECT `PUBLIC$T_SMOKE_JSOURCE_929_601`.ID,`PUBLIC$T_SMOKE_JSOURCE_929_601`.NAME FROM `PUBLIC$T_SMOKE_JSOURCE_929_601`	</stringProp>
+                  <stringProp name="576377351">INSERT INTO `STREAMSQL$T_SMOKE_JSINK_929_601` SELECT `STREAMSQL$T_SMOKE_JSOURCE_929_601`.ID,`STREAMSQL$T_SMOKE_JSOURCE_929_601`.NAME FROM `STREAMSQL$T_SMOKE_JSOURCE_929_601`</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -7925,7 +7986,7 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-2058000336">PUBLIC	F_SMOKE_929_801	FUNCTION</stringProp>
+                  <stringProp name="-2068539381">STREAMSQL	F_SMOKE_929_801	FUNCTION</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -8277,7 +8338,7 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1075 DISQL-CONNECTOR-130-2-drop-streamsql_istream_array_0121" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop table if exists streamsql_istream_array_0121;</stringProp>
+              <stringProp name="query">drop table if exists istream_array_0121;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -8290,7 +8351,7 @@ SELECT ID FROM &quot;T_SMOKE_JSOURCE_929_501&quot;;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1075 DISQL-CONNECTOR-130-2-create-streamsql_istream_array_0121" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table  streamsql_istream_array_0121 (tbigint bigint ARRAY,
+              <stringProp name="query">create table  istream_array_0121 (tbigint bigint ARRAY,
 tsmallint smallint ARRAY,
 tdate date ARRAY,
 ttimestamp timestamp ARRAY,
@@ -8312,7 +8373,7 @@ tfloat float array
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1075 DISQL-CONNECTOR-130-2-insert-streamsql_istream_array_0121" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into  streamsql_istream_array_0121 values((array[-9223372036854775808,9223372036854775807]),(array[-32768,32767]),(array[&apos;2019-09-08&apos;,&apos;2019-04-08&apos;]),(array[&apos;2019-09-08 09:08:08&apos;,&apos;2019-04-08 03:09:09&apos;]),(array[23876.65,98756.78]),(array[&apos;jejj43&apos;,&apos;98756.78&apos;]),(array[true,false]),(array[0.765,-0.978]),(array[0.765,-0.978]));
+              <stringProp name="query">insert into  istream_array_0121 values((array[-9223372036854775808,9223372036854775807]),(array[-32768,32767]),(array[&apos;2019-09-08&apos;,&apos;2019-04-08&apos;]),(array[&apos;2019-09-08 09:08:08&apos;,&apos;2019-04-08 03:09:09&apos;]),(array[23876.65,98756.78]),(array[&apos;jejj43&apos;,&apos;98756.78&apos;]),(array[true,false]),(array[0.765,-0.978]),(array[0.765,-0.978]));
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -8342,7 +8403,7 @@ tfloat float array
 	&apos;dbUrl&apos;: &apos;${dburl}&apos;,
 	&apos;username&apos;: &apos;${udb}&apos;, 
 	&apos;password&apos;: &apos;${udb_password}&apos;, 
-	&apos;tableName&apos;: &apos;streamsql_istream_array_0121&apos;
+	&apos;tableName&apos;: &apos;streamsql.istream_array_0121&apos;
 );
 
 </stringProp>
@@ -8602,7 +8663,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-drop-streamsql_joinwintime1" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop table if exists streamsql_joinwintime1;</stringProp>
+              <stringProp name="query">drop table if exists joinwintime1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -8614,7 +8675,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-drop-streamsql_joinwintime" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop table if exists streamsql_joinwintime;</stringProp>
+              <stringProp name="query">drop table if exists joinwintime;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -8662,7 +8723,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-create-streamsql_joinwintime" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table streamsql_joinwintime (id integer,users varchar(20), amount double,time1 timestamp);</stringProp>
+              <stringProp name="query">create table joinwintime (id integer,users varchar(20), amount double,time1 timestamp);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -8674,7 +8735,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-insert-streamsql_joinwintime" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into  streamsql_joinwintime values
+              <stringProp name="query">insert into joinwintime values
 (32, &apos;dengchao&apos;,  3456.0E0 ,&apos;2018-11-22 09:42:18&apos;),
 (12, &apos;lichen&apos;,  1234.0E0 ,&apos;2018-11-21 09:41:54&apos;),
 (45, &apos;chenhe&apos;, 4567.0E0 ,&apos;2018-11-26 01:44:33&apos;),
@@ -8695,7 +8756,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-create-streamsql_joinwintime1" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create table streamsql_joinwintime1 (id integer,users varchar(20), amount double,time1 timestamp);</stringProp>
+              <stringProp name="query">create table joinwintime1 (id integer,users varchar(20), amount double,time1 timestamp);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -8707,7 +8768,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-insert-streamsql_joinwintime1" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">insert into  streamsql_joinwintime1 values
+              <stringProp name="query">insert into  joinwintime1 values
 (32, &apos;dengchao&apos;,  3456.0E0 ,&apos;2018-11-22 09:42:18&apos;),
 (12, &apos;lichen&apos;,  1234.0E0 ,&apos;2018-11-21 09:41:54&apos;),
 (45, &apos;chenhe&apos;, 4567.0E0 ,&apos;2018-11-26 01:44:33&apos;),
@@ -8754,7 +8815,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
  	&apos;watermarksDelay&apos;:&apos;0&apos;,
  	&apos;username&apos;: &apos;${udb}&apos;, 
  	&apos;password&apos;: &apos;${udb_password}&apos;,
- 	&apos;tableName&apos;: &apos;streamsql_joinwintime&apos;
+ 	&apos;tableName&apos;: &apos;streamsql.joinwintime&apos;
  );
 
 
@@ -8785,7 +8846,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
  	&apos;watermarksDelay&apos;:&apos;0&apos;,
  	&apos;username&apos;: &apos;${udb}&apos;,
  	&apos;password&apos;: &apos;${udb_password}&apos;,
- 	&apos;tableName&apos;: &apos;streamsql_joinwintime1&apos;
+ 	&apos;tableName&apos;: &apos;streamsql.joinwintime1&apos;
  );
 
 
@@ -8923,7 +8984,7 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-drop-streamsql_joinwintime" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop table if exists streamsql_joinwintime;</stringProp>
+              <stringProp name="query">drop table if exists joinwintime;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -8935,7 +8996,7 @@ WHERE T_smoke_dbsource_931_01.id = T_smoke_dbsource_931_02.id AND
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="931 LDBX081-07-DB 数据源-drop-streamsql_joinwintime1" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">drop table if exists streamsql_joinwintime1;</stringProp>
+              <stringProp name="query">drop table if exists joinwintime1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -9351,7 +9412,7 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
           </JDBCSampler>
           <hashTree>
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-              <stringProp name="ConstantTimer.delay">200000</stringProp>
+              <stringProp name="ConstantTimer.delay">20000</stringProp>
             </ConstantTimer>
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
@@ -9400,6 +9461,34 @@ GROUP BY TUMBLE(myrowtime, INTERVAL &apos;1&apos; HOUR), users;
             <stringProp name="dataSource">${u1}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
             <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003-watermark策略设置-drop-T_smoke_watermark_ksource_001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop stream if exists T_smoke_watermark_ksource_001;
+
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="912 ISQL003-watermark策略设置-drop-T_smoke_watermark_jsink_001" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop stream if exists T_smoke_watermark_jsink_001;
+
+</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -10638,7 +10727,7 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="88358312">V_冒烟_jsource_803_001	PUBLIC</stringProp>
+                <stringProp name="2000026255">V_冒烟_jsource_803_001	STREAMSQL</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -11260,7 +11349,7 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="false">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="query">create stream T_parquet_1580(
   ID INT PRIMARY KEY, 
@@ -11288,7 +11377,7 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_1580" enabled="false">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="query">create stream T_parquet_1580(
   ID INT PRIMARY KEY, 
@@ -11319,8 +11408,15 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 create stream T_parquet_psink_1580" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="query">create stream T_parquet_psink_1580(
- ID INT PRIMARY KEY, NAME VARCHAR(255), ACCOUNT BIGINT, AVERAGE DECIMAL(15,3), INCOME DOUBLE,
-  byteField tinyint, shortField smallint, floatField float, dateField date,
+  ID INT PRIMARY KEY, 
+  NAME VARCHAR(255), 
+  ACCOUNT BIGINT, 
+  AVERAGE DECIMAL(15,3), 
+  INCOME DOUBLE,
+  byteField tinyint, 
+  shortField smallint,
+  floatField float, 
+  dateField date,
   timestampField timestamp
 )properties(
  &apos;connector&apos;:&apos;pallas&apos;,
@@ -11339,7 +11435,8 @@ select * from &quot;T_冒烟_jsource_631_002&quot; where 1=1;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1580 LDBX081-23 insert into T_parquet_psink_1580" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">insert into T_parquet_psink_1580 select * from T_parquet_1580;</stringProp>
+              <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 60000;
+insert into T_parquet_psink_1580 select * from T_parquet_1580;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -11502,7 +11599,7 @@ select * from T_parquet_psink_1580 where 1=1;</stringProp>
 )properties(
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
-    &apos;path&apos;:&apos;${T_parquet_1580_path3}&apos;,
+    &apos;path&apos;:&apos;${T_parquet_1580_path2}&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -11795,7 +11892,7 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
 )properties(
     &apos;type&apos;:&apos;source&apos;,
     &apos;connector&apos;:&apos;filesystem&apos;,
-    &apos;path&apos;:&apos;${T_parquet_1580_path3}&apos;,
+    &apos;path&apos;:&apos;${T_parquet_1580_path2}&apos;,
     &apos;format&apos;:&apos;parquet&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
