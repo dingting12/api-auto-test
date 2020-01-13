@@ -589,7 +589,9 @@ drop table Test_External_Table_4 if exists cascade;
 drop table Test_External_Table_5 if exists cascade;
 drop table t_external_csv_wy9 if exists cascade;
 drop table t_inner_csv_wy1 if exists cascade;
-DROP TABLE PUBLIC.&quot;TEST_CSVMY&quot; if exists cascade;</stringProp>
+DROP TABLE PUBLIC.&quot;TEST_CSVMY&quot; if exists cascade;
+DROP TABLE TEST_ASCII if exists cascade;
+DROP TABLE TEST_ASCII_wr if exists cascade;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -637,8 +639,9 @@ format &apos;csv&apos; (delimiter &apos;|&apos; header &apos;false&apos;);</stri
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1737102012">TABLE	CREATE_TABLE
-T_EXTERNAL_CSV_WY9	CREATE EXTERNAL TABLE IF NOT EXISTS TEST_EXTERNALTABLE.T_EXTERNAL_CSV_WY9(TINTEGER INTEGER,TINT INTEGER,TSMALLINT SMALLINT,TBIGINT BIGINT,TREAL DOUBLE,TFLOAT DOUBLE,TDECIMAL DECIMAL(10,2),TNUMERIC NUMERIC(10,4),TDATE DATE,TTIMESTAMP TIMESTAMP,TCHAR CHAR(255),TVARCHAR VARCHAR(8000)) LOCATION (&apos;hdfs://node1:8020/node4/linkoopdb/testdb/externalTable/show_csv7.csv&apos;) FORMAT &apos;csv&apos; (HEADER &apos;false&apos; DELIMITER &apos;|&apos; )</stringProp>
+                  <stringProp name="1447139777">TABLE	CREATE_TABLE
+T_EXTERNAL_CSV_WY9	CREATE EXTERNAL TABLE IF NOT EXISTS TEST_EXTERNALTABLE.T_EXTERNAL_CSV_WY9(TINTEGER INTEGER,TINT INTEGER,TSMALLINT SMALLINT,TBIGINT BIGINT,TREAL DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(10,2),TNUMERIC NUMERIC(10,4),TDATE DATE,TTIMESTAMP TIMESTAMP,TCHAR CHAR(255),TVARCHAR VARCHAR(8000)) LOCATION (&apos;hdfs://node1:8020/node4/linkoopdb/testdb/externalTable/show_csv7.csv&apos;) FORMAT &apos;csv&apos; (HEADER &apos;false&apos; DELIMITER &apos;|&apos; )
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -936,10 +939,10 @@ tvarchar varchar(8000));</stringProp>
               </ResponseAssertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE EXTERNAL TABLE TEST_ASCII_dfs (ints int, floats float,doubles double,varchars VARCHAR(10),chars char(10),tdate date,tdecimal decimal(10,2), ttimestamp timestamp,treal REAL,tNUMERIC NUMERIC(9,2)) LOCATION (&apos;hdfs://node1:8020/node2/linkoopdb/testdb2/main/linkoopdb/home/PUBLIC/tables/ascii2.txt&apos;) FORMAT &apos;csv&apos; (DELIMITER &apos;&#x7;&apos;); " enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="136 LDBX022-02 CREATE EXTERNAL TABLE TEST_ASCII (ints int, floats float,doubles double,varchars VARCHAR(10),chars char(10),tdate date,tdecimal decimal(10,2), ttimestamp timestamp,treal REAL,tNUMERIC NUMERIC(9,2)) LOCATION (&apos;hdfs://node1:8020/node2/linkoopdb/testdb2/main/linkoopdb/home/PUBLIC/tables/ascii2.txt&apos;) FORMAT &apos;csv&apos; (DELIMITER &apos;&#x7;&apos;); " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">CREATE EXTERNAL TABLE TEST_ASCII_dfs (ints int, floats float,doubles double,varchars VARCHAR(10),chars char(10),tdate date,tdecimal decimal(10,2),
+              <stringProp name="query">CREATE EXTERNAL TABLE TEST_ASCII (ints int, floats float,doubles double,varchars VARCHAR(10),chars char(10),tdate date,tdecimal decimal(10,2),
 ttimestamp timestamp,treal REAL,tNUMERIC NUMERIC(9,2)) LOCATION (&apos;hdfs://node1:8020/node2/linkoopdb/testdb2/main/linkoopdb/home/PUBLIC/tables/ascii2.txt&apos;) FORMAT &apos;csv&apos; (DELIMITER &apos;&#x7;&apos;);
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -953,7 +956,7 @@ ttimestamp timestamp,treal REAL,tNUMERIC NUMERIC(9,2)) LOCATION (&apos;hdfs://no
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="136 LDBX022-02 TC-023" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">SELECT * FROM TEST_ASCII_dfs;</stringProp>
+              <stringProp name="query">SELECT * FROM TEST_ASCII WHERE ints=1</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -964,8 +967,58 @@ ttimestamp timestamp,treal REAL,tNUMERIC NUMERIC(9,2)) LOCATION (&apos;hdfs://no
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-2102248147">ID	NAME
-1	zhangsan
+                  <stringProp name="1248001600">INTS	FLOATS	DOUBLES	VARCHARS	CHARS	TDATE	TDECIMAL	TTIMESTAMP	TREAL	TNUMERIC
+1	4.56352352E8	2.35426546478578E14	2342134459	gggg      	2009-7-30	459.24	2009-07-30 04:17:52.0	456.35235	235426.55
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="136 LDBX022-02 CREATE  TABLE TEST_ASCII_pallas_wr (ints int, floats float,doubles double,varchars VARCHAR(10),chars char(10),tdate date,tdecimal decimal(10,2), ttimestamp timestamp,treal REAL,tNUMERIC NUMERIC(9,2)) ;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">CREATE  TABLE TEST_ASCII_wr (ints int, floats float,doubles double,varchars VARCHAR(10),chars char(10),tdate date,tdecimal decimal(10,2),
+ttimestamp timestamp,treal REAL,tNUMERIC NUMERIC(9,2));</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="136 LDBX022-02 INSERT INTO t_inner_csv_wy1 SELECT * FROM t_external_csv_wy9;" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="query">INSERT INTO TEST_ASCII_wr SELECT * FROM TEST_ASCII;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="136 LDBX022-02 TC-024" enabled="true">
+              <stringProp name="dataSource">${a}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">SELECT * FROM TEST_ASCII WHERE ints=1</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1248001600">INTS	FLOATS	DOUBLES	VARCHARS	CHARS	TDATE	TDECIMAL	TTIMESTAMP	TREAL	TNUMERIC
+1	4.56352352E8	2.35426546478578E14	2342134459	gggg      	2009-7-30	459.24	2009-07-30 04:17:52.0	456.35235	235426.55
 </stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -985,7 +1038,10 @@ drop table Test_External_Table_4 if exists cascade;
 drop table Test_External_Table_5 if exists cascade;
 drop table t_external_csv_wy9 if exists cascade;
 drop table t_inner_csv_wy1 if exists cascade;
-DROP TABLE PUBLIC.&quot;TEST_CSVMY&quot; if exists cascade;</stringProp>
+DROP TABLE PUBLIC.&quot;TEST_CSVMY&quot; if exists cascade;
+DROP TABLE TEST_ASCII if exists cascade;
+DROP TABLE TEST_ASCII_dfs if exists cascade;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
