@@ -480,6 +480,60 @@
               <hashTree/>
             </hashTree>
           </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDBX124-02 设置表的写入并行度" enabled="true"/>
+          <hashTree>
+            <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="TEST_TABLE_NAME_02" elementType="Argument">
+                  <stringProp name="Argument.name">TEST_TABLE_NAME_02</stringProp>
+                  <stringProp name="Argument.value">LDBX124_02_TABLE</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </Arguments>
+            <hashTree/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDBX124-02 TC-001 创建表时配置WRITE_PARALLELISM" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-02 TC-001 创建表时配置WRITE_PARALLELISM" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CREATE TABLE ${TEST_TABLE_NAME_02} (id int) properties(&apos;WRITE_PARALLELISM&apos;:&apos;1&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1157542694">0 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Main-Teardown" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01删除测试表" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DROP TABLE ${TEST_TABLE_NAME_02};</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Teardown" enabled="true"/>
         <hashTree>
