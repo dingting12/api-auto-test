@@ -150,6 +150,11 @@
             <stringProp name="Argument.value">${__P(metaurl,jdbc:linkoopdb:tcp://192.168.1.71:9108/ldb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="pg" elementType="Argument">
+            <stringProp name="Argument.name">pg</stringProp>
+            <stringProp name="Argument.value">postgres</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -430,6 +435,22 @@
         <stringProp name="transactionIsolation">DEFAULT</stringProp>
         <stringProp name="trimInterval">60000</stringProp>
         <stringProp name="username">postgres</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="postgres" enabled="true">
+        <stringProp name="dataSource">${pg}</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="dbUrl">jdbc:postgresql://192.168.1.98:5432/gistest</stringProp>
+        <stringProp name="driver">org.postgresql.Driver</stringProp>
+        <stringProp name="username">postgres</stringProp>
+        <stringProp name="password">123456</stringProp>
       </JDBCDataSource>
       <hashTree/>
       <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="linkoopdb_test" enabled="false">
@@ -6332,6 +6353,309 @@ drop view l_postgreslink_wy1.&quot;V_POSTGRESLIINK_WY_1&quot; if exists;
                   <stringProp name="dataSource">${a}</stringProp>
                   <stringProp name="queryType">Update Statement</stringProp>
                   <stringProp name="query">drop database link l_postgreslink_wy1 if exists cascade;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2561 LDBX021-28 支持postgres空间数据类型" enabled="true"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 drop table if exists t_issue2561_1;" enabled="true">
+                  <stringProp name="dataSource">${pg}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">drop table if exists t_issue2561_1;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 create table t_issue2561_1 ( &#x9;id int &#x9;, geometryType geometry(POINt,4326) &#x9;, tpoint POINT &#x9;, tline line &#x9;, tlseg lseg &#x9;, tbox box &#x9;, tpath path &#x9;, tpolygon polygon &#x9;, tcircle circle &#x9;, tgeography  geography(POINT,4269) &#x9;, tbox3d box3d &#x9;, tbox2d box2d &#x9;, tgeometry_dump geometry_dump &#x9;);" enabled="true">
+                  <stringProp name="dataSource">${pg}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">create table t_issue2561_1 (
+	id int
+	, geometryType geometry(POINt,4326)
+	, tpoint POINT
+	, tline line
+	, tlseg lseg
+	, tbox box
+	, tpath path
+	, tpolygon polygon
+	, tcircle circle
+	, tgeography  geography(POINT,4269)
+	, tbox3d box3d
+	, tbox2d box2d
+	, tgeometry_dump geometry_dump
+	);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 CREATE INDEX myTest2561_gix   ON t_issue2561_1   USING GIST (geometryType);" enabled="true">
+                  <stringProp name="dataSource">${pg}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">CREATE INDEX myTest2561_gix
+  ON t_issue2561_1
+  USING GIST (geometryType);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 insert into t_issue2561_1 (id, &#x9;geometryType  &#x9;, tpoint &#x9;, tline  &#x9;, tlseg  &#x9;, tbox &#x9;, tpath  &#x9;, tpolygon &#x9;, tcircle  &#x9;, tgeography &#x9;, tbox3d  &#x9;,tbox2d &#x9;,tgeometry_dump ) values  ( 1, ST_GeomFromText(&apos;POINT(-126.4 45.32)&apos;, 4326),  POINT(1,2)  ,line(Point(1,2), Point(3,4)) ,lseg(Point(1,2), Point(3,4)) , box(Point(-989502.1875, 528439.5625), Point(-987121.375,529933.1875)), &apos;(0,1),(2,3),(4,5)&apos;::path, ST_Polygon(&apos;LINESTRING(75 29, 77 29, 77 29, 75 29)&apos;::geometry,4326)::polygon, Circle(Point(1,2), 0.5) ,&apos;SRID=4269;POINT(-110 30)&apos; ,ST_MakeBox2D(ST_Point(-989502.1875, 528439.5625), ST_Point(-987121.375 ,529933.1875)) ,Box3D(ST_GeomFromEWKT(&apos;LINESTRING(1 2 3, 3 4 5, 5 6 5)&apos;)) ,ST_Dump(ST_GeomFromText(&apos;POINT(-126.4 45.32)&apos;, 4326)));" enabled="true">
+                  <stringProp name="dataSource">${pg}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">insert into t_issue2561_1 (id,
+	geometryType 
+	, tpoint
+	, tline 
+	, tlseg 
+	, tbox
+	, tpath 
+	, tpolygon
+	, tcircle 
+	, tgeography
+	, tbox3d 
+	,tbox2d
+	,tgeometry_dump
+) values  (
+1, ST_GeomFromText(&apos;POINT(-126.4 45.32)&apos;, 4326),
+ POINT(1,2)
+ ,line(Point(1,2), Point(3,4))
+,lseg(Point(1,2), Point(3,4))
+, box(Point(-989502.1875, 528439.5625), Point(-987121.375,529933.1875)), &apos;(0,1),(2,3),(4,5)&apos;::path,
+ST_Polygon(&apos;LINESTRING(75 29, 77 29, 77 29, 75 29)&apos;::geometry,4326)::polygon,
+Circle(Point(1,2), 0.5)
+,&apos;SRID=4269;POINT(-110 30)&apos;
+,ST_MakeBox2D(ST_Point(-989502.1875, 528439.5625), ST_Point(-987121.375 ,529933.1875))
+,Box3D(ST_GeomFromEWKT(&apos;LINESTRING(1 2 3, 3 4 5, 5 6 5)&apos;))
+,ST_Dump(ST_GeomFromText(&apos;POINT(-126.4 45.32)&apos;, 4326)));</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 SELECT * FROM public.&quot;T_ISSUE2561_1&quot;;" enabled="false">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select * from &quot;t_issue2561_1&quot;;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 drop database link PG_GIS_LINK2 if exists cascade;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">drop database link PG_GIS_LINK2 if exists cascade;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 CREATE DATABASE LINK PG_GIS_LINK2 CONNECT TO &apos;postgres&apos; IDENTIFIED by &apos;123456&apos; using &apos;jdbc:postgresql://192.168.1.98:5432/gistest&apos; PROPERTIES(&apos;schema&apos;:&apos;public&apos;, &apos;caseSensitive&apos;:&apos;false&apos;);" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">CREATE DATABASE LINK PG_GIS_LINK2 CONNECT TO &apos;postgres&apos; IDENTIFIED by &apos;123456&apos; using &apos;jdbc:postgresql://192.168.1.98:5432/gistest&apos; PROPERTIES(&apos;schema&apos;:&apos;public&apos;, &apos;caseSensitive&apos;:&apos;false&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 TC-001" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select * from PG_GIS_LINK2.t_issue2561_1;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1226010024">ID	GEOMETRYTYPE	TPOINT	TLINE	TLSEG	TBOX	TPATH	TPOLYGON	TCIRCLE	TGEOGRAPHY	TBOX3D	TBOX2D	TGEOMETRY_DUMP
+1	0101000020E61000009A99999999995FC0295C8FC2F5A84640	(1,2)	{1,-1,1}	[(1,2),(3,4)]	(-987121.375,529933.1875),(-989502.1875,528439.5625)	((0,1),(2,3),(4,5))	((75,29),(77,29),(77,29),(75,29))	&lt;(1,2),0.5&gt;	0101000020AD1000000000000000805BC00000000000003E40	BOX3D(-989502.1875 528439.5625 0,-987121.375 529933.1875 0)	BOX(1 2,5 6)	({},0101000020E61000009A99999999995FC0295C8FC2F5A84640)
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 insert into PG_GIS_LINK2.t_issue2561_1 values(2, &apos;0101000020E61000009A99999999995FC0295C8FC2F5A84640&apos;, &apos;(1,2)&apos;,&apos;{1,-1,1}&apos;, &apos;[(1,2),(3,4)]&apos;, &apos;(-9837121.375,529933.1875),(-989502.1875,528439.5625)&apos;, &apos;((0,1),(2,3),(4,5))&apos;, &apos;((75,29),(77,29),(77,29),(75,29))&apos;, &apos;&lt;(1,2),0.5&gt;&apos;, &apos;0101000020AD1000000000000000805BC00000000000003E40&apos;, &apos;BOX3D(-989502.1875 528439.5625 0,-987121.375 529933.1875 0)&apos;, &apos;BOX(1 2,5 6)&apos;, &apos;({},0101000020E61000009A99999999995FC0295C8FC2F5A84640)&apos;);" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">insert into PG_GIS_LINK2.t_issue2561_1 values(2, &apos;0101000020E61000009A99999999995FC0295C8FC2F5A84640&apos;, &apos;(1,2)&apos;,&apos;{1,-1,1}&apos;, &apos;[(1,2),(3,4)]&apos;, &apos;(-9837121.375,529933.1875),(-989502.1875,528439.5625)&apos;, &apos;((0,1),(2,3),(4,5))&apos;, &apos;((75,29),(77,29),(77,29),(75,29))&apos;, &apos;&lt;(1,2),0.5&gt;&apos;, &apos;0101000020AD1000000000000000805BC00000000000003E40&apos;, &apos;BOX3D(-989502.1875 528439.5625 0,-987121.375 529933.1875 0)&apos;, &apos;BOX(1 2,5 6)&apos;, &apos;({},0101000020E61000009A99999999995FC0295C8FC2F5A84640)&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 TC-002" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select * from PG_GIS_LINK2.t_issue2561_1;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="10068926">ID	GEOMETRYTYPE	TPOINT	TLINE	TLSEG	TBOX	TPATH	TPOLYGON	TCIRCLE	TGEOGRAPHY	TBOX3D	TBOX2D	TGEOMETRY_DUMP
+1	0101000020E61000009A99999999995FC0295C8FC2F5A84640	(1,2)	{1,-1,1}	[(1,2),(3,4)]	(-987121.375,529933.1875),(-989502.1875,528439.5625)	((0,1),(2,3),(4,5))	((75,29),(77,29),(77,29),(75,29))	&lt;(1,2),0.5&gt;	0101000020AD1000000000000000805BC00000000000003E40	BOX3D(-989502.1875 528439.5625 0,-987121.375 529933.1875 0)	BOX(1 2,5 6)	({},0101000020E61000009A99999999995FC0295C8FC2F5A84640)
+2	0101000020E61000009A99999999995FC0295C8FC2F5A84640	(1,2)	{1,-1,1}	[(1,2),(3,4)]	(-989502.1875,529933.1875),(-9837121.375,528439.5625)	((0,1),(2,3),(4,5))	((75,29),(77,29),(77,29),(75,29))	&lt;(1,2),0.5&gt;	0101000020AD1000000000000000805BC00000000000003E40	BOX3D(-989502.1875 528439.5625 0,-987121.375 529933.1875 0)	BOX(1 2,5 6)	({},0101000020E61000009A99999999995FC0295C8FC2F5A84640)
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 TC-003" enabled="true">
+                  <stringProp name="dataSource">${pg}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">SELECT id
+FROM t_issue2561_1
+WHERE ST_DWithin(
+  geometryType,
+  ST_GeomFromText(&apos;POINT(0 0)&apos;, 4326),
+  1000
+);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1572227232">id
+1
+2
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 TC-004" enabled="true">
+                  <stringProp name="dataSource">${pg}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">SELECT id
+FROM t_issue2561_1
+WHERE ST_DWithin(
+  tgeography,
+  ST_GeomFromText(&apos;POINT(0 0)&apos;, 4269),
+  1000000000000
+);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1572227232">id
+1
+2
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2561 LDBX021-28 select   area(tcircle),    center(tbox),   diameter(tcircle ),  height(tbox ),    isclosed(tpath),  isopen(tpath),  length(tpath ),  npoints(tpath),  npoints(tpolygon),  pclose(tpath),   popen(tpath),   radius(tcircle),   width(tbox),   box(tcircle),   box(tpoint),   box(tpoint,tpoint),   box(tpolygon),   bound_box(tbox, tbox),   circle(tbox),   circle(tpoint, 0.66),   circle(tpolygon),   line(tpoint, tpoint),   lseg(tbox),   lseg(tpoint, tpoint),   path(tpolygon),   point(1, 1),   point(tbox),   point(tcircle), point(tlseg), point(tpolygon), polygon(tbox), polygon(tcircle), polygon(12, tcircle), polygon(tpath), box2d(tbox2d), box3d(tbox3d)  from t_issue2561_1;" enabled="true">
+                  <stringProp name="dataSource">${pg}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select 
+ area(tcircle),  
+ center(tbox), 
+ diameter(tcircle ),
+ height(tbox ),  
+ isclosed(tpath),
+ isopen(tpath),
+ length(tpath ),
+ npoints(tpath),
+ npoints(tpolygon),
+ pclose(tpath),
+  popen(tpath),
+  radius(tcircle),
+  width(tbox),
+  box(tcircle),
+  box(tpoint),
+  box(tpoint,tpoint),
+  box(tpolygon),
+  bound_box(tbox, tbox),
+  circle(tbox),
+  circle(tpoint, 0.66),
+  circle(tpolygon),
+  line(tpoint, tpoint),
+  lseg(tbox),
+  lseg(tpoint, tpoint),
+  path(tpolygon),
+  point(1, 1),
+  point(tbox),
+  point(tcircle),
+point(tlseg),
+point(tpolygon),
+polygon(tbox),
+polygon(tcircle),
+polygon(12, tcircle),
+polygon(tpath),
+box2d(tbox2d),
+box3d(tbox3d)
+ from t_issue2561_1;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
