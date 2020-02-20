@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="LDB_EXT_机器学习基本算子1" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -15958,13 +15958,17 @@ drop model m_generalized_linear_regression_model if EXISTS ;
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="530 LDBX009-02 Triangle count--语法重构" enabled="false"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="530 LDBX009-02 Triangle count" enabled="true"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 DROP TABLE t_cvertices_wy1 IF EXISTS CASCADE;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">DROP TABLE t_cvertices_wy1 IF EXISTS CASCADE;
-DROP TABLE t_cedges_wy1 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="query">DROP TABLE t_cvertices_wy1 IF EXISTS;
+DROP TABLE t_cedges_wy1 IF EXISTS ;
+DROP TABLE t_cvertices_wy2 IF EXISTS ;
+DROP TABLE t_cedges_wy2 IF EXISTS;
+drop graph t_cgraph_wy1 if exists;
+drop graph t_cgraph_wy2 if exists;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -16029,7 +16033,9 @@ DROP TABLE t_cedges_wy1 IF EXISTS CASCADE;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 create graph t_cgraph_wy1 as graph_build(t_cvertices_wy1, t_cedges_wy1);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create graph t_cgraph_wy1 as graph_build(t_cvertices_wy1, t_cedges_wy1);</stringProp>
+              <stringProp name="query">create graph t_cgraph_wy1 (t_cvertices_wy1, t_cedges_wy1);
+
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -16054,11 +16060,12 @@ DROP TABLE t_cedges_wy1 IF EXISTS CASCADE;</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1171324566">COUNT	ID
-1	1
-1	2
-1	3
-0	4</stringProp>
+                  <stringProp name="1141450372">COUNT	ID	NAME
+1	1	A
+1	2	B
+1	3	C
+0	4	D
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -16136,7 +16143,7 @@ DROP TABLE t_cedges_wy2 IF EXISTS CASCADE;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 create graph t_cgraph_wy2 as graph_build(t_cvertices_wy2, t_cedges_wy2);" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">create graph t_cgraph_wy2 as graph_build(t_cvertices_wy2, t_cedges_wy2);</stringProp>
+              <stringProp name="query">CREATE graph t_cgraph_wy2 (vertices_copy,edges_copy) AS graph_build((SELECT * FROM t_cvertices_wy2),(SELECT * FROM t_cedges_wy2));</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -16161,13 +16168,14 @@ DROP TABLE t_cedges_wy2 IF EXISTS CASCADE;</stringProp>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-594964473">COUNT	ID
-3	1
-1	2
-4	3
-4	4
-3	5
-0	6</stringProp>
+                  <stringProp name="-854309926">COUNT	ID	NAME
+3	1	A
+1	2	B
+4	3	C
+4	4	D
+3	5	E
+0	6	F
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -16179,10 +16187,13 @@ DROP TABLE t_cedges_wy2 IF EXISTS CASCADE;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="530 LDBX009-02 DROP TABLE t_cvertices_wy1 IF EXISTS CASCADE;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">DROP TABLE t_cvertices_wy1 IF EXISTS CASCADE;
-DROP TABLE t_cedges_wy1 IF EXISTS CASCADE;
-DROP TABLE t_cvertices_wy2 IF EXISTS CASCADE;
-DROP TABLE t_cedges_wy2 IF EXISTS CASCADE;</stringProp>
+              <stringProp name="query">drop graph t_cgraph_wy1 if exists;
+drop graph t_cgraph_wy2 if exists;
+DROP TABLE t_cvertices_wy1 IF EXISTS;
+DROP TABLE t_cedges_wy1 IF EXISTS ;
+DROP TABLE t_cvertices_wy2 IF EXISTS ;
+DROP TABLE t_cedges_wy2 IF EXISTS;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -16193,7 +16204,7 @@ DROP TABLE t_cedges_wy2 IF EXISTS CASCADE;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname=" 536LDBX007-05 Evaluating the performance of regression models" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname=" 536LDBX007-05 Evaluating the performance of regression models" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="536 LDBX007-05 drop model linear_regression_model if exists;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
