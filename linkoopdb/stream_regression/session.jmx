@@ -442,6 +442,22 @@
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 5000" enabled="true"/>
           <hashTree>
+            <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="2073 LDBX081-52 topic delete" enabled="true">
+              <stringProp name="command">/home/luyao/kafka_current/bin/kafka-topics.sh --delete --zookeeper node1:2181,node2:2181,node9:2181/linkoopdb/luyao --topic trx_source1</stringProp>
+              <stringProp name="hostname">192.168.1.75</stringProp>
+              <stringProp name="password">123456</stringProp>
+              <intProp name="port">22</intProp>
+              <stringProp name="username">luyao</stringProp>
+            </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+            <hashTree/>
+            <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="2073 LDBX081-52 kafka-producer" enabled="true">
+              <stringProp name="command">/home/luyao/kafka_current/bin/kafka-console-producer.sh  --broker-list node6:29096 --topic trx_source1&lt; /home/luyao/document/trx_source10000.txt </stringProp>
+              <stringProp name="hostname">192.168.1.75</stringProp>
+              <stringProp name="password">123456</stringProp>
+              <intProp name="port">22</intProp>
+              <stringProp name="username">luyao</stringProp>
+            </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 DROP stream IF EXISTS T_batchsize_kafka_source; drop table if exists t_batchsize_db;" enabled="true">
               <stringProp name="dataSource">${u1}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
@@ -591,7 +607,7 @@ TRX_ID VARCHAR(32768),CUST_ID VARCHAR(32768),TRX_CURR VARCHAR(32768),FLAG_CASH V
             </JDBCSampler>
             <hashTree>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">60000</stringProp>
+                <stringProp name="ConstantTimer.delay">80000</stringProp>
               </ConstantTimer>
               <hashTree/>
               <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
