@@ -119,7 +119,7 @@
           </elementProp>
           <elementProp name="port" elementType="Argument">
             <stringProp name="Argument.name">port</stringProp>
-            <stringProp name="Argument.value">${__P(port,9105)}</stringProp>
+            <stringProp name="Argument.value">${__P(port,9117)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="dburl" elementType="Argument">
@@ -264,9 +264,11 @@
                   <stringProp name="queryType">Update Statement</stringProp>
                   <stringProp name="query">drop table if exists T_jdbc_source_all_file_001;
 drop table if exists T_jdbc_source_all_file_002;
+drop table if exists T_jdbc_sink_all_file_001;
 DROP STREAM IF EXISTS S_jdbc_source_all_file_001;
 DROP STREAM IF EXISTS S_jdbc_source_all_file_002;
-DROP STREAM IF EXISTS S_jdbc_source_all_file_003;</stringProp>
+DROP STREAM IF EXISTS S_jdbc_source_all_file_003;
+DROP STREAM IF EXISTS S_jdbc_sink_all_file_001;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -304,6 +306,31 @@ DROP STREAM IF EXISTS S_jdbc_source_all_file_003;</stringProp>
                   <stringProp name="query"> CREATE table T_jdbc_source_all_file_002 (
  id int , 
  name VARCHAR(30),
+ age int
+ );
+
+ 
+
+ 
+
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的file_创建DB表T_jdbc_sink_all_file_001" enabled="true">
+                  <stringProp name="dataSource">${u1}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query"> CREATE table T_jdbc_sink_all_file_001 (
+
+ name VARCHAR(30),
+ idl int , 
+ idr int , 
  age int
  );
 
@@ -474,6 +501,38 @@ age int
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的file_创建stream sink表S_jdbc_sink_all_file_001" enabled="true">
+                  <stringProp name="dataSource">${u1}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">create stream S_jdbc_sink_all_file_001(
+ name VARCHAR(30),
+ idl int , 
+ idr int , 
+ age int
+)properties(
+&apos;type&apos;: &apos;sink&apos;,
+&apos;connector&apos;: &apos;jdbc&apos;, 
+&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+&apos;dbUrl&apos;: &apos;${dburl}&apos;,
+&apos;username&apos;: &apos;${udb}&apos;,
+&apos;password&apos;: &apos;${udb_password}&apos;, 
+&apos;tableName&apos;: &apos;T_jdbc_sink_all_file_001&apos;,
+&apos;batchSize&apos;:&apos;20&apos;
+);
+
+
+ 
+
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的file_TC 001 E 测试cacheStrategy是否为必填" enabled="true">
                   <stringProp name="dataSource">${u1}</stringProp>
                   <stringProp name="queryType">Update Statement</stringProp>
@@ -502,13 +561,14 @@ age int
                 <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的file_TC 002  测试file是否正常执行" enabled="true">
                   <stringProp name="dataSource">${u1}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
                   <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 80000;
+insert into S_jdbc_sink_all_file_001
 select 
-	S_jdbc_source_all_file_001.name,
-	S_jdbc_source_all_file_001.id,
-	S_jdbc_source_all_file_002.id,
-	S_jdbc_source_all_file_002.age  
+	S_jdbc_source_all_file_001.name as name,
+	S_jdbc_source_all_file_001.id as idl,
+	S_jdbc_source_all_file_002.id as idr,
+	S_jdbc_source_all_file_002.age as age  
 from 
 	S_jdbc_source_all_file_001  
 left join 
@@ -523,6 +583,77 @@ on S_jdbc_source_all_file_001.id = S_jdbc_source_all_file_002.id;
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的file_TC 002  查询结果" enabled="true">
+                  <stringProp name="dataSource">${u1}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select * from T_jdbc_sink_all_file_001 order by idl
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                    <stringProp name="ConstantTimer.delay">60000</stringProp>
+                  </ConstantTimer>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1389273395">NAME	IDL	IDR	AGE
+mary1	1	1	29
+mary2	2	2	23
+mary3	3	3	34
+mary4	4	4	45
+mary5	5	5	29
+mary6	6	6	23
+mary7	7	7	34
+mary8	8	null	null
+mary9	9	null	null
+mary17	17	null	null
+mary18	18	null	null
+mary19	19	null	null
+mary20	20	null	null
+mary1	21	null	null
+mary1	22	null	null
+mary2	23	23	34
+mary2	24	24	45
+mary1	25	25	29
+mary1	26	26	23
+mary2	27	27	34
+mary2	28	28	45
+mary2	29	null	null
+mary1	30	null	null
+mary1	31	null	null
+mary1	32	null	null
+mary2	33	null	null
+mary2	34	null	null
+mary1	35	null	null
+mary1	36	null	null
+mary2	37	null	null
+mary2	38	null	null
+mary2	39	null	null
+mary2	40	null	null
+mary1	41	null	null
+mary1	42	null	null
+mary2	43	null	null
+mary2	44	null	null
+mary1	45	null	null
+mary1	46	null	null
+mary2	47	null	null
+mary2	48	null	null
+mary2	49	49	45
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
               <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的memory" enabled="true"/>
               <hashTree>
@@ -531,9 +662,11 @@ on S_jdbc_source_all_file_001.id = S_jdbc_source_all_file_002.id;
                   <stringProp name="queryType">Update Statement</stringProp>
                   <stringProp name="query">drop table if exists T_jdbc_source_all_memory_001;
 drop table if exists T_jdbc_source_all_memory_002;
+drop table if exists T_jdbc_sink_all_memory_001;
 DROP STREAM IF EXISTS S_jdbc_source_all_memory_001;
 DROP STREAM IF EXISTS S_jdbc_source_all_memory_002;
-DROP STREAM IF EXISTS S_jdbc_source_all_memory_003;</stringProp>
+DROP STREAM IF EXISTS S_jdbc_source_all_memory_003;
+DROP STREAM IF EXISTS S_jdbc_sink_all_memory_001;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="variableNames"></stringProp>
@@ -571,6 +704,31 @@ DROP STREAM IF EXISTS S_jdbc_source_all_memory_003;</stringProp>
                   <stringProp name="query"> CREATE table T_jdbc_source_all_memory_002 (
  id int , 
  name VARCHAR(30),
+ age int
+ );
+
+ 
+
+ 
+
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的memory_创建DB表T_jdbc_sink_all_memory_001" enabled="true">
+                  <stringProp name="dataSource">${u1}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query"> CREATE table T_jdbc_sink_all_memory_001 (
+ 
+ name VARCHAR(30),
+ idl int , 
+ idr int , 
  age int
  );
 
@@ -741,6 +899,38 @@ age int
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的memory_创建stream sink表S_jdbc_sink_all_memory_001" enabled="true">
+                  <stringProp name="dataSource">${u1}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">create stream S_jdbc_sink_all_memory_001(
+ name VARCHAR(30),
+ idl int , 
+ idr int , 
+ age int
+)properties(
+&apos;type&apos;: &apos;sink&apos;,
+&apos;connector&apos;: &apos;jdbc&apos;, 
+&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+&apos;dbUrl&apos;: &apos;${dburl}&apos;,
+&apos;username&apos;: &apos;${udb}&apos;,
+&apos;password&apos;: &apos;${udb_password}&apos;, 
+&apos;tableName&apos;: &apos;T_jdbc_sink_all_memory_001&apos;,
+&apos;batchSize&apos;:&apos;20&apos;
+);
+
+
+ 
+
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的memory_TC 001 E 测试cacheStrategy是否为必填" enabled="true">
                   <stringProp name="dataSource">${u1}</stringProp>
                   <stringProp name="queryType">Update Statement</stringProp>
@@ -769,13 +959,14 @@ age int
                 <hashTree/>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的memory_TC 002  测试memory是否正常执行" enabled="true">
                   <stringProp name="dataSource">${u1}</stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
                   <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 80000;
+insert into S_jdbc_sink_all_memory_001
 select 
-	S_jdbc_source_all_memory_001.name,
-	S_jdbc_source_all_memory_001.id,
-	S_jdbc_source_all_memory_002.id,
-	S_jdbc_source_all_memory_002.age  
+	S_jdbc_source_all_memory_001.name as name,
+	S_jdbc_source_all_memory_001.id as idl,
+	S_jdbc_source_all_memory_002.id as idr,
+	S_jdbc_source_all_memory_002.age as age 
 from 
 	S_jdbc_source_all_memory_001  
 left join 
@@ -790,6 +981,77 @@ on S_jdbc_source_all_memory_001.id = S_jdbc_source_all_memory_002.id;
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                 </JDBCSampler>
                 <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_jdbc source的all的memory_TC 002 查询结果" enabled="true">
+                  <stringProp name="dataSource">${u1}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 80000;
+select * from T_jdbc_sink_all_memory_001 order by idl</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                    <stringProp name="ConstantTimer.delay">60000</stringProp>
+                  </ConstantTimer>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1389273395">NAME	IDL	IDR	AGE
+mary1	1	1	29
+mary2	2	2	23
+mary3	3	3	34
+mary4	4	4	45
+mary5	5	5	29
+mary6	6	6	23
+mary7	7	7	34
+mary8	8	null	null
+mary9	9	null	null
+mary17	17	null	null
+mary18	18	null	null
+mary19	19	null	null
+mary20	20	null	null
+mary1	21	null	null
+mary1	22	null	null
+mary2	23	23	34
+mary2	24	24	45
+mary1	25	25	29
+mary1	26	26	23
+mary2	27	27	34
+mary2	28	28	45
+mary2	29	null	null
+mary1	30	null	null
+mary1	31	null	null
+mary1	32	null	null
+mary2	33	null	null
+mary2	34	null	null
+mary1	35	null	null
+mary1	36	null	null
+mary2	37	null	null
+mary2	38	null	null
+mary2	39	null	null
+mary2	40	null	null
+mary1	41	null	null
+mary1	42	null	null
+mary2	43	null	null
+mary2	44	null	null
+mary1	45	null	null
+mary1	46	null	null
+mary2	47	null	null
+mary2	48	null	null
+mary2	49	49	45
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
               </hashTree>
             </hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2581 LDBX081-64-基本功能测试_jdbc source的lru" enabled="true"/>
@@ -2890,8 +3152,10 @@ on S_jdbc_source_lru_memory_001.id = S_jdbc_source_lru_memory_006.id;
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">drop table if exists T_jdbc_source_memory_01;
+drop table if exists T_jdbc_sink_memory_01;
 drop stream if exists S_file_source_memory_001;
-drop stream if exists S_jdbc_source_memory_001;</stringProp>
+drop stream if exists S_jdbc_source_memory_001;
+drop stream if exists S_jdbc_sink_memory_001;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -2906,6 +3170,24 @@ drop stream if exists S_jdbc_source_memory_001;</stringProp>
                 <stringProp name="query">create table T_jdbc_source_memory_01(
 id bigint,
 name varchar(30),
+age int
+);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试memory_创建DB表T_jdbc_sink_memory_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table T_jdbc_sink_memory_01(
+name varchar(30),
+idl bigint,
+idr bigint,
 age int
 );
 </stringProp>
@@ -2975,7 +3257,7 @@ age int
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create stream S_file_source_memory_001(
-id int,
+id bigint,
 name varchar(30),
 age int
 )properties(
@@ -3025,11 +3307,38 @@ age int
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试memory_创建stream表S_jdbc_sink_memory_001" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create stream S_jdbc_sink_memory_001(
+name varchar(30),
+idl bigint,
+idr bigint,
+age int
+)properties(
+&apos;type&apos;: &apos;sink&apos;,
+&apos;connector&apos;: &apos;jdbc&apos;, 
+&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+&apos;dbUrl&apos;: &apos;${dburl}&apos;,
+&apos;username&apos;: &apos;${udb}&apos;,
+&apos;password&apos;: &apos;${udb_password}&apos;, 
+&apos;tableName&apos;: &apos;T_jdbc_sink_memory_01&apos;,
+&apos;batchSize&apos;:&apos;20&apos;
+);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试memory_TC 001 E 测试cacheStrategy是否为必填" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create stream S_file_source_memory_002(
-id int,
+id bigint,
 name varchar(30),
 age int
 )properties(
@@ -3050,16 +3359,42 @@ age int
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
-              <hashTree/>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-430094893">Arguments options parse error cacheStrategy can&apos;t be empty. in statement [create stream S_file_source_memory_002(
+id bigint,
+name varchar(30),
+age int
+)properties(
+&apos;type&apos;:&apos;source&apos;,
+&apos;connector&apos;:&apos;filesystem&apos;,
+&apos;path&apos;:&apos;hdfs://node3/node7/db2.2/stream/data/filesystem/dataMemo.csv&apos;,
+ &apos;format&apos;:&apos;csv&apos;,
+ &apos;commentPrefix&apos;:&apos;#&apos;,
+ &apos;separator&apos;:&apos;,&apos;,
+ &apos;ignore-first-line&apos;:&apos;false&apos;,
+ &apos;ignore-parse-errors&apos;:&apos;false&apos;,
+ &apos;dataType&apos;:&apos;static&apos;
+ )]</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试memory_TC 002 测试memory是否正常执行" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 80000;
+insert into S_jdbc_sink_memory_001
 select 
-	S_jdbc_source_memory_001.name,
-	S_jdbc_source_memory_001.id,
-	S_file_source_memory_001.id,
-	S_file_source_memory_001.age  
+	S_jdbc_source_memory_001.name as name,
+	S_jdbc_source_memory_001.id as idl,
+	S_file_source_memory_001.id as idr,
+	S_file_source_memory_001.age  as age 
 from 
 	S_jdbc_source_memory_001  
 left join 
@@ -3072,10 +3407,26 @@ on S_jdbc_source_memory_001.id = S_file_source_memory_001.id;</stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试memory_TC 002 查询结果" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from T_jdbc_sink_memory_01 order by idl</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
               <hashTree>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">60000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1946471180">NAME	ID	ID0	AGE
+                    <stringProp name="-1199916166">NAME	IDL	IDR	AGE
 mary1	1	1	29
 mary2	2	2	23
 mary3	3	3	34
@@ -3117,7 +3468,8 @@ mary1	45	null	null
 mary1	46	null	null
 mary2	47	null	null
 mary2	48	null	null
-mary2	49	null	null</stringProp>
+mary2	49	null	null
+</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3133,8 +3485,10 @@ mary2	49	null	null</stringProp>
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">drop table if exists T_jdbc_source_file_01;
+drop table if exists T_jdbc_sink_file_01;
 drop stream if exists S_file_source_file_001;
-drop stream if exists S_jdbc_source_file_001;</stringProp>
+drop stream if exists S_jdbc_source_file_001;
+drop stream if exists S_jdbc_sink_file_001;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -3149,6 +3503,24 @@ drop stream if exists S_jdbc_source_file_001;</stringProp>
                 <stringProp name="query">create table T_jdbc_source_file_01(
 id bigint,
 name varchar(30),
+age int
+);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试file_创建DB表T_jdbc_sink_file_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table T_jdbc_sink_file_01(
+name varchar(30),
+idl bigint,
+idr bigint,
 age int
 );
 </stringProp>
@@ -3218,7 +3590,7 @@ age int
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create stream S_file_source_file_001(
-id int,
+id bigint,
 name varchar(30),
 age int
 )properties(
@@ -3268,6 +3640,33 @@ age int
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试file_创建stream表S_jdbc_sink_file_001" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create stream S_jdbc_sink_file_001(
+name varchar(30),
+idl bigint,
+idr bigint,
+age int
+)properties(
+&apos;type&apos;: &apos;sink&apos;,
+&apos;connector&apos;: &apos;jdbc&apos;, 
+&apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;,
+&apos;dbUrl&apos;: &apos;${dburl}&apos;,
+&apos;username&apos;: &apos;${udb}&apos;,
+&apos;password&apos;: &apos;${udb_password}&apos;, 
+&apos;tableName&apos;: &apos;T_jdbc_sink_file_01&apos;,
+&apos;batchSize&apos;:&apos;20&apos;
+);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试file_TC 001 E 测试cacheStrategy是否为必填" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -3293,16 +3692,42 @@ age int
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
-              <hashTree/>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1363542114">Arguments options parse error cacheStrategy can&apos;t be empty. in statement [create stream S_file_source_file_002(
+id int,
+name varchar(30),
+age int
+)properties(
+&apos;type&apos;:&apos;source&apos;,
+&apos;connector&apos;:&apos;filesystem&apos;,
+&apos;path&apos;:&apos;hdfs://node3/node7/db2.2/stream/data/filesystem/dataMemo.csv&apos;,
+ &apos;format&apos;:&apos;csv&apos;,
+ &apos;commentPrefix&apos;:&apos;#&apos;,
+ &apos;separator&apos;:&apos;,&apos;,
+ &apos;ignore-first-line&apos;:&apos;false&apos;,
+ &apos;ignore-parse-errors&apos;:&apos;false&apos;,
+ &apos;dataType&apos;:&apos;static&apos;
+ )]</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试file_TC 002 测试file是否正常执行" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">set session STREAM_QUERY_LATENCY_MILLS 80000;
+insert into S_jdbc_sink_file_001
 select 
-	S_jdbc_source_file_001.name,
-	S_jdbc_source_file_001.id,
-	S_file_source_file_001.id,
-	S_file_source_file_001.age  
+	S_jdbc_source_file_001.name as name,
+	S_jdbc_source_file_001.id as idl,
+	S_file_source_file_001.id as idr,
+	S_file_source_file_001.age as age 
 from 
 	S_jdbc_source_file_001  
 left join 
@@ -3315,10 +3740,26 @@ on S_jdbc_source_file_001.id = S_file_source_file_001.id;</stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2581 LDBX081-64-基本功能测试_filesystem source_测试file_TC 002 查询结果" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from T_jdbc_sink_file_01 order by idl;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
               <hashTree>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">60000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1946471180">NAME	ID	ID0	AGE
+                    <stringProp name="-1199916166">NAME	IDL	IDR	AGE
 mary1	1	1	29
 mary2	2	2	23
 mary3	3	3	34
@@ -3360,7 +3801,8 @@ mary1	45	null	null
 mary1	46	null	null
 mary2	47	null	null
 mary2	48	null	null
-mary2	49	null	null</stringProp>
+mary2	49	null	null
+</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
