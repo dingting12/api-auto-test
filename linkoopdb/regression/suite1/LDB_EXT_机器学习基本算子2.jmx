@@ -848,7 +848,7 @@
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDB EXT: 机器学习基本算子 " enabled="true"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="326 LDBX004-01 als" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="326 LDBX004-01 als" enabled="false"/>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="326 LDBX004-01 drop table ${als_1} if exists CASCADE;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
@@ -2084,10 +2084,10 @@ drop model ${als_model_2} if exists;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX010-01 DROP TABLE t_user_table_wr if exists;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">DROP TABLE t_user_table_wr if exists;
-DROP TABLE user_table_vertex if exists;
-DROP TABLE t_follower_followee_table_wr if exists;
-DROP TABLE follower_followee_table_edges if exists;
+              <stringProp name="query">DROP TABLE t_user_table_wr if exists cascade;
+DROP TABLE user_table_vertex if exists cascade;
+DROP TABLE t_follower_followee_table_wr if exists cascade;
+DROP TABLE follower_followee_table_edges if exists cascade;
 DROP graph weibo_graph if exists;
 DROP INDEX index_follower_followee_table_edges_wr if exists;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2115,7 +2115,7 @@ DROP INDEX index_follower_followee_table_edges_wr if exists;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX010-01 CREATE TABLE user_table_vertex AS (SELECT user_id AS id  FROM t_user_table_wr WHERE user_id IS NOT null) WITH DATA engine pallas; " enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">CREATE TABLE user_table_vertex AS (SELECT user_id AS id  FROM t_user_table_wr WHERE user_id IS NOT null) WITH DATA engine pallas; </stringProp>
+              <stringProp name="query">CREATE TABLE user_table_vertex AS (SELECT user_id AS id  FROM t_user_table_wr WHERE user_id IS NOT null limit 10000) WITH DATA engine pallas; </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -2127,7 +2127,7 @@ DROP INDEX index_follower_followee_table_edges_wr if exists;</stringProp>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX010-01 SELECT count(*) FROM t_user_table_wr;" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">SELECT count(*) FROM t_user_table_wr;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2156,7 +2156,7 @@ LOCATION (&apos;ldbdist://192.168.1.72:54323/test_graph/edges/edges[0].csv&apos;
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">CREATE TABLE follower_followee_table_edges AS (SELECT follower_id AS src, followee_id as dst 
-FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id IS NOT NULL GROUP BY src,dst)WITH DATA properties (&apos;linkoopdb.pallas.shard_number&apos;:&apos;16&apos;)engine pallas;
+FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id IS NOT NULL GROUP BY src,dst limit 10000)WITH DATA properties (&apos;linkoopdb.pallas.shard_number&apos;:&apos;16&apos;)engine pallas;
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2182,7 +2182,9 @@ FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id 
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="340480205">4	ARRAY[4,5,6]</stringProp>
+                  <stringProp name="391732981">C1
+10000
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2254,7 +2256,7 @@ FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id 
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX010-01 TC-003" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select * from graph_label_propagation(weibo_graph,10);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2288,9 +2290,7 @@ FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id 
             </JDBCSampler>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="396487838">1	ARRAY[1,2,3,4,5,6]</stringProp>
-                </collectionProp>
+                <collectionProp name="Asserion.test_strings"/>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
@@ -2300,7 +2300,7 @@ FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id 
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX010-01 TC-005" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
-              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select * from graph_label_propagation(weibo_graph,100);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2367,12 +2367,13 @@ FROM t_follower_followee_table_wr WHERE followee_id IS NOT NULL AND follower_id 
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="514 LDBX010-01  TC-008" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">DROP TABLE t_user_table_wr if exists;
-DROP TABLE user_table_vertex if exists;
-DROP TABLE t_follower_followee_table_wr if exists;
-DROP TABLE follower_followee_table_edges if exists;
-DROP graph weibo_graph if exists;
-DROP INDEX index_follower_followee_table_edges_wr if exists;</stringProp>
+              <stringProp name="query">DROP graph weibo_graph if exists;
+DROP INDEX index_follower_followee_table_edges_wr if exists;
+DROP TABLE t_user_table_wr if exists cascade;
+DROP TABLE user_table_vertex if exists cascade;
+DROP TABLE t_follower_followee_table_wr if exists cascade;
+DROP TABLE follower_followee_table_edges if exists cascade;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
