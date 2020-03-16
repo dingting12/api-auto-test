@@ -113,7 +113,7 @@
           </elementProp>
           <elementProp name="dburl" elementType="Argument">
             <stringProp name="Argument.name">dburl</stringProp>
-            <stringProp name="Argument.value">${__P(dburl,jdbc:linkoopdb:tcp://192.168.1.78:9108/ldb)}</stringProp>
+            <stringProp name="Argument.value">${__P(dburl,jdbc:linkoopdb:tcp://192.168.1.73:9205/ldb)}</stringProp>
             <stringProp name="Argument.desc">db的url</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -10690,7 +10690,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
 ) PROPERTIES (
   &apos;connector&apos;:&apos;pallas&apos;,
    &apos;linkoopdb.pallas.shard_number&apos; : &apos;1&apos;,
-  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos;
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;3&apos;
 );
 
 </stringProp>
@@ -10710,7 +10710,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
 ) PROPERTIES (
   &apos;connector&apos;:&apos;pallas&apos;,
     &apos;linkoopdb.pallas.shard_number&apos; : &apos;1&apos;,
-  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos;
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;3&apos;
 );</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -10985,7 +10985,7 @@ select * from T_smoke_kafkasource_1075_01 where 1=1;
 )properties(
  &apos;connector&apos;:&apos;pallas&apos;,
   &apos;linkoopdb.pallas.shard_number&apos; : &apos;1&apos;,
-  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos;
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;3&apos;
 )</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -12115,7 +12115,7 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
 ) PROPERTIES (
   &apos;connector&apos;:&apos;pallas&apos;,
    &apos;linkoopdb.pallas.shard_number&apos; : &apos;2&apos;,
-  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;1&apos;
+  &apos;linkoopdb.pallas.shard_duplicate_number&apos; : &apos;3&apos;
 );</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
@@ -12254,6 +12254,53 @@ drop stream if exists T_parquet_jsink_15801;</stringProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1613 LDBX081-26 show jobs" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SHOW JOBS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">jobid</stringProp>
+              <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">60000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1613 LDBX081-26 cancel job &quot;${jobid_1}&quot;" enabled="true">
+            <stringProp name="dataSource">${u1}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings"/>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">true</boolProp>
               <intProp name="Assertion.test_type">2</intProp>
             </ResponseAssertion>
             <hashTree/>
