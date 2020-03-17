@@ -1,41 +1,856 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
   <hashTree>
-    <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="察看结果树" enabled="true">
-      <boolProp name="ResultCollector.error_logging">false</boolProp>
-      <objProp>
-        <name>saveConfig</name>
-        <value class="SampleSaveConfiguration">
-          <time>true</time>
-          <latency>true</latency>
-          <timestamp>true</timestamp>
-          <success>true</success>
-          <label>true</label>
-          <code>true</code>
-          <message>true</message>
-          <threadName>true</threadName>
-          <dataType>true</dataType>
-          <encoding>false</encoding>
-          <assertions>true</assertions>
-          <subresults>true</subresults>
-          <responseData>false</responseData>
-          <samplerData>false</samplerData>
-          <xml>false</xml>
-          <fieldNames>true</fieldNames>
-          <responseHeaders>false</responseHeaders>
-          <requestHeaders>false</requestHeaders>
-          <responseDataOnError>false</responseDataOnError>
-          <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-          <assertionsResultsToSave>0</assertionsResultsToSave>
-          <bytes>true</bytes>
-          <sentBytes>true</sentBytes>
-          <threadCounts>true</threadCounts>
-          <idleTime>true</idleTime>
-          <connectTime>true</connectTime>
-        </value>
-      </objProp>
-      <stringProp name="filename"></stringProp>
-    </ResultCollector>
-    <hashTree/>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="LDB_JDBC_INFO" elementType="Argument">
+            <stringProp name="Argument.name">LDB_JDBC_INFO</stringProp>
+            <stringProp name="Argument.value">ldb_admin</stringProp>
+            <stringProp name="Argument.desc">node</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="TEST_SCHEMA_NAME" elementType="Argument">
+            <stringProp name="Argument.name">TEST_SCHEMA_NAME</stringProp>
+            <stringProp name="Argument.value">TEST_SCHEMA</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="mainurl" elementType="Argument">
+            <stringProp name="Argument.name">mainurl</stringProp>
+            <stringProp name="Argument.value">${__P(mainurl,jdbc:linkoopdb:tcp://192.168.1.71:9105/ldb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="metaurl" elementType="Argument">
+            <stringProp name="Argument.name">metaurl</stringProp>
+            <stringProp name="Argument.value">${__P(metaurl,jdbc:linkoopdb:tcp://192.168.1.71:9108/ldb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="node64_p1" elementType="Argument">
+            <stringProp name="Argument.name">node64_p1</stringProp>
+            <stringProp name="Argument.value">jdbc:linkoopdb:cluster://192.168.1.64:9105|192.168.1.66:9105|192.168.1.67:9105/ldb</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="node" elementType="Argument">
+            <stringProp name="Argument.name">node</stringProp>
+            <stringProp name="Argument.value">${__P(host, 192.168.1.71)}</stringProp>
+            <stringProp name="Argument.desc">linkoopdb host</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="a" elementType="Argument">
+            <stringProp name="Argument.name">a</stringProp>
+            <stringProp name="Argument.value">admin</stringProp>
+            <stringProp name="Argument.desc">dba user</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="a_password" elementType="Argument">
+            <stringProp name="Argument.name">a_password</stringProp>
+            <stringProp name="Argument.value">123456</stringProp>
+            <stringProp name="Argument.desc">dba user password</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="admin" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">${a}</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">${a}</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="ldb_admin" enabled="true">
+        <stringProp name="TestPlan.comments">JDBC连接</stringProp>
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+        <stringProp name="dbUrl">${mainurl}</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">admin</stringProp>
+        <stringProp name="initQuery"></stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="T_U_A" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">T_U_A</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">T_U_A</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="T_U_B" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">T_U_B</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">T_U_B</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="察看结果树" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="LDB EXT: 优化与加速" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="循环控制器" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP SCHEMA" enabled="true">
+            <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP SCHEMA IF EXISTS ${TEST_SCHEMA_NAME} CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE SCHEMA" enabled="true">
+            <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE SCHEMA if not exists ${TEST_SCHEMA_NAME};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SET SCHEMA" enabled="true">
+            <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">SET SCHEMA ${TEST_SCHEMA_NAME};</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDB EXT: 资源管控 " enabled="true"/>
+        <hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDBX124-01 set session count on/off" enabled="true"/>
+          <hashTree>
+            <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="用户定义的变量" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="TEST_TABLE_NAME" elementType="Argument">
+                  <stringProp name="Argument.name">TEST_TABLE_NAME</stringProp>
+                  <stringProp name="Argument.value">LDBX124_01_TABLE</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </Arguments>
+            <hashTree/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Main-Setup" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 创建测试表" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CREATE TABLE ${TEST_TABLE_NAME}(id int, content varchar(10));</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 插入8条数据" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">INSERT INTO ${TEST_TABLE_NAME} VALUES(1,&apos;test1&apos;),(2,&apos;test2&apos;),(3,&apos;test3&apos;),(4,&apos;test4&apos;),(5,&apos;test5&apos;),(6,&apos;test6&apos;),(7,&apos;test7&apos;),(8,&apos;test8&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDBX124-01 TC-001 session count使用默认值" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 TC-001-01 验证session count使用默认值时的update操作" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">update ${TEST_TABLE_NAME} set content =&apos;teststring&apos; where id &lt; 5;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="202574046">4 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 TC-001-02 验证session count使用默认值时的delete操作" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DELETE from ${TEST_TABLE_NAME} where id=1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1329970139">1 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Teardown" enabled="true"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 恢复表${TEST_TABLE_NAME}数据为8条" enabled="true">
+                  <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">INSERT INTO ${TEST_TABLE_NAME} VALUES(1,&apos;test1&apos;);
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1289828248">1 update</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDBX124-01 TC-002 session count值为off" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 TC-002-01 配置session count为off" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">set session count off;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1157542694">0 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 TC-002-02 验证session count使用默认值时的update操作" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">update ${TEST_TABLE_NAME} set content =&apos;teststring&apos; where id &lt; 5;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1076797006">-1 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 TC-002-03 验证session count使用默认值时的delete操作" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DELETE from ${TEST_TABLE_NAME} where id=1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1076797006">-1 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Teardown" enabled="true"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 恢复表${TEST_TABLE_NAME}数据为8条" enabled="true">
+                  <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">INSERT INTO ${TEST_TABLE_NAME} VALUES(1,&apos;test1&apos;);
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1289828248">1 update</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LDBX124-01 TC-003 session count值为on" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 TC-003-01 配置session count为on" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">set session count on;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1157542694">0 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 TC-003-01 验证session count使用默认值时的update操作" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">update ${TEST_TABLE_NAME} set content =&apos;teststring&apos; where id &lt; 5;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="202574046">4 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 TC-003-02 验证session count使用默认值时的delete操作" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DELETE from ${TEST_TABLE_NAME} where id=1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1329970139">1 updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">8</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Teardown" enabled="true"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01 恢复表${TEST_TABLE_NAME}数据为8条" enabled="true">
+                  <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">INSERT INTO ${TEST_TABLE_NAME} VALUES(1,&apos;test1&apos;);
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1289828248">1 update</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Main-Teardown" enabled="true"/>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LDBX124-01删除测试表" enabled="true">
+                <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">DROP TABLE ${TEST_TABLE_NAME};</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Teardown" enabled="false"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP SCHEMA" enabled="true">
+            <stringProp name="dataSource">${LDB_JDBC_INFO}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP SCHEMA IF EXISTS ${TEST_SCHEMA_NAME} CASCADE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="590 LDBX037-01 Refined concurrent control about DDL &amp; DML" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  drop TABLE Test_Data_Type_1 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop  user T_U_A if exists cascade;
+drop user T_U_B if exists cascade;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  CREATE user T_U_A password &apos;123456&apos;; " enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE user T_U_A password &apos;123456&apos;;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  CREATE user T_U_B password &apos;123456&apos;; " enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE user T_U_B password &apos;123456&apos;;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  grant change_authorization to T_U_A;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">grant change_authorization to T_U_A;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  grant change_authorization to T_U_B;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">grant change_authorization to T_U_B;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01   drop TABLE t_user_table_wr_2 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">T_U_A</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop TABLE t_user_table_wr_2 if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  CREATE TABLE t_user_table_wr_2(id BIGINT,name varchar(100)); " enabled="true">
+            <stringProp name="dataSource">T_U_A</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE TABLE t_user_table_wr_2(id BIGINT,name varchar(100));
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  set autocommit FALSE;" enabled="true">
+            <stringProp name="dataSource">T_U_A</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">set autocommit FALSE;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  INSERT INTO t_user_table_wr_2  values(1,&apos;hahaha&apos;);" enabled="true">
+            <stringProp name="dataSource">T_U_A</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO t_user_table_wr_2  values(1,&apos;hahaha&apos;);
+INSERT INTO t_user_table_wr_2  values(2,&apos;xixixi&apos;);
+INSERT INTO t_user_table_wr_2  values(3,&apos;hahaha&apos;);
+INSERT INTO t_user_table_wr_2  values(4,&apos;xixixi&apos;);
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  TC-001" enabled="true">
+            <stringProp name="dataSource">T_U_A</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from  t_user_table_wr_2 order by id;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-859068733">ID	NAME
+1	hahaha
+2	xixixi
+3	hahaha
+4	xixixi
+</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  drop TABLE t_user_table_wr_3 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">T_U_B</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop TABLE t_user_table_wr_3 if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  CREATE TABLE t_user_table_wr_3(id BIGINT,name varchar(100)); " enabled="true">
+            <stringProp name="dataSource">T_U_B</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE TABLE t_user_table_wr_3(id BIGINT,name varchar(100));
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  commit;" enabled="true">
+            <stringProp name="dataSource">T_U_A</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">commit;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  DISCONNECT" enabled="true">
+            <stringProp name="dataSource">T_U_A</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DISCONNECT</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  DISCONNECT" enabled="true">
+            <stringProp name="dataSource">T_U_B</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DISCONNECT</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  drop TABLE t_user_table_wr if exists cascade; drop TABLE t_user_table_wr_2 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop  user T_U_A if exists cascade;
+drop user T_U_B if exists cascade;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="590 LDBX037-01  drop TABLE t_user_table_wr if exists cascade; drop TABLE t_user_table_wr_2 if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop  user T_U_A if exists cascade;
+drop user T_U_B if exists cascade;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="聚合报告" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+        <stringProp name="FileSaver.filename">${logdir}/${__BeanShell(ctx.getThreadGroup().getName())}/${__samplerName}.</stringProp>
+        <boolProp name="FileSaver.errorsonly">true</boolProp>
+        <boolProp name="FileSaver.skipautonumber">false</boolProp>
+        <boolProp name="FileSaver.skipsuffix">false</boolProp>
+        <boolProp name="FileSaver.successonly">false</boolProp>
+      </ResultSaver>
+      <hashTree/>
+    </hashTree>
   </hashTree>
 </jmeterTestPlan>
