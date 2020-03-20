@@ -44,7 +44,7 @@
           </elementProp>
           <elementProp name="metaurl" elementType="Argument">
             <stringProp name="Argument.name">metaurl</stringProp>
-            <stringProp name="Argument.value">${__P(metaurl,jdbc:linkoopdb:tcp://192.168.1.71:9205/ldb)}</stringProp>
+            <stringProp name="Argument.value">${__P(metaurl,jdbc:linkoopdb:tcp://192.168.1.71:9108/ldb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -1288,1267 +1288,6 @@ promo_begin_date DATE
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
-            </hashTree>
-          </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas table" enabled="true"/>
-          <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PRIMARY KEY" enabled="true"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_key_pa_wr if exists CASCADE;
-DROP TABLE t_key_pa_wr2 if exists CASCADE;
-DROP TABLE t_keyco_pa_wr if exists CASCADE;
-DROP TABLE t_keyt_pa_wr if exists CASCADE;
-DROP TABLE t_keylh_pa_wr if exists CASCADE;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_key_pa_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">--在字段级以key方式建立
-CREATE TABLE t_key_pa_wr
-(location_id    int not NULL CONSTRAINT loc_id_pk PRIMARY KEY, 
-street_address VARCHAR(40), 
-postal_code    VARCHAR(12), 
-city           VARCHAR(30), 
-state_province VARCHAR(25), 
-country_id     CHAR(2)
-)engine pallas;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO t_key_pa_wr VALUES(1,&apos;ww&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">INSERT INTO t_key_pa_wr VALUES(1,&apos;ww&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
-INSERT INTO t_key_pa_wr VALUES(2,&apos;aa&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
-INSERT INTO t_key_pa_wr VALUES(3,&apos;ww&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
-INSERT INTO t_key_pa_wr VALUES(4,&apos;ss&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM t_key_pa_wr WHERE street_address=&apos;ww&apos; order by location_id; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SELECT * FROM t_key_pa_wr WHERE street_address=&apos;ww&apos; order by location_id;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="136523814">LOCATION_ID	STREET_ADDRESS	POSTAL_CODE	CITY	STATE_PROVINCE	COUNTRY_ID
-1	ww	qq	dd	qw	dg
-3	ww	qq	dd	qw	dg
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/CREATE TABLE t_key_pa_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">--在字段级以key方式建立
-CREATE TABLE t_key_pa_wr2
-(location_id    int not NULL CONSTRAINT loc_id_pk PRIMARY KEY, 
-street_address VARCHAR(40), 
-postal_code    VARCHAR(12), 
-city           VARCHAR(30), 
-state_province VARCHAR(25), 
-country_id     CHAR(2)
-);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings"/>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/主键列有重复值/INSERT INTO t_key_pa_wr values(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;);" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">INSERT INTO t_key_pa_wr values(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;);
-INSERT INTO t_key_pa_wr values(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;);
-INSERT INTO t_key_pa_wr values(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1207520183">transaction rollback: INSERT is failed!</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME=&apos;T_KEY_PA_WR&apos;;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME=&apos;T_KEY_PA_WR&apos;;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1954816076">TABLE_CAT	TABLE_SCHEM	TABLE_NAME	COLUMN_NAME	KEY_SEQ	PK_NAME
-PUBLIC	SC_DDLTEST	T_KEY_PA_WR	LOCATION_ID	1	LOC_ID_PK
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE  t_keyco_pa_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">--在字段级以constraint方式建立
-CREATE TABLE  t_keyco_pa_wr
-(location_id    int,
-street_address VARCHAR(40), 
-postal_code    VARCHAR(12), 
-city           VARCHAR(30), 
-state_province VARCHAR(25), 
-country_id     CHAR(2) , 
-CONSTRAINT loc_id_pk0 PRIMARY KEY (location_id))engine pallas;
-
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE PK_NAME=&apos;loc_id_pk0&apos;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE PK_NAME=&apos;loc_id_pk0&apos;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1036512169">TABLE_CAT	TABLE_SCHEM	TABLE_NAME	COLUMN_NAME	KEY_SEQ	PK_NAME
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table t_keyt_pa_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">--在表级以key方式建立
-create table t_keyt_pa_wr(id int, primary key (id))engine pallas;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT TABLE_NAME FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME=&apos;T_KEYT_PA_WR&apos;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SELECT TABLE_NAME FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME=&apos;T_KEYT_PA_WR&apos;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1529884434">TABLE_NAME
-T_KEYT_PA_WR
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE t_key_pa_wr if exists;" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_key_pa_wr if exists CASCADE;
-DROP TABLE t_key_pa_wr2 if exists CASCADE;
-DROP TABLE t_keyco_pa_wr if exists CASCADE;
-DROP TABLE t_keyt_pa_wr if exists CASCADE;
-DROP TABLE t_keylh_pa_wr if exists CASCADE;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_keylh_pa_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">--创建联合主键
-CREATE TABLE t_keylh_pa_wr
-(id    int ,
-NAME   VARCHAR(12), 
-postal_code    VARCHAR(12), 
-city           VARCHAR(30), 
-state_province VARCHAR(25), 
-country_id     CHAR(2) , 
-CONSTRAINT loc_id_pk1 PRIMARY KEY (id,name))engine pallas;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM t_keylh_pa_wr WHERE name=&apos;ss&apos; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SELECT * FROM t_keylh_pa_wr WHERE name=&apos;ss&apos; order by id
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings"/>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO t_unique_wr VALUES(1,&apos;ggg&apos;,&apos;hh&apos;,55.99,to_date(&apos;2009-07-30&apos;,&apos;yyyy-mm-dd&apos;),to_date(&apos;2009-07-30&apos;,&apos;yyyy-mm-dd&apos;))" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">INSERT INTO t_keylh_pa_wr VALUES(1,&apos;ss&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
-INSERT INTO t_keylh_pa_wr VALUES(2,&apos;aa&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
-INSERT INTO t_keylh_pa_wr VALUES(3,&apos;ww&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
-INSERT INTO t_keylh_pa_wr VALUES(4,&apos;ss&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas table" enabled="true"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_ddl_wr0 IF EXISTS CASCADE;
-DROP TABLE t_ddl_pallas_wr IF EXISTS CASCADE;
-DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_unique_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TABLE t_ddl_wr0
-(Id_P int  primary key,
-LastName varchar(255),
-FirstName varchar(255),
-Address varchar(255),
-City varchar(255)
-)</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE IF NOT EXISTS t_ddl_pallas_wr " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TABLE IF NOT EXISTS t_ddl_pallas_wr 
-(tinteger integer,
-Id_P integer,
-tsmallint SMALLINT  NOT NULL, 
-tbigint bigint  NOT NULL, 
-treal REAL  NOT NULL,
-tdouble double ,
-tfloat FLOAT, 
-tdecimal decimal(10,2) NULL,
-tnumberic numeric(10,4) DEFAULT NULL, 
-tdate date DEFAULT CURRENT_DATE  NOT NULL,
-ttimestamp date DEFAULT CURRENT_DATE,
-tchar char(255) DEFAULT &apos;min&apos;  NOT null, 
-tvarchar varchar(8000)) 
-partitioned by(Id_P)
-properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
-COMMENT ON table t_ddl_pallas_wr IS &apos;test ddl&apos;;
-COMMENT ON COLUMN t_ddl_pallas_wr.tinteger  IS &apos;test ddl&apos;;
-COMMENT ON COLUMN t_ddl_pallas_wr.Id_P  IS &apos;test ddl&apos;;
-COMMENT ON COLUMN t_ddl_pallas_wr.tsmallint  IS &apos;test ddl&apos;;
-COMMENT ON COLUMN t_ddl_pallas_wr.tdouble  IS &apos;test ddl&apos;;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_ddl_pallas_wr values" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">insert into t_ddl_pallas_wr values (1,83647,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (2,44,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (3,66,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (4,44,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (5,83647,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (6,66,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE IF NOT EXISTS t_ddl_wr0; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TABLE IF NOT EXISTS t_ddl_pallas_wr(id int) engine pallas;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/select * from  t_ddl_pallas_wr order by id; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from  t_ddl_pallas_wr order by id; </stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1853906244">user lacks privilege or object not found: ID</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/CREATE TABLE t_ddl_pallas_wr(id int); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TABLE t_ddl_pallas_wr(id int)  engine pallas;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1273210434">object name already exists:</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_ddl_pallas_wr order by tinteger; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from  t_ddl_pallas_wr order by tinteger;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="907606301">TINTEGER	ID_P	TSMALLINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMBERIC	TDATE	TTIMESTAMP	TCHAR	TVARCHAR
-1	83647	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-2	44	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-3	66	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-4	44	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-5	83647	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-6	66	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">TDATE</stringProp>
-                  <stringProp name="RegexExtractor.regex">00	(.+)	20</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default"></stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <DebugPostProcessor guiclass="TestBeanGUI" testclass="DebugPostProcessor" testname="Debug PostProcessor" enabled="true">
-                  <boolProp name="displayJMeterProperties">true</boolProp>
-                  <boolProp name="displayJMeterVariables">true</boolProp>
-                  <boolProp name="displaySamplerProperties">true</boolProp>
-                  <boolProp name="displaySystemProperties">true</boolProp>
-                </DebugPostProcessor>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_ddl_wr0 IF EXISTS CASCADE;
-DROP TABLE t_ddl_pallas_wr IF EXISTS CASCADE;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE t_truncate if exists CASCADE; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_truncate_pa if exists CASCADE;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_truncate_pa" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE TABLE t_truncate_pa
-(Id_P int  primary key,
-LastName varchar(255),
-FirstName varchar(255),
-Address varchar(255),
-City varchar(255)
-)engine pallas;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_truncate_pa values" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">insert into t_truncate_pa values (1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;);
-insert into t_truncate_pa values (2,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;);
-insert into t_truncate_pa values (3,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_truncate_pa order by Id_P; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from  t_truncate_pa order by Id_P; </stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="332464455">ID_P	LASTNAME	FIRSTNAME	ADDRESS	CITY
-1	a	b	c	d
-2	a	b	c	d
-3	a	b	c	d
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="truncate TABLE t_truncate_pa; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">truncate TABLE t_truncate_pa;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_truncate_pa; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from  t_truncate_pa; </stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1822077135">ID_P	LASTNAME	FIRSTNAME	ADDRESS	CITY
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE t_truncate_pa if exists CASCADE; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_truncate_pa if exists CASCADE;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas TEMPORARY table" enabled="true"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_ddl_wr0 IF EXISTS CASCADE;
-DROP TABLE t_ddl_pallas_wr IF EXISTS CASCADE;
-DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_unique_wr" enabled="false">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TABLE t_ddl_wr0
-(Id_P int  primary key,
-LastName varchar(255),
-FirstName varchar(255),
-Address varchar(255),
-City varchar(255)
-)</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TEMPORARY TABLE IF NOT EXISTS t_ddl_pallas_wr " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TEMPORARY TABLE IF NOT EXISTS t_ddl_pallas_wr 
-(tinteger integer,
-Id_P integer,
-tsmallint SMALLINT  NOT NULL, 
-tbigint bigint  NOT NULL, 
-treal REAL  NOT NULL,
-tdouble double ,
-tfloat FLOAT, 
-tdecimal decimal(10,2) NULL,
-tnumberic numeric(10,4) DEFAULT NULL, 
-tdate date DEFAULT CURRENT_DATE  NOT NULL,
-ttimestamp date DEFAULT CURRENT_DATE,
-tchar char(255) DEFAULT &apos;min&apos;  NOT null, 
-tvarchar varchar(8000)) 
-partitioned by(Id_P)
-properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
-COMMENT ON table t_ddl_pallas_wr IS &apos;test ddl&apos;;
-COMMENT ON COLUMN t_ddl_pallas_wr.tinteger  IS &apos;test ddl&apos;;
-COMMENT ON COLUMN t_ddl_pallas_wr.Id_P  IS &apos;test ddl&apos;;
-COMMENT ON COLUMN t_ddl_pallas_wr.tsmallint  IS &apos;test ddl&apos;;
-COMMENT ON COLUMN t_ddl_pallas_wr.tdouble  IS &apos;test ddl&apos;;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_ddl_pallas_wr values" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">insert into t_ddl_pallas_wr values (1,83647,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (2,44,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (3,66,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (4,44,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (5,83647,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
-insert into t_ddl_pallas_wr values (6,66,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TEMPORARY TABLE IF NOT EXISTS t_ddl_wr0; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TEMPORARY TABLE IF NOT EXISTS t_ddl_pallas_wr(id int) engine pallas;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/select * from  t_ddl_pallas_wr order by id; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from  t_ddl_pallas_wr order by id; </stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1853906244">user lacks privilege or object not found: ID</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/CREATE TABLE t_ddl_pallas_wr(id int); " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TEMPORARY TABLE t_ddl_pallas_wr(id int)  engine pallas;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1273210434">object name already exists:</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_ddl_pallas_wr order by tinteger; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from  t_ddl_pallas_wr order by tinteger;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="907606301">TINTEGER	ID_P	TSMALLINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMBERIC	TDATE	TTIMESTAMP	TCHAR	TVARCHAR
-1	83647	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-2	44	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-3	66	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-4	44	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-5	83647	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-6	66	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">TDATE</stringProp>
-                  <stringProp name="RegexExtractor.regex">00	(.+)	20</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default"></stringProp>
-                  <stringProp name="RegexExtractor.match_number">1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <DebugPostProcessor guiclass="TestBeanGUI" testclass="DebugPostProcessor" testname="Debug PostProcessor" enabled="true">
-                  <boolProp name="displayJMeterProperties">true</boolProp>
-                  <boolProp name="displayJMeterVariables">true</boolProp>
-                  <boolProp name="displaySamplerProperties">true</boolProp>
-                  <boolProp name="displaySystemProperties">true</boolProp>
-                </DebugPostProcessor>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_ddl_wr0 IF EXISTS CASCADE;
-DROP TABLE t_ddl_pallas_wr IF EXISTS CASCADE;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas table as " enabled="true"/>
-          <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create  table as " enabled="true"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr2 IF EXISTS CASCADE;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallaspk_composite_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TABLE t_pallaspk_composite_wr(
-    tsmallint SMALLINT,
-    tint int,
-    tbigint bigint,
-    treal REAL,
-    tdouble double,
-    tfloat float,
-    tdecimal decimal(6,2),
-    tnumeric numeric(6,2),
-    tdate date,
-    ttimestamp timestamp,
-    tvarchar varchar(50),
-    tchar char(50),
-    PRIMARY KEY(treal,tchar)
-) engine pallas;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/insert into t_pallaspk_composite_wr values" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;1111w&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;1111w&apos;);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1221580023">transaction rollback: INSERT is failed! </stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_pallaspk_composite_wr values" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;cy&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,2.2,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;ls&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,3.3,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;wr&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,4.4,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;cy&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,5.5,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;wr&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallasas_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TABLE t_pallasas_wr AS (SELECT * FROM t_pallaspk_composite_wr) WITH DATA partitioned by(tint) 
-properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;)engine pallas;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_pallasas_wr order by treal,tchar; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from  t_pallasas_wr order by treal,tchar;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="668854889">TSMALLINT	TINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR
-1	1	1	1.1	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	1111w                                             
-1	1	1	1.1	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	cy                                                
-1	1	1	2.2	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	ls                                                
-1	1	1	3.3	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	wr                                                
-1	1	1	4.4	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	cy                                                
-1	1	1	5.5	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	wr                                                
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallasas_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TABLE t_pallasas_wr2 AS (SELECT * FROM t_pallaspk_composite_wr) WITH NO DATA partitioned by(tint) 
-properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;)engine pallas;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from t_pallasas_wr2; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from t_pallasas_wr2;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="597438339">TSMALLINT	TINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr2 IF EXISTS CASCADE;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
-                <stringProp name="ConstantTimer.delay">1000</stringProp>
-                <stringProp name="RandomTimer.range">100</stringProp>
-              </UniformRandomTimer>
-              <hashTree/>
-            </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create TEMPORARY table as " enabled="true"/>
-            <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr2 IF EXISTS CASCADE;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallaspk_composite_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TEMPORARY TABLE t_pallaspk_composite_wr(
-    tsmallint SMALLINT,
-    tint int,
-    tbigint bigint,
-    treal REAL,
-    tdouble double,
-    tfloat float,
-    tdecimal decimal(6,2),
-    tnumeric numeric(6,2),
-    tdate date,
-    ttimestamp timestamp,
-    tvarchar varchar(50),
-    tchar char(50),
-    PRIMARY KEY(treal,tchar)
-) engine pallas;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/insert into t_pallaspk_composite_wr values" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;1111w&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;1111w&apos;);
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1221580023">transaction rollback: INSERT is failed! </stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_pallaspk_composite_wr values" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;cy&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,2.2,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;ls&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,3.3,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;wr&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,4.4,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;cy&apos;);
-INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,5.5,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;wr&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallasas_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TEMPORARY TABLE t_pallasas_wr AS (SELECT * FROM t_pallaspk_composite_wr) WITH DATA partitioned by(tint) 
-properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;)engine pallas;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_pallasas_wr order by treal,tchar; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from  t_pallasas_wr order by treal,tchar;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="668854889">TSMALLINT	TINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR
-1	1	1	1.1	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	1111w                                             
-1	1	1	1.1	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	cy                                                
-1	1	1	2.2	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	ls                                                
-1	1	1	3.3	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	wr                                                
-1	1	1	4.4	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	cy                                                
-1	1	1	5.5	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	wr                                                
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallasas_wr" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">CREATE TEMPORARY TABLE t_pallasas_wr2 AS (SELECT * FROM t_pallaspk_composite_wr) WITH NO DATA partitioned by(tint) 
-properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;)engine pallas;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from t_pallasas_wr2; " enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="query">select * from t_pallasas_wr2;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="597438339">TSMALLINT	TINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR
-</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
-                <stringProp name="dataSource">${a}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
-DROP TABLE t_pallasas_wr2 IF EXISTS CASCADE;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-            </hashTree>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time" enabled="true">
-              <intProp name="ActionProcessor.action">1</intProp>
-              <intProp name="ActionProcessor.target">0</intProp>
-              <stringProp name="ActionProcessor.duration">0</stringProp>
-            </TestAction>
-            <hashTree>
-              <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
-                <stringProp name="ConstantTimer.delay">1000</stringProp>
-                <stringProp name="RandomTimer.range">100</stringProp>
-              </UniformRandomTimer>
-              <hashTree/>
             </hashTree>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="others" enabled="false"/>
@@ -4450,6 +3189,1266 @@ promo_begin_date DATE
                   <boolProp name="Assertion.assume_success">true</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas table" enabled="false"/>
+            <hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="PRIMARY KEY" enabled="true"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_key_pa_wr if exists CASCADE;
+DROP TABLE t_key_pa_wr2 if exists CASCADE;
+DROP TABLE t_keyco_pa_wr if exists CASCADE;
+DROP TABLE t_keyt_pa_wr if exists CASCADE;
+DROP TABLE t_keylh_pa_wr if exists CASCADE;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_key_pa_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">--在字段级以key方式建立
+CREATE TABLE t_key_pa_wr
+(location_id    int not NULL CONSTRAINT loc_id_pk PRIMARY KEY, 
+street_address VARCHAR(40), 
+postal_code    VARCHAR(12), 
+city           VARCHAR(30), 
+state_province VARCHAR(25), 
+country_id     CHAR(2)
+)engine pallas;
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO t_key_pa_wr VALUES(1,&apos;ww&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">INSERT INTO t_key_pa_wr VALUES(1,&apos;ww&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
+INSERT INTO t_key_pa_wr VALUES(2,&apos;aa&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
+INSERT INTO t_key_pa_wr VALUES(3,&apos;ww&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
+INSERT INTO t_key_pa_wr VALUES(4,&apos;ss&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM t_key_pa_wr WHERE street_address=&apos;ww&apos; order by location_id; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">SELECT * FROM t_key_pa_wr WHERE street_address=&apos;ww&apos; order by location_id;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="136523814">LOCATION_ID	STREET_ADDRESS	POSTAL_CODE	CITY	STATE_PROVINCE	COUNTRY_ID
+1	ww	qq	dd	qw	dg
+3	ww	qq	dd	qw	dg
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/CREATE TABLE t_key_pa_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">--在字段级以key方式建立
+CREATE TABLE t_key_pa_wr2
+(location_id    int not NULL CONSTRAINT loc_id_pk_wr PRIMARY KEY, 
+street_address VARCHAR(40), 
+postal_code    VARCHAR(12), 
+city           VARCHAR(30), 
+state_province VARCHAR(25), 
+country_id     CHAR(2)
+);
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings"/>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/主键列有重复值/INSERT INTO t_key_pa_wr values(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;);" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">INSERT INTO t_key_pa_wr values(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;);
+INSERT INTO t_key_pa_wr values(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;);
+INSERT INTO t_key_pa_wr values(1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1207520183">transaction rollback: INSERT is failed!</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME=&apos;T_KEY_PA_WR&apos;;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME=&apos;T_KEY_PA_WR&apos;;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings"/>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE  t_keyco_pa_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">--在字段级以constraint方式建立
+CREATE TABLE  t_keyco_pa_wr
+(location_id    int,
+street_address VARCHAR(40), 
+postal_code    VARCHAR(12), 
+city           VARCHAR(30), 
+state_province VARCHAR(25), 
+country_id     CHAR(2) , 
+CONSTRAINT loc_id_pk0 PRIMARY KEY (location_id))engine pallas;
+
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE PK_NAME=&apos;loc_id_pk0&apos;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">SELECT * FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE PK_NAME=&apos;loc_id_pk0&apos;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1036512169">TABLE_CAT	TABLE_SCHEM	TABLE_NAME	COLUMN_NAME	KEY_SEQ	PK_NAME
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="create table t_keyt_pa_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">--在表级以key方式建立
+create table t_keyt_pa_wr(id int, primary key (id))engine pallas;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT TABLE_NAME FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME=&apos;T_KEYT_PA_WR&apos;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">SELECT TABLE_NAME FROM INFORMATION_SCHEMA.SYSTEM_PRIMARYKEYS WHERE TABLE_NAME=&apos;T_KEYT_PA_WR&apos;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1529884434">TABLE_NAME
+T_KEYT_PA_WR
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE t_key_pa_wr if exists;" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_key_pa_wr if exists CASCADE;
+DROP TABLE t_key_pa_wr2 if exists CASCADE;
+DROP TABLE t_keyco_pa_wr if exists CASCADE;
+DROP TABLE t_keyt_pa_wr if exists CASCADE;
+DROP TABLE t_keylh_pa_wr if exists CASCADE;
+
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_keylh_pa_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">--创建联合主键
+CREATE TABLE t_keylh_pa_wr
+(id    int ,
+NAME   VARCHAR(12), 
+postal_code    VARCHAR(12), 
+city           VARCHAR(30), 
+state_province VARCHAR(25), 
+country_id     CHAR(2) , 
+CONSTRAINT loc_id_pk1 PRIMARY KEY (id,name))engine pallas;
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="SELECT * FROM t_keylh_pa_wr WHERE name=&apos;ss&apos; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">SELECT * FROM t_keylh_pa_wr WHERE name=&apos;ss&apos; order by id
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings"/>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="INSERT INTO t_unique_wr VALUES(1,&apos;ggg&apos;,&apos;hh&apos;,55.99,to_date(&apos;2009-07-30&apos;,&apos;yyyy-mm-dd&apos;),to_date(&apos;2009-07-30&apos;,&apos;yyyy-mm-dd&apos;))" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">INSERT INTO t_keylh_pa_wr VALUES(1,&apos;ss&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
+INSERT INTO t_keylh_pa_wr VALUES(2,&apos;aa&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
+INSERT INTO t_keylh_pa_wr VALUES(3,&apos;ww&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);
+INSERT INTO t_keylh_pa_wr VALUES(4,&apos;ss&apos;,&apos;qq&apos;,&apos;dd&apos;,&apos;qw&apos;,&apos;dg&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas table" enabled="false"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_ddl_wr0 IF EXISTS CASCADE;
+DROP TABLE t_ddl_pallas_wr IF EXISTS CASCADE;
+DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_unique_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TABLE t_ddl_wr0
+(Id_P int  primary key,
+LastName varchar(255),
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+)</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE IF NOT EXISTS t_ddl_pallas_wr " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TABLE IF NOT EXISTS t_ddl_pallas_wr 
+(tinteger integer,
+Id_P integer,
+tsmallint SMALLINT  NOT NULL, 
+tbigint bigint  NOT NULL, 
+treal REAL  NOT NULL,
+tdouble double ,
+tfloat FLOAT, 
+tdecimal decimal(10,2) NULL,
+tnumberic numeric(10,4) DEFAULT NULL, 
+tdate date DEFAULT CURRENT_DATE  NOT NULL,
+ttimestamp date DEFAULT CURRENT_DATE,
+tchar char(255) DEFAULT &apos;min&apos;  NOT null, 
+tvarchar varchar(8000)) 
+partitioned by(Id_P)
+properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
+COMMENT ON table t_ddl_pallas_wr IS &apos;test ddl&apos;;
+COMMENT ON COLUMN t_ddl_pallas_wr.tinteger  IS &apos;test ddl&apos;;
+COMMENT ON COLUMN t_ddl_pallas_wr.Id_P  IS &apos;test ddl&apos;;
+COMMENT ON COLUMN t_ddl_pallas_wr.tsmallint  IS &apos;test ddl&apos;;
+COMMENT ON COLUMN t_ddl_pallas_wr.tdouble  IS &apos;test ddl&apos;;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_ddl_pallas_wr values" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">insert into t_ddl_pallas_wr values (1,83647,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (2,44,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (3,66,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (4,44,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (5,83647,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (6,66,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE IF NOT EXISTS t_ddl_wr0; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TABLE IF NOT EXISTS t_ddl_pallas_wr(id int) engine pallas;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/select * from  t_ddl_pallas_wr order by id; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from  t_ddl_pallas_wr order by id; </stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1853906244">user lacks privilege or object not found: ID</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/CREATE TABLE t_ddl_pallas_wr(id int); " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TABLE t_ddl_pallas_wr(id int)  engine pallas;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1273210434">object name already exists:</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_ddl_pallas_wr order by tinteger; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from  t_ddl_pallas_wr order by tinteger;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="907606301">TINTEGER	ID_P	TSMALLINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMBERIC	TDATE	TTIMESTAMP	TCHAR	TVARCHAR
+1	83647	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+2	44	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+3	66	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+4	44	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+5	83647	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+6	66	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">TDATE</stringProp>
+                    <stringProp name="RegexExtractor.regex">00	(.+)	20</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default"></stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <DebugPostProcessor guiclass="TestBeanGUI" testclass="DebugPostProcessor" testname="Debug PostProcessor" enabled="true">
+                    <boolProp name="displayJMeterProperties">true</boolProp>
+                    <boolProp name="displayJMeterVariables">true</boolProp>
+                    <boolProp name="displaySamplerProperties">true</boolProp>
+                    <boolProp name="displaySystemProperties">true</boolProp>
+                  </DebugPostProcessor>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_ddl_wr0 IF EXISTS CASCADE;
+DROP TABLE t_ddl_pallas_wr IF EXISTS CASCADE;
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE t_truncate if exists CASCADE; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_truncate_pa if exists CASCADE;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_truncate_pa" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">CREATE TABLE t_truncate_pa
+(Id_P int  primary key,
+LastName varchar(255),
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+)engine pallas;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_truncate_pa values" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">insert into t_truncate_pa values (1,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;);
+insert into t_truncate_pa values (2,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;);
+insert into t_truncate_pa values (3,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_truncate_pa order by Id_P; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from  t_truncate_pa order by Id_P; </stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="332464455">ID_P	LASTNAME	FIRSTNAME	ADDRESS	CITY
+1	a	b	c	d
+2	a	b	c	d
+3	a	b	c	d
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="truncate TABLE t_truncate_pa; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">truncate TABLE t_truncate_pa;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_truncate_pa; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from  t_truncate_pa; </stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1822077135">ID_P	LASTNAME	FIRSTNAME	ADDRESS	CITY
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE t_truncate_pa if exists CASCADE; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_truncate_pa if exists CASCADE;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas TEMPORARY table" enabled="false"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_ddl_wr0 IF EXISTS CASCADE;
+DROP TABLE t_ddl_pallas_wr IF EXISTS CASCADE;
+DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_unique_wr" enabled="false">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TABLE t_ddl_wr0
+(Id_P int  primary key,
+LastName varchar(255),
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+)</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TEMPORARY TABLE IF NOT EXISTS t_ddl_pallas_wr " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TEMPORARY TABLE IF NOT EXISTS t_ddl_pallas_wr 
+(tinteger integer,
+Id_P integer,
+tsmallint SMALLINT  NOT NULL, 
+tbigint bigint  NOT NULL, 
+treal REAL  NOT NULL,
+tdouble double ,
+tfloat FLOAT, 
+tdecimal decimal(10,2) NULL,
+tnumberic numeric(10,4) DEFAULT NULL, 
+tdate date DEFAULT CURRENT_DATE  NOT NULL,
+ttimestamp date DEFAULT CURRENT_DATE,
+tchar char(255) DEFAULT &apos;min&apos;  NOT null, 
+tvarchar varchar(8000)) 
+partitioned by(Id_P)
+properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;) engine pallas;
+COMMENT ON table t_ddl_pallas_wr IS &apos;test ddl&apos;;
+COMMENT ON COLUMN t_ddl_pallas_wr.tinteger  IS &apos;test ddl&apos;;
+COMMENT ON COLUMN t_ddl_pallas_wr.Id_P  IS &apos;test ddl&apos;;
+COMMENT ON COLUMN t_ddl_pallas_wr.tsmallint  IS &apos;test ddl&apos;;
+COMMENT ON COLUMN t_ddl_pallas_wr.tdouble  IS &apos;test ddl&apos;;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_ddl_pallas_wr values" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">insert into t_ddl_pallas_wr values (1,83647,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (2,44,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (3,66,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (4,44,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (5,83647,32767,9223372036854775807,-1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);
+insert into t_ddl_pallas_wr values (6,66,32767,9223372036854775807,1000000,-1000,3.4028235E38,default,2000,DEFAULT,DEFAULT,&apos;ddeffr&apos;,&apos;long char haha8&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TEMPORARY TABLE IF NOT EXISTS t_ddl_wr0; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TEMPORARY TABLE IF NOT EXISTS t_ddl_pallas_wr(id int) engine pallas;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/select * from  t_ddl_pallas_wr order by id; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from  t_ddl_pallas_wr order by id; </stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1853906244">user lacks privilege or object not found: ID</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/CREATE TABLE t_ddl_pallas_wr(id int); " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TEMPORARY TABLE t_ddl_pallas_wr(id int)  engine pallas;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1273210434">object name already exists:</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_ddl_pallas_wr order by tinteger; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from  t_ddl_pallas_wr order by tinteger;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="907606301">TINTEGER	ID_P	TSMALLINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMBERIC	TDATE	TTIMESTAMP	TCHAR	TVARCHAR
+1	83647	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+2	44	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+3	66	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+4	44	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+5	83647	32767	9223372036854775807	-1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+6	66	32767	9223372036854775807	1000000.0	-1000.0	3.4028235E38	null	2000.0000	${TDATE_g1}	${TDATE_g1}	ddeffr                                                                                                                                                                                                                                                         	long char haha8
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                    <stringProp name="RegexExtractor.refname">TDATE</stringProp>
+                    <stringProp name="RegexExtractor.regex">00	(.+)	20</stringProp>
+                    <stringProp name="RegexExtractor.template">$1$</stringProp>
+                    <stringProp name="RegexExtractor.default"></stringProp>
+                    <stringProp name="RegexExtractor.match_number">1</stringProp>
+                  </RegexExtractor>
+                  <hashTree/>
+                  <DebugPostProcessor guiclass="TestBeanGUI" testclass="DebugPostProcessor" testname="Debug PostProcessor" enabled="true">
+                    <boolProp name="displayJMeterProperties">true</boolProp>
+                    <boolProp name="displayJMeterVariables">true</boolProp>
+                    <boolProp name="displaySamplerProperties">true</boolProp>
+                    <boolProp name="displaySystemProperties">true</boolProp>
+                  </DebugPostProcessor>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_ddl_wr0 IF EXISTS CASCADE;
+DROP TABLE t_ddl_pallas_wr IF EXISTS CASCADE;
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create pallas table as " enabled="false"/>
+            <hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create  table as " enabled="true"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr2 IF EXISTS CASCADE;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallaspk_composite_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TABLE t_pallaspk_composite_wr(
+    tsmallint SMALLINT,
+    tint int,
+    tbigint bigint,
+    treal REAL,
+    tdouble double,
+    tfloat float,
+    tdecimal decimal(6,2),
+    tnumeric numeric(6,2),
+    tdate date,
+    ttimestamp timestamp,
+    tvarchar varchar(50),
+    tchar char(50),
+    PRIMARY KEY(treal,tchar)
+) engine pallas;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/insert into t_pallaspk_composite_wr values" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;1111w&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;1111w&apos;);
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1221580023">transaction rollback: INSERT is failed! </stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_pallaspk_composite_wr values" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;cy&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,2.2,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;ls&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,3.3,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;wr&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,4.4,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;cy&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,5.5,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;wr&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallasas_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TABLE t_pallasas_wr AS (SELECT * FROM t_pallaspk_composite_wr) WITH DATA partitioned by(tint) 
+properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;)engine pallas;
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_pallasas_wr order by treal,tchar; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from  t_pallasas_wr order by treal,tchar;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="668854889">TSMALLINT	TINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR
+1	1	1	1.1	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	1111w                                             
+1	1	1	1.1	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	cy                                                
+1	1	1	2.2	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	ls                                                
+1	1	1	3.3	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	wr                                                
+1	1	1	4.4	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	cy                                                
+1	1	1	5.5	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	wr                                                
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallasas_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TABLE t_pallasas_wr2 AS (SELECT * FROM t_pallaspk_composite_wr) WITH NO DATA partitioned by(tint) 
+properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;)engine pallas;
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from t_pallasas_wr2; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from t_pallasas_wr2;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="597438339">TSMALLINT	TINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr2 IF EXISTS CASCADE;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+              </hashTree>
+              <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time" enabled="true">
+                <intProp name="ActionProcessor.action">1</intProp>
+                <intProp name="ActionProcessor.target">0</intProp>
+                <stringProp name="ActionProcessor.duration">0</stringProp>
+              </TestAction>
+              <hashTree>
+                <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
+                  <stringProp name="ConstantTimer.delay">1000</stringProp>
+                  <stringProp name="RandomTimer.range">100</stringProp>
+                </UniformRandomTimer>
+                <hashTree/>
+              </hashTree>
+              <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="create TEMPORARY table as " enabled="true"/>
+              <hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr2 IF EXISTS CASCADE;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallaspk_composite_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TEMPORARY TABLE t_pallaspk_composite_wr(
+    tsmallint SMALLINT,
+    tint int,
+    tbigint bigint,
+    treal REAL,
+    tdouble double,
+    tfloat float,
+    tdecimal decimal(6,2),
+    tnumeric numeric(6,2),
+    tdate date,
+    ttimestamp timestamp,
+    tvarchar varchar(50),
+    tchar char(50),
+    PRIMARY KEY(treal,tchar)
+) engine pallas;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="/*e*/insert into t_pallaspk_composite_wr values" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;1111w&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;1111w&apos;);
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="1221580023">transaction rollback: INSERT is failed! </stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">true</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="insert into t_pallaspk_composite_wr values" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;cy&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,2.2,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;ls&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,3.3,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;wr&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,4.4,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;cy&apos;);
+INSERT INTO t_pallaspk_composite_wr VALUES(1,1,1,5.5,1.1,1.1,1.11,1.11,DATE &apos;2019-01-01&apos;,TIMESTAMP &apos;2019-01-01 01:01:01&apos;,&apos;1111q&apos;,&apos;wr&apos;);</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallasas_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TEMPORARY TABLE t_pallasas_wr AS (SELECT * FROM t_pallaspk_composite_wr) WITH DATA partitioned by(tint) 
+properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;)engine pallas;
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from  t_pallasas_wr order by treal,tchar; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from  t_pallasas_wr order by treal,tchar;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="668854889">TSMALLINT	TINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR
+1	1	1	1.1	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	1111w                                             
+1	1	1	1.1	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	cy                                                
+1	1	1	2.2	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	ls                                                
+1	1	1	3.3	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	wr                                                
+1	1	1	4.4	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	cy                                                
+1	1	1	5.5	1.1	1.1	1.11	1.11	2019-1-1	2019-01-01 01:01:01.0	1111q	wr                                                
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE TABLE t_pallasas_wr" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">CREATE TEMPORARY TABLE t_pallasas_wr2 AS (SELECT * FROM t_pallaspk_composite_wr) WITH NO DATA partitioned by(tint) 
+properties (&apos;perinsertnum&apos;:&apos;100&apos;, &apos;txnnum&apos;:&apos;5000&apos;, &apos;peringestnum&apos;:&apos;5000&apos;, &apos;linkoopdb.pallas.shard_number&apos;:&apos;4&apos;, &apos;linkoopdb.pallas.shard_duplicate_number&apos;:&apos;1&apos;)engine pallas;
+
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="select * from t_pallasas_wr2; " enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="query">select * from t_pallasas_wr2;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="597438339">TSMALLINT	TINT	TBIGINT	TREAL	TDOUBLE	TFLOAT	TDECIMAL	TNUMERIC	TDATE	TTIMESTAMP	TVARCHAR	TCHAR
+</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+                  <stringProp name="dataSource">${a}</stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="query">DROP TABLE t_pallaspk_composite_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr IF EXISTS CASCADE;
+DROP TABLE t_pallasas_wr2 IF EXISTS CASCADE;
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree/>
+              </hashTree>
+              <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Think Time" enabled="true">
+                <intProp name="ActionProcessor.action">1</intProp>
+                <intProp name="ActionProcessor.target">0</intProp>
+                <stringProp name="ActionProcessor.duration">0</stringProp>
+              </TestAction>
+              <hashTree>
+                <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Pause" enabled="true">
+                  <stringProp name="ConstantTimer.delay">1000</stringProp>
+                  <stringProp name="RandomTimer.range">100</stringProp>
+                </UniformRandomTimer>
                 <hashTree/>
               </hashTree>
             </hashTree>
