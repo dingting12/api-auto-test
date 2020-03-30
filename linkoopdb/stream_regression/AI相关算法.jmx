@@ -320,7 +320,7 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="false"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP SCHEMA IF EXISTS streamsql CASCADE;" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -7976,14 +7976,23 @@ drop table if exists t_string_indexer</stringProp>
               </JDBCSampler>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 chisqselector" enabled="false">
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 chisqselector" enabled="true">
               <stringProp name="TestPlan.comments">没结果</stringProp>
             </GenericController>
             <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  chisqselector_sink</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists FEATURE_DATA;</stringProp>
+                <stringProp name="query">drop table if exists FEATURE_DATA;
+drop table if exists t_chisqselector;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -8176,6 +8185,53 @@ selectFeatures double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_chisqselector_source_01( selectFeatures double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;chisqselector_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;chisqselector_sink_001&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -8201,12 +8257,38 @@ selectFeatures double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_chisqselector_source_01" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 alter stream t_kafkasource_winjoin_bch_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_chisqselector_source_01
-
+                <stringProp name="query">alter stream t_chisqselector_source_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table t_chisqselector( selectFeatures double array ) " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_chisqselector(
+selectFeatures double array
+) 
 </stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 insert into t_chisqselector select * from t_chisqselector_source_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_chisqselector select * from t_chisqselector_source_01
+ </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -8262,6 +8344,20 @@ selectFeatures double array
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_chisqselector_source_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from t_chisqselector
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL RFORMULA_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -8330,7 +8426,8 @@ selectFeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists FEATURE_DATA;</stringProp>
+                <stringProp name="query">drop table if exists FEATURE_DATA;
+drop table if exists t_chisqselector;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -8376,10 +8473,16 @@ selectFeatures double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 word2vec" enabled="false">
-              <stringProp name="TestPlan.comments">没结果</stringProp>
-            </GenericController>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 word2vec" enabled="true"/>
             <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  word2vec_sink1</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL WORD2VEC_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -8419,7 +8522,8 @@ selectFeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop stream if exists t_word2vec_source_01;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop stream if exists t_word2vec_source_01;</stringProp>
+                <stringProp name="query">drop stream if exists t_word2vec_source_01;
+drop table if exists t_word2vec</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -8503,7 +8607,7 @@ selectFeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11  drop table if exists streamsql.word2vec;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.word2vec;</stringProp>
+                <stringProp name="query">drop stream if exists streamsql.word2vec;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -8515,7 +8619,7 @@ selectFeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE TABLE streamsql.word2vec(words varchar(32) array);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE TABLE streamsql.word2vec(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">CREATE stream streamsql.word2vec(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -8576,6 +8680,53 @@ Features double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_word2vec_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;word2vec_sink1&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;word2vec_sink_001&apos;, &apos;format&apos;:&apos;json&apos; );   " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -8601,10 +8752,39 @@ Features double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_word2vec_source_01 " enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 alter stream t_kafkasource_winjoin_bch_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_word2vec_source_01
+                <stringProp name="query">alter stream t_word2vec_source_01 set properties(&apos;group.id&apos;:&apos;15${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="TestPlan.comments">data值为float</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_word2vec_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;word2vec_sink1&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;word2vec_sink_001&apos;, &apos;format&apos;:&apos;json&apos; );   " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_word2vec(
+Features double array
+)
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_word2vec_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;word2vec_sink1&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;word2vec_sink_001&apos;, &apos;format&apos;:&apos;json&apos; );   " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_word2vec select * from t_word2vec_source_01
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -8636,7 +8816,7 @@ Features double array
                 </RegexExtractor>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -8661,6 +8841,19 @@ Features double array
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_word2vec_source_01 " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from t_word2vec
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL WORD2VEC_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -8729,7 +8922,8 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists FEATURE_DATA;</stringProp>
+                <stringProp name="query">drop table if exists FEATURE_DATA;
+drop table if exists t_word2vec</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -8775,10 +8969,16 @@ Features double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 countvectorizer" enabled="false">
-              <stringProp name="TestPlan.comments">没结果</stringProp>
-            </GenericController>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 countvectorizer" enabled="true"/>
             <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  countvectorizer_sink</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL TOKENIZER_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -8842,7 +9042,8 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists FEATURE_DATA;</stringProp>
+                <stringProp name="query">drop table if exists FEATURE_DATA;
+drop table if exists t_countvectorizer</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -8975,6 +9176,53 @@ Features double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_countvectorizer_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;countvectorizer_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;countvectorizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -9000,11 +9248,38 @@ Features double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_countvectorizer_source_01" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 alter stream t_kafkasource_winjoin_bch_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_countvectorizer_source_01
-
+                <stringProp name="query">alter stream t_countvectorizer_source_01 set properties(&apos;group.id&apos;:&apos;15${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="TestPlan.comments">data值为float</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_countvectorizer_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;countvectorizer_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;countvectorizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_countvectorizer(
+Features double array
+) 
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_countvectorizer_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;countvectorizer_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;countvectorizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_countvectorizer select * from t_countvectorizer_source_01
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9036,7 +9311,7 @@ Features double array
                 </RegexExtractor>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -9057,6 +9332,33 @@ Features double array
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_countvectorizer_source_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from t_countvectorizer
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1534606396">ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0]</stringProp>
+                    <stringProp name="1809106302">ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0]</stringProp>
+                    <stringProp name="-1108082593">ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0]</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
@@ -9129,7 +9431,8 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists FEATURE_DATA;</stringProp>
+                <stringProp name="query">drop table if exists FEATURE_DATA;
+drop table if exists t_countvectorizer</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -9175,10 +9478,16 @@ Features double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 gbtclassifier_predict" enabled="false">
-              <stringProp name="TestPlan.comments">没结果</stringProp>
-            </GenericController>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 gbtclassifier_predict" enabled="true"/>
             <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  gbtclassifier_sink</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL GBTCLASSIFIER_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -9286,7 +9595,7 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.gbtclassifier;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.gbtclassifier;</stringProp>
+                <stringProp name="query">drop stream if exists streamsql.gbtclassifier;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -9298,7 +9607,7 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE TABLE streamsql.gbtclassifier(features double array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE TABLE streamsql.gbtclassifier(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">CREATE stream streamsql.gbtclassifier(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9361,6 +9670,53 @@ prediction double
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_gbtclassifier_source_01( Features double array, prediction double ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;gbtclassifier_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;gbtclassifier_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -9387,10 +9743,40 @@ prediction double
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_gbtclassifier_source_01;" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 alter stream t_kafkasource_winjoin_bch_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_gbtclassifier_source_01;
+                <stringProp name="query">alter stream t_gbtclassifier_source_01 set properties(&apos;group.id&apos;:&apos;15${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="TestPlan.comments">data值为float</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_gbtclassifier_source_01( Features double array, prediction double ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;gbtclassifier_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;gbtclassifier_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_gbtclassifier(
+Features double array,
+prediction double
+)
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_gbtclassifier_source_01( Features double array, prediction double ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;gbtclassifier_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;gbtclassifier_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_gbtclassifier select * from t_gbtclassifier_source_01;
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -9423,7 +9809,7 @@ prediction double
                 </RegexExtractor>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -9444,6 +9830,32 @@ prediction double
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_gbtclassifier_source_01;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from t_gbtclassifier;
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1933808575">ARRAY[0.2E0,0.4E0,3.0E0]	1.0</stringProp>
+                    <stringProp name="1422789188">ARRAY[4.0E0,1.0E0,0.0E0]	0.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
@@ -9550,14 +9962,21 @@ prediction double
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 decision_tree_predict" enabled="false">
-              <stringProp name="TestPlan.comments">没结果</stringProp>
-            </GenericController>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 decision_tree_predict" enabled="true"/>
             <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  decision_tree_sink1</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists DT_TRAINING_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists DT_TRAINING_DATA;</stringProp>
+                <stringProp name="query">drop table if exists DT_TRAINING_DATA;
+drop table if exists t_decision_tree</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -9677,7 +10096,7 @@ prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE TABLE streamsql.decision_tree(features double array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE TABLE streamsql.decision_tree(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">CREATE stream streamsql.decision_tree(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9740,58 +10159,6 @@ Prediction double
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_decision_tree_source_01( Features double array, Prediction double ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;decision_tree_sink1&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;decision_tree_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create stream t_decision_tree_source_01(
-Features double array,
-Prediction double
-) properties(
-&apos;type&apos;:&apos;source&apos;,
-&apos;connector&apos;:&apos;kafka&apos;,
-&apos;version&apos;:&apos;0.10&apos;,
-&apos;topic&apos;:&apos;decision_tree_sink1&apos;,
-&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
-&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
-&apos;group.id&apos;:&apos;decision_tree_sink&apos;,
-&apos;format&apos;:&apos;json&apos;
-);
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_decision_tree_source_01" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_decision_tree_source_01
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="157585307">{&quot;FEATURES&quot;:[0.2,0.4,3.0],&quot;PREDICTION&quot;:2.0}</stringProp>
-                    <stringProp name="157585307">{&quot;FEATURES&quot;:[0.2,0.4,3.0],&quot;PREDICTION&quot;:2.0}</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
@@ -9835,6 +10202,149 @@ Prediction double
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_decision_tree_source_01( Features double array, Prediction double ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;decision_tree_sink1&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;decision_tree_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create stream t_decision_tree_source_01(
+Features double array,
+Prediction double
+) properties(
+&apos;type&apos;:&apos;source&apos;,
+&apos;connector&apos;:&apos;kafka&apos;,
+&apos;version&apos;:&apos;0.10&apos;,
+&apos;topic&apos;:&apos;decision_tree_sink1&apos;,
+&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
+&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
+&apos;group.id&apos;:&apos;decision_tree_sink&apos;,
+&apos;format&apos;:&apos;json&apos;
+);
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 alter stream t_kafkasource_winjoin_bch_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">alter stream t_decision_tree_source_01 set properties(&apos;group.id&apos;:&apos;15${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="TestPlan.comments">data值为float</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table t_decision_tree( Features double array, Prediction double ) " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_decision_tree(
+Features double array,
+Prediction double
+) 
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table t_decision_tree( Features double array, Prediction double ) " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_decision_tree select * from t_decision_tree_source_01
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_decision_tree_source_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from t_decision_tree
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1933807614">ARRAY[0.2E0,0.4E0,3.0E0]	2.0</stringProp>
+                    <stringProp name="1422789188">ARRAY[4.0E0,1.0E0,0.0E0]	0.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
@@ -9890,7 +10400,8 @@ Prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists DT_TRAINING_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists DT_TRAINING_DATA;</stringProp>
+                <stringProp name="query">drop table if exists DT_TRAINING_DATA;
+drop table if exists t_decision_tree</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -9936,10 +10447,16 @@ Prediction double
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 tokenizer " enabled="false">
-              <stringProp name="TestPlan.comments">没结果</stringProp>
-            </GenericController>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 tokenizer " enabled="true"/>
             <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  tokenizer_sink</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop stream if exists t_tokenizer_sink_01;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -10003,7 +10520,8 @@ Prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.tokenizer;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.tokenizer;</stringProp>
+                <stringProp name="query">drop stream if exists streamsql.tokenizer;
+drop stream if exists t_tokenizer</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -10015,7 +10533,7 @@ Prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE TABLE streamsql.tokenizer(sentence varchar(2048)); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE TABLE streamsql.tokenizer(sentence varchar(2048))properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">CREATE stream streamsql.tokenizer(sentence varchar(2048))properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -10076,6 +10594,53 @@ words varchar(32) array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_tokenizer_source_01( words varchar(32) array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;tokenizer_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;tokenizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -10101,10 +10666,25 @@ words varchar(32) array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_tokenizer_source_01" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 alter stream t_kafkasource_winjoin_bch_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_tokenizer_source_01
+                <stringProp name="query">alter stream t_tokenizer_source_01 set properties(&apos;group.id&apos;:&apos;15${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="TestPlan.comments">data值为float</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_tokenizer_source_01( words varchar(32) array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;tokenizer_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;tokenizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_tokenizer(
+words varchar(32) array
+)
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -10114,20 +10694,21 @@ words varchar(32) array
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-731764890">{&quot;WORDS&quot;:[&quot;logistic&quot;,&quot;regression&quot;,&quot;models&quot;,&quot;are&quot;,&quot;neat&quot;]}</stringProp>
-                    <stringProp name="1455650983">{&quot;WORDS&quot;:[&quot;i&quot;,&quot;wish&quot;,&quot;java&quot;,&quot;could&quot;,&quot;use&quot;,&quot;case&quot;,&quot;classes&quot;]}</stringProp>
-                    <stringProp name="-591426889">{&quot;WORDS&quot;:[&quot;hi&quot;,&quot;i&quot;,&quot;heard&quot;,&quot;about&quot;,&quot;spark&quot;]}</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_tokenizer_source_01( words varchar(32) array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;tokenizer_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;tokenizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_tokenizer select * from t_tokenizer_source_01
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
@@ -10150,7 +10731,7 @@ words varchar(32) array
                 </RegexExtractor>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -10171,6 +10752,33 @@ words varchar(32) array
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_tokenizer_source_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from t_tokenizer
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1981514974">ARRAY[&apos;logistic&apos;,&apos;regression&apos;,&apos;models&apos;,&apos;are&apos;,&apos;neat&apos;]</stringProp>
+                    <stringProp name="-89081591">ARRAY[&apos;i&apos;,&apos;wish&apos;,&apos;java&apos;,&apos;could&apos;,&apos;use&apos;,&apos;case&apos;,&apos;classes&apos;]</stringProp>
+                    <stringProp name="-49751875">ARRAY[&apos;hi&apos;,&apos;i&apos;,&apos;heard&apos;,&apos;about&apos;,&apos;spark&apos;]</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
@@ -10214,7 +10822,8 @@ words varchar(32) array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop stream if exists t_tokenizer_sink_01;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop stream if exists t_tokenizer_sink_01;</stringProp>
+                <stringProp name="query">drop stream if exists t_tokenizer_sink_01;
+drop stream if exists t_tokenizer</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -10260,10 +10869,18 @@ words varchar(32) array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 hashingtf  " enabled="false">
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 hashingtf  " enabled="true">
               <stringProp name="TestPlan.comments">没结果</stringProp>
             </GenericController>
             <hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  hashingtf_sink8</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.hashingtf; " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -10280,7 +10897,8 @@ words varchar(32) array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop stream if exists t_hashingtf_source_01;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop stream if exists t_hashingtf_source_01;</stringProp>
+                <stringProp name="query">drop stream if exists t_hashingtf_source_01;
+drop table if exists t_hashingtf</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -10328,7 +10946,7 @@ words varchar(32) array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.hashingtf(words varchar(32) array);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.hashingtf(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">create stream streamsql.hashingtf(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -10413,6 +11031,53 @@ rawfeatures double array
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_hashingtf_source_01( rawfeatures double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;hashingtf_sink8&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;hashingtf_sink&apos;, &apos;max.request.size&apos;:&apos;1048627&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -10442,10 +11107,106 @@ rawfeatures double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 alter stream t_kafkasource_winjoin_bch_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">alter stream t_hashingtf_source_01 set properties(&apos;group.id&apos;:&apos;15${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="TestPlan.comments">data值为float</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_hashingtf_source_01( rawfeatures double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;hashingtf_sink8&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;hashingtf_sink&apos;, &apos;max.request.size&apos;:&apos;1048627&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_hashingtf(
+rawfeatures double array
+) 
+
+
+ 
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_hashingtf_source_01( rawfeatures double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;hashingtf_sink8&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;hashingtf_sink&apos;, &apos;max.request.size&apos;:&apos;1048627&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_hashingtf select * from t_hashingtf_source_01
+
+
+ 
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_hashingtf_source_01" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_hashingtf_source_01
+                <stringProp name="query">select * from t_hashingtf
 
 
  
@@ -10474,53 +11235,6 @@ rawfeatures double array
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
                   <stringProp name="ConstantTimer.delay">30000</stringProp>
                 </ConstantTimer>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SHOW JOBS;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
-                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default"></stringProp>
-                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
-                </ConstantTimer>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings"/>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
                 <hashTree/>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop stream  if exists t_hashingtf_dbsource_01;" enabled="true">
@@ -10563,7 +11277,7 @@ rawfeatures double array
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">drop table if exists streamsql.hashingtf;
-</stringProp>
+drop table if exists t_hashingtf</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -10609,7 +11323,7 @@ rawfeatures double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 idf" enabled="false">
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 idf" enabled="true">
               <stringProp name="TestPlan.comments">没结果</stringProp>
             </GenericController>
             <hashTree>
@@ -10624,7 +11338,8 @@ rawfeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists FEATURE_DATA;</stringProp>
+                <stringProp name="query">drop table if exists FEATURE_DATA;
+drop table if exists t_idf</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -10768,7 +11483,7 @@ rawfeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.idf; " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.idf;
+                <stringProp name="query">drop stream if exists streamsql.idf;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -10781,7 +11496,7 @@ rawfeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.idf(rawfeatures double array);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.idf(rawfeatures double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">create stream streamsql.idf(rawfeatures double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -10841,6 +11556,53 @@ Features double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_idf_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;idf_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;idf_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -10866,10 +11628,26 @@ Features double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_idf_source_01" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 alter stream t_kafkasource_winjoin_bch_01 set properties(&apos;group.id&apos;:&apos;12${number}&apos;);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_idf_source_01
+                <stringProp name="query">alter stream t_idf_source_01 set properties(&apos;group.id&apos;:&apos;15${number}&apos;);</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="TestPlan.comments">data值为float</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_idf_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;idf_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;idf_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_idf(
+Features double array
+) 
+
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -10879,31 +11657,21 @@ Features double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 TC-kafka consumer" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-consumer.sh   --zookeeper  node2:2181/linkoopdb/luyao  --topic idf_sink  --timeout-ms 10000  --from-beginning</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
-                <stringProp name="password">123456</stringProp>
-                <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
-              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
-              <hashTree>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">30000</stringProp>
-                </ConstantTimer>
-                <hashTree/>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1522009874">{&quot;FEATURES&quot;:[1.3862943611198906,0.0,0.0,0.0,0.0,1.3862943611198906,0.0,2.772588722239781,0.0,1.3862943611198906]}</stringProp>
-                    <stringProp name="-1635804329"> {&quot;FEATURES&quot;:[0.0,0.0,1.3862943611198906,1.3862943611198906,0.0,1.3862943611198906,0.0,1.3862943611198906,0.0,4.1588830833596715]}</stringProp>
-                    <stringProp name="-1535152392">{&quot;FEATURES&quot;:[0.0,0.0,0.0,1.3862943611198906,1.3862943611198906,1.3862943611198906,1.3862943611198906,0.0,1.3862943611198906,0.0]}</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_idf_source_01( Features double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;idf_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;idf_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_idf select * from t_idf_source_01
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
@@ -10926,7 +11694,7 @@ Features double array
                 </RegexExtractor>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -10947,6 +11715,57 @@ Features double array
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_idf_source_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from t_idf
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-455199022">ARRAY[1.3862943611198906E0,0.0E0,0.0E0,0.0E0,0.0E0,1.3862943611198906E0,0.0E0,2.772588722239781E0,0.0E0,1.3862943611198906E0]</stringProp>
+                    <stringProp name="1769537273">ARRAY[0.0E0,0.0E0,1.3862943611198906E0,1.3862943611198906E0,0.0E0,1.3862943611198906E0,0.0E0,1.3862943611198906E0,0.0E0,4.1588830833596715E0]</stringProp>
+                    <stringProp name="297552536">ARRAY[0.0E0,0.0E0,0.0E0,1.3862943611198906E0,1.3862943611198906E0,1.3862943611198906E0,1.3862943611198906E0,0.0E0,1.3862943611198906E0,0.0E0]</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 TC-kafka consumer" enabled="false">
+                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-console-consumer.sh   --zookeeper  node2:2181/linkoopdb/luyao  --topic idf_sink  --timeout-ms 10000  --from-beginning</stringProp>
+                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">luyao</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
+              <hashTree>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">30000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="1522009874">{&quot;FEATURES&quot;:[1.3862943611198906,0.0,0.0,0.0,0.0,1.3862943611198906,0.0,2.772588722239781,0.0,1.3862943611198906]}</stringProp>
+                    <stringProp name="-1635804329"> {&quot;FEATURES&quot;:[0.0,0.0,1.3862943611198906,1.3862943611198906,0.0,1.3862943611198906,0.0,1.3862943611198906,0.0,4.1588830833596715]}</stringProp>
+                    <stringProp name="-1535152392">{&quot;FEATURES&quot;:[0.0,0.0,0.0,1.3862943611198906,1.3862943611198906,1.3862943611198906,1.3862943611198906,0.0,1.3862943611198906,0.0]}</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
@@ -11026,7 +11845,8 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists FEATURE_DATA;</stringProp>
+                <stringProp name="query">drop table if exists FEATURE_DATA;
+drop table if exists t_idf</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -11072,7 +11892,7 @@ Features double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 binarizer " enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 binarizer ***" enabled="false"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
                 <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  binarizer_sink1</stringProp>
@@ -11097,7 +11917,8 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop stream  if exists t_binarizer_dbsource_01;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop stream  if exists t_binarizer_dbsource_01;</stringProp>
+                <stringProp name="query">drop stream  if exists t_binarizer_dbsource_01;
+drop table if exists t_binarizer</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -11145,7 +11966,7 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.binarizer; " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.binarizer;
+                <stringProp name="query">drop stream if exists streamsql.binarizer;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -11158,7 +11979,7 @@ Features double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.binarizer(features double array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.binarizer(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">create stream streamsql.binarizer(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -11219,6 +12040,53 @@ binarizedfeature double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_binarizer_source_01( binarizedfeature double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;binarizer_sink1&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;binarizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -11244,10 +12112,87 @@ binarizedfeature double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_binarizer_source_01( binarizedfeature double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;binarizer_sink1&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;binarizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_binarizer(
+binarizedfeature double array
+)
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_binarizer_source_01( binarizedfeature double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;binarizer_sink1&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;binarizer_sink&apos;, &apos;format&apos;:&apos;json&apos; ); " enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into  t_binarizer select * from t_binarizer_source_01
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_binarizer_source_01" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_binarizer_source_01
+                <stringProp name="query">select * from t_binarizer
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -11279,53 +12224,6 @@ binarizedfeature double array
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SHOW JOBS;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
-                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default"></stringProp>
-                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
-                </ConstantTimer>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings"/>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
@@ -11381,7 +12279,8 @@ binarizedfeature double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.binarizer; " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.binarizer;
+                <stringProp name="query">drop stream if exists streamsql.binarizer;
+drop table if exists t_binarizer
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -11501,7 +12400,7 @@ binarizedfeature double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.dct; " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.dct;
+                <stringProp name="query">drop stream if exists streamsql.dct;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -11514,7 +12413,7 @@ binarizedfeature double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.dct(features double array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.dct(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">create stream streamsql.dct(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -11566,6 +12465,31 @@ featuresdct double array
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">insert into t_dct_sink_01 SELECT featuresdct from dct(dct_model, streamsql.dct);
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_dct_source_01( featuresdct double array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;dct_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;dct_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create stream t_dct_source_01(
+featuresdct double array
+) properties(
+&apos;type&apos;:&apos;source&apos;,
+&apos;connector&apos;:&apos;kafka&apos;,
+&apos;version&apos;:&apos;0.10&apos;,
+&apos;topic&apos;:&apos;dct_sink&apos;,
+&apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;,
+&apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;,
+&apos;group.id&apos;:&apos;dct_sink&apos;,
+&apos;format&apos;:&apos;json&apos;
+);
+
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -11870,8 +12794,8 @@ featuresdct double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.ngram; " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.ngram;
-</stringProp>
+                <stringProp name="query">drop stream if exists streamsql.ngram;
+drop table if exists t_ngram</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -11883,7 +12807,7 @@ featuresdct double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.ngram(words varchar(32) array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.ngram(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">create stream streamsql.ngram(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -11905,7 +12829,7 @@ featuresdct double array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE STREAM t_ngram_dbsource_01 (words varchar(32) array) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:9105/ldb&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql.ngram&apos;);" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE STREAM t_ngram_dbsource_01 (words varchar(32) array) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:9105/ldb&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql.ngram&apos;);" enabled="false">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">CREATE STREAM t_ngram_dbsource_01 (words varchar(32) array) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;${dburl}&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql.ngram&apos;);</stringProp>
@@ -11968,6 +12892,53 @@ ngrams varchar(32) array
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_ngram_source_01( ngrams varchar(32) array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;ngram_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;ngram_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -11993,10 +12964,86 @@ ngrams varchar(32) array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_ngram_source_01( ngrams varchar(32) array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;ngram_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;ngram_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">create table t_ngram(
+ngrams varchar(32) array
+)
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create stream t_ngram_source_01( ngrams varchar(32) array ) properties( &apos;type&apos;:&apos;source&apos;, &apos;connector&apos;:&apos;kafka&apos;, &apos;version&apos;:&apos;0.10&apos;, &apos;topic&apos;:&apos;ngram_sink&apos;, &apos;bootstrap.servers&apos;:&apos;${kafka_server}&apos;, &apos;zookeeper.connect&apos;:&apos;${zoo_connect}&apos;, &apos;group.id&apos;:&apos;ngram_sink&apos;, &apos;format&apos;:&apos;json&apos; );" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">insert into t_ngram select * from t_ngram_source_01
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SHOW JOBS;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
+                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                  <stringProp name="ConstantTimer.delay">40000</stringProp>
+                </ConstantTimer>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings"/>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_ngram_source_01" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_ngram_source_01
+                <stringProp name="query">select * from t_ngram
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -12032,53 +13079,6 @@ ngrams varchar(32) array
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 show jobs" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">SHOW JOBS;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                  <stringProp name="RegexExtractor.refname">jobid</stringProp>
-                  <stringProp name="RegexExtractor.regex">	(.+?)	20</stringProp>
-                  <stringProp name="RegexExtractor.template">$1$</stringProp>
-                  <stringProp name="RegexExtractor.default"></stringProp>
-                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
-                </RegexExtractor>
-                <hashTree/>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">10000</stringProp>
-                </ConstantTimer>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 cancel job &quot;${jobid_1}&quot;" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CANCEL JOB &quot;${jobid_1}&quot;;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings"/>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">true</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-              </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL ngram_model IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
@@ -12106,7 +13106,8 @@ ngrams varchar(32) array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop stream  if exists t_ngram_dbsource_01;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop stream  if exists t_ngram_dbsource_01;</stringProp>
+                <stringProp name="query">drop stream  if exists t_ngram_dbsource_01;
+drop table if exists t_ngram</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -12164,7 +13165,7 @@ ngrams varchar(32) array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 element_wise_product" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 element_wise_product ***" enabled="false"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
                 <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  element_wise_product_sink</stringProp>
@@ -12237,7 +13238,7 @@ ngrams varchar(32) array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.element_wise_product;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.element_wise_product;
+                <stringProp name="query">drop stream if exists streamsql.element_wise_product;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -12250,7 +13251,7 @@ ngrams varchar(32) array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.element_wise_product(vector double array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.element_wise_product(vector double array);
+                <stringProp name="query">create stream streamsql.element_wise_product(vector double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -12274,7 +13275,7 @@ ngrams varchar(32) array
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE STREAM t_element_wise_product_dbsource_01 (vector double array) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:9105/ldb&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql.element_wise_product&apos;);" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE STREAM t_element_wise_product_dbsource_01 (vector double array) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;jdbc:linkoopdb:tcp://${node}:9105/ldb&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql.element_wise_product&apos;);" enabled="false">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">CREATE STREAM t_element_wise_product_dbsource_01 (vector double array) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;${dburl}&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql.element_wise_product&apos;);</stringProp>
@@ -12532,7 +13533,7 @@ transformedvector double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 pca" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 pca ***" enabled="false"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
                 <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  pca_sink</stringProp>
@@ -12644,7 +13645,7 @@ transformedvector double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.pca;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.pca;
+                <stringProp name="query">drop stream if exists streamsql.pca;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -12657,7 +13658,7 @@ transformedvector double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.pca(features double array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.pca(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">create stream streamsql.pca(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -12938,7 +13939,7 @@ pcafeatures double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 polynomial_expansion" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 polynomial_expansion ***" enabled="false"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
                 <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  polynomial_expansion_sink</stringProp>
@@ -13011,7 +14012,7 @@ pcafeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.polynomial_expansion;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.polynomial_expansion;
+                <stringProp name="query">drop stream if exists streamsql.polynomial_expansion;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -13024,7 +14025,7 @@ pcafeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.polynomial_expansion(features double array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.polynomial_expansion(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">create stream streamsql.polynomial_expansion(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -13307,7 +14308,7 @@ polyfeatures double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 stop_words_remover  " enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 stop_words_remover  ****" enabled="false"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
                 <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  stop_words_remover_sink</stringProp>
@@ -13380,7 +14381,7 @@ polyfeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.stop_words_remover;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.stop_words_remover;
+                <stringProp name="query">drop stream if exists streamsql.stop_words_remover;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -13393,7 +14394,7 @@ polyfeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.stop_words_remover(words varchar(32) array); " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create table streamsql.stop_words_remover(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">create stream streamsql.stop_words_remover(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -13675,7 +14676,7 @@ filtered varchar(32) array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11  vector_indexer" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11  vector_indexer ******" enabled="false"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
                 <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  vector_indexer_sink</stringProp>
@@ -13790,7 +14791,7 @@ filtered varchar(32) array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.vector_indexer; " enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists streamsql.vector_indexer;
+                <stringProp name="query">drop stream if exists streamsql.vector_indexer;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -14080,7 +15081,7 @@ indexedfeatures double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 train_validation_split  E" enabled="false">
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 train_validation_split  E" enabled="true">
               <stringProp name="TestPlan.comments">报错</stringProp>
             </GenericController>
             <hashTree>
@@ -14256,7 +15257,7 @@ Prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11  insert into t_train_validation_split_sink_01 SELECT * from train_validation_split(trainValidationSplit_model, t_TRAIN_VALIDATION_SPLIT_DBSOURCE_01);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">insert into t_train_validation_split_sink_01 SELECT * from train_validation_split(trainValidationSplit_model,);
+                <stringProp name="query">insert into t_train_validation_split_sink_01 SELECT * from train_validation_split(trainValidationSplit_model,trainValidationSplit_train_data);
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -14478,7 +15479,7 @@ Prediction double
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 index_to_string" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 index_to_string" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL INDEX_TO_STRING_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
@@ -14773,7 +15774,7 @@ Prediction double
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 vectorslicer" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 vectorslicer" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL VECTORSLICER_MODEL IF EXISTS;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
