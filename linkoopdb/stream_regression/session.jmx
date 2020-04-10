@@ -124,13 +124,13 @@
           </elementProp>
           <elementProp name="dburl" elementType="Argument">
             <stringProp name="Argument.name">dburl</stringProp>
-            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.73:9205/ldb</stringProp>
+            <stringProp name="Argument.value">jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb</stringProp>
             <stringProp name="Argument.desc">db的url</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="mysql_url" elementType="Argument">
             <stringProp name="Argument.name">mysql_url</stringProp>
-            <stringProp name="Argument.value">jdbc:mysql://192.168.1.73:3306/jmeter_istreamsql?useSSL=false</stringProp>
+            <stringProp name="Argument.value">jdbc:mysql://192.168.1.72:3306/jmeter_istreamsql?useSSL=false</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="kafka_server" elementType="Argument">
@@ -141,18 +141,18 @@
           </elementProp>
           <elementProp name="zoo_connect" elementType="Argument">
             <stringProp name="Argument.name">zoo_connect</stringProp>
-            <stringProp name="Argument.value">node1:2181,node2:2181,node3:2181/istream/node6/kafka</stringProp>
+            <stringProp name="Argument.value">node71:2181,node72:2181,node73:2181/istream/node6/kafka</stringProp>
             <stringProp name="Argument.desc">kafka的zookeeper</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="kafka1_server" elementType="Argument">
             <stringProp name="Argument.name">kafka1_server</stringProp>
-            <stringProp name="Argument.value">node6:29096</stringProp>
+            <stringProp name="Argument.value">node74:29096</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="zoo1_connect" elementType="Argument">
             <stringProp name="Argument.name">zoo1_connect</stringProp>
-            <stringProp name="Argument.value">node1:2181,node2:2181,node9:2181/linkoopdb/luyao</stringProp>
+            <stringProp name="Argument.value">node71:2181,node72:2181,node73:2181/linkoopdb/luyao</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="T_parquet_1580_path1" elementType="Argument">
@@ -182,6 +182,16 @@
           <elementProp name="sc_enginepallas" elementType="Argument">
             <stringProp name="Argument.name">sc_enginepallas</stringProp>
             <stringProp name="Argument.value">${__P(engine,)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="kafka_dir" elementType="Argument">
+            <stringProp name="Argument.name">kafka_dir</stringProp>
+            <stringProp name="Argument.value">/home/stream74/kafka/kafka_2.10-0.10.0.1/bin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="topic_dir" elementType="Argument">
+            <stringProp name="Argument.name">topic_dir</stringProp>
+            <stringProp name="Argument.value">/home/stream74/document</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -443,19 +453,19 @@
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1815 LDBX081-33 SET SESSION STREAM_INTERNAL_BATCH_SIZE 5000" enabled="true"/>
           <hashTree>
             <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="2073 LDBX081-52 topic delete" enabled="true">
-              <stringProp name="command">/home/luyao/kafka_current/bin/kafka-topics.sh --delete --zookeeper node1:2181,node2:2181,node9:2181/linkoopdb/luyao --topic trx_source1</stringProp>
-              <stringProp name="hostname">192.168.1.75</stringProp>
+              <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node71:2181/linkoopdb/luyao --topic trx_source1</stringProp>
+              <stringProp name="hostname">192.168.1.74</stringProp>
               <stringProp name="password">123456</stringProp>
               <intProp name="port">22</intProp>
-              <stringProp name="username">luyao</stringProp>
+              <stringProp name="username">stream74</stringProp>
             </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
             <hashTree/>
             <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="2073 LDBX081-52 kafka-producer" enabled="true">
-              <stringProp name="command">/home/luyao/kafka_current/bin/kafka-console-producer.sh  --broker-list node6:29096 --topic trx_source1&lt; /home/luyao/document/trx_source10000.txt </stringProp>
-              <stringProp name="hostname">192.168.1.75</stringProp>
+              <stringProp name="command">${kafka_dir}/kafka-console-producer.sh  --broker-list node6:29096 --topic trx_source1&lt; ${topic_dir}/trx_source10000.txt </stringProp>
+              <stringProp name="hostname">192.168.1.74</stringProp>
               <stringProp name="password">123456</stringProp>
               <intProp name="port">22</intProp>
-              <stringProp name="username">luyao</stringProp>
+              <stringProp name="username">stream74</stringProp>
             </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1815 LDBX081-33 DROP stream IF EXISTS T_batchsize_kafka_source; drop table if exists t_batchsize_db;" enabled="true">

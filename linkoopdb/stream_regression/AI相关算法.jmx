@@ -84,23 +84,23 @@
           </elementProp>
           <elementProp name="dburl" elementType="Argument">
             <stringProp name="Argument.name">dburl</stringProp>
-            <stringProp name="Argument.value">${__P(dburl,jdbc:linkoopdb:tcp://192.168.1.73:9205/ldb)}</stringProp>
+            <stringProp name="Argument.value">${__P(dburl,jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb)}</stringProp>
             <stringProp name="Argument.desc">db的url</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="mysql_url" elementType="Argument">
             <stringProp name="Argument.name">mysql_url</stringProp>
-            <stringProp name="Argument.value">jdbc:mysql://192.168.1.73:3306/jmeter_istreamsql?useSSL=false</stringProp>
+            <stringProp name="Argument.value">jdbc:mysql://192.168.1.72:3306/jmeter_istreamsql?useSSL=false</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="zoo_connect" elementType="Argument">
             <stringProp name="Argument.name">zoo_connect</stringProp>
-            <stringProp name="Argument.value">node1:2181,node2:2181,node9:2181/linkoopdb/luyao</stringProp>
+            <stringProp name="Argument.value">node71:2181,node72:2181,node73:2181/linkoopdb/luyao</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="kafka_server" elementType="Argument">
             <stringProp name="Argument.name">kafka_server</stringProp>
-            <stringProp name="Argument.value">node6:29096</stringProp>
+            <stringProp name="Argument.value">node74:29096</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="zoo1_connect" elementType="Argument">
@@ -161,6 +161,16 @@
           <elementProp name="dburl_node7_meta" elementType="Argument">
             <stringProp name="Argument.name">dburl_node7_meta</stringProp>
             <stringProp name="Argument.value">${__P(dburl,jdbc:linkoopdb:tcp://192.168.1.77:9118/ldb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="kafka_dir" elementType="Argument">
+            <stringProp name="Argument.name">kafka_dir</stringProp>
+            <stringProp name="Argument.value">/home/stream74/kafka/kafka_2.10-0.10.0.1/bin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="topic_dir" elementType="Argument">
+            <stringProp name="Argument.name">topic_dir</stringProp>
+            <stringProp name="Argument.value">/home/stream74/document</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -320,7 +330,7 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP SCHEMA IF EXISTS streamsql CASCADE;" enabled="true">
             <stringProp name="dataSource">${u1}</stringProp>
@@ -636,11 +646,11 @@ SELECT PREDICTION FROM PREDICT_BY_EXTERNAL_MODEL(ex_model_dt,model_em_predict);<
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 minmax_scaler" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic minmax_scaler_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic minmax_scaler_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL MINMAX_SCALER_MODEL IF EXISTS;" enabled="true">
@@ -1076,11 +1086,11 @@ drop table if exists t_minmax_scaler_source;</stringProp>
             </GenericController>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic standard_scaler_sink2</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic standard_scaler_sink2</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL STANDARD_SCALER_MODEL IF EXISTS;" enabled="true">
@@ -1573,11 +1583,11 @@ drop table if exists t_standard_scaler;</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 normalizer" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  NORMALIZER_MODEL1_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  NORMALIZER_MODEL1_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74 </stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL NORMALIZER_MODEL IF EXISTS;" enabled="true">
@@ -1991,11 +2001,11 @@ drop table if exists t_model_Normalizer</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 random_forest_classifier_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  random_forest_classifier1</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/bin/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  random_forest_classifier1</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL RANDOM_FOREST_CLASSIFIER_MODEL IF EXISTS;" enabled="true">
@@ -2460,11 +2470,11 @@ drop table if exists t_random_forest_classifier;</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 onevsrest_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  onevsrest_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  onevsrest_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL ONEVSREST_MODEL IF EXISTS;" enabled="true">
@@ -2902,11 +2912,11 @@ drop table if exists t_onevsrest;</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 naive_bayes_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  naive_bayes_predict_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  naive_bayes_predict_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL NB_MODEL IF EXISTS;" enabled="true">
@@ -3365,11 +3375,11 @@ drop table if exists t_naive_bayes_predict;</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 multilayer_perceptron_classifier_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  multilayer_perceptron_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/bin/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  multilayer_perceptron_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL MULTILAYER_MODEL IF EXISTS;" enabled="true">
@@ -3848,11 +3858,11 @@ drop table if exists  t_multilayer_perceptron</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 logisticregression_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  logisticregression_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/bin/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  logisticregression_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL LOGISTICREGRESSION_MODEL IF EXISTS;" enabled="true">
@@ -4302,11 +4312,11 @@ drop table if exists t_logisticregression</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 linearsvc_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  linearsvc_predict_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  linearsvc_predict_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL LINEARSVC_MODEL IF EXISTS;" enabled="true">
@@ -4739,11 +4749,11 @@ drop table if exists t_linearsvc_predict</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 lda_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  lda_predict_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  lda_predict_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL lda_model IF EXISTS;" enabled="true">
@@ -5177,11 +5187,11 @@ drop table if exists t_lda_predict</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 kmeans_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  kmeans_predict_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/bin/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  kmeans_predict_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL KMEANS_MODEL IF EXISTS;" enabled="true">
@@ -5651,11 +5661,11 @@ drop table if exists  t_kmeans_predict
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 gaussian_mixture_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  gaussian_mixture_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  gaussian_mixture_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL GAUSSIAN_MIXTURE_MODEL IF EXISTS;" enabled="true">
@@ -6093,11 +6103,11 @@ drop table if exists t_gaussian_mixture</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 decision_tree_regression_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  decision_tree_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  decision_tree_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL DECISION_TREE_REGRESSION_MODEL IF EXISTS;" enabled="true">
@@ -6582,11 +6592,11 @@ drop table if exists t_decision_tree</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 linear_regression_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  linear_regression_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  linear_regression_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL  LINEAR_REGRESSION_MODEL  IF EXISTS;" enabled="true">
@@ -7068,11 +7078,11 @@ drop table if exists t_linear_regression</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 bisecting_kmeans_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  linear_regression_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  linear_regression_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL bisecting_kmeans_model IF EXISTS;" enabled="true">
@@ -7554,11 +7564,11 @@ drop table if exists t_bisecting_kmeans</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 string_indexer" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  string_indexer_sink1</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  string_indexer_sink1</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL STRING_INDEXER_MODEL IF EXISTS;" enabled="true">
@@ -7981,11 +7991,11 @@ drop table if exists t_string_indexer</stringProp>
             </GenericController>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  chisqselector_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  chisqselector_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
@@ -8476,11 +8486,11 @@ drop table if exists t_chisqselector;</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 word2vec" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  word2vec_sink1</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  word2vec_sink1</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL WORD2VEC_MODEL IF EXISTS;" enabled="true">
@@ -8972,11 +8982,11 @@ drop table if exists t_word2vec</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 countvectorizer" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  countvectorizer_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  countvectorizer_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL TOKENIZER_MODEL IF EXISTS;" enabled="true">
@@ -9481,11 +9491,11 @@ drop table if exists t_countvectorizer</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 gbtclassifier_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  gbtclassifier_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  gbtclassifier_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL GBTCLASSIFIER_MODEL IF EXISTS;" enabled="true">
@@ -9965,11 +9975,11 @@ prediction double
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 decision_tree_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  decision_tree_sink1</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  decision_tree_sink1</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists DT_TRAINING_DATA;" enabled="true">
@@ -10450,11 +10460,11 @@ drop table if exists t_decision_tree</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 tokenizer " enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  tokenizer_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  tokenizer_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop stream if exists t_tokenizer_sink_01;" enabled="true">
@@ -10874,11 +10884,11 @@ drop stream if exists t_tokenizer</stringProp>
             </GenericController>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  hashingtf_sink8</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  hashingtf_sink8</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists streamsql.hashingtf; " enabled="true">
@@ -11328,11 +11338,11 @@ drop table if exists t_hashingtf</stringProp>
             </GenericController>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">/home/luyao/kafka_2.10-0.10.0.1/bin/kafka-topics.sh --delete --zookeeper node2:2181/linkoopdb/luyao --topic  idf_sink</stringProp>
-                <stringProp name="hostname">192.168.1.75</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  idf_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">luyao</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists FEATURE_DATA;" enabled="true">
