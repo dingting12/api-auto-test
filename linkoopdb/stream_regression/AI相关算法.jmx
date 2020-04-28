@@ -10050,7 +10050,7 @@ drop table if exists t_countvectorizer</stringProp>
                 <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
-                <stringProp name="username">stream</stringProp>
+                <stringProp name="username">stream74</stringProp>
               </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DROP MODEL GBTCLASSIFIER_MODEL IF EXISTS;" enabled="true">
@@ -15950,26 +15950,20 @@ indexedfeatures double array
               </ResultCollector>
               <hashTree/>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 train_validation_split  E" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 train_validation_split" enabled="true"/>
             <hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table streamsql.train_validation_split if exists;" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table streamsql.train_validation_split if exists;
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-              </JDBCSampler>
+              <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  train_validation_split_sink</stringProp>
+                <stringProp name="hostname">192.168.1.74</stringProp>
+                <stringProp name="password">123456</stringProp>
+                <intProp name="port">22</intProp>
+                <stringProp name="username">stream74</stringProp>
+              </org.apache.jmeter.protocol.ssh.sampler.SSHSampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists trainValidationSplit_train_data;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists trainValidationSplit_train_data;</stringProp>
+                <stringProp name="query">drop stream if exists trainValidationSplit_train_data;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -16031,11 +16025,10 @@ indexedfeatures double array
                 <stringProp name="resultSetMaxRows"></stringProp>
               </JDBCSampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 create table streamsql.train_validation_split(features double array);" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE STREAM TRAIN_VALIDATION_SPLIT_DBSOURCE (features double array) properties (&apos;type&apos;: &apos;source&apos;, &apos;connector&apos;: &apos;jdbc&apos;, &apos;driver&apos;: &apos;com.datapps.linkoopdb.jdbc.JdbcDriver&apos;, &apos;dbUrl&apos;: &apos;${dburl}&apos;,&apos;username&apos;: &apos;${udb}&apos;, &apos;password&apos;: &apos;${udb_password}&apos;, &apos;tableName&apos;: &apos;streamsql.train_validation_split&apos;);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create stream streamsql.train_validation_split(features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);
-</stringProp>
+                <stringProp name="query">CREATE STREAM t_TRAIN_VALIDATION_SPLIT_DBSOURCE_01 (id VARCHAR(10), features double array)properties( &apos;connector&apos;:&apos;pallas&apos;);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -16048,7 +16041,8 @@ indexedfeatures double array
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 insert into  streamsql.train_validation_split values" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">insert into  streamsql.train_validation_split values (array[20.16, 19.66, 131.1, 1274.0, 0.0802, 0.08564, 0.1155, 0.07726, 0.1928, 0.05096, 0.5925, 0.6863, 3.868, 74.85, 0.004536, 0.01376, 0.02645, 0.01247, 0.02193, 0.001589, 23.06, 23.03, 150.2, 1657.0, 0.1054, 0.1537, 0.2606, 0.1425, 0.3055, 0.05933]),(array[14.11, 12.88, 90.03, 616.5, 0.09309, 0.05306, 0.01765, 0.02733, 0.1373, 0.057, 0.2571, 1.081, 1.558, 23.92, 0.006692, 0.01132, 0.005717, 0.006627, 0.01416, 0.002476, 15.53, 18.0, 98.4, 749.9, 0.1281, 0.1109, 0.05307, 0.0589, 0.21, 0.07083]);
+                <stringProp name="query">insert into  t_TRAIN_VALIDATION_SPLIT_DBSOURCE_01 values (&apos;ls&apos;, array[0.2, 0.4, 3.0]),
+(&apos;zs&apos;, array[4.0, 1.0, 0.0]);
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -16110,6 +16104,7 @@ indexedfeatures double array
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create stream t_train_validation_split_sink_01(
+id varchar(10),
 Features double array,
 Prediction double
 ) properties(
@@ -16136,7 +16131,7 @@ Prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11  insert into t_train_validation_split_sink_01 SELECT * from train_validation_split(trainValidationSplit_model, t_TRAIN_VALIDATION_SPLIT_DBSOURCE_01);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">insert into t_train_validation_split_sink_01 SELECT * from train_validation_split(trainValidationSplit_model,trainValidationSplit_train_data);
+                <stringProp name="query">insert into t_train_validation_split_sink_01 SELECT * from train_validation_predict(trainValidationSplit_model,t_TRAIN_VALIDATION_SPLIT_DBSOURCE_01);
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -16161,6 +16156,7 @@ Prediction double
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">create stream t_train_validation_split_source_01(
+id varchar(10),
 Features double array,
 Prediction double
 ) properties(
@@ -16173,21 +16169,6 @@ Prediction double
 &apos;group.id&apos;:&apos;train_validation_split_sink&apos;,
 &apos;format&apos;:&apos;json&apos;
 );
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-              </JDBCSampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_train_validation_split_source_01" enabled="true">
-                <stringProp name="dataSource">${u1}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select * from t_train_validation_split_source_01
 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -16244,6 +16225,34 @@ Prediction double
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">true</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 TC-select * from t_train_validation_split_source_01" enabled="true">
+                <stringProp name="dataSource">${u1}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select * from t_train_validation_split_source_01
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="626280429">ID	FEATURES	PREDICTION</stringProp>
+                    <stringProp name="542181539">ls	ARRAY[0.2E0,0.4E0,3.0E0]	1.0</stringProp>
+                    <stringProp name="220044789">zs	ARRAY[4.0E0,1.0E0,0.0E0]	1.0</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
@@ -16308,7 +16317,7 @@ Prediction double
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists trainValidationSplit_train_data;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists trainValidationSplit_train_data;</stringProp>
+                <stringProp name="query">drop stream if exists trainValidationSplit_train_data;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
