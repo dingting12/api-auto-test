@@ -9,14 +9,22 @@ SQLCli 是一个Python程序，通过jaydebeapi连接数据库的JDBC驱动。
 ***
 ### 安装
 安装的前提有：
-   * 有一个Python 3.6以上的环境，并且安装了pip包管理器
+   * 有一个Python 3.6以上的环境，并且安装了pip包管理器, 建议Anaconda3  
+     Andconda3的安装包： sftp:192.168.1.133:/home/auxo/share-site/tools/anaconda
    * 能够连接到互联网上， 便于下载必要的包
    * 对于Windows平台，还需要提前安装微软的C++编译器（Jaydebeapi安装过程中需要动态编译JType）
 
 安装命令：
 ```
-   pip install -U robotslacker-sqlcli
+   # Clone测试环境，或者利用现有环境
+   # git clone git@github.com:datapps/linkoop-auto-test.git 
+   cd linkoopdb\util\sqlcli
+   python setup.py insall
+
+   # 如果安装包已经上传到pypi，也可以
+   pip install robotslacker-sqlcli
 ```
+
 ***
 ### 第一次使用
 安装后直接在命令下执行sqlcli命令即可。  
