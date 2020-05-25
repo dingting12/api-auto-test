@@ -1,0 +1,772 @@
+SELECT  /*WELLPOINT_94E --  qryid:1061016*/
+case    'NONE' 
+        when    'CRDW PROD TYP (HMO, POS, PPO, TRAD, EPO)' then ( 
+case    when 'No'='Yes' then (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then (PTCD.prod_typ_cd_desc) || ' ' || 'DRUG' 
+        when    201 then (PTCD.prod_typ_cd_desc) || ' ' || 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then (PTCD.prod_typ_cd_desc) || ' ' || 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then (PTCD.prod_typ_cd_desc) || ' ' || 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then (PTCD.prod_typ_cd_desc) || ' ' || 'VISION' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    (
+case    gmus.oth_carr_prim_ind 
+        when    'Y' then (
+case    gmus.oth_carr_ins_cd 
+        when    'M' then (PTCD.prod_typ_cd_desc) || ' - MEDICARE CARVEOUT' 
+else    (PTCD.prod_typ_cd_desc) 
+end     ) 
+else    (PTCD.prod_typ_cd_desc) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+else    (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then (PTCD.prod_typ_cd_desc) || ' ' || 'DRUG' 
+        when    201 then (PTCD.prod_typ_cd_desc) || ' ' || 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then (PTCD.prod_typ_cd_desc) || ' ' || 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then (PTCD.prod_typ_cd_desc) || ' ' || 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then (PTCD.prod_typ_cd_desc) || ' ' || 'VISION' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    (PTCD.prod_typ_cd_desc) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+        when    'FACETS' then ( 
+case    when 'No'='Yes' then (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then ( PCD.prod_cd_desc )||' '||(gmus.cov_serv_id )||' '||'DRUG' 
+        when    201 then ( PCD.prod_cd_desc )||' ' ||(gmus.cov_serv_id )||' '||'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then ( PCD.prod_cd_desc )||' '||(gmus.cov_serv_id )||' '||'MEDICARE SUPP' 
+        when    'R' then ( PCD.prod_cd_desc )||' '||(gmus.cov_serv_id )||' '||'MEDICARE HMO' 
+else    (
+case    gmus.oth_carr_prim_ind 
+        when    'Y' then (
+case    gmus.oth_carr_ins_cd 
+        when    'M' then ( PCD.prod_cd_desc ) || ' ' || (gmus.cov_serv_id )||' - MEDICARE CARVEOUT' 
+else    (( PCD.prod_cd_desc ) || ' ' || ( gmus.cov_serv_id )) 
+end     ) 
+else    (( PCD.prod_cd_desc ) || ' ' || ( gmus.cov_serv_id )) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+else    (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then ( PCD.prod_cd_desc )||' '||(gmus.cov_serv_id )||' '||'DRUG' 
+        when    201 then ( PCD.prod_cd_desc )||' ' ||(gmus.cov_serv_id )||' '||'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then ( PCD.prod_cd_desc )||' '||(gmus.cov_serv_id )||' '||'MEDICARE SUPP' 
+        when    'R' then ( PCD.prod_cd_desc )||' '||(gmus.cov_serv_id )||' '||'MEDICARE HMO' 
+else    (( PCD.prod_cd_desc ) || ' ' || ( gmus.cov_serv_id )) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+        when    'NASCO' then ( 
+case    when 'No'='Yes' then (
+case    when ( gmus.clm_src_sys_key ) in (161,201) 
+        and     ( gmus.mbr_src_sys_key ) = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then 'DRUG' 
+        when    201 then 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    (
+case    gmus.prod_typ_cd 
+        when    1 then 'EPO' 
+else    (
+case    gmus.mbr_src_sys_key 
+        when    153 then (
+case    gmus.oth_carr_prim_ind 
+        when    'Y' then (
+case    gmus.oth_carr_ins_cd 
+        when    'M' then (
+case    gmus.hlth_cov_typ_rollup_cd 
+        when    1 then 'HMO' ||' - MEDICARE CARVEOUT' 
+        when    2 then 'POS' ||' - MEDICARE CARVEOUT' 
+        when    3 then 'PPO' ||' - MEDICARE CARVEOUT' 
+        when    4 then 'TRADITIONAL FIRST-DOLLAR' ||' - MEDICARE CARVEOUT' 
+        when    5 then 'TRADITIONAL CMM' ||' - MEDICARE CARVEOUT' 
+else    (
+case    gmus.prod_typ_cd 
+        when    2 then 'HMO' ||' - MEDICARE CARVEOUT' 
+        when    3 then 'POS' ||' - MEDICARE CARVEOUT' 
+        when    4 then 'PPO' ||' - MEDICARE CARVEOUT' 
+        when    5 then 'TRADITIONAL' ||' - MEDICARE CARVEOUT' 
+else    'UNKNOWN' ||' - MEDICARE CARVEOUT' 
+end     ) 
+end     ) 
+else    (
+case    gmus.hlth_cov_typ_rollup_cd 
+        when    1 then 'HMO' 
+        when    2 then 'POS' 
+        when    3 then 'PPO' 
+        when    4 then 'TRADITIONAL FIRST-DOLLAR' 
+        when    5 then 'TRADITIONAL CMM' 
+else    (
+case    gmus.prod_typ_cd 
+        when    2 then 'HMO' 
+        when    3 then 'POS' 
+        when    4 then 'PPO' 
+        when    5 then 'TRADITIONAL' 
+else    'UNKNOWN' 
+end     ) 
+end     ) 
+end     ) 
+else    (
+case    gmus.hlth_cov_typ_rollup_cd 
+        when    1 then 'HMO' 
+        when    2 then 'POS' 
+        when    3 then 'PPO' 
+        when    4 then 'TRADITIONAL FIRST-DOLLAR' 
+        when    5 then 'TRADITIONAL CMM' 
+else    (
+case    gmus.prod_typ_cd 
+        when    2 then 'HMO' 
+        when    3 then 'POS' 
+        when    4 then 'PPO' 
+        when    5 then 'TRADITIONAL' 
+else    'UNKNOWN' 
+end     ) 
+end     ) 
+end     ) 
+else    (
+case    gmus.oth_carr_prim_ind 
+        when    'Y' then (
+case    gmus.oth_carr_ins_cd 
+        when    'M' then (
+case    gmus.prod_typ_cd 
+        when    2 then 'HMO' ||' - MEDICARE CARVEOUT' 
+        when    3 then 'POS' ||' - MEDICARE CARVEOUT' 
+        when    4 then 'PPO' ||' - MEDICARE CARVEOUT' 
+        when    5 then 'TRADITIONAL' ||' - MEDICARE CARVEOUT' 
+else    'UNKNOWN' ||' - MEDICARE CARVEOUT' 
+end     ) 
+else    (
+case    gmus.prod_typ_cd 
+        when    2 then 'HMO' 
+        when    3 then 'POS' 
+        when    4 then 'PPO' 
+        when    5 then 'TRADITIONAL' 
+else    'UNKNOWN' 
+end     ) 
+end     ) 
+else    (
+case    gmus.prod_typ_cd 
+        when    2 then 'HMO' 
+        when    3 then 'POS' 
+        when    4 then 'PPO' 
+        when    5 then 'TRADITIONAL' 
+else    'UNKNOWN' 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+else    (
+case    when ( gmus.clm_src_sys_key ) in (161,201) 
+        and     ( gmus.mbr_src_sys_key ) = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then 'DRUG' 
+        when    201 then 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    (
+case    gmus.prod_typ_cd 
+        when    1 then 'EPO' 
+else    (
+case    gmus.mbr_src_sys_key 
+        when    153 then (
+case    gmus.hlth_cov_typ_rollup_cd 
+        when    1 then 'HMO' 
+        when    2 then 'POS' 
+        when    3 then 'PPO' 
+        when    4 then 'TRADITIONAL FIRST-DOLLAR' 
+        when    5 then 'TRADITIONAL CMM' 
+else    (
+case    gmus.prod_typ_cd 
+        when    2 then 'HMO' 
+        when    3 then 'POS' 
+        when    4 then 'PPO' 
+        when    5 then 'TRADITIONAL' 
+else    'UNKNOWN' 
+end     ) 
+end     ) 
+else    (
+case    gmus.prod_typ_cd 
+        when    2 then 'HMO' 
+        when    3 then 'POS' 
+        when    4 then 'PPO' 
+        when    5 then 'TRADITIONAL' 
+else    'UNKNOWN' 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+        when    'NONE' then ( 
+case    when 'No'='Yes' then (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then 'DRUG' 
+        when    201 then 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    (
+case    gmus.oth_carr_prim_ind 
+        when    'Y' then (
+case    gmus.oth_carr_ins_cd 
+        when    'M' then 'MEDICARE CARVEOUT' 
+else    'MEDICAL' 
+end     ) 
+else    'MEDICAL' 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+else    (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then 'DRUG' 
+        when    201 then 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    'MEDICAL' 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+else    'OTHER' 
+end     , 
+case    when 'No'='Yes' then (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then 'DRUG' 
+        when    201 then 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.hlth_cov_typ_rollup_cd 
+        when    6 then 'HOTT' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    (
+case    gmus.oth_carr_prim_ind 
+        when    'Y' then (
+case    gmus.oth_carr_ins_cd 
+        when    'M' then 'MEDICARE CARVEOUT' 
+else    'MEDICAL' 
+end     ) 
+else    'MEDICAL' 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+else    (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then 'DRUG' 
+        when    201 then 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.hlth_cov_typ_rollup_cd 
+        when    6 then 'HOTT' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    'MEDICAL' 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     , 
+case    when ( 'No Segment Selected' ) = 'Custom Segment' then ( s.CSTM_SEGM_CD ) 
+        when    ( 'No Segment Selected' ) = 'Division' then ( s.DIV_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Class' then ( s.EMP_CLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employer Health Plan Type' then ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Sub-Class' then ( s.EMP_SUBCLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Network Location' then ( s.NTWK_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Operation Status' then ( s.OPER_STAT_CD ) 
+        when    ( 'No Segment Selected' ) = 'Payroll Location' then ( s.PAYRL_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Plant Location' then ( s.PLNT_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Tobacco Use' then ( s.TBACO_USE_CD ) 
+        when    ( 'No Segment Selected' ) = 'Union Status' then ( s.UNION_STAT_CD ) 
+else    'NO SEGMENT SELECTED' 
+end     , 
+case    when ( 'No Segment Selected' ) = 'Custom Segment' then ( s.CSTM_SEGM_CD ) 
+        when    ( 'No Segment Selected' ) = 'Division' then ( s.DIV_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Class' then ( s.EMP_CLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employer Health Plan Type' then ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Sub-Class' then ( s.EMP_SUBCLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Network Location' then ( s.NTWK_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Operation Status' then ( s.OPER_STAT_CD ) 
+        when    ( 'No Segment Selected' ) = 'Payroll Location' then ( s.PAYRL_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Plant Location' then ( s.PLNT_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Tobacco Use' then ( s.TBACO_USE_CD ) 
+        when    ( 'No Segment Selected' ) = 'Union Status' then ( s.UNION_STAT_CD ) 
+else    'NO SEGMENT SELECTED' 
+end     , 
+case    when ( 'No Segment Selected' ) = 'Custom Segment' then ( s.CSTM_SEGM_CD ) 
+        when    ( 'No Segment Selected' ) = 'Division' then ( s.DIV_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Class' then ( s.EMP_CLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employer Health Plan Type' then ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Sub-Class' then ( s.EMP_SUBCLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Network Location' then ( s.NTWK_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Operation Status' then ( s.OPER_STAT_CD ) 
+        when    ( 'No Segment Selected' ) = 'Payroll Location' then ( s.PAYRL_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Plant Location' then ( s.PLNT_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Tobacco Use' then ( s.TBACO_USE_CD ) 
+        when    ( 'No Segment Selected' ) = 'Union Status' then ( s.UNION_STAT_CD ) 
+else    'NO SEGMENT SELECTED' 
+end     , gmus.pd_prd, gmus.inpat_ind, gmus.prim_vist_reas_cd, gmus.ipp_cd,
+                case 'Group Number' 
+        when    'Group Number' then (
+case    when ( MOWI_gid.grp_id )is null then ( gmus.grp_id ) 
+        when
+        -- gdc.eff_dt >= '20060901'
+        -- and
+             ( MOWI_gid.src_sys_key )<> ( gdc.src_sys_key ) then ( gmus.grp_id )
+        when
+        -- ( gdc.eff_dt ) < '20060901'
+        -- and
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key then MOWI_gid.grp_id
+else    gmus.grp_id 
+end     ) 
+        when    'Group Association ID' then ( ga.assn_id ) 
+else    ( gmus.grp_acct_id ) 
+end     , 'austin powder', gmus.prof_vist_ind, 
+case    'None' 
+        when    'Group' then gmus.grp_id 
+        when    'Group - Subgroup' then gmus.grp_id||'-'||gmus.subgrp_id 
+        when    'Group - Package' then gmus.grp_id||'-'||gmus.pkg_nbr 
+        when    'Group - Subgroup - Package' then gmus.grp_id||'-'||gmus.subgrp_id||'-'||gmus.pkg_nbr 
+else    'All' 
+end     , sum(
+case    when gmus.clm_src_sys_key = 153 
+        and     gmus.prov_fin_agrmt_typ_cd <> 'C' then (gmus.serv_pd_amt + gmus.surchrg_amt) 
+        when    gmus.prov_fin_agrmt_typ_cd = 'C' 
+        and     gmus.clm_src_sys_key ne 159 then gmus.serv_appr_pay_amt 
+else    gmus.serv_pd_amt 
+end     ), sum(gmus.serv_line_cnt), sum(gmus.vist_cnt), sum(gmus.LOS_day_cnt) 
+FROM    PROD_TYP_CD_DOM PTCD RIGHT JOIN grp_med_util_sum gmus 
+        ON      PTCD.prod_typ_cd=gmus.prod_typ_cd LEFT JOIN grp_div_curr gdc 
+        ON      gdc.grp_div_key=gmus.grp_div_key LEFT JOIN PROD_CD_DOM PCD 
+        ON      PCD.prod_cd=gmus.prod_cd LEFT JOIN segm s 
+        ON      case 
+        when    'No Segment Selected' = 'No Segment Selected' 
+        and     'No Segment Selected' = 'No Segment Selected' 
+        and     'No Segment Selected' = 'No Segment Selected' then 'a' 
+else    'b' 
+end     = 'b' 
+        and     gmus.grp_div_key=s.GRP_DIV_KEY 
+        and     gmus.dept_nbr=s.DEPT_NBR 
+        and     gmus.pkg_nbr=s.PKG_NBR 
+        and     gmus.serv_plan_id=s.PLAN_ID 
+        -- and     (gmus.serv_strt_prd || '28') (date, format 'YYYYMMDD') between s.eff_dt and     s.canc_dt
+        -- and     s.clos_dt = '20991231'
+LEFT JOIN Grp_assn GA
+        ON      gmus.grp_div_key=GA.GRP_DIV_KEY 
+        and     gmus.serv_strt_prd between substr(ga.eff_dt,1,6) 
+        and     substr(ga.canc_dt,1,6) 
+        and     ga.clos_dt = '20991231' 
+        and     ga.src_sys_key = (167) LEFT JOIN ( 
+select  gdc.grp_id, gdc.src_sys_key 
+FROM    grp_div gdc 
+where   gdc.src_sys_key in (
+case    when 'NASCO' ='MO LEGACY AND FACETS' then 199 
+        when    'NASCO' ='WI LEGACY AND FACETS' then 202 
+end     ) 
+        and     1=
+case    when 'Group Number' = 'Group Number' then 1 
+else    0 
+end     and gdc.grp_id in ('003323990') 
+group   by 1,2 ) MOWI_gid 
+        ON      gmus.grp_id=MOWI_gid.grp_id 
+WHERE   ( ( 
+case    when ( 'No Segment Selected' ) = 'Custom Segment' then ( s.CSTM_SEGM_CD ) 
+        when    ( 'No Segment Selected' ) = 'Division' then ( s.DIV_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Class' then ( s.EMP_CLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employer Health Plan Type' then ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Sub-Class' then ( s.EMP_SUBCLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Network Location' then ( s.NTWK_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Operation Status' then ( s.OPER_STAT_CD ) 
+        when    ( 'No Segment Selected' ) = 'Payroll Location' then ( s.PAYRL_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Plant Location' then ( s.PLNT_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Tobacco Use' then ( s.TBACO_USE_CD ) 
+        when    ( 'No Segment Selected' ) = 'Union Status' then ( s.UNION_STAT_CD ) 
+else    'NO SEGMENT SELECTED' 
+end     ) in ('All')
+        or      'All' in ('All') ) 
+        AND     ( ( 
+case    when ( 'No Segment Selected' ) = 'Custom Segment' then ( s.CSTM_SEGM_CD ) 
+        when    ( 'No Segment Selected' ) = 'Division' then ( s.DIV_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Class' then ( s.EMP_CLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employer Health Plan Type' then ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Sub-Class' then ( s.EMP_SUBCLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Network Location' then ( s.NTWK_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Operation Status' then ( s.OPER_STAT_CD ) 
+        when    ( 'No Segment Selected' ) = 'Payroll Location' then ( s.PAYRL_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Plant Location' then ( s.PLNT_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Tobacco Use' then ( s.TBACO_USE_CD ) 
+        when    ( 'No Segment Selected' ) = 'Union Status' then ( s.UNION_STAT_CD ) 
+else    'NO SEGMENT SELECTED' 
+end     ) in ('All')
+        or      'All' in ('All') ) 
+        AND     ( ( 
+case    when ( 'No Segment Selected' ) = 'Custom Segment' then ( s.CSTM_SEGM_CD ) 
+        when    ( 'No Segment Selected' ) = 'Division' then ( s.DIV_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Class' then ( s.EMP_CLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employer Health Plan Type' then ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        when    ( 'No Segment Selected' ) = 'Employee Sub-Class' then ( s.EMP_SUBCLS_CD ) 
+        when    ( 'No Segment Selected' ) = 'Network Location' then ( s.NTWK_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Operation Status' then ( s.OPER_STAT_CD ) 
+        when    ( 'No Segment Selected' ) = 'Payroll Location' then ( s.PAYRL_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Plant Location' then ( s.PLNT_LOC_CD ) 
+        when    ( 'No Segment Selected' ) = 'Tobacco Use' then ( s.TBACO_USE_CD ) 
+        when    ( 'No Segment Selected' ) = 'Union Status' then ( s.UNION_STAT_CD ) 
+else    'NO SEGMENT SELECTED' 
+end     ) in ('All')
+        or      'All' in ('All') ) 
+        AND     ( ((( gmus.grp_id ) in (
+select  gd.grp_id 
+from    grp_div as gd 
+where   1=
+case    when 'Group Number' = 'Group Number' then 1 
+else    0 
+end     and gd.grp_id in ('003323990') 
+group   by gd.grp_id 
+union
+ 
+select  gd.grp_id 
+from    grp_assn as ga, grp_div as gd 
+where   1=
+case    when 'Group Association ID' = 'Group Number' then 1 
+else    0 
+end     and ga.assn_id in ('003323990') 
+        and     ga.grp_div_key = gd.grp_div_key 
+group   by gd.grp_id 
+union
+ 
+select  gd.grp_id 
+from    site_grp_acct as sga, grp_div as gd 
+where   1=
+case    when 'Group Account ID' = 'Group Number' then 1 
+else    0 
+end     and sga.grp_acct_id in ('003323990') 
+        and     sga.grp_acct_key = gd.grp_acct_key 
+group   by gd.grp_id)) 
+        and     (
+case    'Group Number' 
+        when    'Group Number' then ( gmus.grp_id ) 
+        when    'Group Association ID' then ( ga.assn_id ) 
+else    ( gmus.grp_acct_id ) 
+end     ) in ('003323990') 
+        and     ((( 'NASCO' )='NASCO' 
+        and     ( gdc.src_sys_key ) IN (153,154,203)) 
+        or      (( 'NASCO' )='FACETS' 
+        and     ( gdc.src_sys_key ) IN (167,203)) 
+        or      (( 'NASCO' )='NASCO/FACETS' 
+        and     ( gdc.src_sys_key ) IN (153,154,167,203)) 
+        or      (( 'NASCO' )='MO LEGACY AND FACETS' 
+        and     ( gdc.src_sys_key ) IN (
+case    when ( MOWI_gid.grp_id ) is null then gdc.src_sys_key 
+        when
+        -- gdc.eff_dt >= '20060901'
+        -- and
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key then gdc.src_sys_key
+        when
+        -- gdc.eff_dt < '20060901'
+        -- and
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key then ( MOWI_gid.src_sys_key )
+else    gdc.src_sys_key 
+end     ) 
+        or      ( gdc.src_sys_key ) IN ( 203)) 
+        and     ( gdc.src_sys_key ) NOT IN ( 202 ) 
+        or      (( 'NASCO' )='WI LEGACY AND FACETS' 
+        and     ( gdc.src_sys_key ) IN (
+case    when ( MOWI_gid.grp_id )is null then gdc.src_sys_key 
+        when
+        -- gdc.eff_dt >= '20060901'
+        -- and
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key then gdc.src_sys_key
+        when
+        -- gdc.eff_dt < '20060901'
+        -- and
+             ( MOWI_gid.src_sys_key )<> gdc.src_sys_key then ( MOWI_gid.src_sys_key )
+else    gdc.src_sys_key 
+end     ) 
+        or      ( gdc.src_sys_key ) IN ( 203)
+        and     ( gdc.src_sys_key ) NOT IN ( 199 )))) ) 
+        AND     ( gmus.clm_src_sys_key NOT IN (160) 
+        AND     gmus.hlth_cov_cls_cd NOT IN ('DN') 
+        AND     gmus.clm_src_sys_key NOT IN (159, 161) 
+        AND     ( ('All' in ('All')
+        or      gmus.pkg_nbr in ('All')) ) 
+        AND     ( ('All' in ('All')
+        or      gmus.subgrp_id in ('All')) ) 
+        AND     ( ( 
+case    when 'No'='Yes' then (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then 'DRUG' 
+        when    201 then 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.hlth_cov_typ_rollup_cd 
+        when    6 then 'HOTT' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    (
+case    gmus.oth_carr_prim_ind 
+        when    'Y' then (
+case    gmus.oth_carr_ins_cd 
+        when    'M' then 'MEDICARE CARVEOUT' 
+else    'MEDICAL' 
+end     ) 
+else    'MEDICAL' 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+else    (
+case    when gmus.clm_src_sys_key in (161,201) 
+        and     gmus.mbr_src_sys_key = 203 then 'MEDICARE PART D' 
+else    (
+case    gmus.clm_src_sys_key 
+        when    161 then 'DRUG' 
+        when    201 then 'DRUG' 
+        when    160 then (
+case    gmus.hlth_cov_cls_cd 
+        when    'VI' then 'VISION' 
+else    'DENTAL' 
+end     ) 
+        when    184 then 'VISION' 
+        when    200 then 'DENTAL' 
+        when    159 then 'MENTAL HEALTH' 
+else    (
+case    gmus.hlth_cov_cls_cd 
+        when    'DN' then 'DENTAL' 
+        when    'VI' then 'VISION' 
+else    (
+case    gmus.hlth_cov_typ_rollup_cd 
+        when    6 then 'HOTT' 
+else    (
+case    gmus.medcr_rel_cov_cd 
+        when    'S' then 'MEDICARE SUPP' 
+        when    'R' then 'MEDICARE HMO' 
+else    'MEDICAL' 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) 
+end     ) IN ('HOTT' , 'MEDICAL' , 'MEDICARE CARVEOUT' , 'MEDICARE HMO' ,
+                'MEDICARE SUPP') ) 
+        AND     (( (( gmus.pd_prd ) between ( '200601' ) 
+        and     ( '200612' )) 
+        and     ( gmus.serv_strt_prd ) between (
+case    when ( 'N' ) ='Y' then ( '199001') 
+else    '177707' 
+end     ) 
+        and     (
+case    when ( 'N' ) ='Y' then ( '200612') 
+else    '209912' 
+end     ) ) 
+        OR      ( (( gmus.pd_prd ) between ( '200501' ) 
+        and     ( '200512' )) 
+        and     ( gmus.serv_strt_prd ) between (
+case    when ( 'N' ) = 'Y' then ( '199001') 
+else    '177707' 
+end     ) 
+        and     (
+case    when ( 'N' ) = 'Y' then ( '200512') 
+else    '209912' 
+end     ) )) ) 
+GROUP   BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 
+;

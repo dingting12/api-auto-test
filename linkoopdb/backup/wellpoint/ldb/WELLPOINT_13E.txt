@@ -1,0 +1,700 @@
+SELECT  /*WELLPOINT_13E --  qryid:808328*/ p4.prod, p4.prod_typ, p4.groupby,
+                p4.ntwk_cd, 
+case    when p4.rank_visit > 15 then ' 9999999999999' 
+else    p4.provtaxid 
+end     as provtaxid, 
+case    when p4.rank_visit > 15 then ' ALL OTHER' 
+else    p4.provloc 
+end     as provloc, 
+case    when p4.rank_visit > 15 then ' ALL OTHER' 
+else    p4.provname 
+end     as provname, /*p4.clmcnt_filter, p4.rank_visit,*/ p4.rank_visit2,
+                case 
+        when    p4.rank_visit > 15 then 9999 
+else    p4.rank_visit_pd 
+end     as rank_visit_pd , 
+case    when p4.rank_visit_pd > 15 then 'other' 
+else    ' toptoptotp' 
+end     as clmcnt_filter2, SUM(visit_cnt) as visit_cnt, sum(p4.clmcnt) as clmcnt,
+                sum(p4.mbrcnt) as mbrcnt, sum(p4.s_pd_amt) as s_pd_amt 
+FROM    (
+SELECT  p4.*, RANK() OVER (PARTITION BY p4.prod, p4.prod_typ, p4.groupby ,
+                p4.ntwk_cd /*,clmcnt_filter */ 
+Order   by P4.prod, P4.prod_typ, P4.groupby,p4.ntwk_cd,/*clmcnt_filter ,*/rank_visit,
+                p4.s_pd_amt desc) as rank_visit_pd 
+FROM    (
+SELECT  p4.prod, p4.prod_typ, p4.groupby, p4.ntwk_cd, p4.visit_cnt,
+                /*CASE WHEN (p4.visit_cnt < 6 and p4.visit_cnt > -6) or (p4.clmcnt < 6 and p4.clmcnt > -6) or (p4.mbrcnt < 6 and p4.mbrcnt > -6) THEN 'other' else 'top' end clmcnt_filter,*/ RANK() OVER (PARTITION BY p4.prod,
+                p4.prod_typ, p4.groupby , p4.ntwk_cd/*,clmcnt_filter */ 
+Order   by P4.prod, P4.prod_typ, P4.groupby,p4.ntwk_cd,/*clmcnt_filter ,
+                */p4.visit_cnt desc ) as rank_visit , 
+Case    when rank_visit > 15 then 'other' 
+else    'toptop' 
+end     as rank_visit2, /*ASE WHEN rank_visit > 15 then '9999999999999' else upper(p4.provtaxid) end as provtaxid, CASE WHEN rank_visit > 15 then 'All Others' else upper(p4.provname) end as provname, CASE WHEN rank_visit > 15 then 'All Others' else upper(p4.provloc) end as provloc*/ p4.clmcnt,
+                p4.mbrcnt, p4.s_pd_amt, p4.provtaxid, p4.provname, p4.provloc 
+FROM    (
+SELECT  p4.prod, p4.prod_typ, p4.groupby, p4.ntwk_cd, p4.provloc,
+                p4.provname, p4.provtaxid, sum(p4.clm_cnt2) as clmcnt, sum(p4.mbr_cnt2 ) as mbrcnt,
+                sum(p4.visit_cnt2) as visit_cnt, sum(p4.s_pd_amt2) as s_pd_amt 
+FROM    (
+SELECT  p3.* , SUM(p3.clmcnt) OVER (PARTITION BY p3.prod, p3.prod_typ,
+                p3.groupby,p3.ntwk_cd,p3.provtaxid ROWS BETWEEN UNBOUNDED PRECEDING 
+        AND     UNBOUNDED FOLLOWING) as clm_cnt2, SUM(p3.mbrcnt) OVER (PARTITION BY p3.prod,
+                p3.prod_typ, p3.groupby,p3.ntwk_cd,p3.provtaxid ROWS BETWEEN UNBOUNDED PRECEDING 
+        AND     UNBOUNDED FOLLOWING) as mbr_cnt2, SUM(p3.visit_cnt) OVER (PARTITION BY p3.prod,
+                p3.prod_typ, p3.groupby,p3.ntwk_cd,p3.provtaxid ROWS BETWEEN UNBOUNDED PRECEDING 
+        AND     UNBOUNDED FOLLOWING) as visit_cnt2, SUM(p3.s_pd_amt) OVER (PARTITION BY p3.prod,
+                p3.prod_typ, p3.groupby, p3.ntwk_cd,p3.provtaxid ROWS BETWEEN UNBOUNDED PRECEDING 
+        AND     UNBOUNDED FOLLOWING) as s_pd_amt2, SUM(1) OVER (PARTITION BY p3.prod,
+                p3.prod_typ, p3.groupby, p3.ntwk_cd,p3.provtaxid 
+ORDER   BY p3.prod, p3.prod_typ, p3.groupby, p3.ntwk_cd,p3. provloc,
+                p3.provname,p3.provtaxid desc ROWS UNBOUNDED PRECEDING) as row_nbr 
+FROM    (
+SELECT  p2.prod, p2.prod_typ, p2.groupby, p2.ntwk_cd, p2.segment1,
+                p2.segment2, p2.segment3, p2.provtaxid, p2. provloc, p2.provname,
+                SUM(p2.mbrcnt) as mbrcnt, SUM(p2.clmcnt) as clmcnt, SUM(p2.visit_cnt ) as visit_cnt,
+                SUM( p2.s_pd_amt) as s_pd_amt 
+FROM    (
+SELECT  p.prod, p.prod_typ, p.groupby, p.ntwk_cd, p.segment1, p.segment2,
+                p.segment3, p.provtaxid, p.provloc, p.provname, SUM(p.mbrcnt) as mbrcnt,
+                SUM(p.clmcnt) as clmcnt, SUM(p.visit_cnt) as visit_cnt , SUM( p.s_pd_amt) as s_pd_amt 
+FROM    (
+SELECT  case 
+        when    e2.prod = 'HOTT' then 'MEDICAL' 
+else    e2.prod 
+end     as prod, 
+case    when e2.prod_typ = 'HOTT' then 'MEDICAL' 
+else    e2.prod_typ 
+end     as prod_typ, e2.groupby, e2.ntwk_cd, e2.clm_src_sys_key, e2.provkey,
+                e2.provtaxid, e2.provloc, e2.provname, e2.segment1, e2.segment2,
+                e2.segment3, SUM(e2.mbrcnt) as mbrcnt, SUM(e2.clmcnt) as clmcnt,
+                SUM(e2.chrg_sign) as visit_cnt , SUM(e2.s_pd_amt) as s_pd_amt 
+FROM    (
+SELECT  e.prod, e.prod_typ, e.groupby, e.ntwk_cd, e.clm_src_sys_key,
+                e.provkey, e.provtaxid, e.provloc, e.provname, e.sub_dep, e.segment1,
+                e.segment2, e.segment3, ZEROIFNULL(e.chrg2 /NULLIFZERO(abs(e.chrg2)) ) as chrg_sign,
+                e.s_pd_amt, e.mbrcnt, e.clmcnt 
+FROM    (
+SELECT  d.prod, d.prod_typ, d.groupby, d.ntwk_cd, d.clm_src_sys_key,
+                d.sub_dep, d.provkey, d.provtaxid, d.provloc, d.provname, d.serv_strt_dt,
+                d.segment1, d.segment2, d.segment3, SUM(d.mbrcnt) as mbrcnt,
+                SUM(d.clmcnt) as clmcnt, SUM(d.s_pd_amt) as s_pd_amt, SUM(d.chrg) as chrg2 
+FROM    (
+SELECT  c.* , 
+CASE    WHEN c.chrg_amt_y ne 0.00 
+        and     c. chrg_amt_n ne 0.00 then c. chrg_amt_n 
+else    c. chrg_amt_n + c. chrg_amt_y 
+end     as chrg 
+FROM    (
+SELECT  a.prod, a.prod_typ, a.groupby, a.clm_src_sys_key, a.sub_dep,
+                a.provkey, a.segment1, a.segment2, a.segment3, a.ntwk_cd, a.prod_cmpnt_key,
+                a.clmkey, a.provtaxid, upper(a.provloc) as provloc, upper(a.provname) as provname,
+                a.serv_strt_dt, SUM(a.mbrcnt) as mbrcnt, SUM(a.clmcnt) as clmcnt,
+                SUM(a.s_pd_amt) as s_pd_amt , SUM(a.chrg_amt_y) as chrg_amt_y,
+                SUM(a.chrg_amt_n) as chrg_amt_n 
+FROM    (
+SELECT  a.*, 
+CASE    WHEN COUNT(*) OVER (PARTITION BY a.prod,a.prod_typ,a.groupby,
+                a.segment1,a.segment2,a.segment3,a.ntwk_cd,a.provkey,a.clmid 
+ORDER   BY a.prod,a.prod_typ,a.groupby,a.segment1,a.segment2,a.segment3,
+                a.ntwk_cd,a.provkey ROWS UNBOUNDED PRECEDING ) = 1 THEN 1 
+ELSE    0 
+END     as clmcnt, 
+CASE    WHEN COUNT(*) OVER (PARTITION BY a.prod,a.prod_typ,a.groupby,
+                a.segment1,a.segment2,a.segment3,a.ntwk_cd,a.provkey ,a.sub_dep 
+ORDER   BY a.prod,a.prod_typ,a.groupby,a.segment1,a.segment2,a.segment3,
+                a.ntwk_cd,a.provkey ROWS UNBOUNDED PRECEDING ) = 1 THEN 1 
+ELSE    0 
+END     as mbrcnt 
+FROM    (
+SELECT  a.*, SUM (1) OVER (PARTITION BY a.hcs_key 
+ORDER   BY a.mbr_key, a.prod_cmpnt_key, a.cust_join_key, a.hcs_key,
+                a.serv_strt_dt,a.oth_carr_ins_cd desc, a.oth_carr_prim_ind desc,
+                a.dept_nbr desc, a.provtaxid desc, a.provloc,a.provname ROWS UNBOUNDED PRECEDING) as row_nbr 
+FROM    (
+SELECT  upper(
+CASE    WHEN po.prov_org_name||po.prov_tax_id||po.zip5_cd = ' ' then '9999999999999' 
+        when    ahkc.clm_src_sys_key =167 THEN po.prov_org_name||po.prov_tax_id||po.zip5_cd 
+ELSE    po.prov_tax_id||po.zip5_cd 
+END     ) as provtaxid , 
+case    when po.prov_org_name is null then 'PROVIDER NOT IDENTIFIED' 
+        when    po.prov_org_name = ' ' then 'PROVIDER NOT IDENTIFIED' 
+else    po.prov_org_name 
+end     as provname, 
+case    when zc.city_name is null then 'PROVIDER NOT IDENTIFIED' 
+else    SUBSTR(zc.city_name,1,25)||', '||TRIM(zc.st_cd) 
+end     as provloc , mpc.oth_carr_ins_cd, mpc.oth_carr_prim_ind, mpc.cust_join_key,
+                pe.dept_nbr , 
+CASE    WHEN char(m.sub_id) > 9 THEN substring(trim(m.sub_id) 
+FROM    4 FOR 9) 
+ELSE    m.sub_id 
+END     ||TRIM(m.brth_dt)||SUBSTR(m.frst_name,1,5)||TRIM(m.gndr_cd) as sub_dep,
+                CASE 'None' 
+        WHEN    'Group' THEN gd.grp_id 
+        WHEN    'Group - Subgroup' THEN gd.grp_id||'-'||gd.subgrp_id 
+        WHEN    'Group - Package' THEN gd.grp_id||'-'||ahkg.pkg_nbr 
+        WHEN    'Group - Subgroup - Package' THEN gd.grp_id||'-'||gd.subgrp_id||'-'||ahkg.pkg_nbr 
+ELSE    'All' 
+END     AS groupby, 
+CASE    WHEN ahkc.clm_src_sys_key IN (161,201) THEN (
+CASE    ahkm.mbr_src_sys_key 
+        WHEN    203 THEN 'MEDICARE PART D' 
+ELSE    'DRUG' 
+END     ) 
+        WHEN    ahkc.clm_src_sys_key IN (161,201) THEN 'DRUG' 
+        WHEN    (ahkc.clm_src_sys_key = 184 
+        OR      pc.hlth_cov_cls_cd = 'VI') THEN 'VISION' 
+        WHEN    (ahkc.clm_src_sys_key IN (160,200) 
+        OR      pc.hlth_cov_cls_cd = 'DN') THEN 'DENTAL' 
+        WHEN    ahkc.clm_src_sys_key = 159 THEN 'MENTAL HEALTH' 
+        WHEN    pc.hlth_cov_typ_cd IN (9,10) THEN 'HOTT' 
+        WHEN    (pc.medcr_rel_cov_cd = 'S' 
+        OR      (pc.medcr_rel_cov_cd = 'R' 
+        AND     ahkc.clm_src_sys_key = 153) 
+        OR      pc.hlth_cov_typ_cd IN (26,28,41)) THEN 'MEDICARE SUPP' 
+        WHEN    pc.medcr_rel_cov_cd = 'R' THEN 'MEDICARE HMO' 
+        WHEN    'No'='Yes' 
+        AND     mpc.oth_carr_ins_cd='M' 
+        AND     mpc.oth_carr_prim_ind = 'Y' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     AS prod, 
+CASE    'NONE' 
+        WHEN    'NONE' THEN prod 
+        WHEN    'CRDW PROD TYP (HMO, POS, PPO, TRAD, EPO)' THEN (
+CASE    WHEN pc.hlth_cov_cls_cd= 'VI' 
+        OR      ahkc.clm_src_sys_key = 184 THEN TRIM(ptcd.prod_typ_cd_desc) || ' VISION' 
+        WHEN    pc.medcr_rel_cov_cd='S' 
+        OR      pc.hlth_cov_typ_cd IN (26,28,41) 
+        OR      (gd.src_sys_key =153 
+        AND     pc.medcr_rel_cov_cd ='R') THEN 'MEDICARE SUPP' 
+        WHEN    pc.medcr_rel_cov_cd ='R' THEN 'MEDICARE HMO' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        AND     mpc.oth_carr_prim_ind = 'Y' THEN TRIM(ptcd.prod_typ_cd_desc) || ' - MEDICARE CARVEOUT' 
+ELSE    TRIM(ptcd.prod_typ_cd_desc) 
+END     ) 
+        WHEN    'FACETS' THEN (
+CASE    WHEN pc.hlth_cov_cls_cd = 'VI' 
+        OR      ahkc.clm_src_sys_key = 184 THEN 'VISION' 
+        WHEN    pc.medcr_rel_cov_cd ='S' 
+        OR      pc.hlth_cov_typ_cd IN (26,28,41) THEN TRIM(pcd.prod_cd_desc)||' '||TRIM(pc.cov_serv_id)||' MEDICARE SUPP' 
+        WHEN    pc.medcr_rel_cov_cd ='R' THEN TRIM(pcd.prod_cd_desc)||' '||TRIM(pc.cov_serv_id)||' MEDICARE HMO' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        AND     mpc.oth_carr_prim_ind = 'Y' THEN TRIM(pcd.prod_cd_desc)||' '||TRIM(pc.cov_serv_id)||' - MEDICARE CARVEOUT' 
+ELSE    TRIM(pcd.prod_cd_desc)||' '||TRIM(pc.cov_serv_id) 
+END     ) 
+        WHEN    'NASCO' THEN (
+CASE    WHEN ahkc.clm_src_sys_key=184 
+        OR      pc.hlth_cov_cls_cd = 'VI' THEN 'VISION' 
+        WHEN    pc.medcr_rel_cov_cd = 'S' 
+        OR      pc.hlth_cov_typ_cd IN (26,28,41) 
+        OR      (gd.src_sys_key=153 
+        AND     pc.medcr_rel_cov_cd ='R') THEN 'MEDICARE SUPP' 
+        WHEN    pc.medcr_rel_cov_cd= 'R' THEN 'MEDICARE HMO' 
+        WHEN    pc.prod_typ_cd= 1 THEN 'EPO' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        AND     mpc.oth_carr_prim_ind = 'Y' 
+        AND     pc.hlth_cov_typ_cd IN (31,34,35) THEN 'HMO - MEDICARE CARVEOUT' 
+        WHEN    pc.hlth_cov_typ_cd IN (31,34,35) THEN 'HMO' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        AND     mpc.oth_carr_prim_ind = 'Y' 
+        AND     pc.hlth_cov_typ_cd IN (32,36,37) THEN 'POS - MEDICARE CARVEOUT' 
+        WHEN    pc.hlth_cov_typ_cd IN (32,36,37) THEN 'POS' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        AND     mpc.oth_carr_prim_ind = 'Y' 
+        AND     pc.hlth_cov_typ_cd IN (33,38,39) THEN 'PPO - MEDICARE CARVEOUT' 
+        WHEN    pc.hlth_cov_typ_cd IN (33,38,39) THEN 'PPO' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        and     mpc.oth_carr_prim_ind = 'Y' 
+        AND     pc.hlth_cov_typ_cd IN (1,2,17,18,19,20) THEN 'TRADITIONAL FIRST-DOLLAR - MEDICARE CARVEOUT' 
+        WHEN    pc.hlth_cov_typ_cd IN (1,2,17,18,19,20) THEN 'TRADITIONAL FIRST-DOLLAR' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        and     mpc.oth_carr_prim_ind = 'Y' 
+        AND     pc.hlth_cov_typ_cd IN (3,21,22) THEN 'TRADITIONAL CMM - MEDICARE CARVEOUT' 
+        WHEN    pc.hlth_cov_typ_cd IN (3,21,22) THEN 'TRADITIONAL CMM' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        and     mpc.oth_carr_prim_ind = 'Y' 
+        AND     pc.prod_typ_cd IN (97,98,99) THEN 'UNKNOWN - MEDICARE CARVEOUT' 
+        WHEN    pc.prod_typ_cd IN (97,98,99) THEN 'UNKNOWN' 
+        WHEN    'No'='Yes' 
+        and     mpc.oth_carr_ins_cd='M' 
+        and     mpc.oth_carr_prim_ind = 'Y' THEN TRIM(ptcd.prod_typ_cd_desc)||' - MEDICARE CARVEOUT' 
+ELSE    TRIM(ptcd.prod_typ_cd_desc) 
+END     ) 
+END     as prod_typ, 
+CASE    WHEN ('No Segment Selected' )='Custom Segment' then s.CSTM_SEGM_CD 
+        when    'No Segment Selected'='Division' then s.DIV_CD 
+        when    'No Segment Selected'='Employee Class' then s.EMP_CLS_CD 
+        when    'No Segment Selected'='Employer Health Plan Type' then s.EMP_HLTH_PLAN_TYP_CD 
+        when    'No Segment Selected'='Employee Sub-Class' then s.EMP_SUBCLS_CD 
+        when    'No Segment Selected'='Network Location' then s.NTWK_LOC_CD 
+        when    'No Segment Selected'='Operation Status' then s.OPER_STAT_CD 
+        when    'No Segment Selected'='Payroll Location' then s.PAYRL_LOC_CD 
+        when    'No Segment Selected'='Plant Location' then s.PLNT_LOC_CD 
+        when    'No Segment Selected'='Tobacco Use' then s.TBACO_USE_CD 
+        when    'No Segment Selected'='Union Status' then s.UNION_STAT_CD 
+else    'NO SEGMENT SELECTED' 
+end     as segment1, 
+CASE    WHEN ('No Segment Selected')='Custom Segment' then s.CSTM_SEGM_CD 
+        when    'No Segment Selected'='Division' then s.DIV_CD 
+        when    'No Segment Selected'='Employee Class' then s.EMP_CLS_CD 
+        when    'No Segment Selected'='Employer Health Plan Type' then s.EMP_HLTH_PLAN_TYP_CD 
+        when    'No Segment Selected'='Employee Sub-Class' then s.EMP_SUBCLS_CD 
+        when    'No Segment Selected'='Network Location' then s.NTWK_LOC_CD 
+        when    'No Segment Selected'='Operation Status' then s.OPER_STAT_CD 
+        when    'No Segment Selected'='Payroll Location' then s.PAYRL_LOC_CD 
+        when    'No Segment Selected'='Plant Location' then s.PLNT_LOC_CD 
+        when    'No Segment Selected'='Tobacco Use' then s.TBACO_USE_CD 
+        when    'No Segment Selected'='Union Status' then s.UNION_STAT_CD 
+else    'NO SEGMENT SELECTED' 
+end     as segment2, 
+CASE    WHEN ( 'No Segment Selected' )='Custom Segment' then s.CSTM_SEGM_CD 
+        when    'No Segment Selected'='Division' then s.DIV_CD 
+        when    'No Segment Selected'='Employee Class' then s.EMP_CLS_CD 
+        when    'No Segment Selected'= 'Employer Health Plan Type' then s.EMP_HLTH_PLAN_TYP_CD 
+        when    'No Segment Selected'='Employee Sub-Class' then s.EMP_SUBCLS_CD 
+        when    'No Segment Selected'='Network Location' then s.NTWK_LOC_CD 
+        when    'No Segment Selected'='Operation Status' then s.OPER_STAT_CD 
+        when    'No Segment Selected'='Payroll Location' then s.PAYRL_LOC_CD 
+        when    'No Segment Selected'='Plant Location' then s.PLNT_LOC_CD 
+        when    'No Segment Selected'='Tobacco Use' then s.TBACO_USE_CD 
+        when    'No Segment Selected'='Union Status' then s.UNION_STAT_CD 
+else    'NO SEGMENT SELECTED' 
+end     as segment3, ahkc.clm_src_sys_key, ah.hcs_key, ahkm.mbr_key ,
+                ahkm.prod_cmpnt_key, ahkg.grp_div_key, 
+CASE    WHEN ahkc. clm_src_sys_key = 126 THEN 'I' 
+        WHEN    ahkc. clm_src_sys_key = 127 
+        and     pc.prod_typ_cd = 2 THEN 'I' 
+        WHEN    ah.reimb_prov_in_ntwk_cd = 'I' THEN 'I' 
+ELSE    'O' 
+END     as ntwk_cd, 
+CASE    WHEN ahkp.serv_prov_org_key is null then ahkp.reimb_prov_org_key 
+ELSE    ahkp.serv_prov_org_key 
+END     as provkey, 
+CASE    WHEN gd.src_sys_key IN (153,154,199) THEN TRIM(ahi.actv_plan_id)|| TRIM(ah.clm_id) 
+        WHEN    gd.src_sys_key IN (167,202) THEN TRIM(ahi.actv_plan_id)||SUBSTRING(ah.clm_id 
+FROM    1 FOR (CHARACTER_LENGTH(TRIM(ah.clm_id)) -2)) 
+ELSE    ah.clm_id 
+END     AS clmid, 
+CASE    WHEN gd.src_sys_key IN (153,154) THEN TRIM(ahi.actv_plan_id)|| TRIM(ah.clm_id)||TRIM(ah.adj_nbr)||SUBSTRING(CAST((ah.serv_line_nbr (
+FORMAT'9999')) AS CHAR (4)) 
+FROM    1 FOR 3) 
+        WHEN    gd.src_sys_key IN (167,202) THEN TRIM(ahi.actv_plan_id)||SUBSTRING(ah.clm_id 
+FROM    1 FOR (CHARACTER_LENGTH(TRIM(ah.clm_id)) -2))||TRIM(ah.adj_nbr)||TRIM(ah.serv_line_nbr) 
+        WHEN    gd.src_sys_key IN (199) THEN TRIM(ahi.actv_plan_id)|| TRIM(ah.clm_id)||TRIM(ah.adj_nbr)||TRIM(ah.serv_line_nbr) 
+ELSE    ah.clm_id 
+END     (char(25)) AS clmkey, 
+CASE    WHEN (ah.serv_diag_cd is NULL 
+        or      ah.serv_diag_cd like ' %') 
+        and     (ah.prim_diag_cd is null 
+        or      ah.prim_diag_cd like ' %') then 'No DX' 
+        when    (ah.serv_diag_cd is NULL 
+        or      ah.serv_diag_cd like ' %') 
+        and     ah.prim_diag_cd is NOT null then ah.prim_diag_cd 
+else    ah.serv_diag_cd 
+END     AS diag_cd, 
+CASE    WHEN ahi.its_plan_id <> ' ' THEN ahi.its_plan_id 
+ELSE    ahi.serv_plan_id 
+END     AS serv_plan_id, ahkc.serv_strt_dt, ahkc.pd_dt, ah.serv_pd_amt,
+                ah.disc_cov_amt, ah.bill_chrg_amt, 
+CASE    WHEN ahkc.ipp_cd=1 
+        AND     ahkc.inpat_ind='Y' THEN 'INPATIENT' 
+        WHEN    ahkc.ipp_cd =1 
+        AND     ahkc.inpat_ind='N' THEN 'OUTPATIENT' 
+        WHEN    ahkc.ipp_cd=2 THEN 'PROFESSIONAL' 
+        WHEN    ahkc.ipp_cd=3 THEN 'DRUG' 
+        WHEN    ahkc.ipp_cd in (7,8,9) THEN 'UNKNOWN' 
+ELSE    'OTHER' 
+END     as clm_typ, 
+CASE    WHEN ah.pgbk_ind = 'Y' THEN ah.bill_chrg_amt 
+ELSE    0.00 
+END     as chrg_amt_y, 
+CASE    WHEN ah.pgbk_ind = 'N' THEN ah.bill_chrg_amt 
+ELSE    0.00 
+END     as chrg_amt_n, 
+CASE    ahkc.clm_src_sys_key 
+        WHEN    153 THEN ah.serv_pd_amt + ahi.surchrg_amt 
+ELSE    ah.serv_pd_amt 
+end     as pd_amt, 
+CASE    WHEN ahkc.clm_src_sys_key = 159 THEN ah.serv_pd_amt 
+        WHEN    ah.prov_fin_agrmt_typ_cd = 'C' THEN ah.serv_appr_pay_amt 
+        WHEN    ahkc.clm_src_sys_key = 153 THEN ah.serv_pd_amt + ahi.surchrg_amt 
+ELSE    ah.serv_pd_amt 
+END     as s_pd_amt /*SUM (1) OVER (PARTITION BY ah.hcs_key ORDER BY ahkm.mbr_key, ahkm.prod_cmpnt_key, mpc.cust_join_key, ah.hcs_key, ahkc.serv_strt_dt,mpc.oth_carr_ins_cd desc, mpc.oth_carr_prim_ind desc, pe.dept_nbr desc, provtaxid desc, provloc,provname ROWS UNBOUNDED PRECEDING) as row_nbr */ 
+FROM    adj_hcs ah INNER JOIN adj_hcs_ii        ahi 
+        ON      ah.hcs_key = ahi.hcs_key INNER JOIN adj_hcs_key_mbr     ahkm 
+        ON      ah.hcs_key = ahkm.hcs_key INNER JOIN adj_hcs_key_prv ahkp 
+        ON      ah.hcs_key = ahkp.hcs_key INNER JOIN adj_hcs_key_grp    ahkg 
+        ON      ahkm.hcs_key = ahkg.hcs_key 
+        AND     ( ('All' in ('All')     or ahkg.pkg_nbr in ('All')) ) INNER JOIN adj_hcs_key_clm         ahkc 
+        ON      ahkc.hcs_key=ahkm.hcs_key 
+        AND     ahkc.clm_src_sys_key NOT IN (159,160,161,184,200,201) 
+        AND     ahkc.ipp_cd = 1 
+        AND     ahkc.inpat_ind = 'N' 
+        AND     (ahkc.pd_dt BETWEEN '20060101' 
+        AND     '20061231') 
+        AND     ahkc.serv_strt_dt BETWEEN (
+CASE    WHEN 'N' ='Y' THEN '19900101' 
+ELSE    '17770707' 
+END     ) 
+        AND     (
+CASE    WHEN 'N' ='Y' THEN '20061231' 
+ELSE    '20991231' 
+END     ) INNER JOIN (
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id,gd.grp_div_key ,gd.src_sys_key,
+                min(gd.eff_dt) as eff_dt, max(gd.canc_dt) as canc_dt 
+FROM    grp_div          gd 
+WHERE   1=
+case    when 'Group Number' = 'Group Number' then 1 
+else    0 
+end     and gd.grp_id in ('00009835' , '00009836') 
+        and     ( ('All' in ('All') 
+        or      gd.subgrp_id in ('All')) ) 
+        and     (( 'FACETS' = 'NASCO' 
+        and     gd.src_sys_key IN (153,154,203)) 
+        or      ('FACETS'='FACETS' 
+        and     gd.src_sys_key IN (167,203)) 
+        or      ('FACETS'='NASCO/FACETS' 
+        and     gd.src_sys_key IN (153,154,167,203)) 
+        or      ('FACETS'='MO LEGACY AND FACETS' 
+        and     gd.src_sys_key IN (167,199,203)) 
+        or      ('FACETS'='WI LEGACY AND FACETS' 
+        and     gd.src_sys_key IN (167,202,203))) 
+group   by 1,2,3,4 EXCEPT 
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id,gd.grp_div_key ,gd.src_sys_key,
+                min(gd.eff_dt) as eff_dt, max(gd.canc_dt) as canc_dt 
+FROM    grp_div gd 
+WHERE   1=
+case    when 'Group Number' = 'Group Number' then 1 
+else    0 
+end     and ('FACETS' in ( 'MO LEGACY AND FACETS','WI LEGACY AND FACETS' ) 
+        and     (gd.src_sys_key IN (167) 
+        and     gd.eff_dt < '20060901' 
+        and     gd.grp_id in ( 
+select  gd2.grp_id 
+from    grp_div gd2 
+where   gd2.src_sys_key in ( 199,202,203) 
+        and     gd.grp_id in ('00009835' , '00009836')) )) 
+group   by 1,2,3,4 
+UNION
+ 
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id ,ga.grp_div_key ,ga.src_sys_key ,
+                ga.eff_dt ,ga.canc_dt 
+FROM    grp_assn as ga, grp_div as gd 
+WHERE   1=
+case    when 'Group Association ID' = 'Group Number' then 1 
+else    0 
+end     and ga.assn_id in ('00009835' , '00009836') 
+        and     ga.grp_div_key = gd.grp_div_key 
+        and     ga.clos_dt = '20991231'
+        and     ga.src_sys_key in (167) 
+group   by 1,2,3,4,5,6 
+UNION
+ 
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id ,gd.grp_div_key ,gd.src_sys_key,
+                min(gd.eff_dt) as eff_dt, max(gd.canc_dt) as canc_dt 
+FROM    site_grp_acct as sga, grp_div as gd 
+WHERE   1=
+case    when 'Group Account ID' = 'Group Number' then 1 
+else    0 
+end     and sga.grp_acct_id in ('00009835' , '00009836') 
+        and     sga.grp_acct_key = gd.grp_acct_key 
+        and     sga.clos_dt = '20991231'
+        and     gd.src_sys_key in (153, 154, 167, 199, 202) 
+GROUP   BY 1,2,3,4) GD 
+        ON      ahkg.grp_div_key = gd.grp_div_key 
+        AND     substr(ahkc.serv_strt_dt ,1,6) BETWEEN(
+CASE    WHEN 'Group Number' = 'Group Association ID' THEN substr(gd.eff_dt,
+                1,6) 
+ELSE    ( '177707' ) 
+END     ) 
+        AND     (
+CASE    WHEN 'Group Number' = 'Group Association ID' THEN substr(gd.canc_dt,
+                1,6) 
+ELSE    ( '209912' ) 
+END     ) LEFT JOIN (
+SELECT  mpc.mbr_key, mpc.cust_join_key, mpc.prod_cmpnt_key, mpc.clm_src_sys_key,
+                mpc.eff_dt, mpc.canc_dt, mpc.pd_from_dt, mpc.pd_thru_dt, MAX(mpc.oth_carr_ins_cd) as oth_carr_ins_cd,
+                MAX(mpc.oth_carr_prim_ind) as oth_carr_prim_ind 
+FROM    (
+SELECT  mpc2.mbr_key, mpc2.cust_join_key, mpc2.prod_cmpnt_key, acme.clm_src_sys_key,
+                mpc2.eff_dt, mpc2.canc_dt, 
+CASE    WHEN mpc2.oth_carr_ins_cd = 'M' THEN 'M' 
+ELSE    'A' 
+END     as oth_carr_ins_cd, mpc2.oth_carr_prim_ind, 
+CASE    WHEN mpc2.clos_dt >= acme.mpc_extr_dt THEN CAST(01991231 as date) 
+ELSE    mpc2.clos_dt 
+END     as clos_dt2, acme.mpc_extr_dt, MIN(acme.pd_from_dt) as pd_from_dt,
+                MAX(acme.pd_thru_dt) as pd_thru_dt 
+FROM    MBR_PROD_CMPNT          mpc2 INNER JOIN (
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id,gd.grp_div_key ,gd.src_sys_key,
+                min(gd.eff_dt) as eff_dt, max(gd.canc_dt) as canc_dt 
+FROM    grp_div          gd 
+WHERE   1=
+case    when 'Group Number' = 'Group Number' then 1 
+else    0 
+end     and gd.grp_id in ('00009835' , '00009836') 
+        and     ( ('All' in ('All') 
+        or      gd.subgrp_id in ('All')) ) 
+        and     (( 'FACETS' = 'NASCO' 
+        and     gd.src_sys_key IN (153,154,203)) 
+        or      ('FACETS'='FACETS' 
+        and     gd.src_sys_key IN (167,203)) 
+        or      ('FACETS'='NASCO/FACETS' 
+        and     gd.src_sys_key IN (153,154,167,203)) 
+        or      ('FACETS'='MO LEGACY AND FACETS' 
+        and     gd.src_sys_key IN (167,199,203)) 
+        or      ('FACETS'='WI LEGACY AND FACETS' 
+        and     gd.src_sys_key IN (167,202,203))) 
+group   by 1,2,3,4 
+UNION
+ 
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id ,ga.grp_div_key ,ga.src_sys_key ,
+                ga.eff_dt ,ga.canc_dt 
+FROM    grp_assn as ga, grp_div as gd 
+WHERE   1=
+case    when 'Group Association ID' = 'Group Number' then 1 
+else    0 
+end     and ga.assn_id in ('00009835' , '00009836') 
+        and     ga.grp_div_key = gd.grp_div_key 
+        and     ga.clos_dt = '20991231'
+        and     ga.src_sys_key in (167) 
+group   by 1,2,3,4,5,6 
+UNION
+ 
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id ,gd.grp_div_key ,gd.src_sys_key,
+                min(gd.eff_dt) as eff_dt, max(gd.canc_dt) as canc_dt 
+FROM    site_grp_acct as sga, grp_div as gd 
+WHERE   1=
+case    when 'Group Account ID' = 'Group Number' then 1 
+else    0 
+end     and sga.grp_acct_id in ('00009835' , '00009836') 
+        and     sga.grp_acct_key = gd.grp_acct_key 
+        and     sga.clos_dt = '20991231'
+        and     gd.src_sys_key in (153, 154, 167, 199, 202) 
+GROUP   BY 1,2,3,4) GD 
+        ON      mpc2.cust_join_key = gd.grp_div_key 
+        AND     mpc2.canc_dt >= gd.eff_dt 
+        AND     mpc2.eff_dt <= gd.canc_dt 
+        AND     mpc2.canc_dt >= mpc2.eff_dt 
+        AND     mpc2.canc_dt >= mpc2.eff_dt INNER JOIN aro_clms_mpc_extr acme 
+        ON      mpc2.open_dt <= acme.mpc_extr_dt 
+        AND     clm_src_sys_key not in (19,154,158,159,160,161,184,188,189,
+                194,195,196,200,201) 
+        AND     clm_src_sys_key in (
+SELECT  DISTINCT gd.src_sys_key 
+FROM    grp_div          gd 
+WHERE   1=
+case    when 'Group Number' = 'Group Number' then 1 
+else    0 
+end     and gd.grp_id in ('00009835' , '00009836') 
+group   by 1 
+UNION
+ 
+SELECT  DISTINCT ga.src_sys_key 
+FROM    grp_assn as ga, grp_div as gd 
+WHERE   1=
+case    when 'Group Association ID' = 'Group Number' then 1 
+else    0 
+end     and ga.assn_id in ('00009835' , '00009836') 
+        and     ga.grp_div_key = gd.grp_div_key 
+        and     ga.clos_dt = '20991231' 
+        and     ga.src_sys_key in (167) 
+group   by 1 
+UNION
+ 
+SELECT  DISTINCT gd.src_sys_key 
+FROM    site_grp_acct as sga, grp_div as gd 
+WHERE   1=
+case    when 'Group Account ID' = 'Group Number' then 1 
+else    0 
+end     and sga.grp_acct_id in ('00009835' , '00009836') 
+        and     sga.grp_acct_key = gd.grp_acct_key 
+        and     sga.clos_dt = '20991231' 
+        and     gd.src_sys_key in (153, 154, 167,199,202) 
+GROUP   BY 1) 
+        and     acme.clos_dt = '20991231' 
+group   by 1,2,3,4,5,6,7,8,9,10 ) mpc INNER JOIN (
+SELECT  mpc3.mbr_key, mpc3.prod_cmpnt_key, mpc3.cust_join_key, mpc3.clm_src_sys_key,
+                mpc3.mpc_extr_dt, max( 
+CASE    WHEN mpc3.clos_dt >= mpc3.mpc_extr_dt THEN CAST(01991231 as date) 
+ELSE    mpc3.clos_dt 
+END     ) as clos_dt2 
+FROM    (
+SELECT  acme.mpc_extr_dt, acme.clm_src_sys_key, mpc2.mbr_key, mpc2.prod_cmpnt_key,
+                mpc2.cust_join_key, mpc2.clos_dt 
+FROM    MBR_PROD_CMPNT  mpc2 INNER JOIN (
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id,gd.grp_div_key ,gd.src_sys_key,
+                min(gd.eff_dt) as eff_dt, max(gd.canc_dt) as canc_dt 
+FROM    grp_div          gd 
+WHERE   1=
+case    when 'Group Number' = 'Group Number' then 1 
+else    0 
+end     and gd.grp_id in ('00009835' , '00009836') 
+        and     ( ('All' in ('All') 
+        or      gd.subgrp_id in ('All')) ) 
+        and     (( 'FACETS' = 'NASCO' 
+        and     gd.src_sys_key IN (153,154,203)) 
+        or      ('FACETS'='FACETS' 
+        and     gd.src_sys_key IN (167,203)) 
+        or      ('FACETS'='NASCO/FACETS' 
+        and     gd.src_sys_key IN (153,154,167,203)) 
+        or      ('FACETS'='MO LEGACY AND FACETS' 
+        and     gd.src_sys_key IN (167,199,203)) 
+        or      ('FACETS'='WI LEGACY AND FACETS' 
+        and     gd.src_sys_key IN (167,202,203))) 
+group   by 1,2,3,4 
+UNION
+ 
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id ,ga.grp_div_key ,ga.src_sys_key ,
+                ga.eff_dt ,ga.canc_dt 
+FROM    grp_assn as ga, grp_div as gd 
+WHERE   1=
+case    when 'Group Association ID' = 'Group Number' then 1 
+else    0 
+end     and ga.assn_id in ('00009835' , '00009836') 
+        and     ga.grp_div_key = gd.grp_div_key 
+        and     ga.clos_dt = '20991231'
+        and     ga.src_sys_key in (167) 
+group   by 1,2,3,4,5,6 
+UNION
+ 
+SELECT  DISTINCT gd.grp_id ,gd.subgrp_id ,gd.grp_div_key ,gd.src_sys_key,
+                min(gd.eff_dt) as eff_dt, max(gd.canc_dt) as canc_dt 
+FROM    site_grp_acct as sga, grp_div as gd 
+WHERE   1=
+case    when 'Group Account ID' = 'Group Number' then 1 
+else    0 
+end     and sga.grp_acct_id in ('00009835' , '00009836') 
+        and     sga.grp_acct_key = gd.grp_acct_key 
+        and     sga.clos_dt = '20991231'
+        and     gd.src_sys_key in (153, 154, 167, 199, 202) 
+GROUP   BY 1,2,3,4) GD 
+        ON      mpc2.cust_join_key = gd.grp_div_key 
+        AND     mpc2.canc_dt >= gd.eff_dt 
+        AND     mpc2.eff_dt <= gd.canc_dt 
+        AND     mpc2.canc_dt >= mpc2.eff_dt 
+        AND     mpc2.canc_dt >= mpc2.eff_dt INNER JOIN aro_clms_mpc_extr acme 
+        ON      mpc2.open_dt <= acme.mpc_extr_dt 
+        AND     clm_src_sys_key not in (19,154,158,159,160,161,184,188,189,
+                194,195,196,200,201) 
+        AND     clm_src_sys_key in (
+SELECT  DISTINCT gd.src_sys_key 
+FROM    grp_div          gd 
+WHERE   1=
+case    when 'Group Number' = 'Group Number' then 1 
+else    0 
+end     and gd.grp_id in ('00009835' , '00009836') 
+group   by 1 
+UNION
+ 
+SELECT  DISTINCT ga.src_sys_key 
+FROM    grp_assn as ga, grp_div as gd 
+WHERE   1=
+case    when 'Group Association ID' = 'Group Number' then 1 
+else    0 
+end     and ga.assn_id in ('00009835' , '00009836') 
+        and     ga.grp_div_key = gd.grp_div_key 
+        and     ga.clos_dt = '20991231' 
+        and     ga.src_sys_key in (167) 
+group   by 1 
+UNION
+ 
+SELECT  DISTINCT gd.src_sys_key 
+FROM    site_grp_acct as sga, grp_div as gd 
+WHERE   1=
+case    when 'Group Account ID' = 'Group Number' then 1 
+else    0 
+end     and sga.grp_acct_id in ('00009835' , '00009836') 
+        and     sga.grp_acct_key = gd.grp_acct_key 
+        and     sga.clos_dt = '20991231' 
+        and     gd.src_sys_key in (153, 154, 167,199,202) 
+GROUP   BY 1) 
+        and     acme.clos_dt = '20991231' ) mpc3 
+GROUP   BY 1,2,3,4,5 ) mpc4 
+        ON      mpc.mbr_key = mpc4.mbr_key 
+        AND     mpc.prod_cmpnt_key = mpc4.prod_cmpnt_key 
+        AND     mpc.cust_join_key = mpc4.cust_join_key 
+        AND     mpc.clos_dt2 = mpc4.clos_dt2 
+        AND     mpc.mpc_extr_dt = mpc4.mpc_extr_dt 
+GROUP   BY 1,2,3,4,5,6,7,8 ) mpc 
+        ON      ahkm.mbr_key = mpc.mbr_key 
+        AND     ahkm.prod_cmpnt_key = mpc.prod_cmpnt_key 
+        AND     ahkg.grp_div_key = mpc.cust_join_key 
+        AND     ahkc.clm_src_sys_key = mpc.clm_src_sys_key 
+        AND     ahkc.pd_dt BETWEEN mpc.pd_from_dt 
+        AND     mpc.pd_thru_dt 
+        AND     ahkc.serv_strt_dt BETWEEN mpc.eff_dt 
+        and     mpc.canc_dt LEFT JOIN mbr m 
+        ON      ahkm.mbr_key = m.mbr_key INNER JOIN prod_cmpnt  pc 
+        ON      ahkm.prod_cmpnt_key = pc.prod_cmpnt_key LEFT JOIN prod_cd_dom           pcd 
+        ON      pcd.prod_cd = pc.prod_cd LEFT JOIN prod_typ_cd_dom       ptcd 
+        ON      ptcd.prod_typ_cd = pc.prod_typ_cd LEFT JOIN payrl_emp pe 
+        ON      ahkm.sub_mbr_key = pe.mbr_key 
+        AND     gd.grp_div_key = pe.grp_div_key 
+        AND     ah.adjud_dt between pe.open_dt 
+        AND     pe.clos_dt 
+        AND     ahkm.mbr_src_sys_key IN (153,154,158) 
+        AND     pe.dept_nbr > ' ' 
+        AND     ahkc.serv_strt_dt BETWEEN pe.eff_dt 
+        AND     pe.canc_dt 
+        AND     'No Segment Selected' NE 'NO SEGMENT SELECTED' LEFT JOIN segm s 
+        ON      gd.grp_div_key = s.grp_div_key 
+        AND     ahkg.pkg_nbr=s.pkg_nbr 
+        AND     s.clos_dt='20991231' 
+        AND     ahkc.serv_strt_dt BETWEEN s.eff_dt 
+        AND     s.canc_dt 
+        AND     ((pe.dept_nbr =s.dept_nbr) 
+        OR      (pe.dept_nbr is null 
+        and     s.dept_nbr is null) 
+        OR      (pe.dept_nbr is null 
+        and     s.dept_nbr =' ') ) 
+        AND     ((
+CASE    WHEN ahi.its_plan_id <> ' ' THEN ahi.its_plan_id 
+ELSE    ahi.serv_plan_id 
+END     =s.plan_id )
+        or      (
+CASE    WHEN ahi.its_plan_id <> ' ' THEN ahi.its_plan_id 
+ELSE    ahi.serv_plan_id 
+END     is null 
+        and     s.plan_id is null) ) 
+        AND     'No Segment Selected' NE 'NO SEGMENT SELECTED' LEFT OUTER JOIN prov_org_xref po 
+        ON      CASE 
+        WHEN    ahkp.serv_prov_org_key is null THEN ahkp.reimb_prov_org_key 
+ELSE    ahkp.serv_prov_org_key 
+END     = po.prov_org_key LEFT OUTER JOIN zip_cd_xref zc 
+        ON      po.zip5_cd = zc.zip5_cd  ) a ) a ) a 
+WHERE   row_nbr = 1 
+        AND     CASE 
+        WHEN    a.segment1 in ('All') 
+        or      'All' in ('All') then 1 
+else    0 
+end     =1 
+        AND     CASE 
+        WHEN    a.segment2 in ('All') 
+        or      'All' in ('All') then 1 
+else    0 
+end     =1 
+        AND     CASE 
+        WHEN    a.segment3 in ('All') 
+        or      'All' in ('All') then 1 
+else    0 
+end     =1 
+        AND     a.prod in ('HOTT' , 'MEDICAL' , 'MEDICARE CARVEOUT' , 'MEDICARE HMO' ,
+                'MEDICARE SUPP') 
+GROUP   BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 ) c ) d 
+GROUP   BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14 ) e ) e2 
+GROUP   BY 1,2,3,4,5,6,7,8,9,10,11,12 ) p 
+GROUP   BY 1,2,3,4,5,6,7,8,9,10 ) p2 
+GROUP   BY 1,2,3,4,5,6,7,8,9,10 ) p3 ) p4 
+WHERE   row_nbr = 1 
+GROUP   BY 1,2,3,4,5,6,7 ) p4 ) p4 ) p4 
+GROUP   BY 1,2,3,4,5,6,7,8,9,10
+;

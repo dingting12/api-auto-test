@@ -1,0 +1,174 @@
+SELECT  /*WELLPOINT_306E --  qryid:1423328*/ gpus.DRUG_SRC_CD ,
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN ( gpus.grp_id ) 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> ( gdc.src_sys_key ) THEN ( gpus.grp_id )
+        WHEN
+        -- ( gdc.eff_dt ) < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN MOWI_gid.grp_id
+ELSE    gpus.grp_id 
+END     ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( gpus.grp_acct_id ) 
+END     , ( 
+CASE    WHEN gpus.clm_src_sys_key IN ( 161 , 201 ) 
+        AND     gpus.mbr_src_sys_key = 203 THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    ( gpus.clm_src_sys_key ) 
+        WHEN    161 THEN 'DRUG' 
+        WHEN    201 THEN 'DRUG' 
+        WHEN    160 THEN ( 
+CASE    ( gpus.hlth_cov_cls_cd ) 
+        WHEN    'VI' THEN 'VISION' 
+ELSE    'DENTAL' 
+END     ) 
+        WHEN    184 THEN 'VISION' 
+        WHEN    200 THEN 'DENTAL' 
+        WHEN    159 THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    ( gpus.hlth_cov_cls_cd ) 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+ELSE    ( 
+CASE    ( gpus.hlth_cov_typ_rollup_cd ) 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    ( gpus.medcr_rel_cov_cd ) 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    ( gpus.oth_carr_prim_ind ) 
+        WHEN    'Y' THEN ( 
+CASE    ( gpus.oth_carr_ins_cd ) 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) , 
+CASE    WHEN SUBSTR ( TRIM ( ( DD.drug_name ) ) , 1 , 1 ) BETWEEN 'A' 
+        AND     'Z' 
+        OR      SUBSTR ( TRIM ( ( DD.drug_name ) ) , 1 , 1 ) BETWEEN 'a' 
+        AND     'z' THEN ( DD.drug_name ) 
+        WHEN    ( gpus.NATL_DRUG_CD ) = '7777777771' THEN 'Reimbursements' 
+        WHEN    ( gpus.NATL_DRUG_CD ) = '77777777778' THEN 'Interest Payment to Member' 
+        WHEN    ( gpus.NATL_DRUG_CD ) = '99999999999' THEN 'Compound Medication' 
+ELSE    ( 'Unkown - Drug Cd:' || ( gpus.NATL_DRUG_CD ) ) 
+END     , gpus.MAIL_ORDER_CD , gpus.FRMLRY_CD , gpus.LBL_NAME , SUM ( gpus.COPAY_REDUC_AMT ) ,
+                SUM ( gpus.DEDUC_REDUC_AMT ) , SUM ( gpus.BRND_PNLTY_AMT ) ,
+                SUM ( gpus.COINS_REDUC_AMT ) , SUM ( gpus.SERV_PD_AMT ) , SUM ( gpus.PRSCRP_CNT ) 
+FROM    DRUG_DOM DD RIGHT JOIN GRP_PHAR_UTIL_SUM gpus 
+        ON      DD.natl_drug_cd = gpus.NATL_DRUG_CD LEFT JOIN grp_div_curr gdc 
+        ON      gdc.grp_div_key = gpus.grp_div_key LEFT JOIN Grp_assn GA 
+        ON      gpus.GRP_DIV_KEY = GA.GRP_DIV_KEY 
+        AND     gpus.serv_strt_prd BETWEEN SUBSTR ( ga.eff_dt , 1 , 6 ) 
+        AND     SUBSTR ( ga.canc_dt , 1 , 6 ) 
+        AND     ga.clos_dt = '20991231' 
+        AND     ga.src_sys_key = ( 167 ) LEFT JOIN ( 
+SELECT  gdc.grp_id , gdc.src_sys_key 
+FROM    grp_div gdc 
+WHERE   gdc.src_sys_key IN ( 
+CASE    WHEN 'FACETS' = 'MO LEGACY AND FACETS' THEN 199 
+        WHEN    'FACETS' = 'WI LEGACY AND FACETS' THEN 202 
+END     ) 
+        AND     1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gdc.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY 1 , 2 ) MOWI_gid 
+        ON      gpus.GRP_ID = MOWI_gid.grp_id 
+WHERE   ( ( ( ( gpus.grp_id ) IN ( 
+SELECT  gd.grp_id 
+FROM    grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gd.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    grp_assn AS ga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Association ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND ga.assn_id IN ( '00009835' , '00009836' ) 
+        AND     ga.grp_div_key = gd.grp_div_key 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    site_grp_acct AS sga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Account ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND sga.grp_acct_id IN ( '00009835' , '00009836' ) 
+        AND     sga.grp_acct_key = gd.grp_acct_key 
+GROUP   BY gd.grp_id ) ) 
+        AND     ( 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( gpus.grp_id ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( gpus.grp_acct_id ) 
+END     ) IN ( '00009835' , '00009836' ) 
+        AND     ( ( ( 'FACETS' ) = 'NASCO' 
+        AND     ( gdc.src_sys_key ) IN ( 153 , 154 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 167 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'NASCO/FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 153 , 154 , 167 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'MO LEGACY AND FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN gdc.src_sys_key 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN gdc.src_sys_key
+        WHEN
+        -- gdc.eff_dt < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN ( MOWI_gid.src_sys_key )
+ELSE    gdc.src_sys_key 
+END     ) 
+        OR      ( gdc.src_sys_key ) IN ( 203 ) ) 
+        AND     ( gdc.src_sys_key ) NOT IN ( 202 ) 
+        OR      ( ( 'FACETS' ) = 'WI LEGACY AND FACETS' 
+        AND     ( gdc.src_sys_key ) IN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN gdc.src_sys_key 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN gdc.src_sys_key
+        WHEN
+        -- gdc.eff_dt < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN ( MOWI_gid.src_sys_key )
+ELSE    gdc.src_sys_key 
+END     ) 
+        OR      ( gdc.src_sys_key ) IN ( 203 ) 
+        AND     ( gdc.src_sys_key ) NOT IN ( 199 ) ) ) ) ) 
+        AND     ( ( ( gpus.PD_PRD ) BETWEEN SUBSTR ( ( '20060101' ) , 1 ,
+                6 ) 
+        AND     SUBSTR ( ( '20061231' ) , 1 , 6 ) ) 
+        AND     ( gpus.SERV_STRT_PRD ) BETWEEN ( 
+CASE    WHEN ( 'N' ) = 'Y' THEN SUBSTR ( ( '19900101' ) , 1 , 6 ) 
+ELSE    '177707' 
+END     ) 
+        AND     ( 
+CASE    WHEN ( 'N' ) = 'Y' THEN SUBSTR ( ( '20061231' ) , 1 , 6 ) 
+ELSE    '209912' 
+END     ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      gpus.pkg_nbr IN ( 'All' ) ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      gpus.subgrp_id IN ( 'All' ) ) ) 
+GROUP   BY 1 , 2 , 3 , 4 , 5 , 6 , 7 
+;

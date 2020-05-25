@@ -1,0 +1,562 @@
+SELECT  /*WELLPOINT_167E --  qryid:1180015*/
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     , 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     , 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     , 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN ( geis.grp_id ) 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> ( geis.mbr_src_sys_key ) THEN ( geis.grp_id )
+        WHEN
+        -- ( gdc.eff_dt ) < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN MOWI_gid.grp_id
+ELSE    geis.grp_id 
+END     ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( geis.grp_acct_id ) 
+END     , 
+CASE    'None' 
+        WHEN    'Group' THEN geis.grp_id 
+        WHEN    'Group - Subgroup' THEN geis.grp_id || '-' || geis.subgrp_id 
+        WHEN    'Group - Package' THEN geis.grp_id || '-' || geis.pkg_nbr 
+        WHEN    'Group - Subgroup - Package' THEN geis.grp_id || '-' || geis.subgrp_id || '-' || geis.pkg_nbr 
+ELSE    'All' 
+END     , geis.hlth_cov_typ_rollup_cd , geis.hlth_cov_cls_cd , 
+CASE    'NONE' 
+        WHEN    'CRDW PROD TYP (HMO, POS, PPO, TRAD, EPO)' THEN ( 
+CASE    WHEN 'No' = 'Yes' THEN ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    geis.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    geis.oth_carr_ins_cd 
+        WHEN    'M' THEN ptcd.prod_typ_cd_desc || ' - MEDICARE CARVEOUT' 
+ELSE    ptcd.prod_typ_cd_desc 
+END     ) 
+ELSE    ptcd.prod_typ_cd_desc 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ptcd.prod_typ_cd_desc 
+END     ) 
+END     ) 
+END     ) 
+        WHEN    'FACETS' THEN ( 
+CASE    WHEN 'No' = 'Yes' THEN ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN ( pcd.prod_cd_desc ) || ' ' || ( geis.cov_serv_id ) || ' ' || 'MEDICARE SUPP' 
+        WHEN    'R' THEN ( pcd.prod_cd_desc ) || ' ' || ( geis.cov_serv_id ) || ' ' || 'MEDICARE HMO' 
+ELSE    ( 
+CASE    geis.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    geis.oth_carr_ins_cd 
+        WHEN    'M' THEN ( pcd.prod_cd_desc ) || ' ' || ( geis.cov_serv_id ) || ' - MEDICARE CARVEOUT' 
+ELSE    ( ( pcd.prod_cd_desc ) || ' ' || ( geis.cov_serv_id ) ) 
+END     ) 
+ELSE    ( ( pcd.prod_cd_desc ) || ' ' || ( geis.cov_serv_id ) ) 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN ( pcd.prod_cd_desc ) || ' ' || ( geis.cov_serv_id ) || ' ' || 'MEDICARE SUPP' 
+        WHEN    'R' THEN ( pcd.prod_cd_desc ) || ' ' || ( geis.cov_serv_id ) || ' ' || 'MEDICARE HMO' 
+ELSE    ( ( pcd.prod_cd_desc ) || ' ' || ( geis.cov_serv_id ) ) 
+END     ) 
+END     ) 
+END     ) 
+        WHEN    'NASCO' THEN ( 
+CASE    WHEN 'No' = 'Yes' THEN ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    1 THEN 'EPO' 
+ELSE    ( 
+CASE    geis.mbr_src_sys_key 
+        WHEN    153 THEN ( 
+CASE    geis.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    geis.oth_carr_ins_cd 
+        WHEN    'M' THEN ( 
+CASE    geis.hlth_cov_typ_rollup_cd 
+        WHEN    1 THEN 'HMO' || ' - MEDICARE CARVEOUT' 
+        WHEN    2 THEN 'POS' || ' - MEDICARE CARVEOUT' 
+        WHEN    3 THEN 'PPO' || ' - MEDICARE CARVEOUT' 
+        WHEN    4 THEN 'TRADITIONAL FIRST-DOLLAR' || ' - MEDICARE CARVEOUT' 
+        WHEN    5 THEN 'TRADITIONAL CMM' || ' - MEDICARE CARVEOUT' 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    2 THEN 'HMO' || ' - MEDICARE CARVEOUT' 
+        WHEN    3 THEN 'POS' || ' - MEDICARE CARVEOUT' 
+        WHEN    4 THEN 'PPO' || ' - MEDICARE CARVEOUT' 
+        WHEN    5 THEN 'TRADITIONAL' || ' - MEDICARE CARVEOUT' 
+ELSE    'UNKNOWN' || ' - MEDICARE CARVEOUT' 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    geis.hlth_cov_typ_rollup_cd 
+        WHEN    1 THEN 'HMO' 
+        WHEN    2 THEN 'POS' 
+        WHEN    3 THEN 'PPO' 
+        WHEN    4 THEN 'TRADITIONAL FIRST-DOLLAR' 
+        WHEN    5 THEN 'TRADITIONAL CMM' 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    2 THEN 'HMO' 
+        WHEN    3 THEN 'POS' 
+        WHEN    4 THEN 'PPO' 
+        WHEN    5 THEN 'TRADITIONAL' 
+ELSE    'UNKNOWN' 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    geis.hlth_cov_typ_rollup_cd 
+        WHEN    1 THEN 'HMO' 
+        WHEN    2 THEN 'POS' 
+        WHEN    3 THEN 'PPO' 
+        WHEN    4 THEN 'TRADITIONAL FIRST-DOLLAR' 
+        WHEN    5 THEN 'TRADITIONAL CMM' 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    2 THEN 'HMO' 
+        WHEN    3 THEN 'POS' 
+        WHEN    4 THEN 'PPO' 
+        WHEN    5 THEN 'TRADITIONAL' 
+ELSE    'UNKNOWN' 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    geis.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    geis.oth_carr_ins_cd 
+        WHEN    'M' THEN ( 
+CASE    geis.prod_typ_cd 
+        WHEN    2 THEN 'HMO' || ' - MEDICARE CARVEOUT' 
+        WHEN    3 THEN 'POS' || ' - MEDICARE CARVEOUT' 
+        WHEN    4 THEN 'PPO' || ' - MEDICARE CARVEOUT' 
+        WHEN    5 THEN 'TRADITIONAL' || ' - MEDICARE CARVEOUT' 
+ELSE    'UNKNOWN' || ' - MEDICARE CARVEOUT' 
+END     ) 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    2 THEN 'HMO' 
+        WHEN    3 THEN 'POS' 
+        WHEN    4 THEN 'PPO' 
+        WHEN    5 THEN 'TRADITIONAL' 
+ELSE    'UNKNOWN' 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    2 THEN 'HMO' 
+        WHEN    3 THEN 'POS' 
+        WHEN    4 THEN 'PPO' 
+        WHEN    5 THEN 'TRADITIONAL' 
+ELSE    'UNKNOWN' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    1 THEN 'EPO' 
+ELSE    ( 
+CASE    geis.mbr_src_sys_key 
+        WHEN    153 THEN ( 
+CASE    geis.hlth_cov_typ_rollup_cd 
+        WHEN    1 THEN 'HMO' 
+        WHEN    2 THEN 'POS' 
+        WHEN    3 THEN 'PPO' 
+        WHEN    4 THEN 'TRADITIONAL FIRST-DOLLAR' 
+        WHEN    5 THEN 'TRADITIONAL CMM' 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    2 THEN 'HMO' 
+        WHEN    3 THEN 'POS' 
+        WHEN    4 THEN 'PPO' 
+        WHEN    5 THEN 'TRADITIONAL' 
+ELSE    'UNKNOWN' 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    geis.prod_typ_cd 
+        WHEN    2 THEN 'HMO' 
+        WHEN    3 THEN 'POS' 
+        WHEN    4 THEN 'PPO' 
+        WHEN    5 THEN 'TRADITIONAL' 
+ELSE    'UNKNOWN' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+        WHEN    'NONE' THEN ( 
+CASE    WHEN 'No' = 'Yes' THEN ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    geis.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    geis.oth_carr_ins_cd 
+        WHEN    'M' THEN ' MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+ELSE    'OTHER' 
+END     , 
+CASE    WHEN 'No' = 'Yes' THEN ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    ( geis.hlth_cov_cls_cd ) 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    geis.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    geis.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    geis.oth_carr_ins_cd 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    ( geis.hlth_cov_cls_cd ) 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    geis.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     , geis.EARN_INC_PRD , SUM ( geis.EARN_INC_AMT ) 
+FROM    PROD_TYP_CD_DOM PTCD RIGHT JOIN grp_earn_inc_sum geis 
+        ON      PTCD.prod_typ_cd = geis.PROD_TYP_CD LEFT JOIN grp_div_curr gdc 
+        ON      gdc.grp_div_key = geis.grp_div_key LEFT JOIN segm s 
+        ON      CASE 
+        WHEN    'No Segment Selected' = 'No Segment Selected' 
+        AND     'No Segment Selected' = 'No Segment Selected' 
+        AND     'No Segment Selected' = 'No Segment Selected' THEN 'a' 
+ELSE    'b' 
+END     = 'b' 
+        AND     geis.grp_div_key = s.GRP_DIV_KEY 
+        AND     geis.dept_nbr = s.DEPT_NBR 
+        AND     geis.pkg_nbr = s.PKG_NBR 
+        AND     geis.serv_plan_id = s.PLAN_ID 
+        -- AND     ( geis.earn_inc_prd || '28' ) ( DATE , FORMAT 'YYYYMMDD' ) BETWEEN s.eff_dt AND     s.canc_dt
+        -- AND     s.clos_dt = '20991231'
+LEFT JOIN PROD_CD_DOM PCD
+        ON      PCD.prod_cd = geis.prod_cd LEFT JOIN Grp_assn GA 
+        ON      geis.GRP_DIV_KEY = GA.GRP_DIV_KEY 
+        AND     geis.earn_inc_prd BETWEEN SUBSTR ( ga.eff_dt , 1 , 6 ) AND     SUBSTR ( ga.canc_dt , 1 , 6 )
+        -- AND     ga.clos_dt = '20991231'
+        AND     ga.src_sys_key = ( 167 ) LEFT JOIN ( 
+SELECT  gdc.grp_id , gdc.src_sys_key 
+FROM    grp_div gdc 
+WHERE   gdc.src_sys_key IN ( 
+CASE    WHEN 'FACETS' = 'MO LEGACY AND FACETS' THEN 199 
+        WHEN    'FACETS' = 'WI LEGACY AND FACETS' THEN 202 
+END     ) 
+        AND     1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gdc.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY 1 , 2 ) MOWI_gid 
+        ON      geis.GRP_ID = MOWI_gid.grp_id 
+WHERE   ( ( 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     ) IN ( 'All' ) 
+        OR      'All' IN ( 'All' ) ) 
+        AND     ( ( 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     ) IN ( 'All' ) 
+        OR      'All' IN ( 'All' ) ) 
+        AND     ( ( 
+CASE    WHEN ( 'No Segment Selected' ) = 'Custom Segment' THEN ( s.CSTM_SEGM_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Division' THEN ( s.DIV_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Class' THEN ( s.EMP_CLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employer Health Plan Type' THEN ( s.EMP_HLTH_PLAN_TYP_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Employee Sub-Class' THEN ( s.EMP_SUBCLS_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Network Location' THEN ( s.NTWK_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Operation Status' THEN ( s.OPER_STAT_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Payroll Location' THEN ( s.PAYRL_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Plant Location' THEN ( s.PLNT_LOC_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Tobacco Use' THEN ( s.TBACO_USE_CD ) 
+        WHEN    ( 'No Segment Selected' ) = 'Union Status' THEN ( s.UNION_STAT_CD ) 
+ELSE    'NO SEGMENT SELECTED' 
+END     ) IN ( 'All' ) 
+        OR      'All' IN ( 'All' ) ) 
+        AND     ( ( ( ( geis.grp_id ) IN ( 
+SELECT  gd.grp_id 
+FROM    grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Number' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND gd.grp_id IN ( '00009835' , '00009836' ) 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    grp_assn AS ga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Association ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND ga.assn_id IN ( '00009835' , '00009836' ) 
+        AND     ga.grp_div_key = gd.grp_div_key 
+GROUP   BY gd.grp_id 
+UNION
+ 
+SELECT  gd.grp_id 
+FROM    site_grp_acct AS sga , grp_div AS gd 
+WHERE   1 = 
+CASE    WHEN 'Group Account ID' = 'Group Number' THEN 1 
+ELSE    0 
+END     AND sga.grp_acct_id IN ( '00009835' , '00009836' ) 
+        AND     sga.grp_acct_key = gd.grp_acct_key 
+GROUP   BY gd.grp_id ) ) 
+        AND     ( 
+CASE    'Group Number' 
+        WHEN    'Group Number' THEN ( geis.grp_id ) 
+        WHEN    'Group Association ID' THEN ( ga.assn_id ) 
+ELSE    ( geis.grp_acct_id ) 
+END     ) IN ( '00009835' , '00009836' ) 
+        AND     ( ( ( 'FACETS' ) = 'NASCO' 
+        AND     ( geis.mbr_src_sys_key ) IN ( 153 , 154 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'FACETS' 
+        AND     ( geis.mbr_src_sys_key ) IN ( 167 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'NASCO/FACETS' 
+        AND     ( geis.mbr_src_sys_key ) IN ( 153 , 154 , 167 , 203 ) ) 
+        OR      ( ( 'FACETS' ) = 'MO LEGACY AND FACETS' 
+        AND     ( geis.mbr_src_sys_key ) IN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN gdc.src_sys_key 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN gdc.src_sys_key
+        WHEN
+        -- gdc.eff_dt < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN ( MOWI_gid.src_sys_key )
+ELSE    gdc.src_sys_key 
+END     ) 
+        OR      ( gdc.src_sys_key ) IN ( 203 ) ) 
+        AND     ( gdc.src_sys_key ) NOT IN ( 202 ) 
+        OR      ( ( 'FACETS' ) = 'WI LEGACY AND FACETS' 
+        AND     ( geis.mbr_src_sys_key ) IN ( 
+CASE    WHEN ( MOWI_gid.grp_id ) IS NULL THEN gdc.src_sys_key 
+        WHEN
+        -- gdc.eff_dt >= '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN gdc.src_sys_key
+        WHEN
+        -- gdc.eff_dt < '20060901'
+        -- AND
+             ( MOWI_gid.src_sys_key ) <> gdc.src_sys_key THEN ( MOWI_gid.src_sys_key )
+ELSE    gdc.src_sys_key 
+END     ) 
+        OR      ( gdc.src_sys_key ) IN ( 203 ) 
+        AND     ( gdc.src_sys_key ) NOT IN ( 199 ) ) ) ) ) 
+        AND     ( geis.earn_inc_prd BETWEEN '200601' 
+        AND     '200612' ) 
+        AND     ( ( 
+CASE    WHEN 'No' = 'Yes' THEN ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    ( geis.hlth_cov_cls_cd ) 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    geis.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    ( 
+CASE    geis.oth_carr_prim_ind 
+        WHEN    'Y' THEN ( 
+CASE    geis.oth_carr_ins_cd 
+        WHEN    'M' THEN 'MEDICARE CARVEOUT' 
+ELSE    'MEDICAL' 
+END     ) 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+ELSE    ( 
+CASE    WHEN ( geis.mbr_src_sys_key ) = 203 
+        AND     ( geis.hlth_cov_cls_cd ) = 'DG' THEN 'MEDICARE PART D' 
+ELSE    ( 
+CASE    ( geis.hlth_cov_cls_cd ) 
+        WHEN    'DG' THEN 'DRUG' 
+        WHEN    'DN' THEN 'DENTAL' 
+        WHEN    'VI' THEN 'VISION' 
+        WHEN    'MH' THEN 'MENTAL HEALTH' 
+        WHEN    'SA' THEN 'MENTAL HEALTH' 
+        WHEN    'MS' THEN 'MENTAL HEALTH' 
+ELSE    ( 
+CASE    geis.hlth_cov_typ_rollup_cd 
+        WHEN    6 THEN 'HOTT' 
+ELSE    ( 
+CASE    geis.medcr_rel_cov_cd 
+        WHEN    'S' THEN 'MEDICARE SUPP' 
+        WHEN    'R' THEN 'MEDICARE HMO' 
+ELSE    'MEDICAL' 
+END     ) 
+END     ) 
+END     ) 
+END     ) 
+END     ) IN ( 'DENTAL' , 'DRUG' , 'HOTT' , 'MEDICAL' , 'MEDICARE CARVEOUT' ,
+                'MEDICARE HMO' , 'MEDICARE SUPP' , 'MENTAL HEALTH' , 'VISION' ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      ( geis.pkg_nbr ) IN ( 'All' ) ) ) 
+        AND     ( ( 'All' IN ( 'All' ) 
+        OR      ( geis.subgrp_id ) IN ( 'All' ) ) ) 
+        AND     ( ( NOT ( ( geis.mbr_src_sys_key ) = '199'
+        AND     SUBSTR ( ( geis.COV_SERV_ID ) , 1 , 4 ) IN ( 'LIFE' , 'LDEP' ,
+                'LADD' , 'LLTD' , 'LSTD' ) ) ) ) 
+GROUP   BY 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 
+HAVING  ( SUM ( geis.EARN_INC_AMT ) <> 0 )
+;
