@@ -900,41 +900,50 @@ select * from T_TYPE_NUMERIC3;
 
 
 -- 验证DECIMAL(n,m)
-
+--1=<n<=38时
+--0=<m<=n
 --当整数部分的长度>n-m时，是否报错
 insert into T_TYPE_NUMERIC3 values(123.67);  
 --查询表T_TYPE_NUMERIC3
 select * from T_TYPE_NUMERIC3; 
 
---当小数部分的长度>m时，小数点后m位向右的数字被舍入
+--整数部分的长度<=n-m
+--当小数部分的长度>m时，精确到小数点右边m位，m位向右的数字四舍五入
 insert into T_TYPE_NUMERIC3 values(1.6798);  
 --查询表T_TYPE_NUMERIC3
 select * from T_TYPE_NUMERIC3; 
 
--- m值与有效位验证
---0=<m<n时
---有效位>n，是否报错
-insert into T_TYPE_NUMERIC3 values(12345.12345);--报错 
+--小数部分的长度=m时，保持原值不变，小数点后保持m位
+insert into T_TYPE_NUMERIC3 values(12345.123);
 
---有效位<=n，精确到小数点右边m位，并四舍五入
-insert into T_TYPE_NUMERIC3 values(1234.9876);  
+--小数部分的长度<m ，小数点后不足m位的在末尾补零，补足m位
+insert into T_TYPE_NUMERIC3 values(1234.98);
 --查询表T_TYPE_NUMERIC3
 select * from T_TYPE_NUMERIC3; 
 
 --m>n时
-
 --创建表T_TYPE_NUMERIC4，是否报错
 create table T_TYPE_NUMERIC4(
 a1 decimal(4,5)
 );
 
 --m<0时
-
 --创建表T_TYPE_NUMERIC4，是否报错
 create table T_TYPE_NUMERIC4(
 a1 decimal(5,-2)
 );
 
+--n<1时
+--创建表T_TYPE_NUMERIC4，是否报错
+create table T_TYPE_NUMERIC4(
+a1 decimal(0,2)
+);
+
+--n>38时
+--创建表T_TYPE_NUMERIC4，是否报错
+create table T_TYPE_NUMERIC4(
+a1 decimal(39,2)
+);
 
 -- 验证DECIMAL(n)，默认为decimal(n,0)
 
@@ -948,7 +957,7 @@ insert into T_TYPE_DECIMAL5 values(1234567.9876);
 --查询表T_TYPE_DECIMAL5
 select * from T_TYPE_DECIMAL5; 
 
---整数部分的长度<=n，精确到整数位，小数部分被舍入
+--整数部分的长度 <=n，精确到整数位，小数部分四舍五入
 insert into T_TYPE_DECIMAL5 values(1234.9876);  
 --查询表T_TYPE_DECIMAL5
 select * from T_TYPE_DECIMAL5; 
@@ -961,7 +970,7 @@ create table T_TYPE_DECIMAL6(
 a1 decimal
 );
 
---整数部分的长度>5，是否报错
+--整数部分的长度 >5，是否报错
 insert into T_TYPE_DECIMAL6 values(123456.78);  
 --查询表T_TYPE_DECIMAL6
 select * from T_TYPE_DECIMAL6; 
@@ -1116,12 +1125,12 @@ a1 DATE
 );
 
 --验证date的最小值1000-01-01
-insert into T_TYPE_DATE values(to_date('1000-01-01','yyyy-mm-dd'));
+insert into T_TYPE_DATE values(to_date('0001-01-01','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
 --验证date的最小值-1，是否报错
-insert into T_TYPE_DATE values(to_date('999-12-31','yyyy-mm-dd'));
+insert into T_TYPE_DATE values(to_date('-0001-12-31','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
@@ -1151,7 +1160,7 @@ insert into T_TYPE_DATE values(to_date('1994/02/18','yyyy/mm/dd'));
 select * from T_TYPE_DATE;
 
 --验证无效年份的date
-insert into T_TYPE_DATE values(to_date('500-01-01','yyyy-mm-dd'));
+insert into T_TYPE_DATE values(to_date('-50-01-01','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
@@ -1214,7 +1223,12 @@ select * from T_TYPE_DATE;
 --验证插入NULL                                                   
 insert into T_TYPE_DATE values(NULL);  
 --查询表T_TYPE_DATE
-select * from T_TYPE_DATE; 
+select * from T_TYPE_DATE;
+
+--验证插入0000-00-00
+insert into T_TYPE_TIMESTAMP values(to_date('0000-00-00','yyyy-mm-dd'));
+--查询表T_TYPE_DATE
+select * from T_TYPE_DATE;
 
 
 
@@ -1230,23 +1244,23 @@ create table T_TYPE_TIMESTAMP(
 a1 TIMESTAMP
 );
 
---验证timestamp的最小值1000:01:01 00:00:00
-insert into T_TYPE_TIMESTAMP values(to_timestamp('1000-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss'));
+--验证timestamp的最小值0001:01:01 00:00:00
+insert into T_TYPE_TIMESTAMP values(to_timestamp('0001-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
---验证timestamp的最小值-1s，是否报错
-insert into T_TYPE_TIMESTAMP values(to_timestamp('999-12-31 23:59:59','yyyy-mm-dd hh24:mi:ss'));
+--验证timestamp的最小值-0.000001s，是否报错
+insert into T_TYPE_TIMESTAMP values(to_timestamp('-0001-12-31 23:59:61.999999','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
---验证timestamp的最大值9999-12-31 23:59:59
-insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:59','yyyy-mm-dd hh24:mi:ss'));
+--验证timestamp的最大值9999-12-31 23:59:61.999999
+insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:61.999999','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
---验证timestamp的最大值+1s，是否报错
-insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss'));
+--验证timestamp的最大值+0.000001s，是否报错
+insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -1256,7 +1270,7 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-
 select * from T_TYPE_TIMESTAMP;
 
 --验证timestamp的格式：yyyy-mm-dd hh24:mi:ss.ff
-insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01.88877','yyyy-mm-dd hh24:mi:ss'));
+insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01.88877','yyyy-mm-dd hh24:mi:ss.ff'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -1271,7 +1285,7 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('1994/02/18 15:13:31','yyyy/mm/
 select * from T_TYPE_TIMESTAMP;
 
 --验证无效的年份
-insert into T_TYPE_TIMESTAMP values(to_timestamp('500-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss'));
+insert into T_TYPE_TIMESTAMP values(to_timestamp('-50-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -1348,7 +1362,12 @@ select * from T_TYPE_TIMESTAMP;
 --验证插入NULL                                                   
 insert into T_TYPE_TIMESTAMP values(NULL);  
 --查询表T_TYPE_TIMESTAMP
-select * from T_TYPE_TIMESTAMP; 
+select * from T_TYPE_TIMESTAMP;
+
+--验证插入0000-00-00 00:00:00.000000
+insert into T_TYPE_TIMESTAMP values(to_timestamp('0000-00-00 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
 
 
 
@@ -1394,18 +1413,23 @@ create table T_TYPE_CHAR3(
 a1 char(30)        
 );
 
---验证插入31个英文字符，插入是否成功
-insert into T_TYPE_CHAR3 values('abcdefghijklmnopqrstuvwxyzabcde');
---查询表T_TYPE_CHAR3
-select * from T_TYPE_CHAR3;
-
---验证插入30个英文字符
+--验证插入30个英文字母
 insert into T_TYPE_CHAR3 values('abcdefghijklmnopqrstuvwxyzabcd');
 --查询表T_TYPE_CHAR3
 select * from T_TYPE_CHAR3;
 
+--验证插入31个英文字母，插入是否成功
+insert into T_TYPE_CHAR3 values('abcdefghijklmnopqrstuvwxyzabcde');
+--查询表T_TYPE_CHAR3
+select * from T_TYPE_CHAR3;
+
 --验证插入30个汉字
-insert into T_TYPE_CHAR3 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十'); --插入时不报错，查询时报错
+insert into T_TYPE_CHAR3 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十');
+--查询表T_TYPE_CHAR3
+select * from T_TYPE_CHAR3;
+
+--验证插入31个汉字，插入是否成功
+insert into T_TYPE_CHAR3 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一'); --插入时不报错，查询时报错
 --查询表T_TYPE_CHAR3
 select * from T_TYPE_CHAR3;
 
@@ -1414,8 +1438,18 @@ insert into T_TYPE_CHAR3 values('一二三四五六七八九十一二三四五')
 --查询表T_TYPE_CHAR3
 select * from T_TYPE_CHAR3;
 
+--验证插入16个汉字，插入是否成功
+insert into T_TYPE_CHAR3 values('一二三四五六七八九十一二三四五六');
+--查询表T_TYPE_CHAR3
+select * from T_TYPE_CHAR3;
+
 --验证插入30个数字
 insert into T_TYPE_CHAR3 values('123456789012345678901234567890');
+--查询表T_TYPE_CHAR3
+select * from T_TYPE_CHAR3;
+
+--验证插入31个数字，插入是否成功
+insert into T_TYPE_CHAR3 values('1234567890123456789012345678901');
 --查询表T_TYPE_CHAR3
 select * from T_TYPE_CHAR3;
 
@@ -1513,18 +1547,23 @@ create table T_TYPE_VARCHAR3(
 a1 char(30)        
 );
 
---验证插入31个英文字符，插入是否成功
-insert into T_TYPE_VARCHAR3 values('abcdefghijklmnopqrstuvwxyzabcde');
---查询表T_TYPE_VARCHAR3
-select * from T_TYPE_VARCHAR3;
-
---验证插入30个英文字符
+--验证插入30个英文字母
 insert into T_TYPE_VARCHAR3 values('abcdefghijklmnopqrstuvwxyzabcd');
 --查询表T_TYPE_VARCHAR3
 select * from T_TYPE_VARCHAR3;
 
+--验证插入31个英文字母，插入是否成功
+insert into T_TYPE_VARCHAR3 values('abcdefghijklmnopqrstuvwxyzabcde');
+--查询表T_TYPE_VARCHAR3
+select * from T_TYPE_VARCHAR3;
+
 --验证插入30个汉字
-insert into T_TYPE_VARCHAR3 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十'); --插入时不报错，查询时报错
+insert into T_TYPE_VARCHAR3 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十');
+--查询表T_TYPE_VARCHAR3
+select * from T_TYPE_VARCHAR3;
+
+--验证插入31个汉字，插入是否成功
+insert into T_TYPE_VARCHAR3 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
 --查询表T_TYPE_VARCHAR3
 select * from T_TYPE_VARCHAR3;
 
@@ -1533,8 +1572,18 @@ insert into T_TYPE_VARCHAR3 values('一二三四五六七八九十一二三四�
 --查询表T_TYPE_VARCHAR3
 select * from T_TYPE_VARCHAR3;
 
+--验证插入16个汉字，插入是否成功
+insert into T_TYPE_VARCHAR3 values('一二三四五六七八九十一二三四五六');
+--查询表T_TYPE_VARCHAR3
+select * from T_TYPE_VARCHAR3;
+
 --验证插入30个数字
 insert into T_TYPE_VARCHAR3 values('123456789012345678901234567890');
+--查询表T_TYPE_VARCHAR3
+select * from T_TYPE_VARCHAR3;
+
+--验证插入31个数字，插入是否成功
+insert into T_TYPE_VARCHAR3 values('1234567890123456789012345678901');
 --查询表T_TYPE_VARCHAR3
 select * from T_TYPE_VARCHAR3;
 
