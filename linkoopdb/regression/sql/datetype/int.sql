@@ -31,17 +31,22 @@ insert into T_TYPE_INT values(2147483648);
 --查询表T_TYPE_INT
 select * from T_TYPE_INT;
 
---验证插入double类型,数据范围内
+--验证精度超出范围，四舍五入
+insert into T_TYPE_INT values(2147483648.89);
+--查询表T_TYPE_INT
+select * from T_TYPE_INT;
+
+--验证插入double类型,数据在int范围内
 insert into T_TYPE_INT values(172.23);
 --查询表T_TYPE_INT
 select * from T_TYPE_INT;
 
---验证插入double类型，值已超出INT最大范围，是否报错
+--验证插入double类型，值已超出int最大范围，是否报错
 insert into T_TYPE_INT values(2147483690.12);
 --查询表T_TYPE_INT
 select * from T_TYPE_INT;
 
---验证插入double类型，值已超出INT最小范围，是否报错
+--验证插入double类型，值已超出int最小范围，是否报错
 insert into T_TYPE_INT values(-2147483690.12);
 --查询表T_TYPE_INT
 select * from T_TYPE_INT;

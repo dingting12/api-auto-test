@@ -11,23 +11,43 @@ create table T_TYPE_REAL(
 a1 real     
 );          
 
---验证real类型最小值-1.7E308
-insert into T_TYPE_REAL values(-1.7E308);
+--验证real类型负数最小值-1.7976931348623157E+308
+insert into T_TYPE_REAL values(-1.7976931348623157E+308);
 --查询表T_TYPE_REAL
 select * from T_TYPE_REAL; 
         
---验证real类型最小值的尾数-0.1，是否报错
-insert into T_TYPE_REAL values(-1.8E308);
+--验证real类型负数最小值的尾数-0.01，是否报错
+insert into T_TYPE_REAL values(-1.8076931348623157E+308);
 --查询表T_TYPE_REAL
 select * from T_TYPE_REAL;
 
---验证real类型最大值1.7E308
-insert into T_TYPE_REAL values(1.7E308);
+--验证real类型负数最大值-2.2250738585072014E-308
+insert into T_TYPE_REAL values(-2.2250738585072014E-308);
 --查询表T_TYPE_REAL
 select * from T_TYPE_REAL; 
         
---验证real类型最大值的尾数+0.1，是否报错
-insert into T_TYPE_REAL values(1.8E308);
+--验证real类型负数最大值的尾数+0.01，是否报错
+insert into T_TYPE_REAL values(-2.2150738585072014E-308);
+--查询表T_TYPE_REAL
+select * from T_TYPE_REAL;
+
+--验证real类型正数最小值2.2250738585072014E-308
+insert into T_TYPE_REAL values(2.2250738585072014E-308);
+--查询表T_TYPE_REAL
+select * from T_TYPE_REAL;
+
+--验证real类型正数最小值的尾数-0.01，是否报错
+insert into T_TYPE_REAL values(2.2150738585072014E-308);
+--查询表T_TYPE_REAL
+select * from T_TYPE_REAL;
+
+--验证real类型正数最大值1.7976931348623157E+308
+insert into T_TYPE_REAL values(1.7976931348623157E+308);
+--查询表T_TYPE_REAL
+select * from T_TYPE_REAL;
+
+--验证real类型正数最大值的尾数+0.01，是否报错
+insert into T_TYPE_REAL values(1.8076931348623157E+308);
 --查询表T_TYPE_REAL
 select * from T_TYPE_REAL;
 

@@ -11,8 +11,6 @@ drop table T_TYPE_DECIMAL4 if exists;
 drop table T_TYPE_DECIMAL5 if exists;
 drop table T_TYPE_DECIMAL6 if exists;
 drop table T_TYPE_DECIMAL7 if exists;
-drop table T_TYPE_DECIMAL8 if exists;
-drop table T_TYPE_DECIMAL9 if exists;
 
 --创建表T_TYPE_DECIMAL1
 create table T_TYPE_DECIMAL1(
@@ -159,21 +157,3 @@ select * from T_TYPE_DECIMAL7;
 insert into T_TYPE_DECIMAL7 values(1234.78);
 --查询表T_TYPE_DECIMAL7
 select * from T_TYPE_DECIMAL7;
-
-
---验证DECIMAL(*,m)
---删除表
-drop table T_TYPE_DECIMAL8 if exists;
---创建表T_TYPE_DECIMAL8，是否报错
-create table T_TYPE_DECIMAL8(
-a1 decimal(*,m)
-);
-
-
---验证DECIMAL(*)
---删除表
-drop table T_TYPE_DECIMAL9 if exists;
---创建表T_TYPE_DECIMAL9，是否报错
-create table T_TYPE_DECIMAL9(
-a1 decimal(*)
-);

@@ -31,17 +31,22 @@ insert into T_TYPE_BIGINT values(9223372036854775808);
 --查询表T_TYPE_BIGINT
 select * from T_TYPE_BIGINT;
 
---验证插入double类型
+--验证精度超出范围，四舍五入
 insert into T_TYPE_BIGINT values(172.23);
 --查询表T_TYPE_BIGINT
 select * from T_TYPE_BIGINT;
 
---验证插入double类型，值已经超出BIGINT最大范围，是否报错
+--验证插入double类型，数据在bigint范围内
+insert into T_TYPE_BIGINT values(172.23);
+--查询表T_TYPE_BIGINT
+select * from T_TYPE_BIGINT;
+
+--验证插入double类型，值已经超出bigint最大范围，是否报错
 insert into T_TYPE_BIGINT values(9223372036854775890.231);
 --查询表T_TYPE_BIGINT
 select * from T_TYPE_BIGINT;
 
---验证插入double类型，值已经超出BIGINT最小范围，是否报错
+--验证插入double类型，值已经超出bigint最小范围，是否报错
 insert into T_TYPE_BIGINT values(-9223372036854775890.231);
 --查询表T_TYPE_BIGINT
 select * from T_TYPE_BIGINT;

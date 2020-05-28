@@ -11,23 +11,43 @@ create table T_TYPE_FLOAT(
 a1 float
 );
 
---验证float类型最小值-3.4E38
-insert into T_TYPE_FLOAT values(-3.4E38);
+--验证float类型负数最小值-3.402823466E+38
+insert into T_TYPE_FLOAT values(-3.402823466E+38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT; 
         
---验证float类型最小值的尾数-0.1，是否报错
-insert into T_TYPE_FLOAT values(-3.5E38);
+--验证float类型负数最小值的尾数-0.01，是否报错
+insert into T_TYPE_FLOAT values(-3.412823466E+38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
---验证float类型最大值3.4E38
-insert into T_TYPE_FLOAT values(3.4E38);
+--验证float类型负数最大值-1.175494351E-38
+insert into T_TYPE_FLOAT values(-1.175494351E-38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT; 
         
---验证float类型最大值的尾数+0.1，是否报错
-insert into T_TYPE_FLOAT values(3.5E38);
+--验证float类型负数最大值的尾数+0.01，是否报错
+insert into T_TYPE_FLOAT values(-1.165494351E-38);
+--查询表T_TYPE_FLOAT
+select * from T_TYPE_FLOAT;
+
+--验证float类型正数最小值1.175494351E-38
+insert into T_TYPE_FLOAT values(1.175494351E-38);
+--查询表T_TYPE_FLOAT
+select * from T_TYPE_FLOAT;
+
+--验证float类型正数最小值的尾数-0.01，是否报错
+insert into T_TYPE_FLOAT values(1.165494351E-38;
+--查询表T_TYPE_FLOAT
+select * from T_TYPE_FLOAT;
+
+--验证float类型正数最大值3.402823466E+38
+insert into T_TYPE_FLOAT values(3.402823466E+38);
+--查询表T_TYPE_FLOAT
+select * from T_TYPE_FLOAT;
+
+--验证float类型正数最大值的尾数+0.01，是否报错
+insert into T_TYPE_FLOAT values(3.412823466E+38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
