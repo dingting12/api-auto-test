@@ -32,17 +32,22 @@ insert into T_TYPE_SMALLINT values(32768);
 --查询表T_TYPE_SMALLINT
 select * from T_TYPE_SMALLINT;
 
---验证插入double类型的数据
-
+--验证精度超出范围，四舍五入
+insert into T_TYPE_SMALLINT values(123.456);
 --查询表T_TYPE_SMALLINT
 select * from T_TYPE_SMALLINT;
 
---验证插入double类型的数据，值已超出SMALLINT最大范围，是否报错                                              
+--验证插入double类型，数据在smallint范围内
+insert into T_TYPE_SMALLINT values(3276.123);
+--查询表T_TYPE_SMALLINT
+select * from T_TYPE_SMALLINT;
+
+--验证插入double类型的数据，值已超出smallint最大范围，是否报错                                              
 insert into T_TYPE_SMALLINT values(327690.123);  
 --查询表T_TYPE_SMALLINT
 select * from T_TYPE_SMALLINT;
 
---验证插入double类型的数据，值已超出SMALLINT最小范围，是否报错                                             
+--验证插入double类型的数据，值已超出smallint最小范围，是否报错                                             
 insert into T_TYPE_SMALLINT values(-32767.1234);  
 --查询表T_TYPE_SMALLINT
 select * from T_TYPE_SMALLINT;
