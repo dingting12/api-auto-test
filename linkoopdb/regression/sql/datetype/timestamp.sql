@@ -234,3 +234,5 @@ select * from T_TYPE_TIMESTAMP;
 insert into T_TYPE_TIMESTAMP values(to_timestamp('0000-00-00 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
+
+
