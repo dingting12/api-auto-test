@@ -384,7 +384,9 @@
             <stringProp name="TestPlan.comments">#2854</stringProp>
           </GenericController>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 model_em_predict " enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 model_em_predict " enabled="true">
+              <stringProp name="TestPlan.comments">#2854</stringProp>
+            </GenericController>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 DB-drop stream if exists model_em_predict;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
@@ -7489,7 +7491,7 @@ drop table if exists t_linear_regression</stringProp>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="1034 LDBX081-11 bisecting_kmeans_predict" enabled="true"/>
             <hashTree>
               <org.apache.jmeter.protocol.ssh.sampler.SSHSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSampler" testname="1034 LDBX081-11 kafka topic delete" enabled="true">
-                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  linear_regression_sink</stringProp>
+                <stringProp name="command">${kafka_dir}/kafka-topics.sh --delete --zookeeper node72:2181/linkoopdb/luyao --topic  bisecting_kmeans_sink</stringProp>
                 <stringProp name="hostname">192.168.1.74</stringProp>
                 <stringProp name="password">123456</stringProp>
                 <intProp name="port">22</intProp>
@@ -7880,9 +7882,8 @@ prediction int
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-2125638690">FEATURES	PREDICTION
-ARRAY[0.2E0,0.4E0,3.0E0]	1
-ARRAY[4.0E0,1.0E0,0.0E0]	0</stringProp>
+                    <stringProp name="975781122">ARRAY[4.0E0,1.0E0,0.0E0]	0</stringProp>
+                    <stringProp name="-1722680769">ARRAY[0.2E0,0.4E0,3.0E0]	1</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -9661,7 +9662,7 @@ drop table if exists t_countvectorizer</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 CREATE TABLE streamsql.countvectorizer(words varchar(32) array);" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">CREATE TABLE streamsql.countvectorizer(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
+                <stringProp name="query">CREATE stream streamsql.countvectorizer(words varchar(32) array)properties( &apos;connector&apos;:&apos;pallas&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9811,7 +9812,6 @@ Features double array
                 <stringProp name="resultVariable"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="TestPlan.comments">data值为float</stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
               </JDBCSampler>
               <hashTree/>
@@ -9910,11 +9910,7 @@ Features double array
               </JDBCSampler>
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1534606396">ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0]</stringProp>
-                    <stringProp name="1809106302">ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0]</stringProp>
-                    <stringProp name="-1108082593">ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0]</stringProp>
-                  </collectionProp>
+                  <collectionProp name="Asserion.test_strings"/>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
@@ -10108,7 +10104,8 @@ drop table if exists t_countvectorizer</stringProp>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="1034 LDBX081-11 drop table if exists GBTCLASSIFIER_TRAIN_DATA;" enabled="true">
                 <stringProp name="dataSource">${u1}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">drop table if exists GBTCLASSIFIER_TRAIN_DATA;</stringProp>
+                <stringProp name="query">drop table if exists GBTCLASSIFIER_TRAIN_DATA;
+drop table if exists t_gbtclassifier;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
