@@ -31,6 +31,16 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00.000000','
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
+--验证timestamp的最大值9999-12-31 23:59:59
+insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:59','yyyy-mm-dd hh24:mi:ss'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
+
+--验证timestamp的最大值+1s，是否报错
+insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
+
 --月份超出范围
 insert into T_TYPE_TIMESTAMP values(to_timestamp('1967-13-01 12:22:11','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
@@ -224,3 +234,5 @@ select * from T_TYPE_TIMESTAMP;
 insert into T_TYPE_TIMESTAMP values(to_timestamp('0000-00-00 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
+
+
