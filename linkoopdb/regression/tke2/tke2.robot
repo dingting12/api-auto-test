@@ -23,6 +23,7 @@ Setup Compare Settings
     Compare Skip                       REWROTED.*
     Compare Skip                       SQLCli.*
     Compare Skip                       REWROTED.*
+    Compare Skip                       start.*
 
     # 一旦遇到错误，就终止继续测试
     Compare Break When Difference      True
