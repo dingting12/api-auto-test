@@ -11,52 +11,57 @@ create table T_TYPE_FLOAT(
 a1 float
 );
 
---验证float类型负数最小值-3.402823466E+38
-insert into T_TYPE_FLOAT values(-3.402823466E+38);
+--验证float类型负数最小值-3.402823E+38
+insert into T_TYPE_FLOAT values(-3.402823E+38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT; 
         
 --验证float类型负数最小值的尾数-0.01，是否报错
-insert into T_TYPE_FLOAT values(-3.412823466E+38);
+insert into T_TYPE_FLOAT values(-3.412823E+38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
---验证float类型负数最大值-1.175494351E-38
-insert into T_TYPE_FLOAT values(-1.175494351E-38);
+--验证float类型负数最大值-1.175494E-38
+insert into T_TYPE_FLOAT values(-1.175494E-38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT; 
         
 --验证float类型负数最大值的尾数+0.01，是否报错
-insert into T_TYPE_FLOAT values(-1.165494351E-38);
+insert into T_TYPE_FLOAT values(-1.165494E-38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
---验证float类型正数最小值1.175494351E-38
-insert into T_TYPE_FLOAT values(1.175494351E-38);
+--验证float类型值为0
+insert into T_TYPE_FLOAT values(0);
+--查询表T_TYPE_FLOAT
+select * from T_TYPE_FLOAT;
+
+--验证float类型正数最小值1.175494E-38
+insert into T_TYPE_FLOAT values(1.175494E-38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
 --验证float类型正数最小值的尾数-0.01，是否报错
-insert into T_TYPE_FLOAT values(1.165494351E-38;
+insert into T_TYPE_FLOAT values(1.165494E-38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
---验证float类型正数最大值3.402823466E+38
-insert into T_TYPE_FLOAT values(3.402823466E+38);
+--验证float类型正数最大值3.402823E+38
+insert into T_TYPE_FLOAT values(3.402823E+38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
 --验证float类型正数最大值的尾数+0.01，是否报错
-insert into T_TYPE_FLOAT values(3.412823466E+38);
+insert into T_TYPE_FLOAT values(3.412823E+38);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
- --验证float类型7个有效位
+ --验证float类型有效位小于等于7
 insert into T_TYPE_FLOAT values(1.234567);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
---验证float类型的有效位超出7个，四舍五入
+--验证float类型的有效位超出7个，截断
 insert into T_TYPE_FLOAT values(1.2345678);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
@@ -66,8 +71,8 @@ insert into T_TYPE_FLOAT values(289);
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
---验证插入varchar类型，插入数字'12345'
-insert into T_TYPE_FLOAT values('1234');
+--验证插入varchar类型，插入数字'1234.56'
+insert into T_TYPE_FLOAT values('1234.56');
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT;
 
