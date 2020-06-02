@@ -18,7 +18,7 @@ name varchar(64000)
 --查询表T_TYPE_VARCHAR1
 select length(name) from T_TYPE_VARCHAR1;
 
---创建表T_TYPE_VARCHAR2，默认长度为1
+--创建表T_TYPE_VARCHAR2，设置为默认长度，默认长度为1
 create table T_TYPE_VARCHAR2(
 a1 varchar
 );
@@ -48,7 +48,7 @@ insert into T_TYPE_VARCHAR3 values('asdfg');
 --查询表T_TYPE_VARCHAR3
 select * from T_TYPE_VARCHAR3;
 
---插入的数据无引号
+--插入的数据无引号，报错
 insert into T_TYPE_VARCHAR3 values(asdfg);
 --查询表T_TYPE_VARCHAR3
 select * from T_TYPE_VARCHAR3;
@@ -63,7 +63,7 @@ insert into T_TYPE_VARCHAR4 values('abcdefghijklmnopqrstuvwxyzabcd');
 --查询表T_TYPE_VARCHAR4
 select * from T_TYPE_VARCHAR4;
 
---验证插入31个英文字母，插入是否成功
+--验证插入31个英文字母，是否截断
 insert into T_TYPE_VARCHAR4 values('abcdefghijklmnopqrstuvwxyzabcde');
 --查询表T_TYPE_VARCHAR4
 select * from T_TYPE_VARCHAR4;
@@ -73,18 +73,8 @@ insert into T_TYPE_VARCHAR4 values('一二三四五六七八九十一二三四�
 --查询表T_TYPE_VARCHAR4
 select * from T_TYPE_VARCHAR4;
 
---验证插入31个汉字，插入是否成功
+--验证插入31个汉字，是否截断
 insert into T_TYPE_VARCHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
---查询表T_TYPE_VARCHAR4
-select * from T_TYPE_VARCHAR4;
-
---验证插入15个汉字
-insert into T_TYPE_VARCHAR4 values('一二三四五六七八九十一二三四五');
---查询表T_TYPE_VARCHAR4
-select * from T_TYPE_VARCHAR4;
-
---验证插入16个汉字，插入是否成功
-insert into T_TYPE_VARCHAR4 values('一二三四五六七八九十一二三四五六');
 --查询表T_TYPE_VARCHAR4
 select * from T_TYPE_VARCHAR4;
 
@@ -93,7 +83,7 @@ insert into T_TYPE_VARCHAR4 values('123456789012345678901234567890');
 --查询表T_TYPE_VARCHAR4
 select * from T_TYPE_VARCHAR4;
 
---验证插入31个数字，插入是否成功
+--验证插入31个数字，是否截断
 insert into T_TYPE_VARCHAR4 values('1234567890123456789012345678901');
 --查询表T_TYPE_VARCHAR4
 select * from T_TYPE_VARCHAR4;

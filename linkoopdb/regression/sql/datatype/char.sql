@@ -18,7 +18,7 @@ name char(64000)
 --查询表T_TYPE_CHAR1
 select length(name) from T_TYPE_CHAR1;
 
---创建表T_TYPE_CHAR2，默认长度为1
+--创建表T_TYPE_CHAR2，设置为默认长度，默认长度为1
 create table T_TYPE_CHAR2 (
 name char
 );
@@ -75,16 +75,6 @@ select * from T_TYPE_CHAR4;
 
 --验证插入31个汉字，插入是否成功
 insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
---查询表T_TYPE_CHAR4
-select * from T_TYPE_CHAR4;
-
---验证插入15个汉字
-insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五');
---查询表T_TYPE_CHAR4
-select * from T_TYPE_CHAR4;
-
---验证插入16个汉字，插入是否成功
-insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六');
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
 
