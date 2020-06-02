@@ -11,8 +11,7 @@ E101Test
     Setup Compare Settings
     Logon And Execute SQL Script       admin/123456  bigint/bigint.sql
     Logon And Execute SQL Script       admin/123456  boolean/boolean.sql
-    *** Compare Files             bigint.log  bigint/bigint.ref ***
-    *** Compare Files             boolean.log  boolean/boolean.ref ***
+
 
 *** Keywords ***
 Setup Compare Settings
