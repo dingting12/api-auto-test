@@ -31,6 +31,21 @@ insert into T_TYPE_DATE values(to_date('10000-01-01','yyyy-mm-dd');
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
+--验证闰年2月份最后一天日期
+insert into T_TYPE_DATE values(to_date('2000-02-29','yyyy-mm-dd'));
+--查询表T_TYPE_DATE
+select * from T_TYPE_DATE;
+
+--验证平年2月份最后一天日期
+insert into T_TYPE_DATE values(to_date('2001-02-28','yyyy-mm-dd'));
+--查询表T_TYPE_DATE
+select * from T_TYPE_DATE;
+
+--大于28号时是否报错
+insert into T_TYPE_DATE values(to_date('2001-02-29','yyyy-mm-dd'));
+--查询表T_TYPE_DATE
+select * from T_TYPE_DATE;
+
 --年，月，日超出范围
 --验证月份超出范围
 insert into T_TYPE_DATE values(to_date('1988-13-01','yyyy-mm-dd'));
@@ -53,7 +68,7 @@ insert into T_TYPE_DATE values(to_date('1994-2-8','yyyy-mm-dd'));
 select * from T_TYPE_DATE;
 
 --验证date格式：yy-mm-dd
-insert into T_TYPE_DATE values(to_timestamp('84-01-01','yy-mm-dd')); --年份用yy表示时，自动补齐为1984
+insert into T_TYPE_DATE values(to_timestamp('94-01-01','yy-mm-dd')); --年份用yy表示时，自动补齐为1994
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
@@ -69,17 +84,17 @@ select * from T_TYPE_DATE;
 
 --年，月，日缺失
 --缺失年份
-insert into T_TYPE_DATE values(to_timestamp('11-26','mm-dd')); --缺少年份时默认为1970
+insert into T_TYPE_DATE values(to_timestamp('11-26','mm-dd')); --缺失年份时默认为1970
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
 --缺失月份
-insert into T_TYPE_DATE values(to_timestamp('1994-18','yyyy-dd'));  --缺少月份时默认是1月
+insert into T_TYPE_DATE values(to_timestamp('1994-18','yyyy-dd')); --缺失月份时默认是1月
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
 --缺失日期
-insert into T_TYPE_DATE values(to_timestamp('1994-02','yyyy-mm')); --缺少日时默认是1日
+insert into T_TYPE_DATE values(to_timestamp('1994-02','yyyy-mm')); --缺失日时默认是1日
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
