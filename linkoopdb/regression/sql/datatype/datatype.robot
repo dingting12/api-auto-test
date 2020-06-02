@@ -9,7 +9,7 @@ Resource          ../../common/SetupRobot.robot
 E101Test
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
-    Logon And Execute SQL Script       admin/123456  bigint/bigint.sql  boolean/boolean.sql
+    Logon And Execute SQL Script       admin/123456  ./sql/datatype/bigint/bigint.sql  ./sql/datatype/boolean/boolean.sql
     Compare Files             datatype.log  datatype.ref
 
 *** Keywords ***
