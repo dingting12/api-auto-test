@@ -16,7 +16,7 @@ set ECHO ON
 ---命名
 
 ----英文命名及大小写
-DROP USER u_Test_DBlink1;
+DROP USER u_Test_DBlink1 CASCADE;
 
 CREATE USER u_Test_DBlink1 IDENTIFIED BY 123456;
 
@@ -32,7 +32,7 @@ SELECT * FROM u_Test_DBlink1.t_dblink_wy1 ORDER BY id;
 
 SELECT username from dba_users WHERE username='U_TEST_DBLINK1';
 
-DROP USER "u_Test_DBlink1";
+DROP USER "u_Test_DBlink1" CASCADE;
 
 CREATE USER "u_Test_DBlink1" IDENTIFIED BY 123456;
 
@@ -49,7 +49,7 @@ SELECT * FROM "u_Test_DBlink1".t_dblink_wy1 ORDER BY id;
 SELECT username from dba_users WHERE username='u_Test_DBlink1';
 
 ----中文命名
-DROP USER 工具人1号;
+DROP USER 工具人1号 CASCADE;
 
 CREATE USER 工具人1号 IDENTIFIED BY 123456;
 
@@ -65,7 +65,7 @@ SELECT * FROM 工具人1号.t_dblink_wy1 ORDER BY id;
 
 SELECT username from dba_users WHERE username='工具人1号';
 
-DROP USER "工具人耄耋貔貅";
+DROP USER "工具人耄耋貔貅" CASCADE;
 
 CREATE USER "工具人耄耋貔貅" IDENTIFIED BY 123456;
 
@@ -82,7 +82,7 @@ SELECT * FROM "工具人耄耋貔貅".t_dblink_wy1 ORDER BY id;
 SELECT username from dba_users WHERE username='工具人耄耋貔貅';
 
 ----中英文混合加特殊字符加大小写
-DROP USER "U_DBlink@!@$%#(*特朗普";
+DROP USER "U_DBlink@!@$%#(*特朗普" CASCADE;
 
 CREATE USER "U_DBlink@!@$%#(*特朗普" IDENTIFIED BY 123456;
 
@@ -101,7 +101,7 @@ SELECT username from dba_users WHERE username='U_DBlink@!@$%#(*特朗普';
 ---权限
 
 ----用户有远程访问权限
-DROP USER u_dblink_permission1;
+DROP USER u_dblink_permission1 CASCADE;
 
 CREATE USER u_dblink_permission1 IDENTIFIED BY 123456;
 
@@ -112,7 +112,7 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION1'); 
 
 ----用户有创建，删除，修改 table的权限
-DROP USER u_dblink_permission2;
+DROP USER u_dblink_permission2 CASCADE;
 
 CREATE USER u_dblink_permission2 IDENTIFIED BY 123456;
 
@@ -134,7 +134,7 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION2'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION2'); 
 
-DROP USER u_dblink_permission3;
+DROP USER u_dblink_permission3 CASCADE;
 
 CREATE USER u_dblink_permission3 IDENTIFIED BY 123456;
 
@@ -149,7 +149,7 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION3'); 
 
 ----用户有创建，删除view的权限
-DROP USER u_dblink_permission4;
+DROP USER u_dblink_permission4 CASCADE;
 
 CREATE USER u_dblink_permission4 IDENTIFIED BY 123456;
 
@@ -161,7 +161,7 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION4'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION4'); 
 
-DROP USER u_dblink_permission5;
+DROP USER u_dblink_permission5 CASCADE;
 
 CREATE USER u_dblink_permission5 IDENTIFIED BY 123456;
 
@@ -174,7 +174,7 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION5'); 
 
 ----用户有创建proc的权限
-DROP USER u_dblink_permission6;
+DROP USER u_dblink_permission6 CASCADE;
 
 CREATE USER u_dblink_permission6 IDENTIFIED BY 123456;
 
@@ -186,7 +186,7 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION6'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION6'); 
 
-DROP USER u_dblink_permission7;
+DROP USER u_dblink_permission7 CASCADE;
 
 CREATE USER u_dblink_permission7 IDENTIFIED BY 123456;
 
@@ -199,7 +199,7 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION7'); 
 
 ----用户有查询的权限
-DROP USER u_dblink_permission8;
+DROP USER u_dblink_permission8 CASCADE;
 
 CREATE USER u_dblink_permission8 IDENTIFIED BY 123456;
 
@@ -210,7 +210,7 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION8'); 
 
 ----用户有插入的权限
-DROP USER u_dblink_permission9;
+DROP USER u_dblink_permission9 CASCADE;
 
 CREATE USER u_dblink_permission9 IDENTIFIED BY 123456;
 
@@ -221,7 +221,7 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION9'); 
 
 ----用户有更新的权限
-DROP USER u_dblink_permission10;
+DROP USER u_dblink_permission10 CASCADE;
 
 CREATE USER u_dblink_permission10 IDENTIFIED BY 123456;
 
@@ -232,7 +232,7 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION10'); 
 
 ----用户有删除的权限
-DROP USER u_dblink_permission11;
+DROP USER u_dblink_permission11 CASCADE;
 
 CREATE USER u_dblink_permission11 IDENTIFIED BY 123456;
 
@@ -243,7 +243,7 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION11'); 
 
 ----用户无任何权限
-DROP USER u_dblink_permission;
+DROP USER u_dblink_permission CASCADE;
 
 CREATE USER u_dblink_permission IDENTIFIED BY 123456;
 
@@ -255,21 +255,21 @@ select privilege from dba_sys_privs where grantee in (select granted_role from d
 --password
 
 ---英文及大小写
-DROP USER u_dblink_password1;
+DROP USER u_dblink_password1 CASCADE;
 
 CREATE USER u_dblink_password1 IDENTIFIED BY csHIKHBNUgdjK;
 
 GRANT dba TO u_dblink_password1;
 
 ---中文
-DROP USER u_dblink_password2;
+DROP USER u_dblink_password2 CASCADE;
 
 CREATE USER u_dblink_password2 IDENTIFIED BY 这是一个密码;
 
 GRANT dba TO u_dblink_password2;
 
 ---中英文混合加特殊字符加大小写
-DROP USER u_dblink_password3;
+DROP USER u_dblink_password3 CASCADE;
 
 CREATE USER u_dblink_password3 IDENTIFIED BY "^&*SDfbj%^$&^红烧冬1278_84";
 
@@ -278,6 +278,8 @@ GRANT dba TO u_dblink_password3;
 
 
 --建表
+DROP USER u_dblink_grammar_cover CASCADE;
+
 CREATE USER u_dblink_grammar_cover identified BY 123456;
 
 GRANT dba TO u_dblink_grammar_cover;
@@ -611,7 +613,7 @@ where i.index_name = c.index_name AND i.table_name='T_DBLINK_CONSTRAINT_7' AND i
 
 
 --大小写敏感
-DROP USER u_case_sensitivity;
+DROP USER u_case_sensitivity CASCADE;
 
 CREATE USER u_case_sensitivity IDENTIFIED BY 123456;
 
