@@ -11,7 +11,19 @@ E101Test
     Setup Compare Settings
     Logon And Execute SQL Script       admin/123456  bigint/bigint.sql
     Logon And Execute SQL Script       admin/123456  boolean/boolean.sql
-
+    Logon And Execute SQL Script       admin/123456  char/char.sql
+    Logon And Execute SQL Script       admin/123456  date/date.sql
+    Logon And Execute SQL Script       admin/123456  decimal/decimal.sql
+    Logon And Execute SQL Script       admin/123456  double/double.sql
+    Logon And Execute SQL Script       admin/123456  float/float.sql
+    Logon And Execute SQL Script       admin/123456  int/int.sql
+    Logon And Execute SQL Script       admin/123456  numeric/numeric.sql
+    Logon And Execute SQL Script       admin/123456  real/real.sql
+    Logon And Execute SQL Script       admin/123456  smallint/smallint.sql
+    Logon And Execute SQL Script       admin/123456  timestamp/timestamp.sql
+    Logon And Execute SQL Script       admin/123456  varchar/varchar.sql
+    Compare Files             bigint.log  bigint/bigint.ref
+    Compare Files             boolean.log  boolean/boolean.ref
 
 *** Keywords ***
 Setup Compare Settings
