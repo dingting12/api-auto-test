@@ -6,7 +6,7 @@ Metadata         Version    0.1
 Resource          ../../../common/SetupRobot.robot
 
 *** Test Cases ***
-E101Test
+DBlinkTest
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
     Execute SQL Script        oracle_setup.sql
