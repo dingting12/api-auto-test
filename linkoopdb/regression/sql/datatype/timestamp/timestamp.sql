@@ -5,6 +5,10 @@
 -- timestamp数据类型验证
 --删除表
 drop table T_TYPE_TIMESTAMP if exists;
+drop table T_TYPE_TIMESTAMP1 if exists;
+drop table T_TYPE_TIMESTAMP2 if exists;
+drop table T_TYPE_TIMESTAMP3 if exists;
+drop table T_TYPE_TIMESTAMP4 if exists;
 
 --创建T_TYPE_TIMESTAMP表
 create table T_TYPE_TIMESTAMP(
@@ -12,7 +16,7 @@ a1 timestamp
 );
 
 --验证timestamp的最小值0001:01:01 00:00:00
-insert into T_TYPE_TIMESTAMP values(to_timestamp('0001-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
+insert into T_TYPE_TIMESTAMP values(to_timestamp('0001-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ff'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -21,7 +25,7 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('-0001-12-31 23:59:61.999999','
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
---验证timestamp的最大值9999-12-31 23:59:61.999999
+--验证timestamp的最大值9999-12-31 23:59:61.999999，闰秒
 insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:61.999999','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
@@ -41,13 +45,29 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00','yyyy-mm
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
+--验证闰年2月份最后一天日期
+insert into T_TYPE_TIMESTAMP values(to_timestamp('2001-02-29 10:30:30','yyyy-mm-dd hh24:mi:ss'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
+
+--验证平年2月份最后一天日期
+insert into T_TYPE_TIMESTAMP values(to_timestamp('2001-02-28 10:30:30','yyyy-mm-dd hh24:mi:ss'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
+
+--大于28号时是否报错
+insert into T_TYPE_TIMESTAMP values(to_timestamp('2001-02-29 10:30:30','yyyy-mm-dd hh24:mi:ss'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
+
+--年，月，日，时，分，秒超出范围
 --月份超出范围
-insert into T_TYPE_TIMESTAMP values(to_timestamp('1967-13-01 12:22:11','yyyy-mm-dd hh24:mi:ss'));
+insert into T_TYPE_TIMESTAMP values(to_timestamp('1988-13-01 12:22:11','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
 --日期超出范围
-insert into T_TYPE_TIMESTAMP values(to_timestamp('1967-12-35 12:33:23','yyyy-mm-dd hh24:mi:ss'));
+insert into T_TYPE_TIMESTAMP values(to_timestamp('1988-12-35 12:33:23','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -67,7 +87,7 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('1997-12-26 23:16:88','yyyy-mm-
 select * from T_TYPE_TIMESTAMP;
 
 --验证timestamp的格式
---验证timestamp的格式：yyyy-mm-dd hh24:mi:ss
+--验证timestamp的格式：24小时制，yyyy-mm-dd hh24:mi:ss
 insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
@@ -76,8 +96,23 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-2-8 5:3:1','yyyy-mm-dd hh
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
---timestamp的格式：yy-mm-dd hh24:mi:ss
-insert into T_TYPE_TIMESTAMP values(to_timestamp('84-01-01 05:03:11','yy-mm-dd hh24:mi:ss')); --年份用yy表示时，自动补齐1984
+--验证timestamp格式：12小时制，yyyy-mm-dd hh12:mi:ss
+insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-dd hh12:mi:ss'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
+
+--上午
+insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-dd hh12:mi:ss am'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
+
+--下午
+insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-dd hh12:mi:ss pm'));
+--查询表T_TYPE_TIMESTAMP
+select * from T_TYPE_TIMESTAMP;
+
+--验证timestamp的格式：yy-mm-dd hh24:mi:ss
+insert into T_TYPE_TIMESTAMP values(to_timestamp('94-01-01 05:03:11','yy-mm-dd hh24:mi:ss')); --年份用yy表示时，自动补齐为1994
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -93,7 +128,7 @@ select * from T_TYPE_TIMESTAMP;
 
 --年，月，日，时，分，秒缺失
 --缺失年份
-insert into T_TYPE_TIMESTAMP values(to_timestamp('11-26 05:03:01','mm-dd hh24:mi:ss')); --缺失年时默认为1970
+insert into T_TYPE_TIMESTAMP values(to_timestamp('11-26 05:03:01','mm-dd hh24:mi:ss')); --缺失年份时默认为1970
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -113,7 +148,7 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-01 13:31','yyyy-mm-dd 
 select * from T_TYPE_TIMESTAMP;
 
 --缺失分钟
-insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-01 10:30','yyyy-mm-dd hh24:ss')); --缺失分时默认是0分
+insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-01 10:30','yyyy-mm-dd hh24:ss')); --缺失分钟时默认是0分
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -125,63 +160,60 @@ select * from T_TYPE_TIMESTAMP;
 
 --带小数秒
 --默认小数秒timestamp
-drop table T_TYPE_TIMESTAMP1 if exists;
-create table T_TYPE_TIMESTAMP1 (birth T_TYPE_TIMESTAMP);--默认6位小数秒
+create table T_TYPE_TIMESTAMP1 (a1 timestamp);--默认6位小数秒
 
 --精度范围内
-insert into T_TYPE_TIMESTAMP1 values(to_timestamp('2019-7-19 10:23:23.776666','yyyy-mm-dd hh24:mi:ss.ss'));
+insert into T_TYPE_TIMESTAMP1 values(to_timestamp('2019-07-19 10:23:23.776666','yyyy-mm-dd hh24:mi:ss.ffffff'));
 --查询表T_TYPE_TIMESTAMP1
 select * from T_TYPE_TIMESTAMP1;
 
 --超出精度，截断
-insert into T_TYPE_TIMESTAMP1 values(to_timestamp('2019-7-19 10:23:23.776666888888','yyyy-mm-dd hh24:mi:ss.ss'));
+insert into T_TYPE_TIMESTAMP1 values(to_timestamp('2019-07-19 10:23:23.776666888888','yyyy-mm-dd hh24:mi:ss.ffffff'));
 --查询表T_TYPE_TIMESTAMP1
 select * from T_TYPE_TIMESTAMP1;
 
 --0位小数秒timestamp(0)
-drop table T_TYPE_TIMESTAMP2 if exists;
-create table T_TYPE_TIMESTAMP2 (birth T_TYPE_TIMESTAMP(0));
+create table T_TYPE_TIMESTAMP2 (a1 timestamp(0));
 
 --精度范围内
-insert into T_TYPE_TIMESTAMP2 values(to_timestamp('2019-7-19 10:23:10','yyyy-mm-dd hh24:mi:ss.ss'));
+insert into T_TYPE_TIMESTAMP2 values(to_timestamp('2019-07-19 10:23:10','yyyy-mm-dd hh24:mi:ss.ff'));
 --查询表T_TYPE_TIMESTAMP2
 select * from T_TYPE_TIMESTAMP2;
 
 --超出精度，截断
-insert into T_TYPE_TIMESTAMP2 values(to_timestamp('2019-7-19 10:23:20.8','yyyy-mm-dd hh24:mi:ss.ss'));
+insert into T_TYPE_TIMESTAMP2 values(to_timestamp('2019-07-19 10:23:20.8','yyyy-mm-dd hh24:mi:ss.ff'));
 --查询表T_TYPE_TIMESTAMP2
 select * from T_TYPE_TIMESTAMP2;
 
 --3位小数秒timestamp(3)
-drop table T_TYPE_TIMESTAMP3 if exists;
-create table T_TYPE_TIMESTAMP3 (birth T_TYPE_TIMESTAMP(3));
+create table T_TYPE_TIMESTAMP3 (a1 timestamp(3));
 
 --精度范围内
-insert into T_TYPE_TIMESTAMP3 values(to_timestamp('2019-7-19 10:23:23.333','yyyy-mm-dd hh24:mi:ss.ss'));
+insert into T_TYPE_TIMESTAMP3 values(to_timestamp('2019-07-19 10:23:23.333','yyyy-mm-dd hh24:mi:ss.fff'));
 --查询表T_TYPE_TIMESTAMP3
 select * from T_TYPE_TIMESTAMP3;
 
 --超出精度，截断
-insert into T_TYPE_TIMESTAMP3 values(to_timestamp('2019-7-19 10:23:23.3334','yyyy-mm-dd hh24:mi:ss.ss'));
+insert into T_TYPE_TIMESTAMP3 values(to_timestamp('2019-07-19 10:23:23.3334','yyyy-mm-dd hh24:mi:ss.fff'));
 --查询表T_TYPE_TIMESTAMP3
 select * from T_TYPE_TIMESTAMP3;
 
 --6位小数秒timestamp(6)
-drop table T_TYPE_TIMESTAMP4 if exists;
-create table T_TYPE_TIMESTAMP4 (birth T_TYPE_TIMESTAMP(6));
+create table T_TYPE_TIMESTAMP4 (a1 timestamp(6));
 
 --精度范围内
-insert into T_TYPE_TIMESTAMP4 values(to_timestamp('2019-7-19 10:23:23.333666','yyyy-mm-dd hh24:mi:ss.ss'));
+insert into T_TYPE_TIMESTAMP4 values(to_timestamp('2019-07-19 10:23:23.333666','yyyy-mm-dd hh24:mi:ss.ffffff'));
 --查询表T_TYPE_TIMESTAMP4
 select * from T_TYPE_TIMESTAMP4;
 
 --超出精度，截断
-insert into T_TYPE_TIMESTAMP4 values(to_timestamp('2019-7-19 10:23:23.3336667','yyyy-mm-dd hh24:mi:ss.ss'));
+insert into T_TYPE_TIMESTAMP4 values(to_timestamp('2019-07-19 10:23:23.3336667','yyyy-mm-dd hh24:mi:ss.ffffff'));
 --查询表T_TYPE_TIMESTAMP4
 select * from T_TYPE_TIMESTAMP4;
 
+--插入不同数据类型
 --验证插入int类型
-insert into T_TYPE_TIMESTAMP values(2147483);
+insert into T_TYPE_TIMESTAMP values(20100208);
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
@@ -190,7 +222,7 @@ insert into T_TYPE_TIMESTAMP values(138.92);
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
---验证插入varchar类型，插入数字'12345'
+--验证插入varchar类型，插入数字'20100111'
 insert into T_TYPE_TIMESTAMP values('20100111');
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;

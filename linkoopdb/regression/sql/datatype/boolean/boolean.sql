@@ -108,7 +108,7 @@ insert into T_TYPE_BOOLEAN values(NULL);
 --查询表T_TYPE_BOOLEAN
 select * from T_TYPE_BOOLEAN; 
 
---验证boolean类型的异常值truew
+--验证boolean类型的异常值truew，是否报错
 insert into T_TYPE_BOOLEAN values(truew);
 --查询表T_TYPE_BOOLEAN
 select * from T_TYPE_BOOLEAN;
