@@ -11,52 +11,57 @@ create table T_TYPE_DOUBLE(
 a1 double
 );          
 
---验证double类型负数最小值-1.7976931348623157E+308
-insert into T_TYPE_DOUBLE values(-1.7976931348623157E+308);
+--验证double类型负数最小值-1.79769313486231E+308
+insert into T_TYPE_DOUBLE values(-1.79769313486231E+308);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
 --验证double类型负数最小值的尾数-0.01，是否报错
-insert into T_TYPE_DOUBLE values(-1.8076931348623157E+308);
+insert into T_TYPE_DOUBLE values(-1.80769313486231E+308);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
---验证double类型负数最大值-2.2250738585072014E-308
-insert into T_TYPE_DOUBLE values(-2.2250738585072014E-308);
+--验证double类型负数最大值-2.22507385850720E-308
+insert into T_TYPE_DOUBLE values(-2.22507385850720E-308);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
 --验证double类型负数最大值的尾数+0.01，是否报错
-insert into T_TYPE_DOUBLE values(-2.2150738585072014E-308);
+insert into T_TYPE_DOUBLE values(-2.21507385850720E-308);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
---验证double类型正数最小值2.2250738585072014E-308
-insert into T_TYPE_DOUBLE values(2.2250738585072014E-308);
+--验证double类型插入0
+insert into T_TYPE_DOUBLE values(0);
+--查询表T_TYPE_DOUBLE
+select * from T_TYPE_DOUBLE;
+
+--验证double类型正数最小值2.22507385850720E-308
+insert into T_TYPE_DOUBLE values(2.22507385850720E-308);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
 --验证double类型正数最小值的尾数-0.01，是否报错
-insert into T_TYPE_DOUBLE values(2.2150738585072014E-308);
+insert into T_TYPE_DOUBLE values(2.21507385850720E-308);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
---验证double类型正数最大值1.7976931348623157E+308
-insert into T_TYPE_DOUBLE values(1.7976931348623157E+308);
+--验证double类型正数最大值1.79769313486231E+308
+insert into T_TYPE_DOUBLE values(1.79769313486231E+308);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
 --验证double类型正数最大值的尾数+0.01，是否报错
-insert into T_TYPE_DOUBLE values(1.8076931348623157E+308);
+insert into T_TYPE_DOUBLE values(1.80769313486231E+308);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
---验证double类型15个有效位
+--验证double类型有效位小于等于15
 insert into T_TYPE_DOUBLE values(1.23456789012345);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
---验证double类型的有效位超出15个，四舍五入
+--验证double类型的有效位超出15个，截断
 insert into T_TYPE_DOUBLE values(1.23456789012345678);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
@@ -66,8 +71,8 @@ insert into T_TYPE_DOUBLE values(289);
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 
---验证插入varchar类型，插入数字'12345'
-insert into T_TYPE_DOUBLE values('1234');
+--验证插入varchar类型，插入数字'1234.56'
+insert into T_TYPE_DOUBLE values('1234.56');
 --查询表T_TYPE_DOUBLE
 select * from T_TYPE_DOUBLE;
 

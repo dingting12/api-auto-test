@@ -31,13 +31,14 @@ insert into T_TYPE_DATE values(to_date('10000-01-01','yyyy-mm-dd');
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
+--年，月，日超出范围
 --验证月份超出范围
-insert into T_TYPE_DATE values(to_date('1967-13-01','yyyy-mm-dd'));
+insert into T_TYPE_DATE values(to_date('1988-13-01','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
 --验证日期超出范围
-insert into T_TYPE_DATE values(to_date('1967-12-35','yyyy-mm-dd'));
+insert into T_TYPE_DATE values(to_date('1988-12-35','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
@@ -83,7 +84,7 @@ insert into T_TYPE_DATE values(to_timestamp('1994-02','yyyy-mm')); --缺少日�
 select * from T_TYPE_DATE;
 
 --验证插入int类型
-insert into T_TYPE_DATE values(2147483);
+insert into T_TYPE_DATE values(20200208);
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
@@ -92,7 +93,7 @@ insert into T_TYPE_DATE values(138.92);
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
---验证插入varchar类型，插入数字'12345'
+--验证插入varchar类型，插入数字'20100111'
 insert into T_TYPE_DATE values('20100111');
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
@@ -109,6 +110,16 @@ select * from T_TYPE_DATE;
 
 --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss
 insert into T_TYPE_DATE values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+--查询表T_TYPE_DATE
+select * from T_TYPE_DATE;
+
+--验证插入boolean类型，插入true
+insert into T_TYPE_DATE values(true);
+--查询表T_TYPE_DATE
+select * from T_TYPE_DATE;
+
+--验证插入boolean类型，插入false
+insert into T_TYPE_DATE values(false);
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
