@@ -1,0 +1,829 @@
+SQLCli Release 0.0.45
+SQL> start date/external_table_basic_type-date.sql
+SQL> loaddriver E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
+driver file [E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar] does not exist.
+SQL> connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.73:9105/ldb
+Database connected.
+SQL> set echo on
+SQL> 
+SQL> 
+SQL> --    Description: date边界值测试,date的数值范围是0001-01-01/9999-12-31
+   > --    Date:         2020-05-28
+   > --    Author:       丁婷
+   > --    hdfs external csv格式
+   > 
+   > -- 测试date类型边界异常值0001-01-00,实际结果是返回空值
+SQL> drop table if exists t_external_hdfs_csv_date_001;
+0 rows affected
+SQL> create external table t_external_hdfs_csv_date_001(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_001.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_hdfs_csv_date_001;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试date类型边界异常值10000-01-01,实际结果是返回空值
+SQL> drop table if exists t_external_hdfs_csv_date_002;
+0 rows affected
+SQL> create external table t_external_hdfs_csv_date_002(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_002.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_hdfs_csv_date_002;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试int类型，值为1234567,实际结果是返回空值
+SQL> drop table if exists t_external_hdfs_csv_date_003;
+0 rows affected
+SQL> create external table t_external_hdfs_csv_date_003(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_003.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_hdfs_csv_date_003;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --测试double类型，值为54775807.111,实际结果是返回空值
+SQL> drop table if exists t_external_hdfs_csv_date_004;
+0 rows affected
+SQL> create external table t_external_hdfs_csv_date_004(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_004.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_hdfs_csv_date_004;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试varchar类型数字，值为'9223372036',实际结果是返回空值
+SQL> drop table if exists t_external_hdfs_csv_date_005;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_005，
+SQL> create external table t_external_hdfs_csv_date_005(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_005.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_hdfs_csv_date_005;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试varchar英文字母，值为'asdf',实际结果是返回空值
+SQL> drop table if exists t_external_hdfs_csv_date_006;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_006，
+SQL> create external table t_external_hdfs_csv_date_006(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzimu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_006的数据
+SQL> select * from t_external_hdfs_csv_date_006;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_007表
+SQL> drop table if exists t_external_hdfs_csv_date_007;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_007，测试varchar中文字符，值为'你好'
+SQL> create external table t_external_hdfs_csv_date_007(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwen.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_007的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_007;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_008表
+SQL> drop table if exists t_external_hdfs_csv_date_008;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_008，测试varchar中英文字符，值为'你好asdf'
+SQL> create external table t_external_hdfs_csv_date_008(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongyinghunhe.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_008的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_008;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_009表
+SQL> drop table if exists t_external_hdfs_csv_date_009;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_009，测试varchar英文特殊字符，值为'#$%^'
+SQL> create external table t_external_hdfs_csv_date_009(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_009的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_009;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_010表
+SQL> drop table if exists t_external_hdfs_csv_date_010;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_010，测试varchar中文特殊字符，值为'@#￥%……'
+SQL> create external table t_external_hdfs_csv_date_010(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_010的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_010;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_010表
+SQL> drop table if exists t_external_hdfs_csv_date_012;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_012，测试超出date范围的timestamp类型，值为10001-01-01 01:01:01
+SQL> create external table t_external_hdfs_csv_date_012(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_012.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_012的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_012;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_013表
+SQL> drop table if exists t_external_hdfs_csv_date_013;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_013，测试boolean类型的true 
+SQL> create external table t_external_hdfs_csv_date_013(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_true.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_013的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_013;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_014表
+SQL> drop table if exists t_external_hdfs_csv_date_014;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_014，测试boolean类型的false 
+SQL> create external table t_external_hdfs_csv_date_014(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_false.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_014的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_014;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL>  
+SQL> -- 删除t_external_hdfs_csv_date_015表
+SQL> drop table if exists t_external_hdfs_csv_date_015;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_015，测试空值
+SQL> create external table t_external_hdfs_csv_date_015(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongzhi.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_015的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_015;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL>  
+SQL>  
+SQL> -- 删除t_external_hdfs_csv_date_016表
+SQL> drop table if exists t_external_hdfs_csv_date_016;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_016，测试空格 
+SQL> create external table t_external_hdfs_csv_date_016(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongge.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_016的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_016;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_017表
+SQL> drop table if exists t_external_hdfs_csv_date_017;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_017，测试null 
+SQL> create external table t_external_hdfs_csv_date_017(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_null.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_017的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_017;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_018表
+SQL> drop table if exists t_external_hdfs_csv_date_018;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_018，测试NULL  
+SQL> create external table t_external_hdfs_csv_date_018(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_018的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_018;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_019表
+SQL> drop table if exists t_external_hdfs_csv_date_019;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_019，测试日期格式为YYYYMMDD，值为20200101  
+SQL> create external table t_external_hdfs_csv_date_019(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_019.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_019的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_019;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_date_020表
+SQL> drop table if exists t_external_hdfs_csv_date_020;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_date_020，测试日期格式为YYYY/MM/DD，值为2020/01/01  
+SQL> create external table t_external_hdfs_csv_date_020(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_020.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_date_020的数据,实际结果是返回空值
+SQL> select * from t_external_hdfs_csv_date_020;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- external  ldbdist csv
+   > -- 测试date类型边界异常值0001-01-00,实际结果是返回空值
+SQL> drop table if exists t_external_ldbdist_csv_date_001;
+0 rows affected
+SQL> create external table t_external_ldbdist_csv_date_001(
+   > a1 date  
+   > )location('ldbdist://node74:54321/csv/date_001.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_date_001;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试date类型边界异常值10000-01-01,实际结果是返回空值
+SQL> drop table if exists t_external_ldbdist_csv_date_002;
+0 rows affected
+SQL> create external table t_external_ldbdist_csv_date_002(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_002.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_date_002;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试int类型，值为1234567,实际结果是返回空值
+SQL> drop table if exists t_external_ldbdist_csv_date_003;
+0 rows affected
+SQL> create external table t_external_ldbdist_csv_date_003(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_003.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_date_003;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --测试double类型，值为54775807.111,实际结果是返回空值
+SQL> drop table if exists t_external_ldbdist_csv_date_004;
+0 rows affected
+SQL> create external table t_external_ldbdist_csv_date_004(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_004.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_date_004;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试varchar类型数字，值为'9223372036',实际结果是返回空值
+SQL> drop table if exists t_external_ldbdist_csv_date_005;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_005，
+SQL> create external table t_external_ldbdist_csv_date_005(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_005.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_date_005;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试varchar英文字母，值为'asdf',实际结果是返回空值
+SQL> drop table if exists t_external_ldbdist_csv_date_006;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_006，
+SQL> create external table t_external_ldbdist_csv_date_006(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzimu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_006的数据
+SQL> select * from t_external_ldbdist_csv_date_006;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_007表
+SQL> drop table if exists t_external_ldbdist_csv_date_007;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_007，测试varchar中文字符，值为'你好'
+SQL> create external table t_external_ldbdist_csv_date_007(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwen.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_007的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_007;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_008表
+SQL> drop table if exists t_external_ldbdist_csv_date_008;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_008，测试varchar中英文字符，值为'你好asdf'
+SQL> create external table t_external_ldbdist_csv_date_008(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongyinghunhe.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_008的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_008;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_009表
+SQL> drop table if exists t_external_ldbdist_csv_date_009;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_009，测试varchar英文特殊字符，值为'#$%^'
+SQL> create external table t_external_ldbdist_csv_date_009(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_009的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_009;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_010表
+SQL> drop table if exists t_external_ldbdist_csv_date_010;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_010，测试varchar中文特殊字符，值为'@#￥%……'
+SQL> create external table t_external_ldbdist_csv_date_010(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_010的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_010;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_010表
+SQL> drop table if exists t_external_ldbdist_csv_date_012;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_012，测试超出date范围的timestamp类型，值为10001-01-01 01:01:01
+SQL> create external table t_external_ldbdist_csv_date_012(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_012.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_012的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_012;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_013表
+SQL> drop table if exists t_external_ldbdist_csv_date_013;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_013，测试boolean类型的true 
+SQL> create external table t_external_ldbdist_csv_date_013(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_true.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_013的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_013;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_014表
+SQL> drop table if exists t_external_ldbdist_csv_date_014;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_014，测试boolean类型的false 
+SQL> create external table t_external_ldbdist_csv_date_014(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_false.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_014的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_014;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL>  
+SQL> -- 删除t_external_ldbdist_csv_date_015表
+SQL> drop table if exists t_external_ldbdist_csv_date_015;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_015，测试空值
+SQL> create external table t_external_ldbdist_csv_date_015(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongzhi.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_015的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_015;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL>  
+SQL>  
+SQL> -- 删除t_external_ldbdist_csv_date_016表
+SQL> drop table if exists t_external_ldbdist_csv_date_016;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_016，测试空格 
+SQL> create external table t_external_ldbdist_csv_date_016(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongge.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_016的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_016;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_017表
+SQL> drop table if exists t_external_ldbdist_csv_date_017;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_017，测试null 
+SQL> create external table t_external_ldbdist_csv_date_017(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_null.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_017的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_017;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_018表
+SQL> drop table if exists t_external_ldbdist_csv_date_018;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_018，测试NULL  
+SQL> create external table t_external_ldbdist_csv_date_018(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_018的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_018;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_019表
+SQL> drop table if exists t_external_ldbdist_csv_date_019;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_019，测试日期格式为YYYYMMDD，值为20200101  
+SQL> create external table t_external_ldbdist_csv_date_019(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_019.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_019的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_019;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_date_020表
+SQL> drop table if exists t_external_ldbdist_csv_date_020;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_date_020，测试日期格式为YYYY/MM/DD，值为2020/01/01  
+SQL> create external table t_external_ldbdist_csv_date_020(
+   > a1 date  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_020.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_date_020的数据,实际结果是返回空值
+SQL> select * from t_external_ldbdist_csv_date_020;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- hdfs external parquet 
+   > 
+   > -- 删除表
+SQL> drop table if exists t_external_hdfs_parquet_date_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_date_002;
+0 rows affected
+SQL> 
+SQL> -- 测试异常值以及其他数据类型
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_date_001(
+   > a1 date,
+   > a2 date,
+   > a3 date,
+   > a4 date,
+   > a5 date,
+   > a6 date,
+   > a7 date
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/date1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_date_001;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'CAST(`A3` AS DATE)' due to data type mismatch: cannot cast int to date;;
+'Project [A1#172913, A2#172914, A3#172915, A4#172916, A5#172917, A6#172918, A7#172919]
++- 'Project [cast(A1#819916 as date) AS A1#172913, cast(A2#819917 as date) AS A2#172914, cast(A3#819918 as date) AS A3#172915, cast(A4#819919 as date) AS A4#172916, cast(A5#819920 as date) AS A5#172917, cast(A6#819921 as date) AS A6#172918, cast(A7#819922 as date) AS A7#172919]
+   +- Relation[A1#819916,A2#819917,A3#819918,A4#819919,A5#819920,A6#819921,A7#819922] parquet
+
+SQL> 
+SQL> -- 测试varchar，date,timestamp,boolean以及''等异常值
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_date_002(
+   > a1 date,
+   > a2 date,
+   > a3 date,
+   > a4 date,
+   > a5 date,
+   > a6 date,
+   > a7 date,
+   > a8 date,
+   > a9 date,
+   > a10 date,
+   > a11 date,
+   > a12 date,
+   > a13 date
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_date_002;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'CAST(`A12` AS DATE)' due to data type mismatch: cannot cast boolean to date;;
+'Project [A1#172920, A2#172921, A3#172922, A4#172923, A5#172924, A6#172925, A7#172926, A8#172927, A9#172928, A10#172929, A11#172930, A12#172931, A13#172932]
++- 'Project [cast(A1#819930 as date) AS A1#172920, cast(A2#819931 as date) AS A2#172921, cast(A3#819932 as date) AS A3#172922, cast(A4#819933 as date) AS A4#172923, cast(A5#819934 as date) AS A5#172924, cast(A6#819935 as date) AS A6#172925, cast(A7#819936 as date) AS A7#172926, cast(A8#819937 as date) AS A8#172927, cast(A9#819938 as date) AS A9#172928, A10#819939 AS A10#172929, cast(A11#819940 as date) AS A11#172930, cast(A12#819941 as date) AS A12#172931, cast(A13#819942 as date) AS A13#172932]
+   +- Relation[A1#819930,A2#819931,A3#819932,A4#819933,A5#819934,A6#819935,A7#819936,A8#819937,A9#819938,A10#819939,A11#819940,A12#819941,A13#819942] parquet
+
+SQL> exit
+Disconnected.

@@ -1,0 +1,1529 @@
+SQLCli Release 0.0.45
+SQL> start decimal/external_table_basic_type-decimal.sql
+SQL> loaddriver E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
+driver file [E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar] does not exist.
+SQL> connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.73:9105/ldb
+Database connected.
+SQL> set echo on
+SQL> 
+SQL> 
+SQL> --    Description: decimal边界值测试,decimal的范围1=<n<=38
+   > --    Date:         2020-05-28
+   > --    Author:       丁婷
+   > --    hdfs external csv格式
+   > 
+   > --
+   > -- 删除t_external_hdfs_csv_decimal_001表
+SQL> drop table if exists t_external_hdfs_csv_decimal_001;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_001，测试总长度n>38,创建失败,实际成功
+SQL> create external table t_external_hdfs_csv_decimal_001(
+   > a1 decimal(39,1)
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_001.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_002表
+SQL> drop table if exists t_external_hdfs_csv_decimal_002;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_002，测试总长度n<1,创建失败，实际创建失败，报precision or scale out of range in statement
+SQL> create external table t_external_hdfs_csv_decimal_002(
+   > a1 decimal(0,0) 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_001.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_hdfs_csv_decimal_002(
+a1 decimal(0,0) 
+)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_001.csv')
+format 'csv' (delimiter ',')]
+SQL>   
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_003表
+SQL> drop table if exists t_external_hdfs_csv_decimal_003;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_003，测试整数部分长度>n-m,例如234.01，应报错,实际返回空值
+SQL> create external table t_external_hdfs_csv_decimal_003(
+   > a1 decimal(4,2)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_001.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_003的数据
+SQL> select * from t_external_hdfs_csv_decimal_003;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_004表
+SQL> drop table if exists t_external_hdfs_csv_decimal_004;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_004，测试小数部分长度>m,例如23.7389,小数点后m位向右的数字被舍入，实际结果为23.74
+SQL> create external table t_external_hdfs_csv_decimal_004(
+   > a1 decimal(4,2)   
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_004的数据
+SQL> select * from t_external_hdfs_csv_decimal_004;
++-------+
+| A1    |
++-------+
+| 23.74 |
++-------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_005表
+SQL> drop table if exists t_external_hdfs_csv_decimal_005;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_005，测试m小于0,创建失败，实际报错precision or scale out of range in statement
+SQL> create external table t_external_hdfs_csv_decimal_005(
+   > a1 decimal(2,-1)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_hdfs_csv_decimal_005(
+a1 decimal(2,-1)  
+)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')
+format 'csv' (delimiter ',')]
+SQL>   
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_006表
+SQL> drop table if exists t_external_hdfs_csv_decimal_006;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_006，测试m大于n,创建失败，实际报错precision or scale out of range in statement
+SQL> create external table t_external_hdfs_csv_decimal_006(
+   > a1 decimal(3,6)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_hdfs_csv_decimal_006(
+a1 decimal(3,6)  
+)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')
+format 'csv' (delimiter ',')]
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_007表
+SQL> drop table if exists t_external_hdfs_csv_decimal_007;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_007，测试decimal默认值是否为(5,0),值为12345,12345.19，实际结果为12345
+SQL> create external table t_external_hdfs_csv_decimal_007(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_003.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_007的数据
+SQL> select * from t_external_hdfs_csv_decimal_007;
++---------+
+| A1      |
++---------+
+| 12345.0 |
+| 12345.0 |
++---------+
+2 rows selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_008表
+SQL> drop table if exists t_external_hdfs_csv_decimal_008;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_008，测试decimal默认值是否为(5,0),值为123456，实际为123456
+SQL> create external table t_external_hdfs_csv_decimal_008(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_008的数据
+SQL> select * from t_external_hdfs_csv_decimal_008;
++----------+
+| A1       |
++----------+
+| 123456.0 |
++----------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_009表
+SQL> drop table if exists t_external_hdfs_csv_decimal_009;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_009，测试(*,m),创建失败，实际报错 unexpected token: * 
+SQL> create external table t_external_hdfs_csv_decimal_009(
+   > a1 decimal(*,m)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create external table t_external_hdfs_csv_decimal_009(
+a1 decimal(*,m)  
+)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+format 'csv' (delimiter ',')]
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_010表
+SQL> drop table if exists t_external_hdfs_csv_decimal_010;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_010，测试(*),创建失败，实际报错unexpected token: * 
+SQL> create external table t_external_hdfs_csv_decimal_010(
+   > a1 decimal(*)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create external table t_external_hdfs_csv_decimal_010(
+a1 decimal(*)  
+)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+format 'csv' (delimiter ',')]
+SQL>   
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_011表
+SQL> drop table if exists t_external_hdfs_csv_decimal_011;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_011，测试decimal(n),n设置为39,创建报错，实际创建成功
+SQL> create external table t_external_hdfs_csv_decimal_011(
+   > a1 decimal(39)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> 
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_012，测试decimal(n),n设置为5,值为123456大于5，报错，实际返回空值
+SQL> create external table t_external_hdfs_csv_decimal_012(
+   > a1 decimal(5)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: object name already exists: T_EXTERNAL_HDFS_CSV_DECIMAL_012 in statement [create external table t_external_hdfs_csv_decimal_012(
+a1 decimal(5)  
+)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+format 'csv' (delimiter ',')]
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_012的数据
+SQL> select * from t_external_hdfs_csv_decimal_012;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_013表
+SQL> drop table if exists t_external_hdfs_csv_decimal_013;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_013，测试decimal(n),n设置为5,值为12345.12,或者为1234，实际为12345和1234
+SQL> create external table t_external_hdfs_csv_decimal_013(
+   > a1 decimal(5)
+   > 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_005.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_013的数据
+SQL> select * from t_external_hdfs_csv_decimal_013;
++---------+
+| A1      |
++---------+
+| 12345.0 |
+| 1234.0  |
++---------+
+2 rows selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_015表
+SQL> drop table if exists t_external_hdfs_csv_decimal_015;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_015，测试空值
+SQL> create external table t_external_hdfs_csv_decimal_015(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongzhi.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_015的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_015;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL>  
+SQL>  
+SQL> -- 删除t_external_hdfs_csv_decimal_016表
+SQL> drop table if exists t_external_hdfs_csv_decimal_016;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_016，测试空格 
+SQL> create external table t_external_hdfs_csv_decimal_016(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongge.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_016的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_016;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_017表
+SQL> drop table if exists t_external_hdfs_csv_decimal_017;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_017，测试null 
+SQL> create external table t_external_hdfs_csv_decimal_017(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_null.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_017的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_017;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_018表
+SQL> drop table if exists t_external_hdfs_csv_decimal_018;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_018，测试NULL  
+SQL> create external table t_external_hdfs_csv_decimal_018(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_018的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_018;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_019表
+SQL> drop table if exists t_external_hdfs_csv_decimal_019;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_019，测试int类型，值为1147483647
+SQL> create external table t_external_hdfs_csv_decimal_019(
+   > a1 decimal(10)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_006.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_019的数据，返回1147483647
+SQL> select * from t_external_hdfs_csv_decimal_019;
++--------------+
+| A1           |
++--------------+
+| 1147483647.0 |
++--------------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_020表
+SQL> drop table if exists t_external_hdfs_csv_decimal_020;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_020，测试date类型，值为2020-01-01
+SQL> create external table t_external_hdfs_csv_decimal_020(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_date.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_020的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_020;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_021表
+SQL> drop table if exists t_external_hdfs_csv_decimal_021;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_021，测试boolean类型，值为false
+SQL> create external table t_external_hdfs_csv_decimal_021(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_false.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_021的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_021;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_022表
+SQL> drop table if exists t_external_hdfs_csv_decimal_022;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_022，测试boolean类型，值为true
+SQL> create external table t_external_hdfs_csv_decimal_022(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_true.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_022的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_022;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_023表
+SQL> drop table if exists t_external_hdfs_csv_decimal_023;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_023，测试timestamp，值为2020-05-08 12:19:01
+SQL> create external table t_external_hdfs_csv_decimal_023(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_timestamp.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_023的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_023;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_024表
+SQL> drop table if exists t_external_hdfs_csv_decimal_024;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_024，测试varchar英文字母，值为'asdf'
+SQL> create external table t_external_hdfs_csv_decimal_024(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzimu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_024的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_024;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_025表
+SQL> drop table if exists t_external_hdfs_csv_decimal_025;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_025，测试varchar中文字符，值为'你好'
+SQL> create external table t_external_hdfs_csv_decimal_025(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwen.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_025的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_025;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_026表
+SQL> drop table if exists t_external_hdfs_csv_decimal_026;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_026，测试varchar中英文字符，值为'你好asdf'
+SQL> create external table t_external_hdfs_csv_decimal_026(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongyinghunhe.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_026的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_026;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_027表
+SQL> drop table if exists t_external_hdfs_csv_decimal_027;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_027，测试varchar英文特殊字符，值为'#$%^'
+SQL> create external table t_external_hdfs_csv_decimal_027(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_027的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_027;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_028表
+SQL> drop table if exists t_external_hdfs_csv_decimal_028;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_028，测试varchar中文特殊字符，值为'@#￥%……'
+SQL> create external table t_external_hdfs_csv_decimal_028(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_decimal_028的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_decimal_028;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_decimal_029表
+SQL> drop table if exists t_external_hdfs_csv_decimal_029;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_decimal_029，测试varchar为数字，值为'123456789'
+SQL> create external table t_external_hdfs_csv_decimal_029(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_007.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> --查询t_external_hdfs_csv_decimal_029的数据，实际返回空值
+SQL> SELECT * FROM t_external_hdfs_csv_decimal_029;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --    ldbdist external csv格式
+   > 
+   > --
+   > -- 删除t_external_ldbdist_csv_decimal_001表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_001;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_001，测试总长度n>38,创建失败,实际成功
+SQL> create external table t_external_ldbdist_csv_decimal_001(
+   > a1 decimal(39,1)
+   > )location('ldbdist://node74:54321/csv/decimal_001.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_002表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_002;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_002，测试总长度n<1,创建失败，实际创建失败，报precision or scale out of range in statement
+SQL> create external table t_external_ldbdist_csv_decimal_002(
+   > a1 decimal(0,0) 
+   > )location('ldbdist://node74:54321/csv/decimal_001.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_ldbdist_csv_decimal_002(
+a1 decimal(0,0) 
+)location('ldbdist://node74:54321/csv/decimal_001.csv')
+format 'csv' (delimiter ',')]
+SQL>   
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_003表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_003;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_003，测试整数部分长度>n-m,例如234.01，应报错,实际返回空值
+SQL> create external table t_external_ldbdist_csv_decimal_003(
+   > a1 decimal(4,2)  
+   > )location('ldbdist://node74:54321/csv/decimal_001.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_003的数据
+SQL> select * from t_external_ldbdist_csv_decimal_003;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_004表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_004;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_004，测试小数部分长度>m,例如23.7389,小数点后m位向右的数字被舍入，实际结果为23.74
+SQL> create external table t_external_ldbdist_csv_decimal_004(
+   > a1 decimal(4,2)   
+   > )location('ldbdist://node74:54321/csv/decimal_002.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_004的数据
+SQL> select * from t_external_ldbdist_csv_decimal_004;
++-------+
+| A1    |
++-------+
+| 23.74 |
++-------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_005表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_005;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_005，测试m小于0,创建失败，实际报错precision or scale out of range in statement
+SQL> create external table t_external_ldbdist_csv_decimal_005(
+   > a1 decimal(2,-1)  
+   > )location('ldbdist://node74:54321/csv/decimal_002.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_ldbdist_csv_decimal_005(
+a1 decimal(2,-1)  
+)location('ldbdist://node74:54321/csv/decimal_002.csv')
+format 'csv' (delimiter ',')]
+SQL>   
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_006表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_006;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_006，测试m大于n,创建失败，实际报错precision or scale out of range in statement
+SQL> create external table t_external_ldbdist_csv_decimal_006(
+   > a1 decimal(3,6)  
+   > )location('ldbdist://node74:54321/csv/decimal_002.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_ldbdist_csv_decimal_006(
+a1 decimal(3,6)  
+)location('ldbdist://node74:54321/csv/decimal_002.csv')
+format 'csv' (delimiter ',')]
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_007表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_007;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_007，测试decimal默认值是否为(5,0),值为12345,12345.19，实际结果为12345
+SQL> create external table t_external_ldbdist_csv_decimal_007(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/decimal_003.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_007的数据
+SQL> select * from t_external_ldbdist_csv_decimal_007;
++---------+
+| A1      |
++---------+
+| 12345.0 |
+| 12345.0 |
++---------+
+2 rows selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_008表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_008;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_008，测试decimal默认值是否为(5,0),值为123456，实际为123456
+SQL> create external table t_external_ldbdist_csv_decimal_008(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_008的数据
+SQL> select * from t_external_ldbdist_csv_decimal_008;
++----------+
+| A1       |
++----------+
+| 123456.0 |
++----------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_009表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_009;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_009，测试(*,m),创建失败，实际报错 unexpected token: * 
+SQL> create external table t_external_ldbdist_csv_decimal_009(
+   > a1 decimal(*,m)  
+   > )location('ldbdist://node74:54321/csv/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create external table t_external_ldbdist_csv_decimal_009(
+a1 decimal(*,m)  
+)location('ldbdist://node74:54321/csv/decimal_004.csv')
+format 'csv' (delimiter ',')]
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_010表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_010;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_010，测试(*),创建失败，实际报错unexpected token: * 
+SQL> create external table t_external_ldbdist_csv_decimal_010(
+   > a1 decimal(*)  
+   > )location('ldbdist://node74:54321/csv/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create external table t_external_ldbdist_csv_decimal_010(
+a1 decimal(*)  
+)location('ldbdist://node74:54321/csv/decimal_004.csv')
+format 'csv' (delimiter ',')]
+SQL>   
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_011表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_011;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_011，测试decimal(n),n设置为39,创建报错，实际创建成功
+SQL> create external table t_external_ldbdist_csv_decimal_011(
+   > a1 decimal(39)  
+   > )location('ldbdist://node74:54321/csv/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> 
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_012，测试decimal(n),n设置为5,值为123456大于5，报错，实际返回空值
+SQL> create external table t_external_ldbdist_csv_decimal_012(
+   > a1 decimal(5)  
+   > )location('ldbdist://node74:54321/csv/decimal_004.csv')
+   > format 'csv' (delimiter ',');
+java.sql.SQLSyntaxErrorException: object name already exists: T_EXTERNAL_LDBDIST_CSV_DECIMAL_012 in statement [create external table t_external_ldbdist_csv_decimal_012(
+a1 decimal(5)  
+)location('ldbdist://node74:54321/csv/decimal_004.csv')
+format 'csv' (delimiter ',')]
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_012的数据
+SQL> select * from t_external_ldbdist_csv_decimal_012;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_013表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_013;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_013，测试decimal(n),n设置为5,值为12345.12,或者为1234，实际为12345和1234
+SQL> create external table t_external_ldbdist_csv_decimal_013(
+   > a1 decimal(5)
+   > 
+   > )location('ldbdist://node74:54321/csv/decimal_005.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_013的数据
+SQL> select * from t_external_ldbdist_csv_decimal_013;
++---------+
+| A1      |
++---------+
+| 12345.0 |
+| 1234.0  |
++---------+
+2 rows selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_015表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_015;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_015，测试空值
+SQL> create external table t_external_ldbdist_csv_decimal_015(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/type_kongzhi.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_015的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_015;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL>  
+SQL>  
+SQL> -- 删除t_external_ldbdist_csv_decimal_016表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_016;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_016，测试空格 
+SQL> create external table t_external_ldbdist_csv_decimal_016(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/type_kongge.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_016的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_016;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_017表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_017;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_017，测试null 
+SQL> create external table t_external_ldbdist_csv_decimal_017(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/type_null.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_017的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_017;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_018表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_018;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_018，测试NULL  
+SQL> create external table t_external_ldbdist_csv_decimal_018(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/type_NULL.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_018的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_018;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_019表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_019;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_019，测试int类型，值为1147483647
+SQL> create external table t_external_ldbdist_csv_decimal_019(
+   > a1 decimal(10)  
+   > )location('ldbdist://node74:54321/csv/decimal_006.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_019的数据，返回1147483647
+SQL> select * from t_external_ldbdist_csv_decimal_019;
++--------------+
+| A1           |
++--------------+
+| 1147483647.0 |
++--------------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_020表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_020;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_020，测试date类型，值为2020-01-01
+SQL> create external table t_external_ldbdist_csv_decimal_020(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/type_date.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_020的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_020;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_021表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_021;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_021，测试boolean类型，值为false
+SQL> create external table t_external_ldbdist_csv_decimal_021(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/boolean_false.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_021的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_021;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_022表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_022;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_022，测试boolean类型，值为true
+SQL> create external table t_external_ldbdist_csv_decimal_022(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/boolean_true.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_022的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_022;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_023表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_023;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_023，测试timestamp，值为2020-05-08 12:19:01
+SQL> create external table t_external_ldbdist_csv_decimal_023(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/type_timestamp.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_023的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_023;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_024表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_024;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_024，测试varchar英文字母，值为'asdf'
+SQL> create external table t_external_ldbdist_csv_decimal_024(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/varchar_yingwenzimu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_024的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_024;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_025表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_025;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_025，测试varchar中文字符，值为'你好'
+SQL> create external table t_external_ldbdist_csv_decimal_025(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/varchar_zhongwen.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_025的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_025;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_026表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_026;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_026，测试varchar中英文字符，值为'你好asdf'
+SQL> create external table t_external_ldbdist_csv_decimal_026(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/varchar_zhongyinghunhe.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_026的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_026;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_027表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_027;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_027，测试varchar英文特殊字符，值为'#$%^'
+SQL> create external table t_external_ldbdist_csv_decimal_027(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/varchar_yingwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_027的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_027;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_028表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_028;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_028，测试varchar中文特殊字符，值为'@#￥%……'
+SQL> create external table t_external_ldbdist_csv_decimal_028(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/varchar_zhongwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_decimal_028的数据，实际返回空值
+SQL> select * from t_external_ldbdist_csv_decimal_028;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_ldbdist_csv_decimal_029表
+SQL> drop table if exists t_external_ldbdist_csv_decimal_029;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_decimal_029，测试varchar为数字，值为'123456789'
+SQL> create external table t_external_ldbdist_csv_decimal_029(
+   > a1 decimal  
+   > )location('ldbdist://node74:54321/csv/decimal_007.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> --查询t_external_ldbdist_csv_decimal_029的数据，实际返回空值
+SQL> SELECT * FROM t_external_ldbdist_csv_decimal_029;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- hdfs external parquet 
+   > 
+   > -- 删除表
+SQL> drop table if exists t_external_hdfs_parquet_decimal_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_002;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_003;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_004;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_005;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_006;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_007;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_008;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_009;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_decimal_010
+   > drop table if exists t_external_hdfs_parquet_decimal_011;
+java.sql.SQLSyntaxErrorException: unexpected token: DROP : line: 2 in statement [drop table if exists t_external_hdfs_parquet_decimal_010
+drop table if exists t_external_hdfs_parquet_decimal_011]
+SQL> drop table if exists t_external_hdfs_parquet_decimal_012;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 创建表t_external_ldbdist_csv_numeric_001，测试总长度n>38,创建失败,实际成功
+SQL> create external table t_external_hdfs_parquet_decimal_001(
+   > a1 decimal(39,1)
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+   > FORMAT'parquet';
+0 rows affected
+SQL> 
+SQL> -- 测试总长度n<1,创建失败，实际创建失败，报precision or scale out of range in statement
+SQL> create external table t_external_hdfs_parquet_decimal_002(
+   > a1 decimal(0,0) 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+   > FORMAT'parquet';
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_hdfs_parquet_decimal_002(
+a1 decimal(0,0) 
+)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+FORMAT'parquet']
+SQL> 
+SQL> -- 测试整数部分长度>n-m,例如234.01，应报错,实际返回空值
+SQL> create external table t_external_hdfs_parquet_decimal_003(
+   > a1 decimal(4,2)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+   > FORMAT'parquet';
+0 rows affected
+SQL>   
+SQL> --查询t_external_ldbdist_csv_numeric_003的数据
+SQL> select * from t_external_hdfs_parquet_decimal_003;
+java.sql.SQLException: Worker execution: ldb worker caused error: db catalyst: adapt to spark error: cache error : java.util.concurrent.ExecutionException: org.apache.spark.sql.AnalysisException: Unable to infer schema for Parquet. It must be specified manually.;
+	at com.google.common.util.concurrent.AbstractFuture.getDoneValue(AbstractFuture.java:503)
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:462)
+	at com.google.common.util.concurrent.AbstractFuture$TrustedFuture.get(AbstractFuture.java:79)
+	at com.google.common.util.concurrent.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:142)
+	at com.google.common.cache.LocalCache$Segment.getAndRecordStats(LocalCache.java:2453)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2417)
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2299)
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2212)
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4147)
+	at com.google.common.cache.LocalCache$LocalManualCache.get(LocalCache.java:5053)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertLogicalRelation(LogicalPlanConverter.java:1256)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:217)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertProject(LogicalPlanConverter.java:1671)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:203)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2491)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2452)
+	at com.datapps.linkoopdb.worker.spark.SparkSessionManager.submitStatement(SparkSessionManager.java:193)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2449)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.receiveMessage(SparkWorker.java:623)
+	at sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:302)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:198)
+	at com.caucho.hessian.server.HessianServlet.invoke(HessianServlet.java:423)
+	at com.caucho.hessian.server.HessianServlet.service(HessianServlet.java:403)
+	at org.spark_project.jetty.servlet.ServletHolder.handle(ServletHolder.java:848)
+	at org.spark_project.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:584)
+	at org.spark_project.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
+	at org.spark_project.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
+	at org.spark_project.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
+	at org.spark_project.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.spark_project.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
+	at org.spark_project.jetty.server.Server.handle(Server.java:539)
+	at org.spark_project.jetty.server.HttpChannel.handle(HttpChannel.java:333)
+	at org.spark_project.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.spark_project.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:283)
+	at org.spark_project.jetty.io.FillInterest.fillable(FillInterest.java:108)
+	at org.spark_project.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.spark.sql.AnalysisException: Unable to infer schema for Parquet. It must be specified manually.;
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$7.apply(DataSource.scala:185)
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$7.apply(DataSource.scala:185)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.sql.execution.datasources.DataSource.getOrInferFileFormatSchema(DataSource.scala:184)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:373)
+	at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:225)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:212)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:643)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:642)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.lambda$convertLogicalRelation$85(LogicalPlanConverter.java:1271)
+	at com.google.common.cache.LocalCache$LocalManualCache$1.load(LocalCache.java:5058)
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3708)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2416)
+	... 39 more
+
+SQL> 
+SQL> 
+SQL> --测试m小于0,创建失败，实际报错precision or scale out of range in statement
+SQL> create external table t_external_hdfs_parquet_decimal_004(
+   > a1 decimal(2,-1)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+   > FORMAT'parquet';
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_hdfs_parquet_decimal_004(
+a1 decimal(2,-1)  
+)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+FORMAT'parquet']
+SQL> 
+SQL> 
+SQL> --测试m大于n,创建失败，实际报错precision or scale out of range in statement
+SQL> create external table t_external_hdfs_parquet_decimal_005(
+   > a1 decimal(3,6)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+   > FORMAT'parquet';
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_hdfs_parquet_decimal_005(
+a1 decimal(3,6)  
+)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+FORMAT'parquet']
+SQL> 
+SQL> 
+SQL> -- 测试(*,m),创建失败，实际报错 unexpected token: * 
+SQL> create external table t_external_hdfs_parquet_decimal_006(
+   > a1 decimal(*,m)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+   > FORMAT'parquet';
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create external table t_external_hdfs_parquet_decimal_006(
+a1 decimal(*,m)  
+)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+FORMAT'parquet']
+SQL> 
+SQL> --测试(*),创建失败，实际报错unexpected token: * 
+SQL> create external table t_external_hdfs_parquet_decimal_007(
+   > a1 decimal(*)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+   > FORMAT'parquet';
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create external table t_external_hdfs_parquet_decimal_007(
+a1 decimal(*)  
+)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+FORMAT'parquet']
+SQL>   
+SQL> -- 测试numeric(n),n设置为39,创建报错，实际创建成功
+SQL> create external table t_external_hdfs_parquet_decimal_008(
+   > a1 decimal(39)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+   > FORMAT'parquet';
+0 rows affected
+SQL>   
+SQL>   
+SQL> 
+SQL> 
+SQL> --测试numeric默认值是否为(5,0),值为123456，实际为123456
+SQL> create external table t_external_hdfs_parquet_decimal_009(
+   > a1 decimal  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric2')
+   > FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_decimal_009;
+java.sql.SQLException: Worker execution: ldb worker caused error: db catalyst: adapt to spark error: cache error : java.util.concurrent.ExecutionException: org.apache.spark.sql.AnalysisException: Unable to infer schema for Parquet. It must be specified manually.;
+	at com.google.common.util.concurrent.AbstractFuture.getDoneValue(AbstractFuture.java:503)
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:462)
+	at com.google.common.util.concurrent.AbstractFuture$TrustedFuture.get(AbstractFuture.java:79)
+	at com.google.common.util.concurrent.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:142)
+	at com.google.common.cache.LocalCache$Segment.getAndRecordStats(LocalCache.java:2453)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2417)
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2299)
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2212)
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4147)
+	at com.google.common.cache.LocalCache$LocalManualCache.get(LocalCache.java:5053)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertLogicalRelation(LogicalPlanConverter.java:1256)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:217)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertProject(LogicalPlanConverter.java:1671)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:203)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2491)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2452)
+	at com.datapps.linkoopdb.worker.spark.SparkSessionManager.submitStatement(SparkSessionManager.java:193)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2449)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.receiveMessage(SparkWorker.java:623)
+	at sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:302)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:198)
+	at com.caucho.hessian.server.HessianServlet.invoke(HessianServlet.java:423)
+	at com.caucho.hessian.server.HessianServlet.service(HessianServlet.java:403)
+	at org.spark_project.jetty.servlet.ServletHolder.handle(ServletHolder.java:848)
+	at org.spark_project.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:584)
+	at org.spark_project.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
+	at org.spark_project.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
+	at org.spark_project.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
+	at org.spark_project.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.spark_project.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
+	at org.spark_project.jetty.server.Server.handle(Server.java:539)
+	at org.spark_project.jetty.server.HttpChannel.handle(HttpChannel.java:333)
+	at org.spark_project.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.spark_project.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:283)
+	at org.spark_project.jetty.io.FillInterest.fillable(FillInterest.java:108)
+	at org.spark_project.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.spark.sql.AnalysisException: Unable to infer schema for Parquet. It must be specified manually.;
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$7.apply(DataSource.scala:185)
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$7.apply(DataSource.scala:185)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.sql.execution.datasources.DataSource.getOrInferFileFormatSchema(DataSource.scala:184)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:373)
+	at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:225)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:212)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:643)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:642)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.lambda$convertLogicalRelation$85(LogicalPlanConverter.java:1271)
+	at com.google.common.cache.LocalCache$LocalManualCache$1.load(LocalCache.java:5058)
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3708)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2416)
+	... 39 more
+
+SQL> 
+SQL> --测试numeric(n),n设置为5,值为123456大于5，报错，实际返回空值 
+SQL> create external table t_external_hdfs_parquet_decimal_010(
+   > a1 decimal(5)  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric2')
+   > FORMAT'parquet';
+java.sql.SQLSyntaxErrorException: object name already exists: T_EXTERNAL_HDFS_PARQUET_DECIMAL_010 in statement [create external table t_external_hdfs_parquet_decimal_010(
+a1 decimal(5)  
+)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric2')
+FORMAT'parquet']
+SQL> select * from t_external_hdfs_parquet_decimal_010;
+java.sql.SQLException: Worker execution: ldb worker caused error: db catalyst: adapt to spark error: cache error : java.util.concurrent.ExecutionException: org.apache.spark.sql.AnalysisException: Unable to infer schema for Parquet. It must be specified manually.;
+	at com.google.common.util.concurrent.AbstractFuture.getDoneValue(AbstractFuture.java:503)
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:462)
+	at com.google.common.util.concurrent.AbstractFuture$TrustedFuture.get(AbstractFuture.java:79)
+	at com.google.common.util.concurrent.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:142)
+	at com.google.common.cache.LocalCache$Segment.getAndRecordStats(LocalCache.java:2453)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2417)
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2299)
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2212)
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4147)
+	at com.google.common.cache.LocalCache$LocalManualCache.get(LocalCache.java:5053)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertLogicalRelation(LogicalPlanConverter.java:1256)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:217)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertProject(LogicalPlanConverter.java:1671)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:203)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2491)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2452)
+	at com.datapps.linkoopdb.worker.spark.SparkSessionManager.submitStatement(SparkSessionManager.java:193)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2449)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.receiveMessage(SparkWorker.java:623)
+	at sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:302)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:198)
+	at com.caucho.hessian.server.HessianServlet.invoke(HessianServlet.java:423)
+	at com.caucho.hessian.server.HessianServlet.service(HessianServlet.java:403)
+	at org.spark_project.jetty.servlet.ServletHolder.handle(ServletHolder.java:848)
+	at org.spark_project.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:584)
+	at org.spark_project.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
+	at org.spark_project.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
+	at org.spark_project.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
+	at org.spark_project.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.spark_project.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
+	at org.spark_project.jetty.server.Server.handle(Server.java:539)
+	at org.spark_project.jetty.server.HttpChannel.handle(HttpChannel.java:333)
+	at org.spark_project.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.spark_project.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:283)
+	at org.spark_project.jetty.io.FillInterest.fillable(FillInterest.java:108)
+	at org.spark_project.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.spark.sql.AnalysisException: Unable to infer schema for Parquet. It must be specified manually.;
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$7.apply(DataSource.scala:185)
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$7.apply(DataSource.scala:185)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.sql.execution.datasources.DataSource.getOrInferFileFormatSchema(DataSource.scala:184)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:373)
+	at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:225)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:212)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:643)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:642)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.lambda$convertLogicalRelation$85(LogicalPlanConverter.java:1271)
+	at com.google.common.cache.LocalCache$LocalManualCache$1.load(LocalCache.java:5058)
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3708)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2416)
+	... 39 more
+
+SQL> 
+SQL> --测试测试小数部分长度>m，测试numeric默认值是否为(5,0),测试int，varchar
+SQL> create external table t_external_hdfs_parquet_decimal_011(
+   > a1 decimal(4,2),
+   > a2 decimal,
+   > a3 decimal,
+   > a4 decimal(5),
+   > a5 decimal(5),
+   > a6 decimal(20) ,
+   > a7 decimal(20),
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric3')
+   > FORMAT'parquet';
+java.sql.SQLSyntaxErrorException: object name already exists: T_EXTERNAL_HDFS_PARQUET_DECIMAL_011 in statement [create external table t_external_hdfs_parquet_decimal_011(
+a1 decimal(4,2),
+a2 decimal,
+a3 decimal,
+a4 decimal(5),
+a5 decimal(5),
+a6 decimal(20) ,
+a7 decimal(20),
+)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric3')
+FORMAT'parquet']
+SQL> select * from t_external_hdfs_parquet_decimal_011;
+java.sql.SQLException: Worker execution: ldb worker caused error: db catalyst: adapt to spark error: cache error : java.util.concurrent.ExecutionException: org.apache.spark.sql.AnalysisException: Unable to infer schema for Parquet. It must be specified manually.;
+	at com.google.common.util.concurrent.AbstractFuture.getDoneValue(AbstractFuture.java:503)
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:462)
+	at com.google.common.util.concurrent.AbstractFuture$TrustedFuture.get(AbstractFuture.java:79)
+	at com.google.common.util.concurrent.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:142)
+	at com.google.common.cache.LocalCache$Segment.getAndRecordStats(LocalCache.java:2453)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2417)
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2299)
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2212)
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4147)
+	at com.google.common.cache.LocalCache$LocalManualCache.get(LocalCache.java:5053)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertLogicalRelation(LogicalPlanConverter.java:1256)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:217)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertProject(LogicalPlanConverter.java:1671)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:203)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2491)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2452)
+	at com.datapps.linkoopdb.worker.spark.SparkSessionManager.submitStatement(SparkSessionManager.java:193)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2449)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.receiveMessage(SparkWorker.java:623)
+	at sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:302)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:198)
+	at com.caucho.hessian.server.HessianServlet.invoke(HessianServlet.java:423)
+	at com.caucho.hessian.server.HessianServlet.service(HessianServlet.java:403)
+	at org.spark_project.jetty.servlet.ServletHolder.handle(ServletHolder.java:848)
+	at org.spark_project.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:584)
+	at org.spark_project.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
+	at org.spark_project.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
+	at org.spark_project.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
+	at org.spark_project.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.spark_project.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
+	at org.spark_project.jetty.server.Server.handle(Server.java:539)
+	at org.spark_project.jetty.server.HttpChannel.handle(HttpChannel.java:333)
+	at org.spark_project.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.spark_project.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:283)
+	at org.spark_project.jetty.io.FillInterest.fillable(FillInterest.java:108)
+	at org.spark_project.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.spark.sql.AnalysisException: Unable to infer schema for Parquet. It must be specified manually.;
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$7.apply(DataSource.scala:185)
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$7.apply(DataSource.scala:185)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.apache.spark.sql.execution.datasources.DataSource.getOrInferFileFormatSchema(DataSource.scala:184)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:373)
+	at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:225)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:212)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:643)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:642)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.lambda$convertLogicalRelation$85(LogicalPlanConverter.java:1271)
+	at com.google.common.cache.LocalCache$LocalManualCache$1.load(LocalCache.java:5058)
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3708)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2416)
+	... 39 more
+
+SQL> 
+SQL> 
+SQL> -- 测试varchar，date,timestamp,boolean以及''等异常值
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_decimal_012(
+   > a1 decimal,
+   > a2 decimal,
+   > a3 decimal,
+   > a4 decimal,
+   > a5 decimal,
+   > a6 decimal,
+   > a7 decimal,
+   > a8 decimal,
+   > a9 decimal,
+   > a10 decimal,
+   > a11 decimal,
+   > a12 decimal,
+   > a13 decimal
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_decimal_012;
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------------+-----+-----+
+| A1     | A2     | A3     | A4     | A5     | A6     | A7     | A8     | A9     | A10    | A11          | A12 | A13 |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------------+-----+-----+
+| <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | 1588911541.0 | 1.0 | 0.0 |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------------+-----+-----+
+1 row selected.
+SQL> exit
+Disconnected.
