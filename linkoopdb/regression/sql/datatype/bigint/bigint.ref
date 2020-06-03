@@ -1,0 +1,419 @@
+SQLCli Release 0.0.45
+SQL> connect admin/123456
+Database connected.
+SQL> start bigint/bigint.sql
+SQL> --Description：bigint data type
+   > --Date：2020-05-22
+   > --Author：李爱敏s
+   > 
+   > -- bigint数据类型验证
+   > --删除表T_TYPE_BIGINT
+SQL> drop table T_TYPE_BIGINT if exists;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_BIGINT
+SQL> create table T_TYPE_BIGINT(
+   > a1 bigint  
+   > );
+0 rows affected
+SQL> 
+SQL> --验证bigint类型最小值-9223372036854775808
+SQL> insert into T_TYPE_BIGINT values(-9223372036854775808);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| -9223372036854775808 |
++----------------------+
+1 row selected.
+SQL> 
+SQL> --验证bigint类型最小值-1，是否报错
+SQL> insert into T_TYPE_BIGINT values(-9223372036854775809);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+2 rows selected.
+SQL> 
+SQL> --验证bigint类型最大值9223372036854775807
+SQL> insert into T_TYPE_BIGINT values(9223372036854775807);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+3 rows selected.
+SQL> 
+SQL> --验证bigint类型最大值+1，是否报错              
+SQL> insert into T_TYPE_BIGINT values(9223372036854775808);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+4 rows selected.
+SQL> 
+SQL> --验证精度超出范围，四舍五入
+SQL> insert into T_TYPE_BIGINT values(172.23);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+5 rows selected.
+SQL> 
+SQL> --验证插入double类型，数据在bigint范围内
+SQL> insert into T_TYPE_BIGINT values(172.23);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+6 rows selected.
+SQL> 
+SQL> --验证插入double类型，值已经超出bigint最大范围，是否报错
+SQL> insert into T_TYPE_BIGINT values(9223372036854775890.231);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+7 rows selected.
+SQL> 
+SQL> --验证插入double类型，值已经超出bigint最小范围，是否报错
+SQL> insert into T_TYPE_BIGINT values(-9223372036854775890.231);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+8 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入数字'12345'
+SQL> insert into T_TYPE_BIGINT values('1234');
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+9 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'AAbcd'
+SQL> insert into T_TYPE_BIGINT values('AAbcd');
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+10 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入汉字'北京'
+SQL> insert into T_TYPE_BIGINT values('北京');
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+11 rows selected.
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd
+SQL> insert into T_TYPE_BIGINT values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+12 rows selected.
+SQL> 
+SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss
+SQL> insert into T_TYPE_BIGINT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 1588911541           |
+| <null>               |
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+13 rows selected.
+SQL> 
+SQL> --验证插入boolean类型，插入true                                                       
+SQL> insert into T_TYPE_BIGINT values(true);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 1                    |
+| 1588911541           |
+| <null>               |
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+14 rows selected.
+SQL> 
+SQL> --验证插入boolean类型，插入false
+SQL> insert into T_TYPE_BIGINT values(false); 
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT; 
++----------------------+
+| A1                   |
++----------------------+
+| 0                    |
+| 1                    |
+| 1588911541           |
+| <null>               |
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+15 rows selected.
+SQL> 
+SQL> --验证插入空值''                                                   
+SQL> insert into T_TYPE_BIGINT values('');     
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| 0                    |
+| 1                    |
+| 1588911541           |
+| <null>               |
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+16 rows selected.
+SQL> 
+SQL> --验证插入空格' '                                                   
+SQL> insert into T_TYPE_BIGINT values(' ');     
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| <null>               |
+| 0                    |
+| 1                    |
+| 1588911541           |
+| <null>               |
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+17 rows selected.
+SQL> 
+SQL> --验证插入null                                                    
+SQL> insert into T_TYPE_BIGINT values(null);  
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;  
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| <null>               |
+| <null>               |
+| 0                    |
+| 1                    |
+| 1588911541           |
+| <null>               |
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+18 rows selected.
+SQL> 
+SQL> --验证插入NULL                                                   
+SQL> insert into T_TYPE_BIGINT values(NULL);  
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| <null>               |
+| <null>               |
+| <null>               |
+| 0                    |
+| 1                    |
+| 1588911541           |
+| <null>               |
+| <null>               |
+| <null>               |
+| 1234                 |
+| 9223372036854775726  |
+| -9223372036854775726 |
+| 172                  |
+| 172                  |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+19 rows selected.
+SQL> exit
+Disconnected.

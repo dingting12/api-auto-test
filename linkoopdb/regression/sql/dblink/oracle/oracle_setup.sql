@@ -1,22 +1,22 @@
 --oracle dblink sql
 
-connect linkoopdb/123456@jdbc:oracle:thin:@192.168.1.72:1521:xe
+connect linkoopdb/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
---¼ÇÂ¼Ö´ĞĞÊ±¼ä
+--è®°å½•æ‰§è¡Œæ—¶é—´
 set timing on
---·µ»Ø½á¹û
+--è¿”å›ç»“æœ
 set termout on
---ÊÇ·ñ´òÓ¡Ö´ĞĞµÄSQLÓï¾ä
+--æ˜¯å¦æ‰“å°æ‰§è¡Œçš„SQLè¯­å¥
 set ECHO ON
 
 
 --------------------------------------------------------
 --user_name
 
----ÃüÃû
+---å‘½å
 
-----Ó¢ÎÄÃüÃû¼°´óĞ¡Ğ´
-DROP USER u_Test_DBlink1;
+----è‹±æ–‡å‘½ååŠå¤§å°å†™
+DROP USER u_Test_DBlink1 CASCADE;
 
 CREATE USER u_Test_DBlink1 IDENTIFIED BY 123456;
 
@@ -26,13 +26,13 @@ DROP TABLE u_Test_DBlink1.t_dblink_wy1;
 
 CREATE TABLE u_Test_DBlink1.t_dblink_wy1(id INT,name VARCHAR(200));
 
-INSERT INTO u_Test_DBlink1.t_dblink_wy1 VALUES(1,'ÎÒÀ´ÊÔÑéÒ»ÏÂ');
+INSERT INTO u_Test_DBlink1.t_dblink_wy1 VALUES(1,'æˆ‘æ¥è¯•éªŒä¸€ä¸‹');
 
 SELECT * FROM u_Test_DBlink1.t_dblink_wy1 ORDER BY id;
 
 SELECT username from dba_users WHERE username='U_TEST_DBLINK1';
 
-DROP USER "u_Test_DBlink1";
+DROP USER "u_Test_DBlink1" CASCADE;
 
 CREATE USER "u_Test_DBlink1" IDENTIFIED BY 123456;
 
@@ -42,66 +42,66 @@ DROP TABLE "u_Test_DBlink1".t_dblink_wy1;
 
 CREATE TABLE "u_Test_DBlink1".t_dblink_wy1(id INT,name VARCHAR(200));
 
-INSERT INTO "u_Test_DBlink1".t_dblink_wy1 VALUES(1,'ÎÒÀ´ÊÔÑéÒ»ÏÂ');
+INSERT INTO "u_Test_DBlink1".t_dblink_wy1 VALUES(1,'æˆ‘æ¥è¯•éªŒä¸€ä¸‹');
 
 SELECT * FROM "u_Test_DBlink1".t_dblink_wy1 ORDER BY id;
 
 SELECT username from dba_users WHERE username='u_Test_DBlink1';
 
-----ÖĞÎÄÃüÃû
-DROP USER ¹¤¾ßÈË1ºÅ;
+----ä¸­æ–‡å‘½å
+DROP USER å·¥å…·äºº1å· CASCADE;
 
-CREATE USER ¹¤¾ßÈË1ºÅ IDENTIFIED BY 123456;
+CREATE USER å·¥å…·äºº1å· IDENTIFIED BY 123456;
 
-GRANT dba TO ¹¤¾ßÈË1ºÅ;
+GRANT dba TO å·¥å…·äºº1å·;
 
-DROP TABLE ¹¤¾ßÈË1ºÅ.t_dblink_wy1;
+DROP TABLE å·¥å…·äºº1å·.t_dblink_wy1;
 
-CREATE TABLE ¹¤¾ßÈË1ºÅ.t_dblink_wy1(id INT,name VARCHAR(200));
+CREATE TABLE å·¥å…·äºº1å·.t_dblink_wy1(id INT,name VARCHAR(200));
 
-INSERT INTO ¹¤¾ßÈË1ºÅ.t_dblink_wy1 VALUES(1,'ÎÒÀ´ÊÔÑéÒ»ÏÂ');
+INSERT INTO å·¥å…·äºº1å·.t_dblink_wy1 VALUES(1,'æˆ‘æ¥è¯•éªŒä¸€ä¸‹');
 
-SELECT * FROM ¹¤¾ßÈË1ºÅ.t_dblink_wy1 ORDER BY id;
+SELECT * FROM å·¥å…·äºº1å·.t_dblink_wy1 ORDER BY id;
 
-SELECT username from dba_users WHERE username='¹¤¾ßÈË1ºÅ';
+SELECT username from dba_users WHERE username='å·¥å…·äºº1å·';
 
-DROP USER "¹¤¾ßÈËë£ñóõùõ÷";
+DROP USER "å·¥å…·äººè€„è€‹è²”è²…" CASCADE;
 
-CREATE USER "¹¤¾ßÈËë£ñóõùõ÷" IDENTIFIED BY 123456;
+CREATE USER "å·¥å…·äººè€„è€‹è²”è²…" IDENTIFIED BY 123456;
 
-GRANT dba TO "¹¤¾ßÈËë£ñóõùõ÷";
+GRANT dba TO "å·¥å…·äººè€„è€‹è²”è²…";
 
-DROP TABLE "¹¤¾ßÈËë£ñóõùõ÷".t_dblink_wy1;
+DROP TABLE "å·¥å…·äººè€„è€‹è²”è²…".t_dblink_wy1;
 
-CREATE TABLE "¹¤¾ßÈËë£ñóõùõ÷".t_dblink_wy1(id INT,name VARCHAR(200));
+CREATE TABLE "å·¥å…·äººè€„è€‹è²”è²…".t_dblink_wy1(id INT,name VARCHAR(200));
 
-INSERT INTO "¹¤¾ßÈËë£ñóõùõ÷".t_dblink_wy1 VALUES(1,'ÎÒÀ´ÊÔÑéÒ»ÏÂ');
+INSERT INTO "å·¥å…·äººè€„è€‹è²”è²…".t_dblink_wy1 VALUES(1,'æˆ‘æ¥è¯•éªŒä¸€ä¸‹');
 
-SELECT * FROM "¹¤¾ßÈËë£ñóõùõ÷".t_dblink_wy1 ORDER BY id;
+SELECT * FROM "å·¥å…·äººè€„è€‹è²”è²…".t_dblink_wy1 ORDER BY id;
 
-SELECT username from dba_users WHERE username='¹¤¾ßÈËë£ñóõùõ÷';
+SELECT username from dba_users WHERE username='å·¥å…·äººè€„è€‹è²”è²…';
 
-----ÖĞÓ¢ÎÄ»ìºÏ¼ÓÌØÊâ×Ö·û¼Ó´óĞ¡Ğ´
-DROP USER "U_DBlink@!@$%#(*ÌØÀÊÆÕ";
+----ä¸­è‹±æ–‡æ··åˆåŠ ç‰¹æ®Šå­—ç¬¦åŠ å¤§å°å†™
+DROP USER "U_DBlink@!@$%#(*ç‰¹æœ—æ™®" CASCADE;
 
-CREATE USER "U_DBlink@!@$%#(*ÌØÀÊÆÕ" IDENTIFIED BY 123456;
+CREATE USER "U_DBlink@!@$%#(*ç‰¹æœ—æ™®" IDENTIFIED BY 123456;
 
-GRANT dba TO "U_DBlink@!@$%#(*ÌØÀÊÆÕ";
+GRANT dba TO "U_DBlink@!@$%#(*ç‰¹æœ—æ™®";
 
-DROP TABLE "U_DBlink@!@$%#(*ÌØÀÊÆÕ".t_dblink_wy1;
+DROP TABLE "U_DBlink@!@$%#(*ç‰¹æœ—æ™®".t_dblink_wy1;
 
-CREATE TABLE "U_DBlink@!@$%#(*ÌØÀÊÆÕ".t_dblink_wy1(id INT,name VARCHAR(200));
+CREATE TABLE "U_DBlink@!@$%#(*ç‰¹æœ—æ™®".t_dblink_wy1(id INT,name VARCHAR(200));
 
-INSERT INTO "U_DBlink@!@$%#(*ÌØÀÊÆÕ".t_dblink_wy1 VALUES(1,'ÎÒÀ´ÊÔÑéÒ»ÏÂ');
+INSERT INTO "U_DBlink@!@$%#(*ç‰¹æœ—æ™®".t_dblink_wy1 VALUES(1,'æˆ‘æ¥è¯•éªŒä¸€ä¸‹');
 
-SELECT * FROM "U_DBlink@!@$%#(*ÌØÀÊÆÕ".t_dblink_wy1 ORDER BY id;
+SELECT * FROM "U_DBlink@!@$%#(*ç‰¹æœ—æ™®".t_dblink_wy1 ORDER BY id;
 
-SELECT username from dba_users WHERE username='U_DBlink@!@$%#(*ÌØÀÊÆÕ';
+SELECT username from dba_users WHERE username='U_DBlink@!@$%#(*ç‰¹æœ—æ™®';
 
----È¨ÏŞ
+---æƒé™
 
-----ÓÃ»§ÓĞÔ¶³Ì·ÃÎÊÈ¨ÏŞ
-DROP USER u_dblink_permission1;
+----ç”¨æˆ·æœ‰è¿œç¨‹è®¿é—®æƒé™
+DROP USER u_dblink_permission1 CASCADE;
 
 CREATE USER u_dblink_permission1 IDENTIFIED BY 123456;
 
@@ -111,8 +111,8 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION1'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION1'); 
 
-----ÓÃ»§ÓĞ´´½¨£¬É¾³ı£¬ĞŞ¸Ä tableµÄÈ¨ÏŞ
-DROP USER u_dblink_permission2;
+----ç”¨æˆ·æœ‰åˆ›å»ºï¼Œåˆ é™¤ï¼Œä¿®æ”¹ tableçš„æƒé™
+DROP USER u_dblink_permission2 CASCADE;
 
 CREATE USER u_dblink_permission2 IDENTIFIED BY 123456;
 
@@ -126,7 +126,7 @@ DROP TABLE u_dblink_permission2.t_dblink_wy1;
 
 CREATE TABLE u_dblink_permission2.t_dblink_wy1(id INT,name VARCHAR(200));
 
-INSERT INTO u_dblink_permission2.t_dblink_wy1 VALUES(1,'ÎÒÀ´ÊÔÑéÒ»ÏÂ');
+INSERT INTO u_dblink_permission2.t_dblink_wy1 VALUES(1,'æˆ‘æ¥è¯•éªŒä¸€ä¸‹');
 
 SELECT * FROM u_dblink_permission2.t_dblink_wy1 ORDER BY id;
 
@@ -134,7 +134,7 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION2'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION2'); 
 
-DROP USER u_dblink_permission3;
+DROP USER u_dblink_permission3 CASCADE;
 
 CREATE USER u_dblink_permission3 IDENTIFIED BY 123456;
 
@@ -148,8 +148,8 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION3'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION3'); 
 
-----ÓÃ»§ÓĞ´´½¨£¬É¾³ıviewµÄÈ¨ÏŞ
-DROP USER u_dblink_permission4;
+----ç”¨æˆ·æœ‰åˆ›å»ºï¼Œåˆ é™¤viewçš„æƒé™
+DROP USER u_dblink_permission4 CASCADE;
 
 CREATE USER u_dblink_permission4 IDENTIFIED BY 123456;
 
@@ -161,7 +161,7 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION4'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION4'); 
 
-DROP USER u_dblink_permission5;
+DROP USER u_dblink_permission5 CASCADE;
 
 CREATE USER u_dblink_permission5 IDENTIFIED BY 123456;
 
@@ -173,8 +173,8 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION5'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION5'); 
 
-----ÓÃ»§ÓĞ´´½¨procµÄÈ¨ÏŞ
-DROP USER u_dblink_permission6;
+----ç”¨æˆ·æœ‰åˆ›å»ºprocçš„æƒé™
+DROP USER u_dblink_permission6 CASCADE;
 
 CREATE USER u_dblink_permission6 IDENTIFIED BY 123456;
 
@@ -186,7 +186,7 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION6'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION6'); 
 
-DROP USER u_dblink_permission7;
+DROP USER u_dblink_permission7 CASCADE;
 
 CREATE USER u_dblink_permission7 IDENTIFIED BY 123456;
 
@@ -198,8 +198,8 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION7'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION7'); 
 
-----ÓÃ»§ÓĞ²éÑ¯µÄÈ¨ÏŞ
-DROP USER u_dblink_permission8;
+----ç”¨æˆ·æœ‰æŸ¥è¯¢çš„æƒé™
+DROP USER u_dblink_permission8 CASCADE;
 
 CREATE USER u_dblink_permission8 IDENTIFIED BY 123456;
 
@@ -209,8 +209,8 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION8'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION8'); 
 
-----ÓÃ»§ÓĞ²åÈëµÄÈ¨ÏŞ
-DROP USER u_dblink_permission9;
+----ç”¨æˆ·æœ‰æ’å…¥çš„æƒé™
+DROP USER u_dblink_permission9 CASCADE;
 
 CREATE USER u_dblink_permission9 IDENTIFIED BY 123456;
 
@@ -220,8 +220,8 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION9'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION9'); 
 
-----ÓÃ»§ÓĞ¸üĞÂµÄÈ¨ÏŞ
-DROP USER u_dblink_permission10;
+----ç”¨æˆ·æœ‰æ›´æ–°çš„æƒé™
+DROP USER u_dblink_permission10 CASCADE;
 
 CREATE USER u_dblink_permission10 IDENTIFIED BY 123456;
 
@@ -231,8 +231,8 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION10'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION10'); 
 
-----ÓÃ»§ÓĞÉ¾³ıµÄÈ¨ÏŞ
-DROP USER u_dblink_permission11;
+----ç”¨æˆ·æœ‰åˆ é™¤çš„æƒé™
+DROP USER u_dblink_permission11 CASCADE;
 
 CREATE USER u_dblink_permission11 IDENTIFIED BY 123456;
 
@@ -242,8 +242,8 @@ select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION11'
 union  
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION11'); 
 
-----ÓÃ»§ÎŞÈÎºÎÈ¨ÏŞ
-DROP USER u_dblink_permission;
+----ç”¨æˆ·æ— ä»»ä½•æƒé™
+DROP USER u_dblink_permission CASCADE;
 
 CREATE USER u_dblink_permission IDENTIFIED BY 123456;
 
@@ -254,30 +254,32 @@ select privilege from dba_sys_privs where grantee in (select granted_role from d
 
 --password
 
----Ó¢ÎÄ¼°´óĞ¡Ğ´
-DROP USER u_dblink_password1;
+---è‹±æ–‡åŠå¤§å°å†™
+DROP USER u_dblink_password1 CASCADE;
 
 CREATE USER u_dblink_password1 IDENTIFIED BY csHIKHBNUgdjK;
 
 GRANT dba TO u_dblink_password1;
 
----ÖĞÎÄ
-DROP USER u_dblink_password2;
+---ä¸­æ–‡
+DROP USER u_dblink_password2 CASCADE;
 
-CREATE USER u_dblink_password2 IDENTIFIED BY ÕâÊÇÒ»¸öÃÜÂë;
+CREATE USER u_dblink_password2 IDENTIFIED BY è¿™æ˜¯ä¸€ä¸ªå¯†ç ;
 
 GRANT dba TO u_dblink_password2;
 
----ÖĞÓ¢ÎÄ»ìºÏ¼ÓÌØÊâ×Ö·û¼Ó´óĞ¡Ğ´
-DROP USER u_dblink_password3;
+---ä¸­è‹±æ–‡æ··åˆåŠ ç‰¹æ®Šå­—ç¬¦åŠ å¤§å°å†™
+DROP USER u_dblink_password3 CASCADE;
 
-CREATE USER u_dblink_password3 IDENTIFIED BY "^&*SDfbj%^$&^ºìÉÕ¶¬1278_84";
+CREATE USER u_dblink_password3 IDENTIFIED BY "^&*SDfbj%^$&^çº¢çƒ§å†¬1278_84";
 
 GRANT dba TO u_dblink_password3;
 
 
 
---½¨±í
+--å»ºè¡¨
+DROP USER u_dblink_grammar_cover CASCADE;
+
 CREATE USER u_dblink_grammar_cover identified BY 123456;
 
 GRANT dba TO u_dblink_grammar_cover;
@@ -291,15 +293,15 @@ CREATE TABLE u_dblink_grammar_cover.t_dblink_datatype1(id INT,tchar CHAR(200),tv
                                 ttimestamp3 TIMESTAMP WITH TIME ZONE,ttimestamp4 TIMESTAMP WITH LOCAL TIME ZONE,
                                 trowid ROWID,turowid UROWID);
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_datatype1 VALUES(1,'cdsfdfd','±±³¯ÏÊÄÑÃñbdjs',TIMESTAMP '2015-03-04 01:30:59',
+INSERT INTO u_dblink_grammar_cover.t_dblink_datatype1 VALUES(1,'cdsfdfd','åŒ—æœé²œéš¾æ°‘bdjs',TIMESTAMP '2015-03-04 01:30:59',
                                                              23143.54,DATE '2015-07-02',234243434,23245.6565,
                                                              utl_raw.cast_to_raw('This is a rawtype test!'),utl_raw.cast_to_raw('This is a rawtype test!'),TIMESTAMP '2020-01-01 12:12:12',
                                                              'cdcdds','vfgfgfg',1212.232,4343.454,
                                                              TO_TIMESTAMP_TZ('2020-01-01 11:00:00 -05:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),TO_TIMESTAMP_TZ('1999-12-12 12:12:12 +08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),NULL,NULL);           
-INSERT INTO u_dblink_grammar_cover.t_dblink_datatype1 VALUES(2,'xcdbfhjdm','ÄÏ³¯ÏÊÄÑÃñxjkl',TIMESTAMP '2020-12-23 21:04:01',
+INSERT INTO u_dblink_grammar_cover.t_dblink_datatype1 VALUES(2,'xcdbfhjdm','å—æœé²œéš¾æ°‘xjkl',TIMESTAMP '2020-12-23 21:04:01',
                                                              5465.23,DATE '2020-12-02',4565565,56.7676,
-                                                             utl_raw.cast_to_raw('hello world'),utl_raw.cast_to_raw('ÕâÊÇÒ»¾ä»°'),TIMESTAMP '2020-05-29 21:21:21',
-                                                             'ÄãËµÊ²Ã´','ÎÒÌı²»¼û',454.656,8965.65,
+                                                             utl_raw.cast_to_raw('hello world'),utl_raw.cast_to_raw('è¿™æ˜¯ä¸€å¥è¯'),TIMESTAMP '2020-05-29 21:21:21',
+                                                             'ä½ è¯´ä»€ä¹ˆ','æˆ‘å¬ä¸è§',454.656,8965.65,
                                                              TO_TIMESTAMP_TZ('2006-06-01 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),TO_TIMESTAMP_TZ('2020-01-01 11:00:00 -08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),NULL,NULL);                                                                   
                                 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_datatype1 ORDER BY id;
@@ -313,37 +315,37 @@ CREATE TABLE u_dblink_grammar_cover.t_dblink_datatype2(id INT,tchar CHAR(200),tv
                                 ttimestamp3 TIMESTAMP WITH TIME ZONE,ttimestamp4 TIMESTAMP WITH LOCAL TIME ZONE,
                                 trowid ROWID,turowid UROWID);
                                 
-INSERT INTO u_dblink_grammar_cover.t_dblink_datatype2 VALUES(1,'cdsfdfd','±±³¯ÏÊÄÑÃñbdjs',TIMESTAMP '2015-03-04 01:30:59',
+INSERT INTO u_dblink_grammar_cover.t_dblink_datatype2 VALUES(1,'cdsfdfd','åŒ—æœé²œéš¾æ°‘bdjs',TIMESTAMP '2015-03-04 01:30:59',
                                                              23143.54,DATE '2015-07-02',23245.6565,
                                                              utl_raw.cast_to_raw('This is a rawtype test!'),utl_raw.cast_to_raw('121212'),utl_raw.cast_to_raw('This is a rawtype test!'),TIMESTAMP '2020-01-01 12:12:12',
                                                              'cdcdds','vfcvfgfgd',1212.232,4343.454,
                                                              TO_TIMESTAMP_TZ('1998-02-26 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),TO_TIMESTAMP_TZ('2006-06-01 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),NULL,NULL);    
-INSERT INTO u_dblink_grammar_cover.t_dblink_datatype2 VALUES(2,'xcdbfhjdm','ÄÏ³¯ÏÊÄÑÃñxjkl',TIMESTAMP '2020-12-23 21:04:01',
+INSERT INTO u_dblink_grammar_cover.t_dblink_datatype2 VALUES(2,'xcdbfhjdm','å—æœé²œéš¾æ°‘xjkl',TIMESTAMP '2020-12-23 21:04:01',
                                                              5465.23,DATE '2020-12-02',56.7676,
-                                                             utl_raw.cast_to_raw('hello world'),utl_raw.cast_to_raw('124545'),utl_raw.cast_to_raw('ÕâÊÇÒ»¾ä»°'),TIMESTAMP '2020-05-29 21:21:21',
-                                                             'ÄãËµÊ²Ã´','ÎÒÌı²»¼û',454.656,8965.65,
+                                                             utl_raw.cast_to_raw('hello world'),utl_raw.cast_to_raw('124545'),utl_raw.cast_to_raw('è¿™æ˜¯ä¸€å¥è¯'),TIMESTAMP '2020-05-29 21:21:21',
+                                                             'ä½ è¯´ä»€ä¹ˆ','æˆ‘å¬ä¸è§',454.656,8965.65,
                                                              TO_TIMESTAMP_TZ('2030-09-01 01:00:59 +09:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),TO_TIMESTAMP_TZ('2010-05-30 08:45:31 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),NULL,NULL);                            
 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_datatype2 ORDER BY id;               
 
----ldbÖ§³ÖµÄ×Ö¶Î                                
+---ldbæ”¯æŒçš„å­—æ®µ                                
 DROP TABLE u_dblink_grammar_cover.t_dblink_datatype3;
 
 CREATE TABLE u_dblink_grammar_cover.t_dblink_datatype3(id INT,tchar CHAR(200),tvarchar2 VARCHAR2(200),ttimestamp1 TIMESTAMP,
                                 tnumber NUMBER(10,2),tdate DATE,tlong LONG,tfloat FLOAT,tblob BLOB,
                                 ttimestamp2 TIMESTAMP(6),tclob CLOB);
                                 
-INSERT INTO u_dblink_grammar_cover.t_dblink_datatype3 VALUES(1,'ÕÅÈı','ÊÇÒ»¸öºÃÈË',TIMESTAMP '1990-01-01 23:59:59',
-                                                             11232.43,DATE '1987-12-01',1232334,243.454,UTL_RAW.CAST_TO_RAW('¹ş¹ş¹ş'),
-                                                             TO_TIMESTAMP_TZ('2006-06-01 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'ÁùÒ»¿ìÀÖ'); 
+INSERT INTO u_dblink_grammar_cover.t_dblink_datatype3 VALUES(1,'å¼ ä¸‰','æ˜¯ä¸€ä¸ªå¥½äºº',TIMESTAMP '1990-01-01 23:59:59',
+                                                             11232.43,DATE '1987-12-01',1232334,243.454,UTL_RAW.CAST_TO_RAW('å“ˆå“ˆå“ˆ'),
+                                                             TO_TIMESTAMP_TZ('2006-06-01 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'å…­ä¸€å¿«ä¹'); 
                                                              
-INSERT INTO u_dblink_grammar_cover.t_dblink_datatype3 VALUES(2,'ÀîËÄ','ÊÇÒ»¸öÉñÆæµÄÈË',TIMESTAMP '2000-01-01 23:59:59',
-                                                             1354232.21,DATE '2005-07-01',120554,623.225,UTL_RAW.CAST_TO_RAW('àÓàÓàÓ'),
-                                                             TO_TIMESTAMP_TZ('1994-04-23 06:01:00 +08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'ÏÈÌìÏÂÖ®ÓÇ¶øÓÇ');                                                              
+INSERT INTO u_dblink_grammar_cover.t_dblink_datatype3 VALUES(2,'æå››','æ˜¯ä¸€ä¸ªç¥å¥‡çš„äºº',TIMESTAMP '2000-01-01 23:59:59',
+                                                             1354232.21,DATE '2005-07-01',120554,623.225,UTL_RAW.CAST_TO_RAW('å˜¤å˜¤å˜¤'),
+                                                             TO_TIMESTAMP_TZ('1994-04-23 06:01:00 +08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'å…ˆå¤©ä¸‹ä¹‹å¿§è€Œå¿§');                                                              
                                 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_datatype3 ORDER BY id;            
 
----ldb²»Ö§³ÖµÄ×Ö¶Î                                
+---ldbä¸æ”¯æŒçš„å­—æ®µ                                
 DROP TABLE u_dblink_grammar_cover.t_dblink_datatype4;
 
 CREATE TABLE u_dblink_grammar_cover.t_dblink_datatype4(id INT,traw RAW(100),tlongraw LONG RAW,tnclob NCLOB,
@@ -351,54 +353,54 @@ CREATE TABLE u_dblink_grammar_cover.t_dblink_datatype4(id INT,traw RAW(100),tlon
                                 ttimestamp3 TIMESTAMP WITH TIME ZONE,ttimestamp4 TIMESTAMP WITH LOCAL TIME ZONE,
                                 trowid ROWID,turowid UROWID);
                                 
-INSERT INTO u_dblink_grammar_cover.t_dblink_datatype4 VALUES(1,UTL_RAW.CAST_TO_RAW('Ê®ÄêÉúËÀÁ½Ã£Ã££¬²»Ë¼Á¿£¬×ÔÄÑÍü'),UTL_RAW.CAST_TO_RAW('ºìËÖÊÖ£¬»ÆÌÙ¾Æ£¬Âú³Ç´ºÉ«¹¬Ç½Áø'),'ÊÖ¶¯»¬»ü',
+INSERT INTO u_dblink_grammar_cover.t_dblink_datatype4 VALUES(1,UTL_RAW.CAST_TO_RAW('åå¹´ç”Ÿæ­»ä¸¤èŒ«èŒ«ï¼Œä¸æ€é‡ï¼Œè‡ªéš¾å¿˜'),UTL_RAW.CAST_TO_RAW('çº¢é…¥æ‰‹ï¼Œé»„è—¤é…’ï¼Œæ»¡åŸæ˜¥è‰²å®«å¢™æŸ³'),'æ‰‹åŠ¨æ»‘ç¨½',
                                                              232.343,4565.767,TO_TIMESTAMP_TZ('2039-01-31 12:59:59 +12:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),
                                                              TO_TIMESTAMP_TZ('2039-01-31 12:59:59 -08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),NULL,NULL);
                                                              
-INSERT INTO u_dblink_grammar_cover.t_dblink_datatype4 VALUES(2,UTL_RAW.CAST_TO_RAW('Ï²»¶¿´ÄãµÄĞ¦Èİ'),UTL_RAW.CAST_TO_RAW('ÕÀ·ÅÔÚÏÄÈÕÒ¹¿Õ'),'ÎÂÈª',
+INSERT INTO u_dblink_grammar_cover.t_dblink_datatype4 VALUES(2,UTL_RAW.CAST_TO_RAW('å–œæ¬¢çœ‹ä½ çš„ç¬‘å®¹'),UTL_RAW.CAST_TO_RAW('ç»½æ”¾åœ¨å¤æ—¥å¤œç©º'),'æ¸©æ³‰',
                                                              232.343,4565.767,TO_TIMESTAMP_TZ('2039-01-31 12:59:59 +12:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),
                                                              TO_TIMESTAMP_TZ('2039-01-31 12:59:59 -08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),NULL,NULL);                                                             
                                 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_datatype4 ORDER BY id;
 
----´øÖĞÎÄµÄ±í
-DROP TABLE u_dblink_grammar_cover.t_dblink_Êı¾İÀàĞÍ5;
+---å¸¦ä¸­æ–‡çš„è¡¨
+DROP TABLE u_dblink_grammar_cover.t_dblink_æ•°æ®ç±»å‹5;
 
-CREATE TABLE u_dblink_grammar_cover.t_dblink_Êı¾İÀàĞÍ5(±àºÅ INT,ĞÕÃû1 CHAR(200),ĞÕÃû2 VARCHAR2(200),Ê±¼ä´Á1 TIMESTAMP,
-                                Êı×Ö1 NUMBER(10,2),ÈÕÆÚ1 DATE,Êı×Ö2 LONG,Êı×Ö3 FLOAT,blobÀàĞÍ1 BLOB,
-                                Ê±¼ä´Á2 TIMESTAMP(6),clobÀàĞÍ1 CLOB);
+CREATE TABLE u_dblink_grammar_cover.t_dblink_æ•°æ®ç±»å‹5(ç¼–å· INT,å§“å1 CHAR(200),å§“å2 VARCHAR2(200),æ—¶é—´æˆ³1 TIMESTAMP,
+                                æ•°å­—1 NUMBER(10,2),æ—¥æœŸ1 DATE,æ•°å­—2 LONG,æ•°å­—3 FLOAT,blobç±»å‹1 BLOB,
+                                æ—¶é—´æˆ³2 TIMESTAMP(6),clobç±»å‹1 CLOB);
                                 
-INSERT INTO u_dblink_grammar_cover.t_dblink_Êı¾İÀàĞÍ5 VALUES(1,'ÕÅÈı','ÊÇÒ»¸öºÃÈË',TIMESTAMP '1990-01-01 23:59:59',
-                                                             11232.43,DATE '1987-12-01',1232334,243.454,UTL_RAW.CAST_TO_RAW('¹ş¹ş¹ş'),
-                                                             TO_TIMESTAMP_TZ('2006-06-01 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'ÁùÒ»¿ìÀÖ'); 
+INSERT INTO u_dblink_grammar_cover.t_dblink_æ•°æ®ç±»å‹5 VALUES(1,'å¼ ä¸‰','æ˜¯ä¸€ä¸ªå¥½äºº',TIMESTAMP '1990-01-01 23:59:59',
+                                                             11232.43,DATE '1987-12-01',1232334,243.454,UTL_RAW.CAST_TO_RAW('å“ˆå“ˆå“ˆ'),
+                                                             TO_TIMESTAMP_TZ('2006-06-01 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'å…­ä¸€å¿«ä¹'); 
                                                              
-INSERT INTO u_dblink_grammar_cover.t_dblink_Êı¾İÀàĞÍ5 VALUES(2,'ÀîËÄ','ÊÇÒ»¸öÉñÆæµÄÈË',TIMESTAMP '2000-01-01 23:59:59',
-                                                             1354232.21,DATE '2005-07-01',120554,623.225,UTL_RAW.CAST_TO_RAW('àÓàÓàÓ'),
-                                                             TO_TIMESTAMP_TZ('1994-04-23 06:01:00 +08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'ÏÈÌìÏÂÖ®ÓÇ¶øÓÇ');                                 
+INSERT INTO u_dblink_grammar_cover.t_dblink_æ•°æ®ç±»å‹5 VALUES(2,'æå››','æ˜¯ä¸€ä¸ªç¥å¥‡çš„äºº',TIMESTAMP '2000-01-01 23:59:59',
+                                                             1354232.21,DATE '2005-07-01',120554,623.225,UTL_RAW.CAST_TO_RAW('å˜¤å˜¤å˜¤'),
+                                                             TO_TIMESTAMP_TZ('1994-04-23 06:01:00 +08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'å…ˆå¤©ä¸‹ä¹‹å¿§è€Œå¿§');                                 
 
-SELECT * FROM u_dblink_grammar_cover.t_dblink_Êı¾İÀàĞÍ5 ORDER BY ±àºÅ;     
+SELECT * FROM u_dblink_grammar_cover.t_dblink_æ•°æ®ç±»å‹5 ORDER BY ç¼–å·;     
 
----ÖĞÓ¢ÎÄ¼Ó´óĞ¡Ğ´µÄ±í
-DROP TABLE u_dblink_grammar_cover."t_DBlink_Êı¾İÀàĞÍ6";
+---ä¸­è‹±æ–‡åŠ å¤§å°å†™çš„è¡¨
+DROP TABLE u_dblink_grammar_cover."t_DBlink_æ•°æ®ç±»å‹6";
 
-CREATE TABLE u_dblink_grammar_cover."t_DBlink_Êı¾İÀàĞÍ6"("±àºÅHJK_ds" INT,"ĞÕdshjkHJBSDÃû1" CHAR(200),"ĞÕVBNBfdnkÃû1" VARCHAR2(200),"Ê±¼ä´Á1cdmGHF" TIMESTAMP,
-                                "Êıbvn_BJH×Ö1" NUMBER(10,2),"ÈÕvcnnm_BHÆÚ1" DATE,"ÊıQZC_BVB×Ö2" LONG,"Êıcnmv_HJ×Ö3" FLOAT,"blobVYTsdvÀàĞÍ1" BLOB,
-                                "Ê±¼äpmc_BH´Á2" TIMESTAMP(6),"clVGHR_gvhobÀàĞÍ1" CLOB);   
+CREATE TABLE u_dblink_grammar_cover."t_DBlink_æ•°æ®ç±»å‹6"("ç¼–å·HJK_ds" INT,"å§“dshjkHJBSDå1" CHAR(200),"å§“VBNBfdnkå1" VARCHAR2(200),"æ—¶é—´æˆ³1cdmGHF" TIMESTAMP,
+                                "æ•°bvn_BJHå­—1" NUMBER(10,2),"æ—¥vcnnm_BHæœŸ1" DATE,"æ•°QZC_BVBå­—2" LONG,"æ•°cnmv_HJå­—3" FLOAT,"blobVYTsdvç±»å‹1" BLOB,
+                                "æ—¶é—´pmc_BHæˆ³2" TIMESTAMP(6),"clVGHR_gvhobç±»å‹1" CLOB);   
                                 
-INSERT INTO u_dblink_grammar_cover."t_DBlink_Êı¾İÀàĞÍ6" VALUES(1,'ÕÅÈı','ÊÇÒ»¸öºÃÈË',TIMESTAMP '1990-01-01 23:59:59',
-                                                             11232.43,DATE '1987-12-01',1232334,243.454,UTL_RAW.CAST_TO_RAW('¹ş¹ş¹ş'),
-                                                             TO_TIMESTAMP_TZ('2006-06-01 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'ÁùÒ»¿ìÀÖ'); 
+INSERT INTO u_dblink_grammar_cover."t_DBlink_æ•°æ®ç±»å‹6" VALUES(1,'å¼ ä¸‰','æ˜¯ä¸€ä¸ªå¥½äºº',TIMESTAMP '1990-01-01 23:59:59',
+                                                             11232.43,DATE '1987-12-01',1232334,243.454,UTL_RAW.CAST_TO_RAW('å“ˆå“ˆå“ˆ'),
+                                                             TO_TIMESTAMP_TZ('2006-06-01 06:01:00 +06:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'å…­ä¸€å¿«ä¹'); 
                                                              
-INSERT INTO u_dblink_grammar_cover."t_DBlink_Êı¾İÀàĞÍ6" VALUES(2,'ÀîËÄ','ÊÇÒ»¸öÉñÆæµÄÈË',TIMESTAMP '2000-01-01 23:59:59',
-                                                             1354232.21,DATE '2005-07-01',120554,623.225,UTL_RAW.CAST_TO_RAW('àÓàÓàÓ'),
-                                                             TO_TIMESTAMP_TZ('1994-04-23 06:01:00 +08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'ÏÈÌìÏÂÖ®ÓÇ¶øÓÇ');                                 
+INSERT INTO u_dblink_grammar_cover."t_DBlink_æ•°æ®ç±»å‹6" VALUES(2,'æå››','æ˜¯ä¸€ä¸ªç¥å¥‡çš„äºº',TIMESTAMP '2000-01-01 23:59:59',
+                                                             1354232.21,DATE '2005-07-01',120554,623.225,UTL_RAW.CAST_TO_RAW('å˜¤å˜¤å˜¤'),
+                                                             TO_TIMESTAMP_TZ('1994-04-23 06:01:00 +08:00','YYYY-MM-DD HH:MI:SS TZH:TZM'),'å…ˆå¤©ä¸‹ä¹‹å¿§è€Œå¿§');                                 
                                 
-SELECT * FROM u_dblink_grammar_cover."t_DBlink_Êı¾İÀàĞÍ6" ORDER BY "±àºÅHJK_ds";
+SELECT * FROM u_dblink_grammar_cover."t_DBlink_æ•°æ®ç±»å‹6" ORDER BY "ç¼–å·HJK_ds";
 
 
---´´½¨ÊÓÍ¼
+--åˆ›å»ºè§†å›¾
 
----´´½¨»ù±¾ÀàĞÍµÄÊÓÍ¼
+---åˆ›å»ºåŸºæœ¬ç±»å‹çš„è§†å›¾
 DROP VIEW u_dblink_grammar_cover.v_dblink_datatype1;
 
 CREATE VIEW u_dblink_grammar_cover.v_dblink_datatype1
@@ -413,7 +415,7 @@ AS SELECT * FROM u_dblink_grammar_cover.t_dblink_datatype2 ORDER BY id;
 
 SELECT * FROM u_dblink_grammar_cover.v_dblink_datatype2 ORDER BY id;
 
----ldbÖ§³ÖµÄÊı¾İÀàĞÍµÄÊÓÍ¼
+---ldbæ”¯æŒçš„æ•°æ®ç±»å‹çš„è§†å›¾
 DROP VIEW u_dblink_grammar_cover.v_dblink_datatype3;
 
 CREATE VIEW u_dblink_grammar_cover.v_dblink_datatype3
@@ -421,7 +423,7 @@ AS SELECT * FROM u_dblink_grammar_cover.t_dblink_datatype3 ORDER BY id;
 
 SELECT * FROM u_dblink_grammar_cover.v_dblink_datatype3 ORDER BY id;
 
----ldb²»Ö§³ÖµÄÊı¾İÀàĞÍµÄÊÓÍ¼
+---ldbä¸æ”¯æŒçš„æ•°æ®ç±»å‹çš„è§†å›¾
 DROP VIEW u_dblink_grammar_cover.v_dblink_datatype4;
 
 CREATE VIEW u_dblink_grammar_cover.v_dblink_datatype4
@@ -429,60 +431,60 @@ AS SELECT * FROM u_dblink_grammar_cover.t_dblink_datatype4 ORDER BY id;
 
 SELECT * FROM u_dblink_grammar_cover.v_dblink_datatype4 ORDER BY id;
 
----´øÖĞÎÄµÄÊÓÍ¼
-DROP VIEW u_dblink_grammar_cover.v_dblink_Êı¾İÀàĞÍ5;
+---å¸¦ä¸­æ–‡çš„è§†å›¾
+DROP VIEW u_dblink_grammar_cover.v_dblink_æ•°æ®ç±»å‹5;
 
-CREATE VIEW u_dblink_grammar_cover.v_dblink_Êı¾İÀàĞÍ5
-AS SELECT * FROM u_dblink_grammar_cover.t_dblink_Êı¾İÀàĞÍ5 ORDER BY ±àºÅ;
+CREATE VIEW u_dblink_grammar_cover.v_dblink_æ•°æ®ç±»å‹5
+AS SELECT * FROM u_dblink_grammar_cover.t_dblink_æ•°æ®ç±»å‹5 ORDER BY ç¼–å·;
 
-SELECT * FROM u_dblink_grammar_cover.v_dblink_Êı¾İÀàĞÍ5 ORDER BY ±àºÅ;
+SELECT * FROM u_dblink_grammar_cover.v_dblink_æ•°æ®ç±»å‹5 ORDER BY ç¼–å·;
 
----ÖĞÓ¢ÎÄ¼Ó´óĞ¡Ğ´µÄÊÓÍ¼
-DROP VIEW u_dblink_grammar_cover."v_DBlink_Êı¾İÀàĞÍ6";
+---ä¸­è‹±æ–‡åŠ å¤§å°å†™çš„è§†å›¾
+DROP VIEW u_dblink_grammar_cover."v_DBlink_æ•°æ®ç±»å‹6";
 
-CREATE VIEW u_dblink_grammar_cover."v_DBlink_Êı¾İÀàĞÍ6"
-AS SELECT * FROM u_dblink_grammar_cover."t_DBlink_Êı¾İÀàĞÍ6" ORDER BY "±àºÅHJK_ds";
+CREATE VIEW u_dblink_grammar_cover."v_DBlink_æ•°æ®ç±»å‹6"
+AS SELECT * FROM u_dblink_grammar_cover."t_DBlink_æ•°æ®ç±»å‹6" ORDER BY "ç¼–å·HJK_ds";
 
-SELECT * FROM u_dblink_grammar_cover."v_DBlink_Êı¾İÀàĞÍ6" ORDER BY "±àºÅHJK_ds";
+SELECT * FROM u_dblink_grammar_cover."v_DBlink_æ•°æ®ç±»å‹6" ORDER BY "ç¼–å·HJK_ds";
 
---¶à±íjoinµÄÊÓÍ¼
-DROP VIEW "V_×óÁ¬½Ó_7";
+--å¤šè¡¨joinçš„è§†å›¾
+DROP VIEW "V_å·¦è¿æ¥_7";
 
-CREATE VIEW "V_×óÁ¬½Ó_7" AS 
-SELECT a.±àºÅ,b."±àºÅHJK_ds",a.ÈÕÆÚ1,b."ÊıQZC_BVB×Ö2",b."ĞÕVBNBfdnkÃû1",a.Ê±¼ä´Á1 FROM u_dblink_grammar_cover.t_dblink_Êı¾İÀàĞÍ5 a
-LEFT JOIN u_dblink_grammar_cover."t_DBlink_Êı¾İÀàĞÍ6" b
-ON a.±àºÅ=b."±àºÅHJK_ds" OR a.ĞÕÃû2=b."ĞÕVBNBfdnkÃû1"
-WHERE a.Êı×Ö3>0 OR b."Êıbvn_BJH×Ö1" BETWEEN 0 AND 100;
+CREATE VIEW "V_å·¦è¿æ¥_7" AS 
+SELECT a.ç¼–å·,b."ç¼–å·HJK_ds",a.æ—¥æœŸ1,b."æ•°QZC_BVBå­—2",b."å§“VBNBfdnkå1",a.æ—¶é—´æˆ³1 FROM u_dblink_grammar_cover.t_dblink_æ•°æ®ç±»å‹5 a
+LEFT JOIN u_dblink_grammar_cover."t_DBlink_æ•°æ®ç±»å‹6" b
+ON a.ç¼–å·=b."ç¼–å·HJK_ds" OR a.å§“å2=b."å§“VBNBfdnkå1"
+WHERE a.æ•°å­—3>0 OR b."æ•°bvn_BJHå­—1" BETWEEN 0 AND 100;
 
-SELECT * FROM "V_×óÁ¬½Ó_7" ORDER BY "±àºÅHJK_ds";
+SELECT * FROM "V_å·¦è¿æ¥_7" ORDER BY "ç¼–å·HJK_ds";
 
---×Ó²éÑ¯µÄÊÓÍ¼
-DROP VIEW v_×Ó²éÑ¯_8;
+--å­æŸ¥è¯¢çš„è§†å›¾
+DROP VIEW v_å­æŸ¥è¯¢_8;
 
-CREATE VIEW v_×Ó²éÑ¯_8 AS 
-SELECT "±àºÅHJK_ds","Ê±¼ä´Á1cdmGHF" FROM u_dblink_grammar_cover."t_DBlink_Êı¾İÀàĞÍ6"
-WHERE "Êıbvn_BJH×Ö1">=(SELECT Êı×Ö1 FROM u_dblink_grammar_cover.t_dblink_Êı¾İÀàĞÍ5 WHERE ĞÕÃû1 LIKE '%Èı%');
+CREATE VIEW v_å­æŸ¥è¯¢_8 AS 
+SELECT "ç¼–å·HJK_ds","æ—¶é—´æˆ³1cdmGHF" FROM u_dblink_grammar_cover."t_DBlink_æ•°æ®ç±»å‹6"
+WHERE "æ•°bvn_BJHå­—1">=(SELECT æ•°å­—1 FROM u_dblink_grammar_cover.t_dblink_æ•°æ®ç±»å‹5 WHERE å§“å1 LIKE '%ä¸‰%');
 
-SELECT * FROM v_×Ó²éÑ¯_8 ORDER BY "Ê±¼ä´Á1cdmGHF";
+SELECT * FROM v_å­æŸ¥è¯¢_8 ORDER BY "æ—¶é—´æˆ³1cdmGHF";
 
 
---´´½¨proc
+--åˆ›å»ºproc
 DROP PROCEDURE u_dblink_grammar_cover.p_dblink_1;
 
 CREATE OR REPLACE PROCEDURE u_dblink_grammar_cover.p_dblink_1
 (
---¶¨ÒåÊäÈë¡¢Êä³ö²ÎÊı--
+--å®šä¹‰è¾“å…¥ã€è¾“å‡ºå‚æ•°--
 num_A IN INTEGER,
 num_B IN INTEGER,
 numType IN INTEGER,
 num_C OUT INTEGER
 )
 AS
---¶¨Òå±äÁ¿--
+--å®šä¹‰å˜é‡--
  -- numCount integer;
  -- numStr varchar(20);  
 BEGIN   
-     --ÅĞ¶Ï¼ÆËãÀàĞÍ--
+     --åˆ¤æ–­è®¡ç®—ç±»å‹--
      IF numType=1 THEN
         num_C := num_A + num_B;
      ELSIF numType=2 THEN
@@ -492,18 +494,19 @@ BEGIN
      ELSIF numType=4 THEN
         num_C := num_A / num_B; 
      ELSE
-     --ÆäËü´¦Àí
-       dbms_output.put_line('ÆäËü´¦Àí');
+     --å…¶å®ƒå¤„ç†
+       dbms_output.put_line('å…¶å®ƒå¤„ç†');
      END IF;
 END;
+/
 
 DECLARE num_C INTEGER;
 BEGIN
-   --µ÷ÓÃ´æ´¢¹ı³Ì---
+   --è°ƒç”¨å­˜å‚¨è¿‡ç¨‹---
    u_dblink_grammar_cover.p_dblink_1(3,4,3,num_C);
-   dbms_output.put_line('Êä³ö½á¹û£º'|| num_C );
+   dbms_output.put_line('è¾“å‡ºç»“æœï¼š'|| num_C );
 END;
-
+/
 
 DROP FUNCTION u_dblink_grammar_cover.f_dblink_1;
 
@@ -512,50 +515,50 @@ RETURN VARCHAR2
 IS
 BEGIN
   RETURN TO_CHAR(sysdate,
-    'YYYY"Äê"MM"ÔÂ"DD"ÈÕ"HH24"Ê±"MI"·Ö"SS"Ãë"');
+    'YYYY"å¹´"MM"æœˆ"DD"æ—¥"HH24"æ—¶"MI"åˆ†"SS"ç§’"');
 END;
+/
 
 
+--çº¦æŸ
 
---Ô¼Êø
-
----Ö÷¼üÔ¼Êø
+---ä¸»é”®çº¦æŸ
 DROP TABLE u_dblink_grammar_cover.t_dblink_constraint_1;
 
 CREATE TABLE u_dblink_grammar_cover.t_dblink_constraint_1(id NUMBER(6),name VARCHAR2(200),sal NUMERIC(10,2),birthday DATE,
                                                           CONSTRAINT t1_id_name_pk PRIMARY KEY(id,name));
                                                           
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_1 VALUES(1,'·ü¶ûÌ©',213.43,DATE '1990-01-01');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_1 VALUES(1,'ä¼å°”æ³°',213.43,DATE '1990-01-01');
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_1 VALUES(2,'Ğ¡ÎÀ',4545.54,DATE '1991-12-23');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_1 VALUES(2,'å°å«',4545.54,DATE '1991-12-23');
 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_constraint_1 ORDER BY id;
 
----·Ç¿ÕÔ¼Êø
+---éç©ºçº¦æŸ
 DROP TABLE u_dblink_grammar_cover.t_dblink_constraint_2;
 
 CREATE TABLE u_dblink_grammar_cover.t_dblink_constraint_2(id NUMBER(6),name VARCHAR2(200),sal NUMERIC(10,2),birthday DATE CONSTRAINT t2_birthday_notnull NOT NULL);
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_2 VALUES(1,'°®ÒòË¹Ì¹',354222.45,DATE '2020-01-03');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_2 VALUES(1,'çˆ±å› æ–¯å¦',354222.45,DATE '2020-01-03');
 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_constraint_2 ORDER BY id;
 
----uniqueÔ¼Êø
+---uniqueçº¦æŸ
 DROP TABLE u_dblink_grammar_cover.t_dblink_constraint_3;
 
 CREATE TABLE u_dblink_grammar_cover.t_dblink_constraint_3(id NUMBER(6),name VARCHAR2(200),sal NUMERIC(10,2),birthday DATE,CONSTRAINT t3_id_unique UNIQUE(id));
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_3 VALUES(1,'ÆÕÀÊ¿Ë',565.67,DATE '1994-11-12');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_3 VALUES(1,'æ™®æœ—å…‹',565.67,DATE '1994-11-12');
 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_constraint_3 ORDER BY id;
 
----foreign keyÔ¼Êø
+---foreign keyçº¦æŸ
 DROP TABLE u_dblink_grammar_cover.t_dblink_constraint_4;
 
 CREATE TABLE u_dblink_grammar_cover.t_dblink_constraint_4(eid NUMBER(6),ename VARCHAR2(200),sal NUMERIC(6,2),
                                                           CONSTRAINT t4_eid_pk PRIMARY KEY(eid));
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_4 VALUES(1,'Á¿×ÓÁ¦Ñ§',2434.65);
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_4 VALUES(1,'é‡å­åŠ›å­¦',2434.65);
 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_constraint_4 ORDER BY eid;
 
@@ -565,34 +568,34 @@ CREATE TABLE u_dblink_grammar_cover.t_dblink_constraint_5(did NUMBER(6),eid NUMB
                                                           CONSTRAINT t5_fk FOREIGN KEY(eid) REFERENCES u_dblink_grammar_cover.t_dblink_constraint_4(eid)
                                                           ON DELETE CASCADE);
                                                           
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_5 VALUES(1,1,'ÎïÀí');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_5 VALUES(1,1,'ç‰©ç†');
 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_constraint_5 ORDER BY did;
 
----checkÔ¼Êø
+---checkçº¦æŸ
 DROP TABLE u_dblink_grammar_cover.t_dblink_constraint_6;
 
 CREATE TABLE u_dblink_grammar_cover.t_dblink_constraint_6(id INT,name VARCHAR2(200),sex VARCHAR2(5));
 
 ALTER TABLE u_dblink_grammar_cover.t_dblink_constraint_6
-ADD CONSTRAINT t6_check CHECK(sex IN ('ÄĞ','Å®'));
+ADD CONSTRAINT t6_check CHECK(sex IN ('ç”·','å¥³'));
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_6 VALUES(1,'·¶ÏĞ','ÄĞ');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_6 VALUES(1,'èŒƒé—²','ç”·');
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_6 VALUES(2,'Õ½¶¹¶¹','Å®');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_6 VALUES(2,'æˆ˜è±†è±†','å¥³');
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_6 VALUES(3,'¹¢³¿Óê','Î´Öª');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_6 VALUES(3,'è€¿æ™¨é›¨','æœªçŸ¥');
 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_constraint_6 ORDER BY id;
 
----Ë÷Òı
+---ç´¢å¼•
 DROP TABLE u_dblink_grammar_cover.t_dblink_constraint_7;
 
 CREATE TABLE u_dblink_grammar_cover.t_dblink_constraint_7(id INT,name VARCHAR2(100),sal FLOAT,birthday DATE);
 
 CREATE INDEX index_t7_id ON u_dblink_grammar_cover.t_dblink_constraint_7(id,name);
 
-INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_7 VALUES(1,'Ê±¼äµÄ¹ÜÀíÕß',674554.45443,DATE '1980-12-11');
+INSERT INTO u_dblink_grammar_cover.t_dblink_constraint_7 VALUES(1,'æ—¶é—´çš„ç®¡ç†è€…',674554.45443,DATE '1980-12-11');
 
 SELECT * FROM u_dblink_grammar_cover.t_dblink_constraint_7 ORDER BY id;
 
@@ -609,8 +612,8 @@ from user_indexes i, user_ind_columns c
 where i.index_name = c.index_name AND i.table_name='T_DBLINK_CONSTRAINT_7' AND i.table_owner='U_DBLINK_GRAMMAR_COVER';
 
 
---´óĞ¡Ğ´Ãô¸Ğ
-DROP USER u_case_sensitivity;
+--å¤§å°å†™æ•æ„Ÿ
+DROP USER u_case_sensitivity CASCADE;
 
 CREATE USER u_case_sensitivity IDENTIFIED BY 123456;
 
