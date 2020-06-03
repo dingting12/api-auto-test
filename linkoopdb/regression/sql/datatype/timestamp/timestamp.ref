@@ -1,0 +1,73 @@
+SQLCli Release 0.0.45
+SQL> connect admin/123456
+Database connected.
+SQL> start timestamp/timestamp.sql
+SQL> --Description：timestamp data type
+   > --Date：2020-05-22
+   > --Author：李爱敏
+   > 
+   > -- timestamp数据类型验证
+   > --删除表
+SQL> drop table T_TYPE_TIMESTAMP if exists;
+0 rows affected
+SQL> drop table T_TYPE_TIMESTAMP1 if exists;
+0 rows affected
+SQL> drop table T_TYPE_TIMESTAMP2 if exists;
+0 rows affected
+SQL> drop table T_TYPE_TIMESTAMP3 if exists;
+0 rows affected
+SQL> drop table T_TYPE_TIMESTAMP4 if exists;
+0 rows affected
+SQL> 
+SQL> --创建T_TYPE_TIMESTAMP表
+SQL> create table T_TYPE_TIMESTAMP(
+   > a1 timestamp
+   > );
+0 rows affected
+SQL> 
+SQL> --验证timestamp的最小值0001:01:01 00:00:00
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('0001-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ff'));
+1 row affected
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 0001-01-01 00:00:00 |
++---------------------+
+1 row selected.
+SQL> 
+SQL> --验证timestamp的最小值-0.000001s，是否报错
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('-0001-12-31 23:59:61.999999','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+2 rows selected.
+SQL> 
+SQL> --验证timestamp的最大值9999-12-31 23:59:61.999999，闰秒
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:61.999999','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+3 rows selected.
+SQL> 
+SQL> --验证timestamp的最大值+0.000001s，是否报错
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
+ValueError("time data '10000-01-01 00:00:0' does not match format '%Y-%m-%d %H:%M:%S'",)
+Disconnected.

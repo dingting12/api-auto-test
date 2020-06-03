@@ -1,0 +1,447 @@
+SQLCli Release 0.0.45
+SQL> connect admin/123456
+Database connected.
+SQL> start numeric/numeric.sql
+SQL> --Description：numeric data type
+   > --Date：2020-05-22
+   > --Author：李爱敏
+   > 
+   > -- numeric数据类型验证
+   > --删除表
+SQL> drop table T_TYPE_NUMERIC1 if exists;
+0 rows affected
+SQL> drop table T_TYPE_NUMERIC2 if exists;
+0 rows affected
+SQL> drop table T_TYPE_NUMERIC3 if exists;
+0 rows affected
+SQL> drop table T_TYPE_NUMERIC4 if exists;
+0 rows affected
+SQL> drop table T_TYPE_NUMERIC5 if exists;
+0 rows affected
+SQL> drop table T_TYPE_NUMERIC6 if exists;
+0 rows affected
+SQL> drop table T_TYPE_NUMERIC7 if exists;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_NUMERIC1
+SQL> create table T_TYPE_NUMERIC1(
+   > a1 numeric(5,2)
+   > );
+0 rows affected
+SQL> 
+SQL> --验证NUMERIC(n,m)
+   > --根据n的值进行判断，当1=<n<=38时
+   > --判断m的值，当0=<m<=n时
+   > --整数部分的长度>n-m，是否报错
+SQL> insert into T_TYPE_NUMERIC1 values(1234.67);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --当整数部分的长度<=n-m时：
+   > --小数部分的长度>m时，精确到小数点右边m位，m位向右的数字四舍五入
+SQL> insert into T_TYPE_NUMERIC1 values(1.56798);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| 1.57   |
+| <null> |
++--------+
+2 rows selected.
+SQL> 
+SQL> --小数部分的长度=m时，保持原值不变，小数点后保持m位
+SQL> insert into T_TYPE_NUMERIC1 values(1.67);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+3 rows selected.
+SQL> 
+SQL> --小数部分的长度<m ，小数点后不足m位的在末尾补零，补足m位
+SQL> insert into T_TYPE_NUMERIC1 values(123.6);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+4 rows selected.
+SQL> 
+SQL> --m>n时
+   > --创建表T_TYPE_NUMERIC2，是否报错
+SQL> create table T_TYPE_NUMERIC2(
+   > a1 numeric(4,5)
+   > );
+0 rows affected
+SQL> 
+SQL> --m<0时
+   > --创建表T_TYPE_NUMERIC3，是否报错
+SQL> create table T_TYPE_NUMERIC3(
+   > a1 numeric(5,-2)
+   > );
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create table T_TYPE_NUMERIC3(
+a1 numeric(5,-2)
+)]
+SQL> 
+SQL> --n<1时
+   > --创建表T_TYPE_NUMERIC4，是否报错
+SQL> create table T_TYPE_NUMERIC4(
+   > a1 numeric(0,2)
+   > );
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create table T_TYPE_NUMERIC4(
+a1 numeric(0,2)
+)]
+SQL> 
+SQL> --n>38时
+   > --创建表T_TYPE_NUMERIC5，是否报错
+SQL> create table T_TYPE_NUMERIC5(
+   > a1 numeric(39,2)
+   > );
+0 rows affected
+SQL> 
+SQL> 
+SQL> --验证NUMERIC(n)，默认为NUMERIC(n,0)
+   > --创建表T_TYPE_DECIMAL6
+SQL> create table T_TYPE_NUMERIC6(
+   > a1 numeric(6)
+   > );
+0 rows affected
+SQL> 
+SQL> --整数部分的长度>n，是否报错
+SQL> insert into T_TYPE_NUMERIC6 values(1234567.9876);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC6
+SQL> select * from T_TYPE_NUMERIC6;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --整数部分的长度 <=n，精确到整数位，小数部分四舍五入
+SQL> insert into T_TYPE_NUMERIC6 values(1234.9876);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC6
+SQL> select * from T_TYPE_NUMERIC6;
++--------+
+| A1     |
++--------+
+| 1235.0 |
+| <null> |
++--------+
+2 rows selected.
+SQL> 
+SQL> 
+SQL> --验证NUMERIC，默认为NUMERIC(5,0)
+   > --创建表T_TYPE_NUMERIC7
+SQL> create table T_TYPE_NUMERIC7(
+   > a1 numeric
+   > );
+0 rows affected
+SQL> 
+SQL> --整数部分的长度 >5，是否报错
+SQL> insert into T_TYPE_NUMERIC7 values(123456.78);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC7
+SQL> select * from T_TYPE_NUMERIC7;
++----------+
+| A1       |
++----------+
+| 123457.0 |
++----------+
+1 row selected.
+SQL> 
+SQL> --整数部分的长度<=5，小数部分四舍五入
+SQL> insert into T_TYPE_NUMERIC7 values(12345.78);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC7
+SQL> select * from T_TYPE_NUMERIC7;
++----------+
+| A1       |
++----------+
+| 12346.0  |
+| 123457.0 |
++----------+
+2 rows selected.
+SQL> 
+SQL> --插入不同数据类型
+   > --验证插入int类型
+SQL> insert into T_TYPE_NUMERIC1 values(214);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+5 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入数字'123.45'
+SQL> insert into T_TYPE_NUMERIC1 values('123.45');
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+6 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'AAAbcd'
+SQL> insert into T_TYPE_NUMERIC1 values('AAAbcd');
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+7 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入汉字'北京'
+SQL> insert into T_TYPE_NUMERIC1 values('北京');
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+8 rows selected.
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd
+SQL> insert into T_TYPE_NUMERIC1 values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+9 rows selected.
+SQL> 
+SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss
+SQL> insert into T_TYPE_NUMERIC1 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+10 rows selected.
+SQL> 
+SQL> --验证插入boolean类型，插入true
+SQL> insert into T_TYPE_NUMERIC1 values(true);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+11 rows selected.
+SQL> 
+SQL> --验证插入boolean类型，插入false
+SQL> insert into T_TYPE_NUMERIC1 values(false);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| 0.0    |
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+12 rows selected.
+SQL> 
+SQL> --验证插入空值''
+SQL> insert into T_TYPE_NUMERIC1 values('');
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
+| 0.0    |
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+13 rows selected.
+SQL> 
+SQL> --验证插入空格' '
+SQL> insert into T_TYPE_NUMERIC1 values(' ');
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| 0.0    |
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+14 rows selected.
+SQL> 
+SQL> --验证插入null
+SQL> insert into T_TYPE_NUMERIC1 values(null);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| 0.0    |
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+15 rows selected.
+SQL> 
+SQL> --验证插入NULL
+SQL> insert into T_TYPE_NUMERIC1 values(NULL);
+1 row affected
+SQL> --查询表T_TYPE_NUMERIC1
+SQL> select * from T_TYPE_NUMERIC1;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 0.0    |
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 123.45 |
+| 214.0  |
+| 123.6  |
+| 1.67   |
+| 1.57   |
+| <null> |
++--------+
+16 rows selected.
+SQL> exit
+Disconnected.
