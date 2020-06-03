@@ -87,27 +87,37 @@
           </elementProp>
           <elementProp name="mainurl" elementType="Argument">
             <stringProp name="Argument.name">mainurl</stringProp>
-            <stringProp name="Argument.value">${__P(mainurl,jdbc:linkoopdb:tcp://node7:9117/ldb)}</stringProp>
+            <stringProp name="Argument.value">${__P(mainurl,jdbc:linkoopdb:tcp://192.168.1.73:9105/ldb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="metaurl" elementType="Argument">
             <stringProp name="Argument.name">metaurl</stringProp>
-            <stringProp name="Argument.value">${__P(metaurl,jdbc:mysql://192.168.1.73:3306/ldb)}</stringProp>
+            <stringProp name="Argument.value">${__P(metaurl,jdbc:mysql://192.168.1.72:3306/node73_ldb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="zoo_connect" elementType="Argument">
             <stringProp name="Argument.name">zoo_connect</stringProp>
-            <stringProp name="Argument.value">node1:2181,node2:2181,node9:2181/linkoopdb/luyao</stringProp>
+            <stringProp name="Argument.value">node72:2181,node73:2181,node74:2181/linkoopdb/luyao</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="kafka_server" elementType="Argument">
             <stringProp name="Argument.name">kafka_server</stringProp>
-            <stringProp name="Argument.value">node6:29096</stringProp>
+            <stringProp name="Argument.value">node74:29096</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="port" elementType="Argument">
             <stringProp name="Argument.name">port</stringProp>
             <stringProp name="Argument.value">${__P(port,9117)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="udf_url" elementType="Argument">
+            <stringProp name="Argument.name">udf_url</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(import org.apache.jmeter.services.FileServer;FileServer.getFileServer().getBaseDir();)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="node" elementType="Argument">
+            <stringProp name="Argument.name">node</stringProp>
+            <stringProp name="Argument.value">${__P(host,192.168.1.71)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -126,7 +136,7 @@
         <stringProp name="timeout">10000</stringProp>
         <stringProp name="transactionIsolation">DEFAULT</stringProp>
         <stringProp name="trimInterval">60000</stringProp>
-        <stringProp name="username">admin</stringProp>
+        <stringProp name="username">node73_dbuser</stringProp>
       </JDBCDataSource>
       <hashTree/>
       <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="admin" enabled="true">
@@ -295,7 +305,7 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SYNONYM" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SYNONYM" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 SYNONYM-drop所有表" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -585,7 +595,7 @@ DROP SYNONYM SYNONYM_01 IF EXISTS;
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SYNONYM 大小写不敏感" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SYNONYM 大小写不敏感" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 SYNONYM-drop所有表" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -875,7 +885,7 @@ DROP SYNONYM SYNONYM_01 IF EXISTS;
           </JDBCSampler>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 UDT" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 UDT" enabled="true"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="stream" enabled="true"/>
           <hashTree>
@@ -1229,7 +1239,7 @@ drop type if exists DB_UDT_TYPE;
             </hashTree>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 ROUTINE" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 ROUTINE" enabled="true"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="存储过程" enabled="true"/>
           <hashTree>
@@ -1477,7 +1487,7 @@ drop table if exists T_EMPLOYEE;</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 ROUTINE UDF 从本地添加jar" enabled="true">
               <stringProp name="dataSource">${a}</stringProp>
               <stringProp name="queryType">Update Statement</stringProp>
-              <stringProp name="query">add jar &apos;E:\workspace1\DbUdf\target\testUdf1-0.0.1-SNAPSHOT.jar&apos; not check exists;</stringProp>
+              <stringProp name="query">add jar &apos;${udf_url}\testUdf-0.0.1-SNAPSHOT.jar&apos; not check exists;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1532,7 +1542,7 @@ drop table T_META_MYSQL_EMPLOYEE2 if exists ;
               <stringProp name="queryType">Update Statement</stringProp>
               <stringProp name="query">CREATE FUNCTION function_test_001(price float) RETURNS float
  LANGUAGE JAVA DETERMINISTIC NO SQL
- EXTERNAL NAME &apos;CLASSPATH:com.datapps.dbudf1.testdbudf1.UDFfloat1&apos;;</stringProp>
+ EXTERNAL NAME &apos;CLASSPATH:com.datapps.dbudf.testdbudf.UDFfloat&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="variableNames"></stringProp>
@@ -1568,8 +1578,9 @@ drop table T_META_MYSQL_EMPLOYEE2 if exists ;
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-334863821">NAME	TYPE	SCHEMA	SYSCREATE	RETURNTYPE	COMMENT	BODY
-FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	null	{&quot;refjava&quot;:&quot;com.datapps.dbudf1.testdbudf1&quot;,&quot;methodName&quot;:&quot;UDFfloat1&quot;}</stringProp>
+                  <stringProp name="-9149308">NAME	TYPE	SCHEMA	SYSCREATE	RETURNTYPE	COMMENT	BODY
+FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	null	{&quot;refjava&quot;:&quot;com.datapps.dbudf.testdbudf&quot;,&quot;methodName&quot;:&quot;UDFfloat&quot;}
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1605,8 +1616,8 @@ FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	null	{&quot;refjava&quot;:&quot;co
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1925932263">NAME	TYPE	SCHEMA	SYSCREATE	RETURNTYPE	COMMENT	BODY
-FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	test function comment	{&quot;refjava&quot;:&quot;com.datapps.dbudf1.testdbudf1&quot;,&quot;methodName&quot;:&quot;UDFfloat1&quot;}
+                  <stringProp name="822995170">NAME	TYPE	SCHEMA	SYSCREATE	RETURNTYPE	COMMENT	BODY
+FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	test function comment	{&quot;refjava&quot;:&quot;com.datapps.dbudf.testdbudf&quot;,&quot;methodName&quot;:&quot;UDFfloat&quot;}
 </stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -1655,7 +1666,7 @@ FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	test function comment	{&quot;refja
             </hashTree>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SQL_HISTORY" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SQL_HISTORY" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 SQL_HISTORY-drop所有表" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -1724,7 +1735,7 @@ FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	test function comment	{&quot;refja
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 SQL_HISTORY TC-002 查询create语句的执行历史" enabled="true">
             <stringProp name="dataSource">meta_admin</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">select ID ,CREATOR,ACCESSTIME from SQL_HISTORY where `SQL`=&apos;INSERT INTO T_META_MYSQL_EMPLOYEE1 VALUES(0801,100000)&apos; order by ACCESSTIME;</stringProp>
+            <stringProp name="query">select `SQL`,CREATOR,SQLTYPE from SQL_HISTORY where `SQL`=&apos;INSERT INTO T_META_MYSQL_EMPLOYEE1 VALUES(0801,100000)&apos; order by ACCESSTIME;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -1735,9 +1746,8 @@ FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	test function comment	{&quot;refja
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-451915376">ID	CREATOR	ACCESSTIME
-1000234	ADMIN	2020-03-30 15:26:00.0
-1006656	ADMIN	2020-03-30 16:08:30.0
+                <stringProp name="83700499">SQL	CREATOR	SQLTYPE
+INSERT INTO T_META_MYSQL_EMPLOYEE1 VALUES(0801,100000)	ADMIN	DML
 </stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
@@ -1748,7 +1758,7 @@ FUNCTION_TEST_001	function	SCHEMA	false	FLOAT	test function comment	{&quot;refja
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 LDB_SCHEMA" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 LDB_SCHEMA" enabled="true"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="普通schema" enabled="true"/>
           <hashTree>
@@ -1919,7 +1929,7 @@ ADMIN	ADMIN	false	0
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="DBlink" enabled="true"/>
           <hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Mysql" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Mysql" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA Mysql-drop所有表" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
@@ -1939,7 +1949,7 @@ ADMIN	ADMIN	false	0
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA Mysql-create_创建mysql link的MYSQL_LINK_01" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create database link MYSQL_LINK_01 connect to &apos;admin&apos; identified by &apos;123456&apos; using &apos;jdbc:mysql://192.168.1.73:3306/dingting&apos;;</stringProp>
+                <stringProp name="query">create database link MYSQL_LINK_01 connect to &apos;admin&apos; identified by &apos;123456&apos; using &apos;jdbc:mysql://192.168.1.72:3306/dingting&apos;;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -1962,9 +1972,8 @@ ADMIN	ADMIN	false	0
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-207540493">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
-MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.73:3306/dingting	{}
-</stringProp>
+                    <stringProp name="-1226379816">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
+MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.72:3306/dingting	{}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1976,7 +1985,7 @@ MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.73:3306/dingt
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA Mysql-alter_修改MYSQL_LINK_01" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">ALTER DATABASE LINK MYSQL_LINK_01 connect to &apos;admin&apos; identified by &apos;123456&apos; using &apos;jdbc:mysql://192.168.1.73:3306/dingting&apos; PROPERTIES (&apos;caseSensitive&apos;:&apos;true&apos;);
+                <stringProp name="query">ALTER DATABASE LINK MYSQL_LINK_01 connect to &apos;admin&apos; identified by &apos;123456&apos; using &apos;jdbc:mysql://192.168.1.72:3306/dingting&apos; PROPERTIES (&apos;caseSensitive&apos;:&apos;true&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2000,9 +2009,8 @@ MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.73:3306/dingt
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-944229599">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
-MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.73:3306/dingting	{&quot;caseSensitive&quot;:&quot;true&quot;}
-</stringProp>
+                    <stringProp name="-799302358">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
+MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.72:3306/dingting	{&quot;caseSensitive&quot;:&quot;true&quot;}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2047,7 +2055,7 @@ MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.73:3306/dingt
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Oracle" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Oracle" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA Oracle-drop所有表" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
@@ -2067,7 +2075,7 @@ MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.73:3306/dingt
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA Oracle-create_创建oracle link的ORACLE_LINK_001" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create database link ORACLE_LINK_001 connect to &apos;testlink1&apos; identified by &apos;123456&apos; using &apos;jdbc:oracle:thin:@192.168.1.73:1521:xe&apos;;</stringProp>
+                <stringProp name="query">create database link ORACLE_LINK_001 connect to &apos;testlink1&apos; identified by &apos;123456&apos; using &apos;jdbc:oracle:thin:@192.168.1.72:1521:xe&apos;;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -2090,9 +2098,8 @@ MYSQL_LINK_01	ADMIN	ADMIN	true	admin	123456	jdbc:mysql://192.168.1.73:3306/dingt
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-252233659">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
-ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.73:1521:xe	{}
-</stringProp>
+                    <stringProp name="-1245597946">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
+ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.72:1521:xe	{}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2104,7 +2111,7 @@ ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.73
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA Oracle-alter_修改ORACLE_LINK_001" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">ALTER database link ORACLE_LINK_001 connect to &apos;testlink1&apos; identified by &apos;123456&apos; using &apos;jdbc:oracle:thin:@192.168.1.73:1521:xe&apos;properties(&apos;maxActive&apos;:&apos;10&apos;);
+                <stringProp name="query">ALTER database link ORACLE_LINK_001 connect to &apos;testlink1&apos; identified by &apos;123456&apos; using &apos;jdbc:oracle:thin:@192.168.1.72:1521:xe&apos;properties(&apos;maxActive&apos;:&apos;10&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2128,9 +2135,8 @@ ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.73
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="876958854">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
-ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.73:1521:xe	{&quot;maxActive&quot;:&quot;10&quot;}
-</stringProp>
+                    <stringProp name="1391404197">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
+ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.72:1521:xe	{&quot;maxActive&quot;:&quot;10&quot;}</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2175,7 +2181,7 @@ ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.73
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SqlServer" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SqlServer" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA SqlServer-drop所有表" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
@@ -2195,7 +2201,7 @@ ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.73
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA SqlServer-create_创建sqlserver  link的SQLSERVER_LINK_001" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create database link SQLSERVER_LINK_001 connect to &apos;sa&apos; identified by &apos;LinkoopDB123&apos; using &apos;jdbc:sqlserver://192.168.1.73;Database=insen&apos; properties (&apos;schema&apos;:&apos;dbo&apos;);</stringProp>
+                <stringProp name="query">create database link SQLSERVER_LINK_001 connect to &apos;sa&apos; identified by &apos;LinkoopDB123&apos; using &apos;jdbc:sqlserver://192.168.1.72;Database=insen&apos; properties (&apos;schema&apos;:&apos;dbo&apos;);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -2218,8 +2224,9 @@ ORACLE_LINK_001	ADMIN	ADMIN	true	testlink1	123456	jdbc:oracle:thin:@192.168.1.73
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="269235178">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
-SQLSERVER_LINK_001	ADMIN	ADMIN	true	sa	LinkoopDB123	jdbc:sqlserver://192.168.1.73;Database=insen	{&quot;schema&quot;:&quot;dbo&quot;}</stringProp>
+                    <stringProp name="-1269136063">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
+SQLSERVER_LINK_001	ADMIN	ADMIN	true	sa	LinkoopDB123	jdbc:sqlserver://192.168.1.72;Database=insen	{&quot;schema&quot;:&quot;dbo&quot;}
+</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2231,7 +2238,7 @@ SQLSERVER_LINK_001	ADMIN	ADMIN	true	sa	LinkoopDB123	jdbc:sqlserver://192.168.1.7
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA SqlServer-alter_修改SQLSERVER_LINK_001" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">alter database link SQLSERVER_LINK_001 connect to &apos;sa&apos; identified by &apos;LinkoopDB123&apos; using &apos;jdbc:sqlserver://192.168.1.73;Database=insen&apos; properties (&apos;schema&apos;:&apos;test_user_schema&apos;);
+                <stringProp name="query">alter database link SQLSERVER_LINK_001 connect to &apos;sa&apos; identified by &apos;LinkoopDB123&apos; using &apos;jdbc:sqlserver://192.168.1.72;Database=insen&apos; properties (&apos;schema&apos;:&apos;test_user_schema&apos;);
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2255,8 +2262,8 @@ SQLSERVER_LINK_001	ADMIN	ADMIN	true	sa	LinkoopDB123	jdbc:sqlserver://192.168.1.7
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1544829125">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
-SQLSERVER_LINK_001	ADMIN	ADMIN	true	sa	LinkoopDB123	jdbc:sqlserver://192.168.1.73;Database=insen	{&quot;schema&quot;:&quot;test_user_schema&quot;}
+                    <stringProp name="-426110332">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
+SQLSERVER_LINK_001	ADMIN	ADMIN	true	sa	LinkoopDB123	jdbc:sqlserver://192.168.1.72;Database=insen	{&quot;schema&quot;:&quot;test_user_schema&quot;}
 </stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -2302,7 +2309,7 @@ SQLSERVER_LINK_001	ADMIN	ADMIN	true	sa	LinkoopDB123	jdbc:sqlserver://192.168.1.7
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Hive" enabled="false"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Hive" enabled="true"/>
             <hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA HIVE-drop所有表" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
@@ -2448,7 +2455,7 @@ HIVE_LINK_001	ADMIN	ADMIN	true	hive	hive	hive	{&quot;schema&quot;:&quot;default&
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA postgres-create_创建postgres  link的POSTGRES_LINK_001" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">create database link POSTGRES_LINK_001 connect to &apos;postgres&apos; identified by &apos;123456&apos; using &apos;jdbc:postgresql://192.168.1.73:5432/postgres&apos; properties (&apos;caseSensitive&apos;:&apos;true&apos;);</stringProp>
+                <stringProp name="query">create database link POSTGRES_LINK_001 connect to &apos;postgres&apos; identified by &apos;123456&apos; using &apos;jdbc:postgresql://192.168.1.72:5432/postgres&apos; properties (&apos;caseSensitive&apos;:&apos;true&apos;);</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -2471,8 +2478,8 @@ HIVE_LINK_001	ADMIN	ADMIN	true	hive	hive	hive	{&quot;schema&quot;:&quot;default&
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1569841109">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
-POSTGRES_LINK_001	ADMIN	ADMIN	true	postgres	123456	jdbc:postgresql://192.168.1.73:5432/postgres	{&quot;schema&quot;:&quot;public&quot;,&quot;caseSensitive&quot;:&quot;true&quot;}
+                    <stringProp name="-1850190998">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
+POSTGRES_LINK_001	ADMIN	ADMIN	true	postgres	123456	jdbc:postgresql://192.168.1.72:5432/postgres	{&quot;schema&quot;:&quot;public&quot;,&quot;caseSensitive&quot;:&quot;true&quot;}
 </stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -2485,7 +2492,7 @@ POSTGRES_LINK_001	ADMIN	ADMIN	true	postgres	123456	jdbc:postgresql://192.168.1.7
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 LDB_SCHEMA postgres-alter_修改POSTGRES_LINK_001" enabled="true">
                 <stringProp name="dataSource">${a}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
-                <stringProp name="query">alter database link POSTGRES_LINK_001 connect to &apos;postgres&apos; identified by &apos;123456&apos; using &apos;jdbc:postgresql://192.168.1.73:5432/postgres&apos;;</stringProp>
+                <stringProp name="query">alter database link POSTGRES_LINK_001 connect to &apos;postgres&apos; identified by &apos;123456&apos; using &apos;jdbc:postgresql://192.168.1.72:5432/postgres&apos;;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -2508,8 +2515,8 @@ POSTGRES_LINK_001	ADMIN	ADMIN	true	postgres	123456	jdbc:postgresql://192.168.1.7
               <hashTree>
                 <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                   <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1799510626">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
-POSTGRES_LINK_001	ADMIN	ADMIN	true	postgres	123456	jdbc:postgresql://192.168.1.73:5432/postgres	{&quot;schema&quot;:&quot;public&quot;,&quot;caseSensitive&quot;:&quot;false&quot;}
+                    <stringProp name="1698598659">NAME	CREATOR	OWNER	ISDBLINK	USERNAME	PASSWORD	CONNECTSTRING	SCHEMAPARAMS_
+POSTGRES_LINK_001	ADMIN	ADMIN	true	postgres	123456	jdbc:postgresql://192.168.1.72:5432/postgres	{&quot;schema&quot;:&quot;public&quot;,&quot;caseSensitive&quot;:&quot;false&quot;}
 </stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -2557,9 +2564,9 @@ POSTGRES_LINK_001	ADMIN	ADMIN	true	postgres	123456	jdbc:postgresql://192.168.1.7
             </hashTree>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 STORAGE_NODE" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 STORAGE_NODE" enabled="true"/>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SHARD" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SHARD" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 SHARD-drop所有表" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -2646,7 +2653,7 @@ _SYSTEM	0	PUBLIC</stringProp>
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 LOCATED_SHARD" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 LOCATED_SHARD" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03  LOCATED_SHARD-drop_删除表" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -2732,7 +2739,7 @@ _SYSTEM	1	true</stringProp>
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 user" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 user" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 USER-drop_删除表" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -3073,7 +3080,7 @@ T_USER_001	[&quot;SELECT&quot;]</stringProp>
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-471049582">EMPNO	ENAME	JOB	MGR	HIREDATE	SAL	COMM	DEPTNO
+                <stringProp name="-1717635144">EMPNO	ENAME	JOB	MGR	HIREDATE	SAL	COMM	DEPTNO
 7369	SMITH	CLERK	7902	1980-12-17	800	null	20
 7499	ALLEN	SALESMAN	7698	1981-2-20	1600	300	30
 7521	WARD	SALESMAN	7698	1981-2-22	1250	500	30
@@ -3085,7 +3092,8 @@ T_USER_001	[&quot;SELECT&quot;]</stringProp>
 7844	TURNER	SALESMAN	7698	1981-9-8	1500	0	30
 7900	JAMES	CLERK	7698	1981-12-8	950	null	30
 7902	FORD	ANALYST	7566	1981-12-8	3000	null	20
-7934	MILLER	CLERK	7782	1982-1-23	1300	null	10</stringProp>
+7934	MILLER	CLERK	7782	1982-1-23	1300	null	10
+</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3154,7 +3162,7 @@ T_USER_001	[&quot;SELECT&quot;]</stringProp>
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SCHEMA_OBJ_PRIV" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SCHEMA_OBJ_PRIV" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 SCHEMA_OBJ_PRIV-drop_删除表" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -3436,7 +3444,7 @@ T_USER_001	[&quot;DELETE&quot;,&quot;UPDATE&quot;,&quot;SELECT&quot;]</stringPro
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="响应断言" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-471049582">EMPNO	ENAME	JOB	MGR	HIREDATE	SAL	COMM	DEPTNO
+                <stringProp name="-1717635144">EMPNO	ENAME	JOB	MGR	HIREDATE	SAL	COMM	DEPTNO
 7369	SMITH	CLERK	7902	1980-12-17	800	null	20
 7499	ALLEN	SALESMAN	7698	1981-2-20	1600	300	30
 7521	WARD	SALESMAN	7698	1981-2-22	1250	500	30
@@ -3448,7 +3456,8 @@ T_USER_001	[&quot;DELETE&quot;,&quot;UPDATE&quot;,&quot;SELECT&quot;]</stringPro
 7844	TURNER	SALESMAN	7698	1981-9-8	1500	0	30
 7900	JAMES	CLERK	7698	1981-12-8	950	null	30
 7902	FORD	ANALYST	7566	1981-12-8	3000	null	20
-7934	MILLER	CLERK	7782	1982-1-23	1300	null	10</stringProp>
+7934	MILLER	CLERK	7782	1982-1-23	1300	null	10
+</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3678,7 +3687,7 @@ T_USER_001	[]	[&quot;ENAME&quot;,&quot;EMPNO&quot;]	[]	[]
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SYS_TABLE" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 SYS_TABLE" enabled="true"/>
         <hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03  SYS_TABLE  pallas table" enabled="false"/>
           <hashTree>
@@ -6886,7 +6895,7 @@ T_PALLAS_INDEX_001	PUBLIC	PUBLIC	1	[{&quot;columnName&quot;:&quot;ID&quot;,&quot
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03  RESOURCE_GROUP-create_创建资源组GLOBAL PERCENT  TEST101" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">CREATE RESOURCE GROUP TEST101 GLOBAL PERCENT 20;</stringProp>
+            <stringProp name="query">CREATE RESOURCE GROUP TEST101 GLOBAL PERCENT 30;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -6898,7 +6907,7 @@ T_PALLAS_INDEX_001	PUBLIC	PUBLIC	1	[{&quot;columnName&quot;:&quot;ID&quot;,&quot
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 RESOURCE_GROUP TC-001 查询TEST101相关信息" enabled="true">
             <stringProp name="dataSource">meta_admin</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION,MEMORY,CPUCORES,NUMEXECUTORS,EXECUTORCORES,EXECUTORMEMORY,HADOOP_USER from RESOURCE_GROUP where NAME=&apos;TEST101&apos;; </stringProp>
+            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION from RESOURCE_GROUP where NAME=&apos;TEST101&apos;; </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -6909,9 +6918,8 @@ T_PALLAS_INDEX_001	PUBLIC	PUBLIC	1	[{&quot;columnName&quot;:&quot;ID&quot;,&quot
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="1810049698">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION	MEMORY	CPUCORES	NUMEXECUTORS	EXECUTORCORES	EXECUTORMEMORY	HADOOP_USER
-ADMIN	ADMIN	30.0	false	12389328738	3	0	0	0	gcy
-</stringProp>
+                <stringProp name="1609260401">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION
+ADMIN	ADMIN	30.0	false</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6923,7 +6931,7 @@ ADMIN	ADMIN	30.0	false	12389328738	3	0	0	0	gcy
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03  RESOURCE_GROUP-alter_修改资源组TEST101" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
             <stringProp name="queryType">Update Statement</stringProp>
-            <stringProp name="query">ALTER RESOURCE GROUP TEST101 SET GLOBAL PERCENT 20, GLOBAL MIN PERCENT 5</stringProp>
+            <stringProp name="query">ALTER RESOURCE GROUP TEST101 SET GLOBAL PERCENT 50, GLOBAL MIN PERCENT 5</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -6935,7 +6943,7 @@ ADMIN	ADMIN	30.0	false	12389328738	3	0	0	0	gcy
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 RESOURCE_GROUP TC-002 查询TEST101相关信息" enabled="true">
             <stringProp name="dataSource">meta_admin</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION,MEMORY,CPUCORES,NUMEXECUTORS,EXECUTORCORES,EXECUTORMEMORY,HADOOP_USER from RESOURCE_GROUP where NAME=&apos;TEST101&apos;; </stringProp>
+            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION from RESOURCE_GROUP where NAME=&apos;TEST101&apos;; </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -6946,8 +6954,8 @@ ADMIN	ADMIN	30.0	false	12389328738	3	0	0	0	gcy
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-1197392927">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION	MEMORY	CPUCORES	NUMEXECUTORS	EXECUTORCORES	EXECUTORMEMORY	HADOOP_USER
-ADMIN	ADMIN	50.0	true	8259552492	2	0	0	0	gcy
+                <stringProp name="1229677256">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION
+ADMIN	ADMIN	50.0	true
 </stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
@@ -6987,7 +6995,7 @@ ADMIN	ADMIN	50.0	true	8259552492	2	0	0	0	gcy
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 RESOURCE_GROUP TC-003 查询TEST102相关信息" enabled="true">
             <stringProp name="dataSource">meta_admin</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION,GLOBALMINPERCENTAGE,MEMORY,CPUCORES,NUMEXECUTORS,EXECUTORCORES,EXECUTORMEMORY,HADOOP_USER from RESOURCE_GROUP where NAME=&apos;TEST102&apos;; </stringProp>
+            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION from RESOURCE_GROUP where NAME=&apos;TEST102&apos;; </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -6998,8 +7006,8 @@ ADMIN	ADMIN	50.0	true	8259552492	2	0	0	0	gcy
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-1910902662">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION	GLOBALMINPERCENTAGE	MEMORY	CPUCORES	NUMEXECUTORS	EXECUTORCORES	EXECUTORMEMORY	HADOOP_USER
-ADMIN	ADMIN	55.0	true	10.0	8259552492	2	0	0	0	gcy
+                <stringProp name="782339533">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION
+ADMIN	ADMIN	55.0	true
 </stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
@@ -7039,7 +7047,7 @@ ADMIN	ADMIN	55.0	true	10.0	8259552492	2	0	0	0	gcy
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 RESOURCE_GROUP TC-004 查询TEST103相关信息" enabled="true">
             <stringProp name="dataSource">meta_admin</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION,GLOBALMINPERCENTAGE,MEMORY,CPUCORES,NUMEXECUTORS,EXECUTORCORES,EXECUTORMEMORY,HADOOP_USER from RESOURCE_GROUP where NAME=&apos;TEST103&apos;; </stringProp>
+            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION from RESOURCE_GROUP where NAME=&apos;TEST103&apos;; </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -7050,9 +7058,8 @@ ADMIN	ADMIN	55.0	true	10.0	8259552492	2	0	0	0	gcy
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-1989901962">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION	GLOBALMINPERCENTAGE	MEMORY	CPUCORES	NUMEXECUTORS	EXECUTORCORES	EXECUTORMEMORY	HADOOP_USER
-ADMIN	ADMIN	50.0	true	15.0	2147483648	2	0	1	1073741824	gcy
-</stringProp>
+                <stringProp name="-2038542974">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION
+ADMIN	ADMIN	50.0	true</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -7079,7 +7086,7 @@ ADMIN	ADMIN	50.0	true	15.0	2147483648	2	0	1	1073741824	gcy
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 RESOURCE_GROUP TC-005 删除后查询TEST103相关信息" enabled="true">
             <stringProp name="dataSource">meta_admin</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION,GLOBALMINPERCENTAGE,MEMORY,CPUCORES,NUMEXECUTORS,EXECUTORCORES,EXECUTORMEMORY,HADOOP_USER from RESOURCE_GROUP where NAME=&apos;TEST103&apos;; </stringProp>
+            <stringProp name="query">select CREATOR,OWNER,PERCENTAGE,DYNAMICALLOCTION from RESOURCE_GROUP where NAME=&apos;TEST103&apos;; </stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames"></stringProp>
@@ -7090,8 +7097,7 @@ ADMIN	ADMIN	50.0	true	15.0	2147483648	2	0	1	1073741824	gcy
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-357012901">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION	GLOBALMINPERCENTAGE	MEMORY	CPUCORES	NUMEXECUTORS	EXECUTORCORES	EXECUTORMEMORY	HADOOP_USER
-</stringProp>
+                <stringProp name="-655375962">CREATOR	OWNER	PERCENTAGE	DYNAMICALLOCTION</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -7101,7 +7107,7 @@ ADMIN	ADMIN	50.0	true	15.0	2147483648	2	0	1	1073741824	gcy
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 stream_job" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="2848 LDBX151-03 stream_job" enabled="true"/>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="2848 LDBX151-03 stream_job-drop所有表" enabled="true">
             <stringProp name="dataSource">${a}</stringProp>
@@ -7348,9 +7354,8 @@ insert into T_stream_sink...	INSERT	ADMIN
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="2143891561">NAME	JOBTYPE	OWNER
-insert into T_stream_sink...	INSERT	ADMIN
-</stringProp>
+                <stringProp name="1177536449">NAME	JOBTYPE	OWNER
+insert into T_stream_sink...	INSERT	ADMIN</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
