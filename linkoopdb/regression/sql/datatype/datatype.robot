@@ -22,8 +22,20 @@ E101Test
     Logon And Execute SQL Script       admin/123456  smallint/smallint.sql
     Logon And Execute SQL Script       admin/123456  timestamp/timestamp.sql
     Logon And Execute SQL Script       admin/123456  varchar/varchar.sql
+
     Compare Files             bigint.log  bigint/bigint.ref
     Compare Files             boolean.log  boolean/boolean.ref
+    Compare Files             char.log  char/char.ref
+    Compare Files             date.log  date/date.ref
+    Compare Files             decimal.log  decimal/decimal.ref
+    Compare Files             double.log  double/double.ref
+    Compare Files             float.log  float/float.ref
+    Compare Files             int.log  int/int.ref
+    Compare Files             numeric.log  numeric/numeric.ref
+    Compare Files             real.log  real/real.ref
+    Compare Files             smallint.log  smallint/smallint.ref
+    Compare Files             timestamp.log  timestamp/timestamp.ref
+    Compare Files             varchar.log  varchar/varchar.ref
 
 *** Keywords ***
 Setup Compare Settings
@@ -38,4 +50,4 @@ Setup Compare Settings
     Compare Skip                       REWROTED.*
 
     # 一旦遇到错误，就终止继续测试
-    Compare Break When Difference      True
+    Compare Break When Difference      False

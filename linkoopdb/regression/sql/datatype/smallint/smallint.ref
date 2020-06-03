@@ -1,0 +1,387 @@
+SQLCli Release 0.0.45
+SQL> connect admin/123456
+Database connected.
+SQL> start smallint/smallint.sql
+SQL> --Description：smallint data type
+   > --Date：2020-05-22
+   > --Author：李爱敏
+   > 
+   > -- smallint数据类型验证
+   > --删除T_TYPE_SMALLINT表
+SQL> drop table T_TYPE_SMALLINT if exists;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_SMALLINT
+SQL> create table T_TYPE_SMALLINT(
+   > a1 smallint  
+   > );
+0 rows affected
+SQL>  
+SQL> --验证samllint类型最小值-32768
+SQL> insert into T_TYPE_SMALLINT values(-32768);  
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| -32768 |
++--------+
+1 row selected.
+SQL> 
+SQL> --验证samllint类型最小值-1,是否报错
+SQL> insert into T_TYPE_SMALLINT values(-32769);   
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 32767  |
+| -32768 |
++--------+
+2 rows selected.
+SQL> truncate table T_TYPE_SMALLINT;
+2 rows affected
+SQL> 
+SQL> --验证samllint类型最大值32767
+SQL> insert into T_TYPE_SMALLINT values(32767);    
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++-------+
+| A1    |
++-------+
+| 32767 |
++-------+
+1 row selected.
+SQL> 
+SQL> --验证samllint类型最大值32767+1，是否报错
+SQL> insert into T_TYPE_SMALLINT values(32768);    
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| -32768 |
+| 32767  |
++--------+
+2 rows selected.
+SQL> 
+SQL> --验证精度超出范围，四舍五入
+SQL> insert into T_TYPE_SMALLINT values(123.456);
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+3 rows selected.
+SQL> 
+SQL> --验证插入double类型，数据在smallint范围内
+SQL> insert into T_TYPE_SMALLINT values(3276.123);
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+4 rows selected.
+SQL> 
+SQL> --验证插入double类型的数据，值已超出smallint最大范围，是否报错                                              
+SQL> insert into T_TYPE_SMALLINT values(327690.123);  
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+5 rows selected.
+SQL> 
+SQL> --验证插入double类型的数据，值已超出smallint最小范围，是否报错                                             
+SQL> insert into T_TYPE_SMALLINT values(-32767.1234);  
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+6 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入数字'12345'
+SQL> insert into T_TYPE_SMALLINT values('12345');  
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+7 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'adcd'  
+SQL> insert into T_TYPE_SMALLINT values('adcd');  
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+8 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入汉字'中国'  
+SQL> insert into T_TYPE_SMALLINT values('中国');  
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+9 rows selected.
+SQL> 
+SQL> --验证插入date类型的数据，格式yyyy-mm-dd
+SQL> insert into T_TYPE_SMALLINT values(to_date('2020-05-08','yyyy-mm-dd')); 
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+10 rows selected.
+SQL> 
+SQL> --验证插入timestamp类型的数据，格式yyyy-mm-dd hh24:mi:ss
+SQL> insert into T_TYPE_SMALLINT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| -8779  |
+| <null> |
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+11 rows selected.
+SQL> 
+SQL> --验证插入boolean类型，插入true                                                       
+SQL> insert into T_TYPE_SMALLINT values(true);
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 1      |
+| -8779  |
+| <null> |
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+12 rows selected.
+SQL> 
+SQL> --验证插入boolean类型，插入false
+SQL> insert into T_TYPE_SMALLINT values(false); 
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT; 
++--------+
+| A1     |
++--------+
+| 0      |
+| 1      |
+| -8779  |
+| <null> |
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+13 rows selected.
+SQL> 
+SQL> --验证插入空值''                                                   
+SQL> insert into T_TYPE_SMALLINT values('');     
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| <null> |
+| 0      |
+| 1      |
+| -8779  |
+| <null> |
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+14 rows selected.
+SQL> 
+SQL> --验证插入空格' '                                                   
+SQL> insert into T_TYPE_SMALLINT values(' ');     
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| 0      |
+| 1      |
+| -8779  |
+| <null> |
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+15 rows selected.
+SQL> 
+SQL> --验证插入null                                                    
+SQL> insert into T_TYPE_SMALLINT values(null);  
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;  
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| 0      |
+| 1      |
+| -8779  |
+| <null> |
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+16 rows selected.
+SQL> 
+SQL> --验证插入NULL                                                   
+SQL> insert into T_TYPE_SMALLINT values(NULL);  
+1 row affected
+SQL> --查询表T_TYPE_SMALLINT
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 0      |
+| 1      |
+| -8779  |
+| <null> |
+| <null> |
+| <null> |
+| 12345  |
+| -32767 |
+| 10     |
+| 3276   |
+| 123    |
+| -32768 |
+| 32767  |
++--------+
+17 rows selected.
+SQL> exit
+Disconnected.

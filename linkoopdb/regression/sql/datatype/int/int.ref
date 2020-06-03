@@ -1,0 +1,419 @@
+SQLCli Release 0.0.45
+SQL> connect admin/123456
+Database connected.
+SQL> start int/int.sql
+SQL> --Description：int data type
+   > --Date：2020-05-22
+   > --Author：李爱敏
+   > 
+   > -- int数据类型验证
+   > --删除T_TYPE_INT表
+SQL> drop table T_TYPE_INT if exists;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_INT
+SQL> create table T_TYPE_INT(
+   > a1 int  
+   > );
+0 rows affected
+SQL> 
+SQL> --验证int类型最小值-2147483648
+SQL> insert into T_TYPE_INT values(-2147483648);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| -2147483648 |
++-------------+
+1 row selected.
+SQL> 
+SQL> --验证int类型最小值-1，是否报错
+SQL> insert into T_TYPE_INT values(-2147483649);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 2147483647  |
+| -2147483648 |
++-------------+
+2 rows selected.
+SQL> 
+SQL> --验证int类型最大值2147483647
+SQL> insert into T_TYPE_INT values(2147483647);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+3 rows selected.
+SQL> 
+SQL> --验证int类型最大值+1，是否报错
+SQL> insert into T_TYPE_INT values(2147483648);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+4 rows selected.
+SQL> 
+SQL> --验证精度超出范围，四舍五入
+SQL> insert into T_TYPE_INT values(2147483648.89);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+5 rows selected.
+SQL> 
+SQL> --验证插入double类型,数据在int范围内
+SQL> insert into T_TYPE_INT values(172.23);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+6 rows selected.
+SQL> 
+SQL> --验证插入double类型，值已超出int最大范围，是否报错
+SQL> insert into T_TYPE_INT values(2147483690.12);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+7 rows selected.
+SQL> 
+SQL> --验证插入double类型，值已超出int最小范围，是否报错
+SQL> insert into T_TYPE_INT values(-2147483690.12);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+8 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入数字'12345'
+SQL> insert into T_TYPE_INT values('1234');
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+9 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'AAbcd'
+SQL> insert into T_TYPE_INT values('AAbcd');
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+10 rows selected.
+SQL> 
+SQL> --验证插入varchar类型，插入汉字'北京'
+SQL> insert into T_TYPE_INT values('北京');
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+11 rows selected.
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd
+SQL> insert into T_TYPE_INT values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+12 rows selected.
+SQL> 
+SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss
+SQL> insert into T_TYPE_INT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 1588911541  |
+| <null>      |
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+13 rows selected.
+SQL> 
+SQL> --验证插入boolean类型，插入true                                                       
+SQL> insert into T_TYPE_INT values(true);
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 1           |
+| 1588911541  |
+| <null>      |
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+14 rows selected.
+SQL> 
+SQL> --验证插入boolean类型，插入false
+SQL> insert into T_TYPE_INT values(false); 
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT; 
++-------------+
+| A1          |
++-------------+
+| 0           |
+| 1           |
+| 1588911541  |
+| <null>      |
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+15 rows selected.
+SQL> 
+SQL> --验证插入空值''                                                   
+SQL> insert into T_TYPE_INT values('');     
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| 0           |
+| 1           |
+| 1588911541  |
+| <null>      |
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+16 rows selected.
+SQL> 
+SQL> --验证插入空格' '                                                   
+SQL> insert into T_TYPE_INT values(' ');     
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| <null>      |
+| 0           |
+| 1           |
+| 1588911541  |
+| <null>      |
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+17 rows selected.
+SQL> 
+SQL> --验证插入null                                                    
+SQL> insert into T_TYPE_INT values(null);  
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;  
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| <null>      |
+| <null>      |
+| 0           |
+| 1           |
+| 1588911541  |
+| <null>      |
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+18 rows selected.
+SQL> 
+SQL> --验证插入NULL                                                   
+SQL> insert into T_TYPE_INT values(NULL);  
+1 row affected
+SQL> --查询表T_TYPE_INT
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| <null>      |
+| <null>      |
+| <null>      |
+| 0           |
+| 1           |
+| 1588911541  |
+| <null>      |
+| <null>      |
+| <null>      |
+| 1234        |
+| 2147483606  |
+| -2147483606 |
+| 172         |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+19 rows selected.
+SQL> exit
+Disconnected.

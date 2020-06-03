@@ -1,0 +1,408 @@
+SQLCli Release 0.0.45
+SQL> connect admin/123456
+Database connected.
+SQL> start varchar/varchar.sql
+SQL> --Description：varchar data type
+   > --Date：2020-05-22
+   > --Author：李爱敏
+   > 
+   > -- varchar数据类型验证
+   > --删除表
+SQL> drop table T_TYPE_VARCHAR1 if exists;
+0 rows affected
+SQL> drop table T_TYPE_VARCHAR2 if exists;
+0 rows affected
+SQL> drop table T_TYPE_VARCHAR3 if exists;
+0 rows affected
+SQL> drop table T_TYPE_VARCHAR4 if exists;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_VARCHAR1，字符长度为64000
+SQL> create table T_TYPE_VARCHAR1 (
+   > name varchar(64000)
+   > );
+0 rows affected
+SQL> 
+SQL> --通过脚本往表T_TYPE_VARCHAR1中插入64000个随机字符
+   > --查询表T_TYPE_VARCHAR1
+SQL> select length(name) from T_TYPE_VARCHAR1;
+0 rows selected.
+SQL> 
+SQL> --创建表T_TYPE_VARCHAR2，设置为默认长度，默认长度为1
+SQL> create table T_TYPE_VARCHAR2(
+   > a1 varchar
+   > );
+java.sql.SQLSyntaxErrorException: length must be specified in type definition: VARCHAR in statement [create table T_TYPE_VARCHAR2(
+a1 varchar
+)]
+SQL> 
+SQL> --插入字符长度为1
+SQL> insert into T_TYPE_VARCHAR2 values('a');
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_VARCHAR2 in statement [insert into T_TYPE_VARCHAR2 values('a')]
+SQL> --查询表T_TYPE_VARCHAR2
+SQL> select * from T_TYPE_VARCHAR2;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_VARCHAR2 in statement [select * from T_TYPE_VARCHAR2]
+SQL> 
+SQL> --插入字符长度>1，是否报错
+SQL> insert into T_TYPE_VARCHAR2 values('ab');
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_VARCHAR2 in statement [insert into T_TYPE_VARCHAR2 values('ab')]
+SQL> --查询表T_TYPE_VARCHAR2
+SQL> select * from T_TYPE_VARCHAR2;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_VARCHAR2 in statement [select * from T_TYPE_VARCHAR2]
+SQL> 
+SQL> --创建表T_TYPE_VARCHAR3
+SQL> create table T_TYPE_VARCHAR3(
+   > a1 varchar(5)
+   > );
+0 rows affected
+SQL> 
+SQL> --插入数据格式为双引号，报错
+SQL> insert into T_TYPE_VARCHAR3 values("asdfg");
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: asdfg in statement [insert into T_TYPE_VARCHAR3 values("asdfg")]
+SQL> --查询表T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR3;
+0 rows selected.
+SQL> 
+SQL> --插入数据格式为单引号
+SQL> insert into T_TYPE_VARCHAR3 values('asdfg');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR3;
++-------+
+| A1    |
++-------+
+| asdfg |
++-------+
+1 row selected.
+SQL> 
+SQL> --插入的数据无引号，报错
+SQL> insert into T_TYPE_VARCHAR3 values(asdfg);
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: ASDFG in statement [insert into T_TYPE_VARCHAR3 values(asdfg)]
+SQL> --查询表T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR3;
++-------+
+| A1    |
++-------+
+| asdfg |
++-------+
+1 row selected.
+SQL> 
+SQL> --创建表T_TYPE_VARCHAR4
+SQL> create table T_TYPE_VARCHAR4(
+   > a1 varchar(30)
+   > );
+0 rows affected
+SQL> 
+SQL> --验证插入30个英文字母
+SQL> insert into T_TYPE_VARCHAR4 values('abcdefghijklmnopqrstuvwxyzabcd');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------+
+| A1                             |
++--------------------------------+
+| abcdefghijklmnopqrstuvwxyzabcd |
++--------------------------------+
+1 row selected.
+SQL> 
+SQL> --验证插入31个英文字母，是否截断
+SQL> insert into T_TYPE_VARCHAR4 values('abcdefghijklmnopqrstuvwxyzabcde');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------+
+| A1                             |
++--------------------------------+
+| abcdefghijklmnopqrstuvwxyzabcd |
+| abcdefghijklmnopqrstuvwxyzabcd |
++--------------------------------+
+2 rows selected.
+SQL> 
+SQL> --验证插入30个汉字
+SQL> insert into T_TYPE_VARCHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+3 rows selected.
+SQL> 
+SQL> --验证插入31个汉字，是否截断
+SQL> insert into T_TYPE_VARCHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+4 rows selected.
+SQL> 
+SQL> --验证插入30个数字
+SQL> insert into T_TYPE_VARCHAR4 values('123456789012345678901234567890');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+5 rows selected.
+SQL> 
+SQL> --验证插入31个数字，是否截断
+SQL> insert into T_TYPE_VARCHAR4 values('1234567890123456789012345678901');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+6 rows selected.
+SQL> 
+SQL> --验证插入int类型
+SQL> insert into T_TYPE_VARCHAR4 values(129);
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+7 rows selected.
+SQL> 
+SQL> --验证插入double类型
+SQL> insert into T_TYPE_VARCHAR4 values(129.77);
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+8 rows selected.
+SQL> 
+SQL> --验证插入date类型
+SQL> insert into T_TYPE_VARCHAR4 values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 2020-05-08                                                   |
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+9 rows selected.
+SQL> 
+SQL> --验证插入timestamp类型
+SQL> insert into T_TYPE_VARCHAR4 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 2020-05-08 12:19:01                                          |
+| 2020-05-08                                                   |
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+10 rows selected.
+SQL> 
+SQL> --验证插入boolean类型
+SQL> insert into T_TYPE_VARCHAR4 values(true);
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| true                                                         |
+| 2020-05-08 12:19:01                                          |
+| 2020-05-08                                                   |
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+11 rows selected.
+SQL> 
+SQL> --验证插入boolean类型
+SQL> insert into T_TYPE_VARCHAR4 values(false);
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| false                                                        |
+| true                                                         |
+| 2020-05-08 12:19:01                                          |
+| 2020-05-08                                                   |
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+12 rows selected.
+SQL> 
+SQL> --验证插入空值''                                                   
+SQL> insert into T_TYPE_VARCHAR4 values('');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+|                                                              |
+| false                                                        |
+| true                                                         |
+| 2020-05-08 12:19:01                                          |
+| 2020-05-08                                                   |
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+13 rows selected.
+SQL> 
+SQL> --验证插入空格' '                                                   
+SQL> insert into T_TYPE_VARCHAR4 values(' ');
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+|                                                              |
+|                                                              |
+| false                                                        |
+| true                                                         |
+| 2020-05-08 12:19:01                                          |
+| 2020-05-08                                                   |
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+14 rows selected.
+SQL> 
+SQL> --验证插入null                                                    
+SQL> insert into T_TYPE_VARCHAR4 values(null);
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| <null>                                                       |
+|                                                              |
+|                                                              |
+| false                                                        |
+| true                                                         |
+| 2020-05-08 12:19:01                                          |
+| 2020-05-08                                                   |
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+15 rows selected.
+SQL> 
+SQL> --验证插入NULL                                                   
+SQL> insert into T_TYPE_VARCHAR4 values(NULL);
+1 row affected
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| <null>                                                       |
+| <null>                                                       |
+|                                                              |
+|                                                              |
+| false                                                        |
+| true                                                         |
+| 2020-05-08 12:19:01                                          |
+| 2020-05-08                                                   |
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
++--------------------------------------------------------------+
+16 rows selected.
+SQL> exit
+Disconnected.
