@@ -10,7 +10,7 @@ E101Test
     [Tags]     SQL-Test       external type test
     Setup Compare Settings
     Execute SQL Script        bigint/external_table_basic_type-bigint.sql
-    Compare Files             type.log  bigint/external_table_basic_type-bigint.ref
+    Compare Files             external_table_basic_type-bigint.log  bigint/external_table_basic_type-bigint.ref
 
 *** Keywords ***
 Setup Compare Settings
