@@ -10,7 +10,31 @@ E101Test
     [Tags]     SQL-Test       external type test
     Setup Compare Settings
     Execute SQL Script        bigint/external_table_basic_type-bigint.sql
+	Execute SQL Script        bigint/external_table_basic_type-int.sql
+	Execute SQL Script        bigint/external_table_basic_type-char.sql
+	Execute SQL Script        bigint/external_table_basic_type-varchar.sql
+	Execute SQL Script        bigint/external_table_basic_type-smallint.sql
+	Execute SQL Script        bigint/external_table_basic_type-float.sql
+	Execute SQL Script        bigint/external_table_basic_type-double.sql
+	Execute SQL Script        bigint/external_table_basic_type-real.sql
+	Execute SQL Script        bigint/external_table_basic_type-decimal.sql
+	Execute SQL Script        bigint/external_table_basic_type-numeric.sql
+	Execute SQL Script        bigint/external_table_basic_type-date.sql
+	Execute SQL Script        bigint/external_table_basic_type-timestamp.sql
+	Execute SQL Script        bigint/external_table_basic_type-boolean.sql
     Compare Files             external_table_basic_type-bigint.log  bigint/external_table_basic_type-bigint.ref
+	Compare Files             external_table_basic_type-int.log  bigint/external_table_basic_type-int.ref
+	Compare Files             external_table_basic_type-char.log  bigint/external_table_basic_type-char.ref
+	Compare Files             external_table_basic_type-varchar.log  bigint/external_table_basic_type-varchar.ref
+	Compare Files             external_table_basic_type-smallint.log  bigint/external_table_basic_type-smallint.ref
+	Compare Files             external_table_basic_type-float.log  bigint/external_table_basic_type-float.ref
+	Compare Files             external_table_basic_type-double.log  bigint/external_table_basic_type-double.ref
+	Compare Files             external_table_basic_type-real.log  bigint/external_table_basic_type-real.ref
+	Compare Files             external_table_basic_type-decimal.log  bigint/external_table_basic_type-decimal.ref
+	Compare Files             external_table_basic_type-numeric.log  bigint/external_table_basic_type-numeric.ref
+	Compare Files             external_table_basic_type-date.log  bigint/external_table_basic_type-date.ref
+	Compare Files             external_table_basic_type-timestamp.log  bigint/external_table_basic_type-timestamp.ref
+	Compare Files             external_table_basic_type-boolean.log  bigint/external_table_basic_type-boolean.ref
 
 *** Keywords ***
 Setup Compare Settings
