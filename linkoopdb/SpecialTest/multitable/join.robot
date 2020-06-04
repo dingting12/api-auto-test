@@ -6,10 +6,9 @@ Metadata         Version    0.1
 Resource          regression/common/SetupRobot.robot
 
 *** Test Cases ***
-createTest
+JoinTest
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
- #   Execute SQL Script        D:/Git/code/linkoop-auto-test/linkoopdb/SpecialTest/multitable/pallasjoin.sql
     Execute SQL Script        pallas_join.sql
     Compare Files             pallas_join.log  pallas_join.ref
 
