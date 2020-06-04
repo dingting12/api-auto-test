@@ -1,5 +1,6 @@
 set echo on
 set timing on
+set time on
 
 connect admin/123456
 DROP TABLE TKE2 IF EXISTS;

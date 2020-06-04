@@ -22,10 +22,11 @@ Setup Compare Settings
     # 比对参考文件的时候使用正则表达式
     Compare Mask                       True
     # 比对参考文件的时候跳过所有符合以下条件的行
-    Compare Skip                       Running.*
+    Compare Skip                       Running time elapsed.*
+    Compare Skip                       Current clock time.*
     Compare Skip                       REWROTED.*
-    Compare Skip                       SQLCli.*
-    Compare Skip                       start.*
+    Compare Skip                       SQLCli Release .*
+    Compare Skip                       start .*
 
     # 一旦遇到错误，就终止继续测试
     Compare Break When Difference      True
