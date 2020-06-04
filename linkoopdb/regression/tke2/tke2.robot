@@ -17,6 +17,8 @@ E101Test
 Setup Compare Settings
     # SQLCli遇到SQL错误会终止继续执行
     SQLCli Break When Error            True
+    # SQLCli会显示所有SQL执行过程到屏幕
+    SQLCli Enable ConsoleOutput        False
     # 比对参考文件的时候忽略空白行
     Compare Ignore EmptyLine           True
     # 比对参考文件的时候使用正则表达式
