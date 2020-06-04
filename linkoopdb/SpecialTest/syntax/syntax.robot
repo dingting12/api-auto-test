@@ -9,8 +9,9 @@ Resource          ../../regression/common/SetupRobot.robot
 E101Test
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
-    SQLCli Break When Error   True
-    Logon And Execute SQL Script       admin/123456  SyntaxCoverage-P1000.sql
+    SQLCli Enable ConsoleOutput      True
+    SQLCli Break When Error          True
+    Logon And Execute SQL Script     admin/123456  SyntaxCoverage-P1000.sql
 
 
     # Compare Files             SyntaxCoverage-P1000.log  SyntaxCoverage-P1000.ref
