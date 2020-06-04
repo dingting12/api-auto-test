@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    两表联结
 ...              数据量为1000万和5000万，同时存储引擎为pallas
-Metadata         Version    2.2.3
+Metadata         Version    0.1
 # 引用公共函数
 Resource          regression/common/SetupRobot.robot
 
