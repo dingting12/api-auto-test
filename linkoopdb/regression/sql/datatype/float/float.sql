@@ -2,6 +2,9 @@
 --Date：2020-05-22
 --Author：李爱敏
 
+set echo on
+set timing on
+
 -- float数据类型验证
 --删除表T_TYPE_FLOAT
 drop table T_TYPE_FLOAT if exists;

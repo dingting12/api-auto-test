@@ -2,6 +2,9 @@
 --Date：2020-05-22
 --Author：李爱敏
 
+set echo on
+set timing on
+
 -- varchar数据类型验证
 --删除表
 drop table T_TYPE_VARCHAR1 if exists;

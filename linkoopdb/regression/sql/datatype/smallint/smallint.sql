@@ -2,6 +2,9 @@
 --Date：2020-05-22
 --Author：李爱敏
 
+set echo on
+set timing on
+
 -- smallint数据类型验证
 --删除T_TYPE_SMALLINT表
 drop table T_TYPE_SMALLINT if exists;

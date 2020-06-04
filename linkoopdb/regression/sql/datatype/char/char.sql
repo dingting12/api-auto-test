@@ -2,6 +2,9 @@
 --Date：2020-05-22
 --Author：李爱敏
 
+set echo on
+set timing on
+
 -- char数据类型验证
 --删除表
 drop table T_TYPE_CHAR1 if exists;

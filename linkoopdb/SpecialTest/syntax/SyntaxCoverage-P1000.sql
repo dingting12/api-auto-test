@@ -2,6 +2,9 @@
 --Date：2020-05-09
 --Author：李爱敏
 
+SET ECHO ON
+SET TIMING ON
+
 -- GROUP BY语法
 --穷举所有数据类型进行group by查询
 SELECT TSMALLINT FROM P1000 GROUP BY TSMALLINT;
