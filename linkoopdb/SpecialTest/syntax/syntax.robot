@@ -3,12 +3,13 @@ Documentation    RobotFrameWork文档实例
 ...              这里的文档内容会出现在报告里面
 Metadata         Version    0.1
 # 引用公共函数
-Resource          ../common/SetupRobot.robot
+Resource          ../../regression/common/SetupRobot.robot
 
 *** Test Cases ***
 E101Test
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
+    SQLCli Break When Error   True
     Logon And Execute SQL Script       admin/123456  SyntaxCoverage-P1000.sql
 
 
@@ -25,7 +26,6 @@ Setup Compare Settings
     Compare Skip                       Running.*
     Compare Skip                       REWROTED.*
     Compare Skip                       SQLCli.*
-    Compare Skip                       REWROTED.*
 
     # 一旦遇到错误，就终止继续测试
     Compare Break When Difference      False

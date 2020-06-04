@@ -3,13 +3,12 @@ Documentation    两表联结
 ...              数据量为1000万和5000万，同时存储引擎为pallas
 Metadata         Version    0.1
 # 引用公共函数
-Resource          regression/common/SetupRobot.robot
+Resource          ../../regression/common/SetupRobot.robot
 
 *** Test Cases ***
-createTest
+JoinTest
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
- #   Execute SQL Script        D:/Git/code/linkoop-auto-test/linkoopdb/SpecialTest/multitable/pallasjoin.sql
     Execute SQL Script        pallas_join.sql
     Compare Files             pallas_join.log  pallas_join.ref
 
