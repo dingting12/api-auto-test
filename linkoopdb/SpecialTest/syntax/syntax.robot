@@ -3,7 +3,7 @@ Documentation    RobotFrameWork文档实例
 ...              这里的文档内容会出现在报告里面
 Metadata         Version    0.1
 # 引用公共函数
-Resource          ../common/SetupRobot.robot
+Resource          ../../regression/common/SetupRobot.robot
 
 *** Test Cases ***
 E101Test
