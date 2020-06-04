@@ -15,7 +15,8 @@ class SetupRobot(object):
                 m_ResourceDirectories.append(os.path.join(m_Regress_Home, file))
         os.environ["T_SOURCE"] = ",".join(m_ResourceDirectories)
         os.environ["T_LOG"] = ",".join(m_ResourceDirectories)
-        os.environ["T_WORK"] = os.path.join(m_Regress_Home, "work")
+        if "T_WORK" not in os.environ:            # 不覆盖已经有的T_WORK设置
+            os.environ["T_WORK"] = os.path.join(m_Regress_Home, "work")
 
     def  keyword_todo(self):
         pass
