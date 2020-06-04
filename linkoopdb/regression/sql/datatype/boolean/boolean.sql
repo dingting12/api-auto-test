@@ -63,7 +63,7 @@ insert into T_TYPE_BOOLEAN values(15.23);
 --查询表T_TYPE_BOOLEAN
 select * from T_TYPE_BOOLEAN;
 
---验证插入varchar类型，插入数字'12345'
+--验证插入varchar类型，插入数字'1234'
 insert into T_TYPE_BOOLEAN values('1234');
 --查询表T_TYPE_BOOLEAN
 select * from T_TYPE_BOOLEAN;

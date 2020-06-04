@@ -1,6 +1,6 @@
 --Description：bigint data type
 --Date：2020-05-22
---Author：李爱敏s
+--Author：李爱敏
 
 -- bigint数据类型验证
 --删除表T_TYPE_BIGINT
