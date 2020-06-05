@@ -14,8 +14,8 @@ E101Test
 
     # 这里所有对选项的修改都会覆盖在Setup Linkoop SQL Test提供的默认值
     # 这里需要根据具体Case的情况来调整具体的设置
-    SQLCli Enable ConsoleOutput    False
-    Compare Enable ConsoleOutput   False
+    SQLCli Enable ConsoleOutput    True
+    Compare Enable ConsoleOutput   True
     SQLCli Break When Error        False
     Compare Break When Difference  False
 
