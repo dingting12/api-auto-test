@@ -6,7 +6,7 @@ Documentation    RobotFrameWork文档实例
 Resource          SetupRobot.res
 
 *** Test Cases ***
-E101Test
+SyntaxCoveragePallasTest
     [Tags]   SQL-Test       Smoke
 
     # 配置环境信息
@@ -16,5 +16,11 @@ E101Test
     SQLCli Enable ConsoleOutput      False
     Compare Enable ConsoleOutput     False
     SQLCli Break When Error          True
-    Logon And Execute SQL Script     admin/123456  SyntaxCoverage-P1000.sql
-    # Compare Files             SyntaxCoverage-P1000.log  SyntaxCoverage-P1000.ref
+
+    Logon And Execute SQL Script     admin/123456  GroupBy-P1000.sql    GroupBy-P1000_pallas.log
+    Logon And Execute SQL Script     admin/123456  Having-P1000.sql     Having-P1000_pallas.log
+    Logon And Execute SQL Script     admin/123456  DataTypeConversion-P1000.sql     DataTypeConversion-P1000_pallas.log
+
+    # Compare Files             GroupBy-P1000.sql    GroupBy-P1000_pallas.ref
+    # Compare Files             Having-P1000.sql     Having-P1000_pallas.ref
+    # Compare Files             DataTypeConversion-P1000.sql     DataTypeConversion-P1000_pallas.ref
