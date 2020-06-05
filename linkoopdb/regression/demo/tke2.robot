@@ -24,7 +24,8 @@ E101Test
 
 E102Test
     [Tags]     SQL-Test       Smoke
-
+    SQLCli Enable ConsoleOutput    True
+    Compare Enable ConsoleOutput   True
     SQLCli Set SQLMAPPING          tke2_pallas.map
     Execute SQL Script             tke2.sql          tke2_pallas.log
     Compare Files                  tke2_pallas.log   tke2.ref
