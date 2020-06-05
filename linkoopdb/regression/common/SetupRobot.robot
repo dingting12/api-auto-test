@@ -39,7 +39,7 @@ SQL Test Setup
     #     SQLCli版本号，        由于版本的更新，版本号比对没有意义
     Compare Skip                       SQLCli Release .*
     #     start                start开始的是在具体执行某一个脚本，在执行中由于路径名不同，具体start后面的信息也会不同，所以不再比对
-    Compare Skip                       start .*
+    Compare Skip                       SQL\> start .*
 
     # 每次Case运行前重置日志比对不一致的次数
     Compare Reset FailedCount
