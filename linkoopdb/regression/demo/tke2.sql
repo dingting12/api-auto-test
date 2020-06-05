@@ -1,5 +1,8 @@
+-- 设置是否在日志中回显执行的SQL
 set echo on
+-- 显示当前SQL语句执行的时间，单位是秒
 set timing on
+-- 显示当前SQL完成时的系统时间
 set time on
 
 connect admin/123456
