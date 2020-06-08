@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    RobotFrameWork文档实例
 ...              这里的文档内容会出现在报告里面
-Metadata         Version    0.1
+
 # 引用公共函数
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       SQL Test Setup
