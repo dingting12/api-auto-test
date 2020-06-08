@@ -5,6 +5,7 @@ Documentation    测试pallas和hdfs表支持的最大列数
 Resource         %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       SQL Test Setup
 Test Teardown    SQL Test Clnup
+Library          OperatingSystem
 
 *** Test Cases ***
 ColumnNumberTest
