@@ -1,3 +1,10 @@
+--Description:column_number
+--Date：2020-06-08
+--Author：阮娜
+
+SET ECHO ON
+SET TIMING ON
+
 -- 删除14万列的hdfs表
 DROP TABLE IF EXISTS H_COLUMNS_14W;
 
