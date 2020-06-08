@@ -14,10 +14,6 @@ SyntaxCoveragePallasTest
     [Tags]   SQL-Test       Smoke   Pallas
 
     # 运行测试
-    SQLCli Enable ConsoleOutput      False
-    Compare Enable ConsoleOutput     False
-    SQLCli Break When Error          True
-
     SQLCli Set SQLMAPPING          tke2_pallas.map
     # Logon And Execute SQL Script     admin/123456  GroupBy-P1000.sql    GroupBy-P1000_pallas.log
     Logon And Execute SQL Script     admin/123456  Having-P1000.sql     Having-P1000_pallas.log
