@@ -1,0 +1,100 @@
+SQLCli Release 0.0.53
+SQL> connect admin/123456
+Database connected.
+SQL> start DataTypeConversion-P1000.sql
+SQL> -- Description：
+   > --             LDB专项测试
+   > --             数据类型转换
+   > -- Date：2020-05-09
+   > -- Author：李爱敏
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 数据类型转换：
+   > -- 转换函数：
+SQL> SELECT TO_DATE(TDATE,'YYYY-MM-DD') FROM P1000 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| 1979-1-21 |
++-----------+
+1 row selected.
+Running time elapsed:      0.18 Seconds
+SQL> SELECT TO_TIMESTAMP(TTIMESTAMP,'YYYY-MM-DD HH24:MI:SS') FROM P1000 LIMIT 1;
++---------------------+
+| C1                  |
++---------------------+
+| 1995-11-01 10:02:16 |
++---------------------+
+1 row selected.
+Running time elapsed:      0.20 Seconds
+SQL> SELECT TO_CHAR(TTIMESTAMP,'YYYY-MM-DD HH24:MI:SS') FROM P1000 LIMIT 1;
++---------------------+
+| C1                  |
++---------------------+
+| 1995-11-01 10:02:16 |
++---------------------+
+1 row selected.
+Running time elapsed:      0.21 Seconds
+SQL> 
+SQL> -- SMALLINT类型可以转换为INTEGER，BIGINT，REAL，DOUBLE，FLOAT，DECIMAL,NUMERIC,VARCHAR,CHAR,BOOLEAN类型的数据，不支持的数据类型给出提示信息
+SQL> SELECT CAST(TSMALLINT AS INTEGER ) FROM P1000 LIMIT 1;
++------+
+| C1   |
++------+
+| 6545 |
++------+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT CAST(TSMALLINT AS BIGINT) FROM P1000 LIMIT 1;
++------+
+| C1   |
++------+
+| 6545 |
++------+
+1 row selected.
+Running time elapsed:      0.17 Seconds
+SQL> SELECT CAST(TSMALLINT AS REAL ) FROM P1000 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 6545.0 |
++--------+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT CAST(TSMALLINT AS DOUBLE ) FROM P1000 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 6545.0 |
++--------+
+1 row selected.
+Running time elapsed:      0.15 Seconds
+SQL> SELECT CAST(TSMALLINT AS FLOAT ) FROM P1000 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 6545.0 |
++--------+
+1 row selected.
+Running time elapsed:      0.15 Seconds
+SQL> SELECT CAST(TSMALLINT AS DECIMAL(10,2) ) FROM P1000 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 6545.0 |
++--------+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT CAST(TSMALLINT AS NUMERIC(10,5) ) FROM P1000 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 6545.0 |
++--------+
+1 row selected.
+Running time elapsed:      0.15 Seconds
+SQL> SELECT CAST(TSMALLINT AS DATE) FROM P1000 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT CAST(TSMALLINT AS DATE) FROM P1000 LIMIT 1]
+Disconnected.
