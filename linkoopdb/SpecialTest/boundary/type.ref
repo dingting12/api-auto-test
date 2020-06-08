@@ -1,0 +1,3049 @@
+SQLCli Release 0.0.53
+SQL> connect admin/123456
+Database connected.
+SQL> start type.sql
+SQL> -- smallint边界值测试
+   > -- 删除T_TYPE_SMALLINT表
+SQL> drop table if exists T_TYPE_SMALLINT;
+0 rows affected
+SQL> 
+SQL> -- 创建表T_TYPE_SMALLINT
+SQL> create table T_TYPE_SMALLINT(
+   > a1 smallint  
+   > );
+0 rows affected
+SQL>  
+SQL>  --测试samllint类型最小值-32768
+SQL> insert into T_TYPE_SMALLINT values(-32768);  
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| -32768 |
++--------+
+1 row selected.
+SQL> 
+SQL> --测试samllint类型异常值-32769
+SQL> insert into T_TYPE_SMALLINT values(-32769);   
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 32767  |
+| -32768 |
++--------+
+2 rows selected.
+SQL> 
+SQL> --测试samllint类型最大值32767
+SQL> insert into T_TYPE_SMALLINT values(32767);    
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 32767  |
+| 32767  |
+| -32768 |
++--------+
+3 rows selected.
+SQL> 
+SQL> --测试samllint类型异常值32768
+SQL> insert into T_TYPE_SMALLINT values(32768);    
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 32767  |
+| -32768 |
+| -32768 |
+| 32767  |
++--------+
+4 rows selected.
+SQL> 
+SQL> --测试double类型
+SQL> insert into T_TYPE_SMALLINT values(172.23);   
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| -32768 |
+| 32767  |
+| 172    |
+| 32767  |
+| -32768 |
++--------+
+5 rows selected.
+SQL> 
+SQL> --测试varchar类型'12345'
+SQL> insert into T_TYPE_SMALLINT values('12345');  
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 172    |
+| 32767  |
+| -32768 |
+| 12345  |
+| -32768 |
+| 32767  |
++--------+
+6 rows selected.
+SQL> 
+SQL> --测试date类型
+SQL> insert into T_TYPE_SMALLINT values(to_date('2020-05-08','yyyy-mm-dd')); 
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 12345  |
+| -32768 |
+| 32767  |
+| <null> |
+| 172    |
+| 32767  |
+| -32768 |
++--------+
+7 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_SMALLINT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| <null> |
+| 172    |
+| 32767  |
+| -32768 |
+| -8779  |
+| 12345  |
+| -32768 |
+| 32767  |
++--------+
+8 rows selected.
+SQL> 
+SQL> --测试varchar类型'adcd'  
+SQL> insert into T_TYPE_SMALLINT values('adcd');  
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| -8779  |
+| 12345  |
+| -32768 |
+| 32767  |
+| <null> |
+| <null> |
+| 172    |
+| 32767  |
+| -32768 |
++--------+
+9 rows selected.
+SQL> 
+SQL> --测试boolean类型                                                       
+SQL> insert into T_TYPE_SMALLINT values(true);    
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;  
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| 172    |
+| 32767  |
+| -32768 |
+| 1      |
+| -8779  |
+| 12345  |
+| -32768 |
+| 32767  |
++--------+
+10 rows selected.
+SQL>       
+SQL> --测试double类型，值已经超出数据范围                                              
+SQL> insert into T_TYPE_SMALLINT values(327690.123);  
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 1      |
+| -8779  |
+| 12345  |
+| -32768 |
+| 32767  |
+| 10     |
+| <null> |
+| <null> |
+| 172    |
+| 32767  |
+| -32768 |
++--------+
+11 rows selected.
+SQL> 
+SQL> --测试空值                                                   
+SQL> insert into T_TYPE_SMALLINT values('');     
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;
++--------+
+| A1     |
++--------+
+| 10     |
+| <null> |
+| <null> |
+| 172    |
+| 32767  |
+| -32768 |
+| <null> |
+| 1      |
+| -8779  |
+| 12345  |
+| -32768 |
+| 32767  |
++--------+
+12 rows selected.
+SQL> 
+SQL> --测试null                                                    
+SQL> insert into T_TYPE_SMALLINT values(null);  
+1 row affected
+SQL> --查询T_TYPE_SMALLINT的数据
+SQL> select * from T_TYPE_SMALLINT;                                                        
++--------+
+| A1     |
++--------+
+| <null> |
+| 1      |
+| -8779  |
+| 12345  |
+| -32768 |
+| 32767  |
+| <null> |
+| 10     |
+| <null> |
+| <null> |
+| 172    |
+| 32767  |
+| -32768 |
++--------+
+13 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- int边界值测试
+   > -- 删除T_TYPE_INT表
+SQL> drop table if exists T_TYPE_INT;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_INT
+SQL> create table T_TYPE_INT(
+   > a1 int  
+   > );
+0 rows affected
+SQL> 
+SQL> --测试int类型最小值-2147483648
+SQL> insert into T_TYPE_INT values(-2147483648);
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| -2147483648 |
++-------------+
+1 row selected.
+SQL> 
+SQL> --测试int类型异常值-2147483649
+SQL> insert into T_TYPE_INT values(-2147483649);
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 2147483647  |
+| -2147483648 |
++-------------+
+2 rows selected.
+SQL> 
+SQL> --测试int类型最大值2147483647
+SQL> insert into T_TYPE_INT values(2147483647);
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 2147483647  |
+| 2147483647  |
+| -2147483648 |
++-------------+
+3 rows selected.
+SQL> 
+SQL>  --测试int类型异常值2147483648
+SQL> insert into T_TYPE_INT values(2147483648);
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 2147483647  |
+| -2147483648 |
+| -2147483648 |
+| 2147483647  |
++-------------+
+4 rows selected.
+SQL> 
+SQL> --测试double类型,数据范围内
+SQL> insert into T_TYPE_INT values(172.23);
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| -2147483648 |
+| 2147483647  |
+| 172         |
+| 2147483647  |
+| -2147483648 |
++-------------+
+5 rows selected.
+SQL> 
+SQL> --测试varchar类型'12345'
+SQL> insert into T_TYPE_INT values('1234');
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 172         |
+| 2147483647  |
+| -2147483648 |
+| 1234        |
+| -2147483648 |
+| 2147483647  |
++-------------+
+6 rows selected.
+SQL> 
+SQL>  --测试date类型
+SQL> insert into T_TYPE_INT values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 1234        |
+| -2147483648 |
+| 2147483647  |
+| <null>      |
+| 172         |
+| 2147483647  |
+| -2147483648 |
++-------------+
+7 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_INT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| 172         |
+| 2147483647  |
+| -2147483648 |
+| 1588911541  |
+| 1234        |
+| -2147483648 |
+| 2147483647  |
++-------------+
+8 rows selected.
+SQL> 
+SQL> --测试varchar类型'adcd'
+SQL> insert into T_TYPE_INT values('adcd');
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 1588911541  |
+| 1234        |
+| -2147483648 |
+| 2147483647  |
+| <null>      |
+| <null>      |
+| 172         |
+| 2147483647  |
+| -2147483648 |
++-------------+
+9 rows selected.
+SQL> 
+SQL> --测试boolean类型
+SQL> insert into T_TYPE_INT values(true);
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| <null>      |
+| 172         |
+| 2147483647  |
+| -2147483648 |
+| 1           |
+| 1588911541  |
+| 1234        |
+| -2147483648 |
+| 2147483647  |
++-------------+
+10 rows selected.
+SQL> 
+SQL> --测试double类型，值已经超出数据范围
+SQL> insert into T_TYPE_INT values(2147483690.12);
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| 1           |
+| 1588911541  |
+| 1234        |
+| -2147483648 |
+| 2147483647  |
+| -2147483606 |
+| <null>      |
+| <null>      |
+| 172         |
+| 2147483647  |
+| -2147483648 |
++-------------+
+11 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_INT values('');
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| -2147483606 |
+| <null>      |
+| <null>      |
+| 172         |
+| 2147483647  |
+| -2147483648 |
+| <null>      |
+| 1           |
+| 1588911541  |
+| 1234        |
+| -2147483648 |
+| 2147483647  |
++-------------+
+12 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_INT values(null);
+1 row affected
+SQL> --查询T_TYPE_INT的数据
+SQL> select * from T_TYPE_INT;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| 1           |
+| 1588911541  |
+| 1234        |
+| -2147483648 |
+| 2147483647  |
+| <null>      |
+| -2147483606 |
+| <null>      |
+| <null>      |
+| 172         |
+| 2147483647  |
+| -2147483648 |
++-------------+
+13 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- bigint边界值测试
+   > --删除表T_TYPE_BIGINT
+SQL> drop table if exists T_TYPE_BIGINT;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_BIGINT
+SQL> create table T_TYPE_BIGINT(
+   > a1 bigint  
+   > );
+0 rows affected
+SQL> 
+SQL> --测试bigint类型最小值-9223372036854775808
+SQL> insert into T_TYPE_BIGINT values(-9223372036854775808);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| -9223372036854775808 |
++----------------------+
+1 row selected.
+SQL> 
+SQL> --测试bigint类型异常值-9223372036854775809
+SQL> insert into T_TYPE_BIGINT values(-9223372036854775809);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+2 rows selected.
+SQL> 
+SQL> --测试bigint类型最大值9223372036854775807
+SQL> insert into T_TYPE_BIGINT values(9223372036854775807);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 9223372036854775807  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+3 rows selected.
+SQL> 
+SQL> --测试bigint类型异常值9223372036854775808
+SQL> insert into T_TYPE_BIGINT values(9223372036854775808);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 9223372036854775807  |
+| -9223372036854775808 |
+| -9223372036854775808 |
+| 9223372036854775807  |
++----------------------+
+4 rows selected.
+SQL> 
+SQL> --测试double类型
+SQL> insert into T_TYPE_BIGINT values(172.23);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+5 rows selected.
+SQL> 
+SQL> --测试double类型，值已经超出数据范围
+SQL> insert into T_TYPE_BIGINT values(9223372036854775890.231);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
+| -9223372036854775726 |
+| -9223372036854775808 |
+| 9223372036854775807  |
++----------------------+
+6 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_BIGINT values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| -9223372036854775726 |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| <null>               |
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+7 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_BIGINT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
+| 1588911541           |
+| -9223372036854775726 |
+| -9223372036854775808 |
+| 9223372036854775807  |
++----------------------+
+8 rows selected.
+SQL> 
+SQL>  --测试varchar类型'adcd'
+SQL> insert into T_TYPE_BIGINT values('adcd');
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 1588911541           |
+| -9223372036854775726 |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| <null>               |
+| <null>               |
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+9 rows selected.
+SQL> 
+SQL> --测试varchar类型'123456789'
+SQL> insert into T_TYPE_BIGINT values('123456789');
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| <null>               |
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
+| 123456789            |
+| 1588911541           |
+| -9223372036854775726 |
+| -9223372036854775808 |
+| 9223372036854775807  |
++----------------------+
+10 rows selected.
+SQL> 
+SQL> --测试boolean类型
+SQL> insert into T_TYPE_BIGINT values(true);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 123456789            |
+| 1588911541           |
+| -9223372036854775726 |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| 1                    |
+| <null>               |
+| <null>               |
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+11 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_BIGINT values('');
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| 1                    |
+| <null>               |
+| <null>               |
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
+| <null>               |
+| 123456789            |
+| 1588911541           |
+| -9223372036854775726 |
+| -9223372036854775808 |
+| 9223372036854775807  |
++----------------------+
+12 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_BIGINT values(null);
+1 row affected
+SQL> --查询表T_TYPE_BIGINT
+SQL> select * from T_TYPE_BIGINT;
++----------------------+
+| A1                   |
++----------------------+
+| <null>               |
+| 123456789            |
+| 1588911541           |
+| -9223372036854775726 |
+| -9223372036854775808 |
+| 9223372036854775807  |
+| <null>               |
+| 1                    |
+| <null>               |
+| <null>               |
+| 172                  |
+| 9223372036854775807  |
+| -9223372036854775808 |
++----------------------+
+13 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- real边界值测试，15个有效位，范围为-1.79769313486231E+308~ -2.22507385850720E-308, 0,2.22507385850720E-308 ~ 1.79769313486231E+308
+   > --删除表T_TYPE_REAL
+SQL> drop table if exists T_TYPE_REAL;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_REAL
+SQL> create table T_TYPE_REAL(
+   > a1 real     
+   > );          
+0 rows affected
+SQL>            
+SQL> --测试real类型异常值-1.79769313486231E+308-1
+SQL> insert into T_TYPE_REAL values(-1.80769313486231E+308);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++------+
+| A1   |
++------+
+| -inf |
++------+
+1 row selected.
+SQL> 
+SQL>  --测试real类型异常值-2.22507385850720E-308+1E-308
+SQL> insert into T_TYPE_REAL values(-2.22507385850720E-308+1E-308);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+2 rows selected.
+SQL> 
+SQL>  --测试real类型异常值2.22507385850720E-308+1E-308
+SQL> insert into T_TYPE_REAL values(2.22507385850720E-308-1E-308);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| 1.2250738585072e-308  |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+3 rows selected.
+SQL> 
+SQL>  --测试real类型异常值1.79769313486231E+308+1
+SQL> insert into T_TYPE_REAL values(1.79769313486231E+308+1);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| -1.2250738585072e-308 |
+| -inf                  |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
++-----------------------+
+4 rows selected.
+SQL> 
+SQL> --测试real类型的小数位超出有效位15个
+SQL> insert into T_TYPE_REAL values(12.1234567891234567);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+5 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_REAL values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
+| <null>                |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
++-----------------------+
+6 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_REAL values(true);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| <null>                |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+7 rows selected.
+SQL> 
+SQL> --测试varchar类型'asdf'
+SQL> insert into T_TYPE_REAL values('asdf');
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
+| <null>                |
+| <null>                |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
++-----------------------+
+8 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_REAL values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| <null>                |
+| <null>                |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+9 rows selected.
+SQL> 
+SQL> --测试smallint类型
+SQL> insert into T_TYPE_REAL values(289);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
+| 289.0                 |
+| <null>                |
+| <null>                |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
++-----------------------+
+10 rows selected.
+SQL> 
+SQL> --测试varchar类型'123.34'
+SQL> insert into T_TYPE_REAL values('123.34');
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| 289.0                 |
+| <null>                |
+| <null>                |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
+| 123.34                |
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+11 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_REAL values('');
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| 123.34                |
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
+| <null>                |
+| 289.0                 |
+| <null>                |
+| <null>                |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
++-----------------------+
+12 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_REAL values(null);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_REAL;
++-----------------------+
+| A1                    |
++-----------------------+
+| <null>                |
+| 289.0                 |
+| <null>                |
+| <null>                |
+| 1.79769313486231e+308 |
+| 1.2250738585072e-308  |
+| <null>                |
+| 123.34                |
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+13 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- double边界值测试
+   > --删除表T_TYPE_DOUBLE
+SQL> drop table if exists T_TYPE_DOUBLE;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_DOUBLE
+SQL> create table T_TYPE_DOUBLE(
+   > a1 double
+   > );          
+0 rows affected
+SQL> 
+SQL> --测试double类型异常值-1.79769313486231E+308-1
+SQL> insert into T_TYPE_DOUBLE values(-1.80769313486231E+308);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_DOUBLE;
++------+
+| A1   |
++------+
+| -inf |
++------+
+1 row selected.
+SQL> 
+SQL>  --测试double类型异常值-2.22507385850720E-308+1E-308
+SQL> insert into T_TYPE_DOUBLE values(-2.22507385850720E-308+1E-308);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+2 rows selected.
+SQL> 
+SQL>  --测试double类型异常值2.22507385850720E-308+1E-308
+SQL> insert into T_TYPE_DOUBLE values(2.22507385850720E-308-1E-308);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| 1.2250738585072e-308  |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+3 rows selected.
+SQL> 
+SQL>  --测试double类型异常值1.79769313486231E+308+1
+SQL> insert into T_TYPE_DOUBLE values(1.80769313486231E+308);
+1 row affected
+SQL> --查询表T_TYPE_REAL
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| -1.2250738585072e-308 |
+| -inf                  |
+| inf                   |
+| 1.2250738585072e-308  |
++-----------------------+
+4 rows selected.
+SQL> 
+SQL> --测试double类型的小数位超出有效位15个
+SQL> insert into T_TYPE_DOUBLE values(12.1234567891234567);
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| inf                   |
+| 1.2250738585072e-308  |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+5 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_DOUBLE values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
+| <null>                |
+| inf                   |
+| 1.2250738585072e-308  |
++-----------------------+
+6 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_DOUBLE values(true);
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| <null>                |
+| inf                   |
+| 1.2250738585072e-308  |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+7 rows selected.
+SQL> 
+SQL> --测试varchar类型'asdf'
+SQL> insert into T_TYPE_DOUBLE values('asdf');
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
+| <null>                |
+| <null>                |
+| inf                   |
+| 1.2250738585072e-308  |
++-----------------------+
+8 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_DOUBLE values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| <null>                |
+| <null>                |
+| inf                   |
+| 1.2250738585072e-308  |
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+9 rows selected.
+SQL> 
+SQL> --测试smallint类型
+SQL> insert into T_TYPE_DOUBLE values(289);
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
+| 289.0                 |
+| <null>                |
+| <null>                |
+| inf                   |
+| 1.2250738585072e-308  |
++-----------------------+
+10 rows selected.
+SQL> 
+SQL> --测试varchar类型'123.34'
+SQL> insert into T_TYPE_DOUBLE values('123.34');
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| 289.0                 |
+| <null>                |
+| <null>                |
+| inf                   |
+| 1.2250738585072e-308  |
+| 123.34                |
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+11 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_DOUBLE values('');
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| 123.34                |
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
+| <null>                |
+| 289.0                 |
+| <null>                |
+| <null>                |
+| inf                   |
+| 1.2250738585072e-308  |
++-----------------------+
+12 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_DOUBLE values(null);
+1 row affected
+SQL> --查询表T_TYPE_DOUBLE
+SQL> select * from T_TYPE_DOUBLE;
++-----------------------+
+| A1                    |
++-----------------------+
+| <null>                |
+| 289.0                 |
+| <null>                |
+| <null>                |
+| inf                   |
+| 1.2250738585072e-308  |
+| <null>                |
+| 123.34                |
+| 1588911541.0          |
+| 1.0                   |
+| 12.123456789123457    |
+| -1.2250738585072e-308 |
+| -inf                  |
++-----------------------+
+13 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- float边界值测试,有效位为7位，范围为-3.402823E+38 ~ -1.175494E-38, 0,1.175494E-38 ~ 3.402823E+38
+   > --删除表T_TYPE_FLOAT
+SQL> drop table if exists T_TYPE_FLOAT;
+0 rows affected
+SQL> drop table if exists T_TYPE_FLOAT1;
+0 rows affected
+SQL> 
+SQL> --创建表T_TYPE_FLOAT1
+SQL> create table T_TYPE_FLOAT1(
+   > a1 float
+   > );  
+0 rows affected
+SQL> 
+SQL> --插入数据到表T_TYPE_FLOAT1，测试固定有效位
+SQL> insert into T_TYPE_FLOAT1 values(1234.56789)   ; 
+1 row affected
+SQL> 
+SQL> --查询表T_TYPE_FLOAT1
+SQL> select * from    T_TYPE_FLOAT1;
++------------------+
+| A1               |
++------------------+
+| 1234.56787109375 |
++------------------+
+1 row selected.
+SQL> 
+SQL> --创建表T_TYPE_FLOAT
+SQL> create table T_TYPE_FLOAT(
+   > a1 float
+   > );
+0 rows affected
+SQL> --测试float类型异常值3.4E38+1
+SQL> insert into T_TYPE_FLOAT values(-3.412823E+38);
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++------+
+| A1   |
++------+
+| -inf |
++------+
+1 row selected.
+SQL> 
+SQL>  --测试float类型异常值-3.4E38-1
+SQL> insert into T_TYPE_FLOAT values(-1.175494E-38+1E-38);
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| -1.7549399538710782e-39 |
+| -inf                    |
++-------------------------+
+2 rows selected.
+SQL> 
+SQL> 
+SQL>  --测试float类型异常值-3.4E38-1
+SQL> insert into T_TYPE_FLOAT values(1.175494E-38-1E-38);
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| 1.7549399538710782e-39  |
+| -1.7549399538710782e-39 |
+| -inf                    |
++-------------------------+
+3 rows selected.
+SQL> 
+SQL> --测试float类型的小数位超出有效位7个
+SQL> insert into T_TYPE_FLOAT values(3.412823E+38);
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| -1.7549399538710782e-39 |
+| -inf                    |
+| inf                     |
+| 1.7549399538710782e-39  |
++-------------------------+
+4 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_FLOAT values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| inf                     |
+| 1.7549399538710782e-39  |
+| <null>                  |
+| -1.7549399538710782e-39 |
+| -inf                    |
++-------------------------+
+5 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_FLOAT values(true);
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| <null>                  |
+| -1.7549399538710782e-39 |
+| -inf                    |
+| 1.0                     |
+| inf                     |
+| 1.7549399538710782e-39  |
++-------------------------+
+6 rows selected.
+SQL> 
+SQL> --测试varchar类型'asdf'
+SQL> insert into T_TYPE_FLOAT values('asdf');
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| 1.0                     |
+| inf                     |
+| 1.7549399538710782e-39  |
+| <null>                  |
+| <null>                  |
+| -1.7549399538710782e-39 |
+| -inf                    |
++-------------------------+
+7 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_FLOAT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| <null>                  |
+| <null>                  |
+| -1.7549399538710782e-39 |
+| -inf                    |
+| 1588911488.0            |
+| 1.0                     |
+| inf                     |
+| 1.7549399538710782e-39  |
++-------------------------+
+8 rows selected.
+SQL> 
+SQL> --测试smallint类型，插入是否成功
+SQL> insert into T_TYPE_FLOAT values(289);
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| 1588911488.0            |
+| 1.0                     |
+| inf                     |
+| 1.7549399538710782e-39  |
+| 289.0                   |
+| <null>                  |
+| <null>                  |
+| -1.7549399538710782e-39 |
+| -inf                    |
++-------------------------+
+9 rows selected.
+SQL> 
+SQL> --测试varchar类型'123.34'
+SQL> insert into T_TYPE_FLOAT values('123.34');
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| 289.0                   |
+| <null>                  |
+| <null>                  |
+| -1.7549399538710782e-39 |
+| -inf                    |
+| 123.33999633789062      |
+| 1588911488.0            |
+| 1.0                     |
+| inf                     |
+| 1.7549399538710782e-39  |
++-------------------------+
+10 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_FLOAT values('');
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| 123.33999633789062      |
+| 1588911488.0            |
+| 1.0                     |
+| inf                     |
+| 1.7549399538710782e-39  |
+| <null>                  |
+| 289.0                   |
+| <null>                  |
+| <null>                  |
+| -1.7549399538710782e-39 |
+| -inf                    |
++-------------------------+
+11 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_FLOAT values(null);
+1 row affected
+SQL> --查询表T_TYPE_FLOAT
+SQL> select * from T_TYPE_FLOAT;
++-------------------------+
+| A1                      |
++-------------------------+
+| <null>                  |
+| 289.0                   |
+| <null>                  |
+| <null>                  |
+| -1.7549399538710782e-39 |
+| -inf                    |
+| <null>                  |
+| 123.33999633789062      |
+| 1588911488.0            |
+| 1.0                     |
+| inf                     |
+| 1.7549399538710782e-39  |
++-------------------------+
+12 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- decimal边界值测试
+   > --删除表
+SQL> drop table if exists T_TYPE_DECIMAL1;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL2;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL3;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL4;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL5;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL6;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL7;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL8;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL9;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL10;
+0 rows affected
+SQL> drop table if exists T_TYPE_DECIMAL11;
+0 rows affected
+SQL> 
+SQL> 
+SQL> --测试总长度n>38,创建失败
+SQL> create table T_TYPE_DECIMAL1(
+   > a1 decimal(39,1)
+   > );
+0 rows affected
+SQL> 
+SQL> -- 测试总长度n<1,创建失败
+SQL> create  table T_TYPE_DECIMAL2(
+   > a1 decimal(0,0) 
+   > );
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create  table T_TYPE_DECIMAL2(
+a1 decimal(0,0) 
+)]
+SQL> 
+SQL> -- 测试整数部分长度>n-m,例如234.01，应报错
+SQL> create table T_TYPE_DECIMAL3(
+   > a1 decimal(4,2)  
+   > );
+0 rows affected
+SQL>  insert into T_TYPE_DECIMAL3 values(234.01);
+1 row affected
+SQL> select * from T_TYPE_DECIMAL3;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --测试m小于0,创建失败
+SQL> create  table T_TYPE_DECIMAL4(
+   > a1 decimal(2,-1)  
+   > );
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create  table T_TYPE_DECIMAL4(
+a1 decimal(2,-1)  
+)]
+SQL> 
+SQL> --测试m大于n,创建失败
+SQL> create  table T_TYPE_DECIMAL5(
+   > a1 decimal(3,6)  
+   > );
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create  table T_TYPE_DECIMAL5(
+a1 decimal(3,6)  
+)]
+SQL> 
+SQL> 
+SQL> -- 测试(*,m),创建失败
+SQL> create  table T_TYPE_DECIMAL6(
+   > a1 decimal(*,m)  
+   > );
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create  table T_TYPE_DECIMAL6(
+a1 decimal(*,m)  
+)]
+SQL> 
+SQL> --测试(*),创建失败
+SQL> create  table T_TYPE_DECIMAL11(
+   > a1 decimal(*)  
+   > );
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create  table T_TYPE_DECIMAL11(
+a1 decimal(*)  
+)]
+SQL>   
+SQL> -- 测试numeric(n),n设置为39,创建报错
+SQL> create  table T_TYPE_DECIMAL7(
+   > a1 decimal(39)  
+   > );
+0 rows affected
+SQL>   
+SQL>  
+SQL> 
+SQL> --测试numeric默认值是否为(5,0),值为123456，实际为123456
+SQL> create  table T_TYPE_DECIMAL8(
+   > a1 decimal  
+   > );
+0 rows affected
+SQL>  insert into T_TYPE_DECIMAL8 values(123456);
+1 row affected
+SQL> select * from T_TYPE_DECIMAL8;
++----------+
+| A1       |
++----------+
+| 123456.0 |
++----------+
+1 row selected.
+SQL> 
+SQL> --测试numeric(n),n设置为5,值为123456大于5，报错，实际返回空值 
+SQL> create  table T_TYPE_DECIMAL9(
+   > a1 decimal(5)  
+   > );
+0 rows affected
+SQL>  insert into T_TYPE_DECIMAL9 values(123456);
+1 row affected
+SQL> select * from T_TYPE_DECIMAL9;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --创建表T_TYPE_DECIMAL3
+SQL> create table T_TYPE_DECIMAL10(
+   > a1 decimal(5,3)
+   > );
+0 rows affected
+SQL> 
+SQL> --测试samllint类型
+SQL> insert into T_TYPE_DECIMAL10 values(32121);
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --测试int类型，插入是否成功
+SQL> insert into T_TYPE_DECIMAL10 values(2147483);
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
++--------+
+2 rows selected.
+SQL> 
+SQL> --测试double类型
+SQL> insert into T_TYPE_DECIMAL10 values(138.92);
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
++--------+
+3 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_DECIMAL10 values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_DECIMAL10 values(true);
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| 1.0    |
+| <null> |
+| <null> |
++--------+
+5 rows selected.
+SQL> 
+SQL> --测试varchar类型
+SQL> insert into T_TYPE_DECIMAL10 values('asdf');
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_DECIMAL10 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 1.0    |
+| <null> |
+| <null> |
++--------+
+7 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_DECIMAL10 values('');
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| <null> |
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+8 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_DECIMAL10 values(null);
+1 row affected
+SQL> --查询表T_TYPE_DECIMAL3
+SQL> select * from T_TYPE_DECIMAL10;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 1.0    |
+| <null> |
+| <null> |
++--------+
+9 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- numeric边界值测试
+   > -- 删除表
+SQL> drop table if exists T_TYPE_numeric1;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric2;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric3;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric4;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric5;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric6;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric7;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric8;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric9;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric10;
+0 rows affected
+SQL> drop table if exists T_TYPE_numeric11;
+0 rows affected
+SQL> 
+SQL> --测试总长度n>38,创建失败
+SQL> create table T_TYPE_numeric1(
+   > a1 numeric(39,1)
+   > );
+0 rows affected
+SQL> 
+SQL> -- 测试总长度n<1,创建失败
+SQL> create  table T_TYPE_numeric2(
+   > a1 numeric(0,0) 
+   > );
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create  table T_TYPE_numeric2(
+a1 numeric(0,0) 
+)]
+SQL> 
+SQL> -- 测试整数部分长度>n-m,例如234.01，应报错
+SQL> create table T_TYPE_numeric3(
+   > a1 numeric(4,2)  
+   > );
+0 rows affected
+SQL>  insert into T_TYPE_numeric3 values(234.01);
+1 row affected
+SQL> select * from T_TYPE_numeric3;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --测试m小于0,创建失败
+SQL> create  table T_TYPE_numeric4(
+   > a1 numeric(2,-1)  
+   > );
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create  table T_TYPE_numeric4(
+a1 numeric(2,-1)  
+)]
+SQL> 
+SQL> --测试m大于n,创建失败
+SQL> create  table T_TYPE_numeric5(
+   > a1 numeric(3,6)  
+   > );
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 测试(*,m),创建失败
+SQL> create  table T_TYPE_numeric6(
+   > a1 numeric(*,m)  
+   > );
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create  table T_TYPE_numeric6(
+a1 numeric(*,m)  
+)]
+SQL> 
+SQL> --测试(*),创建失败
+SQL> create  table T_TYPE_numeric7(
+   > a1 numeric(*)  
+   > );
+java.sql.SQLSyntaxErrorException: unexpected token: * : line: 2 in statement [create  table T_TYPE_numeric7(
+a1 numeric(*)  
+)]
+SQL>   
+SQL> -- 测试numeric(n),n设置为39,创建报错
+SQL> create  table T_TYPE_numeric8(
+   > a1 numeric(39)  
+   > );
+0 rows affected
+SQL>   
+SQL> 
+SQL> --测试numeric默认值是否为(5,0),值为123456，实际为123456
+SQL> create  table T_TYPE_numeric9(
+   > a1 numeric  
+   > );
+0 rows affected
+SQL>  insert into T_TYPE_numeric9 values(123456);
+1 row affected
+SQL> select * from T_TYPE_numeric9;
++----------+
+| A1       |
++----------+
+| 123456.0 |
++----------+
+1 row selected.
+SQL> 
+SQL> --测试numeric(n),n设置为5,值为123456大于5，报错，实际返回空值 
+SQL> create  table T_TYPE_numeric10(
+   > a1 numeric(5)  
+   > );
+0 rows affected
+SQL>  insert into T_TYPE_numeric10 values(123456);
+1 row affected
+SQL> select * from T_TYPE_numeric10;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --创建表T_TYPE_DECIMAL3
+SQL> create table T_TYPE_numeric11(
+   > a1 numeric(5,3)
+   > );
+0 rows affected
+SQL> 
+SQL> 
+SQL> --测试samllint类型
+SQL> insert into T_TYPE_numeric11 values(32121);
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --测试int类型，插入是否成功
+SQL> insert into T_TYPE_numeric11 values(2147483);
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
++--------+
+2 rows selected.
+SQL> 
+SQL> --测试double类型
+SQL> insert into T_TYPE_numeric11 values(138.92);
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
++--------+
+3 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_numeric11 values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_numeric11 values(true);
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| 1.0    |
+| <null> |
+| <null> |
++--------+
+5 rows selected.
+SQL> 
+SQL> --测试varchar类型
+SQL> insert into T_TYPE_numeric11 values('asdf');
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_numeric11 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 1.0    |
+| <null> |
+| <null> |
++--------+
+7 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_numeric11 values('');
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| <null> |
+| 1.0    |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+8 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_numeric11 values(null);
+1 row affected
+SQL> -- 查询数据T_TYPE_NUMERIC3
+SQL> select * from T_TYPE_numeric11;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| <null> |
+| 1.0    |
+| <null> |
+| <null> |
++--------+
+9 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- boolean边界值测试
+   > -- 删除表T_TYPE_BOOLEAN
+SQL> drop table if exists T_TYPE_BOOLEAN;
+0 rows affected
+SQL> 
+SQL> -- 创建表T_TYPE_BOOLEAN
+SQL> create table T_TYPE_BOOLEAN(
+   > a1 boolean
+   > );
+0 rows affected
+SQL> 
+SQL> --测试boolean正常值true
+SQL> insert into T_TYPE_BOOLEAN values(true);
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> 
+SQL> --测试samllint类型
+SQL> insert into T_TYPE_BOOLEAN values(14);
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++------+
+| A1   |
++------+
+| True |
+| True |
++------+
+2 rows selected.
+SQL> 
+SQL> --测试double类型
+SQL> insert into T_TYPE_BOOLEAN values(15.23);
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++------+
+| A1   |
++------+
+| True |
+| True |
+| True |
++------+
+3 rows selected.
+SQL> 
+SQL> --测试int类型，插入是否成功
+SQL> insert into T_TYPE_BOOLEAN values(146798);
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++------+
+| A1   |
++------+
+| True |
+| True |
+| True |
+| True |
++------+
+4 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_BOOLEAN values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| <null> |
+| True   |
+| True   |
++--------+
+5 rows selected.
+SQL> 
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_BOOLEAN values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> --查询数据
+   > --测试varchar类型
+SQL> insert into T_TYPE_BOOLEAN values('adcd');
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| True   |
+| <null> |
+| <null> |
+| True   |
+| True   |
++--------+
+7 rows selected.
+SQL> 
+SQL> --测试varchar类型数值类型
+SQL> insert into T_TYPE_BOOLEAN values('12345');
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| True   |
+| True   |
+| <null> |
+| True   |
+| True   |
+| True   |
++--------+
+8 rows selected.
+SQL> 
+SQL> --测试varchar类型的'false'
+SQL> insert into T_TYPE_BOOLEAN values('false');
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++--------+
+| A1     |
++--------+
+| <null> |
+| True   |
+| True   |
+| True   |
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
++--------+
+9 rows selected.
+SQL> 
+SQL> --测试boolean类型的异常值truew
+SQL> insert into T_TYPE_BOOLEAN values(truew);
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: TRUEW in statement [insert into T_TYPE_BOOLEAN values(truew)]
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++--------+
+| A1     |
++--------+
+| <null> |
+| True   |
+| True   |
+| True   |
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
++--------+
+9 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_BOOLEAN values('');
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++--------+
+| A1     |
++--------+
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| True   |
++--------+
+10 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_BOOLEAN values(null);
+1 row affected
+SQL> --查询数据
+SQL> select * from T_TYPE_BOOLEAN;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| True   |
+| True   |
+| True   |
+| <null> |
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
++--------+
+11 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- date边界值测试
+   > --删除T_TYPE_DATE表
+SQL> drop table if exists T_TYPE_DATE;
+0 rows affected
+SQL> 
+SQL> --创建T_TYPE_DATE表
+SQL> create table T_TYPE_DATE(
+   > a1 DATE
+   > );
+0 rows affected
+SQL> 
+SQL> --测试samllint类型
+SQL> insert into T_TYPE_DATE values(32121);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(32121 AS DATE)' due to data type mismatch: cannot cast int to date;;
+'UnresolvedInlineTable [A1], [Buffer(cast(32121 as date))]
+]
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
+0 rows selected.
+SQL> 
+SQL> --测试int类型，插入是否成功
+SQL> insert into T_TYPE_DATE values(2147483);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(2147483 AS DATE)' due to data type mismatch: cannot cast int to date;;
+'UnresolvedInlineTable [A1], [Buffer(cast(2147483 as date))]
+]
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
+0 rows selected.
+SQL> 
+SQL> --测试double类型
+SQL> insert into T_TYPE_DATE values(138.92);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(138.92BD AS DATE)' due to data type mismatch: cannot cast decimal(5,2) to date;;
+'UnresolvedInlineTable [A1], [Buffer(cast(138.92 as date))]
+]
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
+0 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_DATE values('2020-05-08');
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| 2020-5-8 |
++----------+
+1 row selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_DATE values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| 2020-5-8 |
+| 2020-5-8 |
++----------+
+2 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_DATE values(true);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(true AS DATE)' due to data type mismatch: cannot cast boolean to date;;
+'UnresolvedInlineTable [A1], [Buffer(cast(true as date))]
+]
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| 2020-5-8 |
+| 2020-5-8 |
++----------+
+2 rows selected.
+SQL> 
+SQL> --测试varchar类型
+SQL> insert into T_TYPE_DATE values('asdf');
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| <null>   |
+| 2020-5-8 |
+| 2020-5-8 |
++----------+
+3 rows selected.
+SQL> 
+SQL> --测试无效月份的date
+SQL> insert into T_TYPE_DATE values('1000-13-02');
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| 2020-5-8 |
+| 2020-5-8 |
+| <null>   |
+| <null>   |
++----------+
+4 rows selected.
+SQL> 
+SQL> --测试无效日期的date
+SQL> insert into T_TYPE_DATE values('9999-12-41');
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| <null>   |
+| <null>   |
+| <null>   |
+| 2020-5-8 |
+| 2020-5-8 |
++----------+
+5 rows selected.
+SQL> 
+SQL> --测试date的边界值0001-01-00 
+SQL> insert into T_TYPE_DATE values('0001-01-00');
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| <null>   |
+| 2020-5-8 |
+| 2020-5-8 |
+| <null>   |
+| <null>   |
+| <null>   |
++----------+
+6 rows selected.
+SQL> 
+SQL> --测试date的边界值10000-10-01
+SQL> insert into T_TYPE_DATE values('10000-10-01');
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| <null>   |
+| <null>   |
+| <null>   |
+| <null>   |
+| <null>   |
+| 2020-5-8 |
+| 2020-5-8 |
++----------+
+7 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_DATE values('');
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| <null>   |
+| <null>   |
+| 2020-5-8 |
+| 2020-5-8 |
+| <null>   |
+| <null>   |
+| <null>   |
+| <null>   |
++----------+
+8 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_DATE values(null);
+1 row affected
+SQL> -- 查询数据T_TYPE_DATE
+SQL> select * from T_TYPE_DATE;
++----------+
+| A1       |
++----------+
+| <null>   |
+| <null>   |
+| <null>   |
+| <null>   |
+| <null>   |
+| <null>   |
+| <null>   |
+| 2020-5-8 |
+| 2020-5-8 |
++----------+
+9 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- timestamp边界值测试
+   > --删除T_TYPE_TIMESTAMP表
+SQL> drop table if exists T_TYPE_TIMESTAMP;
+0 rows affected
+SQL> 
+SQL> --创建T_TYPE_TIMESTAMP表
+SQL> create table T_TYPE_TIMESTAMP(
+   > a1 TIMESTAMP
+   > );
+0 rows affected
+SQL> 
+SQL> --测试samllint类型
+SQL> insert into T_TYPE_TIMESTAMP values(32121);
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1970-01-01 16:55:21 |
++---------------------+
+1 row selected.
+SQL> 
+SQL> --测试int类型，插入是否成功
+SQL> insert into T_TYPE_TIMESTAMP values(2147483);
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1970-01-26 04:31:23 |
+| 1970-01-01 16:55:21 |
++---------------------+
+2 rows selected.
+SQL> 
+SQL> --测试double类型
+SQL> insert into T_TYPE_TIMESTAMP values(138.92);
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| 1970-01-01 08:02:18.920000 |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
++----------------------------+
+3 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_TIMESTAMP values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
++----------------------------+
+4 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_TIMESTAMP values(true);
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
+| 1970-01-01 08:00:00        |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
++----------------------------+
+5 rows selected.
+SQL> 
+SQL> --测试varchar类型
+SQL> insert into T_TYPE_TIMESTAMP values('asdf');
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| 1970-01-01 08:00:00        |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
++----------------------------+
+6 rows selected.
+SQL> 
+SQL> --测试timestamp的边界值0001-01-00 00:00:00
+SQL> insert into T_TYPE_TIMESTAMP values('0001-01-00 00:00:00');
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
+| <null>                     |
+| 1970-01-01 08:00:00        |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
++----------------------------+
+7 rows selected.
+SQL> 
+SQL> --测试timestamp的边界值10000-10-01 23:01:01
+SQL> insert into T_TYPE_TIMESTAMP values('10000-10-01 23:01:01');
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| 1970-01-01 08:00:00        |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
++----------------------------+
+8 rows selected.
+SQL> 
+SQL> --测试无效的日期 2020-05-42 12:19:01
+SQL> insert into T_TYPE_TIMESTAMP values('2020-05-42 12:19:01');
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:00:00        |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
++----------------------------+
+9 rows selected.
+SQL> 
+SQL> --测试无效的小时 2020-05-12 28:19:01
+SQL> insert into T_TYPE_TIMESTAMP values('2020-05-12 28:19:01');
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:00:00        |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
++----------------------------+
+10 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_TIMESTAMP values('');
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:00:00        |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
++----------------------------+
+11 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_TIMESTAMP values(null);
+1 row affected
+SQL> -- 查询T_TYPE_TIMESTAMP表
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:00:00        |
+| 1970-01-26 04:31:23        |
+| 1970-01-01 16:55:21        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| 1970-01-01 08:02:18.920000 |
++----------------------------+
+12 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- char边界值测试
+   > -- 删除char表
+SQL> drop table if exists T_TYPE_CHAR1;
+0 rows affected
+SQL> drop table if exists T_TYPE_CHAR2;
+0 rows affected
+SQL> drop table if exists T_TYPE_CHAR3;
+0 rows affected
+SQL> drop table if exists T_TYPE_CHAR4;
+0 rows affected
+SQL> 
+SQL> -- 创建T_TYPE_CHAR1，长度超过64000
+SQL> create  table T_TYPE_CHAR1 (
+   > name CHAR(64001)
+   > ) ;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 创建T_TYPE_CHAR2表
+SQL> create table T_TYPE_CHAR2(
+   > a1 char(5)
+   > );
+0 rows affected
+SQL> 
+SQL> --插入数据格式为双引号，报错
+SQL> insert into T_TYPE_CHAR2 values("asdfg");
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: asdfg in statement [insert into T_TYPE_CHAR2 values("asdfg")]
+SQL> 
+SQL> -- 创建T_TYPE_CHAR3表
+SQL> create table T_TYPE_CHAR3(
+   > a1 char(10)        
+   > );
+0 rows affected
+SQL> create table T_TYPE_CHAR4(
+   > a1 char(19)        
+   > );
+0 rows affected
+SQL> 
+SQL> --测试英文字符为11字符，插入是否报错
+SQL> insert into T_TYPE_CHAR3 values('asdfgh,jkla');
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++------------+
+| A1         |
++------------+
+| asdfgh,jkl |
++------------+
+1 row selected.
+SQL> 
+SQL> --测试中文字符为11字符，插入是否报错
+SQL> insert into T_TYPE_CHAR3 values('好好好好好，好好好好好');
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++----------------------+
+| A1                   |
++----------------------+
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
++----------------------+
+2 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_CHAR3 values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++----------------------+
+| A1                   |
++----------------------+
+| 2020-05-08           |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
++----------------------+
+3 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_CHAR3 values(true);
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++----------------------+
+| A1                   |
++----------------------+
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
+| true                 |
+| 2020-05-08           |
++----------------------+
+4 rows selected.
+SQL> 
+SQL> --测试timestamp类型
+SQL> insert into T_TYPE_CHAR4 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++----------------------+
+| A1                   |
++----------------------+
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
+| true                 |
+| 2020-05-08           |
++----------------------+
+4 rows selected.
+SQL> 
+SQL> --测试int类型，插入是否成功
+SQL> insert into T_TYPE_CHAR3 values(129);
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++----------------------+
+| A1                   |
++----------------------+
+| true                 |
+| 2020-05-08           |
+| 129                  |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
++----------------------+
+5 rows selected.
+SQL> 
+SQL> --测试decimal类型，插入是否成功
+SQL> insert into T_TYPE_CHAR3 values(189.359);
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++----------------------+
+| A1                   |
++----------------------+
+| 129                  |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
+| 189.359              |
+| true                 |
+| 2020-05-08           |
++----------------------+
+6 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_CHAR3 values('');
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++----------------------+
+| A1                   |
++----------------------+
+| 189.359              |
+| true                 |
+| 2020-05-08           |
+|                      |
+| 129                  |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
++----------------------+
+7 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_CHAR3 values(null);
+1 row affected
+SQL> -- 查询结果
+SQL> select * from T_TYPE_CHAR3;
++----------------------+
+| A1                   |
++----------------------+
+|                      |
+| 129                  |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
+| <null>               |
+| 189.359              |
+| true                 |
+| 2020-05-08           |
++----------------------+
+8 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- varchar边界值测试
+   > -- 删除varchar表
+SQL> drop table if exists T_TYPE_VARCHAR1;
+0 rows affected
+SQL> drop table if exists T_TYPE_VARCHAR2;
+0 rows affected
+SQL> drop table if exists T_TYPE_VARCHAR3;
+0 rows affected
+SQL> drop table if exists T_TYPE_VARCHAR4;
+0 rows affected
+SQL> 
+SQL> -- 创建T_TYPE_CHAR1，长度超过64000
+SQL> create  table T_TYPE_VARHAR4 (
+   > name VARCHAR(64001)
+   > ) ;
+0 rows affected
+SQL> -- 创建T_TYPE_VARCHAR1表
+SQL> create table T_TYPE_VARCHAR1(
+   > a1 varchar(5)
+   > );
+0 rows affected
+SQL> 
+SQL> -- 插入数据格式为双引号，报错
+SQL> insert into T_TYPE_VARCHAR1 values("asdfg");
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: asdfg in statement [insert into T_TYPE_VARCHAR1 values("asdfg")]
+SQL> 
+SQL> -- 创建T_TYPE_VARCHAR3表
+SQL> create table T_TYPE_VARCHAR2(
+   > a1 varchar(10)        
+   > );
+0 rows affected
+SQL> create table T_TYPE_VARCHAR3(
+   > a1 varchar(19)        
+   > );
+0 rows affected
+SQL> 
+SQL> --测试英文字符为11字符，插入是否报错
+SQL> insert into T_TYPE_VARCHAR2 values('asdfgh,jkla');
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR2;
++------------+
+| A1         |
++------------+
+| asdfgh,jkl |
++------------+
+1 row selected.
+SQL> 
+SQL> --测试中文字符为11字符，插入是否报错
+SQL> insert into T_TYPE_VARCHAR2 values('好好好好好，好好好好好');
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR2;
++----------------------+
+| A1                   |
++----------------------+
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
++----------------------+
+2 rows selected.
+SQL> 
+SQL> --测试date类型，插入是否成功
+SQL> insert into T_TYPE_VARCHAR2 values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR2;
++----------------------+
+| A1                   |
++----------------------+
+| 2020-05-08           |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
++----------------------+
+3 rows selected.
+SQL> 
+SQL> --测试boolean类型，插入是否成功
+SQL> insert into T_TYPE_VARCHAR2 values(true);
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR2;
++----------------------+
+| A1                   |
++----------------------+
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
+| true                 |
+| 2020-05-08           |
++----------------------+
+4 rows selected.
+SQL> 
+SQL> --测试timestamp类型，插入是否成功
+SQL> insert into T_TYPE_VARCHAR3 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR3;
++---------------------+
+| A1                  |
++---------------------+
+| 2020-05-08 12:19:01 |
++---------------------+
+1 row selected.
+SQL> 
+SQL> --测试int类型，插入是否成功
+SQL> insert into T_TYPE_VARCHAR2 values(129);
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR2;
++----------------------+
+| A1                   |
++----------------------+
+| true                 |
+| 2020-05-08           |
+| 129                  |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
++----------------------+
+5 rows selected.
+SQL> 
+SQL> --测试decimal类型，插入是否成功
+SQL> insert into T_TYPE_VARCHAR2 values(189.359);
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR2;
++----------------------+
+| A1                   |
++----------------------+
+| 129                  |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
+| 189.359              |
+| true                 |
+| 2020-05-08           |
++----------------------+
+6 rows selected.
+SQL> 
+SQL> --测试空值
+SQL> insert into T_TYPE_VARCHAR2 values('');
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR2;
++----------------------+
+| A1                   |
++----------------------+
+| 189.359              |
+| true                 |
+| 2020-05-08           |
+|                      |
+| 129                  |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
++----------------------+
+7 rows selected.
+SQL> 
+SQL> --测试null
+SQL> insert into T_TYPE_VARCHAR2 values(null);
+1 row affected
+SQL> -- 查询结果T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR2;
++----------------------+
+| A1                   |
++----------------------+
+|                      |
+| 129                  |
+| 好好好好好，好好好好 |
+| asdfgh,jkl           |
+| <null>               |
+| 189.359              |
+| true                 |
+| 2020-05-08           |
++----------------------+
+8 rows selected.
+SQL> exit
+Disconnected.
