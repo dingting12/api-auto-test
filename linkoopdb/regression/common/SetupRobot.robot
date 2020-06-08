@@ -43,3 +43,7 @@ SQL Test Setup
 
     # 每次Case运行前重置日志比对不一致的次数
     Compare Reset FailedCount
+
+SQL Test Clnup
+    # 检查SQL运行是否有错误
+    Compare Check Result
