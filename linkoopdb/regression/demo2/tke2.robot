@@ -1,8 +1,7 @@
 *** Settings ***
 Resource         %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       SQL Test Setup
-Test Teardown    SQL Test Clnup
-Library          OperatingSystem
+Test Teardown    Compare Check Result
 
 *** Settings ***
 Documentation    RobotFrameWork文档实例
@@ -31,19 +30,4 @@ Demo3
     SQLCli Set SQLMAPPING          tke2_pallas.map
     Execute SQL Script             tke2.sql          tke2_pallas.log
     Compare Files                  tke2_pallas.log   tke2.ref
-
-Demo4
-    [Documentation]    演示程序4， 使用SQLMAPPING来实现一些表名的替换
-    [Tags]     SQL-Test       Smoke    Pallas
-    SQLCli Set SQLMAPPING            tke2_tabname.map
-
-    Set Environment Variable         TAB_NAME           TKE3
-    Execute SQL Script               tke2.sql           tke2_tke3.log
-    Compare Files                    tke2_tke3.log      tke3.ref
-
-    SQLCli Enable ConsoleOutput      True
-    Compare Enable ConsoleOutput     True
-    Set Environment Variable         TAB_NAME           TKE4
-    Execute SQL Script               tke2.sql           tke2_tke4.log
-    Compare Files                    tke2_tke4.log      tke4.ref
 
