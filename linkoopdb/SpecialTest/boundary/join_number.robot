@@ -12,7 +12,6 @@ Library          OperatingSystem
 JOINNUMBERTest
     [Documentation]    测试支持join表的个数
     [Tags]     SQL-Test       join number test
-    Setup Compare Settings
     Logon And Execute SQL Script    admin/123456  join_number.sql   join_number.log
     Compare Files             join_number.log  join_number.ref
 
