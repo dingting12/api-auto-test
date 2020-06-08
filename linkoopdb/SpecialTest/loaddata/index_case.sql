@@ -1,0 +1,256 @@
+--Description:index
+--Date：2020-06-05
+--Author：耿晨雨
+
+ 
+
+connect admin/123456
+
+set timing on
+
+set ECHO ON
+
+set WHENEVER_SQLERROR CONTINUE
+
+-- 清空环境，删除所有索引和所需表
+drop index TSMALLINT_INDEX 				 if exists;
+drop index TINTEGER_INDEX 				 if exists;
+drop index TBIGINT_INDEX 				 if exists;
+drop index TREAL_INDEX 					 if exists;
+drop index TDOUBLE_INDEX 				 if exists;
+drop index TFLOAT_INDEX 				 if exists;
+drop index TDECIMAL_INDEX 				 if exists;
+drop index TNUMERIC_INDEX 				 if exists;
+drop index TDATE_INDEX 					 if exists;
+drop index TTIMESTAMP_INDEX 			 if exists;
+drop index TBOOL_INDEX 					 if exists;
+drop index TCHAR_INDEX 					 if exists;
+drop index TVARCHAR_INDEX 				 if exists;
+drop index TVARCHARIDX1_FULLTEXT 		 if exists;
+drop index TCHARIDX1_FULLTEXT 			 if exists;
+drop index SINT_INT_INDEX                if exists;
+drop index VAR_DATE_INDEX                if exists;
+drop index INT_DATE_INDEX                if exists;
+drop index SINT_INT_BINT_INDEX           if exists;
+drop index INT_DOU_VAR_INDEX             if exists;
+drop index INT_DATE_VAR_INDEX            if exists;
+drop index INT_TIME_VAR_INDEX            if exists;
+drop index INT_BOOL_TIME_VAR_INDEX       if exists;
+drop index INT_BOOL_NUM_VAR_INDEX        if exists;
+drop index BINT_BOOL_DEC_DATE_INDEX      if exists;
+drop index BINT_CHAR_DEL_DATE_BOOL_INDEX if exists;
+drop index SINT_VAR_NUM_TIME_BOOL_INDEX  if exists;
+drop table P1000_CY						 if exists;
+drop table P1000_CY_PK					 if exists;
+drop table P1000_CY_UNIQUE				 if exists;
+
+
+-- 复制数据表，创建列索引、二级索引和全文索引使用
+create table P1000_CY as (select * from P1000)with data ;
+
+
+-- 复制数据表，创建唯一索引使用
+create table P1000_CY_UNIQUE as (select * from P1000)with data;
+
+
+
+-- 创建SMALLINT类型单列索引
+create index TSMALLINT_INDEX on P1000_CY(TSMALLINT);
+
+-- 验证SMALLINT类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TSMALLINT_INDEX';
+
+-- 创建INTEGER类型单列索引
+create index TINTEGER_INDEX on 	P1000_CY(TINTEGER);
+
+-- 验证INTEGER类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TINTEGER_INDEX';
+
+-- 创建BIGINT类型单列索引
+create index TBIGINT_INDEX on P1000_CY(TBIGINT);
+
+-- 验证BIGINT类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TBIGINT_INDEX';
+
+-- 创建REAL类型单列索引
+create index TREAL_INDEX on P1000_CY(TREAL);
+
+-- 验证REAL类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TREAL_INDEX';
+
+-- 创建DOUBLE类型单列索引
+create index TDOUBLE_INDEX on P1000_CY(TDOUBLE);
+
+-- 验证DOUBLE类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TDOUBLE_INDEX';
+
+-- 创建FLOAT类型单列索引
+create index TFLOAT_INDEX on P1000_CY(TFLOAT);
+
+-- 验证FLOAT类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TFLOAT_INDEX';
+
+-- 创建DECIMAL类型单列索引
+create index TDECIMAL_INDEX on P1000_CY(TDECIMAL);
+
+-- 验证DECIMAL类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TDECIMAL_INDEX';
+
+-- 创建NUMERIC类型单列索引
+create index TNUMERIC_INDEX on P1000_CY(TNUMERIC);
+
+-- 验证NUMERIC类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TNUMERIC_INDEX';
+
+-- 创建DATE类型单列索引
+create index TDATE_INDEX on P1000_CY(TDATE);
+
+-- 验证DATE类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TDATE_INDEX';
+
+-- 创建TIMESTAMP类型单列索引
+create index TTIMESTAMP_INDEX on P1000_CY(TTIMESTAMP);
+
+-- 验证TIMESTAMP类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TTIMESTAMP_INDEX';
+
+-- 创建BOOLEAN类型单列索引
+create index TBOOL_INDEX on P1000_CY(TBOOL);
+
+-- 验证BOOLEAN类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TBOOL_INDEX';
+
+-- 创建CHAR类型单列索引
+create index TCHAR_INDEX on P1000_CY(TCHAR);
+
+-- 验证CHAR类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TCHAR_INDEX';
+
+-- 创建VARCHAR类型单列索引
+create index TVARCHAR_INDEX on P1000_CY(TVARCHAR);
+
+-- 验证VARCHAR类型单列索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TVARCHAR_INDEX';
+
+-- 创建VARCHAR类型全文索引
+create FULLTEXT index TVARCHARIDX1_FULLTEXT on P1000_CY(TVARCHARIDX1);
+
+-- 验证VARCHAR类型全文索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TVARCHARIDX1_FULLTEXT';
+
+-- 创建CHAR类型全文索引
+create FULLTEXT index TCHARIDX1_FULLTEXT on P1000_CY(TCHARIDX1);
+
+-- 验证CHAR类型全文索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TCHARIDX1_FULLTEXT';
+
+
+-- 两个索引字段，创建包含SMALLINT和INTEGER类型二级索引
+create index SINT_INT_INDEX on P1000_CY(TSMALLINT,TINTEGER);
+
+-- 验证包含SMALLINT和INTEGER类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='SINT_INT_INDEX';
+
+-- 两个索引字段，创建包含VARCHAR和DATE类型二级索引
+create index VAR_DATE_INDEX on P1000_CY(TVARCHAR,TDATE);
+
+-- 验证包含VARCHAR和DATE类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='VAR_DATE_INDEX';
+
+-- 两个索引字段，创建包含DATE和INTEGER类型二级索引
+create index INT_DATE_INDEX on P1000_CY(TINTEGER,TDATE);
+
+-- 验证包含DATE和INTEGER类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_DATE_INDEX';
+
+
+-- 三个索引字段，创建包含SMALLINT、INTEGER和BIGINT类型二级索引
+create index SINT_INT_BINT_INDEX on P1000_CY(TSMALLINT,TINTEGER,TBIGINT);
+
+-- 验证包含SMALLINT、INTEGER和BIGINT类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='SINT_INT_BINT_INDEX';
+
+-- 三个索引字段，创建包含DOUBLE、INTEGER和VARCHAR类型二级索引
+create index INT_DOU_VAR_INDEX on P1000_CY(TINTEGER,TDOUBLE,TVARCHAR);
+
+-- 验证包含DOUBLE、INTEGER和VARCHAR类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_DOU_VAR_INDEX';
+
+-- 三个索引字段，创建包含DATE、INTEGER和VARCHAR类型二级索引
+create index INT_DATE_VAR_INDEX on P1000_CY(TINTEGER,TDATE,TVARCHAR);
+
+-- 验证包含DATE、INTEGER和VARCHAR类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_DATE_VAR_INDEX';
+
+-- 三个索引字段，创建包含TIMESTAMP、INTEGER和VARCHAR类型二级索引
+create index INT_TIME_VAR_INDEX on P1000_CY(TINTEGER,TTIMESTAMP,TVARCHAR);
+
+-- 验证包含TIMESTAMP和INTEGER类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_TIME_VAR_INDEX';
+
+-- 四个索引字段，创建包含BOOLEAN、INTEGER、TIMESTAMP和VARCHAR类型二级索引
+create index INT_BOOL_TIME_VAR_INDEX on P1000_CY(TINTEGER,TBOOL,TTIMESTAMP,TVARCHAR);
+
+-- 验证包含BOOLEAN和INTEGER类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_BOOL_TIME_VAR_INDEX';
+
+-- 四个索引字段，创建包含BOOLEAN、INTEGER、NUMERIC和VARCHAR类型二级索引
+create index INT_BOOL_NUM_VAR_INDEX on P1000_CY(TINTEGER,TBOOL,TNUMERIC,TVARCHAR);
+
+-- 验证包含BOOLEAN、INTEGER、NUMERIC和VARCHAR类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_BOOL_NUM_VAR_INDEX';
+
+-- 四个索引字段，创建包含BOOLEAN、BIGINT、DECIMAL和DATE类型二级索引
+create index BINT_BOOL_DEC_DATE_INDEX on P1000_CY(TBIGINT,TBOOL,TDECIMAL,TDATE);
+
+-- 验证包含BOOLEAN、BIGINT、DECIMAL和DATE类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='BINT_BOOL_DEC_DATE_INDEX';
+
+-- 五个索引字段，创建包含CHAR、BIGINT、DECIMAL、DATE、BOOLEAN类型二级索引
+create index BINT_CHAR_DEL_DATE_BOOL_INDEX on P1000_CY(TBIGINT,TCHAR,TDECIMAL,TDATE,TBOOL);
+
+-- 验证包含CHAR、BIGINT、DECIMAL、DATE、BOOLEAN类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='BINT_CHAR_DEL_DATE_BOOL_INDEX';
+
+-- 五个索引字段，创建包含VARCHAR、SMALLINT、NUMERIC、TIMESTAMP和BOOLEAN类型二级索引
+create index SINT_VAR_NUM_TIME_BOOL_INDEX on P1000_CY(TSMALLINT,TVARCHAR,TNUMERIC,TTIMESTAMP,TBOOL);
+
+-- 验证包含VARCHAR、SMALLINT、NUMERIC、TIMESTAMP和BOOLEAN类型二级索引是否创建成功
+select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='SINT_VAR_NUM_TIME_BOOL_INDEX';
+
+
+-- 添加唯一索引
+alter table P1000_CY_UNIQUE  add constraint uq2  unique (TUNIQUE);
+
+
+-- 验证唯一索引是否创建成功
+select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='P1000_CY_UNIQUE' and CONSTRAINT_NAME='UQ2';
+
+
+
+-- 创建包含主索引的表
+CREATE TABLE P1000_CY_PK (
+TUNIQUE BIGINT primary key,
+TSMALLINT SMALLINT, 
+TINTEGER INTEGER, 
+TBIGINT BIGINT, 
+TREAL REAL,
+TDOUBLE DOUBLE,
+TFLOAT FLOAT, 
+TDECIMAL DECIMAL(10,2), 
+TNUMERIC NUMERIC(10, 4), 
+TDATE DATE, 
+TTIMESTAMP TIMESTAMP,
+TBOOL BOOLEAN,
+TCHAR CHAR(255),
+TVARCHAR VARCHAR(4096),
+TCHARIDX1 CHAR(255),
+TCHARIDX2 CHAR(255),
+TCHARIDX3 CHAR(255),
+TVARCHARIDX1 VARCHAR(4096),
+TVARCHARIDX2 VARCHAR(4096),
+TVARCHARIDX3 VARCHAR(4096)
+) ;
+
+-- 往包含主索引的表中插入数据
+insert into P1000_CY_PK select * from P1000_CY
