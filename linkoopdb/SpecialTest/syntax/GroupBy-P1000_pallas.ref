@@ -1,0 +1,1079 @@
+SQLCli Release 0.0.53
+SQL> connect admin/123456
+Database connected.
+SQL> start GroupBy-P1000.sql
+SQL> -- Description：
+   > --             LDB专项测试
+   > --             1.group by 全部类型
+   > --             2.insert 到其他表
+   > --             3.直接返回结果
+   > -- Date：2020-05-09
+   > -- Author：李爱敏
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- GROUP BY语法
+   > -- 穷举所有数据类型进行group by查询
+SQL> SELECT TSMALLINT FROM P1000 GROUP BY TSMALLINT LIMIT 10;
++-----------+
+| TSMALLINT |
++-----------+
+| 7340      |
+| 4519      |
+| 8638      |
+| 2122      |
+| 7880      |
+| 6620      |
+| 1025      |
+| 1990      |
+| 1721      |
+| 8407      |
++-----------+
+10 rows selected.
+Running time elapsed:      1.25 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_SMALLINT表中
+SQL> DROP TABLE T_TYPE_SMALLINT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_SMALLINT AS (SELECT TSMALLINT FROM P1000 GROUP BY TSMALLINT) WITH DATA;
+0 rows affected
+Running time elapsed:      7.50 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_SMALLINT LIMIT 10;
++-----------+
+| TSMALLINT |
++-----------+
+| 8931      |
+| 5662      |
+| 8153      |
+| 2574      |
+| 4248      |
+| 4044      |
+| 9361      |
+| 8636      |
+| 1782      |
+| 9815      |
++-----------+
+10 rows selected.
+Running time elapsed:      0.69 Seconds
+SQL> SELECT TINTEGER FROM P1000 GROUP BY TINTEGER LIMIT 10;
++----------+
+| TINTEGER |
++----------+
+| 36114819 |
+| 69173613 |
+| 66099469 |
+| 67303612 |
+| 67557598 |
+| 17556291 |
+| 94510781 |
+| 15516294 |
+| 83604545 |
+| 89702480 |
++----------+
+10 rows selected.
+Running time elapsed:      1.35 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_INTEGER表中
+SQL> DROP TABLE T_TYPE_INTEGER IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_INTEGER AS (SELECT TINTEGER FROM P1000 GROUP BY TINTEGER) WITH DATA;
+0 rows affected
+Running time elapsed:      8.53 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_INTEGER LIMIT 10;
++----------+
+| TINTEGER |
++----------+
+| 22882500 |
+| 60060854 |
+| 7100285  |
+| 30805415 |
+| 72851502 |
+| 44170930 |
+| 75135067 |
+| 14396391 |
+| 67690188 |
+| 85821611 |
++----------+
+10 rows selected.
+Running time elapsed:      0.74 Seconds
+SQL> SELECT TBIGINT FROM P1000 GROUP BY TBIGINT LIMIT 10;
++--------------+
+| TBIGINT      |
++--------------+
+| 504552979919 |
+| 850489692582 |
+| 865509132836 |
+| 404521119920 |
+| 255656481923 |
+| 363395241163 |
+| 655553177195 |
+| 933577671152 |
+| 452809534087 |
+| 379105851954 |
++--------------+
+10 rows selected.
+Running time elapsed:      1.09 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_BIGINT表中
+SQL> DROP TABLE T_TYPE_BIGINT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_BIGINT AS (SELECT TBIGINT FROM P1000 GROUP BY TBIGINT)  WITH DATA;
+0 rows affected
+Running time elapsed:      8.23 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_BIGINT LIMIT 10;
++--------------+
+| TBIGINT      |
++--------------+
+| 685787216241 |
+| 175145764199 |
+| 11922052978  |
+| 603483737426 |
+| 99243443868  |
+| 951211298592 |
+| 713341065338 |
+| 383036254945 |
+| 610334010423 |
+| 975220180468 |
++--------------+
+10 rows selected.
+Running time elapsed:      0.63 Seconds
+SQL> SELECT TREAL FROM P1000 GROUP BY TREAL LIMIT 10;
++---------+
+| TREAL   |
++---------+
+| 9854.58 |
+| 3497.72 |
+| 7909.12 |
+| 8238.45 |
+| 30.49   |
+| 1677.21 |
+| 9640.14 |
+| 4033.11 |
+| 3621.7  |
+| 3583.99 |
++---------+
+10 rows selected.
+Running time elapsed:      1.41 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_REAL表中
+SQL> DROP TABLE T_TYPE_REAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_REAL AS (SELECT TREAL FROM P1000 GROUP BY TREAL) WITH DATA;
+0 rows affected
+Running time elapsed:      8.91 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_REAL LIMIT 10;
++---------+
+| TREAL   |
++---------+
+| 3169.85 |
+| 6613.86 |
+| 9385.05 |
+| 672.21  |
+| 8883.14 |
+| 7226.85 |
+| 1301.75 |
+| 9113.61 |
+| 8130.95 |
+| 1987.29 |
++---------+
+10 rows selected.
+Running time elapsed:      0.71 Seconds
+SQL> SELECT TDOUBLE FROM P1000 GROUP BY TDOUBLE LIMIT 10;
++---------+
+| TDOUBLE |
++---------+
+| 5345.62 |
+| 1432.51 |
+| 9800.75 |
+| 2054.54 |
+| 4740.46 |
+| 1672.07 |
+| 441.58  |
+| 4033.11 |
+| 5066.45 |
+| 7721.61 |
++---------+
+10 rows selected.
+Running time elapsed:      1.06 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_DOUBLE表中
+SQL> DROP TABLE T_TYPE_DOUBLE IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_DOUBLE AS (SELECT TDOUBLE FROM P1000 GROUP BY TDOUBLE) WITH DATA;
+0 rows affected
+Running time elapsed:      8.37 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_DOUBLE LIMIT 10;
++---------+
+| TDOUBLE |
++---------+
+| 497.53  |
+| 1883.86 |
+| 3036.29 |
+| 1302.19 |
+| 8238.49 |
+| 7615.16 |
+| 5997.87 |
+| 9954.43 |
+| 8243.99 |
+| 672.82  |
++---------+
+10 rows selected.
+Running time elapsed:      0.81 Seconds
+SQL> SELECT TFLOAT FROM P1000 GROUP BY TFLOAT LIMIT 10;
++--------------------+
+| TFLOAT             |
++--------------------+
+| 8715.4296875       |
+| 3487.080078125     |
+| 2795.1201171875    |
+| 4832.2099609375    |
+| 8195.0             |
+| 9333.990234375     |
+| 2945.530029296875  |
+| 1409.4200439453125 |
+| 8445.1103515625    |
+| 1400.3499755859375 |
++--------------------+
+10 rows selected.
+Running time elapsed:      1.35 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_FLOAT表中
+SQL> DROP TABLE T_TYPE_FLOAT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_FLOAT AS (SELECT TFLOAT FROM P1000 GROUP BY TFLOAT) WITH DATA;
+0 rows affected
+Running time elapsed:      9.00 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_FLOAT LIMIT 10;
++------------------+
+| TFLOAT           |
++------------------+
+| 8343.7802734375  |
+| 7681.3701171875  |
+| 9634.1103515625  |
+| 9908.9296875     |
+| 2176.47998046875 |
+| 5559.25          |
+| 482.989990234375 |
+| 6369.47998046875 |
+| 5942.669921875   |
+| 8526.490234375   |
++------------------+
+10 rows selected.
+Running time elapsed:      0.66 Seconds
+SQL> SELECT TDECIMAL FROM P1000 GROUP BY TDECIMAL LIMIT 10;
++----------+
+| TDECIMAL |
++----------+
+| 2468.02  |
+| 8370.78  |
+| 5083.6   |
+| 7643.25  |
+| 330.13   |
+| 7538.5   |
+| 4282.69  |
+| 4809.67  |
+| 1486.45  |
+| 537.21   |
++----------+
+10 rows selected.
+Running time elapsed:      1.07 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_DECIMAL表中
+SQL> DROP TABLE T_TYPE_DECIMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_DECIMAL AS (SELECT TDECIMAL FROM P1000 GROUP BY TDECIMAL) WITH DATA;
+0 rows affected
+Running time elapsed:      8.66 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_DECIMAL LIMIT 10;
++----------+
+| TDECIMAL |
++----------+
+| 3815.42  |
+| 1879.04  |
+| 8503.61  |
+| 1661.87  |
+| 4449.79  |
+| 1133.86  |
+| 4737.05  |
+| 9520.82  |
+| 3584.79  |
+| 9099.57  |
++----------+
+10 rows selected.
+Running time elapsed:      0.63 Seconds
+SQL> SELECT TNUMERIC FROM P1000 GROUP BY TNUMERIC LIMIT 10;
++-----------+
+| TNUMERIC  |
++-----------+
+| 3358.5098 |
+| 378.3413  |
+| 5390.9585 |
+| 8809.605  |
+| 8403.5509 |
+| 2690.0541 |
+| 6707.4282 |
+| 3882.4732 |
+| 2122.5795 |
+| 570.2608  |
++-----------+
+10 rows selected.
+Running time elapsed:      1.38 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_NUMERIC表中
+SQL> DROP TABLE T_TYPE_NUMERIC IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_NUMERIC AS (SELECT TNUMERIC FROM P1000 GROUP BY TNUMERIC) WITH DATA;
+0 rows affected
+Running time elapsed:      8.38 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_NUMERIC LIMIT 10;
++-----------+
+| TNUMERIC  |
++-----------+
+| 7569.4663 |
+| 3827.3302 |
+| 8288.8041 |
+| 4770.1787 |
+| 7688.3667 |
+| 6606.2356 |
+| 3381.5066 |
+| 1240.8702 |
+| 6289.5997 |
+| 3785.0948 |
++-----------+
+10 rows selected.
+Running time elapsed:      0.65 Seconds
+SQL> SELECT TDATE FROM P1000 GROUP BY TDATE LIMIT 10;
++------------+
+| TDATE      |
++------------+
+| 2021-12-18 |
+| 2007-11-15 |
+| 1989-10-28 |
+| 2043-2-15  |
+| 2002-3-2   |
+| 1990-2-5   |
+| 2000-3-17  |
+| 2046-11-26 |
+| 2047-1-23  |
+| 1992-12-20 |
++------------+
+10 rows selected.
+Running time elapsed:      1.18 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_DATE表中
+SQL> DROP TABLE T_TYPE_DATE IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_DATE AS (SELECT TDATE FROM P1000 GROUP BY TDATE) WITH DATA;
+0 rows affected
+Running time elapsed:      8.05 Seconds
+SQL> SELECT * FROM T_TYPE_DATE LIMIT 10;
++------------+
+| TDATE      |
++------------+
+| 2036-11-9  |
+| 2035-11-9  |
+| 1980-7-26  |
+| 2031-8-28  |
+| 2034-8-9   |
+| 2045-5-2   |
+| 1987-11-26 |
+| 1992-9-28  |
+| 2012-9-10  |
+| 2048-3-22  |
++------------+
+10 rows selected.
+Running time elapsed:      0.77 Seconds
+SQL> SELECT TTIMESTAMP FROM P1000 GROUP BY TTIMESTAMP LIMIT 10;
++---------------------+
+| TTIMESTAMP          |
++---------------------+
+| 1995-07-07 17:42:45 |
+| 1990-04-18 18:37:22 |
+| 1994-03-10 16:46:46 |
+| 1985-05-27 11:33:37 |
+| 2021-06-20 11:20:57 |
+| 2008-05-10 10:01:07 |
+| 2023-12-03 07:00:19 |
+| 2030-01-31 01:02:46 |
+| 2049-01-03 23:01:07 |
+| 1990-12-14 09:18:11 |
++---------------------+
+10 rows selected.
+Running time elapsed:      1.27 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_TIMESTAMP表中
+SQL> DROP TABLE T_TYPE_TIMESTAMP IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_TIMESTAMP AS (SELECT TTIMESTAMP FROM P1000 GROUP BY TTIMESTAMP) WITH DATA;
+0 rows affected
+Running time elapsed:     10.28 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_TIMESTAMP LIMIT 10;
++---------------------+
+| TTIMESTAMP          |
++---------------------+
+| 2007-02-28 11:23:03 |
+| 2042-12-13 01:52:38 |
+| 1987-03-07 18:08:19 |
+| 2032-01-26 03:08:12 |
+| 1984-11-21 14:20:16 |
+| 2026-12-16 02:45:38 |
+| 2029-11-29 10:18:52 |
+| 1984-06-26 08:32:07 |
+| 2041-10-07 09:37:06 |
+| 1995-05-25 06:06:52 |
++---------------------+
+10 rows selected.
+Running time elapsed:      0.67 Seconds
+SQL> SELECT TBOOL FROM P1000 GROUP BY TBOOL LIMIT 10;
++-------+
+| TBOOL |
++-------+
+| False |
+| True  |
++-------+
+2 rows selected.
+Running time elapsed:      1.65 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_BOOL表中
+SQL> DROP TABLE T_TYPE_BOOL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_BOOL AS (SELECT TBOOL FROM P1000 GROUP BY TBOOL) WITH DATA;
+0 rows affected
+Running time elapsed:      2.89 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_BOOL LIMIT 10;
++-------+
+| TBOOL |
++-------+
+| False |
+| True  |
++-------+
+2 rows selected.
+Running time elapsed:      0.37 Seconds
+SQL> SELECT TCHAR FROM P1000 GROUP BY TCHAR LIMIT 10;
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TCHAR                                                                                                                                                                                                                                                           |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| maoO4njcXHGEAHhOw5d8bw8aOAUXmiMaOVorzgtR2KetWjgGOS                                                                                                                                                                                                              |
+| GGfvuR9rDdPozTAqRrL6xzvRSF7orOTwopBhGJpFNFMeAgARqb                                                                                                                                                                                                              |
+| kuKSwenxT5KvVDfdMFADoLjR6kOFozfxEJHq3JXYqY7PvjZVtl                                                                                                                                                                                                              |
+| DxR05kePs7ywlBgV3rSjT6ZAYY2SDNahWiajXwuoE8B7mObRS0                                                                                                                                                                                                              |
+| 7dWIkfFtslgg5GxlaUYZ8nHWlqS8f158y3TD4R7wEIxkTgZBLF                                                                                                                                                                                                              |
+| 03K4tOHEje2KLkocP5iGfgZFWCEM1y7X7sDwCZcd6yhY5j1yH4                                                                                                                                                                                                              |
+| VvKzFt97jWZ9px7iGqRZCdcJrUDF3Tafe5H1wiAht6ojRr4SjT                                                                                                                                                                                                              |
+| sdgGSWqE7gKDD7uEH4i7DbRUGj5OfmPzq4AivAmhklOPXRVzYW                                                                                                                                                                                                              |
+| Ss7IlZv3c9RsTFL8sCGa9avuqTXORhElEsw1yC0o0jBi8pdSwe                                                                                                                                                                                                              |
+| 3U8Sqw8EPbfjRZd0Fgk4xiHuZOA77ffBECxnU2LMW9SUdddI5N                                                                                                                                                                                                              |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      1.30 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_CHAR表中
+SQL> DROP TABLE T_TYPE_CHAR IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_CHAR AS (SELECT TCHAR FROM P1000 GROUP BY TCHAR) WITH DATA;
+0 rows affected
+Running time elapsed:      9.62 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_CHAR LIMIT 10;
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TCHAR                                                                                                                                                                                                                                                           |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| nN3SI0thJEvlT65kIEpdxYyVl3sK1IVO2ZgUMcrFoZO4AxAFDm                                                                                                                                                                                                              |
+| TVaj6RwUh0hzNJuSycf5LTaBvR16DNf5pNBhGSiK3jdAVH1FKd                                                                                                                                                                                                              |
+| 98GYjo4O8R4Xf9jeeOglHcZ8cZzsnfrhvLzDb1gcRJcVNNKmNW                                                                                                                                                                                                              |
+| mcFS0Db89HqdvPAum3I4SAhNW3aP77esUYDCRjsltC8xts5mEx                                                                                                                                                                                                              |
+| tI0K8F2mYR4Rv2OvqXGzZoHmLz7eCYRzn7XclnapkS2e9i7MHI                                                                                                                                                                                                              |
+| SYPoB8Bda831h18w35ojN3A5Pj1XdvJlHrtdKcDY2P9DBxHJfU                                                                                                                                                                                                              |
+| Sp1AftGnBtbiVpA4lqAAwg3bkG7yD5KR5db8PatnjE9tLTUzPJ                                                                                                                                                                                                              |
+| PLCRWFK2q3XLXXRd3cGXOcM0VAE6wSDWR4FRnmYdWjRIEtLF9Y                                                                                                                                                                                                              |
+| TE5sbB0PbYyBD4GEctW0HpcjEkaDfWSLSzzPTT8BPJwxp7ps4d                                                                                                                                                                                                              |
+| GNxDvlCjaBJ7Oh68bVtjRDVjAaunDRMnSdFe27nzVWVIs3SZYB                                                                                                                                                                                                              |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.64 Seconds
+SQL> SELECT TVARCHAR FROM P1000 GROUP BY TVARCHAR LIMIT 10;
++------------------------------------------------------------------------------------------------------+
+| TVARCHAR                                                                                             |
++------------------------------------------------------------------------------------------------------+
+| ZYJY0ljvcDHFz8RJ8RAbyRKKgw9gwavrSESuhabgvknEuwxREibNHTRwPVYSiF44m9f6k6OAgWVmLDyW4s1CTxvUPoKcqAKvIi3p |
+| rGwrVVdosXYNOmTlcYdLHCL7wU1ZTnR3ISpoZFz9g8DfSMJ5bVCBBEmOSbEkkkRUN8RSdmNMF6oPTYFbiAv2ENHTDevwyloqIygM |
+| 4KYJcsGouJMCrG9nLBUoP6LMIxgJkYUaopWFI4WGBRjXIRtEXKJDBucBFI4Kb6RTgiOO4R8VbK4kcWpC9fl3gOBRG8dGWB71HR6H |
+| qHKMtYAOlVJhUNc9EnfIuE0MYX7Bvvy3014iHkL5SoHiK1bqXTO0w80Rfb2KiHgwZcHiL8lfXpYpcx5htZLylWntGbBMhvsDZ2pP |
+| 6DDzzew09R4oOzAkER54T0uLHPhNjgby4aqWgRX2PdPLiI1UEsEoP28WjDLuCGFR5Uf76CIEDl6XEy4D9FfD2u2S3B4nCPL76E2g |
+| ymDFZta2c9T4T7Fwjn6epePa7oVwUPsNwaD2LD7PkWucduUTNcFlaPbDKZ2nAGw2B0UCVLoPWmwR4kKC7EVEoLEooHAtagt9cWNv |
+| fRGBUzty3JdcSZ4dFKUq6lpYWuRbfOPgU99GXtToRAjksTfG9T4rR4TjU5FnV2rcwLRXkGAhFKnPhRjVc1IUIFMlbc0ZBaRFXRnd |
+| H016OuCW9o5SCBUBeA9meSl0CXA2cu0ueLCNvIP67cfG1MoPxTLV6geyHzERoOI1mBubtNWbirf38GAeOfPGT9gFdGj6uDT5lw4B |
+| ofGhloKKuXmkAAVeAqqtC27E1df3x6xgNDPy3wODSjg6uOK2W5W9j9BSjIbtRfCpR5Sumq1xq6HAIHBt5BTH6lCqVBftBvR5wF3y |
+| 79NW2uNcpJCbf8xVPM8U0XTGJCXHENgVik5Jbfp0MFPRPOdYBETMh58F6x2ZSni68KLcsTPN4AjUGZYNTCAaMRJHHiHHwuCnetqM |
++------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      1.33 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_VARCHAR表中
+SQL> DROP TABLE T_TYPE_VARCHAR IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_VARCHAR AS (SELECT TVARCHAR FROM P1000 GROUP BY TVARCHAR) WITH DATA;
+0 rows affected
+Running time elapsed:      8.45 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_VARCHAR LIMIT 10;
++------------------------------------------------------------------------------------------------------+
+| TVARCHAR                                                                                             |
++------------------------------------------------------------------------------------------------------+
+| iFSB3zN3ge3vHvtansxbEgHn2RS6C8EM9IOsA5MEwVFGF9cCDTqtOTVcnsa4cEsZoE0jcwGEnzDCwWBbwwIguuDOHdjTcAUj0wpy |
+| 8N1gORcdEF06UIwvN69FXmkqNaeMDrdxhORqjfc1FjHGwcDIgACaPvYMtUZPZTdWvT0j6WTqc3FfuEB3U0qd2TUSdek9j1WAaJUu |
+| 6VBBuASKGfCw4vYfGnUTR0Hy6o2p1JaJ6hJjl9YH1WAA4FzOx5bR0UKtUESSII1HRI4D6RY7PAKFLEvq6VVkkDhAeTqgGoN4bUjF |
+| Lz504F0cRByVPXqO2URnnDUMy6qx4CrrEoM9RGyWDpYCuRDM3MppDWN9mnRvw6J2qXFkIwWNlipG2wctPuVSAqpcRBgbsaHdCma1 |
+| z8TA0H0682nF9HvbIMVhKCD2qX67e7CZzo9UHzh2j9e0ho6Ux6bOiv4fRW14FX8CD3XnDMSEYZGdWDwD4TVXpThsdOgAzcEILRUm |
+| al7hUyna3RZqVBBRGBazNumGvEekWtbaLfz0FA0SMZw48KHjjIc6bUlEJgwWYU8nZ91qPOSntBzdgD0ZhXkeF0rj9H01b1OwAF7v |
+| 9x6bjv0xYeJnx5CuxdUE0WH0mnFnDY67RA7VzVpFBGwC28VZB9U6x68z07W4TOvddfHO2HiK4fyq9a5jxEcpJ3lzcCijGKbDJsA5 |
+| WBqbnv97f4FZ1oEJajLmTEIlSUJ0UYWOFEYZF7JPdUfWUMkeGJrjlOwFObHYMTPeDv4RXaeZl7iypdw2vuGE66W1OWy9UknDhD0O |
+| XevPIUIP0kGD2astrzAfyb2TvD5ExtFKSlJNi6tfm2Kmg4DfsMifFVAr37jEB9RxT5LPGloIRkijdyo0LITAXpfVLA0lLSCVjStD |
+| 2No0PtsHttYcDNsTthW9ex00vZtlbUea3yHq3RRe1oBTSMTr6AXHHXJoutfehmL36TMsd6pAZt5frgPjgkkipJlK1U2HG2TCUC1F |
++------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.67 Seconds
+SQL> 
+SQL> 
+SQL> -- 不同数据类型组合进行group by查询
+   > -- 3种整型数据类型组合
+SQL> SELECT TSMALLINT,TINTEGER,TBIGINT FROM P1000 GROUP BY TSMALLINT, TINTEGER,TBIGINT LIMIT 10;
++-----------+----------+--------------+
+| TSMALLINT | TINTEGER | TBIGINT      |
++-----------+----------+--------------+
+| 9213      | 78087397 | 312746853114 |
+| 2923      | 58901585 | 58925518491  |
+| 2783      | 43059509 | 79418214848  |
+| 1169      | 27556040 | 805126128955 |
+| 3823      | 85624714 | 687162354854 |
+| 9078      | 89413600 | 780612468836 |
+| 5953      | 52169789 | 987328112341 |
+| 6758      | 49098138 | 478747250319 |
+| 4541      | 91805031 | 950067430453 |
+| 9385      | 92759195 | 940086254668 |
++-----------+----------+--------------+
+10 rows selected.
+Running time elapsed:      1.27 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_INTS表中
+SQL> DROP TABLE T_TYPE_INTS IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_INTS AS (SELECT TSMALLINT,TINTEGER,TBIGINT FROM P1000 GROUP BY TSMALLINT, TINTEGER,TBIGINT) WITH DATA;
+0 rows affected
+Running time elapsed:      9.27 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_INTS LIMIT 10;
++-----------+----------+--------------+
+| TSMALLINT | TINTEGER | TBIGINT      |
++-----------+----------+--------------+
+| 7438      | 63314655 | 300004463570 |
+| 6545      | 70330091 | 431606391136 |
+| 6501      | 25519798 | 165439279989 |
+| 9898      | 37824107 | 384091872897 |
+| 967       | 86002439 | 577742029584 |
+| 6721      | 59262532 | 946517965251 |
+| 6546      | 57680313 | 155265316681 |
+| 5098      | 98836364 | 150888428510 |
+| 8288      | 23553294 | 602111697655 |
+| 6819      | 88930088 | 14148538771  |
++-----------+----------+--------------+
+10 rows selected.
+Running time elapsed:      0.66 Seconds
+SQL> 
+SQL> -- 5种浮点型数据类型组合
+SQL> SELECT TREAL,TDOUBLE,TFLOAT,TDECIMAL,TNUMERIC FROM P1000 GROUP BY TREAL, TDOUBLE, TFLOAT, TDECIMAL, TNUMERIC LIMIT 10;
++---------+---------+--------------------+----------+-----------+
+| TREAL   | TDOUBLE | TFLOAT             | TDECIMAL | TNUMERIC  |
++---------+---------+--------------------+----------+-----------+
+| 2608.6  | 1913.49 | 1471.4200439453125 | 7226.61  | 4033.4548 |
+| 8190.2  | 2136.95 | 4919.419921875     | 7790.49  | 7004.7413 |
+| 7370.64 | 1065.41 | 9954.6103515625    | 9372.51  | 9042.1397 |
+| 4037.48 | 4770.37 | 5894.72021484375   | 3834.49  | 9187.7413 |
+| 2342.57 | 6499.43 | 4748.990234375     | 8812.51  | 4832.8444 |
+| 2700.41 | 9398.44 | 7569.0498046875    | 4034.05  | 6572.9201 |
+| 3298.79 | 4506.75 | 2337.030029296875  | 6208.61  | 3904.5203 |
+| 4236.46 | 4882.27 | 1677.5799560546875 | 6819.62  | 1209.7022 |
+| 7777.13 | 9854.75 | 5936.490234375     | 581.19   | 5326.7616 |
+| 5894.45 | 1553.84 | 5972.669921875     | 9458.43  | 5489.0674 |
++---------+---------+--------------------+----------+-----------+
+10 rows selected.
+Running time elapsed:      1.69 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_FLOATS表中
+SQL> DROP TABLE T_TYPE_FLOATS IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_FLOATS AS (SELECT TREAL,TDOUBLE,TFLOAT,TDECIMAL,TNUMERIC FROM P1000 GROUP BY TREAL, TDOUBLE, TFLOAT, TDECIMAL, TNUMERIC) WITH DATA;
+0 rows affected
+Running time elapsed:      8.88 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_FLOATS LIMIT 10;
++---------+---------+--------------------+----------+-----------+
+| TREAL   | TDOUBLE | TFLOAT             | TDECIMAL | TNUMERIC  |
++---------+---------+--------------------+----------+-----------+
+| 4567.0  | 647.48  | 1724.050048828125  | 887.19   | 3660.3706 |
+| 3823.04 | 5762.25 | 3012.860107421875  | 6285.54  | 330.4484  |
+| 4021.5  | 2110.72 | 4988.85986328125   | 6490.72  | 7857.0356 |
+| 9367.05 | 3689.82 | 3758.860107421875  | 2180.84  | 3079.1065 |
+| 2575.7  | 1397.82 | 7758.4599609375    | 9664.08  | 8288.5537 |
+| 8503.02 | 5509.86 | 8269.25            | 1578.4   | 7182.8314 |
+| 7372.48 | 5158.87 | 8850.3701171875    | 4768.9   | 4991.7802 |
+| 685.48  | 5948.05 | 9372.1298828125    | 1578.15  | 2477.4413 |
+| 4882.9  | 4484.51 | 1990.4300537109375 | 1445.72  | 2233.5972 |
+| 2795.05 | 1209.86 | 8066.0400390625    | 5098.95  | 6828.3797 |
++---------+---------+--------------------+----------+-----------+
+10 rows selected.
+Running time elapsed:      0.66 Seconds
+SQL> 
+SQL> -- 2种字符型数据类型组合
+SQL> SELECT TCHAR,TVARCHAR FROM P1000 GROUP BY TCHAR, TVARCHAR LIMIT 10;
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| TCHAR                                                                                                                                                                                                                                                           | TVARCHAR                                                                                             |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| 4c4q5rY2tGhta7BMbkDeZkOLHtGo7OV0LkaChKMIe5gg86nezJ                                                                                                                                                                                                              | G3cBRG4UCEBDSuCavw66KA2kFh08BnFEyuH8sC3AdcgSL4iJthzoaV4HkTLGA94iozCqUgJZidgDYly2AtRMEBsSRK5hCrZ0C00X |
+| zzFawNSqr75BBd0fmsNoecNAEzJsYREcyzHNg1vxURlWnsMFuO                                                                                                                                                                                                              | Ri0RHotXq0CzPk8R9tSeq68jkPRrCOHIoEB4bGFjhKh4hI9nMUZWoFkTtYR6Jl8uTyHZR8mZNFmEyadA2EBCx4koXaW4iGhMf5Zn |
+| YhrCTNFgRFHX9R12r1GVDakikHCayoNFStXKUwNMZ4dHPhlPBD                                                                                                                                                                                                              | hPkDDAj7WzK8Adb6LIORXKme1SiC6mZN3FcnGD2YMwVd8FTgbVmeLOfMoIWyW5Nr45jy9RkBoHBVDrcEMglg8GBllA6vMKEBycFf |
+| uG6BOldNFBSvWpWcpUiYN5iix5qDuTCOfJowkuRGzDAq5nBVXc                                                                                                                                                                                                              | aPsnURnqyqg4npzGs2kLRZSnn7MHSTUCGD0RHgkD0l1X7UPfE0BTByhumNskdfoBJ9UvYYFcaolE7noa3f5Er4yBbnhHenmKOAx4 |
+| haPLCyg2tqydeosIbo8ZPW5FdqmvNm6HWeRzYmvYkMPX8ewgbI                                                                                                                                                                                                              | S7hJBV815Plq39CPAv83wB69WdMgpEheFOGuZF8YE0xUckR48xHeEgdiO0MfOkR2Oyjra3F4RCPvigBBdAj9Ckr8Jf8qMEXnHFtK |
+| dZkxm02JfBNqEEs77I6zRT3ReREnbR41AnBDPikR3aVZNiXPmf                                                                                                                                                                                                              | O34c43COoyMeef4kfOhbVu8cEblFL9OafLuzLVPYgUy4hPyDxD6GbCIql7IdYykNFPhuXLTBL6hyLiXlEuRFqGbOU5VglcjblTuE |
+| 1VOsm3NBotHuo23IBmRCEHHjsMk2dTuc5RgJVRbKeYcnBKdrvu                                                                                                                                                                                                              | jlmGc9WqBsPDAL725HvVAzMIj6CZacHcbyPCVgbPzNK1VVSTkg1WrkRGe1FkS5SaptsVDjomF3EE3eCSZUmnwyYKSkTVeCrvdBZJ |
+| FUgDLCqA7L6JmgqbmUbH0p0O87GAdFApstRm6UpHzUBkqfsMOy                                                                                                                                                                                                              | 1t5Sxt2DYWNZYdIImpOHB1W3VzY5qE1JHsCvufvTnaIw6kw59oT6cL8rJJFxZzMHnEIJDhSGREMSlSp3cD7WMaZuKJvDBHLV59dB |
+| KUr9AFqEJbx2vsVCWuop5HjuRzwiap5yvBXbUT41udey8Y6AV1                                                                                                                                                                                                              | y9BhFV3AWtDjJRoAr6GvR2ybpwlZaa1iCpRF7liKLwMqKIadFhEjSwjvws6smZTeRd4lHAYkhAZWMprbeKvruyc9muVbXNc6NZPT |
+| C7E0rECzgYGbyOnvO5GKJFv035JClZjFlOg8ZILgB3tGJvbHmw                                                                                                                                                                                                              | ZRrvB2wk8IAWuxtoAvy533bCHDXFrUgtaIpYK3NpfyuRHsh7XSWDr5wnV6Rmy4EEAWeJs2ETeREH7nNalcyMXYHGC4GdWFZU0zeV |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      1.45 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_CHARS表中
+SQL> DROP TABLE T_TYPE_CHARS IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_CHARS AS (SELECT TCHAR,TVARCHAR FROM P1000 GROUP BY TCHAR, TVARCHAR) WITH DATA;
+0 rows affected
+Running time elapsed:     10.47 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_CHARS LIMIT 10;
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| TCHAR                                                                                                                                                                                                                                                           | TVARCHAR                                                                                             |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| yJFl5UlKym7B4fCD7E8iOGksewIji2cTBea1RnXErvlEqJGT6G                                                                                                                                                                                                              | uEPT1nvWyhybo7kUnDTOrnuicftOT2E6YTVq0dq86Vhu4i3t0RP5s7f0I6ApJE3lk3qiShmjrSRFgMIRqnBWsKHUYMmHKDiDL1Uk |
+| o0gJJcrpCKScpfIkwzD59IRdtBrMRLdmkXMRFii8rRJF6DfoCA                                                                                                                                                                                                              | gHBRkMb9BXCy0T7ZPZqAJifJrnbHMiCb6OaEH1tshZoE1MeAT4VB3hEYa8xGzWfcXdx4pYGxKbarIdGFzegdvREwcGB1GK0gND4N |
+| vS2sRkX0mqdTF5bfdAZbyxtvHb51Rs4JlstInORgLnAUoOUnGl                                                                                                                                                                                                              | wDlaHRNnCuEHhhBcRx932FiuzMDU4RTROIwGZinnt4yVmWudcVTpd7XTHo68glLgzSHf0MURWTRSD4VjRcDaiH289MVvzUZrOuVv |
+| xHjADY613VgVCEtEoYDcOgwpTXKDLCNsvKRozwrzW40SjutnCq                                                                                                                                                                                                              | BnyNSH3tRYp5PiWz2luEJN51xVGHfWWVfFRhyPxnlhkroHaUuZ83jrLvSSNA651DdV1q6gkpNRLlAEV933XxwKHvF2kztADC48EX |
+| Jj44Es5elOHUXRJmYfJIsYNiopE6CRFUYwGKSonzj1Az1EST0e                                                                                                                                                                                                              | HfaIXpjoFHFgGBE62HGHIfvnpwjgDYRYRoIGFHFMATOMT1idZFfIZZ3frV4ab5HhZUflLPGm5zR9dEobgwXVBFGI8nTnTnIwe9ml |
+| s4lWpYkAFlhdgGdFuMmSUz56czFgZAAEC63aMLSArTJsbr4Eod                                                                                                                                                                                                              | Z2HhzzDndHuGDqyx0Pe1oRDifa3RZgZant7f25uCNs3EvsBFETYBzsK116VZsxvo3t46iSi1zYL8vf6HXC5LCgBwnUlkjlq4nV0t |
+| 1rNgL9EGWAVBaqzD1Y86YC3rsc7aZOpRZVVJ2pw4ux8B9lvvZG                                                                                                                                                                                                              | PR5prh7MfgWGpihjTiuFahlMCDFBANULi8RvfV9VgVRwezB8aT9fizRG24SlR1z6D3E2M46BTF3AvHcHv9UixWLVIn7eP2OJbJsR |
+| XcKv46PeKgHH9HhoutlaS8Gs2k6EjJgauzWBnfzR3OHDE5scDa                                                                                                                                                                                                              | 0vFLXkmVLcIVHxjxcVDwE99t0TUGCDOv0DvGTNn7GRX310KGrBRVa73xW9BL9FAi0TPBNAKuGKyseYtngwCGvRsDN07Oky4BURPN |
+| jEOnkqlCxHfb3skW7c0RNU1HRimpNZDHl9dKRB1XuMjXTzLrOy                                                                                                                                                                                                              | Py63N4kiT6SJ1qWqWrzxhtFKJBI9Ueq2hJPeJdgFi8wIFMMiMOcRkmfYsGEFL5esgFyldhBteTUkhOP1jUcMXsRbHsqVDO2GCFj8 |
+| orXCv4JBAdgAAO1Vi60EOSIF8njU5YDCrjSsktn8kydRBnas92                                                                                                                                                                                                              | zgj8CTAz2MApBjcRB5hfSsgRNa9VDNGG095ZP5prchDhrrdWDeg7gbDG3SUrWqoaRCn92F3LlynYoVPVcByHkfHGsRWEmKA7IAvC |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.66 Seconds
+SQL> 
+SQL> -- 2种日期类型数据类型组合
+SQL> SELECT TDATE,TTIMESTAMP FROM P1000 GROUP BY TDATE,TTIMESTAMP LIMIT 10;
++------------+---------------------+
+| TDATE      | TTIMESTAMP          |
++------------+---------------------+
+| 1983-10-30 | 2001-03-18 23:41:13 |
+| 2015-8-12  | 2009-04-04 21:21:56 |
+| 1993-8-25  | 1999-11-09 16:44:49 |
+| 1986-12-10 | 2020-09-08 20:52:55 |
+| 1990-11-21 | 1997-04-08 21:02:00 |
+| 1990-10-16 | 2027-05-27 10:38:14 |
+| 2029-10-29 | 2002-05-12 14:48:49 |
+| 1990-11-2  | 2033-11-06 21:29:56 |
+| 2040-7-10  | 1994-10-31 16:55:28 |
+| 2010-9-12  | 1989-10-23 11:31:02 |
++------------+---------------------+
+10 rows selected.
+Running time elapsed:      1.29 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_DATES表中
+SQL> DROP TABLE T_TYPE_DATES IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_DATES AS (SELECT TDATE,TTIMESTAMP FROM P1000 GROUP BY TDATE,TTIMESTAMP) WITH DATA;
+0 rows affected
+Running time elapsed:      9.28 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_DATES LIMIT 10;
++------------+---------------------+
+| TDATE      | TTIMESTAMP          |
++------------+---------------------+
+| 2000-3-6   | 2005-12-21 15:10:22 |
+| 2013-12-30 | 2016-04-02 23:43:22 |
+| 2021-8-6   | 2048-11-08 21:28:31 |
+| 2004-10-15 | 2028-07-09 10:36:30 |
+| 2029-7-6   | 1990-10-17 04:51:55 |
+| 1985-4-1   | 2021-07-14 13:20:10 |
+| 1989-1-24  | 2014-01-21 23:14:10 |
+| 2043-10-26 | 2029-11-24 14:21:06 |
+| 2043-4-26  | 1979-03-28 09:14:28 |
+| 1980-8-20  | 2034-08-06 05:00:15 |
++------------+---------------------+
+10 rows selected.
+Running time elapsed:      0.64 Seconds
+SQL> 
+SQL> -- 整型，浮点型，字符型，日期型4种数据类型组合
+SQL> SELECT TBIGINT,TDOUBLE,TCHAR,TDATE FROM P1000 GROUP BY TBIGINT, TDOUBLE, TCHAR,TDATE LIMIT 10;
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+| TBIGINT      | TDOUBLE | TCHAR                                                                                                                                                                                                                                                           | TDATE      |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+| 300816906730 | 3931.49 | BB1xPREbZwsA2gmLFElR3fdZubgFouubCzOUePRaZPzxHudxus                                                                                                                                                                                                              | 2040-12-26 |
+| 736942586689 | 7226.5  | TDhK5whXPYGRoHv4qyhBii8wUC12TrBoP5aLN5R47hO6l4AbAA                                                                                                                                                                                                              | 2023-11-28 |
+| 846031141578 | 3657.12 | 9E8aXXAXBDDAbqPhBEhXe3prXeY6T47X0T5R3jhwHwILuaCMoH                                                                                                                                                                                                              | 2019-5-13  |
+| 856654817228 | 2690.9  | kjkEPNtnqb6jrbcy9vkhPFT3jC9Tvgr9LjNdA01OK2qxVFRkAR                                                                                                                                                                                                              | 2020-6-8   |
+| 365656026    | 4882.75 | GoOR0IaG7IGRlVt87KCAgZHvABEVGy9sbCfYiz3BwlL6Gs4mSX                                                                                                                                                                                                              | 2031-5-5   |
+| 865934794333 | 8672.2  | mCiD1pLk2HRIu58LqMRKzTM704lSvGANdKIwsVx7sHPFD12VIW                                                                                                                                                                                                              | 2008-4-26  |
+| 601463302089 | 2136.45 | hZ1pTm6HutzOpwogIXlmcidCLMbqJHfIAb9fR3gFG7CDxMpur9                                                                                                                                                                                                              | 2025-4-3   |
+| 132648398861 | 7321.29 | JwRcxSW5lN42LFdbVs93Y8TwvmV7myBJe8nETXAR02T4mgDFx0                                                                                                                                                                                                              | 1988-2-21  |
+| 739604541796 | 5528.82 | ViyakXbUSPcLnTn6F8AcPn58ucLBHYZ6VRYLmvGjqp8Au2wDc0                                                                                                                                                                                                              | 2048-10-4  |
+| 18652439755  | 3758.05 | llm76yikfwOZgIGfb1hVaid2aJJzJWOqgyZlhycDDcSSFsiCaC                                                                                                                                                                                                              | 2007-12-25 |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+10 rows selected.
+Running time elapsed:      1.32 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_ARRAY4表中
+SQL> DROP TABLE T_TYPE_ARRAY4 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_ARRAY4 AS (SELECT TBIGINT,TDOUBLE,TCHAR,TDATE FROM P1000 GROUP BY TBIGINT, TDOUBLE, TCHAR,TDATE) WITH DATA;
+0 rows affected
+Running time elapsed:      8.91 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_ARRAY4 LIMIT 10;
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+| TBIGINT      | TDOUBLE | TCHAR                                                                                                                                                                                                                                                           | TDATE      |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+| 885534557814 | 8911.5  | lXMg885XXDmkRadSUjxfv0onAL6eYLYzIFGRiyIxfZrfMYDKjN                                                                                                                                                                                                              | 2012-3-29  |
+| 775157651414 | 5907.29 | RMIWG2LArOceB2NMzhF1vN3Kogl8xFP3z3tq1oVyKoRIAORJjI                                                                                                                                                                                                              | 2028-1-12  |
+| 12595980070  | 1852.96 | udlVF2GgWvU6wBNfAkjRKy2Sogzyf4pAWFisBYNTTrFZyfVFSs                                                                                                                                                                                                              | 1981-3-15  |
+| 769449611350 | 887.05  | um4uR13RNOOAIZzjjYTv4RMaFJDH4M41oOjNEWAdxfUNm8JF65                                                                                                                                                                                                              | 2024-5-10  |
+| 599230249335 | 6289.27 | ly4Fupeau3JcupxBDOWBezCWMiFxw4FTPReeghFBkMHE3qalIY                                                                                                                                                                                                              | 2020-9-17  |
+| 938818294685 | 2304.54 | cGC3p9UVvSopmXP6ms9P7sbMvwHVCitmNcRkhqRRJYbDni19Yd                                                                                                                                                                                                              | 2011-1-15  |
+| 647506024948 | 5695.08 | UVBA4XVbXsxF7FRzbHUxG0ywX6ChSHYEzbNVZb9sXn9fDRYgvU                                                                                                                                                                                                              | 1999-11-26 |
+| 467361468253 | 6669.25 | wjUwCSFH2BYAFZ2DHVZ48oW3HFNHJmPBI8j1agmqljr6raRvo7                                                                                                                                                                                                              | 2020-10-3  |
+| 384247158304 | 1165.86 | BU6hMcV5URZHu5AqNVOJiHGam9XDEsWMsuFVjRUdaYywK4BAom                                                                                                                                                                                                              | 1988-3-28  |
+| 48945387071  | 4021.45 | HDrM7T2CMmjHlwV57fmwBaH4G9dK5MC20nR1frFIPgD9pRuqfx                                                                                                                                                                                                              | 2027-11-17 |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+10 rows selected.
+Running time elapsed:      0.57 Seconds
+SQL> 
+SQL> -- 整型，浮点型2种数据类型组合
+SQL> SELECT TSMALLINT,TREAL FROM P1000 GROUP BY TSMALLINT, TREAL LIMIT 10;
++-----------+---------+
+| TSMALLINT | TREAL   |
++-----------+---------+
+| 4034      | 7721.61 |
+| 588       | 3941.5  |
+| 9385      | 8041.05 |
+| 3061      | 2279.67 |
+| 2952      | 8119.99 |
+| 2829      | 1065.87 |
+| 5906      | 8288.79 |
+| 9961      | 2825.49 |
+| 4809      | 9615.58 |
+| 3301      | 4033.93 |
++-----------+---------+
+10 rows selected.
+Running time elapsed:      1.22 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_ARRAY21表中
+SQL> DROP TABLE T_TYPE_ARRAY21 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_ARRAY21 AS (SELECT TSMALLINT,TREAL FROM P1000 GROUP BY TSMALLINT, TREAL) WITH DATA;
+0 rows affected
+Running time elapsed:      8.20 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_ARRAY21 LIMIT 10;
++-----------+---------+
+| TSMALLINT | TREAL   |
++-----------+---------+
+| 9214      | 6312.51 |
+| 9831      | 2783.64 |
+| 2952      | 4805.3  |
+| 7004      | 407.11  |
+| 9361      | 30.19   |
+| 9646      | 5559.42 |
+| 6885      | 2189.61 |
+| 9698      | 8702.05 |
+| 564       | 7643.51 |
+| 3746      | 2682.85 |
++-----------+---------+
+10 rows selected.
+Running time elapsed:      0.62 Seconds
+SQL> 
+SQL> -- 整型，字符型2种数据类型组合
+SQL> SELECT TINTEGER,TVARCHAR FROM P1000 GROUP BY TINTEGER, TVARCHAR LIMIT 10;
++----------+------------------------------------------------------------------------------------------------------+
+| TINTEGER | TVARCHAR                                                                                             |
++----------+------------------------------------------------------------------------------------------------------+
+| 52152551 | CjpPtatjPO6NIcjaWduj5MDxdSE0xLIxaEc90YEk2TOzxR41PVvWNeRydLCzZ3SOfFRMHDTWBDoFbCFGp9LKq4XUH8GBc4vy7C6s |
+| 13318015 | 6mamwGdpDh9L9clVabTb326gjucwSAR4HamlHVJm6kOHWXXh3ryTgxiy4Une2OvUDlJONtSCDrDK9XphB7FYHLyfGVVIH7pGcN1R |
+| 54183195 | VpuGlIRWWjXYsrxjYMb1FMllGgG8dmTd0H7POJn6IdwCk1VVOWg31AIjWRYJjHqm6GP8kbxUDttDp3M2ITCHZgJLd27droTF6zDN |
+| 14434268 | F9Pw5VkWBx4Nfwucu67o9LZSZKe4XeZd4aImPJmSuSmFvnKWHAp3lTgJdRGh9wpymsbWbcx8gYpr6t04uapUS7NPeGxtsR0uidsD |
+| 15552268 | Xz0yjvzn3WvJNzdrsubYIVPdgBjHTHA4znLKZlkmlsanRV2wSGfahmfGDRE8kgn9N6gPKyJ4zAUVFLKcRPWv2prh830THAm89NKX |
+| 98749127 | AA2zlVuyiBLMftMyOoHPTkttOiYcMVuK5V7fIR4X18Cq7UBBAhlBI1JlAJm4EIoYcWA1dKVK2A9DntjlcwEpCHWF7sxS2jgUGqgR |
+| 11059277 | OHzWTphlS7lFcncDRwnNDUGVcu0wRC0A5ORgjofCWwLBi9qbrKR7czyFOXfx1FlzgaxiEXRCfTOftZfIgeBeIDGvaJFwSn3pNodc |
+| 83801749 | xl4CLGHm1DWGcYnJqNLZO6GIKHymOenL6ksRqto0WrTrRzZJB9mm6CsdrnGcD5dIW7lG3alCqX6iXkkCd9OWyMlDr3Hsa3RsmNiw |
+| 52935917 | t6lfFCZkBZEBwivnC2ue7NKAmAeE1evRLAPEbsCyiLbR2ggd1IcsujWyIRPPpvoZC79RRJXsHFa7Obo2SNqbatCq8CY8PGmmR0Kq |
+| 78496960 | 0KHTh9tZJARoTNzX7RnR1KTKWuA5tGpqdGTYolLfxBhfOn7OXlLi6utpICFeBwkb2IC9VjZqZop0ooG4GkkwJIOFqyXRYqil1CiZ |
++----------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      1.26 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_ARRAY22表中
+SQL> DROP TABLE T_TYPE_ARRAY22 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_ARRAY22 AS (SELECT TINTEGER,TVARCHAR FROM P1000 GROUP BY TINTEGER, TVARCHAR) WITH DATA;
+0 rows affected
+Running time elapsed:      9.12 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_ARRAY22 LIMIT 10;
++----------+------------------------------------------------------------------------------------------------------+
+| TINTEGER | TVARCHAR                                                                                             |
++----------+------------------------------------------------------------------------------------------------------+
+| 24527291 | ZJ0jsYLnrPzXbRezAPRBeMFp41yiJKWlTRwkSg1RxjEcctYCymUVeHidp1MHB0R6oAt8ABFoht5xCg7i4V7VoXTFdpoG62eUr8ib |
+| 41454651 | R6L13KkmpbTflddt0HmTVyyyazYiALvGhHDTh2nLVLmMTluKiERKCeZApiZdHPgPF9FV8l7oRmFMTu5GdvzM3jciRAyhFtTnHulC |
+| 32458443 | 8KMp0C62kJsNVcNMWxCam7r0WdbMr1Lls9Eseqeui7RCsHiwvdaRU2x4MRPT31JV0oPpzZ6Dr95tiZNM0CvuwxAPqpIxxo1h8hgG |
+| 56493830 | oxBdXKv8e2yTH1Y4ytnRBrHbRqxMeebpPcbmcctg6YNxZv9qcScEKyssEv5S93qBUJ2hwHbuBSda99o0Nddl5tnV8xUCiUN8jatA |
+| 16840702 | 9LRFVArKWvEX2M7jVNmDKHR4UryBp82nbj9G73AR4kWHXdNmby2vBaMEodmiAw5wKGhRcw5gwB7zUN7uSElIcpASu90ADFJsHs5T |
+| 73827183 | 78av84mxkKjWoOLsnhp6NDks62TDg6OCfYHLklYggCm9Ki4RhPwgwt1htFxmKRciIY7s3YloVc3tXRNG2MvWESimzHVqAzAfUrVZ |
+| 58559072 | ErrJS7Y5XtKRXl3LHzGEmYPJcH2dnxvRDc7CtCJXFj71sjcfDHAR9q6K4TmssJ66cnlR6t265jF1UfIxeD02o8kkqP2ehvI7b31z |
+| 86366349 | WmcwPcrdsBmKIpF6sRD4TeTl9YWPxJlcjjDHV5EJ6RgDwcBMxtVO3H0GLdcrcx89bVoYceepj0eIl9xCTaCJlr5jqtybzam8JH5f |
+| 44880693 | PpBcJk2RSdI6jRaGkjiPOzmksdsVFE4DZUBCnGoEL3UA1CDPpI0WyfkF105l0oxHEWMx2CDwkRc574PG4YyFk3vEUTKZGHjoCDAb |
+| 3525364  | 2uRTXcJkoVy1etotplgdIrpaimx5r6tIqLt0bWykLZcDTbVvYzoH5outhYWGWfbuKdCRbK2CDRA3P29c0tz8LFzaDOJ0OmZkkG0R |
++----------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.63 Seconds
+SQL> 
+SQL> -- 整型，日期型2种数据类型组合
+SQL> SELECT TBIGINT,TDATE FROM P1000 GROUP BY TBIGINT, TDATE LIMIT 10;
++--------------+-----------+
+| TBIGINT      | TDATE     |
++--------------+-----------+
+| 209040458852 | 2021-2-14 |
+| 970215198026 | 1994-5-17 |
+| 962058323693 | 1994-9-2  |
+| 963331363531 | 2004-7-5  |
+| 318183562433 | 1992-7-16 |
+| 642404371281 | 2025-4-28 |
+| 19799891605  | 1986-5-18 |
+| 79961196303  | 2028-2-7  |
+| 353570834048 | 2018-1-24 |
+| 575359395435 | 1995-9-10 |
++--------------+-----------+
+10 rows selected.
+Running time elapsed:      1.55 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_ARRAY23表中
+SQL> DROP TABLE T_TYPE_ARRAY23 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_ARRAY23 AS (SELECT TBIGINT,TDATE FROM P1000 GROUP BY TBIGINT, TDATE) WITH DATA;
+0 rows affected
+Running time elapsed:      9.83 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_ARRAY23 LIMIT 10;
++--------------+------------+
+| TBIGINT      | TDATE      |
++--------------+------------+
+| 43230592403  | 1987-11-29 |
+| 863297233756 | 2033-3-26  |
+| 43132053365  | 2048-1-10  |
+| 89247596485  | 2020-11-4  |
+| 459747245310 | 2028-10-17 |
+| 955357554765 | 1980-10-7  |
+| 188016151298 | 1999-11-4  |
+| 916473663181 | 1985-8-8   |
+| 469105540858 | 2000-12-1  |
+| 78434958607  | 2009-6-3   |
++--------------+------------+
+10 rows selected.
+Running time elapsed:      0.61 Seconds
+SQL> 
+SQL> -- 整型，浮点型，字符型3种数据类型组合
+SQL> SELECT TSMALLINT,TREAL,TCHAR FROM P1000 GROUP BY TSMALLINT, TREAL, TCHAR LIMIT 10;
++-----------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TSMALLINT | TREAL   | TCHAR                                                                                                                                                                                                                                                           |
++-----------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 9372      | 1428.05 | 9W3fy5RnNx4am1wbs7Rcq890KhGC0icyBPS3D03WhEP6RRFJM4                                                                                                                                                                                                              |
+| 646       | 6755.67 | 4W7gHsSBpDYuWUK0w0I3zlyNtjNusgGZIfUz4jJ3lOhRFBkti7                                                                                                                                                                                                              |
+| 2623      | 9508.61 | TCgsFuaVFbhsR9n4Do5oOoFyJEKc6XkaSoTBnaKUTB1t8kkvqI                                                                                                                                                                                                              |
+| 8403      | 2230.02 | pH5VMUfZRfwKUbkK48kmIYNDgO3htulV2gGijgiOLbuW4w8ViR                                                                                                                                                                                                              |
+| 7265      | 430.13  | TFZaVm3NolaRocyMMRE1o0pSh3xwi0mecKEinPa4HpDSakAxbR                                                                                                                                                                                                              |
+| 3904      | 4616.11 | 6JD4MvSfC9JudEjDuo5MLY121GN5BqIDovXR53vtajGvwkgwBi                                                                                                                                                                                                              |
+| 3123      | 4449.51 | 90MPppn84MXOwWBLRlTNWR0I172yyO0SuHEXhfXzLXvHcTq4vV                                                                                                                                                                                                              |
+| 989       | 5255.82 | tKRpz9pyvawEFLtnBRGUs8mq6nevZWdjJk8Hx8P7iHowXvjANN                                                                                                                                                                                                              |
+| 4711      | 4917.61 | oA5RE1Ma33REecv1R8k2hKN8wIiZP0Nzi2i2YBvXtWLqoT4URz                                                                                                                                                                                                              |
+| 7394      | 1169.93 | 6Io0m5MJz6jjAAsATC7vJsSCghdbucUE9G8Canbc7jaGKecknV                                                                                                                                                                                                              |
++-----------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      1.44 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_ARRAY31表中
+SQL> DROP TABLE T_TYPE_ARRAY31 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_ARRAY31 AS (SELECT TSMALLINT,TREAL,TCHAR FROM P1000 GROUP BY TSMALLINT, TREAL, TCHAR) WITH DATA;
+0 rows affected
+Running time elapsed:      9.84 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_ARRAY31 LIMIT 10;
++-----------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TSMALLINT | TREAL   | TCHAR                                                                                                                                                                                                                                                           |
++-----------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 7343      | 570.0   | X9w91yhMdVLHxNHUVC8cPktvfe9BDgVIleRl8zMYDCg108LmJf                                                                                                                                                                                                              |
+| 672       | 1800.84 | gCwtEZHJ1IGJFCVWaMpkajS2MsXymhotJ561A4BD0s4FFxBpDO                                                                                                                                                                                                              |
+| 440       | 4567.45 | H36xhUioCgtR7ahbXrA9j2ZMCMV9qA2ie0e2sO8mcOA78bqwnv                                                                                                                                                                                                              |
+| 2825      | 4567.49 | rGXOgmUmRnraWEJNwI36S7cKBoC5uHv91bT8vXps84cmiARuTO                                                                                                                                                                                                              |
+| 4919      | 674.11  | r1b6CzGCyezYa9c6ANtzedV8GnV3KcdqO91U1A7v0GHFTiGMD2                                                                                                                                                                                                              |
+| 2279      | 5257.51 | 924gqivXbi1ARTp1jHutUAzDS9AsXCd8c1mqRRwMFoRe06p7Uu                                                                                                                                                                                                              |
+| 3931      | 5218.35 | JR1Jm8j3PGw34GVkE8ExpfRE5nHhDqstZIfF9CTtOXBqF49qhj                                                                                                                                                                                                              |
+| 3381      | 8314.02 | rMTb5uqWXXroGGg7PPCBWPTaXI4yGHIS1uBkLhV1YGwZZuRByh                                                                                                                                                                                                              |
+| 1657      | 543.99  | sobSAiPEFnbYuTcfEa44gmVZXw7BGw7cMHkEHE4K1r6tCBjYmi                                                                                                                                                                                                              |
+| 1400      | 482.11  | LvISGa2sCAN1eRuzZRG1vZukq0732sFL4jvVr3kyp7ugvAGyRx                                                                                                                                                                                                              |
++-----------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.60 Seconds
+SQL> 
+SQL> -- 整型，浮点型，日期型3种数据类型组合
+SQL> SELECT TSMALLINT,TREAL,TDATE FROM P1000 GROUP BY TSMALLINT, TREAL, TDATE LIMIT 10;
++-----------+---------+------------+
+| TSMALLINT | TREAL   | TDATE      |
++-----------+---------+------------+
+| 7835      | 6269.72 | 1989-11-21 |
+| 9923      | 1913.25 | 2004-3-13  |
+| 8403      | 7120.87 | 2009-10-14 |
+| 4248      | 2193.93 | 2015-6-14  |
+| 1137      | 6263.05 | 2015-3-6   |
+| 8560      | 2337.79 | 2027-6-25  |
+| 9046      | 4867.82 | 2049-11-11 |
+| 3514      | 1295.04 | 2032-11-12 |
+| 6645      | 75.04   | 2017-6-8   |
+| 3904      | 4033.02 | 2036-8-21  |
++-----------+---------+------------+
+10 rows selected.
+Running time elapsed:      1.49 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_ARRAY32表中
+SQL> DROP TABLE T_TYPE_ARRAY32 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_ARRAY32 AS (SELECT TSMALLINT,TREAL,TDATE FROM P1000 GROUP BY TSMALLINT, TREAL, TDATE) WITH DATA;
+0 rows affected
+Running time elapsed:      9.19 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_ARRAY32 LIMIT 10;
++-----------+---------+------------+
+| TSMALLINT | TREAL   | TDATE      |
++-----------+---------+------------+
+| 674       | 8833.58 | 2034-8-21  |
+| 7676      | 1219.86 | 2042-10-29 |
+| 5673      | 1782.75 | 2025-11-2  |
+| 3413      | 2963.27 | 2005-8-15  |
+| 1672      | 4548.25 | 1982-3-24  |
+| 5544      | 6729.29 | 2023-11-16 |
+| 378       | 4711.19 | 1999-12-2  |
+| 3815      | 661.49  | 2007-11-10 |
+| 2862      | 4988.13 | 2039-7-15  |
+| 3196      | 8129.73 | 1992-6-18  |
++-----------+---------+------------+
+10 rows selected.
+Running time elapsed:      0.62 Seconds
+SQL> 
+SQL> -- 浮点型，字符型，日期型3种数据类型组合
+SQL> SELECT TREAL,TCHAR,TDATE FROM P1000 GROUP BY TREAL,TCHAR, TDATE LIMIT 10;
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+| TREAL   | TCHAR                                                                                                                                                                                                                                                           | TDATE      |
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+| 7359.05 | 0soMvDAwUJiMzaD1aCmRoT0CUB3Rxmn29i6rdYbrBEMn5OBhy6                                                                                                                                                                                                              | 2042-10-9  |
+| 3299.25 | Sge8rrRR7344G1ooHyKe5GwKXzx3mGEuZED2tjSpXeVjwcYGUs                                                                                                                                                                                                              | 2035-4-11  |
+| 1232.67 | PCRHZ3Bg3pkLAHUiLRuq4VrCgS9qE56iRjPnYXR7Cc5e5hYUc9                                                                                                                                                                                                              | 2031-12-27 |
+| 9539.07 | DXGrhASxRT0tqp4Tq5oVlhpiNiayKxMrRyghnCBF2zKAOHUgZT                                                                                                                                                                                                              | 2026-11-24 |
+| 8539.02 | ZBsDUHuXYSUHnZtwRblKRvpvUDYFCE9R2cu5e0GFgd86q18THh                                                                                                                                                                                                              | 2010-5-31  |
+| 1400.13 | 0CWdEui0CysRYULSH2sxk8JbnecywO0Hcc00m7C2EfoEA3qcfn                                                                                                                                                                                                              | 2043-2-27  |
+| 2330.49 | nKfVi3P1Fd4xaxjNHFA77z8EUfTAaEW95cRMEqxAUDoHhpiMx6                                                                                                                                                                                                              | 2008-4-13  |
+| 1702.99 | x7iLiFnLxbiI9LOGwjE6sschmLWzDIlR9DRAANZI3mYROsC57A                                                                                                                                                                                                              | 2044-8-26  |
+| 2683.04 | KYY2WPz6AXLxRRimg4G9WF1i8dHB8wUr21m0Pm6o6ERwufSPgo                                                                                                                                                                                                              | 2009-4-18  |
+| 8532.19 | iIljNKVFB6TyR0Zs5ppGwYVFuyMjFyRjMdau3RaNnO6nhFv8VE                                                                                                                                                                                                              | 2049-5-27  |
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+10 rows selected.
+Running time elapsed:      1.33 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_ARRAY33表中
+SQL> DROP TABLE T_TYPE_ARRAY33 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_ARRAY33 AS (SELECT TREAL,TCHAR,TDATE FROM P1000 GROUP BY TREAL,TCHAR, TDATE) WITH DATA;
+0 rows affected
+Running time elapsed:      9.19 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_ARRAY33 LIMIT 10;
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+| TREAL   | TCHAR                                                                                                                                                                                                                                                           | TDATE      |
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+| 9372.67 | RMIWG2LArOceB2NMzhF1vN3Kogl8xFP3z3tq1oVyKoRIAORJjI                                                                                                                                                                                                              | 2035-8-20  |
+| 5464.29 | OGj6mW00VuADM9qMl1fMAhYSMDHwIKvJGNhaUMxG6PLT9FXbFY                                                                                                                                                                                                              | 2036-8-17  |
+| 5540.49 | UlnlKSU7hPt41LvAea5RKABAmFRZUWS50hHLVgxbP3ciNedPL7                                                                                                                                                                                                              | 2035-6-6   |
+| 7531.43 | MqMX3DmrzKsOAIGLOCL79PNos8XwbqRtmiADGAM4foHFdziDV6                                                                                                                                                                                                              | 2008-10-21 |
+| 4541.27 | cf7wVJs6qgsl9lCM3n923Rv96jRcqzyAGw8kvSMR8gwpBgFOLX                                                                                                                                                                                                              | 2042-1-27  |
+| 4616.19 | O8zrfydCildhzBxqEsVYjrAup5DPw48qjlDyFq6E4lsJO34o0e                                                                                                                                                                                                              | 2041-4-21  |
+| 719.42  | jyUrvAvyBiaz6XCNvgyUINkPaSDaz3WWhZKUHNVSRjRkf5X8K0                                                                                                                                                                                                              | 2018-6-30  |
+| 2819.84 | XEaagAYMGTeBFTAvq0o1FZehdD9v2rS8oYODIGM2jRZZTeNB8B                                                                                                                                                                                                              | 1980-6-14  |
+| 9639.0  | TzzV5rdcclCSYoWs81rEDC5yp4AJRh9imoic4s3Ybob313gU1f                                                                                                                                                                                                              | 2027-9-25  |
+| 8702.46 | CdIJzYO2EObBzeNACXMN8Ztr7GYl0GOTyBna4JEMHSB3bLBjG8                                                                                                                                                                                                              | 2047-1-25  |
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+
+10 rows selected.
+Running time elapsed:      0.66 Seconds
+SQL> 
+SQL> -- 因为布尔型的数据在数据库表里只有一种数据：True，timestamp类型的数据在数据库表里没有重复数据，所以选取余下的11种类型的数据进行组合查询
+SQL> SELECT TSMALLINT,TINTEGER,TBIGINT,TREAL,TDOUBLE,TFLOAT,TDECIMAL,TNUMERIC,TDATE,TCHAR,TVARCHAR FROM P1000 GROUP BY TSMALLINT, TINTEGER, TBIGINT, TREAL, TDOUBLE, TFLOAT, TDECIMAL, TNUMERIC, TDATE, TCHAR, TVARCHAR LIMIT 10;
++-----------+----------+--------------+---------+---------+--------------------+----------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| TSMALLINT | TINTEGER | TBIGINT      | TREAL   | TDOUBLE | TFLOAT             | TDECIMAL | TNUMERIC  | TDATE      | TCHAR                                                                                                                                                                                                                                                           | TVARCHAR                                                                                             |
++-----------+----------+--------------+---------+---------+--------------------+----------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| 4003      | 31848436 | 74010560467  | 3240.48 | 789.51  | 6075.10986328125   | 5924.04  | 8306.5566 | 2024-3-15  | z8oRDFNnlhtNkbOBWLTv3WU5iGOP2HZtc4HvihnmKDRPDYS5Ck                                                                                                                                                                                                              | OvkF7G5EmllrMDe4lbSRBs6ipw4ff5iiPZZFSHwyYOlei8iE2RwAo6EgxjK8J2RGBy0CrcKDFhzKD5HxYPfRJZAZixcFV9FzD3Y1 |
+| 2180      | 47641840 | 128292261844 | 3657.58 | 2103.02 | 4853.85986328125   | 9137.13  | 8850.4534 | 1980-2-8   | VOiDcpKpLlG6e98yRUlUdYoNYPS6RZPD1y9n7RUrNaxp0wEzfA                                                                                                                                                                                                              | Rk67VRvfnHV6uJHZ6TqqFpMOEazRg4TdVblvVZShcXF3Y4dh4gcEG5FieRElh3VcUjxA3ML9DNG7jq7SnTrIbRwwEyZMI1I61J4c |
+| 5349      | 88627153 | 695657748225 | 30.03   | 2782.5  | 7438.14013671875   | 2189.93  | 8076.1662 | 2024-6-20  | 95tJLBGFJYaeIFofft2Hr4wBlrlHGOF8Ms3U8GlG4ckVWBUzsP                                                                                                                                                                                                              | jvBhZtUZSF2ZlnJrNa157u3476SVeEbllr6aBjkWgfbCSYUXAzbd5ZqLBzKmWAp3fmLSZdYHOoRDRjZIvBy4Rzs9gSbzRYkR6S5v |
+| 6186      | 79114602 | 699427021137 | 5203.82 | 8266.7  | 3689.47998046875   | 1949.02  | 8636.8773 | 2021-11-23 | DIcBk6vEMSgY7jr1eg8HKbEZmV1fjvjHTzBKSKfiMcLNFYqgNr                                                                                                                                                                                                              | eyFnZtp3FbFbRBg5CB9R6qbv1DvMfoRyVYZeUMY0smiignijZnrKXSLlcuXCaIIrEie0f99UPRjhPOr1T3C6TqKaCNPKj04q4XSk |
+| 5376      | 97512508 | 147558732961 | 7925.99 | 8526.61 | 3061.070068359375  | 7343.75  | 5201.5894 | 1986-4-11  | BIRc1xygfqYeeLGp3RabDx2Bkx8lvq0AEsE7ocfxC10fpLfm4K                                                                                                                                                                                                              | yVBSdivEbzlmvnPo2G4YPxoGjRfN3ER20LOBX5SCdIW0JY98CEkREisA0Bnkwwg8WGCGNqCeGJqoWEVu7kA58pbTAtbjDENMbxfZ |
+| 2619      | 49595726 | 691762903561 | 6729.99 | 967.42  | 2913.030029296875  | 8403.37  | 7688.2829 | 1990-7-4   | xLAINLxc5v6BiRsd28VzmKBhZelwkww5DZd9hUU6it3rPHxkE7                                                                                                                                                                                                              | uo3RRTnkHCXRPgb0ZnaHhGzyntJRiolOTsXDMbckh5BtR5xH5vIvRtsKEg09U1vMbWepiCO4FCSRJY7Alm9rR4mNtero9AhGh6VF |
+| 9340      | 70744684 | 389141732377 | 1467.33 | 8060.03 | 4576.85986328125   | 617.67   | 5664.3618 | 1996-2-9   | tsmeAbmy32gUh0RabNR4LOoljqEMZPpc6wE69Z9p3lf4tgy8g5                                                                                                                                                                                                              | 6g8OlkiCeGn6YNWUq6xy5ov10hpo5OB57x5P0dtvxzDNJfrxhFaR8dzaudvj5PtStenouRCOf3SOz0w5DjvLImAOMdCDTXAIlWZr |
+| 1428      | 24257218 | 114522260079 | 2574.99 | 4740.58 | 1115.4100341796875 | 9279.46  | 8702.5836 | 2019-11-23 | ZIpgH6qNgmgTb0gxig3AsAYWUrHEyMKNA9FEpWSVdlGE3vEgiY                                                                                                                                                                                                              | KJRz1AmIp6huLVWsMHGp8tC69KunMl7XroEJSLVSPP5MEbJfWR5z8kgvVL02a3eFT6bPSjk2aqqrZR9X3bRMK236FwH0sk34Otyv |
+| 3012      | 43105940 | 235532946715 | 4711.02 | 4021.99 | 4740.02001953125   | 2862.78  | 1202.1443 | 2036-8-25  | 7WBUCBYgXMCdsLhWzsae8LH5feDujeco4NCrphILrOFHATlvGX                                                                                                                                                                                                              | y8WNfHeN1NGWHvj1h4ZjBiyIk9zxS7myR2X9XxNAYNFlSIG2bNwhM9XaD6k2aoeXDlkGNMsVlGDEKNEIU83YOZaf0Os4lM7caJen |
+| 9954      | 62462034 | 92831558169  | 2788.46 | 2430.44 | 4867.2001953125    | 5446.93  | 9340.0412 | 1997-8-18  | pdV1rpJRYHlzPYkxEhjqvHfIRLrG2Vruck5ziFPeoREtLTzfBd                                                                                                                                                                                                              | VKu3wpRf1eJoriVY8RDyJWtqc4b72Wqab2RBx3GK0egXwrs21TqbMOubCNEa3H7T2aaBgpjWBM5wDmjtAvAGJxgGVhHbg1BReAig |
++-----------+----------+--------------+---------+---------+--------------------+----------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      1.80 Seconds
+SQL> -- 把查询出的数据insert到T_TYPE_ALL表中
+SQL> DROP TABLE T_TYPE_ALL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_TYPE_ALL AS (SELECT TSMALLINT,TINTEGER,TBIGINT,TREAL,TDOUBLE,TFLOAT,TDECIMAL,TNUMERIC,TDATE,TCHAR,TVARCHAR FROM P1000 GROUP BY TSMALLINT, TINTEGER, TBIGINT, TREAL, TDOUBLE, TFLOAT, TDECIMAL, TNUMERIC, TDATE, TCHAR, TVARCHAR) WITH DATA;
+0 rows affected
+Running time elapsed:     10.03 Seconds
+SQL> -- 查看返回结果
+SQL> SELECT * FROM T_TYPE_ALL LIMIT 10;
++-----------+----------+--------------+---------+---------+-------------------+----------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| TSMALLINT | TINTEGER | TBIGINT      | TREAL   | TDOUBLE | TFLOAT            | TDECIMAL | TNUMERIC  | TDATE      | TCHAR                                                                                                                                                                                                                                                           | TVARCHAR                                                                                             |
++-----------+----------+--------------+---------+---------+-------------------+----------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+| 9005      | 60949347 | 279681151098 | 3133.93 | 7790.05 | 9372.490234375    | 8417.58  | 8833.7022 | 2009-4-28  | oB6Mkk43Nf2S3hqWvR1A64rYwVLqdqNhrqdMiO6zUtrFePzOS6                                                                                                                                                                                                              | Sre1nl9ZJzFRt9Wj95UBKuH4R1fnhoogEhO617lvwcmIURIdvTZZBDLnuzNUoXd6GgXYjKSRbxHcDvGb5gEfrEELoKiU97mGNfGa |
+| 3659      | 51158429 | 305254172297 | 6034.5  | 9630.61 | 8044.47998046875  | 5158.07  | 8639.7011 | 1983-4-13  | YzBwDAFFVDGg09vXGASYBHVtRzISJcGnbYtSEnPCyov69WK3Tb                                                                                                                                                                                                              | YOLn5IZnpEtsBD58tZv5q6sFIO2wxFqyvJYNcjapFWM4EelllJ3ZvJn2l03uHRiUOOgNPO6eLRNKMjLtMjoOmWPBXIoBTCXfpk7C |
+| 6167      | 64063778 | 589675857516 | 1721.35 | 412.67  | 937.2899780273438 | 8855.04  | 2136.3846 | 2018-10-23 | C4lbPld70qxHTqB4CJZLrpGUTJMEHj9O5GUw8RHxrJCdxE5aAs                                                                                                                                                                                                              | XNJ3ugV2xXkD8a98BWCI5Kb2plymtIpOlUSXA4nOXg0CRCt6r3BRI1DdTj4Gd5ycWj26YJ3scCYgqBGPq73KtH9RmqyC35AhPzhP |
+| 4033      | 94510781 | 512464166929 | 4616.2  | 4619.4  | 5716.02001953125  | 9140.12  | 8269.4534 | 2011-8-21  | F2BRC3xoNxg1Z6k4GlOMNlGtomabmB1rASkynnu3RRPIzwR8EY                                                                                                                                                                                                              | RKxLRpK0Sya48RKSfdzzcbqzRR42ZKjch8iJO1tJ0lOd5JEFupaeLhP0yhNvDb6jbw1L5ZsRXhUFAfIsTk8JBSqz0t0TM88V0uPH |
+| 810       | 75645682 | 213191146832 | 6318.49 | 4003.67 | 989.02001953125   | 2422.05  | 889.885   | 1987-1-29  | ByHGU09ySiDvzrNK0Lkh7TtEv8U8qfHHuXF6eJyH2SSrBTCEjj                                                                                                                                                                                                              | 3ZrE9Y61DN6eR7q1EPNVsaBWZj18GOlbsYOoPWxRMjzHBAnNOIyq9XvylRwOD0a6fRuErcwUWMMMEx5rDeD7dp4jYCiJYpRRVySK |
+| 9639      | 88425820 | 394447829829 | 2130.99 | 9317.33 | 4748.2900390625   | 430.02   | 4034.4853 | 2043-2-4   | FNboJwY86pYGEtLDIt5Rmdy3WlCRoAnckUEd8Ii30Mkknj0ICb                                                                                                                                                                                                              | Sx0bAcRpY1bJBdAMWpHohORJA0GRIfpBsfoPqdlOrbwaOuyD8S4UGRgt2pCW1J5SwcSB557RjdV83MgzIPC0waEO3EbntbFtwfjq |
+| 6885      | 59010032 | 487429737685 | 1677.61 | 5529.73 | 6477.43994140625  | 4242.37  | 412.4882  | 2041-2-6   | elgkfGAH43SFMdcmdnReLhAePML2iO6S9fycHRVBGanmFqnHnH                                                                                                                                                                                                              | UbmxNvry6cn10IqsvLrCf53Rvs8mrChnVN8DJBFwdlESW34ovNxCJTsFytcetfcwRR11cWvhY4dcutXtCZSDRb8Z6n2gT0krSoun |
+| 7120      | 5743777  | 466802923506 | 2913.75 | 7724.49 | 3514.2900390625   | 7401.82  | 6919.7372 | 2009-9-26  | lEFzENCc72O2wkKA3ANSlwHWJaagHxMctFikdB34juw8nmqarc                                                                                                                                                                                                              | zvWtp3PtU91z2fRT8NIVIVaRlyEH2kvd09ayiE5qeopldpmF9oqjR5P1Ax90T5zGYnFd1CJZ6A1YmZhRA6qg6TbuSMTzGqXEIuqD |
+| 443       | 52973935 | 218796045508 | 3189.62 | 1937.86 | 5953.35009765625  | 9304.7   | 5867.478  | 1996-6-11  | CFTaBr7hGdRjtB8bPjuRRWnY9EwCp0KMDIEZzWROZF6cJ8FJOO                                                                                                                                                                                                              | VCDW9b0TYUcyGmFBc8KUUe4ks08Eo1H5dT39RaP5hH6EY8JRjMROeAChuSih3IZssDH4RXL9EP7Kr6GyXjLvunxDRRN5ndXwGcym |
+| 8526      | 47866272 | 613948337035 | 5977.33 | 86.99   | 443.6000061035156 | 9144.08  | 403.5587  | 2045-7-5   | 6ZD87dbDDI8dy3Lk9u7df93iXWJkUx8YgsxNtcfIimgvp7PRRJ                                                                                                                                                                                                              | 1qwVPU2axNAZxjaDXuxgHtqS1ERDOMLMRxefXvNg2AFRNe2vsxAunS7vrCdHrRLovFg6ei5dDEzl2DUChuY89HtnRs7jgs8T69by |
++-----------+----------+--------------+---------+---------+-------------------+----------+-----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.69 Seconds
+Running time elapsed:    269.25 Seconds
+SQL> exit
+Disconnected.

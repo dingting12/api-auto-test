@@ -21,7 +21,7 @@ SyntaxCoveragePallasTest
 
     Compare Files             GroupBy-P1000.sql    GroupBy-P1000_pallas.ref
     Compare Files             Having-P1000.sql     Having-P1000_pallas.ref
-    # Compare Files             DataTypeConversion-P1000.sql     DataTypeConversion-P1000_pallas.ref
+    Compare Files             DataTypeConversion-P1000.sql     DataTypeConversion-P1000_pallas.ref
 
 
 
