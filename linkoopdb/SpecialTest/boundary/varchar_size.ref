@@ -1,0 +1,47 @@
+SQLCli Release 0.0.53
+SQL> connect admin/123456
+Database connected.
+SQL> start varchar_size.sql
+SQL> --Description:column_number
+   > --Date：2020-06-09
+   > --Author：阮娜
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL>
+SQL> -- 删除H_VARCHAR_MAX、P_VARCHAR_MAX、H_VARCHAR_2G、P_VARCHAR_2G表
+SQL> DROP TABLE IF EXISTS H_VARCHAR_MAX;
+0 rows affected
+Running time elapsed:      0.02 Seconds
+SQL> DROP TABLE IF EXISTS P_VARCHAR_MAX;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE IF EXISTS H_VARCHAR_2G;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE IF EXISTS P_VARCHAR_2G;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL>
+SQL> -- 创建varchar(2147483648)列的hdfs表
+SQL> CREATE TABLE H_VARCHAR_2G(TVARCHAR varchar(2147483648));
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [CREATE TABLE H_VARCHAR_2G(TVARCHAR varchar(2147483648))]
+Running time elapsed:      0.01 Seconds
+SQL>
+SQL> -- 创建varchar(2147483647)列的hdfs表
+SQL> CREATE TABLE H_VARCHAR_MAX(TVARCHAR varchar(2147483647));
+0 rows affected
+Running time elapsed:      0.13 Seconds
+SQL>
+SQL> -- 创建varchar(2147483648)列的pallas表
+SQL> CREATE TABLE P_VARCHAR_2G(TVARCHAR varchar(2147483648)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [CREATE TABLE P_VARCHAR_2G(TVARCHAR varchar(2147483648)) ENGINE PALLAS]
+Running time elapsed:      0.00 Seconds
+SQL>
+SQL> -- 创建varchar(2147483647)列的pallas表
+SQL> CREATE TABLE P_VARCHAR_MAX(TVARCHAR varchar(2147483647)) ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.16 Seconds
+Running time elapsed:      0.33 Seconds
+SQL> exit
+Disconnected.
