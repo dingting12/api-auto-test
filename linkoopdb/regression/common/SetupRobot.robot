@@ -1,9 +1,11 @@
 *** Settings ***
+Documentation     SetupRobot.py
+...               Regress_Friendly      No
 Library           SQLCliLibrary
 Library           CompareLibrary
 Library           SetupRobot.py
 Library           OperatingSystem
-#Metadata          RegressSuite         FALSE
+
 
 *** Keywords ***
 SQL Test Setup
