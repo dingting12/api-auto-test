@@ -3,6 +3,7 @@ Library           SQLCliLibrary
 Library           CompareLibrary
 Library           SetupRobot.py
 Library           OperatingSystem
+#Metadata          RegressSuite         FALSE
 
 *** Keywords ***
 SQL Test Setup
@@ -43,6 +44,9 @@ SQL Test Setup
 
     # 每次Case运行前重置日志比对不一致的次数
     Compare Reset FailedCount
+
+    # Case运行在脚本所在的目录下，切换当前工作目录
+    SetupRoot CD CurrentDirectory      ${SUITE SOURCE}
 
 SQL Test Clnup
     # 检查SQL运行是否有错误
