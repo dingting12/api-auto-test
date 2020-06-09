@@ -8,7 +8,7 @@ Test Teardown    SQL Test Clnup
 Library          OperatingSystem
 
 *** Test Cases ***
-ColumnNumberTest
+VarcharSizeTest
     [Tags]     SQL-Test       varchar size test
     Logon And Execute SQL Script    admin/123456  varchar_size.sql   varchar_size.log
     Compare Files             varchar_size.log  varchar_size.ref
