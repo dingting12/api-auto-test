@@ -1,7 +1,3 @@
-loaddriver E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
-connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.73:9105/ldb
-set echo on
-
 
 --    Description: double边界值测试,double的范围-1.79769313486231E+308,-2.22507385850720E-308, 0,2.22507385850720E-308 ~ 1.79769313486231E+308
 --    Date:         2020-05-28

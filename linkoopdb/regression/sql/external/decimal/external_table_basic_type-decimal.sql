@@ -1,7 +1,3 @@
-loaddriver E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
-connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.73:9105/ldb
-set echo on
-
 
 --    Description: decimal边界值测试,decimal的范围1=<n<=38
 --    Date:         2020-05-28

@@ -1,7 +1,3 @@
-loaddriver E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
-connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.73:9105/ldb
-set echo on
-
 
 --    Description: int边界值测试,int的数值范围是-2,147,483,648/2,147,483,647
 --    Date:         2020-05-28
