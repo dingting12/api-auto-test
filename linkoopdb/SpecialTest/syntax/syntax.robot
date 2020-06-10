@@ -15,13 +15,13 @@ SyntaxCoveragePallasTest
 
     # 运行测试
     SQLCli Set SQLMAPPING          tke2_pallas.map
-    Logon And Execute SQL Script     admin/123456  GroupBy-P1000.sql    GroupBy-P1000_pallas.log
-    Logon And Execute SQL Script     admin/123456  Having-P1000.sql     Having-P1000_pallas.log
-    Logon And Execute SQL Script     admin/123456  DataTypeConversion-P1000.sql     DataTypeConversion-P1000_pallas.log
+    Logon And Execute SQL Script     admin/123456  GroupBy.sql    GroupBy_pallas.log
+    Logon And Execute SQL Script     admin/123456  Having.sql     Having_pallas.log
+    Logon And Execute SQL Script     admin/123456  DataTypeConversion.sql     DataTypeConversion_pallas.log
 
-    Compare Files             GroupBy-P1000.sql    GroupBy-P1000_pallas.ref
-    Compare Files             Having-P1000.sql     Having-P1000_pallas.ref
-    Compare Files             DataTypeConversion-P1000.sql     DataTypeConversion-P1000_pallas.ref
+    Compare Files             GroupBy.sql    GroupBy_pallas.ref
+    Compare Files             Having.sql     Having_pallas.ref
+    Compare Files             DataTypeConversion.sql     DataTypeConversion_pallas.ref
 
 
 
