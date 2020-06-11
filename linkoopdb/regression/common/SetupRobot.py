@@ -13,7 +13,6 @@ class SetupRobot(object):
     def SetupRoot_CD_CurrentDirectory(self, p_szDirectory):
         os.chdir(os.path.dirname(p_szDirectory))
 
-
 if __name__ == '__main__':
     m_Regress_Home = os.path.abspath(os.path.join(os.path.split(os.path.realpath(__file__))[0], ".."))
     dirs = os.listdir(m_Regress_Home)

@@ -1,23 +1,15 @@
-/*
- *   NAME
- *       test.sql
- *   
- *   DESCRPTION
- *       LDB 专项测试
- *          1. select list +函数组合
- *          2. from 表，子查询
- *          3. 操作符（数学，逻辑，比较）
- *          4. 函数（全部类型组合）
- *          5. where 表达式
- *          6. insert 到其他表
- *          7. 直接返回结果
- * 
- *   NOTES
- * 
- *   MODIFIED    (MM/DD/YY)
- *    shizhao     05/11/20       -- Created
- * 
- */
+-- Description
+--       LDB专项测试
+--          1. select list +函数组合
+--          2. from 表，子查询
+--          3. 操作符（数学，逻辑，比较）
+--          4. 函数（全部类型组合）
+--          5. where 表达式
+--          6. insert 到其他表
+--          7. 直接返回结果
+--
+-- Date：2020-06-10
+-- Author：赵石
 
 SET ECHO ON
 SET TIMING ON
