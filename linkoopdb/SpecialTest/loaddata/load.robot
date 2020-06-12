@@ -9,13 +9,13 @@ Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
 LoadTest
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
+    SQLCli Set SQLMAPPING     %{TEST_ROOT}/regression/common/pallas256.map
     Execute SQL Script        count_case.sql
     Execute SQL Script        delete_case.sql
     Execute SQL Script        update_case.sql
     Compare Files             count_case.log  count_case.ref
     Compare Files             delete_case.log  delete_case.ref
     Compare Files             update_case.log  update_case.ref
-
     Execute SQL Script        drop_case.sql
     Compare Files             drop_case.log  drop_case.ref
 
