@@ -3,10 +3,11 @@
 --    Author:       丁婷
 
 --259 T321-01 User-defined functions with no overloading
-DROP FUNCTION function_test_001;
+DROP FUNCTION if exists function_test_001;
 
 CREATE FUNCTION function_test_001() RETURNS INTEGER
-  RETURN 10;
+  RETURN 10
+  /
   
 call function_test_001();
   
@@ -56,7 +57,7 @@ call trim('   XXX   ');
 --2558 Refactor UDF handling
 drop jar 'testUdf-0.0.1-SNAPSHOT.jar';
 
-add jar '${udf_url}/testUdf-0.0.1-SNAPSHOT.jar' not check exists;
+add jar 'linkoopdb/smoke/sql/testUdf-0.0.1-SNAPSHOT.jar' not check exists;
 
 drop function if exists function_test_bigint;
 drop table if exists db_udf_bigint;

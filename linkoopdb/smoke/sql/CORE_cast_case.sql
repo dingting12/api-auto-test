@@ -103,13 +103,15 @@ times timestamp,
 varch1 varchar(30),
 char1 char(50),
 clob1 clob
-);
+)
+/
 
 create table T_cast_function_002(
 bit1 bit(8),
 binary1 binary(20),
 varbin1 varbinary(20)
-);
+)
+/
 
 insert into T_cast_function_001 values
 (true,132,2098,9036890,3.67,54.982,902.01,90.1,893.31,'2020-02-02','2019-10-01 19:20:01','123','true','true'),
@@ -167,7 +169,8 @@ date1 date array,
 times timestamp array,
 varch1 varchar(30) array,
 char1 char(50) array
-);
+)
+/
 
 insert into T_cast_function_003 values
 (1,array[true,false],array[132,68],array[2098],array[9036890],array[3.67],array[54.982],array[902.01],array[90.1],array[893.31],array['2020-02-02'],array['2019-10-01 19:20:01'],array['123'],array['true']),
@@ -201,7 +204,8 @@ drop table if exists T_cast_function_004;
 create table T_cast_function_004(
 id int,
 course struct<course:string,score:int>
-);
+)
+/
 
 insert into T_cast_function_004 values
 (1, json_to_struct('{"course":60,"score":80}')),

@@ -9,9 +9,9 @@ Test Teardown    SQL Test Clnup
 Library          OperatingSystem
 
 *** Test Cases ***
-EXTERNALTYPETest   
-	[Documentation]    测试外部表类型
-    [Tags]     SQL-Test       external type test
+SMOKETEST   
+	[Documentation]    冒烟测试
+    [Tags]     SQL-Test       smoke test
     Logon And Execute SQL Script     admin/123456  CORE 基本PSM.sql
 	LOgon And Execute SQL Script     admin/123456  CORE_cast_case.sql
 	LOgon And Execute SQL Script     admin/123456  CORE_null与基本完整性约束.sql
