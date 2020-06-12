@@ -12,9 +12,10 @@ Library          OperatingSystem
 SMOKETEST   
 	[Documentation]    冒烟测试
     [Tags]     SQL-Test       smoke test   
-	LOgon And Execute SQL Script     admin/123456  CORE_cast_case.sql        
-	Compare Files        CORE_cast_case.log    			  CORE_cast_case.ref 
-	
+	LOgon And Execute SQL Script     admin/123456  CORE_null与基本完整性约束.sql 
+    LOgon And Execute SQL Script     admin/123456  CORE_Schema_DDL.sql  	
+	Compare Files        CORE_null与基本完整性约束.log    		 CORE_null与基本完整性约束.ref 
+	Compare Files        CORE_Schema_DDL.sql.log    			  CORE_Schema_DDL.sql.ref 
 		
 
 
