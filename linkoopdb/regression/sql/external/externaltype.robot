@@ -12,7 +12,6 @@ Library          OperatingSystem
 EXTERNALTYPETest   
 	[Documentation]    测试外部表类型
     [Tags]     SQL-Test       external type test
-    Setup Compare Settings
     Logon And Execute SQL Script     admin/123456  bigint/external_table_basic_type-bigint.sql
 	LOgon And Execute SQL Script     admin/123456  int/external_table_basic_type-int.sql
 	LOgon And Execute SQL Script     admin/123456  char/external_table_basic_type-char.sql
