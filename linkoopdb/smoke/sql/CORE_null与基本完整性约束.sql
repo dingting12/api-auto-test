@@ -22,7 +22,7 @@ alter table T_Extended_Schema_Manipulation_001 add column c1 int;
 
 SELECT data_type
 FROM information_schema.columns
-WHERE table_name = 'T_Extended_Schema_Manipulation_001'
+WHERE table_name = 'T_EXTENDED_SCHEMA_MANIPULATION_001'
 	AND column_name = 'C1';
 	
 --删除一列
@@ -30,7 +30,7 @@ alter table T_Extended_Schema_Manipulation_001 drop column c1;
 
 SELECT data_type
 FROM information_schema.columns
-WHERE table_name = 'T_Extended_Schema_Manipulation_001'
+WHERE table_name = 'T_EXTENDED_SCHEMA_MANIPULATION_001'
 	AND column_name = 'C1';
 
 --测试599 E141-07  Column defaults+not null
@@ -64,14 +64,14 @@ tbinaryv binary varying(100) default '0x10110110'
 
 insert into T_Extended_Schema_Manipulation_002(tint) values (11);
 
-select * from T_Extended_Schema_Manipulation_002;
+select tsmallint,tint,treal,tdouble from T_Extended_Schema_Manipulation_002;
 
 --增加一列测试默认值
 alter table T_Extended_Schema_Manipulation_002 add column c1 smallint default 520;
 
 insert into T_Extended_Schema_Manipulation_002(tsmallint) values (110);
 
-select * from T_Extended_Schema_Manipulation_002;
+select tsmallint,tint,treal,tdouble from T_Extended_Schema_Manipulation_002;
 
 
 -- 244 F381-03 ALTER TABLE statement: DROP CONSTRAINT clause
