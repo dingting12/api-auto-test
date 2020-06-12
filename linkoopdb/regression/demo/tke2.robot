@@ -1,7 +1,7 @@
 *** Settings ***
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Suite Setup       SQL Test Setup
-Suite Teardown    SQL Test Clnup
+Test Setup       SQL Test Setup
+Test Teardown    SQL Test Clnup
 
 *** Settings ***
 Documentation    RobotFrameWork文档实例
