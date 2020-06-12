@@ -27,3 +27,4 @@ Setup Compare Settings
 
     # 一旦遇到错误，就终止继续测试
     Compare Break When Difference      False
+	Compare Enable ConsoleOutput       True
