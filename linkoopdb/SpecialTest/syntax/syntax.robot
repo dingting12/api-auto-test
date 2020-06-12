@@ -19,10 +19,6 @@ SyntaxCoveragePallasTest
     Logon And Execute SQL Script     admin/123456  Having.sql     Having_pallas.log
     Logon And Execute SQL Script     admin/123456  DataTypeConversion.sql     DataTypeConversion_pallas.log
 
-    Compare Files             GroupBy.sql    GroupBy_pallas.ref
-    Compare Files             Having.sql     Having_pallas.ref
-    Compare Files             DataTypeConversion.sql     DataTypeConversion_pallas.ref
-
-
-
-
+    Compare Files             GroupBy_pallas.log    GroupBy_pallas.ref
+    Compare Files             Having_pallas.log     Having_pallas.ref
+    Compare Files             DataTypeConversion_pallas.log     DataTypeConversion_pallas.ref
