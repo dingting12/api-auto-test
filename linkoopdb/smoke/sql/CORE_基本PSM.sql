@@ -6,8 +6,7 @@
 DROP FUNCTION if exists function_test_001;
 
 CREATE FUNCTION function_test_001() RETURNS INTEGER
-  RETURN 10
-  /
+  RETURN 10;
   
 call function_test_001();
   

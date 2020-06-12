@@ -1,21 +1,17 @@
 SQLCli Release 0.0.55
 SQL> connect admin/123456
 Database connected.
-SQL> start CORE_view.sql
-SQL> --    Description: 测试视图
-   > --    Date:         2020-06-10
+SQL> start CORE_cast_case.sql
+SQL> --    Description: 测试cast&case,包括F481,F221,F261,F201
+   > --    Date:         2020-06-09
    > --    Author:       丁婷
    > 
-   > -- 测试257 F081 UNION and EXCEPT in views
-SQL> drop view v_view_test_001 if exists cascade;
+   > --删除表
+SQL> drop table if exists T_Cast_Case_001;
 0 rows affected
-SQL> drop view v_view_test_002 if exists cascade;
-0 rows affected
-SQL> drop TABLE T_View_table_001 if exists cascade;
-0 rows affected
-SQL> drop TABLE T_View_table_002 if exists cascade;
-0 rows affected
-SQL> CREATE TABLE T_View_table_001 (
+SQL> 
+SQL> -- 创建并插入数据到表T_Cast_Case_001
+SQL> CREATE TABLE T_Cast_Case_001 (
    > EMPNO INT,
    > ENAME VARCHAR(20),
    > JOB VARCHAR(20),
@@ -26,8 +22,8 @@ SQL> CREATE TABLE T_View_table_001 (
    > DEPTNO INT
    > );
 0 rows affected
-SQL> INSERT INTO T_View_table_001 VALUES
-   >  (7369,'SMITH','CLERK',7902,'1980-12-17',800,NULL,20),
+SQL> INSERT INTO T_Cast_Case_001 VALUES 
+   > (7369,'SMITH','CLERK',7902,'1980-12-17',800,NULL,20),
    > (7499,'ALLEN','SALESMAN',7698,'1981-2-20',1600,300,30),
    > (7521,'WARD','SALESMAN',7698,'1981-2-22',1250,500,30),
    > (7566,'JONES','MANAGER',7839,'1981-4-2',2975,NULL,20),
@@ -40,237 +36,302 @@ SQL> INSERT INTO T_View_table_001 VALUES
    > (7902,'FORD','ANALYST',7566,'1981-12-8',3000,NULL,20),
    > (7934,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10);
 12 rows affected
-SQL> CREATE TABLE T_View_table_002 (
-   > DEPTNO INT,
-   > DNAME VARCHAR(20),
-   > LOC VARCHAR(20)
-   > );
-0 rows affected
-SQL> INSERT INTO T_View_table_002 VALUES 
-   > (10,'ACCOUNTING','NEW YORK'),
-   > (20,'RESEARCH','DALLAS'),
-   > (30,'SALES','CHICAGO'),
-   > (40,'OPERATIONS','BOSTON');
-4 rows affected
-SQL> create view v_view_test_001 as select * from T_View_table_001 order by empno;
-0 rows affected
-SQL> create view v_view_test_002 as select * from T_View_table_002 where sal > 1500 order by empno;
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: SAL in statement [create view v_view_test_002 as select * from T_View_table_002 where sal > 1500 order by empno]
+SQL> 
+SQL> -- 测试292 F481 Expanded NULL predicate的is not null和is null
 SQL> select count(*) from (
-   > select * from v_view_test_001 union select * from v_view_test_002);
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: V_VIEW_TEST_002 in statement [select count(*) from (
-select * from v_view_test_001 union select * from v_view_test_002)]
-SQL> select count(*) from (
-   > select * from v_view_test_001 except select * from v_view_test_002);
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: V_VIEW_TEST_002 in statement [select count(*) from (
-select * from v_view_test_001 except select * from v_view_test_002)]
-SQL> 
-SQL> 
-SQL> -- 测试251 F131-01 WHERE, GROUP BY, and HAVING clauses supported in queries with grouped views
-SQL> drop view v_view_test_003 if exists cascade;
-0 rows affected
-SQL> drop table T_View_table_003 if exists cascade;
-0 rows affected
-SQL> drop table T_View_table_004 if exists cascade;
-0 rows affected
-SQL> drop table T_View_table_005 if exists cascade;
-0 rows affected
-SQL> drop table T_View_table_006 if exists cascade;
-0 rows affected
-SQL> drop table T_View_table_007 if exists cascade;
-0 rows affected
-SQL> create table T_View_table_003(
-   > sno varchar(10),
-   > sname varchar(20),
-   > sage int,
-   > ssex varchar(5)
-   > );
-0 rows affected
-SQL> insert into T_View_table_003 values 
-   > ('s001','张三',23,'男'),
-   > ('s002','李四',23,'男'),
-   > ('s003','吴鹏',25,'男'),
-   > ('s004','琴沁',20,'女'),
-   > ('s005','王丽',20,'女'),
-   > ('s006','李波',21,'男'),
-   > ('s007','刘玉',21,'男'),
-   > ('s008','萧蓉',21,'女'),
-   > ('s009','陈萧晓',23,'女'),
-   > ('s010','陈美',22,'女');
-10 rows affected
-SQL> create table T_View_table_004(
-   > tno varchar(10),
-   > tname varchar(20)
-   > );
-0 rows affected
-SQL> insert into T_View_table_004 values ('t001', '刘阳'),
-   > ('t002', '谌燕'),
-   > ('t003', '胡明星');
-3 rows affected
-SQL> create table T_View_table_005(
-   > cno varchar(10),
-   > cname varchar(20),
-   > tno varchar(20)
-   > );
-0 rows affected
-SQL> insert into T_View_table_005 values ('c001','J2SE','t002'),
-   > ('c002','Java Web','t002'),
-   > ('c003','SSH','t001'),
-   > ('c004','Oracle','t001'),
-   > ('c005','SQL SERVER 2005','t003'),
-   > ('c006','C#','t003'),
-   > ('c007','JavaScript','t002'),
-   > ('c008','DIV+CSS','t001'),
-   > ('c009','PHP','t003'),
-   > ('c010','EJB3.0','t002');
-10 rows affected
-SQL> create table T_View_table_006(
-   > sno varchar(10),
-   > cno varchar(10),
-   > score int
-   > );
-0 rows affected
-SQL> insert into T_View_table_006 values ('s001','c001',78.9),
-   > ('s002','c001',80.9),
-   > ('s003','c001',81.9),
-   > ('s004','c001',60.9),
-   > ('s001','c002',82.9),
-   > ('s002','c002',72.9),
-   > ('s003','c002',81.9),
-   > ('s001','c003','59');
-8 rows affected
-SQL> CREATE VIEW v_view_test_003
-   > AS
-   > SELECT MAX(t.tno) AS new_tno, MAX(t.tname) AS new_tname
-   > 	, MAX(c.cno) AS new_cno1, MAX(c.cname) AS new_cname
-   > 	, c.cno AS new_cno2, AVG(score) AS new_avg
-   > FROM T_View_table_006 sc, T_View_table_005 c, T_View_table_004 t
-   > WHERE sc.cno = c.cno
-   > 	AND c.tno = t.tno
-   > GROUP BY c.cno
-   > HAVING COUNT(*) >= 1;
-0 rows affected
-SQL> 
-SQL> -- F131-02 Multiple tables supported in queries with grouped views
-SQL> drop view v_view_test_004 if exists cascade;
-0 rows affected
-SQL> CREATE VIEW v_view_test_004
-   > AS
-   > SELECT sc.sno, st.sname, COUNT(sc.cno) AS new_count
-   > FROM T_View_table_003 st, T_View_table_006 sc
-   > WHERE sc.sno = st.sno
-   > GROUP BY sc.sno, st.sname;
-0 rows affected
-SQL> select OCTET_LENGTH(sname) from v_view_test_004;
-+----+
-| C1 |
-+----+
-| 6  |
-| 6  |
-| 6  |
-| 6  |
-+----+
-4 rows selected.
-SQL> 
-SQL> 
-SQL> -- F131-03 Set functions supported in queries with grouped views 
-SQL> select count(distinct new_count) from v_view_test_004;
-+----+
-| C1 |
-+----+
-| 3  |
-+----+
-1 row selected.
-SQL> 
-SQL> -- F131-04 Subqueries with GROUP BY and HAVING clauses and grouped views
-SQL> drop view v_view_sel_001 if exists cascade;
-0 rows affected
-SQL> drop TABLE T_sel_001 if exists cascade;
-0 rows affected
-SQL> drop TABLE T_sel_003 if exists cascade;
-0 rows affected
-SQL> create table T_sel_001(
-   > sno varchar(10),
-   > sname varchar(20),
-   > sage int,
-   > ssex varchar(5)
-   > );
-0 rows affected
-SQL> create table T_sel_003(
-   > sno varchar(10),
-   > sname varchar(20),
-   > sage int,
-   > sschool varchar(20)
-   > );
-0 rows affected
-SQL> insert into T_sel_001 values
-   > ('s002','李四',23,'男'),
-   > ('s003','吴鹏',25,'男'),
-   > ('s004','琴沁',20,'女'),
-   > ('s005','王丽',20,'女'),
-   > ('s006','李波',21,'男'),
-   > ('s007','刘玉',21,'男'),
-   > ('s008','萧蓉',21,'女'),
-   > ('s009','陈萧晓',23,'女'),
-   > ('s010','陈美',22,'女');
-9 rows affected
-SQL> insert into T_sel_003 values
-   > ('s002','李四',23,'school1'),
-   > ('s003','吴鹏',22,'school3'),
-   > ('s004','琴沁',20,'school3'),
-   > ('s005','王丽',20,'school1'),
-   > ('s006','李波',21,'school2'),
-   > ('s007','刘玉',21,'school1'),
-   > ('s008','萧蓉',21,'school3'),
-   > ('s009','陈萧晓',23,'school1'),
-   > ('s010','陈美',22,'女school1');
-9 rows affected
-SQL> create view v_view_sel_001 AS select sage,count(sname) as count1 from T_sel_001  group by sage;
-0 rows affected
-SQL> SELECT *
-   > FROM (
-   > 	SELECT *
-   > 	FROM v_view_sel_001
-   > 	WHERE (sage, count1) IN (
-   > 		SELECT sage, COUNT(sage)
-   > 		FROM T_sel_003
-   > 		GROUP BY sage
-   > 		HAVING COUNT(sage) > 1
-   > 	)
-   > );
-+------+--------+
-| SAGE | COUNT1 |
-+------+--------+
-| 20   | 2      |
-| 23   | 2      |
-| 21   | 3      |
-+------+--------+
-3 rows selected.
-SQL> drop view v_view_sel_001 if exists cascade;
-0 rows affected
-SQL> drop TABLE T_sel_001 if exists cascade;
-0 rows affected
-SQL> drop TABLE T_sel_003 if exists cascade;
-0 rows affected
-SQL> 
-SQL> -- F131-05 Single row SELECT with GROUP BY and HAVING clauses and grouped views
-SQL> CREATE VIEW v_view_test_005
-   > AS
-   > SELECT st.sno, st.sname, COUNT(sc.cno) AS new_count
-   > FROM T_View_table_003 st
-   > 	LEFT JOIN T_View_table_006 sc ON st.sno = sc.sno
-   > GROUP BY st.sno, st.sname
-   > HAVING COUNT(sc.cno) < (
-   > 	SELECT COUNT(DISTINCT cno)
-   > 	FROM T_View_table_005
-   > );
-0 rows affected
-SQL> select count(*) from v_view_test_004 where (sno,new_count) in (select sno,max(new_count) from v_view_test_005 group by sno);
+   > select * from T_Cast_Case_001 where (sal + comm) is not null);
 +----+
 | C1 |
 +----+
 | 4  |
 +----+
 1 row selected.
+SQL> select * from T_Cast_Case_001 where rand() is null order by empno;
+0 rows selected.
+SQL> 
+SQL> -- 测试228 F261-01 Simple CASE
+SQL> select empno,ename,case job
+   >  when 'CLERK' then '职员' 
+   >  when 'SALESMAN' then '推销员' 
+   >  when 'MANAGER' then '主管' 
+   >  when 'PRESIDENT' then '经理' 
+   >  else '未知' end case 
+   >  from T_Cast_Case_001 
+   >  order by empno;
++-------+--------+--------+
+| EMPNO | ENAME  | C3     |
++-------+--------+--------+
+| 7369  | SMITH  | 职员   |
+| 7499  | ALLEN  | 推销员 |
+| 7521  | WARD   | 推销员 |
+| 7566  | JONES  | 主管   |
+| 7654  | MARTIN | 推销员 |
+| 7698  | BLAKE  | 主管   |
+| 7782  | CLARK  | 主管   |
+| 7839  | KING   | 经理   |
+| 7844  | TURNER | 推销员 |
+| 7900  | JAMES  | 职员   |
+| 7902  | FORD   | 未知   |
+| 7934  | MILLER | 职员   |
++-------+--------+--------+
+12 rows selected.
+SQL>  
+SQL> -- 测试229 F261-02 Searched CASE 
+SQL> SELECT CASE WHEN sal <= 500 THEN '1' 
+   > HEN sal > 500 AND sal <= 600  THEN '2'
+   > HEN sal > 600 AND sal <= 800  THEN '3'
+   > HEN sal > 800 AND sal <= 1000 THEN '4'
+   > LSE NULL END salary_class,COUNT(*) 
+   > ROM T_Cast_Case_001 
+   > ROUP BY CASE WHEN sal <= 500 THEN '1'
+   > HEN sal > 500 AND sal <= 600  THEN '2'
+   > HEN sal > 600 AND sal <= 800  THEN '3'
+   > HEN sal > 800 AND sal <= 1000 THEN '4'
+   > LSE NULL END;
++--------------+----+
+| SALARY_CLASS | C2 |
++--------------+----+
+| 3            | 1  |
+| <null>       | 10 |
+| 4            | 1  |
++--------------+----+
+3 rows selected.
+SQL> 
+SQL> -- 测试230 F261-03 NULLIF 
+SQL> select nullif(ename,'SMITH') from T_Cast_Case_001 order by empno;
++--------+
+| C1     |
++--------+
+| <null> |
+| ALLEN  |
+| WARD   |
+| JONES  |
+| MARTIN |
+| BLAKE  |
+| CLARK  |
+| KING   |
+| TURNER |
+| JAMES  |
+| FORD   |
+| MILLER |
++--------+
+12 rows selected.
+SQL> 
+SQL> -- 测试231 F261-04 COALESCE
+SQL> SELECT empno,ename,COALESCE(job,'qwertyuiop') from T_Cast_Case_001 order by empno;
++-------+--------+-----------+
+| EMPNO | ENAME  | C3        |
++-------+--------+-----------+
+| 7369  | SMITH  | CLERK     |
+| 7499  | ALLEN  | SALESMAN  |
+| 7521  | WARD   | SALESMAN  |
+| 7566  | JONES  | MANAGER   |
+| 7654  | MARTIN | SALESMAN  |
+| 7698  | BLAKE  | MANAGER   |
+| 7782  | CLARK  | MANAGER   |
+| 7839  | KING   | PRESIDENT |
+| 7844  | TURNER | SALESMAN  |
+| 7900  | JAMES  | CLERK     |
+| 7902  | FORD   | ANALYST   |
+| 7934  | MILLER | CLERK     |
++-------+--------+-----------+
+12 rows selected.
+SQL> 
+SQL> 
+SQL> --删除表
+SQL> drop table if exists T_Cast_Case_002;
+0 rows affected
+SQL> 
+SQL> --创建T_Cast_Case_002,并插入数据
+SQL> create table T_Cast_Case_002(
+   > ID int default 666,
+   > USER_NAME VARCHAR(20) default '测试',
+   > COURSE VARCHAR(20) default '测试',
+   > SCORE int default 0);
+0 rows affected
+SQL> INSERT INTO T_Cast_Case_002(id) values(21);
+1 row affected
+SQL> 
+SQL> -- 226 F221 Explicit defaults
+SQL> SELECT * FROM T_Cast_Case_002;
++----+-----------+--------+-------+
+| ID | USER_NAME | COURSE | SCORE |
++----+-----------+--------+-------+
+| 21 | 测试      | 测试   | 0     |
++----+-----------+--------+-------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --删除表
+SQL> drop table if exists T_cast_function_001;
+0 rows affected
+SQL> drop table if exists T_cast_function_002;
+0 rows affected
+SQL> 
+SQL> -- 创建T_cast_function_001,T_cast_function_002,并插入数据
+SQL> create table T_cast_function_001(
+   > bool boolean,
+   > small smallint,
+   > int1 int,
+   > big bigint,
+   > deci decimal(3,2),
+   > real1 real,
+   > double1 double,
+   > float1 float,
+   > num numeric(5,2),
+   > date1 date,
+   > times timestamp,
+   > varch1 varchar(30),
+   > char1 char(50),
+   > clob1 clob
+   > )
+   > /
+0 rows affected
+SQL> create table T_cast_function_002(
+   > bit1 bit(8),
+   > binary1 binary(20),
+   > varbin1 varbinary(20)
+   > )
+   > /
+0 rows affected
+SQL> insert into T_cast_function_001 values
+   > (true,132,2098,9036890,3.67,54.982,902.01,90.1,893.31,'2020-02-02','2019-10-01 19:20:01','123','true','true'),
+   > (false,112,347,9036290,9.37,44.982,821.01,40.1,856.31,'2020-02-03','2019-10-03 19:20:01','true','11','插入海量数据!!!'),
+   > (false,112,348,9036290,9.37,44.982,821.01,40.1,856.31,'2020-02-03','2019-10-03 19:20:01','str','df','插入海量数据!!!'),
+   > (false,112,349,9036290,9.37,44.982,821.01,40.1,856.31,'2020-02-03','2019-10-03 19:20:01','456','sd','插入海量数据!!!');
+4 rows affected
+SQL> insert into T_cast_function_002 values
+   > ('10100','11001','hlsljoipipknjjoi');
+1 row affected
+SQL> 
+SQL> -- 测试2827 F201 CAST function基本数据类型
+SQL> select int1,
+   > cast(bool as varchar(10)) as b1,
+   > cast(small as bigint) as b2,
+   > cast(int1 as double) as b3,
+   > cast(big as double) as b4,
+   > cast(deci as bigint) as b5,
+   > cast(real1 as decimal) as b6,
+   > cast(num as float) as b7, 
+   > cast(double1 as int) as b8,
+   > cast(float1 as bigint) as b9, 
+   > cast(char1 as int) as b10,
+   > cast(varch1 as bigint) as b11,
+   > cast(date1 as char(100))as b12,
+   > cast(times as varchar(100)) as b13,
+   > cast(clob1 as varchar(100)) as b14
+   > from T_cast_function_001 
+   > order by int1;
++------+-------+-----+--------+-----------+----+------+-------------------+-----+----+--------+--------+------------------------------------------------------------------------------------------------------+---------------------+-----------------+
+| INT1 | B1    | B2  | B3     | B4        | B5 | B6   | B7                | B8  | B9 | B10    | B11    | B12                                                                                                  | B13                 | B14             |
++------+-------+-----+--------+-----------+----+------+-------------------+-----+----+--------+--------+------------------------------------------------------------------------------------------------------+---------------------+-----------------+
+| 347  | false | 112 | 347.0  | 9036290.0 | 9  | 45.0 | 856.3099975585938 | 821 | 40 | 11     | <null> | 2020-02-03                                                                                           | 2019-10-03 19:20:01 | 插入海量数据!!! |
+| 348  | false | 112 | 348.0  | 9036290.0 | 9  | 45.0 | 856.3099975585938 | 821 | 40 | <null> | <null> | 2020-02-03                                                                                           | 2019-10-03 19:20:01 | 插入海量数据!!! |
+| 349  | false | 112 | 349.0  | 9036290.0 | 9  | 45.0 | 856.3099975585938 | 821 | 40 | <null> | 456    | 2020-02-03                                                                                           | 2019-10-03 19:20:01 | 插入海量数据!!! |
+| 2098 | true  | 132 | 2098.0 | 9036890.0 | 3  | 55.0 | 893.3099975585938 | 902 | 90 | <null> | 123    | 2020-02-02                                                                                           | 2019-10-01 19:20:01 | true            |
++------+-------+-----+--------+-----------+----+------+-------------------+-----+----+--------+--------+------------------------------------------------------------------------------------------------------+---------------------+-----------------+
+4 rows selected.
+SQL> 
+SQL> -- 测试2827 F201 CAST function基本数据类型
+SQL> select bit1,
+   > cast(bit1 as bit) as b1 ,
+   > cast(binary1 as char ) as b9,
+   > cast(varbin1 as varchar ) as b10
+   > from T_cast_function_002 ;
++------+------+-------+------------------+
+| BIT1 | B1   | B9    | B10              |
++------+------+-------+------------------+
+| True | True | 11001 | hlsljoipipknjjoi |
++------+------+-------+------------------+
+1 row selected.
+SQL> 
+SQL> -- 删除表
+SQL> drop table if exists T_cast_function_003;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 创建T_cast_function_003,并插入数据
+SQL> create table T_cast_function_003(
+   > id int,
+   > bool boolean array,
+   > small smallint array,
+   > int1 int array,
+   > big bigint array,
+   > deci decimal(3,2) array,
+   > real1 real array,
+   > double1 double array,
+   > float1 float array,
+   > num numeric(5,2) array,
+   > date1 date array,
+   > times timestamp array,
+   > varch1 varchar(30) array,
+   > char1 char(50) array
+   > )
+   > /
+0 rows affected
+SQL> insert into T_cast_function_003 values
+   > (1,array[true,false],array[132,68],array[2098],array[9036890],array[3.67],array[54.982],array[902.01],array[90.1],array[893.31],array['2020-02-02'],array['2019-10-01 19:20:01'],array['123'],array['true']),
+   > (2,array[false],array[112],array[348],array[9036290],array[9.37],array[44.982],array[821.01],array[40.1],array[856.31],array['2020-02-03'],array['2019-10-03 19:20:01'],array['true'],array['11']),
+   > (3,array[false],array[112],array[348],array[9036290],array[9.37],array[44.982],array[821.01],array[40.1],array[856.31],array['2020-02-03'],array['2019-10-03 19:20:01'],array['str'],array['df']),
+   > (4,array[false],array[112],array[348],array[9036290],array[9.37],array[44.982],array[821.01],array[40.1],array[856.31],array['2020-02-03'],array['2019-10-03 19:20:01'],array['456'],array['sd']);
+4 rows affected
+SQL> 
+SQL> 
+SQL> --测试2827 F201 CAST function数组类型
+SQL> select id,
+   > cast(bool as char(10) array) as b1,
+   > cast(small as int array) as b2,
+   > cast(int1 as real array) as b3,
+   > cast(big as char(10) array) as b4,
+   > cast(deci as bigint array) as b5,
+   > cast(real1 as int array) as b6,
+   > cast(num as float array) as b7,
+   > cast(double1 as int array) as b8,
+   > cast(float1 as int array) as b9,
+   > cast(char1 as varchar(10) array) as b10,
+   > cast(varch1 as smallint array) as b11,
+   > cast(date1 as varchar(100) array) as b12,
+   > cast(times as date array) as b13 
+   > from T_cast_function_003
+   > order by id;
++----+----------------------------------+---------------+-----------------+---------------------+----------+-----------+-----------------+------------+-----------+---------------+-------------+---------------------+-------------------------+
+| ID | B1                               | B2            | B3              | B4                  | B5       | B6        | B7              | B8         | B9        | B10           | B11         | B12                 | B13                     |
++----+----------------------------------+---------------+-----------------+---------------------+----------+-----------+-----------------+------------+-----------+---------------+-------------+---------------------+-------------------------+
+| 1  | ARRAY['true      ','false     '] | ARRAY[132,68] | ARRAY[2098.0E0] | ARRAY['9036890   '] | ARRAY[3] | ARRAY[54] | ARRAY[893.31E0] | ARRAY[902] | ARRAY[90] | ARRAY['true'] | ARRAY[123]  | ARRAY['2020-02-02'] | ARRAY[DATE'2019-10-01'] |
+| 2  | ARRAY['false     ']              | ARRAY[112]    | ARRAY[348.0E0]  | ARRAY['9036290   '] | ARRAY[9] | ARRAY[44] | ARRAY[856.31E0] | ARRAY[821] | ARRAY[40] | ARRAY['11']   | ARRAY[NULL] | ARRAY['2020-02-03'] | ARRAY[DATE'2019-10-03'] |
+| 3  | ARRAY['false     ']              | ARRAY[112]    | ARRAY[348.0E0]  | ARRAY['9036290   '] | ARRAY[9] | ARRAY[44] | ARRAY[856.31E0] | ARRAY[821] | ARRAY[40] | ARRAY['df']   | ARRAY[NULL] | ARRAY['2020-02-03'] | ARRAY[DATE'2019-10-03'] |
+| 4  | ARRAY['false     ']              | ARRAY[112]    | ARRAY[348.0E0]  | ARRAY['9036290   '] | ARRAY[9] | ARRAY[44] | ARRAY[856.31E0] | ARRAY[821] | ARRAY[40] | ARRAY['sd']   | ARRAY[456]  | ARRAY['2020-02-03'] | ARRAY[DATE'2019-10-03'] |
++----+----------------------------------+---------------+-----------------+---------------------+----------+-----------+-----------------+------------+-----------+---------------+-------------+---------------------+-------------------------+
+4 rows selected.
+SQL> 
+SQL> --删除表
+SQL> drop table if exists T_cast_function_004;
+0 rows affected
+SQL> 
+SQL> -- 创建表T_cast_function_004，并插入数据
+SQL> create table T_cast_function_004(
+   > id int,
+   > course struct<course:string,score:int>
+   > )
+   > /
+0 rows affected
+SQL> insert into T_cast_function_004 values
+   > (1, json_to_struct('{"course":60,"score":80}')),
+   > (2, json_to_struct('{"course":"!!!!!","score":1234567}'));
+2 rows affected
+SQL> insert into T_cast_function_004  values
+   > (3,cast('{"course":60,"score":80}' as struct<course:string,score:int>));
+1 row affected
+SQL> 
+SQL> --测试2827 F201 CAST functions truct类型
+SQL> select id,struct_to_json(T_cast_function_004.course) from T_cast_function_004 order by id;
++----+------------------------------------+
+| ID | C2                                 |
++----+------------------------------------+
+| 1  | {"COURSE":"60","SCORE":80}         |
+| 2  | {"COURSE":"!!!!!","SCORE":1234567} |
+| 3  | {"COURSE":"60","SCORE":80}         |
++----+------------------------------------+
+3 rows selected.
 SQL> exit
 Disconnected.
