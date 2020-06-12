@@ -1,8 +1,9 @@
 *** Settings ***
 Documentation     SetupRobot.py
 ...               Regress_Friendly      No
-Library           SQLCliLibrary
-Library           CompareLibrary
+...               Feature_ID
+Library           RunSQLCli.py
+Library           RunCompare.py
 Library           SetupRobot.py
 Library           OperatingSystem
 
