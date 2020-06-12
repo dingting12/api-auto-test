@@ -10,6 +10,9 @@ Library           OperatingSystem
 
 *** Keywords ***
 SQL Test Setup
+    # 在Robot运行中，即使某一个Case失败，也不会终止整个Suite的继续运行
+    Run Keyword And Continue On Failure      Dummy Test
+
     # 控制SQLCli在执行SQL语句中是否遇到错误，就立即终止后续的SQL执行
     # 默认是不终止，即使SQL有错误，整个SQL也会被执行完毕
     SQLCli Break When Error            False
@@ -54,3 +57,6 @@ SQL Test Setup
 SQL Test Clnup
     # 检查SQL运行是否有错误
     Compare Check Result
+
+Dummy Test
+    Log to Console      ""
