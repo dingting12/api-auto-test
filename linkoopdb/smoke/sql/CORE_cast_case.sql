@@ -145,8 +145,8 @@ order by int1;
 -- 测试2827 F201 CAST function基本数据类型
 select bit1,
 cast(bit1 as bit) as b1 ,
-cast(binary1 as char )  b9,
-cast(varbin1 as varchar )  b10,
+cast(binary1 as char ) as b9,
+cast(varbin1 as varchar ) as b10
 from T_cast_function_002 ;
 
 -- 删除表
@@ -192,7 +192,7 @@ cast(double1 as int array) as b8,
 cast(float1 as int array) as b9,
 cast(char1 as varchar(10) array) as b10,
 cast(varch1 as smallint array) as b11,
-cast(date1 as varchar(100) array) as b12 
+cast(date1 as varchar(100) array) as b12,
 cast(times as date array) as b13 
 from T_cast_function_003
 order by id;
@@ -216,4 +216,4 @@ insert into T_cast_function_004  values
 (3,cast('{"course":60,"score":80}' as struct<course:string,score:int>));
 
 --测试2827 F201 CAST functions truct类型
-select id,struct_to_json(db_cast_function_struct.course) from T_cast_function_004 order by id;
+select id,struct_to_json(T_cast_function_004.course) from T_cast_function_004 order by id;
