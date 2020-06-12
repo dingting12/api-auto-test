@@ -1,0 +1,984 @@
+SQLCli Release 0.0.55
+SQL> connect admin/123456
+Database connected.
+SQL> start basic_SQLSynatx.sql
+SQL> -- Description
+   > --       LDB专项测试
+   > --          1. select list +函数组合
+   > --          2. from 表，子查询
+   > --          3. 操作符（数学，逻辑，比较）
+   > --          4. 函数（全部类型组合）
+   > --          5. where 表达式
+   > --          6. insert 到其他表
+   > --          7. 直接返回结果
+   > --
+   > -- Date：2020-06-10
+   > -- Author：赵石
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 测试各种数据类型的函数支持
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 
+   > 	    TUNIQUE,
+   > 		ABS(TSMALLINT-5000),
+   > 		ABS(TINTEGER-50000000),
+   > 		ABS(TBIGINT-50000000),
+   > 		CEIL(TINTEGER/TSMALLINT),
+   > 		BROUND(TBIGINT/TSMALLINT,4),
+   > 		CEIL(TREAL),
+   > 		CEIL(TDOUBLE),
+   > 		CEIL(TFLOAT),
+   > 		CEIL(TNUMERIC),
+   > 		BROUND(TREAL,1),
+   > 		BROUND(TDOUBLE,1) BROUND_DOUBLE,
+   > 		BROUND(TFLOAT,1) BROUND_FLOAT,
+   > 		BROUND(TNUMERIC,1),
+   > 		DATE_FORMAT(TDATE, 'YYYY-MM-DD'),
+   > 		DATE_FORMAT(TTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+   > 		DATE_FORMAT(DATE_ADD(TDATE, 10), 'YYYY-MM-DD'),
+   > 		DATE_FORMAT(DATE_ADD(TTIMESTAMP,10), 'YYYY-MM-DD HH24:MI:SS'),
+   > 		DATE_FORMAT(DATE_ADD(TDATE, 10), 'YYYY-MM-DD'),
+   > 		DATEDIFF(TDATE, TTIMESTAMP),
+   > 		CAST(TBOOL AS INTEGER),
+   > 		CAST(TBOOL AS VARCHAR),
+   > 	    SUBSTR(TCHAR,10),
+   > 	    SUBSTR(TVARCHAR,-10),
+   > 	    SUBSTR(TCHARIDX1,100),
+   > 	    SUBSTR(TCHARIDX2,-100),
+   > 		REPLACE(TVARCHAR,'a','b'),
+   > 		REPLACE(TVARCHARIDX1,'c','d'),
+   > 	    SUBSTR(TVARCHARIDX1,100),
+   > 	    SUBSTR(TVARCHARIDX1,-100),
+   > 	    REVERSE(TVARCHARIDX2),
+   > 		UPPER(TCHAR||TCHARIDX1),LOWER(TCHAR||TCHARIDX1),
+   > 		UPPER(TVARCHARIDX1),LOWER(TVARCHARIDX1)
+   > 	FROM H1000
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      7.72 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.63 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.06 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.25 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 
+   > 	    TUNIQUE,
+   > 		ABS(TSMALLINT-5000),
+   > 		ABS(TINTEGER-50000000),
+   > 		ABS(TBIGINT-50000000),
+   > 		CEIL(TINTEGER/TSMALLINT),
+   > 		BROUND(TBIGINT/TSMALLINT,4),
+   > 		CEIL(TREAL),
+   > 		CEIL(TDOUBLE),
+   > 		CEIL(TFLOAT),
+   > 		CEIL(TNUMERIC),
+   > 		BROUND(TREAL,1),
+   > 		BROUND(TDOUBLE,1) BROUND_DOUBLE,
+   > 		BROUND(TFLOAT,1) BROUND_FLOAT,
+   > 		BROUND(TNUMERIC,1),
+   > 		DATE_FORMAT(TDATE, 'YYYY-MM-DD'),
+   > 		DATE_FORMAT(TTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+   > 		DATE_FORMAT(DATE_ADD(TDATE, 10), 'YYYY-MM-DD'),
+   > 		DATE_FORMAT(DATE_ADD(TTIMESTAMP,10), 'YYYY-MM-DD HH24:MI:SS'),
+   > 		DATE_FORMAT(DATE_ADD(TDATE, 10), 'YYYY-MM-DD'),
+   > 		DATEDIFF(TDATE, TTIMESTAMP),
+   > 		CAST(TBOOL AS INTEGER),
+   > 		CAST(TBOOL AS VARCHAR),
+   > 	    SUBSTR(TCHAR,10),
+   > 	    SUBSTR(TVARCHAR,-10),
+   > 	    SUBSTR(TCHARIDX1,100),
+   > 	    SUBSTR(TCHARIDX2,-100),
+   > 		REPLACE(TVARCHAR,'a','b'),
+   > 		REPLACE(TVARCHARIDX1,'c','d'),
+   > 	    SUBSTR(TVARCHARIDX1,100),
+   > 	    SUBSTR(TVARCHARIDX1,-100),
+   > 	    REVERSE(TVARCHARIDX2),
+   > 		UPPER(TCHAR||TCHARIDX1),LOWER(TCHAR||TCHARIDX1),
+   > 		UPPER(TVARCHARIDX1),LOWER(TVARCHARIDX1)
+   > 	FROM (SELECT * FROM H1000 LIMIT 10000)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      5.27 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.14 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.17 Seconds
+SQL> 
+SQL> -- 测试操作符,Like
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE 	TCHAR LIKE 'wwCPj24BEI6e2j8%E3AABkSslALAD'
+   > 	OR TVARCHAR LIKE 'gJ5Bs1JHciwrfT70m%3Rl3xENSSO7xWV'
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      6.24 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.18 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.07 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.30 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE 	TCHAR LIKE 'wwCPj24BEI6e2j8%E3AABkSslALAD'
+   > 	OR TVARCHAR LIKE 'gJ5Bs1JHciwrfT70m%3Rl3xENSSO7xWV'
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      4.14 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- 测试操作符BETWEEN， 日期类型，时间戳类型，整数类型
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.36 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE TDATE BETWEEN TO_DATE('2018-01-01','YYYY-MM-DD') AND TO_DATE('2049-01-01','YYYY-MM-DD')
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:     10.15 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.18 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE TTIMESTAMP BETWEEN TO_TIMESTAMP('2018-01-01','YYYY-MM-DD') AND TO_TIMESTAMP('2049-01-01','YYYY-MM-DD')
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      2.69 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.15 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.28 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE TSMALLINT BETWEEN 3000 AND 5000
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      5.93 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.06 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.29 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE TDATE BETWEEN TO_DATE('2018-01-01','YYYY-MM-DD') AND TO_DATE('2049-01-01','YYYY-MM-DD')
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.22 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.06 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.95 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE TTIMESTAMP BETWEEN TO_TIMESTAMP('2018-01-01','YYYY-MM-DD') AND TO_TIMESTAMP('2049-01-01','YYYY-MM-DD')
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      5.15 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.21 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.91 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE TSMALLINT BETWEEN 3000 AND 5000
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      2.85 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.06 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.43 Seconds
+SQL> 
+SQL> -- 数字运算符, 类型的隐性转换
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.02 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	TSMALLINT + TINTEGER + TDOUBLE - TFLOAT - TDECIMAL - TNUMERIC
+   > 	FROM 	H1000 
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.93 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.21 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: TUNIQUE in statement [SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3]
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.56 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	TSMALLINT + TINTEGER + TDOUBLE - TFLOAT - TDECIMAL - TNUMERIC
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      5.14 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: TUNIQUE in statement [SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3]
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 数字运算符
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.31 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE   TSMALLINT > 4000
+   > 	OR      TINTEGER  < 80000000
+   > 	OR      TDOUBLE   > 3000
+   > 	OR      TFLOAT    < 6500
+   > 	OR      TDECIMAL  > 5000
+   > 	OR      TNUMERIC  < 5000
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      4.70 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.14 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      1.00 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE   TSMALLINT > 4000
+   > 	OR      TINTEGER  < 80000000
+   > 	OR      TDOUBLE   > 3000
+   > 	OR      TFLOAT    < 6500
+   > 	OR      TDECIMAL  > 5000
+   > 	OR      TNUMERIC  < 5000
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      7.45 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.59 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE   TINTEGER / TSMALLINT > 300
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.96 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.14 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.06 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.41 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE   TDOUBLE / TFLOAT  > 300
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      4.90 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.24 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE   TNUMERIC / TDECIMAL > 300
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      6.53 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.15 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- 字符串等值判断
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.23 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT * 
+   > 	FROM 	H1000 
+   > 	WHERE 	TCHAR = 'wwCPj24BEI6e2j8EktHZF9G18ENcBaoUrfWcRE3AABkSslALAD'
+   > 	    OR  TVARCHARIDX2 = 'kZNR5JkD89cEBo4FR3tU2vsZptbYZr9NzHydbp5Niyoq1dUnddvdKsmwuoxvEx4dz23JcjR9bGtzrxPD2sp13NBsgSiekmBVMpvB'
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      1.36 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.14 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.17 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT * 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE 	TCHAR = 'wwCPj24BEI6e2j8EktHZF9G18ENcBaoUrfWcRE3AABkSslALAD'
+   > 	    OR  TVARCHARIDX2 = 'kZNR5JkD89cEBo4FR3tU2vsZptbYZr9NzHydbp5Niyoq1dUnddvdKsmwuoxvEx4dz23JcjR9bGtzrxPD2sp13NBsgSiekmBVMpvB'
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.15 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.15 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- 字符串IN判断
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.26 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT * 
+   > 	FROM 	H1000 
+   > 	WHERE 	TCHAR IN 
+   > 		(
+   > 			'wwCPj24BEI6e2j8EktHZF9G18ENcBaoUrfWcRE3AABkSslALAD',
+   > 			'NKlW25jgZxhIcCcpGMfgPzdjaTVRxDLK5PMmeuOlW4WkFKnRT3'
+   > 		)
+   > 	OR    	TSMALLINT IN (2404, 4625)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      4.56 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.22 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.28 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT * 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE 	TCHAR IN 
+   > 		(
+   > 			'wwCPj24BEI6e2j8EktHZF9G18ENcBaoUrfWcRE3AABkSslALAD',
+   > 			'NKlW25jgZxhIcCcpGMfgPzdjaTVRxDLK5PMmeuOlW4WkFKnRT3'
+   > 		)
+   > 	OR    	TSMALLINT IN (2404, 4625)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      4.28 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.14 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- 字符串反向IN判断
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.34 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE 	TCHAR NOT IN 
+   > 		(
+   > 			'wwCPj24BEI6e2j8EktHZF9G18ENcBaoUrfWcRE3AABkSslALAD',
+   > 			'NKlW25jgZxhIcCcpGMfgPzdjaTVRxDLK5PMmeuOlW4WkFKnRT3'
+   > 		)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.39 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.20 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.29 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE 	TCHAR NOT IN 
+   > 		(
+   > 			'wwCPj24BEI6e2j8EktHZF9G18ENcBaoUrfWcRE3AABkSslALAD',
+   > 			'NKlW25jgZxhIcCcpGMfgPzdjaTVRxDLK5PMmeuOlW4WkFKnRT3'
+   > 		)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      4.32 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.15 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- 日期类型IN判断
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.48 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 
+   > 	WHERE 	TDATE IN (TO_DATE('2013-01-02','YYYY-MM-DD'))
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.86 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.14 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.07 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.32 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000) 
+   > 	WHERE 	TDATE IN (TO_DATE('2013-01-02','YYYY-MM-DD'))
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.15 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.18 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- EXISTS 子查询判断
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.27 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000 E 
+   > 	WHERE EXISTS 
+   > 		(
+   > 			SELECT * 
+   > 			FROM 	H1000 D 
+   > 			WHERE 	D.TBIGINT  = E.TBIGINT 
+   > 		)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.65 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.19 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.07 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.30 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)  E 
+   > 	WHERE EXISTS 
+   > 		(
+   > 			SELECT * 
+   > 			FROM 	(SELECT * FROM H1000 LIMIT 10000)  D 
+   > 			WHERE 	D.TBIGINT  = E.TBIGINT 
+   > 		)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.84 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.14 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- 子查询判断
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.52 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000
+   > 	WHERE 	TSMALLINT IN 
+   > 		(
+   > 			SELECT TSMALLINT FROM H1000 ORDER BY TSMALLINT LIMIT 30000
+   > 		)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.37 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.06 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.45 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE 	TSMALLINT IN 
+   > 		(
+   > 			SELECT TSMALLINT FROM (SELECT * FROM H1000 LIMIT 10000) ORDER BY TSMALLINT LIMIT 30000
+   > 		)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.42 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- 多字段IN查询，数字类型
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.35 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000
+   > 	WHERE 	(TINTEGER,TDOUBLE) 
+   > 		IN (
+   > 			SELECT 		TINTEGER,TDOUBLE 
+   > 			FROM 		H1000  
+   > 			ORDER BY TSMALLINT 
+   > 			LIMIT 30000
+   > 			)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      5.54 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.16 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.41 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE 	(TINTEGER,TDOUBLE) 
+   > 		IN (
+   > 			SELECT 		TINTEGER,TDOUBLE 
+   > 			FROM 		(SELECT * FROM H1000 LIMIT 10000)  
+   > 			ORDER BY TSMALLINT 
+   > 			LIMIT 30000
+   > 			)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      3.63 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.19 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- 多字段IN查询，字符串类型
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.39 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	H1000
+   > 	WHERE 	(TCHAR,TVARCHAR) 
+   > 		IN (
+   > 			SELECT 	TCHAR,TVARCHAR 
+   > 			FROM 	H1000  
+   > 			ORDER BY TSMALLINT LIMIT 30000
+   > 			)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      4.34 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.14 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.68 Seconds
+SQL> CREATE TABLE SHI_TEST_QUERY 
+   > AS 
+   > (
+   > 	SELECT 	* 
+   > 	FROM 	(SELECT * FROM H1000 LIMIT 10000)
+   > 	WHERE 	(TCHAR,TVARCHAR) 
+   > 		IN (
+   > 			SELECT 	TCHAR,TVARCHAR 
+   > 			FROM 	(SELECT * FROM H1000 LIMIT 10000)  
+   > 			ORDER BY TSMALLINT LIMIT 30000
+   > 			)
+   > )
+   > WITH DATA;
+0 rows affected
+Running time elapsed:      4.78 Seconds
+SQL> SELECT COUNT(*) FROM SHI_TEST_QUERY;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.17 Seconds
+SQL> SELECT * FROM SHI_TEST_QUERY ORDER BY TUNIQUE LIMIT 3;
+0 rows selected.
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE SHI_TEST_QUERY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.33 Seconds
+Running time elapsed:    171.47 Seconds
+SQL> exit
+Disconnected.
