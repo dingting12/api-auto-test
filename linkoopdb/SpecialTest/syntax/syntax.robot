@@ -51,7 +51,7 @@ SyntaxCoveragePallasTest-Having
     Compare Files                   Having_pallas.log             Having.ref
 
 SyntaxCoveragePallasTest-DataTypeConversion
-    [Documentation]    语法覆盖-HDFS-DataTypeConversion
+    [Documentation]    语法覆盖-Pallas-DataTypeConversion
     [Tags]   Smoke   Pallas
 
     # 运行测试
@@ -67,7 +67,7 @@ SyntaxCoverageHDFSTest-BasicSynatx-H1000
     Compare Files                   basic_synatx_H1000.log            basic_synatx.ref
 
 SyntaxCoveragePallasTest-BasicSynatx-P1000
-    [Documentation]    语法覆盖-HDFS-BasicSynatx-P1000-Pallas
+    [Documentation]    语法覆盖-Pallas-BasicSynatx-P1000-Pallas
     [Tags]   Smoke   HDFS
 
     SQLCli Set SQLMAPPING           pallas256.map,synatx_tabname.map
