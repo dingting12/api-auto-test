@@ -1,6 +1,6 @@
 *** Settings ***
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       SQL Test Setup
+Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
 Test Teardown    SQL Test Clnup
 
 *** Settings ***
@@ -74,3 +74,7 @@ SyntaxCoveragePallasTest-BasicSynatx-P1000
     Set Environment Variable        TAB_NAME                P1000
     Logon And Execute SQL Script    admin/123456            basic_SQLSynatx.sql        basic_synatx_P1000.log
     Compare Files                   basic_synatx_P1000.log  basic_synatx.ref
+
+*** Keywords ***
+Setup Custom Settings
+    Compare Break When Difference      True
