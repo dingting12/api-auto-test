@@ -1,16 +1,16 @@
 *** Settings ***
-Documentation    单表查询
-...              数据量为1000万，存储引擎为pallas
+Documentation    日期时间函数测试
+...              测试日期时间函数的使用
 Metadata         Version    0.1
 # 引用公共函数
 Resource          ../../regression/common/SetupRobot.robot
 
 *** Test Cases ***
-SingleTableOperationTest
+JoinTest
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
-    Execute SQL Script        SingleTableOperation1000.sql
-    Compare Files             SingleTableOperation1000.log  SingleTableOperation1000.ref
+    Execute SQL Script        date_time_function.sql
+    Compare Files             date_time_function.sql  date_time_function.ref
 
 *** Keywords ***
 Setup Compare Settings
@@ -27,4 +27,3 @@ Setup Compare Settings
 
     # 一旦遇到错误，就终止继续测试
     Compare Break When Difference      False
-	Compare Enable ConsoleOutput       True

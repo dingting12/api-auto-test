@@ -25,12 +25,12 @@ insert into T_TYPE_DATE values(to_date('-0001-12-31','yyyy-mm-dd'));
 select * from T_TYPE_DATE;
 
 --验证date的最大值9999-12-31
-insert into T_TYPE_DATE values(to_date('9999-12-31','yyyy-mm-dd');
+insert into T_TYPE_DATE values(to_date('9999-12-31','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
 --验证date的最大值+1，是否报错
-insert into T_TYPE_DATE values(to_date('10000-01-01','yyyy-mm-dd');
+insert into T_TYPE_DATE values(to_date('10000-01-01','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
@@ -107,7 +107,7 @@ insert into T_TYPE_DATE values(20200208);
 select * from T_TYPE_DATE;
 
 --验证插入double类型
-insert into T_TYPE_DATE values(138.92);
+insert into T_TYPE_DATE values(20100505.102345);
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 

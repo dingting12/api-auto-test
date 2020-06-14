@@ -6,6 +6,7 @@ from .commandanalyze import CommandNotFound
 from .sqlcliexception import SQLCliException
 import click
 import time
+import os
 from time import strftime, localtime
 from multiprocessing import Lock
 
@@ -18,6 +19,7 @@ class SQLExecute(object):
     SQLMappingHandler = None            # SQL重写处理
     m_Current_RunningSQL = None         # 目前程序运行的当前SQL
     Console = False                     # 屏幕输出Console
+    logger = None                       # 日志输出
     m_Worker_Name = None                # 为每个SQLExecute实例起一个名字，便于统计分析
 
     # 进程锁, 用来在输出perf文件的时候控制并发写文件
@@ -34,8 +36,10 @@ class SQLExecute(object):
     def __init__(self):
         # 设置一些默认的参数
         self.options = {"WHENEVER_SQLERROR": "CONTINUE", "PAGE": "OFF", "OUTPUT_FORMAT": "ASCII", "ECHO": "ON",
-                        "LONG": 20, 'KAFKA_SERVERS': None, 'TIMING': 'OFF', 'TIME': 'OFF', 'TERMOUT': 'ON',
-                        'FEEDBACK': 'ON', "ARRAYSIZE": 10000, 'SQLREWRITE': 'ON', "DEBUG": 'OFF'}
+                        'TIMING': 'OFF', 'TIME': 'OFF', 'TERMOUT': 'ON',
+                        'FEEDBACK': 'ON', "ARRAYSIZE": 10000, 'SQLREWRITE': 'ON', "DEBUG": 'OFF',
+                        'HDFS_WEBFSURL': None, 'HDFS_WEBFSROOT': "/", 'KAFKA_SERVERS': None,
+                        "CLOB_LONG": 20, 'FLOAT_FORMAT': '%.7g', 'DOUBLE_FORMAT': '%0.10g'}
 
     def set_logfile(self, p_logfile):
         self.logfile = p_logfile
@@ -111,6 +115,8 @@ class SQLExecute(object):
                 # 执行正常的SQL语句
                 if cur is not None:
                     try:
+                        if "SQLCLI_DEBUG" in os.environ:
+                            click.secho("DEBUG-SQL=[" + str(sql) + "]", file=self.logfile)
                         cur.execute(sql)
                         rowcount = 0
                         while True:
@@ -124,7 +130,8 @@ class SQLExecute(object):
                         if (
                                 str(e).find("SQLSyntaxErrorException") != -1 or
                                 str(e).find("SQLException") != -1 or
-                                str(e).find("SQLDataException") != -1
+                                str(e).find("SQLDataException") != -1 or
+                                str(e).find('time data') != -1
                         ):
                             # SQL 语法错误
                             if self.options["WHENEVER_SQLERROR"] == "EXIT":
@@ -217,7 +224,11 @@ class SQLExecute(object):
                     m_row = []
                     for column in row:
                         if str(type(column)).find('JDBCClobClient') != -1:
-                            m_row.append(column.getSubString(1, int(self.options["LONG"])))
+                            m_row.append(column.getSubString(1, int(self.options["CLOB_LONG"])))
+                        elif str(type(column)).find("Float") != -1:
+                            m_row.append(self.options["FLOAT_FORMAT"] % column)
+                        elif str(type(column)).find("Double") != -1:
+                            m_row.append(self.options["DOUBLE_FORMAT"] % column)
                         else:
                             m_row.append(column)
                     m_row = tuple(m_row)

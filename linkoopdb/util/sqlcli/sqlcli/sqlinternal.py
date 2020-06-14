@@ -6,9 +6,14 @@ from kafka import KafkaProducer
 from .sqlcliexception import SQLCliException
 import datetime
 import random
+from hdfs.client import Client
+from hdfs.util import HdfsError
+
 
 # 缓存seed文件，来加速后面的随机函数random_from_seed工作
 seed_cache = {"10s": [], "100s": [], "1Ks": [], "10Ks": [], "100Ks": [], "10n": [], "100n": [], "1Kn": [], "10Kn": []}
+# 全局内存文件系统句柄
+g_MemoryFSHandler = None
 
 
 # 创建seed文件，默认在SQLCLI_HOME/data下
@@ -250,7 +255,7 @@ def identity(p_arg):
 
 
 def parse_formula_str(p_formula_str):
-    m_row_struct = re.split('[{}]', p_formula_str.replace('\n', '').replace('\r', ''))
+    m_row_struct = re.split('[{}]', p_formula_str)
 
     for m_nRowPos in range(0, len(m_row_struct)):
         if re.search('random_ascii_lowercase|random_ascii_uppercase|random_ascii_letters' +
@@ -316,53 +321,156 @@ def Create_file(p_filename, p_formula_str, p_rows, p_options):
         m_producer = None
         m_topicname = None
         m_output = None
+        m_HDFS_Handler = None
+        m_filename = None
 
         if p_filename.startswith('mem://'):
             m_fs = fs.open_fs('mem://')
-            m_filename = p_filename[6:]
+            m_filename = p_filename[len('mem://'):]
             m_output = m_fs.open(m_filename, 'w')
         elif p_filename.startswith('file://'):
             m_fs = fs.open_fs('./')
-            m_filename = p_filename[7:]
-            m_output = m_fs.open(m_filename, 'w')
-        elif p_filename.startswith('tar://'):
-            m_fs = fs.open_fs(p_filename + ".tar", create=True)
-            m_filename = p_filename[6:]
-            m_output = m_fs.open(m_filename, 'w')
-        elif p_filename.startswith('zip://'):
-            m_fs = fs.open_fs(p_filename + ".zip",  create=True)
-            m_filename = p_filename[6:]
+            m_filename = p_filename[len('file://'):]
             m_output = m_fs.open(m_filename, 'w')
         elif p_filename.startswith('kafka://'):
-            if p_options["KAFKA_SERVERS"] is None or len(p_options["KAFKA_SERVERS"].strip() == 0):
+            if p_options["KAFKA_SERVERS"] is None or len(p_options["KAFKA_SERVERS"].strip()) == 0:
                 raise SQLCliException("Please set KAFKA_SERVERS first")
             m_producer = KafkaProducer(bootstrap_servers=p_options["KAFKA_SERVERS"])
-            m_topicname = p_filename[8:]
+            m_topicname = p_filename[len('kafka://'):]
+        elif p_filename.startswith('hdfs://'):
+            if p_options["HDFS_WEBFSURL"] is None or len(p_options["HDFS_WEBFSURL"].strip()) == 0:
+                raise SQLCliException("Please set HDFS_WEBFSURL first")
+            if p_options["HDFS_WEBFSROOT"] is None or len(p_options["HDFS_WEBFSROOT"].strip()) == 0:
+                raise SQLCliException("Please set HDFS_WEBFSROOT first")
+            m_filefullname = p_filename[len('hdfs://'):]
+            m_filename = os.path.basename(m_filefullname)
+            m_pathname = os.path.join(p_options["HDFS_WEBFSROOT"], os.path.dirname(m_filefullname))
+            m_HDFS_Handler = Client(p_options["HDFS_WEBFSURL"],
+                                    m_pathname,
+                                    proxy=None, session=None)
         else:
             raise SQLCliException("Unknown file format.")
 
         m_row_struct = parse_formula_str(p_formula_str)
         buf = []
-        for i in range(0, p_rows):
-            if p_filename.startswith('kafka://'):
+        if p_filename.startswith('hdfs://'):            # 处理HDFS文件写入
+            with m_HDFS_Handler.write(m_filename) as m_output:
+                for i in range(0, p_rows):
+                    m_output.write(get_final_string(m_row_struct))
+        elif p_filename.startswith('kafka://'):        # 处理Kafka数据写入
+            for i in range(0, p_rows):
                 m_producer.send(m_topicname, get_final_string(m_row_struct).encode())
-            else:
+            m_producer.flush()
+        else:                                          # 处理普通文件写入
+            for i in range(0, p_rows):
                 buf.append(get_final_string(m_row_struct) + '\n')
-                if len(buf) == 100000:                 # 为了提高IO效率，每10W条写入文件一次
+                if len(buf) == 100000:  # 为了提高IO效率，每10W条写入文件一次
                     m_output.writelines(buf)
                     buf = []
-
-        # 写入最后一部分
-        if not p_filename.startswith('kafka://'):
             if len(buf) != 0:
                 m_output.writelines(buf)
-
-        if p_filename.startswith('kafka://'):
-            m_producer.flush()
-        else:
             m_output.close()
     except SQLCliException as e:
         raise SQLCliException(e.message)
     except Exception as e:
         raise SQLCliException(repr(e))
     return
+
+
+def Convert_file(p_srcfilename, p_dstfilename, p_options):
+    try:
+        global g_MemoryFSHandler
+        if p_srcfilename.startswith('mem://'):
+            m_srcFSType = "MEM"
+            if g_MemoryFSHandler is None:
+                g_MemoryFSHandler = fs.open_fs('mem://')
+                m_srcFS = g_MemoryFSHandler
+            else:
+                m_srcFS = g_MemoryFSHandler
+            m_srcFileName = p_srcfilename[len('mem://'):]
+        elif p_srcfilename.startswith('file://'):
+            m_srcFSType = "FS"
+            m_srcFS = fs.open_fs('./')
+            m_srcFileName = p_srcfilename[len('file://'):]
+        elif p_srcfilename.startswith('hdfs://'):
+            m_srcFSType = "HDFS"
+            m_srcFullFileName = p_srcfilename[len('hdfs://'):]
+            m_srcFileName = os.path.basename(m_srcFullFileName)
+            if p_options["HDFS_WEBFSURL"] is None or len(p_options["HDFS_WEBFSURL"].strip()) == 0:
+                raise SQLCliException("Please set HDFS_WEBFSURL first")
+            if p_options["HDFS_WEBFSROOT"] is None or len(p_options["HDFS_WEBFSROOT"].strip()) == 0:
+                raise SQLCliException("Please set HDFS_WEBFSROOT first")
+            m_srcPathName = os.path.join(p_options["HDFS_WEBFSROOT"], os.path.dirname(m_srcFullFileName))
+            m_srcFS = Client(p_options["HDFS_WEBFSURL"], m_srcPathName, proxy=None, session=None)
+        else:
+            m_srcFS = None
+            m_srcFileName = None
+            m_srcFSType = "Not Supported"
+
+        if p_dstfilename.startswith('mem://'):
+            m_dstFSType = "MEM"
+            if g_MemoryFSHandler is None:
+                g_MemoryFSHandler = fs.open_fs('mem://')
+                m_dstFS = g_MemoryFSHandler
+            else:
+                m_dstFS = g_MemoryFSHandler
+            m_dstFileName = p_dstfilename[len('mem://'):]
+        elif p_dstfilename.startswith('file://'):
+            m_dstFSType = "FS"
+            m_dstFS = fs.open_fs('./')
+            m_dstFileName = p_dstfilename[len('file://'):]
+        elif p_dstfilename.startswith('hdfs://'):
+            m_dstFSType = "HDFS"
+            m_dstFullFileName = p_dstfilename[len('hdfs://'):]
+            m_dstFileName = os.path.basename(m_dstFullFileName)
+            if p_options["HDFS_WEBFSURL"] is None or len(p_options["HDFS_WEBFSURL"].strip()) == 0:
+                raise SQLCliException("Please set HDFS_WEBFSURL first")
+            if p_options["HDFS_WEBFSROOT"] is None or len(p_options["HDFS_WEBFSROOT"].strip()) == 0:
+                raise SQLCliException("Please set HDFS_WEBFSROOT first")
+            m_dstPathName = os.path.join(p_options["HDFS_WEBFSROOT"], os.path.dirname(m_dstFullFileName))
+            m_dstFS = Client(p_options["HDFS_WEBFSURL"], m_dstPathName, proxy=None, session=None)
+        else:
+            m_dstFS = None
+            m_dstFileName = None
+            m_dstFSType = "Not Supported"
+
+        if m_srcFSType == "Not Supported" or m_dstFSType == "Not Supported":
+            raise SQLCliException("Not supported convert.")
+
+        if m_srcFSType in ('MEM', 'FS') and m_dstFSType in ('MEM', 'FS'):
+            with m_srcFS.openbin(m_srcFileName, "r") as m_reader, m_dstFS.openbin(m_dstFileName, "w") as m_writer:
+                while True:
+                    m_Contents = m_reader.read(8192)
+                    if len(m_Contents) == 0:
+                        break
+                    m_writer.write(m_Contents)
+
+        if m_srcFSType == "HDFS" and m_dstFSType in ('MEM', 'FS'):
+            with m_srcFS.read(m_srcFileName, "rb") as m_reader, m_dstFS.openbin(m_dstFileName, "w") as m_writer:
+                while True:
+                    m_Contents = m_reader.read(8192)
+                    if len(m_Contents) == 0:
+                        break
+                    m_writer.write(m_Contents)
+
+        if m_srcFSType in ('MEM', 'FS') and m_dstFSType == "HDFS":
+            with m_srcFS.openbin(m_srcFileName, "r") as m_reader, m_dstFS.write(m_dstFileName) as m_writer:
+                while True:
+                    m_Contents = m_reader.read(8192)
+                    if len(m_Contents) == 0:
+                        break
+                    m_writer.write(m_Contents)
+
+        if m_srcFSType == "HDFS" and m_dstFSType == "HDFS":
+            with m_srcFS.read(m_srcFileName) as m_reader, m_dstFS.write(m_dstFileName) as m_writer:
+                while True:
+                    m_Contents = m_reader.read(8192)
+                    if len(m_Contents) == 0:
+                        break
+                    m_writer.write(m_Contents)
+    except HdfsError as he:
+        # HDFS 会打印整个堆栈信息，所以这里默认只打印第一行的信息
+        if "SQLCLI_DEBUG" in os.environ:
+            raise SQLCliException(he.message)
+        else:
+            raise SQLCliException(he.message.split('\n')[0])
