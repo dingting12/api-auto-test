@@ -1,0 +1,249 @@
+SQLCli Release 0.0.58
+SQL> connect admin/123456
+Database connected.
+SQL> start LDB_EXT_特征工程.sql
+SQL> --    Description: 测试特征工程
+   > --    Date:         2020-06-11
+   > --    Author:       丁婷
+   > 
+   > 
+   > --619 LDBX011-03 CountVectorizer
+SQL> drop table countvectorizer_data_001 if exists cascade;
+0 rows affected
+SQL> drop table Test_Feature_Engineering_001 if exists cascade;
+0 rows affected
+SQL> drop model countvectorizer_model_001 if exists;
+0 rows affected
+SQL> drop model tokenizer_model_001 if exists;
+0 rows affected
+SQL> create table countvectorizer_data_001 (
+   > label double,
+   > sentence varchar(200)
+   > );
+0 rows affected
+SQL> insert into countvectorizer_data_001 values
+   > (0.0,'Hi I heard about Spark'),
+   > (0.0,'I wish Java could use case classes'),
+   > (1.0,'Logistic regression models are neat');
+3 rows affected
+SQL> create model tokenizer_model_001 as tokenizer_transformer();
+0 rows affected
+SQL> create model countvectorizer_model_001 as countvectorizer_transformer
+   > ((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
+0 rows affected
+SQL> SELECT *
+   > FROM countvectorizer(countvectorizer_model_001, (
+   > 	SELECT *
+   > 	FROM tokenizer(tokenizer_model_001, countvectorizer_data_001)
+   > ));
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+3 rows selected.
+SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,1.0,1.0,true);
+0 rows affected
+SQL> desc model countvectorizer_model_001
+0 rows affected
+SQL> select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+3 rows selected.
+SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),20,1.0,1.0,false);
+0 rows affected
+SQL> desc model countvectorizer_model_001
+0 rows affected
+SQL> select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+3 rows selected.
+SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,-1.0,1.0,false);
+java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: Worker execution: ldb ai caused error: ldbTableFunction call failed on COUNTVECTORIZER_TRANSFORMER, caused by :cntVec_ba18c5b01716 parameter minDF given invalid value -1.0., cntVec_ba18c5b01716 parameter minDF given invalid value -1.0.
+SQL> desc model countvectorizer_model_001
+0 rows affected
+SQL> select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+3 rows selected.
+SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,1.0,-1.0,false);
+java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: Worker execution: ldb ai caused error: ldbTableFunction call failed on COUNTVECTORIZER_TRANSFORMER, caused by :cntVec_2ac920bc805a parameter minTF given invalid value -1.0., cntVec_2ac920bc805a parameter minTF given invalid value -1.0.
+SQL> desc model countvectorizer_model_001
+0 rows affected
+SQL> select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
++-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
+3 rows selected.
+SQL> create table Test_Feature_Engineering_001 (c1 double array,c2 varchar(200),c3 varchar(100) array);
+0 rows affected
+SQL> insert into Test_Feature_Engineering_001 select features c1,sentence c2,words c3 from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
+3 rows affected
+SQL> select c1 from Test_Feature_Engineering_001;
++--------------------------------------------------------------------------------------------------------+
+| C1                                                                                                     |
++--------------------------------------------------------------------------------------------------------+
+| ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
+| ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
+| ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
++--------------------------------------------------------------------------------------------------------+
+3 rows selected.
+SQL> drop table countvectorizer_data_001 if exists cascade;
+0 rows affected
+SQL> drop table Test_Feature_Engineering_001 if exists cascade;
+0 rows affected
+SQL> drop model countvectorizer_model_001 if exists;
+0 rows affected
+SQL> drop model tokenizer_model_001 if exists;
+0 rows affected
+SQL> 
+SQL> 
+SQL> 
+SQL> --629 LDBX012-09 IndexToString
+SQL> drop table stringindexer_data_001 if EXISTS cascade;
+0 rows affected
+SQL> drop table Test_Feature_Engineering_002 if EXISTS cascade;
+0 rows affected
+SQL> drop model string_indexer_model_001 if EXISTS;
+0 rows affected
+SQL> drop model index_to_string_model_001 if EXISTS;
+0 rows affected
+SQL> create table stringindexer_data_001(
+   > category varchar(20)
+   > );
+0 rows affected
+SQL> insert into stringindexer_data_001 values
+   > ('a'),
+   > ('b'),
+   > ('c'),
+   > ('a'),
+   > ('b'),
+   > ('b'),
+   > ('c');
+7 rows affected
+SQL> create model string_indexer_model_001 as string_indexer_transformer(stringindexer_data_001);
+0 rows affected
+SQL> create model index_to_string_model_001 as index_to_string_transformer();
+0 rows affected
+SQL> select * from index_to_string(index_to_string_model_001,(select * from string_indexer(string_indexer_model_001,stringindexer_data_001)));
++----------+---------------+------------------+
+| CATEGORY | CATEGORYINDEX | ORIGINALCATEGORY |
++----------+---------------+------------------+
+| a        | 1             | a                |
+| b        | 0             | b                |
+| c        | 2             | c                |
+| a        | 1             | a                |
+| b        | 0             | b                |
+| b        | 0             | b                |
+| c        | 2             | c                |
++----------+---------------+------------------+
+7 rows selected.
+SQL> create table Test_Feature_Engineering_002(c1 varchar(20));
+0 rows affected
+SQL> insert into Test_Feature_Engineering_002 select ORIGINALCATEGORY from index_to_string(index_to_string_model_001,(select * from string_indexer(string_indexer_model_001,stringindexer_data_001)));
+7 rows affected
+SQL> select * from Test_Feature_Engineering_002;
++----+
+| C1 |
++----+
+| a  |
+| b  |
+| c  |
+| a  |
+| b  |
+| b  |
+| c  |
++----+
+7 rows selected.
+SQL> 
+SQL> --645 LDBX013-01 VectorSlicer
+SQL> drop table vectorslicer_data_001 if exists cascade;
+0 rows affected
+SQL> drop table Test_Feature_Engineering_003 if exists cascade;
+0 rows affected
+SQL> drop model m_rformula_model_001 if exists;
+0 rows affected
+SQL> drop model vectorslicer_model_001 if exists;
+0 rows affected
+SQL> create table vectorslicer_data_001 (
+   > id double,
+   > country varchar(32) ,
+   > hour double,
+   > clicked double
+   > );
+0 rows affected
+SQL> insert into vectorslicer_data_001 values
+   > (7,'us',18,1.0),
+   > (8,'ca',18,1.0),
+   > (9,'nz',19,1.0),
+   > (10,'as',18,1.0),
+   > (11,'uu',18,0.0);
+5 rows affected
+SQL> create model m_rformula_model_001 as rformula_transformer((select country,hour,clicked from vectorslicer_data_001));
+0 rows affected
+SQL> create model vectorslicer_model_001 as vectorslicer_transformer(array[0,1]);
+0 rows affected
+SQL> select * from vectorslicer(vectorslicer_model_001,(select * from rformula(m_rformula_model_001,(select country,hour,clicked from vectorslicer_data_001 order by country,hour,clicked))));
++---------+------+---------+---------------------------------------+-------+--------------------+
+| COUNTRY | HOUR | CLICKED | FEATURES                              | LABEL | SELECTFEATURES     |
++---------+------+---------+---------------------------------------+-------+--------------------+
+| as      | 18   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,1.0E0,18.0E0] | 1     | ARRAY[0.0E0,0.0E0] |
+| ca      | 18   | 1       | ARRAY[0.0E0,0.0E0,1.0E0,0.0E0,18.0E0] | 1     | ARRAY[0.0E0,0.0E0] |
+| nz      | 19   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,19.0E0] | 1     | ARRAY[0.0E0,0.0E0] |
+| us      | 18   | 1       | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,18.0E0] | 1     | ARRAY[0.0E0,1.0E0] |
+| uu      | 18   | 0       | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,18.0E0] | 0     | ARRAY[1.0E0,0.0E0] |
++---------+------+---------+---------------------------------------+-------+--------------------+
+5 rows selected.
+SQL> update model vectorslicer_model_001 as vectorslicer_transformer(array[2]);
+0 rows affected
+SQL> desc model vectorslicer_model_001
+0 rows affected
+SQL> select * from vectorslicer(vectorslicer_model_001,(select * from rformula(m_rformula_model_001,(select country,hour,clicked from vectorslicer_data_001 order by country,hour,clicked))));
++---------+------+---------+---------------------------------------+-------+----------------+
+| COUNTRY | HOUR | CLICKED | FEATURES                              | LABEL | SELECTFEATURES |
++---------+------+---------+---------------------------------------+-------+----------------+
+| as      | 18   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,1.0E0,18.0E0] | 1     | ARRAY[0.0E0]   |
+| ca      | 18   | 1       | ARRAY[0.0E0,0.0E0,1.0E0,0.0E0,18.0E0] | 1     | ARRAY[1.0E0]   |
+| nz      | 19   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,19.0E0] | 1     | ARRAY[0.0E0]   |
+| us      | 18   | 1       | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,18.0E0] | 1     | ARRAY[0.0E0]   |
+| uu      | 18   | 0       | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,18.0E0] | 0     | ARRAY[0.0E0]   |
++---------+------+---------+---------------------------------------+-------+----------------+
+5 rows selected.
+SQL> create table Test_Feature_Engineering_003 (country varchar(32) ,hour double,clicked double,FEATURES double array,LABEL double,SELECTFEATURES double array);
+0 rows affected
+SQL> insert into Test_Feature_Engineering_003 select * from vectorslicer(vectorslicer_model_001,(select * from rformula(m_rformula_model_001,(select country,hour,clicked from vectorslicer_data_001))));
+5 rows affected
+SQL> select * from Test_Feature_Engineering_003;
++---------+------+---------+---------------------------------------+-------+----------------+
+| COUNTRY | HOUR | CLICKED | FEATURES                              | LABEL | SELECTFEATURES |
++---------+------+---------+---------------------------------------+-------+----------------+
+| as      | 18   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,1.0E0,18.0E0] | 1     | ARRAY[0.0E0]   |
+| uu      | 18   | 0       | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,18.0E0] | 0     | ARRAY[0.0E0]   |
+| us      | 18   | 1       | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,18.0E0] | 1     | ARRAY[0.0E0]   |
+| ca      | 18   | 1       | ARRAY[0.0E0,0.0E0,1.0E0,0.0E0,18.0E0] | 1     | ARRAY[1.0E0]   |
+| nz      | 19   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,19.0E0] | 1     | ARRAY[0.0E0]   |
++---------+------+---------+---------------------------------------+-------+----------------+
+5 rows selected.
+SQL> exit
+Disconnected.

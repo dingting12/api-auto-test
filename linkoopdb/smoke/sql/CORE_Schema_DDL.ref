@@ -7,8 +7,8 @@ SQL> --    Description: 测试schema ddl
    > --    Author:       丁婷
    > 
    > --测试80 F311-01 CREATE SCHEMA，不支持数字开头
-SQL> drop scheme if exists T_create_schema_001;
-java.sql.SQLSyntaxErrorException: unexpected token: SCHEME in statement [drop scheme if exists T_create_schema_001]
+SQL> drop schema if exists T_create_schema_001;
+java.sql.SQLException: dependent privilege descriptors still exist in statement [drop schema if exists T_create_schema_001]
 SQL> CREATE SCHEMA T_create_schema_001;
 java.sql.SQLSyntaxErrorException: object name already exists: T_CREATE_SCHEMA_001 in statement [CREATE SCHEMA T_create_schema_001]
 SQL> CREATE SCHEMA 12_sdgh_wegh_wy1;
@@ -65,6 +65,21 @@ SQL> CREATE VIEW T_create_view_schema_001.v_craete_view_001 AS
    > T_create_view_schema_001.t_create_table_002 t2 
    > ORDER BY t1.SAL,t2.SAL;
 0 rows affected
+SQL> select * from T_create_view_schema_001.v_craete_view_001;
++-----+-----+
+| ID1 | ID2 |
++-----+-----+
+| 3   | 4   |
+| 3   | 6   |
+| 3   | 5   |
+| 1   | 4   |
+| 1   | 6   |
+| 1   | 5   |
+| 2   | 4   |
+| 2   | 6   |
+| 2   | 5   |
++-----+-----+
+9 rows selected.
 SQL> 
 SQL> --122 F311-05 GRANT statement,privilege at the table level (single)
 SQL> drop user user_ddl if exists cascade;
