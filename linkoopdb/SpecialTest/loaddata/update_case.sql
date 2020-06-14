@@ -123,7 +123,7 @@ create index TTIMESTAMP_INDEX on P1000_CY_UPDATE(TTIMESTAMP);
 -- 更新TIMESTAMP类型的数据，单个条件，条件列为索引列，更新条数为 1
 UPDATE P1000_CY_UPDATE set TTIMESTAMP='1993-05-04 00:04:17.0' where TTIMESTAMP='2015-01-22 19:27:39.0';
 
--- 更新BOOLEAN类型的数据，单个条件，无索引，更新条数为10000000
+-- 更新BOOLEAN类型的数据，单个条件，无索引，更新条数为 4999473
 UPDATE P1000_CY_UPDATE set TBOOL=false where TBOOL=TRUE;
 
 -- 创建BOOLEAN类型单列索引
