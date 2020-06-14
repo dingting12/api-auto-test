@@ -1,17 +1,80 @@
-SQLCli Release 0.0.55
+SQLCli Release 0.0.58
 SQL> connect admin/123456
 Database connected.
-SQL> start CORE_Subquery.sql
-SQL> --    Description: 测试子查询
+SQL> start CORE_Schema_DDL.sql
+SQL> --    Description: 测试schema ddl 
    > --    Date:         2020-06-10
    > --    Author:       丁婷
    > 
-   > -- 测试402  F471  Scalar subquery values
-SQL> drop table T_db_subquery_001 if exists cascade;
+   > --测试80 F311-01 CREATE SCHEMA，不支持数字开头
+SQL> drop scheme if exists T_create_schema_001;
+java.sql.SQLSyntaxErrorException: unexpected token: SCHEME in statement [drop scheme if exists T_create_schema_001]
+SQL> CREATE SCHEMA T_create_schema_001;
+java.sql.SQLSyntaxErrorException: object name already exists: T_CREATE_SCHEMA_001 in statement [CREATE SCHEMA T_create_schema_001]
+SQL> CREATE SCHEMA 12_sdgh_wegh_wy1;
+java.sql.SQLSyntaxErrorException: unexpected token: 12 in statement [CREATE SCHEMA 12_sdgh_wegh_wy1]
+SQL> 
+SQL> -- 78 F311-02 CREATE TABLE for persistent base tables
+SQL> drop table T_create_schema_001.Test_CREATE_table_001 if exists cascade;
 0 rows affected
-SQL> drop table T_db_subquery_002 if exists cascade;
+SQL> drop schema T_create_schema_001 if exists cascade;
 0 rows affected
-SQL> CREATE TABLE T_db_subquery_001 (
+SQL> create schema T_create_schema_001 create table Test_CREATE_table_001 (id int);
+0 rows affected
+SQL> insert into T_create_schema_001.Test_CREATE_table_001 values (1);
+1 row affected
+SQL> select * from T_create_schema_001.Test_CREATE_table_001;
++----+
+| ID |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 79 F311-03 CREATE VIEW
+SQL> DROP SCHEMA T_create_view_schema_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE SCHEMA T_create_view_schema_001;
+0 rows affected
+SQL> CREATE TABLE T_create_view_schema_001.t_create_table_001(
+   > id INT,
+   > name VARCHAR(200),
+   > sal NUMERIC(6,2)
+   > );
+0 rows affected
+SQL> INSERT INTO T_create_view_schema_001.t_create_table_001 VALUES
+   > (1,'张三阿Sa',128.23),
+   > (2,'cdng稍等',2186.23),
+   > (3,'xsh文件sd',34.56);
+3 rows affected
+SQL> CREATE TABLE T_create_view_schema_001.t_create_table_002(
+   > id INT,
+   > name VARCHAR(200),
+   > sal NUMERIC(6,2)
+   > );
+0 rows affected
+SQL> INSERT INTO T_create_view_schema_001.t_create_table_002 VALUES
+   > (4,'张三阿Sa',56.76),
+   > (5,'cdng稍等',3754.54),
+   > (6,'xsh文件sd',389.23);
+3 rows affected
+SQL> CREATE VIEW T_create_view_schema_001.v_craete_view_001 AS 
+   > SELECT t1.id id1,t2.id id2 
+   > FROM T_create_view_schema_001.t_create_table_001 t1,
+   > T_create_view_schema_001.t_create_table_002 t2 
+   > ORDER BY t1.SAL,t2.SAL;
+0 rows affected
+SQL> 
+SQL> --122 F311-05 GRANT statement,privilege at the table level (single)
+SQL> drop user user_ddl if exists cascade;
+0 rows affected
+SQL> drop schema S_create_schema_001 if exists cascade;
+0 rows affected
+SQL> create schema S_create_schema_001;
+0 rows affected
+SQL> CREATE TABLE S_create_schema_001.t_create_table_003 
+   > (
    > EMPNO INT,
    > ENAME VARCHAR(20),
    > JOB VARCHAR(20),
@@ -22,7 +85,7 @@ SQL> CREATE TABLE T_db_subquery_001 (
    > DEPTNO INT
    > );
 0 rows affected
-SQL> INSERT INTO T_db_subquery_001 VALUES 
+SQL> INSERT INTO S_create_schema_001.t_create_table_003 VALUES
    > (7369,'SMITH','CLERK',7902,'1980-12-17',800,NULL,20),
    > (7499,'ALLEN','SALESMAN',7698,'1981-2-20',1600,300,30),
    > (7521,'WARD','SALESMAN',7698,'1981-2-22',1250,500,30),
@@ -36,35 +99,98 @@ SQL> INSERT INTO T_db_subquery_001 VALUES
    > (7902,'FORD','ANALYST',7566,'1981-12-8',3000,NULL,20),
    > (7934,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10);
 12 rows affected
-SQL> CREATE TABLE T_db_subquery_002 (
-   > DEPTNO INT,
-   > DNAME VARCHAR(20),
-   > LOC VARCHAR(20)
-   > );
+SQL> create user user_ddl password '123456';
 0 rows affected
-SQL> INSERT INTO T_db_subquery_002 VALUES 
-   > (10,'ACCOUNTING','NEW YORK'),
-   > (20,'RESEARCH','DALLAS'),
-   > (30,'SALES','CHICAGO'),
-   > (40,'OPERATIONS','BOSTON');
-4 rows affected
-SQL> select
-   > (select max(SAL) from T_db_subquery_001)       max_salary,
-   > (select max(HIREDATE) from T_db_subquery_001)  max_hiredate
-   > from T_db_subquery_001,(select dname from T_db_subquery_002 where deptno = 10) limit 1;
-+------------+--------------+
-| MAX_SALARY | MAX_HIREDATE |
-+------------+--------------+
-| 5000       | 1982-1-23    |
-+------------+--------------+
-1 row selected.
-SQL> select count(*) from (
-   > select sal, (select max(DEPTNO) from T_db_subquery_002)+1 from T_db_subquery_001 order by sal);
+SQL> grant select on S_create_schema_001.t_create_table_003 to user_ddl;
+0 rows affected
+SQL> grant change_authorization to user_ddl; 
+0 rows affected
+SQL> connect user USER1 password '123456';
+Missing required argument
+.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+SQL> select count(*) from S_create_schema_001.t_create_table_003 where empno > 7499;
 +----+
 | C1 |
 +----+
-| 12 |
+| 10 |
 +----+
 1 row selected.
+SQL> insert into S_create_schema_001.t_create_table_003 values (7900,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10);
+1 row affected
+SQL> 
+SQL> 
+SQL> 
+SQL> --122 F311-05 GRANT statement,privilege at the table level (multiple)
+SQL> connect user admin password '123456';
+Missing required argument
+.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+SQL> REVOKE all ON S_create_schema_001.t_create_table_003 FROM user_ddl RESTRICT;
+0 rows affected
+SQL> GRANT select,update ON S_create_schema_001.t_create_table_003 TO user_ddl;
+0 rows affected
+SQL> grant change_authorization to user_ddl; 
+java.sql.SQLException: invalid role specification: USER_DDL in statement [grant change_authorization to user_ddl]
+SQL> connect user USER1 password '123456';
+Missing required argument
+.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+SQL> update S_create_schema_001.t_create_table_003 set ename = 'aaa' where sal = 1250;
+1 row affected
+SQL> insert into S_create_schema_001.t_create_table_003 values (7900,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10);
+1 row affected
+SQL> 
+SQL> 
+SQL> --122 F311-05 GRANT statement,privilege at the column level (1)
+SQL> connect user admin password '123456';
+Missing required argument
+.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+SQL> REVOKE all ON S_create_schema_001.t_create_table_003 FROM user_ddl RESTRICT;
+0 rows affected
+SQL> grant select(ename) on S_create_schema_001.t_create_table_003 to user_ddl;
+0 rows affected
+SQL> grant change_authorization to user_ddl; 
+java.sql.SQLException: invalid role specification: USER_DDL in statement [grant change_authorization to user_ddl]
+SQL> connect user USER1 password '123456';
+Missing required argument
+.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+SQL> select ename from S_create_schema_001.t_create_table_003 ;
++--------+
+| ENAME  |
++--------+
+| MILLER |
+| JONES  |
+| MARTIN |
+| BLAKE  |
+| SMITH  |
+| ALLEN  |
+| aaa    |
+| CLARK  |
+| KING   |
+| TURNER |
+| JAMES  |
+| FORD   |
+| MILLER |
+| MILLER |
++--------+
+14 rows selected.
+SQL> select EMPNO from S_create_schema_001.t_create_table_003 ;
++-------+
+| EMPNO |
++-------+
+| 7900  |
+| 7566  |
+| 7654  |
+| 7698  |
+| 7369  |
+| 7499  |
+| 7521  |
+| 7782  |
+| 7839  |
+| 7844  |
+| 7900  |
+| 7902  |
+| 7934  |
+| 7900  |
++-------+
+14 rows selected.
 SQL> exit
 Disconnected.

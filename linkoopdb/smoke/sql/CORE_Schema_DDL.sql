@@ -3,7 +3,7 @@
 --    Author:       丁婷
 
 --测试80 F311-01 CREATE SCHEMA，不支持数字开头
-drop scheme if exists T_create_schema_001;
+drop schema if exists T_create_schema_001;
 
 CREATE SCHEMA T_create_schema_001;
 
@@ -52,6 +52,8 @@ SELECT t1.id id1,t2.id id2
 FROM T_create_view_schema_001.t_create_table_001 t1,
 T_create_view_schema_001.t_create_table_002 t2 
 ORDER BY t1.SAL,t2.SAL;
+
+select * from T_create_view_schema_001.v_craete_view_001;
 
 --122 F311-05 GRANT statement,privilege at the table level (single)
 
