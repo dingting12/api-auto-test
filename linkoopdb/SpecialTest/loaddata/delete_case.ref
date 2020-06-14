@@ -1,0 +1,167 @@
+SQLCli Release 0.0.58
+SQL> start delete_case.sql
+SQL> --Description:delete
+   > --Date：2020-06-05
+   > --Author：耿晨雨
+SQL> connect admin/123456
+Database connected.
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> set ECHO ON
+Running time elapsed:      0.00 Seconds
+SQL> set WHENEVER_SQLERROR CONTINUE
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 清空环境
+SQL> drop table P1000_CY_DELETE	if exists;
+0 rows affected
+Running time elapsed:     10.32 Seconds
+SQL> 
+SQL> -- 创建delete使用的表
+SQL> create table P1000_CY_DELETE as (select * from P1000)with data ;
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > create table P1000_CY_DELETE as (select * from P1000)with data properties ('linkoopdb.pallas.shard_number':'256') engine pallas 
+0 rows affected
+Running time elapsed:     37.09 Seconds
+SQL> 
+SQL> 
+SQL> -- 单个条件，删除SMALLINT类型数据，删除条数为10003
+SQL> DELETE FROM P1000_CY_DELETE WHERE TSMALLINT=2477;
+10003 rows affected
+Running time elapsed:     15.24 Seconds
+SQL> 
+SQL> -- 单个条件，删除INTEGER类型数据，删除条数为977
+SQL> DELETE FROM P1000_CY_DELETE WHERE TINTEGER=37301469;
+977 rows affected
+Running time elapsed:      3.80 Seconds
+SQL> 
+SQL> -- 单个条件，删除BIGINT类型数据，删除条数为1017
+SQL> DELETE FROM P1000_CY_DELETE WHERE TBIGINT=344154547996;
+1017 rows affected
+Running time elapsed:     10.68 Seconds
+SQL> 
+SQL> -- 单个条件，删除REAL类型数据，删除条数为181
+SQL> DELETE FROM P1000_CY_DELETE WHERE TREAL=86.85;
+181 rows affected
+Running time elapsed:      6.04 Seconds
+SQL> 
+SQL> -- 单个条件，删除DOUBLE类型数据，删除条数为96
+SQL> DELETE FROM P1000_CY_DELETE WHERE TDOUBLE=3240.4;
+96 rows affected
+Running time elapsed:      3.79 Seconds
+SQL> 
+SQL> -- 单个条件，删除FLOAT类型数据，删除条数为96，为了调试case临时加上单引号查询
+SQL> DELETE FROM P1000_CY_DELETE WHERE TFLOAT='7049.96';
+96 rows affected
+Running time elapsed:      3.30 Seconds
+SQL> 
+SQL> -- 单个条件，删除DECIMAL类型数据，删除条数为402
+SQL> DELETE FROM P1000_CY_DELETE WHERE TDECIMAL=4629.49;
+402 rows affected
+Running time elapsed:      4.85 Seconds
+SQL> 
+SQL> -- 单个条件，删除NUMERIC类型数据，删除条数为25
+SQL> DELETE FROM P1000_CY_DELETE WHERE TNUMERIC=1332.5098;
+25 rows affected
+Running time elapsed:      5.29 Seconds
+SQL> 
+SQL> -- 单个条件，删除DATE类型数据，删除条数为373
+SQL> DELETE FROM P1000_CY_DELETE WHERE TDATE='2048-12-03';
+373 rows affected
+Running time elapsed:     22.12 Seconds
+SQL> 
+SQL> -- 单个条件，删除TIMESTAMP类型数据，删除条数为1
+SQL> DELETE FROM P1000_CY_DELETE WHERE TTIMESTAMP='2033-10-17 13:30:14.0';
+1 row affected
+Running time elapsed:     11.49 Seconds
+SQL> 
+SQL> -- 单个条件，删除CHAR类型数据，删除条数为988
+SQL> DELETE FROM P1000_CY_DELETE WHERE TCHAR='YiAPq8UBnBBi7B4kAXDFFWHxrkUi6KcFijR0BlsMIEZEsLR7HT';
+988 rows affected
+Running time elapsed:      8.27 Seconds
+SQL> 
+SQL> -- 单个条件，删除VARCHAR类型数据，删除条数为989
+SQL> DELETE FROM P1000_CY_DELETE WHERE TVARCHAR='lEUpANE7uy5hr1jz10PFiAzOnSctnH0ZAikpCnA7cX0NWoZKvVHo4vEKuzWdLxzSCNFbNPXeJezFEWC2zrhEN0UkzNCclWiYhdui';
+989 rows affected
+Running time elapsed:      6.98 Seconds
+SQL> 
+SQL> -- 多个条件，条件为唯一列和普通列，普通列类型为SMALLINT
+SQL> DELETE FROM P1000_CY_DELETE WHERE TUNIQUE=1000 and TSMALLINT>300;
+1 row affected
+Running time elapsed:      2.99 Seconds
+SQL> 
+SQL> -- 多个条件，条件为唯一列和普通列，普通列类型为DECIMAL
+SQL> DELETE FROM P1000_CY_DELETE WHERE TUNIQUE=10000 and TDECIMAL>3376.58;
+1 row affected
+Running time elapsed:      4.19 Seconds
+SQL> 
+SQL> -- 多个条件，条件为唯一列和普通列，普通列类型为DATE
+SQL> DELETE FROM P1000_CY_DELETE WHERE TUNIQUE=100000 and TDATE='1980-11-22';
+0 rows affected
+Running time elapsed:      2.20 Seconds
+SQL> 
+SQL> -- 多个条件，条件为唯一列和普通列，普通列类型为VARCHAR
+SQL> DELETE FROM P1000_CY_DELETE WHERE TUNIQUE=1000000 and TVARCHAR like '%0%';
+1 row affected
+Running time elapsed:     11.09 Seconds
+SQL> 
+SQL> -- 多个条件，条件为两个普通列，列类型为INTEGER和SMALLINT
+SQL> DELETE FROM P1000_CY_DELETE WHERE TINTEGER=8836933 and TSMALLINT>4400;
+586 rows affected
+Running time elapsed:      4.67 Seconds
+SQL> 
+SQL> -- 多个条件，条件为两个普通列，列类型为INTEGER和DECIMAL
+SQL> DELETE FROM P1000_CY_DELETE WHERE TINTEGER=8982356 and TDECIMAL>956.70;
+889 rows affected
+Running time elapsed:      9.36 Seconds
+SQL> 
+SQL> -- 多个条件，条件为两个普通列，列类型为VARCHAR和DATE
+SQL> DELETE FROM P1000_CY_DELETE WHERE TVARCHAR='Yv9hLsRBCp6TjNRfNm10AA7dS7zYHUk0vb5GnKoXKWeWhh4SpHMr5WEob2Mcue5LO1aKNGEAvfeiCpNoEqjS2OW8VPluE4XIVcwl' and TDATE='1980-03-18';
+1 row affected
+Running time elapsed:      2.90 Seconds
+SQL> 
+SQL> -- 多个条件，条件为两个普通列，列类型为DECIMAL和VARCHAR
+SQL> DELETE FROM P1000_CY_DELETE WHERE TDECIMAL=5907.75 and TVARCHAR like '%a%';
+180 rows affected
+Running time elapsed:      4.70 Seconds
+SQL> 
+SQL> 
+SQL> -- 添加10条TBOOL字段值为false的数据，为后续case准备数据
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000001,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.38 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000002,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.13 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000003,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.33 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000004,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.25 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000005,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.14 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000006,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.13 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000007,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.22 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000008,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.15 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000009,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.30 Seconds
+SQL> INSERT INTO P1000_CY_DELETE VALUES (10000010,8742,7877248,579089790234,757.57E0,5176.99E0,3331.94E0,7399.33,1850.0292,'1986-02-07 00:00:00','1993-01-04 02:40:19.0',FALSE,   'ixIkRJ6m3b4wn2oJlNXL1SffCT917YTvrGjFP0VRtmTZNkn4gg','ZBHE9i2AmJEEmkS9kBsbCGd6vTtCes5ScPZsIotglGS3T0MYFzUg4OAY45qYzFmGv7LI0MSfLjPAzxcqRNIXXeSRUAlBy7Y79Dn0','hVEoAyVx17URjEyjKAE0DZ77k7Silx423wVWGCw7XX0e5RdXGW','HZEc0d76jYoxOxeb5eXW1MRl65DM8wFtdEXMlgt14jmmeA6eg7',                                    'VAoEZp4JIom2ch4RzEOBsrOZRFRSqTJKYlhUI28q3CThJIYV3f',                                     '2B8XaeTfjGU0YJR3kiCR648kXcZ1iKaSkpTnRUlsUqmL84OiIkG3ibjrPcHMGFu9aVKC2CNbusu4RKdysdrcJtp8WSdsowBRpGCv','eCKFyVf9WprWNEwfJp9Vrk84FIW3LgoCx4exUKjOma8Nt65N8vblre1zCLjSm1fGn1uzJssYa3wFRh4zXU9bhXHaCzRwW0N7SFK6','EAd2NsHP4qdfILrCFbh2FUdtUYNHuIbDw42ODdZc2oSR3SFwsRbb8V4bKMPHGITmOeTbR2MazqVjYpGW7HN9k1vVqDS6aavwYvwm');
+1 row affected
+Running time elapsed:      0.13 Seconds
+SQL> 
+SQL> -- 单个条件，删除BOOLEAN类型数据，删除条数为4992148
+SQL> DELETE FROM P1000_CY_DELETE WHERE TBOOL=FALSE
+4992148 rows affected
+Running time elapsed:     12.52 Seconds
+Running time elapsed:    206.17 Seconds
+SQL> exit
+Disconnected.

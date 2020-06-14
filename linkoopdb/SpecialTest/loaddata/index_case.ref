@@ -1,0 +1,606 @@
+SQLCli Release 0.0.58
+SQL> start index_case.sql
+SQL> --Description:index
+   > --Date：2020-06-05
+   > --Author：耿晨雨
+SQL> connect admin/123456
+Database connected.
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> set ECHO ON
+Running time elapsed:      0.00 Seconds
+SQL> set WHENEVER_SQLERROR CONTINUE
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 清空环境，删除所有索引和所需表
+SQL> drop index TSMALLINT_INDEX 				 if exists;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> drop index TINTEGER_INDEX 				 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TBIGINT_INDEX 				 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TREAL_INDEX 					 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TDOUBLE_INDEX 				 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TFLOAT_INDEX 				 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TDECIMAL_INDEX 				 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TNUMERIC_INDEX 				 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TDATE_INDEX 					 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TTIMESTAMP_INDEX 			 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TBOOL_INDEX 					 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TCHAR_INDEX 					 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TVARCHAR_INDEX 				 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TVARCHARIDX1_FULLTEXT 		 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index TCHARIDX1_FULLTEXT 			 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index SINT_INT_INDEX                if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index VAR_DATE_INDEX                if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index INT_DATE_INDEX                if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index SINT_INT_BINT_INDEX           if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index INT_DOU_VAR_INDEX             if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index INT_DATE_VAR_INDEX            if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index INT_TIME_VAR_INDEX            if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index INT_BOOL_TIME_VAR_INDEX       if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index INT_BOOL_NUM_VAR_INDEX        if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index BINT_BOOL_DEC_DATE_INDEX      if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index BINT_CHAR_DEL_DATE_BOOL_INDEX if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop index SINT_VAR_NUM_TIME_BOOL_INDEX  if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table P1000_CY						 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table P1000_CY_PK					 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table P1000_CY_UNIQUE				 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> 
+SQL> -- 复制数据表，创建列索引、二级索引和全文索引使用
+SQL> create table P1000_CY as (select * from P1000)with data ;
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > create table P1000_CY as (select * from P1000)with data properties ('linkoopdb.pallas.shard_number':'256') engine pallas 
+0 rows affected
+Running time elapsed:     30.71 Seconds
+SQL> 
+SQL> 
+SQL> -- 复制数据表，创建唯一索引使用
+SQL> create table P1000_CY_UNIQUE as (select * from P1000)with data;
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > create table P1000_CY_UNIQUE as (select * from P1000)with data properties ('linkoopdb.pallas.shard_number':'256') engine pallas
+0 rows affected
+Running time elapsed:     30.37 Seconds
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 创建SMALLINT类型单列索引
+SQL> create index TSMALLINT_INDEX on P1000_CY(TSMALLINT);
+0 rows affected
+Running time elapsed:     93.47 Seconds
+SQL> 
+SQL> -- 验证SMALLINT类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TSMALLINT_INDEX';
++---------------+--------------+------------+------------+-----------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME      | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-----------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TSMALLINT_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-----------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.03 Seconds
+SQL> 
+SQL> -- 创建INTEGER类型单列索引
+SQL> create index TINTEGER_INDEX on 	P1000_CY(TINTEGER);
+0 rows affected
+Running time elapsed:     31.01 Seconds
+SQL> 
+SQL> -- 验证INTEGER类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TINTEGER_INDEX';
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME     | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TINTEGER_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建BIGINT类型单列索引
+SQL> create index TBIGINT_INDEX on P1000_CY(TBIGINT);
+0 rows affected
+Running time elapsed:     20.97 Seconds
+SQL> 
+SQL> -- 验证BIGINT类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TBIGINT_INDEX';
++---------------+--------------+------------+------------+---------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME    | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+---------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TBIGINT_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+---------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建REAL类型单列索引
+SQL> create index TREAL_INDEX on P1000_CY(TREAL);
+0 rows affected
+Running time elapsed:     36.62 Seconds
+SQL> 
+SQL> -- 验证REAL类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TREAL_INDEX';
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME  | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TREAL_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建DOUBLE类型单列索引
+SQL> create index TDOUBLE_INDEX on P1000_CY(TDOUBLE);
+0 rows affected
+Running time elapsed:     28.52 Seconds
+SQL> 
+SQL> -- 验证DOUBLE类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TDOUBLE_INDEX';
++---------------+--------------+------------+------------+---------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME    | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+---------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TDOUBLE_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+---------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建FLOAT类型单列索引
+SQL> create index TFLOAT_INDEX on P1000_CY(TFLOAT);
+0 rows affected
+Running time elapsed:     13.25 Seconds
+SQL> 
+SQL> -- 验证FLOAT类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TFLOAT_INDEX';
++---------------+--------------+------------+------------+--------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME   | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+--------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TFLOAT_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+--------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建DECIMAL类型单列索引
+SQL> create index TDECIMAL_INDEX on P1000_CY(TDECIMAL);
+0 rows affected
+Running time elapsed:     18.35 Seconds
+SQL> 
+SQL> -- 验证DECIMAL类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TDECIMAL_INDEX';
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME     | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TDECIMAL_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建NUMERIC类型单列索引
+SQL> create index TNUMERIC_INDEX on P1000_CY(TNUMERIC);
+0 rows affected
+Running time elapsed:     21.80 Seconds
+SQL> 
+SQL> -- 验证NUMERIC类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TNUMERIC_INDEX';
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME     | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TNUMERIC_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建DATE类型单列索引
+SQL> create index TDATE_INDEX on P1000_CY(TDATE);
+0 rows affected
+Running time elapsed:     14.60 Seconds
+SQL> 
+SQL> -- 验证DATE类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TDATE_INDEX';
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME  | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TDATE_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建TIMESTAMP类型单列索引
+SQL> create index TTIMESTAMP_INDEX on P1000_CY(TTIMESTAMP);
+0 rows affected
+Running time elapsed:     20.60 Seconds
+SQL> 
+SQL> -- 验证TIMESTAMP类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TTIMESTAMP_INDEX';
++---------------+--------------+------------+------------+------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME       | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TTIMESTAMP_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建BOOLEAN类型单列索引
+SQL> create index TBOOL_INDEX on P1000_CY(TBOOL);
+0 rows affected
+Running time elapsed:     12.92 Seconds
+SQL> 
+SQL> -- 验证BOOLEAN类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TBOOL_INDEX';
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME  | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TBOOL_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建CHAR类型单列索引
+SQL> create index TCHAR_INDEX on P1000_CY(TCHAR);
+0 rows affected
+Running time elapsed:     30.73 Seconds
+SQL> 
+SQL> -- 验证CHAR类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TCHAR_INDEX';
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME  | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TCHAR_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建VARCHAR类型单列索引
+SQL> create index TVARCHAR_INDEX on P1000_CY(TVARCHAR);
+0 rows affected
+Running time elapsed:     47.66 Seconds
+SQL> 
+SQL> -- 验证VARCHAR类型单列索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TVARCHAR_INDEX';
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME     | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TVARCHAR_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建VARCHAR类型全文索引
+SQL> create FULLTEXT index TVARCHARIDX1_FULLTEXT on P1000_CY(TVARCHARIDX1);
+0 rows affected
+Running time elapsed:     43.61 Seconds
+SQL> 
+SQL> -- 验证VARCHAR类型全文索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TVARCHARIDX1_FULLTEXT';
++---------------+--------------+------------+------------+-----------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME            | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-----------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TVARCHARIDX1_FULLTEXT | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-----------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 创建CHAR类型全文索引
+SQL> create FULLTEXT index TCHARIDX1_FULLTEXT on P1000_CY(TCHARIDX1);
+0 rows affected
+Running time elapsed:     25.77 Seconds
+SQL> 
+SQL> -- 验证CHAR类型全文索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='TCHARIDX1_FULLTEXT';
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME         | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | TCHARIDX1_FULLTEXT | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> 
+SQL> -- 两个索引字段，创建包含SMALLINT和INTEGER类型二级索引
+SQL> create index SINT_INT_INDEX on P1000_CY(TSMALLINT,TINTEGER);
+0 rows affected
+Running time elapsed:     10.07 Seconds
+SQL> 
+SQL> -- 验证包含SMALLINT和INTEGER类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='SINT_INT_INDEX';
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME     | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | SINT_INT_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 两个索引字段，创建包含VARCHAR和DATE类型二级索引
+SQL> create index VAR_DATE_INDEX on P1000_CY(TVARCHAR,TDATE);
+0 rows affected
+Running time elapsed:     57.22 Seconds
+SQL> 
+SQL> -- 验证包含VARCHAR和DATE类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='VAR_DATE_INDEX';
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME     | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | VAR_DATE_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 两个索引字段，创建包含DATE和INTEGER类型二级索引
+SQL> create index INT_DATE_INDEX on P1000_CY(TINTEGER,TDATE);
+0 rows affected
+Running time elapsed:     25.43 Seconds
+SQL> 
+SQL> -- 验证包含DATE和INTEGER类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_DATE_INDEX';
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME     | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | INT_DATE_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+----------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> 
+SQL> -- 三个索引字段，创建包含SMALLINT、INTEGER和BIGINT类型二级索引
+SQL> create index SINT_INT_BINT_INDEX on P1000_CY(TSMALLINT,TINTEGER,TBIGINT);
+0 rows affected
+Running time elapsed:     26.10 Seconds
+SQL> 
+SQL> -- 验证包含SMALLINT、INTEGER和BIGINT类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='SINT_INT_BINT_INDEX';
++---------------+--------------+------------+------------+---------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME          | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+---------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | SINT_INT_BINT_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+---------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 三个索引字段，创建包含DOUBLE、INTEGER和VARCHAR类型二级索引
+SQL> create index INT_DOU_VAR_INDEX on P1000_CY(TINTEGER,TDOUBLE,TVARCHAR);
+0 rows affected
+Running time elapsed:     64.04 Seconds
+SQL> 
+SQL> -- 验证包含DOUBLE、INTEGER和VARCHAR类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_DOU_VAR_INDEX';
++---------------+--------------+------------+------------+-------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME        | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | INT_DOU_VAR_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 三个索引字段，创建包含DATE、INTEGER和VARCHAR类型二级索引
+SQL> create index INT_DATE_VAR_INDEX on P1000_CY(TINTEGER,TDATE,TVARCHAR);
+0 rows affected
+Running time elapsed:     36.10 Seconds
+SQL> 
+SQL> -- 验证包含DATE、INTEGER和VARCHAR类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_DATE_VAR_INDEX';
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME         | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | INT_DATE_VAR_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 三个索引字段，创建包含TIMESTAMP、INTEGER和VARCHAR类型二级索引
+SQL> create index INT_TIME_VAR_INDEX on P1000_CY(TINTEGER,TTIMESTAMP,TVARCHAR);
+0 rows affected
+Running time elapsed:     43.65 Seconds
+SQL> 
+SQL> -- 验证包含TIMESTAMP和INTEGER类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_TIME_VAR_INDEX';
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME         | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | INT_TIME_VAR_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+--------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 四个索引字段，创建包含BOOLEAN、INTEGER、TIMESTAMP和VARCHAR类型二级索引
+SQL> create index INT_BOOL_TIME_VAR_INDEX on P1000_CY(TINTEGER,TBOOL,TTIMESTAMP,TVARCHAR);
+0 rows affected
+Running time elapsed:     34.79 Seconds
+SQL> 
+SQL> -- 验证包含BOOLEAN和INTEGER类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_BOOL_TIME_VAR_INDEX';
++---------------+--------------+------------+------------+-------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME              | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | INT_BOOL_TIME_VAR_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-------------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 四个索引字段，创建包含BOOLEAN、INTEGER、NUMERIC和VARCHAR类型二级索引
+SQL> create index INT_BOOL_NUM_VAR_INDEX on P1000_CY(TINTEGER,TBOOL,TNUMERIC,TVARCHAR);
+0 rows affected
+Running time elapsed:     44.44 Seconds
+SQL> 
+SQL> -- 验证包含BOOLEAN、INTEGER、NUMERIC和VARCHAR类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='INT_BOOL_NUM_VAR_INDEX';
++---------------+--------------+------------+------------+------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME             | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | INT_BOOL_NUM_VAR_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+------------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 四个索引字段，创建包含BOOLEAN、BIGINT、DECIMAL和DATE类型二级索引
+SQL> create index BINT_BOOL_DEC_DATE_INDEX on P1000_CY(TBIGINT,TBOOL,TDECIMAL,TDATE);
+0 rows affected
+Running time elapsed:      7.33 Seconds
+SQL> 
+SQL> -- 验证包含BOOLEAN、BIGINT、DECIMAL和DATE类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='BINT_BOOL_DEC_DATE_INDEX';
++---------------+--------------+------------+------------+--------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME               | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+--------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | BINT_BOOL_DEC_DATE_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+--------------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 五个索引字段，创建包含CHAR、BIGINT、DECIMAL、DATE、BOOLEAN类型二级索引
+SQL> create index BINT_CHAR_DEL_DATE_BOOL_INDEX on P1000_CY(TBIGINT,TCHAR,TDECIMAL,TDATE,TBOOL);
+0 rows affected
+Running time elapsed:     34.24 Seconds
+SQL> 
+SQL> -- 验证包含CHAR、BIGINT、DECIMAL、DATE、BOOLEAN类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='BINT_CHAR_DEL_DATE_BOOL_INDEX';
++---------------+--------------+------------+------------+-------------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME                    | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+-------------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | BINT_CHAR_DEL_DATE_BOOL_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+-------------------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> -- 五个索引字段，创建包含VARCHAR、SMALLINT、NUMERIC、TIMESTAMP和BOOLEAN类型二级索引
+SQL> create index SINT_VAR_NUM_TIME_BOOL_INDEX on P1000_CY(TSMALLINT,TVARCHAR,TNUMERIC,TTIMESTAMP,TBOOL);
+0 rows affected
+Running time elapsed:     37.55 Seconds
+SQL> 
+SQL> -- 验证包含VARCHAR、SMALLINT、NUMERIC、TIMESTAMP和BOOLEAN类型二级索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.SYSTEM_INDEXSTATS where TABLE_NAME='P1000_CY' and INDEX_NAME='SINT_VAR_NUM_TIME_BOOL_INDEX';
++---------------+--------------+------------+------------+------------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | INDEX_NAME                   | CARDINALITY | ALLOCATED_ROWS | USED_SPACE | ALLOCATED_SPACE | SPACE_ID | BASE_SPACE |
++---------------+--------------+------------+------------+------------------------------+-------------+----------------+------------+-----------------+----------+------------+
+| PUBLIC        | PUBLIC       | P1000_CY   | MEMORY     | SINT_VAR_NUM_TIME_BOOL_INDEX | <null>      | <null>         | <null>     | <null>          | <null>   | <null>     |
++---------------+--------------+------------+------------+------------------------------+-------------+----------------+------------+-----------------+----------+------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> 
+SQL> -- 添加唯一索引
+SQL> alter table P1000_CY_UNIQUE  add constraint uq2  unique (TUNIQUE);
+0 rows affected
+Running time elapsed:     11.84 Seconds
+SQL> 
+SQL> 
+SQL> -- 验证唯一索引是否创建成功
+SQL> select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='P1000_CY_UNIQUE' and CONSTRAINT_NAME='UQ2';
++--------------------+-------------------+-----------------+-----------------+---------------+--------------+-----------------+---------------+--------------------+
+| CONSTRAINT_CATALOG | CONSTRAINT_SCHEMA | CONSTRAINT_NAME | CONSTRAINT_TYPE | TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME      | IS_DEFERRABLE | INITIALLY_DEFERRED |
++--------------------+-------------------+-----------------+-----------------+---------------+--------------+-----------------+---------------+--------------------+
+| PUBLIC             | PUBLIC            | UQ2             | UNIQUE          | PUBLIC        | PUBLIC       | P1000_CY_UNIQUE | NO            | NO                 |
++--------------------+-------------------+-----------------+-----------------+---------------+--------------+-----------------+---------------+--------------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 创建包含主索引的表
+SQL> CREATE TABLE P1000_CY_PK (
+   > TUNIQUE BIGINT primary key,
+   > TSMALLINT SMALLINT, 
+   > TINTEGER INTEGER, 
+   > TBIGINT BIGINT, 
+   > TREAL REAL,
+   > TDOUBLE DOUBLE,
+   > TFLOAT FLOAT, 
+   > TDECIMAL DECIMAL(10,2), 
+   > TNUMERIC NUMERIC(10, 4), 
+   > TDATE DATE, 
+   > TTIMESTAMP TIMESTAMP,
+   > TBOOL BOOLEAN,
+   > TCHAR CHAR(255),
+   > TVARCHAR VARCHAR(4096),
+   > TCHARIDX1 CHAR(255),
+   > TCHARIDX2 CHAR(255),
+   > TCHARIDX3 CHAR(255),
+   > TVARCHARIDX1 VARCHAR(4096),
+   > TVARCHARIDX2 VARCHAR(4096),
+   > TVARCHARIDX3 VARCHAR(4096)
+   > ) ;
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE TABLE P1000_CY_PK (
+REWROTED    > TUNIQUE BIGINT primary key,
+REWROTED    > TSMALLINT SMALLINT, 
+REWROTED    > TINTEGER INTEGER, 
+REWROTED    > TBIGINT BIGINT, 
+REWROTED    > TREAL REAL,
+REWROTED    > TDOUBLE DOUBLE,
+REWROTED    > TFLOAT FLOAT, 
+REWROTED    > TDECIMAL DECIMAL(10,2), 
+REWROTED    > TNUMERIC NUMERIC(10, 4), 
+REWROTED    > TDATE DATE, 
+REWROTED    > TTIMESTAMP TIMESTAMP,
+REWROTED    > TBOOL BOOLEAN,
+REWROTED    > TCHAR CHAR(255),
+REWROTED    > TVARCHAR VARCHAR(4096),
+REWROTED    > TCHARIDX1 CHAR(255),
+REWROTED    > TCHARIDX2 CHAR(255),
+REWROTED    > TCHARIDX3 CHAR(255),
+REWROTED    > TVARCHARIDX1 VARCHAR(4096),
+REWROTED    > TVARCHARIDX2 VARCHAR(4096),
+REWROTED    > TVARCHARIDX3 VARCHAR(4096)
+REWROTED    > )  properties ('linkoopdb.pallas.shard_number':'256') engine pallas
+0 rows affected
+Running time elapsed:      0.76 Seconds
+SQL> 
+SQL> -- 往包含主索引的表中插入数据
+SQL> insert into P1000_CY_PK select * from P1000_CY
+10000000 rows affected
+Running time elapsed:   2602.19 Seconds
+Running time elapsed:   3557.70 Seconds
+SQL> exit
+Disconnected.
