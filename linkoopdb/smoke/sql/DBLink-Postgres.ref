@@ -1,46 +1,50 @@
-SQLCli Release 0.0.55
+SQLCli Release 0.0.58
 SQL> connect admin/123456
 Database connected.
-SQL> start DBLink-oracle.sql
-SQL> --    Description: 测试DBlink中的oracle数据库
+SQL> start DBLink-Postgres.sql
+SQL> --    Description: 测试DBlink中的Postgres
    > --    Date:         2020-06-11
    > --    Author:       丁婷
-SQL> drop database link ORACLE_LINK_001 if exists cascade;
+SQL> drop database link POSTGRES_LINK_001 if exists cascade;
 0 rows affected
-SQL> create database link ORACLE_LINK_001 connect to 'testlink1' 
-   > identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+SQL> create database link POSTGRES_LINK_001  connect to 'postgres' identified by '123456' using 'jdbc:postgresql://192.168.1.72:5432/postgres' properties ('caseSensitive':'true');
 0 rows affected
-SQL> drop table ORACLE_LINK_001.T_DBLink_ORACLE_001 if exists cascade;
+SQL> drop table POSTGRES_LINK_001.T_DBLink_POSTGRES_001 if exists cascade;
 0 rows affected
-SQL> create table ORACLE_LINK_001.T_DBLink_ORACLE_001 (
-   > tint INT,
-   > tchar char(20),
-   > tvarchar varchar(20),
-   > tdecimal decimal(5,3),
-   > tfloat float(2),
-   > tdate date,
-   > ttimestamp timestamp,
-   > tclob Clob,
-   > tBlob Blob
+SQL> create table POSTGRES_LINK_001.T_DBLink_POSTGRES_001 (
+   > EMPNO INT,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > COMM INT,
+   > DEPTNO INT
    > );
 0 rows affected
-SQL> insert into ORACLE_LINK_001.T_DBLink_ORACLE_001 values 
-   > (1,'tchar1','tvarchar',12.345,45.678,date '2018-03-09',timestamp '2018-03-29 20:21:22','44444','1001000110010111011001101100110111110000010101111101111111001011011001100100'),
-   > (2,'tchar2','tvarchar',12.345,45.678,date '2018-03-09',timestamp '2018-03-29 20:21:22','44444','1001000110010111011001101100110111110000010101111101111111001011011001100100'),
-   > (3,'tchar3','tvarchar',12.345,45.678,date '2018-03-09',timestamp '2018-03-29 20:21:22','44444','1001000110010111011001101100110111110000010101111101111111001011011001100100'),
-   > (4,'tchar4','tvarchar',12.345,45.678,date '2018-03-09',timestamp '2018-03-29 20:21:22','44444','1001000110010111011001101100110111110000010101111101111111001011011001100100');
-4 rows affected
+SQL> 
+SQL> --测试插入数据
+SQL> insert into POSTGRES_LINK_001.T_DBLink_POSTGRES_001 values 
+   > (7369,'SMITH','CLERK',7902,'1980-12-17',800,NULL,20),
+   > (7934,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10),
+   > (7566,'JONES','MANAGER',7839,'1981-4-2',2975,NULL,20),
+   > (7654,'MARTIN','SALESMAN',7698,'1981-9-28',1150,1400,30),
+   > (7698,'BLAKE','MANAGER',7839,'1981-5-1',2850,NULL,30),
+   > (7782,'CLARK','MANAGER',7839,'1981-6-9',2450,NULL,10),
+   > (7839,'KING','PRESIDENT',NULL,'1981-11-17',5000,NULL,10),
+   > (7844,'TURNER','SALESMAN',7698,'1981-9-8',1500,0,30);
+8 rows affected
 SQL> 
 SQL> --测试增加字段
-SQL> alter table ORACLE_LINK_001.T_DBLink_ORACLE_001 add column c4 int;
+SQL> alter table POSTGRES_LINK_001.T_DBLink_POSTGRES_001 add column c4 int;
 0 rows affected
-SQL> select data_type from information_schema.columns where table_schema = 'ORACLE_LINK_001' and table_name = 'T_DBLink_ORACLE_001' and column_name = 'C4';
+SQL> select data_type from information_schema.columns where table_schema = 'POSTGRES_LINK_001' and table_name = 'T_DBLink_POSTGRES_001' and column_name = 'C4';
 0 rows selected.
 SQL> 
 SQL> --测试删除字段
-SQL> alter table ORACLE_LINK_001.T_DBLink_ORACLE_001 drop column c4;
+SQL> alter table POSTGRES_LINK_001.T_DBLink_POSTGRES_001 drop column c4;
 0 rows affected
-SQL> select count(*) from information_schema.columns where table_schema = 'ORACLE_LINK_001' and table_name = 'T_DBLink_ORACLE_001';
+SQL> select count(*) from information_schema.columns where table_schema = 'POSTGRES_LINK_001' and table_name = 'T_DBLink_POSTGRES_001';
 +----+
 | C1 |
 +----+
@@ -49,46 +53,24 @@ SQL> select count(*) from information_schema.columns where table_schema = 'ORACL
 1 row selected.
 SQL> 
 SQL> --测试更新某一字段
-SQL> UPDATE ORACLE_LINK_001.T_DBLink_ORACLE_001 SET tfloat=123.111 where tint>1;
-3 rows affected
+SQL> UPDATE POSTGRES_LINK_001.T_DBLink_POSTGRES_001 SET SAL=9010 where EMPNO=7782;
+1 row affected
 SQL> 
 SQL> --删除某一行数据
-SQL> delete from ORACLE_LINK_001.T_DBLink_ORACLE_001 where tint > 2;
-2 rows affected
+SQL> delete from POSTGRES_LINK_001.T_DBLink_POSTGRES_001 where EMPNO > 7782;
+3 rows affected
 SQL> 
 SQL> --使用聚合函数查询数据行数
-SQL> select count(*) from  ORACLE_LINK_001.T_DBLink_ORACLE_001;
+SQL> select count(*) from POSTGRES_LINK_001.T_DBLink_POSTGRES_001;
 +----+
 | C1 |
 +----+
-| 2  |
+| 5  |
 +----+
 1 row selected.
-SQL> 
-SQL> --查询数据
-SQL> select tchar,tdecimal,tdate from ORACLE_LINK_001.T_DBLink_ORACLE_001 order by tINT;
-+----------------------+----------+----------+
-| TCHAR                | TDECIMAL | TDATE    |
-+----------------------+----------+----------+
-| tchar1               | 12.345   | 2018-3-9 |
-| tchar2               | 12.345   | 2018-3-9 |
-+----------------------+----------+----------+
-2 rows selected.
-SQL> 
-SQL> 
-SQL> 
-SQL> --加载其他用户的表
-SQL> drop table ORACLE_LINK_001.T_DBLink_ORACLE_001 if exists cascade;
+SQL> drop table POSTGRES_LINK_001.T_DBLink_POSTGRES_001 if exists cascade;
 0 rows affected
-SQL> drop database link ORACLE_LINK_001 if exists cascade;
+SQL> drop database link POSTGRES_LINK_001 if exists cascade;
 0 rows affected
-SQL> create database link ORACLE_LINK_001 connect to 'testlink1' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe' properties('otherUsers':'testlink2');
-0 rows affected
-SQL> SELECT * FROM ORACLE_LINK_001.TBLLINK3
-   > 
-   > drop database link ORACLE_LINK_001 if exists cascade;
-java.sql.SQLSyntaxErrorException: unexpected token: DROP : line: 5 in statement [SELECT * FROM ORACLE_LINK_001.TBLLINK3
-
-drop database link ORACLE_LINK_001 if exists cascade]
 SQL> exit
 Disconnected.

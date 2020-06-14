@@ -1,0 +1,68 @@
+SQLCli Release 0.0.58
+SQL> connect admin/123456
+Database connected.
+SQL> start LDB_EXT_资源管控.sql
+SQL> --    Description: 基本PSM
+   > --    Date:         2020-06-12
+   > --    Author:       丁婷
+   > 
+   > --398 LDBX033-02 LDBX033-03 Resource control through resource groups
+SQL> DROP resource group resource_group_test_001 if exists;
+0 rows affected
+SQL> CREATE RESOURCE GROUP resource_group_test_001 GLOBAL PERCENT 100, GLOBAL MIN PERCENT 20;
+0 rows affected
+SQL> SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE
+   > FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME='RESOURCE_GROUP_TEST_001';
++-------------------------+------------+----------+-------------------------+--------------------------------+
+| RESOURCE_GROUP_NAME     | C2         | CPU_USED | RESOURCE_GLOBAL_PRECENT | RESOURCE_GLOBAL_MIN_PERCENTAGE |
++-------------------------+------------+----------+-------------------------+--------------------------------+
+| RESOURCE_GROUP_TEST_001 | 7.69230769 | 2        | 100                     | 20                             |
++-------------------------+------------+----------+-------------------------+--------------------------------+
+1 row selected.
+SQL> DROP resource group RESOURCE_GROUP_TEST_001 if exists;
+0 rows affected
+SQL> DROP RESOURCE GROUP RESOURCE_GROUP_TEST_002 if exists;
+0 rows affected
+SQL> create resource group RESOURCE_GROUP_TEST_002 EXECUTOR CPU 1,MANAGER MEMORY 1G, EXECUTOR MEMORY 1G,EXECUTOR NUMBER 1;
+0 rows affected
+SQL> SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+   > RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES,RESOURCE_NUMEXECUTORS
+   > FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME='RESOURCE_GROUP_TEST_002';
++-------------------------+-----+----------+-------------------------+--------------------------------+-----+-----+------------------------+-----------------------+
+| RESOURCE_GROUP_NAME     | C2  | CPU_USED | RESOURCE_GLOBAL_PRECENT | RESOURCE_GLOBAL_MIN_PERCENTAGE | C6  | C7  | RESOURCE_EXECUTORCORES | RESOURCE_NUMEXECUTORS |
++-------------------------+-----+----------+-------------------------+--------------------------------+-----+-----+------------------------+-----------------------+
+| RESOURCE_GROUP_TEST_002 | 2.0 | 2        | 0                       | 0                              | 1.0 | 1.0 | 1                      | 1                     |
++-------------------------+-----+----------+-------------------------+--------------------------------+-----+-----+------------------------+-----------------------+
+1 row selected.
+SQL> alter resource group RESOURCE_GROUP_TEST_002 set MANAGER MEMORY 2g, EXECUTOR MEMORY 2g;
+0 rows affected
+SQL> SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+   > RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES,RESOURCE_NUMEXECUTORS
+   > FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME='RESOURCE_GROUP_TEST_002';
++-------------------------+-----+----------+-------------------------+--------------------------------+-----+-----+------------------------+-----------------------+
+| RESOURCE_GROUP_NAME     | C2  | CPU_USED | RESOURCE_GLOBAL_PRECENT | RESOURCE_GLOBAL_MIN_PERCENTAGE | C6  | C7  | RESOURCE_EXECUTORCORES | RESOURCE_NUMEXECUTORS |
++-------------------------+-----+----------+-------------------------+--------------------------------+-----+-----+------------------------+-----------------------+
+| RESOURCE_GROUP_TEST_002 | 4.0 | 2        | 0                       | 0                              | 2.0 | 2.0 | 1                      | 1                     |
++-------------------------+-----+----------+-------------------------+--------------------------------+-----+-----+------------------------+-----------------------+
+1 row selected.
+SQL> DROP RESOURCE GROUP RESOURCE_GROUP_TEST_002 if exists;
+0 rows affected
+SQL> DROP RESOURCE GROUP RESOURCE_GROUP_TEST_003 if exists;
+0 rows affected
+SQL> CREATE RESOURCE GROUP RESOURCE_GROUP_TEST_003 GLOBAL PERCENT 50, GLOBAL MIN PERCENT 10, MANAGER MEMORY 2g, EXECUTOR MEMORY 1g, EXECUTOR CPU 3;
+0 rows affected
+SQL> ALTER RESOURCE GROUP RESOURCE_GROUP_TEST_003 SET GLOBAL PERCENT 100, GLOBAL MIN PERCENT 10, MANAGER MEMORY 0g, EXECUTOR MEMORY 0g, EXECUTOR CPU 0;
+0 rows affected
+SQL> SELECT resource_group_name,memory_used/1024/1024/1024,cpu_used,RESOURCE_GLOBAL_PRECENT,RESOURCE_GLOBAL_MIN_PERCENTAGE,
+   > RESOURCE_MANAGERMEMORY/1024/1024/1024,RESOURCE_EXECUTORMEMORY/1024/1024/1024,RESOURCE_EXECUTORCORES
+   > FROM information_schema.SYSTEM_RESOURCE_GROUP  where RESOURCE_GROUP_NAME='RESOURCE_GROUP_TEST_003';
++-------------------------+------------+----------+-------------------------+--------------------------------+-----+-----+------------------------+
+| RESOURCE_GROUP_NAME     | C2         | CPU_USED | RESOURCE_GLOBAL_PRECENT | RESOURCE_GLOBAL_MIN_PERCENTAGE | C6  | C7  | RESOURCE_EXECUTORCORES |
++-------------------------+------------+----------+-------------------------+--------------------------------+-----+-----+------------------------+
+| RESOURCE_GROUP_TEST_003 | 7.69230769 | 2        | 100                     | 10                             | 0.0 | 0.0 | 0                      |
++-------------------------+------------+----------+-------------------------+--------------------------------+-----+-----+------------------------+
+1 row selected.
+SQL> DROP RESOURCE GROUP RESOURCE_GROUP_TEST_003 if exists;
+0 rows affected
+SQL> exit
+Disconnected.

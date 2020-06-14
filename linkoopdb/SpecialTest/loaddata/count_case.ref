@@ -1,0 +1,198 @@
+SQLCli Release 0.0.55
+SQL> start count_case.sql
+SQL> --Description:count
+   > --Date：2020-06-05
+   > --Author：耿晨雨
+SQL> connect admin/123456
+Database connected.
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> set ECHO ON
+Running time elapsed:      0.00 Seconds
+SQL> set WHENEVER_SQLERROR CONTINUE
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 清空环境
+SQL> drop table P1000_CY_COUNT	if exists;
+0 rows affected
+Running time elapsed:      0.02 Seconds
+SQL> 
+SQL> -- 创建count使用的表
+SQL> create table P1000_CY_COUNT as (select * from P1000)with data;
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > create table P1000_CY_COUNT as (select * from P1000)with data properties ('linkoopdb.pallas.shard_number':'256') engine pallas;
+0 rows affected
+Running time elapsed:     79.15 Seconds
+SQL> 
+SQL> -- 统计所有数据条数，条数为10000000
+SQL> select count(*) from P1000_CY_COUNT;
++----------+
+| C1       |
++----------+
+| 10000000 |
++----------+
+1 row selected.
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计SMALLINT类型字段无重复的条数，条数为944
+SQL> select count(DISTINCT TSMALLINT ) from P1000_CY_COUNT;
++-----+
+| C1  |
++-----+
+| 944 |
++-----+
+1 row selected.
+Running time elapsed:     12.48 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计INTEGER类型字段无重复的条数，条数为9998
+SQL> select count(DISTINCT TINTEGER  ) from P1000_CY_COUNT;
++------+
+| C1   |
++------+
+| 9998 |
++------+
+1 row selected.
+Running time elapsed:     12.51 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计BIGINT类型字段无重复的条数，条数为9999
+SQL> select count(DISTINCT TBIGINT   ) from P1000_CY_COUNT;
++------+
+| C1   |
++------+
+| 9999 |
++------+
+1 row selected.
+Running time elapsed:     11.22 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计REAL类型字段无重复的条数，条数为56640
+SQL> select count(DISTINCT TREAL     ) from P1000_CY_COUNT;
++-------+
+| C1    |
++-------+
+| 56640 |
++-------+
+1 row selected.
+Running time elapsed:     12.68 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计DOUBLE类型字段无重复的条数，条数为56640
+SQL> select count(DISTINCT TDOUBLE   ) from P1000_CY_COUNT;
++-------+
+| C1    |
++-------+
+| 56640 |
++-------+
+1 row selected.
+Running time elapsed:      8.08 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计FLOAT类型字段无重复的条数，条数为56640
+SQL> select count(DISTINCT TFLOAT    ) from P1000_CY_COUNT;
++-------+
+| C1    |
++-------+
+| 56640 |
++-------+
+1 row selected.
+Running time elapsed:     13.48 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计DECIMAL类型字段无重复的条数，条数为56640
+SQL> select count(DISTINCT TDECIMAL  ) from P1000_CY_COUNT;
++-------+
+| C1    |
++-------+
+| 56640 |
++-------+
+1 row selected.
+Running time elapsed:     10.38 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计NUMERIC类型字段无重复的条数，条数为891100
+SQL> select count(DISTINCT TNUMERIC  ) from P1000_CY_COUNT;
++--------+
+| C1     |
++--------+
+| 891100 |
++--------+
+1 row selected.
+Running time elapsed:      6.87 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计DATE类型字段无重复的条数，条数为25932
+SQL> select count(DISTINCT TDATE     ) from P1000_CY_COUNT;
++-------+
+| C1    |
++-------+
+| 25932 |
++-------+
+1 row selected.
+Running time elapsed:      9.03 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计TIMESTAMP类型字段无重复的条数，条数为9977491
+SQL> select count(DISTINCT TTIMESTAMP) from P1000_CY_COUNT;
++---------+
+| C1      |
++---------+
+| 9977491 |
++---------+
+1 row selected.
+Running time elapsed:      9.63 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计BOOL类型字段无重复的条数，条数为2
+SQL> select count(DISTINCT TBOOL     ) from P1000_CY_COUNT;
++----+
+| C1 |
++----+
+| 2  |
++----+
+1 row selected.
+Running time elapsed:      7.53 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计CHAR类型字段无重复的条数，条数为9999
+SQL> select count(DISTINCT TCHAR     ) from P1000_CY_COUNT;
++------+
+| C1   |
++------+
+| 9999 |
++------+
+1 row selected.
+Running time elapsed:     10.59 Seconds
+SQL> 
+SQL> -- 单个去重字段，统计VARCHAR类型字段无重复的条数，条数为9999
+SQL> select count(DISTINCT TVARCHAR  ) from P1000_CY_COUNT;
++------+
+| C1   |
++------+
+| 9999 |
++------+
+1 row selected.
+Running time elapsed:      8.41 Seconds
+SQL> 
+SQL> -- 多个去重字段，统计SMALLINT、DOUBLE、BOOLEAN和VARCHAR类型字段无重复的条数，条数为9999936
+SQL> select count(DISTINCT TSMALLINT,TDOUBLE,TBOOL,TVARCHAR) from P1000_CY_COUNT;
++---------+
+| C1      |
++---------+
+| 9999936 |
++---------+
+1 row selected.
+Running time elapsed:     12.97 Seconds
+SQL> 
+SQL> -- 多个去重字段，统计INTEGER、DECIMAL、BOOLEAN和CHAR类型字段无重复的条数，条数为9999993
+SQL> select count(DISTINCT TINTEGER,TDECIMAL,TBOOL,TCHAR) from P1000_CY_COUNT;
++---------+
+| C1      |
++---------+
+| 9999993 |
++---------+
+1 row selected.
+Running time elapsed:      7.86 Seconds
+SQL> 
+SQL> -- 多个去重字段，统计BIGINT、NUMERIC、DATE、BOOLEAN和VARCHAR类型字段无重复的条数，条数为10000000
+SQL> select count(DISTINCT TBIGINT,TNUMERIC,TDATE,TBOOL,TVARCHAR) from P1000_CY_COUNT;
++----------+
+| C1       |
++----------+
+| 10000000 |
++----------+
+1 row selected.
+Running time elapsed:      8.93 Seconds
+Running time elapsed:    242.89 Seconds
+SQL> exit
+Disconnected.
