@@ -10,9 +10,11 @@ LoadTest
     [Tags]     SQL-Test       Smoke
     Setup Compare Settings
     SQLCli Set SQLMAPPING     %{TEST_ROOT}/regression/common/pallas256.map
+    Execute SQL Script        index_case.sql
     Execute SQL Script        count_case.sql
     Execute SQL Script        delete_case.sql
     Execute SQL Script        update_case.sql
+    Compare Files             index_case.log  index_case.ref
     Compare Files             count_case.log  count_case.ref
     Compare Files             delete_case.log  delete_case.ref
     Compare Files             update_case.log  update_case.ref
