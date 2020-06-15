@@ -2,9 +2,8 @@
 --Date：2020-06-09
 --Author：贾路遥
 
-loaddriver F:\db_ex\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
-
-connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
+set echo on
+set timing on
 
 --建表Test_Builtin_2
 DROP TABLE Test_Builtin_2 IF EXISTS ;

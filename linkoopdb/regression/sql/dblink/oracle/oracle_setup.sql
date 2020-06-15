@@ -1,6 +1,7 @@
---oracle dblink sql
-
-connect linkoopdb/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+--Description:oracleDDL、DML、DQL
+--Date：2020-06-15
+--Author：王煜
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 --记录执行时间
 set timing on
@@ -111,6 +112,8 @@ SELECT username from dba_users WHERE username='U_DBlink@!@$%#(*特朗普';
 ---权限
 
 ----用户有远程访问权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission1 CASCADE;
 
 CREATE USER u_dblink_permission1 IDENTIFIED BY 123456;
@@ -122,9 +125,15 @@ union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION1'); 
 
 ----用户有创建，删除，修改 table的权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission2 CASCADE;
 
 CREATE USER u_dblink_permission2 IDENTIFIED BY 123456;
+
+GRANT CREATE SESSION TO u_dblink_permission2;
+
+GRANT RESOURCE,CONNECT TO u_dblink_permission2;
 
 GRANT CREATE TABLE TO u_dblink_permission2;
 
@@ -142,13 +151,19 @@ INSERT INTO u_dblink_permission2.t_dblink_wy1 VALUES(1,'我来试验一下');
 
 SELECT * FROM u_dblink_permission2.t_dblink_wy1 ORDER BY id;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION2'  
-union  
-select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION2'); 
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION2'
+union
+select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION2');
+
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 DROP USER u_dblink_permission3 CASCADE;
 
 CREATE USER u_dblink_permission3 IDENTIFIED BY 123456;
+
+GRANT CREATE SESSION TO u_dblink_permission3;
+
+GRANT RESOURCE,CONNECT TO u_dblink_permission3;
 
 GRANT CREATE ANY TABLE TO u_dblink_permission3;
 
@@ -156,9 +171,9 @@ GRANT DROP ANY TABLE TO u_dblink_permission3;
 
 GRANT ALTER ANY TABLE TO u_dblink_permission3;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION3'  
-union  
-select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION3'); 
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION3'
+union
+select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION3');
 
 connect u_dblink_permission3/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -171,17 +186,23 @@ INSERT INTO u_dblink_permission3.t_dblink_wy1 VALUES(1,'我来试验一下');
 SELECT * FROM u_dblink_permission3.t_dblink_wy1 ORDER BY id;
 
 ----用户有创建，删除view的权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission4 CASCADE;
 
 CREATE USER u_dblink_permission4 IDENTIFIED BY 123456;
+
+GRANT CREATE SESSION TO u_dblink_permission4;
+
+GRANT RESOURCE,CONNECT TO u_dblink_permission4;
 
 GRANT CREATE VIEW TO u_dblink_permission4;
 
 GRANT DROP ANY VIEW TO u_dblink_permission4;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION4'  
-union  
-select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION4'); 
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION4'
+union
+select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION4');
 
 connect u_dblink_permission4/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -198,17 +219,23 @@ SELECT * FROM u_dblink_permission4.t_dblink_wy1;
 
 SELECT * FROM u_dblink_permission4.v_dblink_wy1 ORDER BY id;
 
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission5 CASCADE;
 
 CREATE USER u_dblink_permission5 IDENTIFIED BY 123456;
+
+GRANT CREATE SESSION TO u_dblink_permission5;
+
+GRANT RESOURCE,CONNECT TO u_dblink_permission5;
 
 GRANT CREATE ANY VIEW TO u_dblink_permission5;
 
 GRANT DROP ANY VIEW TO u_dblink_permission5;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION5'  
-union  
-select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION5'); 
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION5'
+union
+select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION5');
 
 connect u_dblink_permission5/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -228,17 +255,23 @@ SELECT * FROM u_dblink_permission5.t_dblink_wy1;
 SELECT * FROM u_dblink_permission5.v_dblink_wy1 ORDER BY id;
 
 ----用户有创建proc的权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission6 CASCADE;
 
 CREATE USER u_dblink_permission6 IDENTIFIED BY 123456;
+
+GRANT CREATE SESSION TO u_dblink_permission6;
+
+GRANT RESOURCE,CONNECT TO u_dblink_permission6;
 
 GRANT CREATE PROCEDURE TO u_dblink_permission6;
 
 GRANT DROP ANY PROCEDURE TO u_dblink_permission6;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION6'  
-union  
-select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION6'); 
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION6'
+union
+select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION6');
 
 connect u_dblink_permission6/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -279,17 +312,23 @@ BEGIN
    dbms_output.put_line('输出结果：'|| num_C );
 END;
 
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission7 CASCADE;
 
 CREATE USER u_dblink_permission7 IDENTIFIED BY 123456;
+
+GRANT CREATE SESSION TO u_dblink_permission7;
+
+GRANT RESOURCE,CONNECT TO u_dblink_permission7;
 
 GRANT CREATE ANY PROCEDURE TO u_dblink_permission7;
 
 GRANT DROP ANY PROCEDURE TO u_dblink_permission7;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION7'  
-union  
-select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION7'); 
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION7'
+union
+select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION7');
 
 connect u_dblink_permission7/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -331,15 +370,21 @@ BEGIN
 END;
 
 ----用户有查询的权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission8 CASCADE;
 
 CREATE USER u_dblink_permission8 IDENTIFIED BY 123456;
 
+GRANT RESOURCE,CONNECT TO u_dblink_permission8;
+
+GRANT CREATE ANY PROCEDURE TO u_dblink_permission8;
+
 GRANT SELECT ANY TABLE TO u_dblink_permission8;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION8'  
-union  
-select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION8'); 
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION8'
+union
+select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION8');
 
 connect u_dblink_permission8/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -362,14 +407,20 @@ SELECT * FROM u_dblink_permission4.v_dblink_wy1 ORDER BY id;
 
 
 ----用户有插入的权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission9 CASCADE;
 
 CREATE USER u_dblink_permission9 IDENTIFIED BY 123456;
 
+GRANT RESOURCE,CONNECT TO u_dblink_permission9;
+
+GRANT CREATE ANY PROCEDURE TO u_dblink_permission9;
+
 GRANT INSERT ANY TABLE TO u_dblink_permission9;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION9'  
-union  
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION9'
+union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION9');
 
 connect u_dblink_permission9/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
@@ -391,14 +442,20 @@ SELECT * FROM u_dblink_permission9.v_dblink_wy1 ORDER BY id;
 
 
 ----用户有更新的权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission10 CASCADE;
 
 CREATE USER u_dblink_permission10 IDENTIFIED BY 123456;
 
+GRANT RESOURCE,CONNECT TO u_dblink_permission10;
+
+GRANT CREATE ANY PROCEDURE TO u_dblink_permission10;
+
 GRANT UPDATE ANY TABLE TO u_dblink_permission10;
 
-select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION10'  
-union  
+select privilege from dba_sys_privs where grantee='U_DBLINK_PERMISSION10'
+union
 select privilege from dba_sys_privs where grantee in (select granted_role from dba_role_privs where grantee='U_DBLINK_PERMISSION10');
 
 connect u_dblink_permission10/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
@@ -423,9 +480,15 @@ SELECT * FROM u_dblink_permission10.t_dblink_wy1;
 SELECT * FROM u_dblink_permission10.v_dblink_wy1 ORDER BY id;
 
 ----用户有删除的权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission11 CASCADE;
 
 CREATE USER u_dblink_permission11 IDENTIFIED BY 123456;
+
+GRANT RESOURCE,CONNECT TO u_dblink_permission11;
+
+GRANT CREATE ANY PROCEDURE TO u_dblink_permission11;
 
 GRANT DELETE ANY TABLE TO u_dblink_permission11;
 
@@ -458,6 +521,8 @@ SELECT * FROM u_dblink_permission11.t_dblink_wy1;
 SELECT * FROM u_dblink_permission11.v_dblink_wy1 ORDER BY id;
 
 ----用户无任何权限
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_permission CASCADE;
 
 CREATE USER u_dblink_permission IDENTIFIED BY 123456;
@@ -470,6 +535,8 @@ select privilege from dba_sys_privs where grantee in (select granted_role from d
 --password
 
 ---英文及大小写
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_password1 CASCADE;
 
 CREATE USER u_dblink_password1 IDENTIFIED BY csHIKHBNUgdjK;
@@ -494,6 +561,8 @@ SELECT * FROM u_dblink_password1.t_dblink_wy1;
 SELECT * FROM u_dblink_password1.v_dblink_wy1 ORDER BY id;
 
 ---中文
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_password2 CASCADE;
 
 CREATE USER u_dblink_password2 IDENTIFIED BY 这是一个密码;
@@ -518,6 +587,8 @@ SELECT * FROM u_dblink_password2.t_dblink_wy1;
 SELECT * FROM u_dblink_password2.v_dblink_wy1 ORDER BY id;
 
 ---中英文混合加特殊字符加大小写
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_password3 CASCADE;
 
 CREATE USER u_dblink_password3 IDENTIFIED BY "^&*SDfbj%^$&^红烧冬1278_84";
@@ -542,6 +613,8 @@ SELECT * FROM u_dblink_password3.t_dblink_wy1;
 SELECT * FROM u_dblink_password3.v_dblink_wy1 ORDER BY id;
 
 --建表
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_dblink_grammar_cover CASCADE;
 
 CREATE USER u_dblink_grammar_cover identified BY 123456;
@@ -879,6 +952,8 @@ where i.index_name = c.index_name AND i.table_name='T_DBLINK_CONSTRAINT_7' AND i
 
 
 --大小写敏感
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
 DROP USER u_case_sensitivity CASCADE;
 
 CREATE USER u_case_sensitivity IDENTIFIED BY 123456;
