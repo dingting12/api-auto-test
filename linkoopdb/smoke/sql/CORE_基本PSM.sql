@@ -7,6 +7,7 @@ DROP FUNCTION if exists function_test_001;
 
 CREATE FUNCTION function_test_001() RETURNS INTEGER
   RETURN 10;
+/
   
 call function_test_001();
   
@@ -46,7 +47,8 @@ CREATE Function function_test_002( in x INT)
     set y= x;
     return TABLE(select id, firstname from T_invocation_test_001 where id > y);
   end;
-  
+/ 
+
 call function_test_002(10);
 
 
@@ -64,6 +66,7 @@ drop table if exists db_udf_bigint;
 CREATE FUNCTION function_test_bigint(price bigint) RETURNS bigint
  LANGUAGE JAVA DETERMINISTIC NO SQL
  EXTERNAL NAME 'CLASSPATH:com.datapps.dbudf.testdbudf.UDFbigint';
+/
  
 CREATE TABLE db_udf_bigint(price bigint);
  

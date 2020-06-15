@@ -3,7 +3,7 @@
 --    Author:       丁婷
 
 --测试80 F311-01 CREATE SCHEMA，不支持数字开头
-drop schema if exists T_create_schema_001;
+drop schema if exists T_create_schema_001 cascade;
 
 CREATE SCHEMA T_create_schema_001;
 
@@ -110,7 +110,6 @@ REVOKE all ON S_create_schema_001.t_create_table_003 FROM user_ddl RESTRICT;
 
 GRANT select,update ON S_create_schema_001.t_create_table_003 TO user_ddl;
 
-grant change_authorization to user_ddl; 
 
 connect user user_ddl password '123456';
 
@@ -126,9 +125,8 @@ REVOKE all ON S_create_schema_001.t_create_table_003 FROM user_ddl RESTRICT;
 
 grant select(ename) on S_create_schema_001.t_create_table_003 to user_ddl;
 
-grant change_authorization to user_ddl; 
 
-connect user USER1 password '123456';
+connect user user_ddl password '123456';
 
 select ename from S_create_schema_001.t_create_table_003 ;
 

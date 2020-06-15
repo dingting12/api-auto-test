@@ -36,29 +36,6 @@ desc model countvectorizer_model_001
 
 select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
 
-update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),20,1.0,1.0,false);
-
-desc model countvectorizer_model_001
-
-select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
-
-update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,-1.0,1.0,false);
-
-desc model countvectorizer_model_001
-
-select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
-
-update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,1.0,-1.0,false);
-
-desc model countvectorizer_model_001
-
-select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
-
-create table Test_Feature_Engineering_001 (c1 double array,c2 varchar(200),c3 varchar(100) array);
-
-insert into Test_Feature_Engineering_001 select features c1,sentence c2,words c3 from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
-
-select c1 from Test_Feature_Engineering_001;
 
 drop table countvectorizer_data_001 if exists cascade;
 drop table Test_Feature_Engineering_001 if exists cascade;

@@ -7,10 +7,10 @@ SQL> --    Description: 测试schema ddl
    > --    Author:       丁婷
    > 
    > --测试80 F311-01 CREATE SCHEMA，不支持数字开头
-SQL> drop schema if exists T_create_schema_001;
-java.sql.SQLException: dependent privilege descriptors still exist in statement [drop schema if exists T_create_schema_001]
+SQL> drop schema if exists T_create_schema_001 cascade;
+0 rows affected
 SQL> CREATE SCHEMA T_create_schema_001;
-java.sql.SQLSyntaxErrorException: object name already exists: T_CREATE_SCHEMA_001 in statement [CREATE SCHEMA T_create_schema_001]
+0 rows affected
 SQL> CREATE SCHEMA 12_sdgh_wegh_wy1;
 java.sql.SQLSyntaxErrorException: unexpected token: 12 in statement [CREATE SCHEMA 12_sdgh_wegh_wy1]
 SQL> 
@@ -141,8 +141,6 @@ SQL> REVOKE all ON S_create_schema_001.t_create_table_003 FROM user_ddl RESTRICT
 0 rows affected
 SQL> GRANT select,update ON S_create_schema_001.t_create_table_003 TO user_ddl;
 0 rows affected
-SQL> grant change_authorization to user_ddl; 
-java.sql.SQLException: invalid role specification: USER_DDL in statement [grant change_authorization to user_ddl]
 SQL> connect user user_ddl password '123456';
 Database connected.
 SQL> update S_create_schema_001.t_create_table_003 set ename = 'aaa' where sal = 1250;
@@ -158,10 +156,8 @@ SQL> REVOKE all ON S_create_schema_001.t_create_table_003 FROM user_ddl RESTRICT
 0 rows affected
 SQL> grant select(ename) on S_create_schema_001.t_create_table_003 to user_ddl;
 0 rows affected
-SQL> grant change_authorization to user_ddl; 
-java.sql.SQLException: invalid role specification: USER_DDL in statement [grant change_authorization to user_ddl]
-SQL> connect user USER1 password '123456';
-SQLInvalidAuthorizationSpecException(<capsule object "constructor key" at 0x000002358FAFBDB0>)
+SQL> connect user user_ddl password '123456';
+Database connected.
 SQL> select ename from S_create_schema_001.t_create_table_003 ;
 +--------+
 | ENAME  |
@@ -181,22 +177,6 @@ SQL> select ename from S_create_schema_001.t_create_table_003 ;
 +--------+
 12 rows selected.
 SQL> select EMPNO from S_create_schema_001.t_create_table_003 ;
-+-------+
-| EMPNO |
-+-------+
-| 7566  |
-| 7654  |
-| 7698  |
-| 7369  |
-| 7499  |
-| 7521  |
-| 7782  |
-| 7839  |
-| 7844  |
-| 7900  |
-| 7902  |
-| 7934  |
-+-------+
-12 rows selected.
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_CREATE_TABLE_003 in statement [select EMPNO from S_create_schema_001.t_create_table_003 ]
 SQL> exit
 Disconnected.

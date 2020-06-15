@@ -5,8 +5,8 @@ drop database link TERADATA_LINK_001 if exists cascade;
 
 create database link TERADATA_LINK_001  CONNECT TO
 'testdblink' IDENTIFIED BY 'testdblink' 
-USING 'jdbc:teradata://192.168.1.134/CLIENT_CHARSET=cp936,TMODE=TERA,CHARSET=ASCII,LOB_SUPPORT=ON,COLUMN_NAME = ON,MAYBENULL = ON,database=testdblinkbase'
-PROPERTIES ('host':'192.168.1.134' , 'schema':'testdblinkbase');
+USING 'jdbc:teradata://192.168.1.136/CLIENT_CHARSET=cp936,TMODE=TERA,CHARSET=ASCII,LOB_SUPPORT=ON,COLUMN_NAME = ON,MAYBENULL = ON,database=testdblinkbase'
+PROPERTIES ('host':'192.168.1.136' , 'schema':'testdblinkbase');
 
 drop table TERADATA_LINK_001.T_DBLink_TERADATA_001 if exists cascade;
 
