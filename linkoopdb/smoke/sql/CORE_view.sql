@@ -6,7 +6,7 @@
 drop view v_view_test_001 if exists cascade;
 drop view v_view_test_002 if exists cascade;
 drop TABLE T_View_table_001 if exists cascade;
-drop TABLE T_View_table_002 if exists cascade;
+
 
 CREATE TABLE T_View_table_001 (
 EMPNO INT,
@@ -34,21 +34,9 @@ INSERT INTO T_View_table_001 VALUES
 (7934,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10);
 
 
-CREATE TABLE T_View_table_002 (
-DEPTNO INT,
-DNAME VARCHAR(20),
-LOC VARCHAR(20)
-);
-
-INSERT INTO T_View_table_002 VALUES 
-(10,'ACCOUNTING','NEW YORK'),
-(20,'RESEARCH','DALLAS'),
-(30,'SALES','CHICAGO'),
-(40,'OPERATIONS','BOSTON');
-
 create view v_view_test_001 as select * from T_View_table_001 order by empno;
 
-create view v_view_test_002 as select * from T_View_table_002 where sal > 1500 order by empno;
+create view v_view_test_002 as select * from T_View_table_001 where sal > 1500 order by empno;
 
 select count(*) from (
 select * from v_view_test_001 union select * from v_view_test_002);

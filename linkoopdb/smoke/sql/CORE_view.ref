@@ -1,4 +1,4 @@
-SQLCli Release 0.0.58
+SQLCli Release 0.0.61
 SQL> connect admin/123456
 Database connected.
 SQL> start CORE_view.sql
@@ -12,8 +12,6 @@ SQL> drop view v_view_test_001 if exists cascade;
 SQL> drop view v_view_test_002 if exists cascade;
 0 rows affected
 SQL> drop TABLE T_View_table_001 if exists cascade;
-0 rows affected
-SQL> drop TABLE T_View_table_002 if exists cascade;
 0 rows affected
 SQL> CREATE TABLE T_View_table_001 (
    > EMPNO INT,
@@ -40,30 +38,26 @@ SQL> INSERT INTO T_View_table_001 VALUES
    > (7902,'FORD','ANALYST',7566,'1981-12-8',3000,NULL,20),
    > (7934,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10);
 12 rows affected
-SQL> CREATE TABLE T_View_table_002 (
-   > DEPTNO INT,
-   > DNAME VARCHAR(20),
-   > LOC VARCHAR(20)
-   > );
-0 rows affected
-SQL> INSERT INTO T_View_table_002 VALUES 
-   > (10,'ACCOUNTING','NEW YORK'),
-   > (20,'RESEARCH','DALLAS'),
-   > (30,'SALES','CHICAGO'),
-   > (40,'OPERATIONS','BOSTON');
-4 rows affected
 SQL> create view v_view_test_001 as select * from T_View_table_001 order by empno;
 0 rows affected
-SQL> create view v_view_test_002 as select * from T_View_table_002 where sal > 1500 order by empno;
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: SAL in statement [create view v_view_test_002 as select * from T_View_table_002 where sal > 1500 order by empno]
+SQL> create view v_view_test_002 as select * from T_View_table_001 where sal > 1500 order by empno;
+0 rows affected
 SQL> select count(*) from (
    > select * from v_view_test_001 union select * from v_view_test_002);
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: V_VIEW_TEST_002 in statement [select count(*) from (
-select * from v_view_test_001 union select * from v_view_test_002)]
++----+
+| C1 |
++----+
+| 12 |
++----+
+1 row selected.
 SQL> select count(*) from (
    > select * from v_view_test_001 except select * from v_view_test_002);
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: V_VIEW_TEST_002 in statement [select count(*) from (
-select * from v_view_test_001 except select * from v_view_test_002)]
++----+
+| C1 |
++----+
+| 6  |
++----+
+1 row selected.
 SQL> 
 SQL> 
 SQL> -- 测试251 F131-01 WHERE, GROUP BY, and HAVING clauses supported in queries with grouped views

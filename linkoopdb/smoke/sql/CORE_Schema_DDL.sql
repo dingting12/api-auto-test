@@ -95,7 +95,7 @@ grant select on S_create_schema_001.t_create_table_003 to user_ddl;
 
 grant change_authorization to user_ddl; 
 
-connect user USER1 password '123456';
+connect user user_ddl password '123456';
 
 select count(*) from S_create_schema_001.t_create_table_003 where empno > 7499;
 
@@ -112,7 +112,7 @@ GRANT select,update ON S_create_schema_001.t_create_table_003 TO user_ddl;
 
 grant change_authorization to user_ddl; 
 
-connect user USER1 password '123456';
+connect user user_ddl password '123456';
 
 update S_create_schema_001.t_create_table_003 set ename = 'aaa' where sal = 1250;
 

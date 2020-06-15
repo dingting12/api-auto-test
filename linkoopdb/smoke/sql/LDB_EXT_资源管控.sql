@@ -1,4 +1,4 @@
---    Description: 基本PSM
+--    Description: 测试资源管控
 --    Date:         2020-06-12
 --    Author:       丁婷
 
