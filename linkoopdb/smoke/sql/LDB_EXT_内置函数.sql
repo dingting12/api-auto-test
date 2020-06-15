@@ -3,6 +3,7 @@
 --    Author:       丁婷
 
 -- 测试327 LDBX070-01 Spark 2.3.0 built-in functions 
+drop table if exists T_Builtin_Function_001;
 CREATE TABLE T_Builtin_Function_001 (
 id int,
 name VARCHAR(100)

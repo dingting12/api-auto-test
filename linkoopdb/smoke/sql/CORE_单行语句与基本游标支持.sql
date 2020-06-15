@@ -90,7 +90,8 @@ CREATE PROCEDURE sp_opencursor_test_001()
   END IF;
  END WHILE;
  CLOSE projcursor;
- END;
+ END
+ /
  
  
 delete from t_procedure_test_002;
@@ -127,7 +128,8 @@ CREATE PROCEDURE sp_opencursor_test_002()
  open projcursor;
  insert into t_procedure_test_003 values(100,'qqqaaazzz');
  close projcursor;
- END;
+ END
+ /
  
  call sp_opencursor_test_002();
 
@@ -156,7 +158,8 @@ create procedure sp_opencursor_test_003()
     for_label: for for_variable as cursor1 cursor for select * from t_procedure_test_004 for update do
       update t_procedure_test_004 set col2 = 1000  where current of cursor1;
     end for for_label;
-  end label_1;
+  end label_1
+  /
   
 call sp_opencursor_test_003();
   
@@ -168,7 +171,8 @@ create procedure sp_opencursor_test_004()
     for_label: for for_variable as cursor1 cursor for select * from t_procedure_test_004 for update do
       delete from t_procedure_test_004  where current of cursor1;
     end for for_label;
-  end label_1;
+  end label_1
+  /
   
 call sp_opencursor_test_004();
   
@@ -226,7 +230,8 @@ CREATE PROCEDURE sp_opencursor_test_005 (INOUT par1 INTEGER, INOUT par2 VARCHAR(
  END LOOP label1;
  insert into t_procedure_test_005  values(1000, 'QQQ', :SQLCODE, :SQLSTATE, :ACTIVITY_COUNT);
  CLOSE projcursor;
- END;
+ END
+ /
  
  delete from t_procedure_test_005;
  
