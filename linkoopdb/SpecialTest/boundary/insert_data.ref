@@ -1,0 +1,276 @@
+SQLCli Release 0.0.61
+SQL> connect admin/123456
+Database connected.
+SQL> start insert_data.sql
+SQL> --Description:column_number
+   > --Date：2020-06-09
+   > --Author：阮娜
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 删除P_10W_1S和EX_RN_10W表
+SQL> DROP TABLE IF EXISTS P_10W_1S;
+0 rows affected
+Running time elapsed:      0.02 Seconds
+SQL> DROP TABLE IF EXISTS EX_RN_10W;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建外部表EX_RN_10W
+SQL> create external table EX_RN_10W
+   > (
+   > antiNucleus     INT,
+   > eventFile       INT,
+   > eventNumber     INT,
+   > eventTime       DOUBLE,
+   > histFile        INT,
+   > multiplicity    INT,
+   > NaboveLb        INT,
+   > NbelowLb        INT,
+   > NLb     INT,
+   > primaryTracks   INT,
+   > prodTime        DOUBLE,
+   > Pt      FLOAT,
+   > runNumber       INT,
+   > vertexX FLOAT,
+   > vertexY FLOAT,
+   > vertexZ FLOAT           
+   > ) location ('hdfs://node73:8020/node72/ruanna/file/10w.csv') FORMAT 'csv' (DELIMITER ',') PROPERTIES ('ignoreLeadingWhiteSpace':'true');
+0 rows affected
+Running time elapsed:      3.59 Seconds
+SQL> 
+SQL> -- 创建单个shard pallas表P_10W_1S
+SQL> CREATE TABLE P_10W_1S(
+   > ANTINUCLEUS INTEGER,EVENTFILE INTEGER,EVENTNUMBER INTEGER,
+   > EVENTTIME DOUBLE,HISTFILE INTEGER,MULTIPLICITY INTEGER,
+   > NABOVELB INTEGER,NBELOWLB INTEGER,NLB INTEGER,PRIMARYTRACKS INTEGER,
+   > PRODTIME DOUBLE,PT FLOAT,RUNNUMBER INTEGER,VERTEXX FLOAT,VERTEXY FLOAT,VERTEXZ FLOAT
+   > ) PROPERTIES('linkoopdb.pallas.shard_number':'1') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.29 Seconds
+SQL> 
+SQL> -- 有事务，插入10万条数据到pallas表
+SQL> INSERT INTO P_10W_1S SELECT * FROM EX_RN_10W;
+100000 rows affected
+Running time elapsed:     19.86 Seconds
+SQL> SELECT COUNT(*) FROM P_10W_1S;
++--------+
+| C1     |
++--------+
+| 100000 |
++--------+
+1 row selected.
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- 删除P_10W01_1S和EX_RN_10W01表
+SQL> DROP TABLE IF EXISTS P_10W01_1S;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE IF EXISTS EX_RN_10W01;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建外部表EX_RN_10W01
+SQL> create external table EX_RN_10W01
+   > (
+   > antiNucleus     INT,
+   > eventFile       INT,
+   > eventNumber     INT,
+   > eventTime       DOUBLE,
+   > histFile        INT,
+   > multiplicity    INT,
+   > NaboveLb        INT,
+   > NbelowLb        INT,
+   > NLb     INT,
+   > primaryTracks   INT,
+   > prodTime        DOUBLE,
+   > Pt      FLOAT,
+   > runNumber       INT,
+   > vertexX FLOAT,
+   > vertexY FLOAT,
+   > vertexZ FLOAT           
+   > ) location ('hdfs://node73:8020/node72/ruanna/file/10w01.csv') FORMAT 'csv' (DELIMITER ',') PROPERTIES ('ignoreLeadingWhiteSpace':'true');
+0 rows affected
+Running time elapsed:      3.79 Seconds
+SQL> 
+SQL> -- 创建单个shard pallas表P_10W01_1S
+SQL> CREATE TABLE P_10W01_1S(
+   > ANTINUCLEUS INTEGER,EVENTFILE INTEGER,EVENTNUMBER INTEGER,
+   > EVENTTIME DOUBLE,HISTFILE INTEGER,MULTIPLICITY INTEGER,
+   > NABOVELB INTEGER,NBELOWLB INTEGER,NLB INTEGER,PRIMARYTRACKS INTEGER,
+   > PRODTIME DOUBLE,PT FLOAT,RUNNUMBER INTEGER,VERTEXX FLOAT,VERTEXY FLOAT,VERTEXZ FLOAT
+   > ) PROPERTIES('linkoopdb.pallas.shard_number':'1') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      2.93 Seconds
+SQL> 
+SQL> -- 有事务，插入10万01条数据到pallas表
+SQL> INSERT INTO P_10W01_1S SELECT * FROM EX_RN_10W01;
+java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: transaction rollback: INSERT is failed! Transaction can not exceed 100000 rows on one shard
+Running time elapsed:      7.72 Seconds
+SQL> SELECT COUNT(*) FROM P_10W01_1S;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- 删除P_40W_4S和EX_RN_40W表
+SQL> DROP TABLE IF EXISTS P_40W_4S;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE IF EXISTS EX_RN_40W;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建外部表EX_RN_40W
+SQL> create external table EX_RN_40W
+   > (
+   > antiNucleus     INT,
+   > eventFile       INT,
+   > eventNumber     INT,
+   > eventTime       DOUBLE,
+   > histFile        INT,
+   > multiplicity    INT,
+   > NaboveLb        INT,
+   > NbelowLb        INT,
+   > NLb     INT,
+   > primaryTracks   INT,
+   > prodTime        DOUBLE,
+   > Pt      FLOAT,
+   > runNumber       INT,
+   > vertexX FLOAT,
+   > vertexY FLOAT,
+   > vertexZ FLOAT           
+   > ) location ('hdfs://node73:8020/node72/ruanna/file/40w.csv') FORMAT 'csv' (DELIMITER ',') PROPERTIES ('ignoreLeadingWhiteSpace':'true');
+0 rows affected
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> -- 创建4个shard pallas表
+SQL> CREATE TABLE P_40W_4S(
+   > ANTINUCLEUS INTEGER,EVENTFILE INTEGER,EVENTNUMBER INTEGER,
+   > EVENTTIME DOUBLE,HISTFILE INTEGER,MULTIPLICITY INTEGER,
+   > NABOVELB INTEGER,NBELOWLB INTEGER,NLB INTEGER,PRIMARYTRACKS INTEGER,
+   > PRODTIME DOUBLE,PT FLOAT,RUNNUMBER INTEGER,VERTEXX FLOAT,VERTEXY FLOAT,VERTEXZ FLOAT
+   > ) PROPERTIES('linkoopdb.pallas.shard_number':'4') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      2.29 Seconds
+SQL> 
+SQL> -- 有事务，插入40万条数据到pallas表
+SQL> INSERT INTO P_40W_4S SELECT * FROM EX_RN_40W;
+java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: transaction rollback: INSERT is failed! Transaction can not exceed 100000 rows on one shard
+Running time elapsed:     10.96 Seconds
+SQL> SELECT COUNT(*) FROM P_40W_4S;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      1.09 Seconds
+SQL> 
+SQL> -- 删除P_40W_4S和EX_RN_40W表
+SQL> DROP TABLE IF EXISTS P_41W_4S;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE IF EXISTS EX_RN_41W;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建外部表EX_RN_40W
+SQL> create external table EX_RN_41W
+   > (
+   > antiNucleus     INT,
+   > eventFile       INT,
+   > eventNumber     INT,
+   > eventTime       DOUBLE,
+   > histFile        INT,
+   > multiplicity    INT,
+   > NaboveLb        INT,
+   > NbelowLb        INT,
+   > NLb     INT,
+   > primaryTracks   INT,
+   > prodTime        DOUBLE,
+   > Pt      FLOAT,
+   > runNumber       INT,
+   > vertexX FLOAT,
+   > vertexY FLOAT,
+   > vertexZ FLOAT           
+   > ) location ('hdfs://node73:8020/node72/ruanna/file/41w.csv') FORMAT 'csv' (DELIMITER ',') PROPERTIES ('ignoreLeadingWhiteSpace':'true');
+0 rows affected
+Running time elapsed:      0.50 Seconds
+SQL> 
+SQL> -- 创建4个shard pallas表
+SQL> CREATE TABLE P_41W_4S(
+   > ANTINUCLEUS INTEGER,EVENTFILE INTEGER,EVENTNUMBER INTEGER,
+   > EVENTTIME DOUBLE,HISTFILE INTEGER,MULTIPLICITY INTEGER,
+   > NABOVELB INTEGER,NBELOWLB INTEGER,NLB INTEGER,PRIMARYTRACKS INTEGER,
+   > PRODTIME DOUBLE,PT FLOAT,RUNNUMBER INTEGER,VERTEXX FLOAT,VERTEXY FLOAT,VERTEXZ FLOAT
+   > ) PROPERTIES('linkoopdb.pallas.shard_number':'4') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      2.69 Seconds
+SQL> 
+SQL> -- 有事务，插入41万条数据到pallas表
+SQL> INSERT INTO P_41W_4S SELECT * FROM EX_RN_41W;
+java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: transaction rollback: INSERT is failed! Transaction can not exceed 100000 rows on one shard
+Running time elapsed:      8.85 Seconds
+SQL> SELECT COUNT(*) FROM P_41W_4S;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+Running time elapsed:      0.12 Seconds
+SQL> 
+SQL> -- 删除H_10Y表
+SQL> DROP TABLE IF EXISTS H_10Y;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建H_10Y hdfs表
+SQL> CREATE TABLE H_10Y(TUNIQUE BIGINT,TSMALLINT SMALLINT,TINTEGER INTEGER,TBIGINT BIGINT,TREAL DOUBLE,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(10,2),TNUMERIC NUMERIC(10,4),TDATE DATE,TTIMESTAMP TIMESTAMP,TBOOL BOOLEAN,TCHAR CHAR(255),TVARCHAR VARCHAR(4096),TCHARIDX1 CHAR(255),TCHARIDX2 CHAR(255),TCHARIDX3 CHAR(255),TVARCHARIDX1 VARCHAR(4096),TVARCHARIDX2 VARCHAR(4096),TVARCHARIDX3 VARCHAR(4096));
+0 rows affected
+Running time elapsed:      4.64 Seconds
+SQL> 
+SQL> -- 有事务，插入10亿数据到hdfs表
+SQL> INSERT INTO H_10Y SELECT * FROM T10Y_E;
+1000000000 rows affected
+Running time elapsed:   1596.34 Seconds
+SQL> SELECT COUNT(*) FROM H_10Y;
++------------+
+| C1         |
++------------+
+| 1000000000 |
++------------+
+1 row selected.
+Running time elapsed:     34.33 Seconds
+SQL> 
+SQL> -- 删除P_10Y表
+SQL> DROP TABLE IF EXISTS P_10Y;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建P_10Y pallas表
+SQL> CREATE TABLE P_10Y(TUNIQUE BIGINT,TSMALLINT SMALLINT,TINTEGER INTEGER,TBIGINT BIGINT,TREAL DOUBLE,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(10,2),TNUMERIC NUMERIC(10,4),TDATE DATE,TTIMESTAMP TIMESTAMP,TBOOL BOOLEAN,TCHAR CHAR(255),TVARCHAR VARCHAR(4096),TCHARIDX1 CHAR(255),TCHARIDX2 CHAR(255),TCHARIDX3 CHAR(255),TVARCHARIDX1 VARCHAR(4096),TVARCHARIDX2 VARCHAR(4096),TVARCHARIDX3 VARCHAR(4096))
+   > PROPERTIES('linkoopdb.pallas.shard_number':'256') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      5.90 Seconds
+SQL> 
+SQL> -- 无事务，插入10亿数据到pallas表
+SQL> LOAD INTO P_10Y SELECT * FROM T10Y_E;
+1000000000 rows affected
+Running time elapsed:  11089.08 Seconds
+SQL> SELECT COUNT(*) FROM P_10Y;
++------------+
+| C1         |
++------------+
+| 1000000000 |
++------------+
+1 row selected.
+Running time elapsed:      3.00 Seconds
+Running time elapsed:  12798.46 Seconds
+SQL> exit
+Disconnected.
