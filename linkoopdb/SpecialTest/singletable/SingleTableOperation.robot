@@ -26,5 +26,5 @@ Setup Compare Settings
     Compare Skip                       start.*
 
     # 一旦遇到错误，就终止继续测试
-    Compare Break When Difference      False
+    Compare Break When Difference      True
 	Compare Enable ConsoleOutput       True
