@@ -47,7 +47,7 @@ CREATE Function function_test_002( in x INT)
     set y= x;
     return TABLE(select id, firstname from T_invocation_test_001 where id > y);
   end;
-/ 
+/
 
 call function_test_002(10);
 
