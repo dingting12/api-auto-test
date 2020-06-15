@@ -1,6 +1,6 @@
 --oracle dblink sql
 
-connect sys/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 --记录执行时间
 set timing on
