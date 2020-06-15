@@ -128,6 +128,6 @@ grant select(ename) on S_create_schema_001.t_create_table_003 to user_ddl;
 
 connect user user_ddl password '123456';
 
-select ename from S_create_schema_001.t_create_table_003 ;
+select ename from S_create_schema_001.t_create_table_003 order by ename;
 
 select EMPNO from S_create_schema_001.t_create_table_003 ;

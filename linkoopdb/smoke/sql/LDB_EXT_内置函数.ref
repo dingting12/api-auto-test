@@ -6,192 +6,246 @@ SQL> --    Description: 测试内置函数
    > --    Date:         2020-06-11
    > --    Author:       丁婷
    > 
-   > 
-   > --619 LDBX011-03 CountVectorizer
-SQL> drop table countvectorizer_data_001 if exists cascade;
+   > -- 测试327 LDBX070-01 Spark 2.3.0 built-in functions 
+SQL> drop table if exists T_Builtin_Function_001;
 0 rows affected
-SQL> drop table Test_Feature_Engineering_001 if exists cascade;
-0 rows affected
-SQL> drop model countvectorizer_model_001 if exists;
-0 rows affected
-SQL> drop model tokenizer_model_001 if exists;
-0 rows affected
-SQL> create table countvectorizer_data_001 (
-   > label double,
-   > sentence varchar(200)
+SQL> CREATE TABLE T_Builtin_Function_001 (
+   > id int,
+   > name VARCHAR(100)
    > );
 0 rows affected
-SQL> insert into countvectorizer_data_001 values
-   > (0.0,'Hi I heard about Spark'),
-   > (0.0,'I wish Java could use case classes'),
-   > (1.0,'Logistic regression models are neat');
+SQL> INSERT INTO T_Builtin_Function_001 VALUES 
+   > (1,'zs'),
+   > (2,'ls'),
+   > (3,'ww');
 3 rows affected
-SQL> create model tokenizer_model_001 as tokenizer_transformer();
-0 rows affected
-SQL> create model countvectorizer_model_001 as countvectorizer_transformer
-   > ((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
-0 rows affected
-SQL> SELECT *
-   > FROM countvectorizer(countvectorizer_model_001, (
-   > 	SELECT *
-   > 	FROM tokenizer(tokenizer_model_001, countvectorizer_data_001)
-   > ));
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0] |
-| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0] |
-| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0] |
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-3 rows selected.
-SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,1.0,1.0,true);
-0 rows affected
-SQL> desc model countvectorizer_model_001
-0 rows affected
-SQL> select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0] |
-| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0] |
-| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,1.0E0,1.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-3 rows selected.
-SQL> drop table countvectorizer_data_001 if exists cascade;
-0 rows affected
-SQL> drop table Test_Feature_Engineering_001 if exists cascade;
-0 rows affected
-SQL> drop model countvectorizer_model_001 if exists;
-0 rows affected
-SQL> drop model tokenizer_model_001 if exists;
-0 rows affected
+SQL> SELECT CHARACTER_LENGTH('Spark SQL '),
+   > 	   UPPER(name),
+   > 	   degrees(PI() / 2),
+   >        cast('214748364.7' as INT),
+   >        octet_length('!@#$%^&*()'),
+   >        trim(both 'SL' from 'SSparkSQLS'),
+   >        add_months(date '2016-08-31', 1),
+   >        lower('dsdsd'),
+   > 	   coalesce(NULL, 1.0, NULL),
+   > 	   nvl2(true, ARRAY[2,2,3], null),
+   > 	   least(10, -9, 2, 4, 3),
+   > 	   datediff(date '2009-07-31', date '2009-07-30'),
+   >        unix_timestamp(timestamp '2016-04-08 12:13:14', 'yyyy-mm-dd hh24:mi:ss'),
+   > 	   concat_ws(' ', ARRAY[date '2016-12-31',date '2016-1-30'], ARRAY['wd'])
+   > FROM T_Builtin_Function_001 limit 1;
++----+----+----+-----------+----+--------+---------------------+-------+-----+--------------+-----+-----+------------+--------------------------+
+| C1 | C2 | C3 | C4        | C5 | C6     | C7                  | C8    | C9  | C10          | C11 | C12 | C13        | C14                      |
++----+----+----+-----------+----+--------+---------------------+-------+-----+--------------+-----+-----+------------+--------------------------+
+| 10 | ZS | 90 | 214748364 | 10 | parkSQ | 2016-09-30 00:00:00 | dsdsd | 1.0 | ARRAY[2,2,3] | -9  | 1   | 1460088794 | 2016-12-31 2016-01-30 wd |
++----+----+----+-----------+----+--------+---------------------+-------+-----+--------------+-----+-----+------------+--------------------------+
+1 row selected.
 SQL> 
 SQL> 
-SQL> 
-SQL> --629 LDBX012-09 IndexToString
-SQL> drop table stringindexer_data_001 if EXISTS cascade;
+SQL> --432 LDBX070-02  to_char function
+SQL> drop table if exists T_to_char_001;
 0 rows affected
-SQL> drop table Test_Feature_Engineering_002 if EXISTS cascade;
-0 rows affected
-SQL> drop model string_indexer_model_001 if EXISTS;
-0 rows affected
-SQL> drop model index_to_string_model_001 if EXISTS;
-0 rows affected
-SQL> create table stringindexer_data_001(
-   > category varchar(20)
+SQL> create table T_to_char_001 (
+   > ID INT,
+   > NAME VARCHAR(20),
+   > TDATE DATE,
+   > TTIMESTAMP TIMESTAMP
    > );
 0 rows affected
-SQL> insert into stringindexer_data_001 values
-   > ('a'),
-   > ('b'),
-   > ('c'),
-   > ('a'),
-   > ('b'),
-   > ('b'),
-   > ('c');
-7 rows affected
-SQL> create model string_indexer_model_001 as string_indexer_transformer(stringindexer_data_001);
+SQL> insert into T_to_char_001 VALUES 
+   > (3,'ww',to_date('03-08-2018','dd-mm-yyyy'),to_timestamp('03-08-2018 22:10:13','dd-mm-yyyy hh24:mi:ss')),
+   > (4,'qq',to_date('08-2018-04','mm-yyyy-dd'),to_timestamp('08-2018-04 22:10:14','mm-yyyy-dd hh24:mi:ss'));
+2 rows affected
+SQL> select to_char(tdate,'mm-dd-yyyy') from T_to_char_001 where id = 3;
++------------+
+| C1         |
++------------+
+| 08-03-2018 |
++------------+
+1 row selected.
+SQL> drop table if exists T_to_char_001;
 0 rows affected
-SQL> create model index_to_string_model_001 as index_to_string_transformer();
-0 rows affected
-SQL> select * from index_to_string(index_to_string_model_001,(select * from string_indexer(string_indexer_model_001,stringindexer_data_001)));
-+----------+---------------+------------------+
-| CATEGORY | CATEGORYINDEX | ORIGINALCATEGORY |
-+----------+---------------+------------------+
-| a        | 1             | a                |
-| b        | 0             | b                |
-| c        | 2             | c                |
-| a        | 1             | a                |
-| b        | 0             | b                |
-| b        | 0             | b                |
-| c        | 2             | c                |
-+----------+---------------+------------------+
-7 rows selected.
-SQL> create table Test_Feature_Engineering_002(c1 varchar(20));
-0 rows affected
-SQL> insert into Test_Feature_Engineering_002 select ORIGINALCATEGORY from index_to_string(index_to_string_model_001,(select * from string_indexer(string_indexer_model_001,stringindexer_data_001)));
-7 rows affected
-SQL> select * from Test_Feature_Engineering_002;
-+----+
-| C1 |
-+----+
-| a  |
-| b  |
-| c  |
-| a  |
-| b  |
-| b  |
-| c  |
-+----+
-7 rows selected.
 SQL> 
-SQL> --645 LDBX013-01 VectorSlicer
-SQL> drop table vectorslicer_data_001 if exists cascade;
+SQL> --528 LDBX070-03 JSON_TUPLE functon
+SQL> SELECT json_tuple('{"a":1, "b":2}', 'a', 'b')  from (values(1));
++----+----+
+| C1 | C2 |
++----+----+
+| 1  | 2  |
++----+----+
+1 row selected.
+SQL> 
+SQL> --573 LDBX070-04  json_path function
+SQL> select json_path(
+   > '[
+   > {"snumber":"13011560889", "enddate":"12321312321","codetag":"1"},
+   > {"snumber":"18600010011", "enddate":"212212222", "codetag":"0"},
+   > {"snumber":"13011560889", "enddate":"212212222", "codetag":"2"},
+   > {"snumber":"13011560889", "enddate":"212212222", "codetag":"3"}]',
+   > '$[?(@.snumber == "13011560889")].codetag') 
+   > from (values(1,2,3)) as t;
++---------------+
+| C1            |
++---------------+
+| ["1","2","3"] |
++---------------+
+1 row selected.
+SQL> 
+SQL> --708 LDBX070-06 NAMED_STRUCT function
+SQL> select named_struct('a', 1, 'b', 2, 'c', 3) FROM (values(1)) as t;
++-----------+
+| C1        |
++-----------+
+| [1, 2, 3] |
++-----------+
+1 row selected.
+SQL> 
+SQL> --727 date_fomat function
+SQL> SELECT DATE_FORMAT(date '2017-12-31', 'yyyyMMdd') FROM (values(1)) as t;
++----------+
+| C1       |
++----------+
+| 20171231 |
++----------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --699 LDBX070-05 FROM_JSON function
+SQL> select j.tsmallint, j.tint,j.tbigint,j.tdouble from (
+   >      select from_json(json, 'tsmallint smallint,tint int,tbigint bigint,tdouble double') j FROM
+   >                   (values('{"tsmallint":23,"tint":34344,"tbigint":43545665,"tdouble":5657.54}')) as k(json)
+   >   );
++----+-------+----------+---------+
+| J  | J     | J        | J       |
++----+-------+----------+---------+
+| 23 | 34344 | 43545665 | 5657.54 |
++----+-------+----------+---------+
+1 row selected.
+SQL>   
+SQL> --1970  LDBX070-08 GROUP_CANCAT aggregation function,2113  LDBX070-15 GROUP_TO_ARRAY aggregation function
+SQL> DROP TABLE T_olap_test_001 IF EXISTS;
 0 rows affected
-SQL> drop table Test_Feature_Engineering_003 if exists cascade;
-0 rows affected
-SQL> drop model m_rformula_model_001 if exists;
-0 rows affected
-SQL> drop model vectorslicer_model_001 if exists;
-0 rows affected
-SQL> create table vectorslicer_data_001 (
-   > id double,
-   > country varchar(32) ,
-   > hour double,
-   > clicked double
+SQL> create table T_olap_test_001 (
+   > id varchar(10), 
+   > group_id varchar(10), 
+   > column_id int, 
+   > column_value int
    > );
 0 rows affected
-SQL> insert into vectorslicer_data_001 values
-   > (7,'us',18,1.0),
-   > (8,'ca',18,1.0),
-   > (9,'nz',19,1.0),
-   > (10,'as',18,1.0),
-   > (11,'uu',18,0.0);
-5 rows affected
-SQL> create model m_rformula_model_001 as rformula_transformer((select country,hour,clicked from vectorslicer_data_001));
+SQL> insert into T_olap_test_001 VALUES
+   > ('a','2019-01-01', 1, 360),
+   > ('a','2019-01-01', 1, 360),
+   > ('a','2019-01-01', 2, 360),
+   > ('a','2019-01-01', 3, 373),
+   > ('b','2019-01-01', 4, 345),
+   > ('a','2019-01-02', 5, 370),
+   > ('a','2019-01-01', 6, 371),
+   > ('a','2019-01-01', 7, 381),
+   > ('b','2019-01-01', 8, 382),
+   > ('a','2019-01-01', 9, 383),
+   > ('a','2019-01-02', 10, 420),
+   > ('a','2019-01-01', 11, 430),
+   > ('a','2019-01-01', 12, 410),
+   > ('b','2019-01-01', 13, 330),
+   > ('a','2019-01-01', 14, null);
+15 rows affected
+SQL> select group_id, GROUP_CONCAT(column_value order by column_value) from T_olap_test_001 group by group_id;
++------------+-------------------------------------------------+
+| GROUP_ID   | C2                                              |
++------------+-------------------------------------------------+
+| 2019-01-01 | 330,345,360,360,360,371,373,381,382,383,410,430 |
+| 2019-01-02 | 370,420                                         |
++------------+-------------------------------------------------+
+2 rows selected.
+SQL> select group_id, GROUP_TO_ARRAY(column_value order by column_id) from T_olap_test_001 group by group_id;
++------------+--------------------------------------------------------+
+| GROUP_ID   | C2                                                     |
++------------+--------------------------------------------------------+
+| 2019-01-01 | ARRAY[360,360,360,373,345,371,381,382,383,430,410,330] |
+| 2019-01-02 | ARRAY[370,420]                                         |
++------------+--------------------------------------------------------+
+2 rows selected.
+SQL> DROP TABLE T_olap_test_001 IF EXISTS;
 0 rows affected
-SQL> create model vectorslicer_model_001 as vectorslicer_transformer(array[0,1]);
+SQL> 
+SQL> --1518 LDBX070-09 support agg udaf with where condition，1969  LDBX070-07 TRUNC number function
+SQL> drop table T_AGG_TEST_001 if exists;
 0 rows affected
-SQL> select * from vectorslicer(vectorslicer_model_001,(select * from rformula(m_rformula_model_001,(select country,hour,clicked from vectorslicer_data_001 order by country,hour,clicked))));
-+---------+------+---------+---------------------------------------+-------+--------------------+
-| COUNTRY | HOUR | CLICKED | FEATURES                              | LABEL | SELECTFEATURES     |
-+---------+------+---------+---------------------------------------+-------+--------------------+
-| as      | 18   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,1.0E0,18.0E0] | 1     | ARRAY[0.0E0,0.0E0] |
-| ca      | 18   | 1       | ARRAY[0.0E0,0.0E0,1.0E0,0.0E0,18.0E0] | 1     | ARRAY[0.0E0,0.0E0] |
-| nz      | 19   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,19.0E0] | 1     | ARRAY[0.0E0,0.0E0] |
-| us      | 18   | 1       | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,18.0E0] | 1     | ARRAY[0.0E0,1.0E0] |
-| uu      | 18   | 0       | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,18.0E0] | 0     | ARRAY[1.0E0,0.0E0] |
-+---------+------+---------+---------------------------------------+-------+--------------------+
-5 rows selected.
-SQL> update model vectorslicer_model_001 as vectorslicer_transformer(array[2]);
+SQL> create table T_AGG_TEST_001(
+   > i1 int, 
+   > d2 double, 
+   > d3 decimal(4,2), 
+   > d4 date, 
+   > t5 timestamp
+   > );
 0 rows affected
-SQL> desc model vectorslicer_model_001
+SQL> insert into T_AGG_TEST_001 values(
+   >  (1,1,12.76,'2008-08-22', '2008-08-08 20:08:08'),
+   >  (2,2,23.76,'2008-08-23', '2008-08-09 20:08:08'),
+   >  (3,3,38.76,'2008-08-24', '2008-08-10 20:08:08'),
+   >  (4,4,42.76,'2008-08-25', '2008-08-11 20:08:08'),
+   >  (5,5,51.76,'2008-08-26', '2008-08-12 20:08:08'),
+   >  (6,6,69.76,'2008-08-27', '2008-08-13 20:08:08'),
+   >  (10,null,null,'2008-08-28', '2008-08-14 20:08:08'),
+   >  (null,10,10.76,'2008-08-28', '2008-08-14 20:08:08'),
+   >  (10,10,19.76,'2008-08-28', '2008-08-14 20:08:08'),
+   >  (10,10,88.76,'2008-08-28', '2008-08-14 20:08:08'),
+   >  (10,10,16.76,'2008-08-28', '2008-08-14 20:08:08'),
+   >  (10,10,44.76,'2008-08-28', '2008-08-14 20:08:08'),
+   >  (10,10,54.76,'2008-08-28', '2008-08-14 20:08:08'),
+   >  (10,10,11.76,'2008-08-28', '2008-08-14 20:08:08'));
+14 rows affected
+SQL> select sum_where(i1,i1 = 10) from T_AGG_TEST_001
+   > 
+   > select i1, avg_where(i1,i1 IS null) from T_AGG_TEST_001 GROUP BY i1 order by i1;
+java.sql.SQLSyntaxErrorException: unexpected token: SELECT : line: 5 in statement [ select sum_where(i1,i1 = 10) from T_AGG_TEST_001
+ 
+ select i1, avg_where(i1,i1 IS null) from T_AGG_TEST_001 GROUP BY i1 order by i1]
+SQL>  SELECT TRUNC(d3,2) FROM T_AGG_TEST_001 limit 1;
++-------+
+| C1    |
++-------+
+| 44.76 |
++-------+
+1 row selected.
+SQL>  drop table T_AGG_TEST_001 if exists;
 0 rows affected
-SQL> select * from vectorslicer(vectorslicer_model_001,(select * from rformula(m_rformula_model_001,(select country,hour,clicked from vectorslicer_data_001 order by country,hour,clicked))));
-+---------+------+---------+---------------------------------------+-------+----------------+
-| COUNTRY | HOUR | CLICKED | FEATURES                              | LABEL | SELECTFEATURES |
-+---------+------+---------+---------------------------------------+-------+----------------+
-| as      | 18   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,1.0E0,18.0E0] | 1     | ARRAY[0.0E0]   |
-| ca      | 18   | 1       | ARRAY[0.0E0,0.0E0,1.0E0,0.0E0,18.0E0] | 1     | ARRAY[1.0E0]   |
-| nz      | 19   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,19.0E0] | 1     | ARRAY[0.0E0]   |
-| us      | 18   | 1       | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,18.0E0] | 1     | ARRAY[0.0E0]   |
-| uu      | 18   | 0       | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,18.0E0] | 0     | ARRAY[0.0E0]   |
-+---------+------+---------+---------------------------------------+-------+----------------+
-5 rows selected.
-SQL> create table Test_Feature_Engineering_003 (country varchar(32) ,hour double,clicked double,FEATURES double array,LABEL double,SELECTFEATURES double array);
+SQL> 
+SQL> --73 LDBX070-13 trim函数的支持和72 LDBX070-14 concat函数的完整支持
+SQL> DROP TABLE t_trim_concat_001 IF EXISTS CASCADE;
 0 rows affected
-SQL> insert into Test_Feature_Engineering_003 select * from vectorslicer(vectorslicer_model_001,(select * from rformula(m_rformula_model_001,(select country,hour,clicked from vectorslicer_data_001))));
-5 rows affected
-SQL> select * from Test_Feature_Engineering_003;
-+---------+------+---------+---------------------------------------+-------+----------------+
-| COUNTRY | HOUR | CLICKED | FEATURES                              | LABEL | SELECTFEATURES |
-+---------+------+---------+---------------------------------------+-------+----------------+
-| as      | 18   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,1.0E0,18.0E0] | 1     | ARRAY[0.0E0]   |
-| uu      | 18   | 0       | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,18.0E0] | 0     | ARRAY[0.0E0]   |
-| us      | 18   | 1       | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,18.0E0] | 1     | ARRAY[0.0E0]   |
-| ca      | 18   | 1       | ARRAY[0.0E0,0.0E0,1.0E0,0.0E0,18.0E0] | 1     | ARRAY[1.0E0]   |
-| nz      | 19   | 1       | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,19.0E0] | 1     | ARRAY[0.0E0]   |
-+---------+------+---------+---------------------------------------+-------+----------------+
-5 rows selected.
+SQL> CREATE TABLE t_trim_concat_001(
+   > id int,
+   > name varchar(200)
+   > );
+0 rows affected
+SQL> INSERT INTO t_trim_concat_001 VALUES
+   > (1,' q az xe'),
+   > (2,'S D B J Y '),
+   > (3,'  z  xn  HJd UG'),
+   > (4,' cs sds dsd');
+4 rows affected
+SQL> SELECT trim(name) FROM t_trim_concat_001 ORDER BY id;
++---------------+
+| C1            |
++---------------+
+| q az xe       |
+| S D B J Y     |
+| z  xn  HJd UG |
+| cs sds dsd    |
++---------------+
+4 rows selected.
+SQL> SELECT concat(id,name) FROM t_trim_concat_001 ORDER BY id;
++------------------+
+| C1               |
++------------------+
+| 1 q az xe        |
+| 2S D B J Y       |
+| 3  z  xn  HJd UG |
+| 4 cs sds dsd     |
++------------------+
+4 rows selected.
+SQL> DROP TABLE t_trim_concat_001 IF EXISTS CASCADE;
+0 rows affected
 SQL> exit
 Disconnected.

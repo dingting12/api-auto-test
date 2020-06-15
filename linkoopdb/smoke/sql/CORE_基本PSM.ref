@@ -1,4 +1,4 @@
-SQLCli Release 0.0.58
+SQLCli Release 0.0.61
 SQL> connect admin/123456
 Database connected.
 SQL> start CORE_基本PSM.sql
@@ -11,23 +11,31 @@ SQL> DROP FUNCTION if exists function_test_001;
 0 rows affected
 SQL> CREATE FUNCTION function_test_001() RETURNS INTEGER
    >   RETURN 10;
-   >   
-   > call function_test_001();
-   >   
-   > DROP FUNCTION function_test_001;
-   > 
-   > --261 T321-03 Function invocation
-   > DROP FUNCTION function_test_002;
-   > drop table if exists T_invocation_test_001;
-   > 
-   > CREATE TABLE T_invocation_test_001 (
+   > /
+0 rows affected
+SQL> call function_test_001();
++-----+
+| @p0 |
++-----+
+| 10  |
++-----+
+1 row selected.
+SQL> DROP FUNCTION function_test_001;
+0 rows affected
+SQL> 
+SQL> --261 T321-03 Function invocation
+SQL> DROP FUNCTION function_test_002;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: FUNCTION_TEST_002 in statement [DROP FUNCTION function_test_002]
+SQL> drop table if exists T_invocation_test_001;
+0 rows affected
+SQL> CREATE TABLE T_invocation_test_001 (
    > ID INTEGER NOT NULL PRIMARY KEY,
    > FIRSTNAME VARCHAR(255),
    > LASTNAME VARCHAR(255),
    > STREET VARCHAR(255),
    > CITY VARCHAR(255));
-   > 
-   > INSERT INTO T_invocation_test_001 VALUES
+0 rows affected
+SQL> INSERT INTO T_invocation_test_001 VALUES
    > (1,'Susanne','King','366 - 20th Ave.','Olten'),
    > (2,'Anne','Miller','20 Upland Pl.','Lyon'),
    > (3,'Michael','Clancy','542 Upland Pl.','San Francisco'),
@@ -41,8 +49,8 @@ SQL> CREATE FUNCTION function_test_001() RETURNS INTEGER
    > (47,'Janet','Fuller','445 Upland Pl.','Dallas'),
    > (48,'Robert','White','549 Seventh Av.','San Francisco'),
    > (49,'George','Fuller','534 - 20th Ave.','Olten');
-   > 
-   > CREATE Function function_test_002( in x INT)
+13 rows affected
+SQL> CREATE Function function_test_002( in x INT)
    >   returns table(i INT, v VARCHAR(100))
    >   READS SQL DATA
    >   begin atomic
@@ -50,7 +58,8 @@ SQL> CREATE FUNCTION function_test_001() RETURNS INTEGER
    >     set y= x;
    >     return TABLE(select id, firstname from T_invocation_test_001 where id > y);
    >   end;
-   >   
+   > / 
+   > 
    > call function_test_002(10);
    > 
    > 
@@ -68,48 +77,8 @@ SQL> CREATE FUNCTION function_test_001() RETURNS INTEGER
    > CREATE FUNCTION function_test_bigint(price bigint) RETURNS bigint
    >  LANGUAGE JAVA DETERMINISTIC NO SQL
    >  EXTERNAL NAME 'CLASSPATH:com.datapps.dbudf.testdbudf.UDFbigint';
-   >  
-   > CREATE TABLE db_udf_bigint(price bigint);
-   >  
-   >  INSERT INTO db_udf_bigint VALUES
-   > (18902),
-   > (1032);
-   > 
-   > select function_test_bigint(price) from  db_udf_bigint ;
-java.sql.SQLSyntaxErrorException: unexpected token: CALL : line: 4 in statement [CREATE FUNCTION function_test_001() RETURNS INTEGER
-  RETURN 10;
-  
-call function_test_001();
-  
-DROP FUNCTION function_test_001;
-
-                                 
-DROP FUNCTION function_test_002;
-drop table if exists T_invocation_test_001;
-
-CREATE TABLE T_invocation_test_001 (
-ID INTEGER NOT NULL PRIMARY KEY,
-FIRSTNAME VARCHAR(255),
-LASTNAME VARCHAR(255),
-STREET VARCHAR(255),
-CITY VARCHAR(255));
-
-INSERT INTO T_invocation_test_001 VALUES
-(1,'Susanne','King','366 - 20th Ave.','Olten'),
-(2,'Anne','Miller','20 Upland Pl.','Lyon'),
-(3,'Michael','Clancy','542 Upland Pl.','San Francisco'),
-(40,'Susanne','Miller','440 - 20th Ave.','Dallas'),
-(41,'Bill','King','546 College Av.','New York'),
-(42,'Robert','Ott','503 Seventh Av.','Oslo'),
-(43,'Susanne','Smith','2 Upland Pl.','Dallas'),
-(44,'Sylvia','Ott','361 College Av.','New York'),
-(45,'Janet','May','396 Seventh Av.','Oslo'),
-(46,'Andrew','May','172 Seventh Av.','New York'),
-(47,'Janet','Fuller','445 Upland Pl.','Dallas'),
-(48,'Robert','White','549 Seventh Av.','San Francisco'),
-(49,'George','Fuller','534 - 20th Ave.','Olten');
-
-CREATE Function function_test_002( in x INT)
+   > /
+java.sql.SQLSyntaxErrorException: unexpected token: / : line: 9 in statement [CREATE Function function_test_002( in x INT)
   returns table(i INT, v VARCHAR(100))
   READS SQL DATA
   begin atomic
@@ -117,7 +86,8 @@ CREATE Function function_test_002( in x INT)
     set y= x;
     return TABLE(select id, firstname from T_invocation_test_001 where id > y);
   end;
-  
+/ 
+
 call function_test_002(10);
 
 
@@ -134,14 +104,14 @@ drop table if exists db_udf_bigint;
 
 CREATE FUNCTION function_test_bigint(price bigint) RETURNS bigint
  LANGUAGE JAVA DETERMINISTIC NO SQL
- EXTERNAL NAME 'CLASSPATH:com.datapps.dbudf.testdbudf.UDFbigint';
- 
-CREATE TABLE db_udf_bigint(price bigint);
- 
- INSERT INTO db_udf_bigint VALUES
-(18902),
-(1032);
-
-select function_test_bigint(price) from  db_udf_bigint ]
+ EXTERNAL NAME 'CLASSPATH:com.datapps.dbudf.testdbudf.UDFbigint']
+SQL> CREATE TABLE db_udf_bigint(price bigint);
+0 rows affected
+SQL> INSERT INTO db_udf_bigint VALUES
+   > 18902),
+   > 1032);
+2 rows affected
+SQL> select function_test_bigint(price) from  db_udf_bigint ;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: FUNCTION_TEST_BIGINT in statement [select function_test_bigint(price) from  db_udf_bigint ]
 SQL> exit
 Disconnected.
