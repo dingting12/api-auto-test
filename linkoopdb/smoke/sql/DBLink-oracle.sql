@@ -58,6 +58,6 @@ drop database link ORACLE_LINK_001 if exists cascade;
 
 create database link ORACLE_LINK_001 connect to 'testlink1' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe' properties('otherUsers':'testlink2');
 
-SELECT * FROM ORACLE_LINK_001.TBLLINK3
+SELECT * FROM ORACLE_LINK_001.TBLLINK3;
 
 drop database link ORACLE_LINK_001 if exists cascade;

@@ -1,4 +1,4 @@
-SQLCli Release 0.0.58
+SQLCli Release 0.0.61
 SQL> connect admin/123456
 Database connected.
 SQL> start CORE_Schema_DDL.sql
@@ -120,9 +120,8 @@ SQL> grant select on S_create_schema_001.t_create_table_003 to user_ddl;
 0 rows affected
 SQL> grant change_authorization to user_ddl; 
 0 rows affected
-SQL> connect user USER1 password '123456';
-Missing required argument
-.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+SQL> connect user user_ddl password '123456';
+Database connected.
 SQL> select count(*) from S_create_schema_001.t_create_table_003 where empno > 7499;
 +----+
 | C1 |
@@ -131,33 +130,30 @@ SQL> select count(*) from S_create_schema_001.t_create_table_003 where empno > 7
 +----+
 1 row selected.
 SQL> insert into S_create_schema_001.t_create_table_003 values (7900,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10);
-1 row affected
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_CREATE_TABLE_003 in statement [insert into S_create_schema_001.t_create_table_003 values (7900,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10)]
 SQL> 
 SQL> 
 SQL> 
 SQL> --122 F311-05 GRANT statement,privilege at the table level (multiple)
 SQL> connect user admin password '123456';
-Missing required argument
-.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+Database connected.
 SQL> REVOKE all ON S_create_schema_001.t_create_table_003 FROM user_ddl RESTRICT;
 0 rows affected
 SQL> GRANT select,update ON S_create_schema_001.t_create_table_003 TO user_ddl;
 0 rows affected
 SQL> grant change_authorization to user_ddl; 
 java.sql.SQLException: invalid role specification: USER_DDL in statement [grant change_authorization to user_ddl]
-SQL> connect user USER1 password '123456';
-Missing required argument
-.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+SQL> connect user user_ddl password '123456';
+Database connected.
 SQL> update S_create_schema_001.t_create_table_003 set ename = 'aaa' where sal = 1250;
 1 row affected
 SQL> insert into S_create_schema_001.t_create_table_003 values (7900,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10);
-1 row affected
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_CREATE_TABLE_003 in statement [insert into S_create_schema_001.t_create_table_003 values (7900,'MILLER','CLERK',7782,'1982-1-23',1300,NULL,10)]
 SQL> 
 SQL> 
 SQL> --122 F311-05 GRANT statement,privilege at the column level (1)
 SQL> connect user admin password '123456';
-Missing required argument
-.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+Database connected.
 SQL> REVOKE all ON S_create_schema_001.t_create_table_003 FROM user_ddl RESTRICT;
 0 rows affected
 SQL> grant select(ename) on S_create_schema_001.t_create_table_003 to user_ddl;
@@ -165,13 +161,11 @@ SQL> grant select(ename) on S_create_schema_001.t_create_table_003 to user_ddl;
 SQL> grant change_authorization to user_ddl; 
 java.sql.SQLException: invalid role specification: USER_DDL in statement [grant change_authorization to user_ddl]
 SQL> connect user USER1 password '123456';
-Missing required argument
-.connect [user name]/[password]@jdbc:[db type]:[driver type]://[host]:[port]/[service name]
+SQLInvalidAuthorizationSpecException(<capsule object "constructor key" at 0x000002358FAFBDB0>)
 SQL> select ename from S_create_schema_001.t_create_table_003 ;
 +--------+
 | ENAME  |
 +--------+
-| MILLER |
 | JONES  |
 | MARTIN |
 | BLAKE  |
@@ -184,14 +178,12 @@ SQL> select ename from S_create_schema_001.t_create_table_003 ;
 | JAMES  |
 | FORD   |
 | MILLER |
-| MILLER |
 +--------+
-14 rows selected.
+12 rows selected.
 SQL> select EMPNO from S_create_schema_001.t_create_table_003 ;
 +-------+
 | EMPNO |
 +-------+
-| 7900  |
 | 7566  |
 | 7654  |
 | 7698  |
@@ -204,8 +196,7 @@ SQL> select EMPNO from S_create_schema_001.t_create_table_003 ;
 | 7900  |
 | 7902  |
 | 7934  |
-| 7900  |
 +-------+
-14 rows selected.
+12 rows selected.
 SQL> exit
 Disconnected.

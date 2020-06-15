@@ -4,9 +4,6 @@
 
 -- 测试402  F471  Scalar subquery values
 drop table T_db_subquery_001 if exists cascade;
-loaddriver E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
-connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
-set echo on
 
 drop table T_db_subquery_002 if exists cascade;
 

@@ -1,4 +1,4 @@
-SQLCli Release 0.0.58
+SQLCli Release 0.0.61
 SQL> connect admin/123456
 Database connected.
 SQL> start LDB_EXT_特征工程.sql
@@ -39,9 +39,9 @@ SQL> SELECT *
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 | LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
-| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
-| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,1.0E0,1.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0] |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 3 rows selected.
 SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,1.0,1.0,true);
@@ -52,9 +52,9 @@ SQL> select * from countvectorizer(countvectorizer_model_001,(select * from toke
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 | LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
-| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
-| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,1.0E0,1.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 3 rows selected.
 SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),20,1.0,1.0,false);
@@ -65,35 +65,35 @@ SQL> select * from countvectorizer(countvectorizer_model_001,(select * from toke
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 | LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
-| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
-| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 3 rows selected.
 SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,-1.0,1.0,false);
-java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: Worker execution: ldb ai caused error: ldbTableFunction call failed on COUNTVECTORIZER_TRANSFORMER, caused by :cntVec_ba18c5b01716 parameter minDF given invalid value -1.0., cntVec_ba18c5b01716 parameter minDF given invalid value -1.0.
+java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: Worker execution: ldb ai caused error: ldbTableFunction call failed on COUNTVECTORIZER_TRANSFORMER, caused by :cntVec_1c86b2eeffe2 parameter minDF given invalid value -1.0., cntVec_1c86b2eeffe2 parameter minDF given invalid value -1.0.
 SQL> desc model countvectorizer_model_001
 0 rows affected
 SQL> select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 | LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
-| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
-| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 3 rows selected.
 SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,1.0,-1.0,false);
-java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: Worker execution: ldb ai caused error: ldbTableFunction call failed on COUNTVECTORIZER_TRANSFORMER, caused by :cntVec_2ac920bc805a parameter minTF given invalid value -1.0., cntVec_2ac920bc805a parameter minTF given invalid value -1.0.
+java.sql.SQLException: Worker execution: ldb worker caused error: com.datapps.linkoopdb.jdbc.LdbSqlException: Worker execution: ldb ai caused error: ldbTableFunction call failed on COUNTVECTORIZER_TRANSFORMER, caused by :cntVec_6c3a4849a57f parameter minTF given invalid value -1.0., cntVec_6c3a4849a57f parameter minTF given invalid value -1.0.
 SQL> desc model countvectorizer_model_001
 0 rows affected
 SQL> select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 | LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
-| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
-| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
+| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0] |
+| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0] |
+| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
 +-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
 3 rows selected.
 SQL> create table Test_Feature_Engineering_001 (c1 double array,c2 varchar(200),c3 varchar(100) array);
@@ -104,9 +104,9 @@ SQL> select c1 from Test_Feature_Engineering_001;
 +--------------------------------------------------------------------------------------------------------+
 | C1                                                                                                     |
 +--------------------------------------------------------------------------------------------------------+
-| ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
-| ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
-| ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
+| ARRAY[0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0] |
+| ARRAY[1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0] |
+| ARRAY[1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
 +--------------------------------------------------------------------------------------------------------+
 3 rows selected.
 SQL> drop table countvectorizer_data_001 if exists cascade;
