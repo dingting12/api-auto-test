@@ -7,7 +7,7 @@ Resource          ../../regression/common/SetupRobot.robot
 
 *** Test Cases ***
 SingleTableOperationTest
-    [Tags]     SQL-Test       Smoke
+    [Tags]     SQL-Test       SingleTable
     Setup Compare Settings
     Execute SQL Script        SingleTableOperation1000.sql
     Compare Files             SingleTableOperation1000.log  SingleTableOperation1000.ref

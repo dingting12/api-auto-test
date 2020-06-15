@@ -9,7 +9,7 @@ connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.62:59105/ldb
 --记录执行时间
 set timing off
 --不需要返回结果
-set termout on
+set termout off
 
 set echo on
 
