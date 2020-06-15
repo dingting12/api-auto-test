@@ -1,5 +1,6 @@
---oracle dblink sql
-
+--Description:oracleDDL、DML、DQL
+--Date：2020-06-15
+--Author：王煜
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 --记录执行时间
@@ -132,7 +133,7 @@ CREATE USER u_dblink_permission2 IDENTIFIED BY 123456;
 
 GRANT CREATE SESSION TO u_dblink_permission2;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission2;
+GRANT RESOURCE,CONNECT TO u_dblink_permission2;
 
 GRANT CREATE TABLE TO u_dblink_permission2;
 
@@ -162,7 +163,7 @@ CREATE USER u_dblink_permission3 IDENTIFIED BY 123456;
 
 GRANT CREATE SESSION TO u_dblink_permission3;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission3;
+GRANT RESOURCE,CONNECT TO u_dblink_permission3;
 
 GRANT CREATE ANY TABLE TO u_dblink_permission3;
 
@@ -193,7 +194,7 @@ CREATE USER u_dblink_permission4 IDENTIFIED BY 123456;
 
 GRANT CREATE SESSION TO u_dblink_permission4;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission4;
+GRANT RESOURCE,CONNECT TO u_dblink_permission4;
 
 GRANT CREATE VIEW TO u_dblink_permission4;
 
@@ -226,7 +227,7 @@ CREATE USER u_dblink_permission5 IDENTIFIED BY 123456;
 
 GRANT CREATE SESSION TO u_dblink_permission5;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission5;
+GRANT RESOURCE,CONNECT TO u_dblink_permission5;
 
 GRANT CREATE ANY VIEW TO u_dblink_permission5;
 
@@ -262,7 +263,7 @@ CREATE USER u_dblink_permission6 IDENTIFIED BY 123456;
 
 GRANT CREATE SESSION TO u_dblink_permission6;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission6;
+GRANT RESOURCE,CONNECT TO u_dblink_permission6;
 
 GRANT CREATE PROCEDURE TO u_dblink_permission6;
 
@@ -319,7 +320,7 @@ CREATE USER u_dblink_permission7 IDENTIFIED BY 123456;
 
 GRANT CREATE SESSION TO u_dblink_permission7;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission7;
+GRANT RESOURCE,CONNECT TO u_dblink_permission7;
 
 GRANT CREATE ANY PROCEDURE TO u_dblink_permission7;
 
@@ -375,7 +376,7 @@ DROP USER u_dblink_permission8 CASCADE;
 
 CREATE USER u_dblink_permission8 IDENTIFIED BY 123456;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission8;
+GRANT RESOURCE,CONNECT TO u_dblink_permission8;
 
 GRANT CREATE ANY PROCEDURE TO u_dblink_permission8;
 
@@ -412,7 +413,7 @@ DROP USER u_dblink_permission9 CASCADE;
 
 CREATE USER u_dblink_permission9 IDENTIFIED BY 123456;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission9;
+GRANT RESOURCE,CONNECT TO u_dblink_permission9;
 
 GRANT CREATE ANY PROCEDURE TO u_dblink_permission9;
 
@@ -447,7 +448,7 @@ DROP USER u_dblink_permission10 CASCADE;
 
 CREATE USER u_dblink_permission10 IDENTIFIED BY 123456;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission10;
+GRANT RESOURCE,CONNECT TO u_dblink_permission10;
 
 GRANT CREATE ANY PROCEDURE TO u_dblink_permission10;
 
@@ -485,7 +486,7 @@ DROP USER u_dblink_permission11 CASCADE;
 
 CREATE USER u_dblink_permission11 IDENTIFIED BY 123456;
 
-GRANT CREATE RESOURCE,CONNECT TO u_dblink_permission11;
+GRANT RESOURCE,CONNECT TO u_dblink_permission11;
 
 GRANT CREATE ANY PROCEDURE TO u_dblink_permission11;
 
