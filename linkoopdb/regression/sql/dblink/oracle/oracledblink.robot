@@ -7,7 +7,7 @@ Resource          ../../../common/SetupRobot.robot
 
 *** Test Cases ***
 DBlinkTest
-    [Tags]     SQL-Test       Smoke
+    [Tags]     SQL-Test       DBlinkTest
     Setup Compare Settings
     Execute SQL Script        oracle_setup.sql
     Compare Files             oracle_setup.log  oracle_setup.ref
