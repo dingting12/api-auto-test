@@ -12,14 +12,11 @@ FunctionTestHdfsTest-String
     Execute SQL Script        string_function.sql
     Compare Files             string_function.sql  string_function.ref
 	
-FunctionTestPallasTest-String
-    [Documentation]    字符串函数测试用例补充-Pallas
+FunctionTestHdfsTest-String
     [Tags]     FUNCTION
-
-    # 运行测试
-    SQLCli Set SQLMAPPING           pallas256.map,synatx_tabname.map
-    Logon And Execute SQL Script    admin/123456              string_function.sql             string_function.log
-    Compare Files                   string_function.log        string_function.ref
+    Setup Compare Settings
+    Execute SQL Script        date_time_function.sql
+    Compare Files             date_time_function.sql  date_time_function.ref
 
 *** Keywords ***
 Setup Compare Settings
