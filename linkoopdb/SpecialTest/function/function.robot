@@ -26,6 +26,7 @@ Setup Compare Settings
     Compare Ignore EmptyLine           True
     # 比对参考文件的时候使用正则表达式
     Compare Mask                       True
+    Compare Enable ConsoleOutput       True
     # 比对参考文件的时候跳过所有符合Running.*匹配的行
     Compare Skip                       Running.*
     Compare Skip                       REWROTED.*
@@ -34,4 +35,4 @@ Setup Compare Settings
     Compare Skip                       start.*
 
 
-	Compare Enable ConsoleOutput       True
+
