@@ -1,6 +1,6 @@
 *** Settings ***
-Documentation    字符串函数测试
-...              测试字符串函数的使用
+Documentation    函数测试
+...              测试LDB函数的使用
 Metadata         Version    0.1
 # 引用公共函数
 Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
@@ -33,5 +33,5 @@ Setup Compare Settings
     Compare Skip                       REWROTED.*
     Compare Skip                       start.*
 
-    # 一旦遇到错误，就终止继续测试
-    Compare Break When Difference      True
+
+	Compare Enable ConsoleOutput       True
