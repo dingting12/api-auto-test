@@ -8,15 +8,17 @@ Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
 *** Test Cases ***
 FunctionTestHdfsTest-String
     [Tags]     FUNCTION
-    Setup Compare Settings
-    Execute SQL Script        string_function.sql
-    Compare Files             string_function.sql  string_function.ref
+    
+    # 运行测试
+    Logon And Execute SQL Script    admin/123456              string_function.sql           string_function.log
+    Compare Files                   string_function.log       string_function.ref
 	
 FunctionTestHdfsTest-Time
     [Tags]     FUNCTION
-    Setup Compare Settings
-    Execute SQL Script        date_time_function.sql
-    Compare Files             date_time_function.sql  date_time_function.ref
+    
+    # 运行测试
+    Logon And Execute SQL Script    admin/123456              date_time_function.sql           date_time_function.log
+    Compare Files                   date_time_function.log       date_time_function.ref
 
 *** Keywords ***
 Setup Compare Settings
