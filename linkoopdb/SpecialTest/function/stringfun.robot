@@ -6,11 +6,20 @@ Metadata         Version    0.1
 Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
 
 *** Test Cases ***
-JoinTest
+FunctionTestHdfsTest-String
     [Tags]     FUNCTION
-    
+    Setup Compare Settings
+    Execute SQL Script        string_function.sql
+    Compare Files             string_function.sql  string_function.ref
+	
+FunctionTestPallasTest-String
+    [Documentation]    字符串函数测试用例补充-Pallas
+    [Tags]     FUNCTION
+
+    # 运行测试
+    SQLCli Set SQLMAPPING           pallas256.map,synatx_tabname.map
     Logon And Execute SQL Script    admin/123456              string_function.sql             string_function.log
-    Compare Files                   string_function.log       string_function.ref
+    Compare Files                   string_function.log        string_function.ref
 
 *** Keywords ***
 Setup Compare Settings
@@ -27,5 +36,3 @@ Setup Compare Settings
 
     # 一旦遇到错误，就终止继续测试
     Compare Break When Difference      True
-    Compare Enable ConsoleOutput       True
-    SQLCli Enable ConsoleOutput        True

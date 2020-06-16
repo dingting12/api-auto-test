@@ -3,14 +3,23 @@ Documentation    日期时间函数测试
 ...              测试日期时间函数的使用
 Metadata         Version    0.1
 # 引用公共函数
-Resource          ../../regression/common/SetupRobot.robot
+Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
 
 *** Test Cases ***
-JoinTest
-    [Tags]     SQL-Test       Smoke
+FunctionTestHdfsTest-Time
+    [Tags]     FUNCTION
     Setup Compare Settings
     Execute SQL Script        date_time_function.sql
     Compare Files             date_time_function.sql  date_time_function.ref
+	
+FunctionTestPallasTest-Time
+    [Documentation]    日期时间测试用例补充-Pallas
+    [Tags]     FUNCTION
+
+    # 运行测试
+    SQLCli Set SQLMAPPING           pallas256.map,synatx_tabname.map
+    Logon And Execute SQL Script    admin/123456              date_time_function.sql            date_time_function.log
+    Compare Files                   date_time_function.log        date_time_function.ref
 
 *** Keywords ***
 Setup Compare Settings

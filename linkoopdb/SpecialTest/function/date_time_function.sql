@@ -9,45 +9,6 @@ INSERT INTO Test_Builtin_Function_2 VALUES (1,' Justin Bieber '),(2,' Hailey Bal
 INSERT INTO Test_Builtin_Function_2 VALUES(4,' q az xe'),(5,'S D B J Y '),(6,'  z  xn  HJd UG'),(7,' cs sds dsd');
 
 
---CHARACTER_LENGTH()函数
-
-SELECT CHARACTER_LENGTH('  ') FROM Test_Builtin_Function_2 limit 1;
-SELECT CHARACTER_LENGTH(name) FROM Test_Builtin_Function_2;
-SELECT CHARACTER_LENGTH(timestamp '2019-02-11 09:22:23') FROM Test_Builtin_Function_2 limit 1;
-SELECT CHARACTER_LENGTH( ) FROM Test_Builtin_Function_2 limit 1;
-SELECT CHARACTER_LENGTH() FROM Test_Builtin_Function_2 limit 1;
-SELECT CHARACTER_LENGTH(abc) FROM Test_Builtin_Function_2 limit 1;
-
-SELECT CHARACTER_LENGTH(trim(both from name)) FROM Test_Builtin_Function_2;
-SELECT CHARACTER_LENGTH(trim(substring(' l i n ko o p d b ', 5))) FROM Test_Builtin_Function_2 limit 1;
-
-SELECT trim(BOTH 'qw' FROM 'qww') FROM Test_Builtin_Function_2;
-SELECT trim(BOTH 'q' FROM 'qww') FROM Test_Builtin_Function_2;
-SELECT trim(BOTH 'qwq' FROM 'qwwww') FROM Test_Builtin_Function_2;
-
-SELECT trim(name) FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim('a' 'b') FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(both from name) FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(TRAILING FROM name) FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(LEADING FROM name) FROM Test_Builtin_Function_2 ORDER BY id;
-
-SELECT trim('  ') FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(both from '  ') FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(TRAILING FROM '  ') FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(LEADING FROM '  ') FROM Test_Builtin_Function_2 ORDER BY id;
-
-SELECT trim(12 3 ) FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(both from 12 3 ) FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(TRAILING FROM 12 3 ) FROM Test_Builtin_Function_2 ORDER BY id;
-SELECT trim(LEADING FROM 12 3 ) FROM Test_Builtin_Function_2 ORDER BY id;
-
-SELECT trim('a' 'abc a ba') FROM Test_Builtin_Function_2 limit 1;
-SELECT trim('a' FROM 'abc a ba') FROM Test_Builtin_Function_2 limit 1;
-SELECT trim('SL' FROM 'SLINKOOPDBL') FROM Test_Builtin_Function_2 limit 1;
-SELECT trim('a' ,'abc a b') FROM Test_Builtin_Function_2 limit 1;
-SELECT trim('SL' FROM 'SINKOOPDBL') FROM Test_Builtin_Function_2 limit 1;
-SELECT trim(BOTH 'a' FROM 'abc a b') FROM Test_Builtin_Function_2 limit 1;
-
 --to_date()函数
 
 SELECT to_date('2018-09-01','RRRRMMDD') FROM Test_Builtin_Function_2 limit 1;
@@ -115,24 +76,6 @@ SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH24:SS') FROM Test_Built
 SELECT to_timestamp(to_date('2018-11-22','YYYY-MM-DD')) FROM Test_Builtin_Function_2 limit 1;
 SELECT to_timestamp(to_date(ADD_MONTHS(timestamp '2011-01-01 21:01:33',6))) FROM Test_Builtin_Function_2 LIMIT 1;
 SELECT to_timestamp(CURRENT_DATE) FROM Test_Builtin_Function_2 LIMIT 1;
-
-
---substring()函数
-SELECT substring('linkoopdb', 5) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', 100) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', -100) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', 0) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', -1) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring(' l i n ko o p d b ', 5) FROM Test_Builtin_Function_2 limit 1;
-
-SELECT substring('linkoopdb', 100,100) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', 1,2) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', -100,-100) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', 0,0) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', -1,-2) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', 5,3) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', 5,0) FROM Test_Builtin_Function_2 limit 1;
-SELECT substring('linkoopdb', 5,100) FROM Test_Builtin_Function_2 limit 1;
 
 
 --ADD_MONTHS()函数
