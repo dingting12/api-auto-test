@@ -6,11 +6,19 @@ Metadata         Version    0.1
 Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
 
 *** Test Cases ***
-JoinTest
+FunctionTestHdfsTest-String
     [Tags]     FUNCTION
     
-    Logon And Execute SQL Script    admin/123456              string_function.sql             string_function.log
+    # 运行测试
+    Logon And Execute SQL Script    admin/123456              string_function.sql           string_function.log
     Compare Files                   string_function.log       string_function.ref
+	
+FunctionTestHdfsTest-Time
+    [Tags]     FUNCTION
+    
+    # 运行测试
+    Logon And Execute SQL Script    admin/123456              date_time_function.sql           date_time_function.log
+    Compare Files                   date_time_function.log       date_time_function.ref
 
 *** Keywords ***
 Setup Compare Settings
@@ -27,5 +35,3 @@ Setup Compare Settings
 
     # 一旦遇到错误，就终止继续测试
     Compare Break When Difference      True
-    Compare Enable ConsoleOutput       True
-    SQLCli Enable ConsoleOutput        True
