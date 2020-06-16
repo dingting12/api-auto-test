@@ -487,11 +487,11 @@ class RunCompare(object):
                 print(line, file=m_CompareResultFile)
                 if self.__EnableConsoleOutPut:
                     if line.startswith('-'):
-                        logger.write('<i><font style="font-size:150%;color:white;background-color:Red">' +
-                                     "    " + line + '</font></i>', html=True)
+                        logger.write('<font style="font-size:120%;color:white;background-color:Red">' +
+                                     "    " + line + '</font>', html=True)
                     elif line.startswith('+'):
-                        logger.write('<i><font style="font-size:150%;color:white;background-color:Green">' +
-                                     "    " + line + '</font></i>', html=True)
+                        logger.write('<font style="font-size:120%;color:white;background-color:Green">' +
+                                     "    " + line + '</font>', html=True)
                     else:
                         logger.write("    " + line + "\n")
             m_CompareResultFile.close()
