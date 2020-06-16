@@ -304,6 +304,7 @@ BEGIN
        dbms_output.put_line('其它处理');
      END IF;
 END;
+/
 
 DECLARE num_C INTEGER;
 BEGIN
@@ -361,6 +362,7 @@ BEGIN
        dbms_output.put_line('其它处理');
      END IF;
 END;
+/
 
 DECLARE num_C INTEGER;
 BEGIN
