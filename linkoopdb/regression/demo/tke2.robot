@@ -6,12 +6,11 @@ Test Teardown    SQL Test Clnup
 *** Settings ***
 Documentation    RobotFrameWork文档实例
 ...              这里的文档内容会出现在报告里面
-Force Tags       SQL-Test
+Force Tags       Demo
 
 *** Test Cases ***
 Demo1
     [Documentation]    演示程序1， 最简单基础的一个SQL测试
-    Compare Break When Difference      True
     Execute SQL Script             tke2.sql          tke2_hdfs.log
     Compare Files                  tke2_hdfs.log     tke2.ref
 
