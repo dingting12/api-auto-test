@@ -312,6 +312,7 @@ BEGIN
    u_dblink_permission6.p_dblink_1(3,4,3,num_C);
    dbms_output.put_line('输出结果：'|| num_C );
 END;
+/
 
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -370,6 +371,7 @@ BEGIN
    u_dblink_permission7.p_dblink_1(3,4,3,num_C);
    dbms_output.put_line('输出结果：'|| num_C );
 END;
+/
 
 ----用户有查询的权限
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
