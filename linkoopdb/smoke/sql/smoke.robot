@@ -34,6 +34,7 @@ SMOKETEST
 	LOgon And Execute SQL Script     admin/123456  ldbdist.sql
 	LOgon And Execute SQL Script     admin/123456  Stored_procedure.sql
 	LOgon And Execute SQL Script     admin/123456  LDB_EXT_Partition-Bucket-index.sql
+	LOgon And Execute SQL Script     admin/123456  OLAP_Window_Function.sql
     Compare Files        CORE_基本PSM.log                 CORE_基本PSM.ref              
 	Compare Files        CORE_cast_case.log    			  CORE_cast_case.ref 
 	Compare Files        CORE_null与基本完整性约束.log    CORE_null与基本完整性约束.ref 
@@ -56,6 +57,7 @@ SMOKETEST
 	Compare Files		 ldbdist.log                      ldbdist.ref 
 	Compare Files		 Stored_procedure.log             Stored_procedure.ref 
 	Compare Files		 LDB_EXT_Partition-Bucket-index.log  LDB_EXT_Partition-Bucket-index.ref 
+	Compare Files		 OLAP_Window_Function.log         OLAP_Window_Function.ref 
 		
 
 
