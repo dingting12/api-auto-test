@@ -19,7 +19,7 @@ SQL Test Setup
 
     # 控制日志比对是否在遇到不一致现象的时候，就立即终止本Case的后续测试工作
     # 默认是不终止，即使比对发生错误，测试也会继续运行下去
-    Compare Break When Difference      False
+    Compare Break When Difference      True
 
     # 控制SQLCli控制台是否显示输出，如果在Jenkins中运行，则打开后同样会在Jenkins的控制台上显示出来
     # 小心： 如果SQL中包含返回内容较多的查询，这样打开将导致测试报告文件很大，可能会变得无法阅读
