@@ -7,14 +7,14 @@ Resource          ../../../common/SetupRobot.robot
 
 *** Test Cases ***
 OracleSetUp
-    [Tags]     SQL-Test       DBLINK
+    [Tags] DBLINK
     Setup Compare Settings
     Execute SQL Script        oracle_database_sql/oracle_setup.sql
     Compare Files             oracle_setup.log  oracle_setup.ref
 
 *** Test Cases ***
 CreateDBlinkTest
-    [Tags]     SQL-Test       DBLINK
+    [Tags] DBLINK
     Setup Compare Settings
     Execute SQL Script        the_DDL_of_oracle_dblink/create_oracle_dblink.sql
     Compare Files             create_oracle_dblink.log  create_oracle_dblink.ref
