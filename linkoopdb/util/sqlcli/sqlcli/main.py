@@ -1398,7 +1398,7 @@ class SQLCli(object):
     def execute_internal_command(self, arg, **_):
         # 创建数据文件, 根据末尾的rows来决定创建的行数
         # 此时，SQL语句中的回车换行符没有意义
-        matchObj = re.match(r"create\s+file\s+(.*?)\((.*)\)(\s+)?rows\s+([1-9]\d*)(\s+)?(;)?$",
+        matchObj = re.match(r"create\s+file\s+(.*?)\((.*)\)(\s+)?rows\s+(\d+)(\s+)?$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
             # create file command  将根据格式要求创建需要的文件
@@ -1414,7 +1414,7 @@ class SQLCli(object):
             return
 
         #  创建数据文件
-        matchObj = re.match(r"create\s+file\s+(.*?)\((.*)\)(\s+)?(;)?$",
+        matchObj = re.match(r"create\s+file\s+(.*?)\((.*)\)(\s+)?$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
             # create file command  将根据格式要求创建需要的文件
@@ -1430,7 +1430,7 @@ class SQLCli(object):
             return
 
         #  在不同的文件中进行相互转换
-        matchObj = re.match(r"create\s+file\s+(.*?)\s+from\s+(.*?)(\s+)?(;)?$",
+        matchObj = re.match(r"create\s+file\s+(.*?)\s+from\s+(.*?)(\s+)?$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
             # 在不同的文件中相互转换
@@ -1445,19 +1445,34 @@ class SQLCli(object):
             return
 
         # 创建随机数Seed的缓存文件
-        matchObj = re.match(r"create\s+seeddatafile(\s+)?;$",
+        matchObj = re.match(r"create\s+seeddatafile\s+(.*)\s+with\s+null\s+rows\s+(\d+)$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
-            Create_SeedCacheFile()
+            m_strSeedFile = str(matchObj.group(1)).lstrip().rstrip()
+            m_nNullValueCount = int(matchObj.group(2))
+            Create_SeedCacheFile(p_szSeedName=m_strSeedFile, p_nNullValueCount=m_nNullValueCount)
             yield (
                 None,
                 None,
                 None,
-                'file created Successful.')
+                'seed file created Successful.')
+            return
+
+        # 创建随机数Seed的缓存文件
+        matchObj = re.match(r"create\s+seeddatafile\s+(.*)(\s+)?$",
+                            arg, re.IGNORECASE | re.DOTALL)
+        if matchObj:
+            m_strSeedFile = str(matchObj.group(1))
+            Create_SeedCacheFile(p_szSeedName=m_strSeedFile)
+            yield (
+                None,
+                None,
+                None,
+                'seed file created Successful.')
             return
 
         # 不认识的internal命令
-        raise SQLCliException("Unknown internal Command. Please double check.")
+        raise SQLCliException("Unknown internal Command [" + str(arg) + "]. Please double check.")
 
     # 逐条处理SQL语句
     # 如果执行成功，返回true
