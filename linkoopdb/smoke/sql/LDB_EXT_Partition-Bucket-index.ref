@@ -1,0 +1,181 @@
+SQLCli Release 0.0.61
+SQL> connect admin/123456
+Database connected.
+SQL> start LDB_EXT_Partition-Bucket-index.sql
+SQL> --    Description: 测试分区，分桶，索引
+   > --    Date:         2020-06-16
+   > --    Author:       丁婷
+   > 
+   > --测试分区,hdfs内部表
+SQL> drop table if exists T_PARTITION_HDFS_001;
+0 rows affected
+SQL> CREATE TABLE T_PARTITION_HDFS_001 (
+   > A INT, 
+   > B DECIMAL(10,2),
+   > C VARCHAR(255)
+   > ) PARTITIONED BY(A, C);
+0 rows affected
+SQL> INSERT INTO T_PARTITION_HDFS_001 VALUES
+   > (1,10.2,'asd'),
+   > (2,10.2,'asd'),
+   > (1,10.2,'asd'),
+   > (3,10.2,'asd');
+4 rows affected
+SQL> SELECT * FROM T_PARTITION_HDFS_001 ORDER BY A;
++---+------+-----+
+| A | B    | C   |
++---+------+-----+
+| 1 | 10.2 | asd |
+| 1 | 10.2 | asd |
+| 2 | 10.2 | asd |
+| 3 | 10.2 | asd |
++---+------+-----+
+4 rows selected.
+SQL> 
+SQL> --测试分区,hdfs外部表csv，parquet格式
+SQL> drop table if exists T_PARTITION_EXTERNAL_HDFS_001;
+0 rows affected
+SQL> drop table if exists T_PARTITION_EXTERNAL_HDFS_002;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE T_PARTITION_EXTERNAL_HDFS_001 (
+   > tint int,
+   > tsmallint smallint,
+   > tbigint bigint,
+   > treal real,
+   > tfloat float,
+   > tdouble double,
+   > tdecimal decimal(10,2),
+   > tnumeric numeric(10,4),
+   > tdate date,
+   > ttimestamp timestamp,
+   > tchar char(10),
+   > tvarchar varchar(8000)
+   > )location('hdfs:///user/testdb73/external_file/show_csv7.csv')
+   > format 'csv' (delimiter '|' header 'false') PARTITIONED BY(tint);
+0 rows affected
+SQL> SELECT * FROM T_PARTITION_EXTERNAL_HDFS_001 ORDER BY tint;
++------+-----------+---------+-------+--------+---------+----------+----------+----------+---------------------+------------+----------+
+| TINT | TSMALLINT | TBIGINT | TREAL | TFLOAT | TDOUBLE | TDECIMAL | TNUMERIC | TDATE    | TTIMESTAMP          | TCHAR      | TVARCHAR |
++------+-----------+---------+-------+--------+---------+----------+----------+----------+---------------------+------------+----------+
+| 1    | 1         | 1       | 1.11  | 1.11   | 1.11    | 1.11     | 1.11     | 2019-2-1 | 2000-10-23 23:22:01 | xnxjdud    | bvhhut   |
+| 2    | 2         | 2       | 2.22  | 2.22   | 2.22    | 2.22     | 2.22     | 2018-3-2 | 2001-09-22 22:21:02 | nii        | nioipo   |
+| 3    | 3         | 3       | 3.33  | 3.33   | 3.33    | 3.33     | 3.33     | 2017-4-3 | 2002-08-21 21:20:03 | qoncsd     | bbcu     |
+| 4    | 4         | 4       | 4.44  | 4.44   | 4.44    | 4.44     | 4.44     | 2016-5-4 | 2003-07-20 20:19:04 | vnucy      | cmoouuw  |
++------+-----------+---------+-------+--------+---------+----------+----------+----------+---------------------+------------+----------+
+4 rows selected.
+SQL> CREATE EXTERNAL TABLE T_PARTITION_EXTERNAL_HDFS_002 (
+   > i_item_sk char(20),
+   > i_item_id char(20),
+   > i_rec_start_date char(20),
+   > i_rec_end_date char(20),
+   > i_item_desc varchar(200),
+   > i_current_price char(20),
+   > i_wholesale_cost char(20),
+   > i_brand_id char(20),
+   > i_brand char(50),
+   > i_class_id char(20),
+   > i_class char(20),
+   > i_category_id char(20),
+   > i_category char(20),
+   > i_manufact_id char(20),
+   > i_manufact char(20),
+   > i_size char(20),
+   > i_formulation char(50),
+   > i_color char(20),
+   > i_units char(20),
+   > i_container char(20),
+   > i_manager_id char(20),
+   > i_product_name char(20)
+   > )LOCATION ('hdfs:///user/testdb73/external_file/item.parquet') FORMAT 'parquet' PARTITIONED BY(i_item_sk);
+0 rows affected
+SQL> SELECT * FROM T_PARTITION_EXTERNAL_HDFS_002  ORDER BY i_item_sk LIMIT 10;
++----------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+
+| I_ITEM_SK            | I_ITEM_ID            | I_REC_START_DATE     | I_REC_END_DATE       | I_ITEM_DESC                                                                                                                                                                                     | I_CURRENT_PRICE      | I_WHOLESALE_COST     | I_BRAND_ID           | I_BRAND                                            | I_CLASS_ID           | I_CLASS              | I_CATEGORY_ID        | I_CATEGORY           | I_MANUFACT_ID        | I_MANUFACT           | I_SIZE               | I_FORMULATION                                      | I_COLOR              | I_UNITS              | I_CONTAINER          | I_MANAGER_ID         | I_PRODUCT_NAME       |
++----------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+
+| 1                    | AAAAAAAABAAAAAAA     | 1997-10-27           | <null>               | Agricultural sites will not provide skills. Again                                                                                                                                               | 0.55                 | 0.22                 | 7003002              | exportibrand #2                                    | 3                    | kids                 | 7                    | Home                 | 113                  | prioughtought        | N/A                  | 5357922029965drab316                               | puff                 | Tsp                  | Unknown              | 21                   | ought                |
+| 10                   | AAAAAAAAKAAAAAAA     | 1997-10-27           | 1999-10-27           | Deep national ministers receive again financial trees. Sure, temporary months say very enough resulting premises. Sufficient, particular males modify more short, lo                            | 6.20                 | 4.34                 | 2002001              | importoimporto #1                                  | 2                    | shirts               | 2                    | Men                  | 908                  | eingbarn st          | small                | 0078417387lavender81                               | midnight             | Gram                 | Unknown              | 10                   | barought             |
+| 100                  | AAAAAAAAEGAAAAAA     | 1997-10-27           | 1999-10-27           | Arguments play actually to a adults. Proposed, accessible failures reach home low twins. Still great suggestions appear dear, traditional girls. More fixed contexts might kiss up a fees.      | 24.14                | 17.38                | 6016005              | corpbrand #5                                       | 16                   | consignment          | 6                    | Jewelry              | 29                   | n stable             | N/A                  | 1indian7576310458190                               | sky                  | Ounce                | Unknown              | 6                    | barbarought          |
+| 1000                 | AAAAAAAAIODAAAAA     | 1997-10-27           | 1999-10-27           | Laws expect stores. Other products can install that responsible consequences; parties lead for a states. Special, pal                                                                           | 3.35                 | 2.74                 | 10007015             | brandunivamalg #15                                 | 7                    | personal             | 10                   | Electronics          | 347                  | ationesepri          | N/A                  | 75210834sky485049722                               | papaya               | Bundle               | Unknown              | 42                   | barbarbarought       |
+| 10000                | AAAAAAAAABHCAAAA     | 1997-10-27           | 1999-10-27           | Small, happy eyes close                                                                                                                                                                         | 1.05                 | 0.53                 | 4004001              | edu packedu pack #1                                | 4                    | athletic             | 4                    | Shoes                | 151                  | oughtantiought       | N/A                  | 923403222704lemon353                               | red                  | Bunch                | Unknown              | 2                    | barbarbarbarought    |
+| 10001                | AAAAAAAAABHCAAAA     | 1999-10-28           | 2001-10-26           | Level children shall exist finally other, patient costs. Adequate values come very children. Reforms ought to profit too as black troops. Nev                                                   | 6.23                 | 0.53                 | 9001006              | amalgmaxi #6                                       | 4                    | arts                 | 9                    | Books                | 151                  | oughtantiought       | N/A                  | dodger69913549121182                               | purple               | Pallet               | Unknown              | 85                   | oughtbarbarbarought  |
+| 10002                | AAAAAAAAABHCAAAA     | 2001-10-27           | <null>               | Precise, right horses end here to a rights. Initially positive results adopt just parliamen                                                                                                     | 5.53                 | 3.31                 | 9001006              | corpamalgamalg #7                                  | 4                    | wireless             | 10                   | Electronics          | 151                  | oughtantiought       | N/A                  | dodger69913549121182                               | peru                 | Gross                | Unknown              | 5                    | ablebarbarbarought   |
+| 10003                | AAAAAAAADBHCAAAA     | 1997-10-27           | <null>               | Concerned, novel users shall carry probably also elaborate cases. Now given businesses would not tell therefore all rich elections. Figures may re-establish. Movements mean little developing  | 6.24                 | 4.24                 | 6004004              | edu packcorp #4                                    | 4                    | bracelets            | 6                    | Jewelry              | 525                  | antiableanti         | N/A                  | 47797sandy8554477303                               | red                  | Gram                 | Unknown              | 51                   | pribarbarbarought    |
+| 10004                | AAAAAAAAEBHCAAAA     | 1997-10-27           | 2000-10-26           | Ago eastern                                                                                                                                                                                     | 5.88                 | 1.94                 | 1004001              | edu packamalg #1                                   | 4                    | swimwear             | 1                    | Women                | 342                  | ableesepri           | medium               | 9826235grey616435483                               | turquoise            | Bundle               | Unknown              | 17                   | esebarbarbarought    |
+| 10005                | AAAAAAAAEBHCAAAA     | 2000-10-27           | <null>               | New, great pilots should not reach industrial, available courts; known forms could not provide. Nuclear, obvious eyes can prove strangely individu                                              | 4.38                 | 1.94                 | 1004001              | importoamalg #2                                    | 2                    | fragrances           | 1                    | Women                | 342                  | ableesepri           | extra large          | 663447red50665317556                               | royal                | Pallet               | Unknown              | 11                   | antibarbarbarought   |
++----------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+
+10 rows selected.
+SQL> 
+SQL> --测试分桶,hdfs外部表csv，parquet格式
+SQL> drop table if exists T_BUCKET_EXTERNAL_HDFS_001;
+0 rows affected
+SQL> drop table if exists T_BUCKET_EXTERNAL_HDFS_002;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE T_BUCKET_EXTERNAL_HDFS_001 (
+   > tint int,
+   > tsmallint smallint,
+   > tbigint bigint,
+   > treal real,
+   > tfloat float,
+   > tdouble double,
+   > tdecimal decimal(10,2),
+   > tnumeric numeric(10,4),
+   > tdate date,
+   > ttimestamp timestamp,
+   > tchar char(10),
+   > tvarchar varchar(8000)
+   > )location('hdfs:///user/testdb73/external_file/show_csv7.csv')
+   > format 'csv' (delimiter '|' header 'false') CLUSTERED BY (tint) INTO 4 BUCKETS;
+0 rows affected
+SQL> SELECT * FROM T_BUCKET_EXTERNAL_HDFS_001 ORDER BY tint;
++------+-----------+---------+-------+--------+---------+----------+----------+----------+---------------------+------------+----------+
+| TINT | TSMALLINT | TBIGINT | TREAL | TFLOAT | TDOUBLE | TDECIMAL | TNUMERIC | TDATE    | TTIMESTAMP          | TCHAR      | TVARCHAR |
++------+-----------+---------+-------+--------+---------+----------+----------+----------+---------------------+------------+----------+
+| 1    | 1         | 1       | 1.11  | 1.11   | 1.11    | 1.11     | 1.11     | 2019-2-1 | 2000-10-23 23:22:01 | xnxjdud    | bvhhut   |
+| 2    | 2         | 2       | 2.22  | 2.22   | 2.22    | 2.22     | 2.22     | 2018-3-2 | 2001-09-22 22:21:02 | nii        | nioipo   |
+| 3    | 3         | 3       | 3.33  | 3.33   | 3.33    | 3.33     | 3.33     | 2017-4-3 | 2002-08-21 21:20:03 | qoncsd     | bbcu     |
+| 4    | 4         | 4       | 4.44  | 4.44   | 4.44    | 4.44     | 4.44     | 2016-5-4 | 2003-07-20 20:19:04 | vnucy      | cmoouuw  |
++------+-----------+---------+-------+--------+---------+----------+----------+----------+---------------------+------------+----------+
+4 rows selected.
+SQL> CREATE EXTERNAL TABLE T_BUCKET_EXTERNAL_HDFS_002 (
+   > i_item_sk char(20),
+   > i_item_id char(20),
+   > i_rec_start_date char(20),
+   > i_rec_end_date char(20),
+   > i_item_desc varchar(200),
+   > i_current_price char(20),
+   > i_wholesale_cost char(20),
+   > i_brand_id char(20),
+   > i_brand char(50),
+   > i_class_id char(20),
+   > i_class char(20),
+   > i_category_id char(20),
+   > i_category char(20),
+   > i_manufact_id char(20),
+   > i_manufact char(20),
+   > i_size char(20),
+   > i_formulation char(50),
+   > i_color char(20),
+   > i_units char(20),
+   > i_container char(20),
+   > i_manager_id char(20),
+   > i_product_name char(20)
+   > )LOCATION ('hdfs:///user/testdb73/external_file/item.parquet') FORMAT 'parquet' CLUSTERED BY (i_item_sk) INTO 10 BUCKETS;
+0 rows affected
+SQL> SELECT * FROM T_BUCKET_EXTERNAL_HDFS_002  ORDER BY i_item_sk LIMIT 10;
++----------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+
+| I_ITEM_SK            | I_ITEM_ID            | I_REC_START_DATE     | I_REC_END_DATE       | I_ITEM_DESC                                                                                                                                                                                     | I_CURRENT_PRICE      | I_WHOLESALE_COST     | I_BRAND_ID           | I_BRAND                                            | I_CLASS_ID           | I_CLASS              | I_CATEGORY_ID        | I_CATEGORY           | I_MANUFACT_ID        | I_MANUFACT           | I_SIZE               | I_FORMULATION                                      | I_COLOR              | I_UNITS              | I_CONTAINER          | I_MANAGER_ID         | I_PRODUCT_NAME       |
++----------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+
+| 1                    | AAAAAAAABAAAAAAA     | 1997-10-27           | <null>               | Agricultural sites will not provide skills. Again                                                                                                                                               | 0.55                 | 0.22                 | 7003002              | exportibrand #2                                    | 3                    | kids                 | 7                    | Home                 | 113                  | prioughtought        | N/A                  | 5357922029965drab316                               | puff                 | Tsp                  | Unknown              | 21                   | ought                |
+| 10                   | AAAAAAAAKAAAAAAA     | 1997-10-27           | 1999-10-27           | Deep national ministers receive again financial trees. Sure, temporary months say very enough resulting premises. Sufficient, particular males modify more short, lo                            | 6.20                 | 4.34                 | 2002001              | importoimporto #1                                  | 2                    | shirts               | 2                    | Men                  | 908                  | eingbarn st          | small                | 0078417387lavender81                               | midnight             | Gram                 | Unknown              | 10                   | barought             |
+| 100                  | AAAAAAAAEGAAAAAA     | 1997-10-27           | 1999-10-27           | Arguments play actually to a adults. Proposed, accessible failures reach home low twins. Still great suggestions appear dear, traditional girls. More fixed contexts might kiss up a fees.      | 24.14                | 17.38                | 6016005              | corpbrand #5                                       | 16                   | consignment          | 6                    | Jewelry              | 29                   | n stable             | N/A                  | 1indian7576310458190                               | sky                  | Ounce                | Unknown              | 6                    | barbarought          |
+| 1000                 | AAAAAAAAIODAAAAA     | 1997-10-27           | 1999-10-27           | Laws expect stores. Other products can install that responsible consequences; parties lead for a states. Special, pal                                                                           | 3.35                 | 2.74                 | 10007015             | brandunivamalg #15                                 | 7                    | personal             | 10                   | Electronics          | 347                  | ationesepri          | N/A                  | 75210834sky485049722                               | papaya               | Bundle               | Unknown              | 42                   | barbarbarought       |
+| 10000                | AAAAAAAAABHCAAAA     | 1997-10-27           | 1999-10-27           | Small, happy eyes close                                                                                                                                                                         | 1.05                 | 0.53                 | 4004001              | edu packedu pack #1                                | 4                    | athletic             | 4                    | Shoes                | 151                  | oughtantiought       | N/A                  | 923403222704lemon353                               | red                  | Bunch                | Unknown              | 2                    | barbarbarbarought    |
+| 10001                | AAAAAAAAABHCAAAA     | 1999-10-28           | 2001-10-26           | Level children shall exist finally other, patient costs. Adequate values come very children. Reforms ought to profit too as black troops. Nev                                                   | 6.23                 | 0.53                 | 9001006              | amalgmaxi #6                                       | 4                    | arts                 | 9                    | Books                | 151                  | oughtantiought       | N/A                  | dodger69913549121182                               | purple               | Pallet               | Unknown              | 85                   | oughtbarbarbarought  |
+| 10002                | AAAAAAAAABHCAAAA     | 2001-10-27           | <null>               | Precise, right horses end here to a rights. Initially positive results adopt just parliamen                                                                                                     | 5.53                 | 3.31                 | 9001006              | corpamalgamalg #7                                  | 4                    | wireless             | 10                   | Electronics          | 151                  | oughtantiought       | N/A                  | dodger69913549121182                               | peru                 | Gross                | Unknown              | 5                    | ablebarbarbarought   |
+| 10003                | AAAAAAAADBHCAAAA     | 1997-10-27           | <null>               | Concerned, novel users shall carry probably also elaborate cases. Now given businesses would not tell therefore all rich elections. Figures may re-establish. Movements mean little developing  | 6.24                 | 4.24                 | 6004004              | edu packcorp #4                                    | 4                    | bracelets            | 6                    | Jewelry              | 525                  | antiableanti         | N/A                  | 47797sandy8554477303                               | red                  | Gram                 | Unknown              | 51                   | pribarbarbarought    |
+| 10004                | AAAAAAAAEBHCAAAA     | 1997-10-27           | 2000-10-26           | Ago eastern                                                                                                                                                                                     | 5.88                 | 1.94                 | 1004001              | edu packamalg #1                                   | 4                    | swimwear             | 1                    | Women                | 342                  | ableesepri           | medium               | 9826235grey616435483                               | turquoise            | Bundle               | Unknown              | 17                   | esebarbarbarought    |
+| 10005                | AAAAAAAAEBHCAAAA     | 2000-10-27           | <null>               | New, great pilots should not reach industrial, available courts; known forms could not provide. Nuclear, obvious eyes can prove strangely individu                                              | 4.38                 | 1.94                 | 1004001              | importoamalg #2                                    | 2                    | fragrances           | 1                    | Women                | 342                  | ableesepri           | extra large          | 663447red50665317556                               | royal                | Pallet               | Unknown              | 11                   | antibarbarbarought   |
++----------------------+----------------------+----------------------+----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------+----------------------------------------------------+----------------------+----------------------+----------------------+----------------------+----------------------+
+10 rows selected.
+SQL> exit
+Disconnected.

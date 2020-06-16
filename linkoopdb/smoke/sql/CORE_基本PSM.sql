@@ -45,7 +45,7 @@ CREATE Function function_test_002( in x INT)
   begin atomic
     declare y int;
     set y= x;
-    return TABLE(select id, firstname from T_invocation_test_001 where id > y);
+    return TABLE(select id, firstname from T_invocation_test_001 where id > y order by id);
   end;
 /
 
