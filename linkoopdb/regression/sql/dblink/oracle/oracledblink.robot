@@ -19,4 +19,4 @@ CreateDBlinkTest
     Compare Files             create_oracle_dblink.log  create_oracle_dblink.ref
 
 *** Keywords ***
-Setup Compare Settings
+Setup Custom Settings
