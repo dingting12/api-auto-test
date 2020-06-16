@@ -19,7 +19,7 @@ SQL Test Setup
 
     # 控制日志比对是否在遇到不一致现象的时候，就立即终止本Case的后续测试工作
     # 默认是不终止，即使比对发生错误，测试也会继续运行下去
-    Compare Break When Difference      False
+    Compare Break When Difference      True
 
     # 控制SQLCli控制台是否显示输出，如果在Jenkins中运行，则打开后同样会在Jenkins的控制台上显示出来
     # 小心： 如果SQL中包含返回内容较多的查询，这样打开将导致测试报告文件很大，可能会变得无法阅读
@@ -34,8 +34,16 @@ SQL Test Setup
 
     # 比对参考文件的时候忽略空白行
     Compare Ignore EmptyLine           True
+
     # 比对参考文件的时候使用正则表达式
     Compare Mask                       True
+
+    # 比对文件的时候忽略大小写差异
+    Compare IgnoreCase                 False
+
+    # 比对文件的时候忽略内容的首末空格
+    Compare IgnoreTailOrHeadBlank      False
+
     # 比对参考文件的时候跳过所有符合以下标记的行
     #     Running time elapsed 是程序的运行时长，由于每次运行都可能不一致，所以比对没有意义
     Compare Skip                       Running time elapsed.*

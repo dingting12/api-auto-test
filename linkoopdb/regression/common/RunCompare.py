@@ -19,33 +19,50 @@ class POSIXCompare:
         pass
 
     # 正则表达比较两个字符串
-    # p_str1 原字符串
-    # p_str2 正则表达式
-    def compare_string(self, p_str1, p_str2, p_compare_maskEnabled=False):
+    # p_str1                  原字符串
+    # p_str2                  正则表达式
+    # p_compare_maskEnabled   是否按照正则表达式来判断是否相等
+    # p_compare_ignorecase    是否忽略匹配中的大小写
+    def compare_string(self, p_str1, p_str2,
+                       p_compare_maskEnabled=False,
+                       p_compare_ignorecase=False):
+        # 如果两个字符串完全相等，直接返回
         if p_str1 == p_str2:
             return True
-        else:
-            if not p_compare_maskEnabled:
+
+        # 如果忽略大小写的情况下，两个字符串的大写相同，则直接返回
+        if p_compare_ignorecase:
+            if p_str1.upper() == p_str2.upper():
+                return True
+
+        # 如果没有启用正则，则直接返回不相等
+        if not p_compare_maskEnabled:
+            return False
+
+        # 用正则判断表达式是否相等
+        try:
+            if p_str2 in self.CompiledRegexPattern:
+                m_CompiledPattern = self.CompiledRegexPattern[p_str2]
+            else:
+                m_CompiledPattern = re.compile(p_str2)
+                self.CompiledRegexPattern[p_str2] = m_CompiledPattern
+            if p_compare_ignorecase:
+                matchObj = re.match(m_CompiledPattern, p_str1, re.IGNORECASE)
+            else:
+                matchObj = re.match(m_CompiledPattern, p_str1)
+            if matchObj is None:
+                return False
+            elif str(matchObj.group()) != p_str1:
                 return False
             else:
-                try:
-                    if p_str2 in self.CompiledRegexPattern:
-                        m_CompiledPattern = self.CompiledRegexPattern[p_str2]
-                    else:
-                        m_CompiledPattern = re.compile(p_str2)
-                        self.CompiledRegexPattern[p_str2] = m_CompiledPattern
-                    matchObj = re.match(m_CompiledPattern, p_str1)
-                    if matchObj is None:
-                        return False
-                    elif str(matchObj.group()) != p_str1:
-                        return False
-                    else:
-                        return True
-                except re.error:
-                    # 正则表达式错误，可能是由于这并非是一个正则表达式
-                    return False
+                return True
+        except re.error:
+            # 正则表达式错误，可能是由于这并非是一个正则表达式
+            return False
 
-    def compare(self, x, y, p_compare_maskEnabled=False):
+    def compare(self, x, y,
+                p_compare_maskEnabled=False,
+                p_compare_ignorecase=False):
         # LCS问题就是求两个字符串最长公共子串的问题。
         # 解法就是用一个矩阵来记录两个字符串中所有位置的两个字符之间的匹配情况，若是匹配则为1，否则为0。
         # 然后求出对角线最长的1序列，其对应的位置就是最长匹配子串的位置。
@@ -69,7 +86,8 @@ class POSIXCompare:
         c = [[0 for _ in range(len(y) + 1)] for _ in range(len(x) + 1)]
         for i, xi in enumerate(x):
             for j, yj in enumerate(y):
-                if self.compare_string(xi, yj, p_compare_maskEnabled):
+                if self.compare_string(xi, yj,
+                                       p_compare_maskEnabled, p_compare_ignorecase):
                     c[i][j] = 1 + c[i - 1][j - 1]
                 else:
                     c[i][j] = max(c[i][j - 1], c[i - 1][j])
@@ -94,7 +112,8 @@ class POSIXCompare:
                 next_y = next_y
                 next_i = next_i - 1
                 next_j = next_j
-            elif self.compare_string(next_x[next_i], next_y[next_j], p_compare_maskEnabled):
+            elif self.compare_string(next_x[next_i], next_y[next_j],
+                                     p_compare_maskEnabled, p_compare_ignorecase):
                 m_CompareDiffResult.append("  " + next_x[next_i])
                 next_x = next_x
                 next_y = next_y
@@ -117,8 +136,11 @@ class POSIXCompare:
         return compare_result, m_CompareDiffResult
 
     def compare_text_files(self, file1, file2,
-                           skiplines=None, ignoreEmptyLine=False,
-                           CompareWithMask=None):
+                           skiplines=None,
+                           ignoreEmptyLine=False,
+                           CompareWithMask=None,
+                           CompareIgnoreCase=False,
+                           CompareIgnoreTailOrHeadBlank=False):
         if not os.path.isfile(file1):
             raise DiffException('ERROR: %s is not a file' % file1)
         if not os.path.isfile(file2):
@@ -128,13 +150,20 @@ class POSIXCompare:
         file1content = open(file1, mode='r', encoding='utf-8').readlines()
         file2content = open(file2, mode='r', encoding='utf-8').readlines()
 
-        # 去掉filecontent中的空格
+        # 去掉filecontent中的回车换行
         for m_nPos in range(0, len(file1content)):
             if file1content[m_nPos].endswith('\n'):
                 file1content[m_nPos] = file1content[m_nPos][:-1]
         for m_nPos in range(0, len(file2content)):
             if file2content[m_nPos].endswith('\n'):
                 file2content[m_nPos] = file2content[m_nPos][:-1]
+
+        # 去掉fileconent中的首尾空格
+        if CompareIgnoreTailOrHeadBlank:
+            for m_nPos in range(0, len(file1content)):
+                file1content[m_nPos] = file1content[m_nPos].lstrip().rstrip()
+            for m_nPos in range(0, len(file2content)):
+                file2content[m_nPos] = file2content[m_nPos].lstrip().rstrip()
 
         # 去除在SkipLine里头的所有内容
         if skiplines is not None:
@@ -178,7 +207,9 @@ class POSIXCompare:
         # 输出两个信息
         # 1：  Compare的结果是否存在dif，True/False
         # 2:   Compare的Dif列表，注意：这里是一个翻转的列表
-        return self.compare(file1content, file2content, p_compare_maskEnabled=CompareWithMask)
+        return self.compare(file1content, file2content,
+                            p_compare_maskEnabled=CompareWithMask,
+                            p_compare_ignorecase=CompareIgnoreCase)
 
 
 class RunCompare(object):
@@ -188,6 +219,8 @@ class RunCompare(object):
     __EnableConsoleOutPut = False             # 是否关闭在Console上的显示，默认是不关闭
     __IgnoreEmptyLine = False                 # 是否在比对的时候忽略空白行
     __CompareWithMask = False                 # 是否在比对的时候利用正则表达式
+    __CompareIgnoreCase = False               # 是否再比对的时候忽略大小写
+    __CompareIgnoreTailOrHeadBlank = False    # 是否忽略对比的前后空格
     __CompareFailedCount = 0                  # Compare已经失败的个次数
 
     def __init__(self):
@@ -296,6 +329,36 @@ class RunCompare(object):
          """
         if str(p_szCompareWithMask).upper() == 'TRUE':
             self.__CompareWithMask = True
+        if str(p_szCompareWithMask).upper() == 'FALSE':
+            self.__CompareWithMask = False
+
+    def Compare_IgnoreCase(self, p_szIgnoreCase):
+        """ 设置是否在比对的时候忽略大小写  """
+        """
+         输入参数：
+              p_szIgnoreCase:        在比对的时候是否忽略大小写，默认是不忽略
+         返回值：
+             无
+
+         """
+        if str(p_szIgnoreCase).upper() == 'TRUE':
+            self.__CompareIgnoreCase = True
+        if str(p_szIgnoreCase).upper() == 'FALSE':
+            self.__CompareIgnoreCase = False
+
+    def Compare_IgnoreTailOrHeadBlank(self, p_szIgnoreTailOrHeadBlank):
+        """ 设置是否在比对的时候忽略行首和行末的空格  """
+        """
+         输入参数：
+              p_szIgnoreTailOrHeadBlank:        在比对的时候是否忽略行首和行末的空格，默认是不忽略
+         返回值：
+             无
+
+         """
+        if str(p_szIgnoreTailOrHeadBlank).upper() == 'TRUE':
+            self.__CompareIgnoreTailOrHeadBlank = True
+        if str(p_szIgnoreTailOrHeadBlank).upper() == 'FALSE':
+            self.__CompareIgnoreTailOrHeadBlank = False
 
     def Compare_Files(self, p_szWorkFile, p_szReferenceFile):
         """ 比较两个文件是否一致  """
@@ -402,7 +465,12 @@ class RunCompare(object):
         try:
             # 这里的CompareResultList是一个被翻转了的列表，在输出的时候，需要翻转回来
             (m_CompareResult, m_CompareResultList) = m_Comparer.compare_text_files(
-                m_szWorkFile, m_ReferenceLog, self.__SkipLines, self.__IgnoreEmptyLine, self.__CompareWithMask)
+                m_szWorkFile, m_ReferenceLog,
+                self.__SkipLines,
+                self.__IgnoreEmptyLine,
+                self.__CompareWithMask,
+                self.__CompareIgnoreCase,
+                self.__CompareIgnoreTailOrHeadBlank)
         except DiffException as de:
             raise RuntimeError('Diff exception::' + de.message)
 
@@ -418,7 +486,14 @@ class RunCompare(object):
             for line in m_CompareResultList[::-1]:
                 print(line, file=m_CompareResultFile)
                 if self.__EnableConsoleOutPut:
-                    logger.write("    " + line + "\n")
+                    if line.startswith('-'):
+                        logger.write('<font style="font-size:120%;color:white;background-color:Red">' +
+                                     "    " + line + '</font>', html=True)
+                    elif line.startswith('+'):
+                        logger.write('<font style="font-size:120%;color:white;background-color:Green">' +
+                                     "    " + line + '</font>', html=True)
+                    else:
+                        logger.write("    " + line + "\n")
             m_CompareResultFile.close()
             logger.write("======= Diff file [" + m_DifFullFileName + "] <<<<<< ")
             if self.__BreakWithDifference:
@@ -429,3 +504,8 @@ class RunCompare(object):
 
 if __name__ == '__main__':
     pass
+    myCompare = RunCompare()
+    # myCompare.Compare_IgnoreCase("TRUE")
+    myCompare.Compare_Files("C:\\Work\\linkoop\\robotframework-comparelibrary\\localtest\\join_number.log",
+                            "C:\\Work\\linkoop\\robotframework-comparelibrary\\localtest\\join_number.ref",
+                            )

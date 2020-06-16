@@ -97,7 +97,7 @@ CREATE USER "U_DBlink@!@$%#(*特朗普" IDENTIFIED BY 123456;
 
 GRANT dba TO "U_DBlink@!@$%#(*特朗普";
 
-connect U_DBlink@!@$%#(*特朗普/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+connect "U_DBlink@!@$%#(*特朗普"/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 DROP TABLE "U_DBlink@!@$%#(*特朗普".t_dblink_wy1;
 
@@ -304,6 +304,7 @@ BEGIN
        dbms_output.put_line('其它处理');
      END IF;
 END;
+/
 
 DECLARE num_C INTEGER;
 BEGIN
@@ -311,6 +312,7 @@ BEGIN
    u_dblink_permission6.p_dblink_1(3,4,3,num_C);
    dbms_output.put_line('输出结果：'|| num_C );
 END;
+/
 
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -361,6 +363,7 @@ BEGIN
        dbms_output.put_line('其它处理');
      END IF;
 END;
+/
 
 DECLARE num_C INTEGER;
 BEGIN
@@ -368,6 +371,7 @@ BEGIN
    u_dblink_permission7.p_dblink_1(3,4,3,num_C);
    dbms_output.put_line('输出结果：'|| num_C );
 END;
+/
 
 ----用户有查询的权限
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
