@@ -15,7 +15,7 @@ INSERT INTO Test_Builtin_2 VALUES(4,' q az xe'),(5,'S D B J Y '),(6,'  z  xn  HJ
 --CHARACTER_LENGTH()函数
 
 SELECT CHARACTER_LENGTH('  ') FROM Test_Builtin_2 limit 1;
-SELECT CHARACTER_LENGTH(name) FROM Test_Builtin_2 order by id ;
+SELECT CHARACTER_LENGTH(name) FROM Test_Builtin_2 order by id;
 
 --异常测试
 SELECT CHARACTER_LENGTH(timestamp '2019-02-11 09:22:23') FROM Test_Builtin_2 limit 1;
