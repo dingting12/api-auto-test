@@ -9,13 +9,13 @@ Force Tags       FUNCTION
 *** Test Cases ***
 FunctionTestHdfsTest-String
     [Documentation]    字符串函数测试
-    Logon And Execute SQL Script    admin/123456              string_function.sql           string_function.log
-    Compare Files                   string_function.log       string_function.ref
+    Logon And Execute SQL Script    admin/123456              string_function/string_function.sql           string_function.log
+    Compare Files                   string_function.log       string_function/string_function.ref
 	
 FunctionTestHdfsTest-Time
     [Documentation]    时间函数测试
-    Logon And Execute SQL Script    admin/123456              date_time_function.sql           date_time_function.log
-    Compare Files                   date_time_function.log       date_time_function.ref
+    Logon And Execute SQL Script    admin/123456              time_function/date_time_function.sql           date_time_function.log
+    Compare Files                   date_time_function.log       time_function/date_time_function.ref
 
 *** Keywords ***
 Setup Custom Settings

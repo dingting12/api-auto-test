@@ -1,0 +1,574 @@
+SQLCli Release 0.0.61
+SQL> connect admin/123456
+Database connected.
+SQL> start OLAP_Window_Function.sql
+SQL> --    Description: 测试外部表的hdfs，包括csv和parquet格式
+   > --    Date:         2020-06-11
+   > --    Author:       丁婷
+   > 
+   > -- 74 LDBX070-12 window函数row_number()
+SQL> DROP TABLE T_ROW_NUMBER_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE T_ROW_NUMBER_001 (
+   > EMPNO INT,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > COMM INT,
+   > DEPTNO INT
+   > );
+0 rows affected
+SQL> INSERT INTO T_ROW_NUMBER_001 VALUES 
+   > (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20),
+   > (7499,'ALLEN','SALESMAN',7698,TO_DATE('1981-2-20','yyyy-mm-dd'),1600,300,30),
+   > (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','yyyy-mm-dd'),1250,500,30),
+   > (7566,'JONES','MANAGER',7839,TO_DATE('1981-4-2','yyyy-mm-dd'),2975,NULL,20),
+   > (7654,'MARTIN','SALESMAN',7698,TO_DATE('1981-9-28','yyyy-mm-dd'),1250,1400,30),
+   > (7698,'BLAKE','MANAGER',7839,TO_DATE('1981-5-1','yyyy-mm-dd'),2850,NULL,30),
+   > (7782,'CLARK','MANAGER',7839,TO_DATE('1981-6-9','yyyy-mm-dd'),2450,NULL,10),
+   > (7839,'KING','PRESIDENT',NULL,TO_DATE('1981-11-17','yyyy-mm-dd'),5000,NULL,10),
+   > (7844,'TURNER','SALESMAN',7698,TO_DATE('1981-9-8','yyyy-mm-dd'),1500,0,30),
+   > (7900,'JAMES','CLERK',7698,TO_DATE('1981-12-3','yyyy-mm-dd'),950,NULL,30),
+   > (7902,'FORD','ANALYST',7566,TO_DATE('1981-12-3','yyyy-mm-dd'),3000,NULL,20),
+   > (7934,'MILLER','CLERK',7782,TO_DATE('1982-1-23','yyyy-mm-dd'),1300,NULL,10);
+12 rows affected
+SQL> SELECT DEPTNO, SAL,ROW_NUMBER() OVER(PARTITION BY empno ORDER BY comm DESC) RW FROM T_ROW_NUMBER_001 order by DEPTNO;
++--------+------+----+
+| DEPTNO | SAL  | RW |
++--------+------+----+
+| 10     | 5000 | 1  |
+| 10     | 2450 | 1  |
+| 10     | 1300 | 1  |
+| 20     | 3000 | 1  |
+| 20     | 800  | 1  |
+| 20     | 2975 | 1  |
+| 30     | 950  | 1  |
+| 30     | 2850 | 1  |
+| 30     | 1500 | 1  |
+| 30     | 1600 | 1  |
+| 30     | 1250 | 1  |
+| 30     | 1250 | 1  |
++--------+------+----+
+12 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试298 T610 Window Functions 
+SQL> drop table T_Window_Functions_001 if exists cascade;
+0 rows affected
+SQL> create table T_Window_Functions_001 (
+   > depname varchar(100), 
+   > empno int, 
+   > salary double
+   > );
+0 rows affected
+SQL> insert into T_Window_Functions_001 values
+   > ('develop' , 11 , 5200),
+   > ('develop' , 7 , 4200),
+   > ('develop' , 9 , 4500),
+   > ('develop' , 8 , 6000),
+   > ('develop' , 10 , 5200),
+   > ('personnel' , 5 , 3500),
+   > ('personnel' , 2 , 3900),
+   > ('sales' , 3 , 4800),
+   > ('sales' , 1 , 5000),
+   > ('sales' , 4 , 4800);
+10 rows affected
+SQL> SELECT depname, empno, salary, 
+   >       AVG(salary) OVER (PARTITION BY depname ) AS c1,
+   > 	SUM(salary) OVER (PARTITION BY depname ) AS c2,
+   > 	MIN(salary) OVER (PARTITION BY depname ) AS c3,
+   > 	MAX(salary) OVER (PARTITION BY depname ) AS c4
+   > FROM T_Window_Functions_001
+   > ORDER BY depname, empno, salary, c1, c2, c3, c4;
++-----------+-------+--------+-------------+-------+------+------+
+| DEPNAME   | EMPNO | SALARY | C1          | C2    | C3   | C4   |
++-----------+-------+--------+-------------+-------+------+------+
+| develop   | 7     | 4200   | 5020        | 25100 | 4200 | 6000 |
+| develop   | 8     | 6000   | 5020        | 25100 | 4200 | 6000 |
+| develop   | 9     | 4500   | 5020        | 25100 | 4200 | 6000 |
+| develop   | 10    | 5200   | 5020        | 25100 | 4200 | 6000 |
+| develop   | 11    | 5200   | 5020        | 25100 | 4200 | 6000 |
+| personnel | 2     | 3900   | 3700        | 7400  | 3500 | 3900 |
+| personnel | 5     | 3500   | 3700        | 7400  | 3500 | 3900 |
+| sales     | 1     | 5000   | 4866.666667 | 14600 | 4800 | 5000 |
+| sales     | 3     | 4800   | 4866.666667 | 14600 | 4800 | 5000 |
+| sales     | 4     | 4800   | 4866.666667 | 14600 | 4800 | 5000 |
++-----------+-------+--------+-------------+-------+------+------+
+10 rows selected.
+SQL> SELECT  depname, empno, salary, 
+   > dense_rank() OVER (PARTITION BY depname order by empno) c1 
+   > FROM T_Window_Functions_001 
+   > order by depname, empno, salary,c1;
++-----------+-------+--------+----+
+| DEPNAME   | EMPNO | SALARY | C1 |
++-----------+-------+--------+----+
+| develop   | 7     | 4200   | 1  |
+| develop   | 8     | 6000   | 2  |
+| develop   | 9     | 4500   | 3  |
+| develop   | 10    | 5200   | 4  |
+| develop   | 11    | 5200   | 5  |
+| personnel | 2     | 3900   | 1  |
+| personnel | 5     | 3500   | 2  |
+| sales     | 1     | 5000   | 1  |
+| sales     | 3     | 4800   | 2  |
+| sales     | 4     | 4800   | 3  |
++-----------+-------+--------+----+
+10 rows selected.
+SQL> SELECT depname, CUME_DIST() OVER (PARTITION BY depname order by empno) c1 
+   > FROM T_Window_Functions_001 
+   > order by depname,c1;
++-----------+--------------+
+| DEPNAME   | C1           |
++-----------+--------------+
+| develop   | 0.2          |
+| develop   | 0.4          |
+| develop   | 0.6          |
+| develop   | 0.8          |
+| develop   | 1            |
+| personnel | 0.5          |
+| personnel | 1            |
+| sales     | 0.3333333333 |
+| sales     | 0.6666666667 |
+| sales     | 1            |
++-----------+--------------+
+10 rows selected.
+SQL> SELECT depname, PERCENT_RANK() OVER (PARTITION BY depname order by empno) c1 
+   > FROM T_Window_Functions_001 
+   > order by depname,c1;
++-----------+------+
+| DEPNAME   | C1   |
++-----------+------+
+| develop   | 0    |
+| develop   | 0.25 |
+| develop   | 0.5  |
+| develop   | 0.75 |
+| develop   | 1    |
+| personnel | 0    |
+| personnel | 1    |
+| sales     | 0    |
+| sales     | 0.5  |
+| sales     | 1    |
++-----------+------+
+10 rows selected.
+SQL> SELECT depname, NTILE(4) OVER (PARTITION BY depname order by empno) c1 
+   > FROM T_Window_Functions_001 
+   > order by depname,c1;
++-----------+----+
+| DEPNAME   | C1 |
++-----------+----+
+| develop   | 1  |
+| develop   | 1  |
+| develop   | 2  |
+| develop   | 3  |
+| develop   | 4  |
+| personnel | 1  |
+| personnel | 2  |
+| sales     | 1  |
+| sales     | 2  |
+| sales     | 3  |
++-----------+----+
+10 rows selected.
+SQL> SELECT depname, empno, salary, rank() OVER (PARTITION BY depname ORDER BY salary DESC) c1 
+   > FROM T_Window_Functions_001 
+   > order by depname, empno, salary,c1;
++-----------+-------+--------+----+
+| DEPNAME   | EMPNO | SALARY | C1 |
++-----------+-------+--------+----+
+| develop   | 7     | 4200   | 5  |
+| develop   | 8     | 6000   | 1  |
+| develop   | 9     | 4500   | 4  |
+| develop   | 10    | 5200   | 2  |
+| develop   | 11    | 5200   | 2  |
+| personnel | 2     | 3900   | 1  |
+| personnel | 5     | 3500   | 2  |
+| sales     | 1     | 5000   | 1  |
+| sales     | 3     | 4800   | 2  |
+| sales     | 4     | 4800   | 2  |
++-----------+-------+--------+----+
+10 rows selected.
+SQL>  
+SQL> 
+SQL> --测试304 T614 NTILE function
+SQL> SELECT depname, NTILE(4) OVER (PARTITION BY depname order by empno) c1 
+   > FROM T_Window_Functions_001 
+   > order by depname,c1;
++-----------+----+
+| DEPNAME   | C1 |
++-----------+----+
+| develop   | 1  |
+| develop   | 1  |
+| develop   | 2  |
+| develop   | 3  |
+| develop   | 4  |
+| personnel | 1  |
+| personnel | 2  |
+| sales     | 1  |
+| sales     | 2  |
+| sales     | 3  |
++-----------+----+
+10 rows selected.
+SQL> SELECT deptno,ename||' '||job e_name,sal,
+   > NTILE(4) OVER (PARTITION BY deptno ORDER BY sal DESC) AS quartile
+   > FROM T_ROW_NUMBER_001 order by deptno,e_name,quartile,sal;
++--------+-----------------+------+----------+
+| DEPTNO | E_NAME          | SAL  | QUARTILE |
++--------+-----------------+------+----------+
+| 10     | CLARK MANAGER   | 2450 | 2        |
+| 10     | KING PRESIDENT  | 5000 | 1        |
+| 10     | MILLER CLERK    | 1300 | 3        |
+| 20     | FORD ANALYST    | 3000 | 1        |
+| 20     | JONES MANAGER   | 2975 | 2        |
+| 20     | SMITH CLERK     | 800  | 3        |
+| 30     | ALLEN SALESMAN  | 1600 | 1        |
+| 30     | BLAKE MANAGER   | 2850 | 1        |
+| 30     | JAMES CLERK     | 950  | 4        |
+| 30     | MARTIN SALESMAN | 1250 | 3        |
+| 30     | TURNER SALESMAN | 1500 | 2        |
+| 30     | WARD SALESMAN   | 1250 | 2        |
++--------+-----------------+------+----------+
+12 rows selected.
+SQL> 
+SQL> --测试305 T615 LEAD and LAG functions
+SQL>  DROP TABLE T_Window_Functions_002 IF EXISTS  CASCADE;
+0 rows affected
+SQL> CREATE TABLE if not exists T_Window_Functions_002(
+   >       name varchar(50),
+   >       grade INT,
+   >       mark NUMERIC(4,1),
+   >       sort INT
+   >  );
+0 rows affected
+SQL> INSERT INTO T_Window_Functions_002 VALUES
+   > ('a1',1,90,1),
+   > ('b1',1,82,2),
+   > ('c1',1,60,3),
+   > ('d1',1,15,4),
+   > ('a2',2,86,1),
+   > ('b2',2,65,2),
+   > ('c2',2,45,3),
+   > ('a3',3,95,1),
+   > ('b3',3,78,2),
+   > ('c3',3,45,3);
+10 rows affected
+SQL> SELECT name,grade,mark,
+   > LEAD(mark,2) OVER(PARTITION BY GRADE ORDER BY mark) LAST_mark 
+   > FROM T_Window_Functions_002
+   > ORDER BY GRADE,MARK;
++------+-------+------+-----------+
+| NAME | GRADE | MARK | LAST_MARK |
++------+-------+------+-----------+
+| d1   | 1     | 15.0 | 82.0      |
+| c1   | 1     | 60.0 | 90.0      |
+| b1   | 1     | 82.0 | <null>    |
+| a1   | 1     | 90.0 | <null>    |
+| c2   | 2     | 45.0 | 86.0      |
+| b2   | 2     | 65.0 | <null>    |
+| a2   | 2     | 86.0 | <null>    |
+| c3   | 3     | 45.0 | 95.0      |
+| b3   | 3     | 78.0 | <null>    |
+| a3   | 3     | 95.0 | <null>    |
++------+-------+------+-----------+
+10 rows selected.
+SQL> SELECT name,grade,mark,
+   > LAG(mark,2) OVER(PARTITION BY GRADE ORDER BY mark) LAST_mark 
+   > FROM T_Window_Functions_002
+   > ORDER BY GRADE,MARK;
++------+-------+------+-----------+
+| NAME | GRADE | MARK | LAST_MARK |
++------+-------+------+-----------+
+| d1   | 1     | 15.0 | <null>    |
+| c1   | 1     | 60.0 | <null>    |
+| b1   | 1     | 82.0 | 15.0      |
+| a1   | 1     | 90.0 | 60.0      |
+| c2   | 2     | 45.0 | <null>    |
+| b2   | 2     | 65.0 | <null>    |
+| a2   | 2     | 86.0 | 45.0      |
+| c3   | 3     | 45.0 | <null>    |
+| b3   | 3     | 78.0 | <null>    |
+| a3   | 3     | 95.0 | 45.0      |
++------+-------+------+-----------+
+10 rows selected.
+SQL> 									  
+SQL> --测试306 T616 Null treatment option for LEAD and LAG functions
+SQL>  DROP TABLE T_Window_Functions_003 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE  if not exists T_Window_Functions_003(
+   >       name varchar(50),
+   >       grade INT,
+   >       mark NUMERIC(4,1),
+   >       sort INT
+   > );
+0 rows affected
+SQL> INSERT INTO T_Window_Functions_003 VALUES
+   > ('a1',1,null,1),
+   > ('b1',1,null,2),
+   > ('c1',1,60,3),
+   > ('d1',1,15,4),
+   > ('a2',2,86,1),
+   > ('b2',2,65,2),
+   > ('c2',2,45,3),
+   > ('a3',3,95,1),
+   > ('b3',3,78,2),
+   > ('c3',3,45,3);
+10 rows affected
+SQL> SELECT name,grade,mark,
+   > LEAD(mark,2) OVER(PARTITION BY GRADE ORDER BY name,mark) LAST_mark 
+   > FROM T_Window_Functions_003
+   > ORDER BY GRADE,MARK;
++------+-------+--------+-----------+
+| NAME | GRADE | MARK   | LAST_MARK |
++------+-------+--------+-----------+
+| a1   | 1     | <null> | 60.0      |
+| b1   | 1     | <null> | 15.0      |
+| d1   | 1     | 15.0   | <null>    |
+| c1   | 1     | 60.0   | <null>    |
+| c2   | 2     | 45.0   | <null>    |
+| b2   | 2     | 65.0   | <null>    |
+| a2   | 2     | 86.0   | 45.0      |
+| c3   | 3     | 45.0   | <null>    |
+| b3   | 3     | 78.0   | <null>    |
+| a3   | 3     | 95.0   | 45.0      |
++------+-------+--------+-----------+
+10 rows selected.
+SQL> SELECT name,grade,mark,
+   > LAG(mark,2) OVER(PARTITION BY GRADE ORDER BY name,mark) LAST_mark 
+   > FROM T_Window_Functions_003
+   > ORDER BY GRADE,MARK;
++------+-------+--------+-----------+
+| NAME | GRADE | MARK   | LAST_MARK |
++------+-------+--------+-----------+
+| a1   | 1     | <null> | <null>    |
+| b1   | 1     | <null> | <null>    |
+| d1   | 1     | 15.0   | <null>    |
+| c1   | 1     | 60.0   | <null>    |
+| c2   | 2     | 45.0   | 86.0      |
+| b2   | 2     | 65.0   | <null>    |
+| a2   | 2     | 86.0   | <null>    |
+| c3   | 3     | 45.0   | 95.0      |
+| b3   | 3     | 78.0   | <null>    |
+| a3   | 3     | 95.0   | <null>    |
++------+-------+--------+-----------+
+10 rows selected.
+SQL> 
+SQL> --655 T611 Elementary OLAP operations
+SQL> SELECT name,grade,mark,avg(sort) 
+   >   OVER (PARTITION BY grade) as avg_sort
+   >   FROM T_Window_Functions_002
+   >   ORDER BY mark,name,grade;
++------+-------+------+----------+
+| NAME | GRADE | MARK | AVG_SORT |
++------+-------+------+----------+
+| d1   | 1     | 15.0 | 2.5      |
+| c2   | 2     | 45.0 | 2        |
+| c3   | 3     | 45.0 | 2        |
+| c1   | 1     | 60.0 | 2.5      |
+| b2   | 2     | 65.0 | 2        |
+| b3   | 3     | 78.0 | 2        |
+| b1   | 1     | 82.0 | 2.5      |
+| a2   | 2     | 86.0 | 2        |
+| a1   | 1     | 90.0 | 2.5      |
+| a3   | 3     | 95.0 | 2        |
++------+-------+------+----------+
+10 rows selected.
+SQL>   
+SQL> --656 T612 Advanced OLAP operations
+SQL> SELECT name, grade, mark, 
+   > dense_rank() OVER (PARTITION BY grade order by mark DESC) as dr 
+   > FROM T_Window_Functions_002 
+   > order by grade, dr,name,mark desc;
++------+-------+------+----+
+| NAME | GRADE | MARK | DR |
++------+-------+------+----+
+| a1   | 1     | 90.0 | 1  |
+| b1   | 1     | 82.0 | 2  |
+| c1   | 1     | 60.0 | 3  |
+| d1   | 1     | 15.0 | 4  |
+| a2   | 2     | 86.0 | 1  |
+| b2   | 2     | 65.0 | 2  |
+| c2   | 2     | 45.0 | 3  |
+| a3   | 3     | 95.0 | 1  |
+| b3   | 3     | 78.0 | 2  |
+| c3   | 3     | 45.0 | 3  |
++------+-------+------+----+
+10 rows selected.
+SQL> 
+SQL> --657 T613 Sampling 
+SQL> select * from T_Window_Functions_002 
+   > tablesample bernoulli(0.0)
+   > ORDER BY GRADE ASC,MARK ASC;
+0 rows selected.
+SQL>   
+SQL> --658 T617 FIRST_VALUE and LAST_VALUE functions
+SQL> DROP TABLE T_Window_Functions_004 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE T_Window_Functions_004(
+   > EMPNO INT,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > COMM INT,
+   > DEPTNO INT
+   > );
+0 rows affected
+SQL> INSERT INTO T_Window_Functions_004 VALUES
+   > (1,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20),
+   > (1,'ALLEN','SALESMAN',7698,TO_DATE('1981-2-20','yyyy-mm-dd'),1500,300,30),
+   > (1,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','yyyy-mm-dd'),1250,500,30),
+   > (2,'JONES','MANAGER',7839,TO_DATE('1981-4-2','yyyy-mm-dd'),3000,NULL,20),
+   > (2,'MARTIN','SALESMAN',7698,TO_DATE('1981-9-28','yyyy-mm-dd'),1250,1400,30),
+   > (2,'BLAKE','MANAGER',7839,TO_DATE('1981-5-1','yyyy-mm-dd'),2450,NULL,30),
+   > (2,'CLARK','MANAGER',7839,TO_DATE('1981-6-9','yyyy-mm-dd'),2450,NULL,10),
+   > (3,'KING','PRESIDENT',NULL,TO_DATE('1981-11-17','yyyy-mm-dd'),5000,NULL,10),
+   > (3,'TURNER','SALESMAN',7698,TO_DATE('1981-9-8','yyyy-mm-dd'),1500,0,30),
+   > (3,'JAMES','CLERK',7698,TO_DATE('1981-12-3','yyyy-mm-dd'),950,NULL,30),
+   > (3,'FORD','ANALYST',7566,TO_DATE('1981-12-3','yyyy-mm-dd'),3000,NULL,20),
+   > (3,'MILLER','CLERK',7782,TO_DATE('1982-1-23','yyyy-mm-dd'),4000,NULL,10);
+12 rows affected
+SQL> SELECT EMPNO,ENAME,SAL,
+   > LAST_VALUE(SAL) 
+   > OVER (PARTITION BY EMPNO ORDER BY SAL DESC ROWS BETWEEN 1 following and 2 following) LAST_SAL 
+   > FROM T_Window_Functions_004 
+   > order by EMPNO,ENAME,SAL;
++-------+--------+------+----------+
+| EMPNO | ENAME  | SAL  | LAST_SAL |
++-------+--------+------+----------+
+| 1     | ALLEN  | 1500 | 800      |
+| 1     | SMITH  | 800  | <null>   |
+| 1     | WARD   | 1250 | 800      |
+| 2     | BLAKE  | 2450 | 1250     |
+| 2     | CLARK  | 2450 | 1250     |
+| 2     | JONES  | 3000 | 2450     |
+| 2     | MARTIN | 1250 | <null>   |
+| 3     | FORD   | 3000 | 950      |
+| 3     | JAMES  | 950  | <null>   |
+| 3     | KING   | 5000 | 3000     |
+| 3     | MILLER | 4000 | 1500     |
+| 3     | TURNER | 1500 | 950      |
++-------+--------+------+----------+
+12 rows selected.
+SQL> 
+SQL> --660 T619 Nested window functions
+SQL> SELECT empno,ename,hiredate,sal,
+   > AVG(sal) OVER (PARTITION BY empno ORDER BY hiredate) avg_sal_hiredate,
+   > sum(sal) OVER (PARTITION BY empno) sum_sal_order, 
+   > AVG(sal) OVER (PARTITION BY empno ORDER BY hiredate ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) avg1, 
+   > count(sal) OVER (PARTITION BY empno ORDER BY hiredate RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) count1
+   > FROM T_Window_Functions_004 order by empno,ename,hiredate,sal;
++-------+--------+------------+------+------------------+---------------+-------------+--------+
+| EMPNO | ENAME  | HIREDATE   | SAL  | AVG_SAL_HIREDATE | SUM_SAL_ORDER | AVG1        | COUNT1 |
++-------+--------+------------+------+------------------+---------------+-------------+--------+
+| 1     | ALLEN  | 1981-2-20  | 1500 | 1183.333333      | 3550          | 1183.333333 | 3      |
+| 1     | SMITH  | 1980-12-17 | 800  | 800              | 3550          | 1183.333333 | 3      |
+| 1     | WARD   | 1981-2-2   | 1250 | 1025             | 3550          | 1183.333333 | 3      |
+| 2     | BLAKE  | 1981-5-1   | 2450 | 2725             | 9150          | 2287.5      | 4      |
+| 2     | CLARK  | 1981-6-9   | 2450 | 2633.333333      | 9150          | 2287.5      | 4      |
+| 2     | JONES  | 1981-4-2   | 3000 | 3000             | 9150          | 2287.5      | 4      |
+| 2     | MARTIN | 1981-9-28  | 1250 | 2287.5           | 9150          | 2287.5      | 4      |
+| 3     | FORD   | 1981-12-3  | 3000 | 2612.5           | 14450         | 2890        | 5      |
+| 3     | JAMES  | 1981-12-3  | 950  | 2612.5           | 14450         | 2890        | 5      |
+| 3     | KING   | 1981-11-17 | 5000 | 3250             | 14450         | 2890        | 5      |
+| 3     | MILLER | 1982-1-23  | 4000 | 2890             | 14450         | 2890        | 5      |
+| 3     | TURNER | 1981-9-8   | 1500 | 1500             | 14450         | 2890        | 5      |
++-------+--------+------------+------+------------------+---------------+-------------+--------+
+12 rows selected.
+SQL> 
+SQL> --736 LDBX043-05 聚集函数REGXXX
+SQL> DROP TABLE T_Window_Functions_005 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE T_Window_Functions_005 (
+   > sals INT,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > DEPTNO INT
+   > );
+0 rows affected
+SQL> INSERT INTO T_Window_Functions_005 VALUES 
+   > (34,'SMTH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),28,30),
+   > (66,'SMTH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),99,20),
+   > (12,'MITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),5,20),
+   > (964,'MITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,30),
+   > (964,'JAKE','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),310,10),
+   > (964,'TOM','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),58900,60),
+   > (9064,'BOB','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,60);
+7 rows affected
+SQL> SELECT DEPTNO, ENAME,
+   > OVAR_POP(sals,sal) AS covar_pop,
+   > OVAR_POP(sals,sals) AS covar_pop1,
+   > OVAR_POP(sal,sals) AS covar_pop2,
+   > OVAR_SAMP(sal,sal) AS covar_samp1
+   >    FROM T_Window_Functions_005
+   >    GROUP BY DEPTNO,ENAME
+   >    ORDER BY COVAR_POP DESC;
++--------+-------+-----------+------------+------------+-------------+
+| DEPTNO | ENAME | COVAR_POP | COVAR_POP1 | COVAR_POP2 | COVAR_SAMP1 |
++--------+-------+-----------+------------+------------+-------------+
+| 30     | MITH  | 0         | 0          | 0          | nan         |
+| 20     | SMTH  | 0         | 0          | 0          | nan         |
+| 20     | MITH  | 0         | 0          | 0          | nan         |
+| 30     | SMTH  | 0         | 0          | 0          | nan         |
+| 60     | BOB   | 0         | 0          | 0          | nan         |
+| 10     | JAKE  | 0         | 0          | 0          | nan         |
+| 60     | TOM   | 0         | 0          | 0          | nan         |
++--------+-------+-----------+------------+------------+-------------+
+7 rows selected.
+SQL> SELECT DEPTNO,
+   > EGR_SLOPE(sals,sal) slope1,
+   > EGR_SLOPE(sals,sals) slope2,
+   > EGR_INTERCEPT(sal,sals) intercept1,
+   > EGR_INTERCEPT(sal,sal) intercept2
+   >   FROM T_Window_Functions_005
+   >   WHERE DEPTNO in (20,30)
+   >    GROUP BY DEPTNO
+   >    ORDER BY DEPTNO DESC;
++--------+--------------+--------+--------------+------------+
+| DEPTNO | SLOPE1       | SLOPE2 | INTERCEPT1   | INTERCEPT2 |
++--------+--------------+--------+--------------+------------+
+| 30     | 1.204663212  | 1      | -0.223655914 | 0          |
+| 20     | 0.5744680851 | 1      | -15.88888889 | 0          |
++--------+--------------+--------+--------------+------------+
+2 rows selected.
+SQL> --2246 T612-01 Named Window
+SQL> drop table T_Window_Functions_006 if exists cascade;
+0 rows affected
+SQL> create table T_Window_Functions_006 (depname varchar(100), empno int, salary double);
+0 rows affected
+SQL> insert into T_Window_Functions_006 values(
+   >  ('develop' , 11 , 5200),
+   >  ('develop' , 7 , 4200),
+   >  ('develop' , 9 , 4500),
+   >  ('develop' , 8 , 6000),
+   >  ('develop' , 10 , 5200),
+   >  ('personnel' , 5 , 3500),
+   >  ('personnel' , 2 , 3900),
+   >  ('sales' , 3 , 4800),
+   >  ('sales' , 1 , 5000),
+   >  ('sales' , 4 , 4800));
+10 rows affected
+SQL> SELECT depname, empno, salary, avg(salary) OVER w1 as c1, sum(salary) OVER w2 as c2,
+   > min(salary) OVER w3 as c3, max(salary) OVER w4 as c4 FROM T_Window_Functions_006 order by depname, empno, salary,c1,c2,c3,c4
+   > WINDOW w1 AS (PARTITION BY depname),w2 AS (PARTITION BY depname),w3 AS (PARTITION BY depname),w4 AS (PARTITION BY depname);
++-----------+-------+--------+-------------+-------+------+------+
+| DEPNAME   | EMPNO | SALARY | C1          | C2    | C3   | C4   |
++-----------+-------+--------+-------------+-------+------+------+
+| develop   | 7     | 4200   | 5020        | 25100 | 4200 | 6000 |
+| develop   | 8     | 6000   | 5020        | 25100 | 4200 | 6000 |
+| develop   | 9     | 4500   | 5020        | 25100 | 4200 | 6000 |
+| develop   | 10    | 5200   | 5020        | 25100 | 4200 | 6000 |
+| develop   | 11    | 5200   | 5020        | 25100 | 4200 | 6000 |
+| personnel | 2     | 3900   | 3700        | 7400  | 3500 | 3900 |
+| personnel | 5     | 3500   | 3700        | 7400  | 3500 | 3900 |
+| sales     | 1     | 5000   | 4866.666667 | 14600 | 4800 | 5000 |
+| sales     | 3     | 4800   | 4866.666667 | 14600 | 4800 | 5000 |
+| sales     | 4     | 4800   | 4866.666667 | 14600 | 4800 | 5000 |
++-----------+-------+--------+-------------+-------+------+------+
+10 rows selected.
+SQL> exit
+Disconnected.

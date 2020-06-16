@@ -25,7 +25,7 @@ SQL> DROP FUNCTION function_test_001;
 SQL> 
 SQL> --261 T321-03 Function invocation
 SQL> DROP FUNCTION function_test_002;
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: FUNCTION_TEST_002 in statement [DROP FUNCTION function_test_002]
+0 rows affected
 SQL> drop table if exists T_invocation_test_001;
 0 rows affected
 SQL> CREATE TABLE T_invocation_test_001 (
@@ -56,55 +56,51 @@ SQL> CREATE Function function_test_002( in x INT)
    >   begin atomic
    >     declare y int;
    >     set y= x;
-   >     return TABLE(select id, firstname from T_invocation_test_001 where id > y);
+   >     return TABLE(select id, firstname from T_invocation_test_001 where id > y order by id);
    >   end;
-   > / 
-   > 
-   > call function_test_002(10);
-   > 
-   > 
-   > --262 T321-04 CALL statement
-   > call trim('   XXX   ');
-   > 
-   > --2558 Refactor UDF handling
-   > drop jar 'testUdf-0.0.1-SNAPSHOT.jar';
-   > 
-   > add jar 'linkoopdb/smoke/sql/testUdf-0.0.1-SNAPSHOT.jar' not check exists;
-   > 
-   > drop function if exists function_test_bigint;
-   > drop table if exists db_udf_bigint;
-   > 
-   > CREATE FUNCTION function_test_bigint(price bigint) RETURNS bigint
+   > /
+0 rows affected
+SQL> call function_test_002(10);
++----+-----------+
+| ID | FIRSTNAME |
++----+-----------+
+| 40 | Susanne   |
+| 41 | Bill      |
+| 42 | Robert    |
+| 43 | Susanne   |
+| 44 | Sylvia    |
+| 45 | Janet     |
+| 46 | Andrew    |
+| 47 | Janet     |
+| 48 | Robert    |
+| 49 | George    |
++----+-----------+
+10 rows selected.
+SQL> 
+SQL> 
+SQL> --262 T321-04 CALL statement
+SQL> call trim('   XXX   ');
++-----+
+| @p0 |
++-----+
+| XXX |
++-----+
+1 row selected.
+SQL> 
+SQL> --2558 Refactor UDF handling
+SQL> drop jar 'testUdf-0.0.1-SNAPSHOT.jar';
+0 rows affected
+SQL> add jar 'linkoopdb/smoke/sql/testUdf-0.0.1-SNAPSHOT.jar' not check exists;
+0 rows affected
+SQL> drop function if exists function_test_bigint;
+0 rows affected
+SQL> drop table if exists db_udf_bigint;
+0 rows affected
+SQL> CREATE FUNCTION function_test_bigint(price bigint) RETURNS bigint
    >  LANGUAGE JAVA DETERMINISTIC NO SQL
    >  EXTERNAL NAME 'CLASSPATH:com.datapps.dbudf.testdbudf.UDFbigint';
    > /
-java.sql.SQLSyntaxErrorException: unexpected token: / : line: 9 in statement [CREATE Function function_test_002( in x INT)
-  returns table(i INT, v VARCHAR(100))
-  READS SQL DATA
-  begin atomic
-    declare y int;
-    set y= x;
-    return TABLE(select id, firstname from T_invocation_test_001 where id > y);
-  end;
-/ 
-
-call function_test_002(10);
-
-
-                            
-call trim('   XXX   ');
-
-                            
-drop jar 'testUdf-0.0.1-SNAPSHOT.jar';
-
-add jar 'linkoopdb/smoke/sql/testUdf-0.0.1-SNAPSHOT.jar' not check exists;
-
-drop function if exists function_test_bigint;
-drop table if exists db_udf_bigint;
-
-CREATE FUNCTION function_test_bigint(price bigint) RETURNS bigint
- LANGUAGE JAVA DETERMINISTIC NO SQL
- EXTERNAL NAME 'CLASSPATH:com.datapps.dbudf.testdbudf.UDFbigint']
+0 rows affected
 SQL> CREATE TABLE db_udf_bigint(price bigint);
 0 rows affected
 SQL> INSERT INTO db_udf_bigint VALUES
@@ -112,6 +108,12 @@ SQL> INSERT INTO db_udf_bigint VALUES
    > 1032);
 2 rows affected
 SQL> select function_test_bigint(price) from  db_udf_bigint ;
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: FUNCTION_TEST_BIGINT in statement [select function_test_bigint(price) from  db_udf_bigint ]
++-------+
+| C1    |
++-------+
+| 18904 |
+| 1034  |
++-------+
+2 rows selected.
 SQL> exit
 Disconnected.
