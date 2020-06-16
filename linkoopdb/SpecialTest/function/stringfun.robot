@@ -12,7 +12,7 @@ FunctionTestHdfsTest-String
     Execute SQL Script        string_function.sql
     Compare Files             string_function.sql  string_function.ref
 	
-FunctionTestHdfsTest-String
+FunctionTestHdfsTest-Time
     [Tags]     FUNCTION
     Setup Compare Settings
     Execute SQL Script        date_time_function.sql
