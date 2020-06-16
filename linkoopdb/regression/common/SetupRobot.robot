@@ -34,8 +34,16 @@ SQL Test Setup
 
     # 比对参考文件的时候忽略空白行
     Compare Ignore EmptyLine           True
+
     # 比对参考文件的时候使用正则表达式
     Compare Mask                       True
+
+    # 比对文件的时候忽略大小写差异
+    Compare IgnoreCase                 False
+
+    # 比对文件的时候忽略内容的首末空格
+    Compare IgnoreTailOrHeadBlank      False
+
     # 比对参考文件的时候跳过所有符合以下标记的行
     #     Running time elapsed 是程序的运行时长，由于每次运行都可能不一致，所以比对没有意义
     Compare Skip                       Running time elapsed.*
