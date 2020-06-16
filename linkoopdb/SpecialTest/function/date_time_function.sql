@@ -12,7 +12,7 @@ INSERT INTO Test_Builtin_Function_2 VALUES(4,' q az xe'),(5,'S D B J Y '),(6,'  
 --to_date()函数
 
 SELECT to_date('2018-09-01','RRRRMMDD') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-01','RRRR-MM-DD') FROM Test_Builtin_Function_2 limit 1;
+SELECT to_date('2018-09-01','RRRR-MM-DD') FROM Test_Builtin_Function_2 limit 1 ;
 SELECT to_date('2018-09-01','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
 SELECT to_date('2018-09-11','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
 SELECT to_date('2018-09-11','RRRR-MM') FROM Test_Builtin_Function_2 limit 1;

@@ -1,6 +1,6 @@
 *** Settings ***
-Documentation    字符串函数测试
-...              测试字符串函数的使用
+Documentation    函数测试
+...              测试LDB函数的使用
 Metadata         Version    0.1
 # 引用公共函数
 Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
@@ -8,18 +8,17 @@ Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
 *** Test Cases ***
 FunctionTestHdfsTest-String
     [Tags]     FUNCTION
-    Setup Compare Settings
-    Execute SQL Script        string_function.sql
-    Compare Files             string_function.sql  string_function.ref
-	
-FunctionTestPallasTest-String
-    [Documentation]    字符串函数测试用例补充-Pallas
-    [Tags]     FUNCTION
-
+    
     # 运行测试
-    SQLCli Set SQLMAPPING           pallas256.map,synatx_tabname.map
-    Logon And Execute SQL Script    admin/123456              string_function.sql             string_function.log
-    Compare Files                   string_function.log        string_function.ref
+    Logon And Execute SQL Script    admin/123456              string_function.sql           string_function.log
+    Compare Files                   string_function.log       string_function.ref
+	
+FunctionTestHdfsTest-Time
+    [Tags]     FUNCTION
+    
+    # 运行测试
+    Logon And Execute SQL Script    admin/123456              date_time_function.sql           date_time_function.log
+    Compare Files                   date_time_function.log       date_time_function.ref
 
 *** Keywords ***
 Setup Compare Settings
@@ -27,6 +26,7 @@ Setup Compare Settings
     Compare Ignore EmptyLine           True
     # 比对参考文件的时候使用正则表达式
     Compare Mask                       True
+    Compare Enable ConsoleOutput       True
     # 比对参考文件的时候跳过所有符合Running.*匹配的行
     Compare Skip                       Running.*
     Compare Skip                       REWROTED.*
@@ -34,5 +34,5 @@ Setup Compare Settings
     Compare Skip                       REWROTED.*
     Compare Skip                       start.*
 
-    # 一旦遇到错误，就终止继续测试
-    Compare Break When Difference      True
+
+
