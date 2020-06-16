@@ -97,7 +97,7 @@ CREATE USER "U_DBlink@!@$%#(*特朗普" IDENTIFIED BY 123456;
 
 GRANT dba TO "U_DBlink@!@$%#(*特朗普";
 
-connect U_DBlink@!@$%#(*特朗普/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+connect "U_DBlink@!@$%#(*特朗普"/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 DROP TABLE "U_DBlink@!@$%#(*特朗普".t_dblink_wy1;
 
