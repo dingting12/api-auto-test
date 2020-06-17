@@ -34,9 +34,9 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:61.999999','y
 select * from T_TYPE_TIMESTAMP;
 
 --验证timestamp的最大值+0.000001s，是否报错
-insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
+--insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
-select * from T_TYPE_TIMESTAMP;
+--select * from T_TYPE_TIMESTAMP;
 
 --验证timestamp的最大值9999-12-31 23:59:59
 insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:59','yyyy-mm-dd hh24:mi:ss'));
