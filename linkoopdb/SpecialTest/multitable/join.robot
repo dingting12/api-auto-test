@@ -2,7 +2,7 @@
 Documentation    两表联结
 ...              数据量为1000万和5000万，同时存储引擎为pallas
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       SQL Test Setup   AND   Setup Custom Settings
+Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
 Test Teardown    SQL Test Clnup
 
 *** Test Cases ***
