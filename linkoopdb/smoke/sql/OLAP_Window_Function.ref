@@ -2,8 +2,8 @@ SQLCli Release 0.0.61
 SQL> connect admin/123456
 Database connected.
 SQL> start OLAP_Window_Function.sql
-SQL> --    Description: 测试外部表的hdfs，包括csv和parquet格式
-   > --    Date:         2020-06-11
+SQL> --    Description: 测试olap window function
+   > --    Date:         2020-06-16
    > --    Author:       丁婷
    > 
    > -- 74 LDBX070-12 window函数row_number()
@@ -34,22 +34,22 @@ SQL> INSERT INTO T_ROW_NUMBER_001 VALUES
    > (7902,'FORD','ANALYST',7566,TO_DATE('1981-12-3','yyyy-mm-dd'),3000,NULL,20),
    > (7934,'MILLER','CLERK',7782,TO_DATE('1982-1-23','yyyy-mm-dd'),1300,NULL,10);
 12 rows affected
-SQL> SELECT DEPTNO, SAL,ROW_NUMBER() OVER(PARTITION BY empno ORDER BY comm DESC) RW FROM T_ROW_NUMBER_001 order by DEPTNO;
+SQL> SELECT DEPTNO, SAL,ROW_NUMBER() OVER(PARTITION BY empno ORDER BY comm DESC) RW FROM T_ROW_NUMBER_001 order by DEPTNO,SAL;
 +--------+------+----+
 | DEPTNO | SAL  | RW |
 +--------+------+----+
-| 10     | 5000 | 1  |
-| 10     | 2450 | 1  |
 | 10     | 1300 | 1  |
-| 20     | 3000 | 1  |
+| 10     | 2450 | 1  |
+| 10     | 5000 | 1  |
 | 20     | 800  | 1  |
 | 20     | 2975 | 1  |
+| 20     | 3000 | 1  |
 | 30     | 950  | 1  |
-| 30     | 2850 | 1  |
+| 30     | 1250 | 1  |
+| 30     | 1250 | 1  |
 | 30     | 1500 | 1  |
 | 30     | 1600 | 1  |
-| 30     | 1250 | 1  |
-| 30     | 1250 | 1  |
+| 30     | 2850 | 1  |
 +--------+------+----+
 12 rows selected.
 SQL> 
@@ -506,17 +506,17 @@ SQL> SELECT DEPTNO, ENAME,
    > OVAR_SAMP(sal,sal) AS covar_samp1
    >    FROM T_Window_Functions_005
    >    GROUP BY DEPTNO,ENAME
-   >    ORDER BY COVAR_POP DESC;
+   >    ORDER BY DEPTNO DESC;
 +--------+-------+-----------+------------+------------+-------------+
 | DEPTNO | ENAME | COVAR_POP | COVAR_POP1 | COVAR_POP2 | COVAR_SAMP1 |
 +--------+-------+-----------+------------+------------+-------------+
-| 30     | MITH  | 0         | 0          | 0          | nan         |
-| 20     | SMTH  | 0         | 0          | 0          | nan         |
-| 20     | MITH  | 0         | 0          | 0          | nan         |
-| 30     | SMTH  | 0         | 0          | 0          | nan         |
 | 60     | BOB   | 0         | 0          | 0          | nan         |
-| 10     | JAKE  | 0         | 0          | 0          | nan         |
 | 60     | TOM   | 0         | 0          | 0          | nan         |
+| 30     | MITH  | 0         | 0          | 0          | nan         |
+| 30     | SMTH  | 0         | 0          | 0          | nan         |
+| 20     | MITH  | 0         | 0          | 0          | nan         |
+| 20     | SMTH  | 0         | 0          | 0          | nan         |
+| 10     | JAKE  | 0         | 0          | 0          | nan         |
 +--------+-------+-----------+------------+------------+-------------+
 7 rows selected.
 SQL> SELECT DEPTNO,
