@@ -1,124 +1,140 @@
-SQLCli Release 0.0.45
+SQLCli Release 0.0.55
 SQL> connect admin/123456
 Database connected.
-SQL> start char/char.sql
-SQL> --Description：char data type
+SQL> start varchar/varchar.sql
+SQL> --Description：varchar data type
    > --Date：2020-05-22
    > --Author：李爱敏
-   > 
-   > -- char数据类型验证
+SQL> set echo on
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- varchar数据类型验证
    > --删除表
-SQL> drop table T_TYPE_CHAR1 if exists;
+SQL> drop table T_TYPE_VARCHAR1 if exists;
 0 rows affected
-SQL> drop table T_TYPE_CHAR2 if exists;
+Running time elapsed:      0.43 Seconds
+SQL> drop table T_TYPE_VARCHAR2 if exists;
 0 rows affected
-SQL> drop table T_TYPE_CHAR3 if exists;
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_VARCHAR3 if exists;
 0 rows affected
-SQL> drop table T_TYPE_CHAR4 if exists;
+Running time elapsed:      0.49 Seconds
+SQL> drop table T_TYPE_VARCHAR4 if exists;
 0 rows affected
+Running time elapsed:      0.45 Seconds
 SQL> 
-SQL> --创建表T_TYPE_CHAR1，字符长度为64000
-SQL> create table T_TYPE_CHAR1 (
-   > name char(64000)
+SQL> --创建表T_TYPE_VARCHAR1，字符长度为64000
+SQL> create table T_TYPE_VARCHAR1 (
+   > name varchar(64000)
    > );
 0 rows affected
+Running time elapsed:      0.07 Seconds
 SQL> 
-SQL> --通过脚本往表T_TYPE_CHAR1中插入64000个随机字符
-   > --查询表T_TYPE_CHAR1
-SQL> select length(name) from T_TYPE_CHAR1;
+SQL> --通过脚本往表T_TYPE_VARCHAR1中插入64000个随机字符
+   > --查询表T_TYPE_VARCHAR1
+SQL> select length(name) from T_TYPE_VARCHAR1;
 0 rows selected.
+Running time elapsed:      0.08 Seconds
 SQL> 
-SQL> --创建表T_TYPE_CHAR2，设置为默认长度，默认长度为1
-SQL> create table T_TYPE_CHAR2 (
-   > name char
+SQL> --创建表T_TYPE_VARCHAR2，设置为默认长度，默认长度为1
+SQL> create table T_TYPE_VARCHAR2(
+   > a1 varchar
    > );
-0 rows affected
+java.sql.SQLSyntaxErrorException: length must be specified in type definition: VARCHAR in statement [create table T_TYPE_VARCHAR2(
+a1 varchar
+)]
+Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> --插入字符长度为1
-SQL> insert into T_TYPE_CHAR2 values('a');
-1 row affected
-SQL> --查询表T_TYPE_CHAR2
-SQL> select * from T_TYPE_CHAR2;
-+------+
-| NAME |
-+------+
-| a    |
-+------+
-1 row selected.
+SQL> insert into T_TYPE_VARCHAR2 values('a');
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_VARCHAR2 in statement [insert into T_TYPE_VARCHAR2 values('a')]
+Running time elapsed:      0.00 Seconds
+SQL> --查询表T_TYPE_VARCHAR2
+SQL> select * from T_TYPE_VARCHAR2;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_VARCHAR2 in statement [select * from T_TYPE_VARCHAR2]
+Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> --插入字符长度>1，是否报错
-SQL> insert into T_TYPE_CHAR2 values('ab');
-1 row affected
-SQL> --查询表T_TYPE_CHAR2
-SQL> select * from T_TYPE_CHAR2;
-+------+
-| NAME |
-+------+
-| a    |
-| a    |
-+------+
-2 rows selected.
+SQL> insert into T_TYPE_VARCHAR2 values('ab');
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_VARCHAR2 in statement [insert into T_TYPE_VARCHAR2 values('ab')]
+Running time elapsed:      0.00 Seconds
+SQL> --查询表T_TYPE_VARCHAR2
+SQL> select * from T_TYPE_VARCHAR2;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_VARCHAR2 in statement [select * from T_TYPE_VARCHAR2]
+Running time elapsed:      0.00 Seconds
 SQL> 
-SQL> --创建表T_TYPE_CHAR3
-SQL> create table T_TYPE_CHAR3(
-   > a1 char(5)
+SQL> --创建表T_TYPE_VARCHAR3
+SQL> create table T_TYPE_VARCHAR3(
+   > a1 varchar(5)
    > );
 0 rows affected
+Running time elapsed:      0.06 Seconds
 SQL> 
 SQL> --插入数据格式为双引号，报错
-SQL> insert into T_TYPE_CHAR3 values("asdfg");
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: asdfg in statement [insert into T_TYPE_CHAR3 values("asdfg")]
-SQL> --查询表T_TYPE_CHAR3
-SQL> select * from T_TYPE_CHAR3;
+SQL> insert into T_TYPE_VARCHAR3 values("asdfg");
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: asdfg in statement [insert into T_TYPE_VARCHAR3 values("asdfg")]
+Running time elapsed:      0.00 Seconds
+SQL> --查询表T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR3;
 0 rows selected.
+Running time elapsed:      0.07 Seconds
 SQL> 
 SQL> --插入数据格式为单引号
-SQL> insert into T_TYPE_CHAR3 values('asdfg');
+SQL> insert into T_TYPE_VARCHAR3 values('asdfg');
 1 row affected
-SQL> --查询表T_TYPE_CHAR3
-SQL> select * from T_TYPE_CHAR3;
+Running time elapsed:      1.07 Seconds
+SQL> --查询表T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR3;
 +-------+
 | A1    |
 +-------+
 | asdfg |
 +-------+
 1 row selected.
+Running time elapsed:      0.28 Seconds
 SQL> 
-SQL> --插入的数据无引号
-SQL> insert into T_TYPE_CHAR3 values(asdfg);
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: ASDFG in statement [insert into T_TYPE_CHAR3 values(asdfg)]
-SQL> --查询表T_TYPE_CHAR3
-SQL> select * from T_TYPE_CHAR3;
+SQL> --插入的数据无引号，报错
+SQL> insert into T_TYPE_VARCHAR3 values(asdfg);
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: ASDFG in statement [insert into T_TYPE_VARCHAR3 values(asdfg)]
+Running time elapsed:      0.00 Seconds
+SQL> --查询表T_TYPE_VARCHAR3
+SQL> select * from T_TYPE_VARCHAR3;
 +-------+
 | A1    |
 +-------+
 | asdfg |
 +-------+
 1 row selected.
+Running time elapsed:      0.28 Seconds
 SQL> 
-SQL> --创建表T_TYPE_CHAR4
-SQL> create table T_TYPE_CHAR4(
-   > a1 char(30)        
+SQL> --创建表T_TYPE_VARCHAR4
+SQL> create table T_TYPE_VARCHAR4(
+   > a1 varchar(30)
    > );
 0 rows affected
+Running time elapsed:      0.08 Seconds
 SQL> 
 SQL> --验证插入30个英文字母
-SQL> insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcd');
+SQL> insert into T_TYPE_VARCHAR4 values('abcdefghijklmnopqrstuvwxyzabcd');
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.48 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------+
 | A1                             |
 +--------------------------------+
 | abcdefghijklmnopqrstuvwxyzabcd |
 +--------------------------------+
 1 row selected.
+Running time elapsed:      0.27 Seconds
 SQL> 
-SQL> --验证插入31个英文字母，插入是否成功
-SQL> insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcde');
+SQL> --验证插入31个英文字母，是否截断
+SQL> insert into T_TYPE_VARCHAR4 values('abcdefghijklmnopqrstuvwxyzabcde');
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.44 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------+
 | A1                             |
 +--------------------------------+
@@ -126,12 +142,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd |
 +--------------------------------+
 2 rows selected.
+Running time elapsed:      0.53 Seconds
 SQL> 
 SQL> --验证插入30个汉字
-SQL> insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十');
+SQL> insert into T_TYPE_VARCHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十');
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.46 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -140,12 +158,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 3 rows selected.
+Running time elapsed:      1.00 Seconds
 SQL> 
-SQL> --验证插入31个汉字，插入是否成功
-SQL> insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
+SQL> --验证插入31个汉字，是否截断
+SQL> insert into T_TYPE_VARCHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.44 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -155,12 +175,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 4 rows selected.
+Running time elapsed:      1.01 Seconds
 SQL> 
 SQL> --验证插入30个数字
-SQL> insert into T_TYPE_CHAR4 values('123456789012345678901234567890');
+SQL> insert into T_TYPE_VARCHAR4 values('123456789012345678901234567890');
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.50 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -171,12 +193,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 5 rows selected.
+Running time elapsed:      1.90 Seconds
 SQL> 
-SQL> --验证插入31个数字，插入是否成功
-SQL> insert into T_TYPE_CHAR4 values('1234567890123456789012345678901');
+SQL> --验证插入31个数字，是否截断
+SQL> insert into T_TYPE_VARCHAR4 values('1234567890123456789012345678901');
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.44 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -188,12 +212,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 6 rows selected.
+Running time elapsed:      1.48 Seconds
 SQL> 
 SQL> --验证插入int类型
-SQL> insert into T_TYPE_CHAR4 values(129);
+SQL> insert into T_TYPE_VARCHAR4 values(129);
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.49 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -206,12 +232,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 7 rows selected.
+Running time elapsed:      1.77 Seconds
 SQL> 
 SQL> --验证插入double类型
-SQL> insert into T_TYPE_CHAR4 values(129.77);
+SQL> insert into T_TYPE_VARCHAR4 values(129.77);
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.41 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -225,12 +253,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 8 rows selected.
+Running time elapsed:      2.16 Seconds
 SQL> 
 SQL> --验证插入date类型
-SQL> insert into T_TYPE_CHAR4 values(to_date('2020-05-08','yyyy-mm-dd'));
+SQL> insert into T_TYPE_VARCHAR4 values(to_date('2020-05-08','yyyy-mm-dd'));
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.45 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -245,12 +275,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 9 rows selected.
+Running time elapsed:      2.26 Seconds
 SQL> 
 SQL> --验证插入timestamp类型
-SQL> insert into T_TYPE_CHAR4 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+SQL> insert into T_TYPE_VARCHAR4 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.54 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -266,12 +298,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 10 rows selected.
+Running time elapsed:      2.49 Seconds
 SQL> 
 SQL> --验证插入boolean类型
-SQL> insert into T_TYPE_CHAR4 values(true);
+SQL> insert into T_TYPE_VARCHAR4 values(true);
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.46 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -288,12 +322,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 11 rows selected.
+Running time elapsed:      2.84 Seconds
 SQL> 
 SQL> --验证插入boolean类型
-SQL> insert into T_TYPE_CHAR4 values(false);
+SQL> insert into T_TYPE_VARCHAR4 values(false);
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.46 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -311,12 +347,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 12 rows selected.
+Running time elapsed:      3.30 Seconds
 SQL> 
 SQL> --验证插入空值''                                                   
-SQL> insert into T_TYPE_CHAR4 values('');
+SQL> insert into T_TYPE_VARCHAR4 values('');
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.49 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -335,12 +373,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 13 rows selected.
+Running time elapsed:      3.28 Seconds
 SQL> 
 SQL> --验证插入空格' '                                                   
-SQL> insert into T_TYPE_CHAR4 values(' ');
+SQL> insert into T_TYPE_VARCHAR4 values(' ');
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.49 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -360,12 +400,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 14 rows selected.
+Running time elapsed:      3.71 Seconds
 SQL> 
 SQL> --验证插入null                                                    
-SQL> insert into T_TYPE_CHAR4 values(null);
+SQL> insert into T_TYPE_VARCHAR4 values(null);
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.43 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -386,12 +428,14 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 15 rows selected.
+Running time elapsed:      3.76 Seconds
 SQL> 
 SQL> --验证插入NULL                                                   
-SQL> insert into T_TYPE_CHAR4 values(NULL);
+SQL> insert into T_TYPE_VARCHAR4 values(NULL);
 1 row affected
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
+Running time elapsed:      0.43 Seconds
+SQL> --查询表T_TYPE_VARCHAR4
+SQL> select * from T_TYPE_VARCHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
@@ -413,5 +457,7 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 +--------------------------------------------------------------+
 16 rows selected.
+Running time elapsed:      4.07 Seconds
+Running time elapsed:     46.66 Seconds
 SQL> exit
 Disconnected.

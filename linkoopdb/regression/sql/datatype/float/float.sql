@@ -6,7 +6,7 @@ set echo on
 set timing on
 
 -- float数据类型验证
---删除表T_TYPE_FLOAT
+--如果表已存在，则先删除
 drop table T_TYPE_FLOAT if exists;
 
 --创建表T_TYPE_FLOAT
@@ -128,3 +128,7 @@ select * from T_TYPE_FLOAT;
 insert into T_TYPE_FLOAT values(NULL);  
 --查询表T_TYPE_FLOAT
 select * from T_TYPE_FLOAT; 
+
+
+--最后删除创建的表
+drop table T_TYPE_FLOAT if exists;

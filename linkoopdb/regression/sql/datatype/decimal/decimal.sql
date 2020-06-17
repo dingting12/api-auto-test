@@ -56,16 +56,16 @@ create table T_TYPE_DECIMAL3(
 a1 decimal(5,-2)
 );
 
---当n>38时
+--当n<1时
 --创建表T_TYPE_DECIMAL4，是否报错
 create table T_TYPE_DECIMAL4(
-a1 decimal(39,2)
+a1 decimal(0,2)
 );
 
---当n<1时
+--当n>38时
 --创建表T_TYPE_DECIMAL5，是否报错
 create table T_TYPE_DECIMAL5(
-a1 decimal(0,0)
+a1 decimal(39,2)
 );
 
 
