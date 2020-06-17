@@ -32,7 +32,7 @@ f date,
 g timestamp
 ) LOCATION ('ldbdist://192.168.1.71:54323/files/files1.csv,ldbdist://192.168.1.71:54323/files/files2.csv,ldbdist://192.168.1.71:54323/files/files3.csv') FORMAT 'csv' (DELIMITER ',');
 
-select * from T_LDBDIST_MANYFILE_001 order by f;
+select * from T_LDBDIST_MANYFILE_001 order by a,f;
 
 
 CREATE EXTERNAL TABLE T_LDBDIST_SINGDIR_001 (
@@ -45,7 +45,7 @@ f date,
 g timestamp
 ) LOCATION ('ldbdist://192.168.1.71:54323/files') FORMAT 'csv' (DELIMITER ',');
 
-select * from T_LDBDIST_SINGDIR_001 order by f;
+select * from T_LDBDIST_SINGDIR_001 order by a,f;
 
 
 CREATE EXTERNAL TABLE T_LDBDIST_MANYDIR_001 (
@@ -59,7 +59,7 @@ g timestamp
 ) LOCATION ('ldbdist://192.168.1.71:54323/single,ldbdist://192.168.1.71:54323/files') FORMAT 'csv' (DELIMITER ',');
 
 
-select * from T_LDBDIST_MANYDIR_001 order by f;
+select * from T_LDBDIST_MANYDIR_001 order by a,f;
 
 CREATE EXTERNAL TABLE T_LDBDIST_ZHENGZE_001 (
 a char(20),
@@ -71,7 +71,7 @@ f date,
 g timestamp
 )LOCATION ('ldbdist://192.168.1.71:54323/files/files[1-3].csv') FORMAT 'csv' (DELIMITER ',');
 
-select * from T_LDBDIST_ZHENGZE_001 order by f; 
+select * from T_LDBDIST_ZHENGZE_001 order by a,f; 
 
 CREATE EXTERNAL TABLE T_LDBDIST_MIXFILE_001 (
 a char(20),
@@ -84,7 +84,7 @@ g timestamp
 )LOCATION ('ldbdist://192.168.1.71:54323/files/files[1-3].csv,ldbdist://192.168.1.71:54323/single') FORMAT 'csv' (DELIMITER ',');
 
 
-select * from T_LDBDIST_MIXFILE_001 order by f;
+select * from T_LDBDIST_MIXFILE_001 order by a,f;
 
 DROP TABLE T_LDBDIST_SINGFILE_001 if exists;
 DROP TABLE T_LDBDIST_MANYFILE_001 if exists;
