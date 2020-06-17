@@ -31,19 +31,17 @@ SQL> create model tokenizer_model_001 as tokenizer_transformer();
 SQL> create model countvectorizer_model_001 as countvectorizer_transformer
    > ((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
 0 rows affected
-SQL> SELECT *
+SQL> SELECT count(*)
    > FROM countvectorizer(countvectorizer_model_001, (
    > 	SELECT *
    > 	FROM tokenizer(tokenizer_model_001, countvectorizer_data_001)
    > ));
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| LABEL | SENTENCE                            | WORDS                                                   | FEATURES                                                                                               |
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-| 1     | Logistic regression models are neat | ARRAY['logistic','regression','models','are','neat']    | ARRAY[0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0] |
-| 0     | I wish Java could use case classes  | ARRAY['i','wish','java','could','use','case','classes'] | ARRAY[1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,0.0E0,1.0E0] |
-| 0     | Hi I heard about Spark              | ARRAY['hi','i','heard','about','spark']                 | ARRAY[1.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,0.0E0,1.0E0,0.0E0,0.0E0,1.0E0,1.0E0,1.0E0,0.0E0] |
-+-------+-------------------------------------+---------------------------------------------------------+--------------------------------------------------------------------------------------------------------+
-3 rows selected.
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
 SQL> update model countvectorizer_model_001 as countvectorizer_transformer((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)),262144,1.0,1.0,true);
 0 rows affected
 SQL> desc model countvectorizer_model_001

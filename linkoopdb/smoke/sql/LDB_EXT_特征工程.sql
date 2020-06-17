@@ -1,4 +1,3 @@
-
 --    Description: 测试特征工程
 --    Date:         2020-06-11
 --    Author:       丁婷
@@ -25,7 +24,7 @@ create model tokenizer_model_001 as tokenizer_transformer();
 create model countvectorizer_model_001 as countvectorizer_transformer
 ((select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
 
-SELECT *
+SELECT count(*)
 FROM countvectorizer(countvectorizer_model_001, (
 	SELECT *
 	FROM tokenizer(tokenizer_model_001, countvectorizer_data_001)
