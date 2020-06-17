@@ -1,4 +1,4 @@
-SQLCli Release 0.0.55
+SQLCli Release 0.0.64
 SQL> connect admin/123456
 Database connected.
 SQL> start float/float.sql
@@ -10,592 +10,598 @@ SQL> set timing on
 Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> -- float数据类型验证
-   > --删除表T_TYPE_FLOAT
+   > --如果表已存在，则先删除
 SQL> drop table T_TYPE_FLOAT if exists;
 0 rows affected
-Running time elapsed:      0.57 Seconds
+Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> --创建表T_TYPE_FLOAT
 SQL> create table T_TYPE_FLOAT(
    > a1 float
    > );
 0 rows affected
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.12 Seconds
 SQL> 
 SQL> --验证float类型负数最小值-3.402823E+38
 SQL> insert into T_TYPE_FLOAT values(-3.402823E+38);
 1 row affected
-Running time elapsed:      0.59 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT; 
-+-------------------------+
-| A1                      |
-+-------------------------+
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| -3.402823e+38 |
++---------------+
 1 row selected.
-Running time elapsed:      0.32 Seconds
+Running time elapsed:      0.34 Seconds
 SQL>         
 SQL> --验证float类型负数最小值的尾数-0.01，是否报错
 SQL> insert into T_TYPE_FLOAT values(-3.412823E+38);
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| -inf          |
+| -3.402823e+38 |
++---------------+
 2 rows selected.
-Running time elapsed:      0.63 Seconds
+Running time elapsed:      0.83 Seconds
 SQL> 
 SQL> --验证float类型负数最大值-1.175494E-38
 SQL> insert into T_TYPE_FLOAT values(-1.175494E-38);
 1 row affected
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.45 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT; 
-+-------------------------+
-| A1                      |
-+-------------------------+
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 3 rows selected.
-Running time elapsed:      0.86 Seconds
+Running time elapsed:      0.77 Seconds
 SQL>         
 SQL> --验证float类型负数最大值的尾数+0.01，是否报错
 SQL> insert into T_TYPE_FLOAT values(-1.165494E-38);
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 4 rows selected.
-Running time elapsed:      1.04 Seconds
+Running time elapsed:      1.06 Seconds
 SQL> 
 SQL> --验证float类型值为0
 SQL> insert into T_TYPE_FLOAT values(0);
 1 row affected
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 5 rows selected.
-Running time elapsed:      1.33 Seconds
+Running time elapsed:      1.45 Seconds
 SQL> 
 SQL> --验证float类型正数最小值1.175494E-38
 SQL> insert into T_TYPE_FLOAT values(1.175494E-38);
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 6 rows selected.
-Running time elapsed:      1.58 Seconds
+Running time elapsed:      1.47 Seconds
 SQL> 
 SQL> --验证float类型正数最小值的尾数-0.01，是否报错
 SQL> insert into T_TYPE_FLOAT values(1.165494E-38);
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 7 rows selected.
-Running time elapsed:      2.13 Seconds
+Running time elapsed:      1.81 Seconds
 SQL> 
 SQL> --验证float类型正数最大值3.402823E+38
 SQL> insert into T_TYPE_FLOAT values(3.402823E+38);
 1 row affected
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 8 rows selected.
-Running time elapsed:      2.08 Seconds
+Running time elapsed:      2.48 Seconds
 SQL> 
 SQL> --验证float类型正数最大值的尾数+0.01，是否报错
 SQL> insert into T_TYPE_FLOAT values(3.412823E+38);
 1 row affected
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 9 rows selected.
-Running time elapsed:      2.20 Seconds
+Running time elapsed:      2.24 Seconds
 SQL> 
 SQL>  --验证float类型有效位小于等于7
 SQL> insert into T_TYPE_FLOAT values(1.234567);
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 10 rows selected.
-Running time elapsed:      2.62 Seconds
+Running time elapsed:      2.44 Seconds
 SQL> 
 SQL> --验证float类型的有效位超出7个，截断
 SQL> insert into T_TYPE_FLOAT values(1.2345678);
 1 row affected
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 11 rows selected.
-Running time elapsed:      3.02 Seconds
+Running time elapsed:      2.86 Seconds
 SQL> 
 SQL> --验证插入int类型
 SQL> insert into T_TYPE_FLOAT values(289);
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.60 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 12 rows selected.
-Running time elapsed:      3.00 Seconds
+Running time elapsed:      3.33 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入数字'1234.56'
 SQL> insert into T_TYPE_FLOAT values('1234.56');
 1 row affected
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 13 rows selected.
-Running time elapsed:      3.26 Seconds
+Running time elapsed:      3.31 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入英文字母'AAAbcd'
 SQL> insert into T_TYPE_FLOAT values('AAAbcd');
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 14 rows selected.
-Running time elapsed:      3.75 Seconds
+Running time elapsed:      4.42 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入汉字'北京'
 SQL> insert into T_TYPE_FLOAT values('北京');
 1 row affected
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.61 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 15 rows selected.
-Running time elapsed:      3.76 Seconds
+Running time elapsed:      3.65 Seconds
 SQL> 
 SQL> --验证插入date类型，格式yyyy-mm-dd
 SQL> insert into T_TYPE_FLOAT values(to_date('2020-05-08','yyyy-mm-dd'));
 1 row affected
-Running time elapsed:      0.55 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| <null>        |
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 16 rows selected.
-Running time elapsed:      4.42 Seconds
+Running time elapsed:      3.89 Seconds
 SQL> 
 SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss
 SQL> insert into T_TYPE_FLOAT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
 1 row affected
-Running time elapsed:      0.60 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 1588911488.0            |
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 1.588911e+09  |
+| <null>        |
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 17 rows selected.
-Running time elapsed:      4.21 Seconds
+Running time elapsed:      4.64 Seconds
 SQL> 
 SQL> --验证插入boolean类型，插入true                                                       
 SQL> insert into T_TYPE_FLOAT values(true);
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 1.0                     |
-| 1588911488.0            |
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 1             |
+| 1.588911e+09  |
+| <null>        |
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 18 rows selected.
-Running time elapsed:      4.89 Seconds
+Running time elapsed:      4.61 Seconds
 SQL> 
 SQL> --验证插入boolean类型，插入false
 SQL> insert into T_TYPE_FLOAT values(false); 
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT; 
-+-------------------------+
-| A1                      |
-+-------------------------+
-| 0.0                     |
-| 1.0                     |
-| 1588911488.0            |
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| 0             |
+| 1             |
+| 1.588911e+09  |
+| <null>        |
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 19 rows selected.
-Running time elapsed:      4.68 Seconds
+Running time elapsed:      4.69 Seconds
 SQL> 
 SQL> --验证插入空值''                                                   
 SQL> insert into T_TYPE_FLOAT values('');     
 1 row affected
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| <null>                  |
-| 0.0                     |
-| 1.0                     |
-| 1588911488.0            |
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| <null>        |
+| 0             |
+| 1             |
+| 1.588911e+09  |
+| <null>        |
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 20 rows selected.
-Running time elapsed:      5.06 Seconds
+Running time elapsed:      5.50 Seconds
 SQL> 
 SQL> --验证插入空格' '                                                   
 SQL> insert into T_TYPE_FLOAT values(' ');     
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| <null>                  |
-| <null>                  |
-| 0.0                     |
-| 1.0                     |
-| 1588911488.0            |
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| <null>        |
+| <null>        |
+| 0             |
+| 1             |
+| 1.588911e+09  |
+| <null>        |
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 21 rows selected.
-Running time elapsed:      5.73 Seconds
+Running time elapsed:      5.07 Seconds
 SQL> 
 SQL> --验证插入null                                                    
 SQL> insert into T_TYPE_FLOAT values(null);  
 1 row affected
-Running time elapsed:      0.58 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> --查询表T_TYPE_FLOAT
 SQL> select * from T_TYPE_FLOAT;  
-+-------------------------+
-| A1                      |
-+-------------------------+
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 0.0                     |
-| 1.0                     |
-| 1588911488.0            |
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
++---------------+
+| A1            |
++---------------+
+| <null>        |
+| <null>        |
+| <null>        |
+| 0             |
+| 1             |
+| 1.588911e+09  |
+| <null>        |
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 22 rows selected.
 Running time elapsed:      5.86 Seconds
 SQL> 
 SQL> --验证插入NULL                                                   
 SQL> insert into T_TYPE_FLOAT values(NULL);  
 1 row affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> --查询表T_TYPE_FLOAT
-SQL> select * from T_TYPE_FLOAT;
-+-------------------------+
-| A1                      |
-+-------------------------+
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 0.0                     |
-| 1.0                     |
-| 1588911488.0            |
-| <null>                  |
-| <null>                  |
-| <null>                  |
-| 1234.56005859375        |
-| 289.0                   |
-| 1.2345677614212036      |
-| 1.2345670461654663      |
-| inf                     |
-| 3.4028230607370965e+38  |
-| 1.1654939843316335e-38  |
-| 1.1754939304327482e-38  |
-| 0.0                     |
-| -1.1654939843316335e-38 |
-| -1.1754939304327482e-38 |
-| -inf                    |
-| -3.4028230607370965e+38 |
-+-------------------------+
+SQL> select * from T_TYPE_FLOAT; 
++---------------+
+| A1            |
++---------------+
+| <null>        |
+| <null>        |
+| <null>        |
+| <null>        |
+| 0             |
+| 1             |
+| 1.588911e+09  |
+| <null>        |
+| <null>        |
+| <null>        |
+| 1234.56       |
+| 289           |
+| 1.234568      |
+| 1.234567      |
+| inf           |
+| 3.402823e+38  |
+| 1.165494e-38  |
+| 1.175494e-38  |
+| 0             |
+| -1.165494e-38 |
+| -1.175494e-38 |
+| -inf          |
+| -3.402823e+38 |
++---------------+
 23 rows selected.
-Running time elapsed:      6.33 Seconds
-Running time elapsed:     84.76 Seconds
+Running time elapsed:      5.75 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_FLOAT if exists;
+0 rows affected
+Running time elapsed:      0.59 Seconds
+Running time elapsed:     85.08 Seconds
 SQL> exit
 Disconnected.

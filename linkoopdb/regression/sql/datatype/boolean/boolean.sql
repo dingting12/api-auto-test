@@ -6,7 +6,7 @@ set echo on
 set timing on
 
 -- boolean数据类型验证
---如果表一存在，则先删除
+--如果表已存在，则先删除
 drop table T_TYPE_BOOLEAN if exists;
 
 --创建表T_TYPE_BOOLEAN

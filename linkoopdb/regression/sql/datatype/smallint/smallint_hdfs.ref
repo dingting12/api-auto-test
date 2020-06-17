@@ -1,4 +1,4 @@
-SQLCli Release 0.0.55
+SQLCli Release 0.0.64
 SQL> connect admin/123456
 Database connected.
 SQL> start smallint/smallint.sql
@@ -10,22 +10,22 @@ SQL> set timing on
 Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> -- smallint数据类型验证
-   > --删除T_TYPE_SMALLINT表
+   > --如果表已存在，则先删除
 SQL> drop table T_TYPE_SMALLINT if exists;
 0 rows affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> --创建表T_TYPE_SMALLINT
 SQL> create table T_TYPE_SMALLINT(
    > a1 smallint  
    > );
 0 rows affected
-Running time elapsed:      0.05 Seconds
+Running time elapsed:      0.10 Seconds
 SQL>  
 SQL> --验证samllint类型最小值-32768
 SQL> insert into T_TYPE_SMALLINT values(-32768);  
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.60 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -34,12 +34,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | -32768 |
 +--------+
 1 row selected.
-Running time elapsed:      0.30 Seconds
+Running time elapsed:      0.31 Seconds
 SQL> 
 SQL> --验证samllint类型最小值-1,是否报错
 SQL> insert into T_TYPE_SMALLINT values(-32769);   
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -49,15 +49,15 @@ SQL> select * from T_TYPE_SMALLINT;
 | -32768 |
 +--------+
 2 rows selected.
-Running time elapsed:      0.59 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> truncate table T_TYPE_SMALLINT;
 2 rows affected
-Running time elapsed:      0.83 Seconds
+Running time elapsed:      0.75 Seconds
 SQL> 
 SQL> --验证samllint类型最大值32767
 SQL> insert into T_TYPE_SMALLINT values(32767);    
 1 row affected
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.39 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +-------+
@@ -71,7 +71,7 @@ SQL>
 SQL> --验证samllint类型最大值32767+1，是否报错
 SQL> insert into T_TYPE_SMALLINT values(32768);    
 1 row affected
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -81,12 +81,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 2 rows selected.
-Running time elapsed:      0.59 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> 
 SQL> --验证精度超出范围，四舍五入
 SQL> insert into T_TYPE_SMALLINT values(123.456);
 1 row affected
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.46 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -97,12 +97,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 3 rows selected.
-Running time elapsed:      0.79 Seconds
+Running time elapsed:      0.85 Seconds
 SQL> 
 SQL> --验证插入double类型，数据在smallint范围内
 SQL> insert into T_TYPE_SMALLINT values(3276.123);
 1 row affected
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -114,12 +114,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 4 rows selected.
-Running time elapsed:      1.25 Seconds
+Running time elapsed:      1.07 Seconds
 SQL> 
 SQL> --验证插入double类型的数据，值已超出smallint最大范围，是否报错                                              
 SQL> insert into T_TYPE_SMALLINT values(327690.123);  
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -132,12 +132,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 5 rows selected.
-Running time elapsed:      1.39 Seconds
+Running time elapsed:      1.36 Seconds
 SQL> 
 SQL> --验证插入double类型的数据，值已超出smallint最小范围，是否报错                                             
 SQL> insert into T_TYPE_SMALLINT values(-32767.1234);  
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -151,12 +151,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 6 rows selected.
-Running time elapsed:      1.61 Seconds
+Running time elapsed:      1.72 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入数字'12345'
 SQL> insert into T_TYPE_SMALLINT values('12345');  
 1 row affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -171,12 +171,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 7 rows selected.
-Running time elapsed:      1.80 Seconds
+Running time elapsed:      1.94 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入英文字母'adcd'  
 SQL> insert into T_TYPE_SMALLINT values('adcd');  
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -192,12 +192,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 8 rows selected.
-Running time elapsed:      2.09 Seconds
+Running time elapsed:      2.15 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入汉字'中国'  
 SQL> insert into T_TYPE_SMALLINT values('中国');  
 1 row affected
-Running time elapsed:      0.42 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -214,12 +214,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 9 rows selected.
-Running time elapsed:      2.61 Seconds
+Running time elapsed:      2.09 Seconds
 SQL> 
 SQL> --验证插入date类型的数据，格式yyyy-mm-dd
 SQL> insert into T_TYPE_SMALLINT values(to_date('2020-05-08','yyyy-mm-dd')); 
 1 row affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -237,12 +237,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 10 rows selected.
-Running time elapsed:      2.59 Seconds
+Running time elapsed:      2.93 Seconds
 SQL> 
 SQL> --验证插入timestamp类型的数据，格式yyyy-mm-dd hh24:mi:ss
 SQL> insert into T_TYPE_SMALLINT values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
 1 row affected
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -261,12 +261,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 11 rows selected.
-Running time elapsed:      2.76 Seconds
+Running time elapsed:      2.45 Seconds
 SQL> 
 SQL> --验证插入boolean类型，插入true                                                       
 SQL> insert into T_TYPE_SMALLINT values(true);
 1 row affected
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.57 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -286,12 +286,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 12 rows selected.
-Running time elapsed:      3.25 Seconds
+Running time elapsed:      2.97 Seconds
 SQL> 
 SQL> --验证插入boolean类型，插入false
 SQL> insert into T_TYPE_SMALLINT values(false); 
 1 row affected
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT; 
 +--------+
@@ -312,12 +312,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 13 rows selected.
-Running time elapsed:      3.01 Seconds
+Running time elapsed:      3.83 Seconds
 SQL> 
 SQL> --验证插入空值''                                                   
 SQL> insert into T_TYPE_SMALLINT values('');     
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -339,12 +339,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 14 rows selected.
-Running time elapsed:      3.52 Seconds
+Running time elapsed:      3.66 Seconds
 SQL> 
 SQL> --验证插入空格' '                                                   
 SQL> insert into T_TYPE_SMALLINT values(' ');     
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -367,12 +367,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 15 rows selected.
-Running time elapsed:      3.93 Seconds
+Running time elapsed:      4.66 Seconds
 SQL> 
 SQL> --验证插入null                                                    
 SQL> insert into T_TYPE_SMALLINT values(null);  
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;  
 +--------+
@@ -396,12 +396,12 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 16 rows selected.
-Running time elapsed:      3.95 Seconds
+Running time elapsed:      4.06 Seconds
 SQL> 
 SQL> --验证插入NULL                                                   
 SQL> insert into T_TYPE_SMALLINT values(NULL);  
 1 row affected
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_SMALLINT
 SQL> select * from T_TYPE_SMALLINT;
 +--------+
@@ -426,7 +426,13 @@ SQL> select * from T_TYPE_SMALLINT;
 | 32767  |
 +--------+
 17 rows selected.
-Running time elapsed:      4.58 Seconds
-Running time elapsed:     51.02 Seconds
+Running time elapsed:      4.62 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_SMALLINT if exists;
+0 rows affected
+Running time elapsed:      0.57 Seconds
+Running time elapsed:     53.46 Seconds
 SQL> exit
 Disconnected.

@@ -1,4 +1,4 @@
-SQLCli Release 0.0.55
+SQLCli Release 0.0.64
 SQL> connect admin/123456
 Database connected.
 SQL> start real/real.sql
@@ -10,361 +10,361 @@ SQL> set timing on
 Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> -- real数据类型验证
-   > --删除表T_TYPE_REAL
+   > --如果表已存在，则先删除
 SQL> drop table T_TYPE_REAL if exists ;
 0 rows affected
-Running time elapsed:      0.60 Seconds
+Running time elapsed:      0.01 Seconds
 SQL> 
 SQL> --创建表T_TYPE_REAL
 SQL> create table T_TYPE_REAL(
    > a1 real     
    > );          
 0 rows affected
-Running time elapsed:      0.06 Seconds
+Running time elapsed:      0.08 Seconds
 SQL> 
 SQL> --验证real类型负数最小值-1.79769313486231E+308
 SQL> insert into T_TYPE_REAL values(-1.79769313486231E+308);
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL; 
-+------------------------+
-| A1                     |
-+------------------------+
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| -1.797693135e+308 |
++-------------------+
 1 row selected.
-Running time elapsed:      0.24 Seconds
+Running time elapsed:      0.25 Seconds
 SQL>         
 SQL> --验证real类型负数最小值的尾数-0.01，是否报错
 SQL> insert into T_TYPE_REAL values(-1.80769313486231E+308);
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.84 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 2 rows selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> 
 SQL> --验证real类型负数最大值-2.22507385850720E-308
 SQL> insert into T_TYPE_REAL values(-2.22507385850720E-308);
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL; 
-+------------------------+
-| A1                     |
-+------------------------+
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 3 rows selected.
-Running time elapsed:      0.75 Seconds
+Running time elapsed:      0.77 Seconds
 SQL>         
 SQL> --验证real类型负数最大值的尾数+0.01，是否报错
 SQL> insert into T_TYPE_REAL values(-2.21507385850720E-308);
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 4 rows selected.
-Running time elapsed:      1.08 Seconds
+Running time elapsed:      1.07 Seconds
 SQL> 
 SQL> --验证real类型插入0
 SQL> insert into T_TYPE_REAL values(0);
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 5 rows selected.
-Running time elapsed:      1.25 Seconds
+Running time elapsed:      1.28 Seconds
 SQL> 
 SQL> --验证real类型正数最小值2.22507385850720E-308
 SQL> insert into T_TYPE_REAL values(2.22507385850720E-308);
 1 row affected
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 6 rows selected.
-Running time elapsed:      1.51 Seconds
+Running time elapsed:      1.53 Seconds
 SQL> 
 SQL> --验证real类型正数最小值的尾数-0.01，是否报错
 SQL> insert into T_TYPE_REAL values(2.21507385850720E-308);
 1 row affected
-Running time elapsed:      0.93 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 7 rows selected.
-Running time elapsed:      1.71 Seconds
+Running time elapsed:      1.80 Seconds
 SQL> 
 SQL> --验证real类型正数最大值1.79769313486231E+308
 SQL> insert into T_TYPE_REAL values(1.79769313486231E+308);
 1 row affected
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 8 rows selected.
-Running time elapsed:      1.88 Seconds
+Running time elapsed:      2.44 Seconds
 SQL> 
 SQL> --验证real类型正数最大值的尾数+0.01，是否报错
 SQL> insert into T_TYPE_REAL values(1.80769313486231E+308);
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.57 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 9 rows selected.
-Running time elapsed:      2.14 Seconds
+Running time elapsed:      2.25 Seconds
 SQL> 
 SQL> --验证real类型的有效位小于等于15
 SQL> insert into T_TYPE_REAL values(1.23456789012345);
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.82 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 10 rows selected.
-Running time elapsed:      2.57 Seconds
+Running time elapsed:      2.48 Seconds
 SQL> 
 SQL> --验证real类型的有效位超出15个，截断
 SQL> insert into T_TYPE_REAL values(1.23456789012345678);
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 11 rows selected.
-Running time elapsed:      2.76 Seconds
+Running time elapsed:      3.00 Seconds
 SQL> 
 SQL> --验证插入int类型
 SQL> insert into T_TYPE_REAL values(289);
 1 row affected
-Running time elapsed:      0.55 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 12 rows selected.
-Running time elapsed:      2.98 Seconds
+Running time elapsed:      3.05 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入数字'1234.56'
 SQL> insert into T_TYPE_REAL values('1234.56');
 1 row affected
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 13 rows selected.
-Running time elapsed:      3.73 Seconds
+Running time elapsed:      3.33 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入英文字母'AAAbcd'
 SQL> insert into T_TYPE_REAL values('AAAbcd');
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 14 rows selected.
-Running time elapsed:      3.34 Seconds
+Running time elapsed:      3.88 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入汉字'北京'
 SQL> insert into T_TYPE_REAL values('北京');
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 15 rows selected.
-Running time elapsed:      3.69 Seconds
+Running time elapsed:      3.88 Seconds
 SQL> 
 SQL> --验证插入date类型，格式yyyy-mm-dd
 SQL> insert into T_TYPE_REAL values(to_date('2020-05-08','yyyy-mm-dd'));
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.57 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| <null>            |
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 16 rows selected.
-Running time elapsed:      3.76 Seconds
+Running time elapsed:      4.25 Seconds
 SQL> 
 SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss
 SQL> insert into T_TYPE_REAL values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
@@ -372,230 +372,236 @@ SQL> insert into T_TYPE_REAL values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm
 Running time elapsed:      0.47 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 1588911541.0           |
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 1588911541        |
+| <null>            |
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 17 rows selected.
-Running time elapsed:      3.87 Seconds
+Running time elapsed:      4.40 Seconds
 SQL> 
 SQL> --验证插入boolean类型，插入true                                                       
 SQL> insert into T_TYPE_REAL values(true);
 1 row affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| 1.0                    |
-| 1588911541.0           |
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 1                 |
+| 1588911541        |
+| <null>            |
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 18 rows selected.
-Running time elapsed:      4.82 Seconds
+Running time elapsed:      5.31 Seconds
 SQL> 
 SQL> --验证插入boolean类型，插入false
 SQL> insert into T_TYPE_REAL values(false); 
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL; 
-+------------------------+
-| A1                     |
-+------------------------+
-| 0.0                    |
-| 1.0                    |
-| 1588911541.0           |
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| 0                 |
+| 1                 |
+| 1588911541        |
+| <null>            |
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 19 rows selected.
-Running time elapsed:      4.73 Seconds
+Running time elapsed:      4.78 Seconds
 SQL> 
 SQL> --验证插入空值''                                                   
 SQL> insert into T_TYPE_REAL values('');     
 1 row affected
-Running time elapsed:      0.54 Seconds
+Running time elapsed:      0.74 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| <null>                 |
-| 0.0                    |
-| 1.0                    |
-| 1588911541.0           |
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| <null>            |
+| 0                 |
+| 1                 |
+| 1588911541        |
+| <null>            |
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 20 rows selected.
-Running time elapsed:      5.87 Seconds
+Running time elapsed:      5.61 Seconds
 SQL> 
 SQL> --验证插入空格' '                                                   
 SQL> insert into T_TYPE_REAL values(' ');     
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| <null>                 |
-| <null>                 |
-| 0.0                    |
-| 1.0                    |
-| 1588911541.0           |
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| <null>            |
+| <null>            |
+| 0                 |
+| 1                 |
+| 1588911541        |
+| <null>            |
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 21 rows selected.
-Running time elapsed:      5.40 Seconds
+Running time elapsed:      5.41 Seconds
 SQL> 
 SQL> --验证插入null                                                    
 SQL> insert into T_TYPE_REAL values(null);  
 1 row affected
-Running time elapsed:      0.41 Seconds
+Running time elapsed:      0.63 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;  
-+------------------------+
-| A1                     |
-+------------------------+
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 0.0                    |
-| 1.0                    |
-| 1588911541.0           |
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| <null>            |
+| <null>            |
+| <null>            |
+| 0                 |
+| 1                 |
+| 1588911541        |
+| <null>            |
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 22 rows selected.
-Running time elapsed:      5.19 Seconds
+Running time elapsed:      5.87 Seconds
 SQL> 
 SQL> --验证插入NULL                                                   
 SQL> insert into T_TYPE_REAL values(NULL);  
 1 row affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> --查询表T_TYPE_REAL
 SQL> select * from T_TYPE_REAL;
-+------------------------+
-| A1                     |
-+------------------------+
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 0.0                    |
-| 1.0                    |
-| 1588911541.0           |
-| <null>                 |
-| <null>                 |
-| <null>                 |
-| 1234.56                |
-| 289.0                  |
-| 1.2345678901234567     |
-| 1.23456789012345       |
-| inf                    |
-| 1.79769313486231e+308  |
-| 2.2150738585072e-308   |
-| 2.2250738585072e-308   |
-| 0.0                    |
-| -2.2150738585072e-308  |
-| -2.2250738585072e-308  |
-| -inf                   |
-| -1.79769313486231e+308 |
-+------------------------+
++-------------------+
+| A1                |
++-------------------+
+| <null>            |
+| <null>            |
+| <null>            |
+| <null>            |
+| 0                 |
+| 1                 |
+| 1588911541        |
+| <null>            |
+| <null>            |
+| <null>            |
+| 1234.56           |
+| 289               |
+| 1.23456789        |
+| 1.23456789        |
+| inf               |
+| 1.797693135e+308  |
+| 2.215073859e-308  |
+| 2.225073859e-308  |
+| 0                 |
+| -2.215073859e-308 |
+| -2.225073859e-308 |
+| -inf              |
+| -1.797693135e+308 |
++-------------------+
 23 rows selected.
-Running time elapsed:      5.87 Seconds
-Running time elapsed:     81.77 Seconds
+Running time elapsed:      6.07 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_REAL if exists ;
+0 rows affected
+Running time elapsed:      0.57 Seconds
+Running time elapsed:     86.89 Seconds
 SQL> exit
 Disconnected.

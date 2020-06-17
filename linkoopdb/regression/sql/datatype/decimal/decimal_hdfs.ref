@@ -10,35 +10,35 @@ SQL> set timing on
 Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> -- decimal数据类型验证
-   > --删除表
+   > --如果表已存在，则先删除
 SQL> drop table T_TYPE_DECIMAL1 if exists;
 0 rows affected
-Running time elapsed:      0.94 Seconds
+Running time elapsed:      0.67 Seconds
 SQL> drop table T_TYPE_DECIMAL2 if exists;
 0 rows affected
-Running time elapsed:      0.01 Seconds
+Running time elapsed:      0.02 Seconds
 SQL> drop table T_TYPE_DECIMAL3 if exists;
 0 rows affected
 Running time elapsed:      0.05 Seconds
 SQL> drop table T_TYPE_DECIMAL4 if exists;
 0 rows affected
-Running time elapsed:      0.56 Seconds
+Running time elapsed:      0.03 Seconds
 SQL> drop table T_TYPE_DECIMAL5 if exists;
 0 rows affected
-Running time elapsed:      0.26 Seconds
+Running time elapsed:      0.61 Seconds
 SQL> drop table T_TYPE_DECIMAL6 if exists;
 0 rows affected
-Running time elapsed:      0.56 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> drop table T_TYPE_DECIMAL7 if exists;
 0 rows affected
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.57 Seconds
 SQL> 
 SQL> --创建表T_TYPE_DECIMAL1
 SQL> create table T_TYPE_DECIMAL1(
    > a1 decimal(5,2)
    > );
 0 rows affected
-Running time elapsed:      0.10 Seconds
+Running time elapsed:      0.15 Seconds
 SQL> 
 SQL> --验证DECIMAL(n,m)
    > --根据n的值进行判断，当1=<n<=38时
@@ -46,7 +46,7 @@ SQL> --验证DECIMAL(n,m)
    > --整数部分的长度>n-m，是否报错
 SQL> insert into T_TYPE_DECIMAL1 values(1234.67);
 1 row affected
-Running time elapsed:      1.19 Seconds
+Running time elapsed:      0.83 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -55,13 +55,13 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.36 Seconds
 SQL> 
 SQL> --当整数部分的长度<=n-m时：
    > --小数部分的长度>m时，精确到小数点右边m位，m位向右的数字四舍五入
 SQL> insert into T_TYPE_DECIMAL1 values(1.56798);
 1 row affected
-Running time elapsed:      0.57 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -71,12 +71,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 2 rows selected.
-Running time elapsed:      0.62 Seconds
+Running time elapsed:      0.61 Seconds
 SQL> 
 SQL> --小数部分的长度=m时，保持原值不变，小数点后保持m位
 SQL> insert into T_TYPE_DECIMAL1 values(1.67);
 1 row affected
-Running time elapsed:      0.67 Seconds
+Running time elapsed:      0.80 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -87,12 +87,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 3 rows selected.
-Running time elapsed:      0.86 Seconds
+Running time elapsed:      0.83 Seconds
 SQL> 
 SQL> --小数部分的长度<m时，小数点后不足m位的在末尾补零，补足m位
 SQL> insert into T_TYPE_DECIMAL1 values(123.6);
 1 row affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.63 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -124,7 +124,7 @@ SQL> create table T_TYPE_DECIMAL3(
 java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create table T_TYPE_DECIMAL3(
 a1 decimal(5,-2)
 )]
-Running time elapsed:      0.00 Seconds
+Running time elapsed:      0.02 Seconds
 SQL> 
 SQL> --当n<1时
    > --创建表T_TYPE_DECIMAL4，是否报错
@@ -142,7 +142,7 @@ SQL> create table T_TYPE_DECIMAL5(
    > a1 decimal(39,2)
    > );
 0 rows affected
-Running time elapsed:      0.15 Seconds
+Running time elapsed:      0.10 Seconds
 SQL> 
 SQL> 
 SQL> --验证DECIMAL(n)，默认为DECIMAL(n,0)
@@ -151,12 +151,12 @@ SQL> create table T_TYPE_DECIMAL6(
    > a1 decimal(6)
    > );
 0 rows affected
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.08 Seconds
 SQL> 
 SQL> --整数部分的长度>n，是否报错
 SQL> insert into T_TYPE_DECIMAL6 values(1234567.9876);
 1 row affected
-Running time elapsed:      0.57 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_DECIMAL6
 SQL> select * from T_TYPE_DECIMAL6;
 +--------+
@@ -165,12 +165,12 @@ SQL> select * from T_TYPE_DECIMAL6;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.57 Seconds
+Running time elapsed:      0.67 Seconds
 SQL> 
 SQL> --整数部分的长度<=n，精确到整数位，小数部分四舍五入
 SQL> insert into T_TYPE_DECIMAL6 values(1234.9876);
 1 row affected
-Running time elapsed:      0.54 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_DECIMAL6
 SQL> select * from T_TYPE_DECIMAL6;
 +--------+
@@ -180,7 +180,7 @@ SQL> select * from T_TYPE_DECIMAL6;
 | <null> |
 +--------+
 2 rows selected.
-Running time elapsed:      0.64 Seconds
+Running time elapsed:      0.76 Seconds
 SQL> 
 SQL> 
 SQL> --验证DECIMAL，默认为DECIMAL(5,0)
@@ -189,12 +189,12 @@ SQL> create table T_TYPE_DECIMAL7(
    > a1 decimal
    > );
 0 rows affected
-Running time elapsed:      0.13 Seconds
+Running time elapsed:      0.11 Seconds
 SQL> 
 SQL> --整数部分长度>5，是否报错
 SQL> insert into T_TYPE_DECIMAL7 values(123456.78);
 1 row affected
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> --查询表T_TYPE_DECIMAL7
 SQL> select * from T_TYPE_DECIMAL7;
 +----------+
@@ -203,12 +203,12 @@ SQL> select * from T_TYPE_DECIMAL7;
 | 123457.0 |
 +----------+
 1 row selected.
-Running time elapsed:      0.41 Seconds
+Running time elapsed:      0.39 Seconds
 SQL> 
 SQL> --整数部分长度<=5，小数部分四舍五入
 SQL> insert into T_TYPE_DECIMAL7 values(1234.78);
 1 row affected
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> --查询表T_TYPE_DECIMAL7
 SQL> select * from T_TYPE_DECIMAL7;
 +----------+
@@ -218,13 +218,13 @@ SQL> select * from T_TYPE_DECIMAL7;
 | 123457.0 |
 +----------+
 2 rows selected.
-Running time elapsed:      0.61 Seconds
+Running time elapsed:      0.67 Seconds
 SQL> 
 SQL> --插入不同数据类型
    > --验证插入int类型
 SQL> insert into T_TYPE_DECIMAL1 values(214);
 1 row affected
-Running time elapsed:      0.56 Seconds
+Running time elapsed:      0.63 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -237,12 +237,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 5 rows selected.
-Running time elapsed:      1.53 Seconds
+Running time elapsed:      1.32 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入数字'123.45'
 SQL> insert into T_TYPE_DECIMAL1 values('123.45');
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.63 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -256,12 +256,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 6 rows selected.
-Running time elapsed:      1.85 Seconds
+Running time elapsed:      1.64 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入英文字母'AAAbcd'
 SQL> insert into T_TYPE_DECIMAL1 values('AAAbcd');
 1 row affected
-Running time elapsed:      0.55 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -276,12 +276,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 7 rows selected.
-Running time elapsed:      1.99 Seconds
+Running time elapsed:      1.80 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入汉字'北京'
 SQL> insert into T_TYPE_DECIMAL1 values('北京');
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.59 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -297,12 +297,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 8 rows selected.
-Running time elapsed:      2.08 Seconds
+Running time elapsed:      2.62 Seconds
 SQL> 
 SQL> --验证插入date类型，格式yyyy-mm-dd
 SQL> insert into T_TYPE_DECIMAL1 values(to_date('2020-05-08','yyyy-mm-dd'));
 1 row affected
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -319,12 +319,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 9 rows selected.
-Running time elapsed:      2.42 Seconds
+Running time elapsed:      2.36 Seconds
 SQL> 
 SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss
 SQL> insert into T_TYPE_DECIMAL1 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -342,12 +342,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 10 rows selected.
-Running time elapsed:      3.10 Seconds
+Running time elapsed:      2.69 Seconds
 SQL> 
 SQL> --验证插入boolean类型，插入true                                                       
 SQL> insert into T_TYPE_DECIMAL1 values(true);
 1 row affected
-Running time elapsed:      0.56 Seconds
+Running time elapsed:      0.63 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -366,12 +366,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 11 rows selected.
-Running time elapsed:      3.79 Seconds
+Running time elapsed:      3.72 Seconds
 SQL> 
 SQL> --验证插入boolean类型，插入false
 SQL> insert into T_TYPE_DECIMAL1 values(false);
 1 row affected
-Running time elapsed:      0.64 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -391,12 +391,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 12 rows selected.
-Running time elapsed:      3.01 Seconds
+Running time elapsed:      3.21 Seconds
 SQL> 
 SQL> --验证插入空值''                                                   
 SQL> insert into T_TYPE_DECIMAL1 values('');
 1 row affected
-Running time elapsed:      0.54 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -417,12 +417,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 13 rows selected.
-Running time elapsed:      3.57 Seconds
+Running time elapsed:      3.49 Seconds
 SQL> 
 SQL> --验证插入空格' '                                                   
 SQL> insert into T_TYPE_DECIMAL1 values(' ');
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -444,12 +444,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 14 rows selected.
-Running time elapsed:      3.50 Seconds
+Running time elapsed:      4.27 Seconds
 SQL> 
 SQL> --验证插入null                                                    
 SQL> insert into T_TYPE_DECIMAL1 values(null);
 1 row affected
-Running time elapsed:      0.62 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -472,12 +472,12 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 15 rows selected.
-Running time elapsed:      4.07 Seconds
+Running time elapsed:      4.67 Seconds
 SQL> 
 SQL> --验证插入NULL                                                   
 SQL> insert into T_TYPE_DECIMAL1 values(NULL);
 1 row affected
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.75 Seconds
 SQL> --查询表T_TYPE_DECIMAL1
 SQL> select * from T_TYPE_DECIMAL1;
 +--------+
@@ -501,5 +501,30 @@ SQL> select * from T_TYPE_DECIMAL1;
 | <null> |
 +--------+
 16 rows selected.
-Running time elapsed:      4.10 Seconds
-Running time elapsed:     57.38 Seconds
+Running time elapsed:      5.22 Seconds
+SQL> 
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_DECIMAL1 if exists;
+0 rows affected
+Running time elapsed:      0.49 Seconds
+SQL> drop table T_TYPE_DECIMAL2 if exists;
+0 rows affected
+Running time elapsed:      0.01 Seconds
+SQL> drop table T_TYPE_DECIMAL3 if exists;
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> drop table T_TYPE_DECIMAL4 if exists;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> drop table T_TYPE_DECIMAL5 if exists;
+0 rows affected
+Running time elapsed:      0.54 Seconds
+SQL> drop table T_TYPE_DECIMAL6 if exists;
+0 rows affected
+Running time elapsed:      0.45 Seconds
+SQL> drop table T_TYPE_DECIMAL7 if exists;
+0 rows affected
+Running time elapsed:      0.46 Seconds
+Running time elapsed:     61.68 Seconds
