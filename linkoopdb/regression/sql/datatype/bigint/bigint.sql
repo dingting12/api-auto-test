@@ -1,6 +1,6 @@
---Description：bigint data type
---Date：2020-05-22
---Author：李爱敏
+-- Description：bigint data type
+-- Date：2020-05-22
+-- Author：李爱敏
 
 set echo on
 set timing on
