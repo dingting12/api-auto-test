@@ -1,3 +1,4 @@
+
 --    Description: 测试特征工程
 --    Date:         2020-06-11
 --    Author:       丁婷
@@ -34,7 +35,7 @@ update model countvectorizer_model_001 as countvectorizer_transformer((select * 
 
 desc model countvectorizer_model_001
 
-select * from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
+select count(*) from countvectorizer(countvectorizer_model_001,(select * from tokenizer(tokenizer_model_001,countvectorizer_data_001)));
 
 
 drop table countvectorizer_data_001 if exists cascade;
