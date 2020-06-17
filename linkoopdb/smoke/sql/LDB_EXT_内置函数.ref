@@ -195,22 +195,39 @@ SQL> insert into T_AGG_TEST_001 values(
    >  (10,10,54.76,'2008-08-28', '2008-08-14 20:08:08'),
    >  (10,10,11.76,'2008-08-28', '2008-08-14 20:08:08'));
 14 rows affected
-SQL> select sum_where(i1,i1 = 10) from T_AGG_TEST_001
-   > 
-   > select i1, avg_where(i1,i1 IS null) from T_AGG_TEST_001 GROUP BY i1 order by i1;
-java.sql.SQLSyntaxErrorException: unexpected token: SELECT : line: 5 in statement [ select sum_where(i1,i1 = 10) from T_AGG_TEST_001
- 
- select i1, avg_where(i1,i1 IS null) from T_AGG_TEST_001 GROUP BY i1 order by i1]
-SQL>  SELECT TRUNC(d3,2) FROM T_AGG_TEST_001 limit 1;
+SQL>  select sum_where(i1,i1 = 10) from T_AGG_TEST_001;
++----+
+| C1 |
++----+
+| 70 |
++----+
+1 row selected.
+SQL>  select i1, avg_where(i1,i1 IS null) from T_AGG_TEST_001 GROUP BY i1 order by i1;
++--------+--------+
+| I1     | C2     |
++--------+--------+
+| <null> | <null> |
+| 1      | <null> |
+| 2      | <null> |
+| 3      | <null> |
+| 4      | <null> |
+| 5      | <null> |
+| 6      | <null> |
+| 10     | <null> |
++--------+--------+
+8 rows selected.
+SQL>  SELECT TRUNC(d3,2) FROM T_AGG_TEST_001 order by i1 limit 3;
 +-------+
 | C1    |
 +-------+
-| 44.76 |
+| 10.76 |
+| 12.76 |
+| 23.76 |
 +-------+
-1 row selected.
+3 rows selected.
 SQL>  drop table T_AGG_TEST_001 if exists;
 0 rows affected
-SQL> 
+SQL>  
 SQL> --73 LDBX070-13 trim函数的支持和72 LDBX070-14 concat函数的完整支持
 SQL> DROP TABLE t_trim_concat_001 IF EXISTS CASCADE;
 0 rows affected

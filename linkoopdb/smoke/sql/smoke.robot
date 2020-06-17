@@ -59,5 +59,7 @@ SMOKETEST
 	Compare Files		 LDB_EXT_Partition-Bucket-index.log  LDB_EXT_Partition-Bucket-index.ref 
 	Compare Files		 OLAP_Window_Function.log         OLAP_Window_Function.ref 
 		
-
+*** Keywords *** 
+ Setup Custom Settings 
+ Compare Enable ConsoleOutput True 
 

@@ -1,3 +1,5 @@
+loaddriver E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
+connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
 --    Description: 测试内置函数
 --    Date:         2020-06-11
 --    Author:       丁婷
@@ -136,14 +138,14 @@ insert into T_AGG_TEST_001 values(
  (10,10,54.76,'2008-08-28', '2008-08-14 20:08:08'),
  (10,10,11.76,'2008-08-28', '2008-08-14 20:08:08'));
  
- select sum_where(i1,i1 = 10) from T_AGG_TEST_001
+ select sum_where(i1,i1 = 10) from T_AGG_TEST_001;
  
  select i1, avg_where(i1,i1 IS null) from T_AGG_TEST_001 GROUP BY i1 order by i1;
  
- SELECT TRUNC(d3,2) FROM T_AGG_TEST_001 limit 1;
+ SELECT TRUNC(d3,2) FROM T_AGG_TEST_001 order by i1 limit 3;
  
  drop table T_AGG_TEST_001 if exists;
-
+ 
 --73 LDBX070-13 trim函数的支持和72 LDBX070-14 concat函数的完整支持
 DROP TABLE t_trim_concat_001 IF EXISTS CASCADE;
 
