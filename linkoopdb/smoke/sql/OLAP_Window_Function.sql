@@ -247,7 +247,7 @@ COVAR_POP(sal,sals) AS covar_pop2,
 COVAR_SAMP(sal,sal) AS covar_samp1
     FROM T_Window_Functions_005
     GROUP BY DEPTNO,ENAME
-    ORDER BY DEPTNO DESC;
+    ORDER BY DEPTNO,ENAMEDESC;
 	
 	SELECT DEPTNO,
 REGR_SLOPE(sals,sal) slope1,
