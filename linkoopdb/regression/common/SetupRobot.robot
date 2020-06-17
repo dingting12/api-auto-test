@@ -30,7 +30,7 @@ SQL Test Setup
     # 如果在Jenkins中运行，则打开后同样会在Jenkins的控制台上显示出来
     # 小心： 如果比对文件很大，这样打开将导致测试报告文件很大，可能会变得无法阅读
     # 默认是关闭状态，即不显示Compare的结果
-    Compare Enable ConsoleOutput       False
+    Compare Enable ConsoleOutput       True
 
     # 比对参考文件的时候忽略空白行
     Compare Ignore EmptyLine           True
