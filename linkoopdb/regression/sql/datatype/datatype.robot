@@ -27,6 +27,9 @@ DataTypeSTest-HDFS
     Logon And Execute SQL Script       admin/123456  smallint/smallint.sql      smallint_hdfs.log
     Logon And Execute SQL Script       admin/123456  timestamp/timestamp.sql    timestamp_hdfs.log
     Logon And Execute SQL Script       admin/123456  varchar/varchar.sql        varchar_hdfs.log
+    Logon And Execute SQL Script       admin/123456  binary/binary.sql          binary_hdfs.log
+    Logon And Execute SQL Script       admin/123456  array/array.sql            array_hdfs.log
+
 
     #Compare Files             bigint_hdfs.log       bigint/bigint_hdfs.ref
     #Compare Files             boolean_hdfs.log      boolean/boolean_hdfs.ref
@@ -41,3 +44,5 @@ DataTypeSTest-HDFS
     #Compare Files             smallint_hdfs.log     smallint/smallint_hdfs.ref
     #Compare Files             timestamp_hdfs.log    timestamp/timestamp_hdfs.ref
     #Compare Files             varchar_hdfs.log      varchar/varchar_hdfs.ref
+    #Compare Files             binary_hdfs.log       binary/binary_hdfs.ref
+    #Compare Files             array_hdfs.log        array/array_hdfs.ref
