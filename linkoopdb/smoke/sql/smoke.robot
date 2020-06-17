@@ -4,7 +4,7 @@ Documentation    RobotFrameWork文档实例
 
 # 引用公共函数
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       SQL Test Setup   AND   Setup Custom Settings
+Test Setup       SQL Test Setup
 Test Teardown    SQL Test Clnup
 Library          OperatingSystem
 
