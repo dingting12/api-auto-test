@@ -93,7 +93,7 @@ order by depname,c1;
 
 SELECT deptno,ename||' '||job e_name,sal,
 NTILE(4) OVER (PARTITION BY deptno ORDER BY sal DESC) AS quartile
-FROM T_ROW_NUMBER_001 order by deptno,e_name,quartile,sal;
+FROM T_ROW_NUMBER_001 order by deptno,e_name,quartile,sal,quartile;
 
 --测试305 T615 LEAD and LAG functions
  DROP TABLE T_Window_Functions_002 IF EXISTS  CASCADE;
