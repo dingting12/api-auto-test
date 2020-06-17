@@ -1,4 +1,4 @@
--- Description：Binary data type
+-- Description：array data type
 -- Date：2020-06-16
 -- Author：李爱敏
 

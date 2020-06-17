@@ -13,135 +13,136 @@ SQL> -- char数据类型验证
    > --删除表
 SQL> drop table T_TYPE_CHAR1 if exists;
 0 rows affected
-Running time elapsed:      0.58 Seconds
+Running time elapsed:      0.68 Seconds
 SQL> drop table T_TYPE_CHAR2 if exists;
 0 rows affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.68 Seconds
 SQL> drop table T_TYPE_CHAR3 if exists;
 0 rows affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      1.29 Seconds
 SQL> drop table T_TYPE_CHAR4 if exists;
 0 rows affected
-Running time elapsed:      0.60 Seconds
+Running time elapsed:      0.67 Seconds
 SQL> 
-SQL> --创建表T_TYPE_CHAR1，字符长度为64000
+SQL> --创建表T_TYPE_CHAR1，设置字符长度为64000
 SQL> create table T_TYPE_CHAR1 (
    > name char(64000)
    > );
 0 rows affected
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.13 Seconds
 SQL> 
 SQL> --通过脚本往表T_TYPE_CHAR1中插入64000个随机字符
    > --查询表T_TYPE_CHAR1
 SQL> select length(name) from T_TYPE_CHAR1;
 0 rows selected.
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.12 Seconds
 SQL> 
-SQL> --创建表T_TYPE_CHAR2，设置为默认长度，默认长度为1
+SQL> --创建表T_TYPE_CHAR2，设置字符长度大于64000，是否报错
 SQL> create table T_TYPE_CHAR2 (
-   > name char
+   > name char(64001)
    > );
 0 rows affected
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.13 Seconds
+SQL> 
+SQL> --创建表T_TYPE_CHAR3，设置为默认长度，默认长度为1
+SQL> create table T_TYPE_CHAR3 (
+   > a1 char
+   > );
+0 rows affected
+Running time elapsed:      0.08 Seconds
 SQL> 
 SQL> --插入字符长度为1
-SQL> insert into T_TYPE_CHAR2 values('a');
+SQL> insert into T_TYPE_CHAR3 values('a');
 1 row affected
-Running time elapsed:      0.47 Seconds
-SQL> --查询表T_TYPE_CHAR2
-SQL> select * from T_TYPE_CHAR2;
-+------+
-| NAME |
-+------+
-| a    |
-+------+
+Running time elapsed:      0.62 Seconds
+SQL> --查询表T_TYPE_CHAR3
+SQL> select * from T_TYPE_CHAR3;
++----+
+| A1 |
++----+
+| a  |
++----+
 1 row selected.
-Running time elapsed:      0.31 Seconds
+Running time elapsed:      0.36 Seconds
 SQL> 
 SQL> --插入字符长度>1，是否报错
-SQL> insert into T_TYPE_CHAR2 values('ab');
+SQL> insert into T_TYPE_CHAR3 values('ab');
 1 row affected
-Running time elapsed:      0.69 Seconds
-SQL> --查询表T_TYPE_CHAR2
-SQL> select * from T_TYPE_CHAR2;
-+------+
-| NAME |
-+------+
-| a    |
-| a    |
-+------+
+Running time elapsed:      0.52 Seconds
+SQL> --查询表T_TYPE_CHAR3
+SQL> select * from T_TYPE_CHAR3;
++----+
+| A1 |
++----+
+| a  |
+| a  |
++----+
 2 rows selected.
-Running time elapsed:      0.56 Seconds
+Running time elapsed:      0.77 Seconds
 SQL> 
-SQL> --创建表T_TYPE_CHAR3
-SQL> create table T_TYPE_CHAR3(
-   > a1 char(5)
+SQL> --创建表T_TYPE_CHAR4，设置字符长度为30
+SQL> create table T_TYPE_CHAR4(
+   > a1 char(30)
    > );
 0 rows affected
-Running time elapsed:      0.06 Seconds
+Running time elapsed:      0.13 Seconds
 SQL> 
 SQL> --插入数据格式为双引号，报错
-SQL> insert into T_TYPE_CHAR3 values("asdfg");
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: asdfg in statement [insert into T_TYPE_CHAR3 values("asdfg")]
-Running time elapsed:      0.00 Seconds
-SQL> --查询表T_TYPE_CHAR3
-SQL> select * from T_TYPE_CHAR3;
+SQL> insert into T_TYPE_CHAR4 values("abcdef");
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: abcdef in statement [insert into T_TYPE_CHAR4 values("abcdef")]
+Running time elapsed:      0.02 Seconds
+SQL> --查询表T_TYPE_CHAR4
+SQL> select * from T_TYPE_CHAR4;
 0 rows selected.
-Running time elapsed:      0.06 Seconds
+Running time elapsed:      0.07 Seconds
 SQL> 
 SQL> --插入数据格式为单引号
-SQL> insert into T_TYPE_CHAR3 values('asdfg');
+SQL> insert into T_TYPE_CHAR4 values('abcdef');
 1 row affected
-Running time elapsed:      0.98 Seconds
-SQL> --查询表T_TYPE_CHAR3
-SQL> select * from T_TYPE_CHAR3;
-+-------+
-| A1    |
-+-------+
-| asdfg |
-+-------+
+Running time elapsed:      0.56 Seconds
+SQL> --查询表T_TYPE_CHAR4
+SQL> select * from T_TYPE_CHAR4;
++--------------------------------+
+| A1                             |
++--------------------------------+
+| abcdef                         |
++--------------------------------+
 1 row selected.
-Running time elapsed:      0.28 Seconds
+Running time elapsed:      0.36 Seconds
 SQL> 
 SQL> --插入的数据无引号
-SQL> insert into T_TYPE_CHAR3 values(asdfg);
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: ASDFG in statement [insert into T_TYPE_CHAR3 values(asdfg)]
-Running time elapsed:      0.00 Seconds
-SQL> --查询表T_TYPE_CHAR3
-SQL> select * from T_TYPE_CHAR3;
-+-------+
-| A1    |
-+-------+
-| asdfg |
-+-------+
+SQL> insert into T_TYPE_CHAR4 values(abcdef);
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: ABCDEF in statement [insert into T_TYPE_CHAR4 values(abcdef)]
+Running time elapsed:      0.01 Seconds
+SQL> --查询表T_TYPE_CHAR4
+SQL> select * from T_TYPE_CHAR4;
++--------------------------------+
+| A1                             |
++--------------------------------+
+| abcdef                         |
++--------------------------------+
 1 row selected.
-Running time elapsed:      0.27 Seconds
-SQL> 
-SQL> --创建表T_TYPE_CHAR4
-SQL> create table T_TYPE_CHAR4(
-   > a1 char(30)        
-   > );
-0 rows affected
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.62 Seconds
 SQL> 
 SQL> --验证插入30个英文字母
 SQL> insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcd');
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------+
 | A1                             |
 +--------------------------------+
 | abcdefghijklmnopqrstuvwxyzabcd |
+| abcdef                         |
 +--------------------------------+
-1 row selected.
-Running time elapsed:      0.28 Seconds
+2 rows selected.
+Running time elapsed:      0.63 Seconds
 SQL> 
 SQL> --验证插入31个英文字母，插入是否成功
 SQL> insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcde');
 1 row affected
-Running time elapsed:      0.42 Seconds
+Running time elapsed:      0.74 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------+
@@ -149,14 +150,15 @@ SQL> select * from T_TYPE_CHAR4;
 +--------------------------------+
 | abcdefghijklmnopqrstuvwxyzabcd |
 | abcdefghijklmnopqrstuvwxyzabcd |
+| abcdef                         |
 +--------------------------------+
-2 rows selected.
-Running time elapsed:      0.53 Seconds
+3 rows selected.
+Running time elapsed:      0.88 Seconds
 SQL> 
 SQL> --验证插入30个汉字
 SQL> insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十');
 1 row affected
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -165,66 +167,13 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-3 rows selected.
-Running time elapsed:      0.78 Seconds
+4 rows selected.
+Running time elapsed:      1.19 Seconds
 SQL> 
 SQL> --验证插入31个汉字，插入是否成功
 SQL> insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
-1 row affected
-Running time elapsed:      0.55 Seconds
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
-+--------------------------------------------------------------+
-| A1                                                           |
-+--------------------------------------------------------------+
-| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
-| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
-| abcdefghijklmnopqrstuvwxyzabcd                               |
-| abcdefghijklmnopqrstuvwxyzabcd                               |
-+--------------------------------------------------------------+
-4 rows selected.
-Running time elapsed:      1.04 Seconds
-SQL> 
-SQL> --验证插入30个数字
-SQL> insert into T_TYPE_CHAR4 values('123456789012345678901234567890');
-1 row affected
-Running time elapsed:      0.47 Seconds
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
-+--------------------------------------------------------------+
-| A1                                                           |
-+--------------------------------------------------------------+
-| 123456789012345678901234567890                               |
-| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
-| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
-| abcdefghijklmnopqrstuvwxyzabcd                               |
-| abcdefghijklmnopqrstuvwxyzabcd                               |
-+--------------------------------------------------------------+
-5 rows selected.
-Running time elapsed:      1.28 Seconds
-SQL> 
-SQL> --验证插入31个数字，插入是否成功
-SQL> insert into T_TYPE_CHAR4 values('1234567890123456789012345678901');
-1 row affected
-Running time elapsed:      0.51 Seconds
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
-+--------------------------------------------------------------+
-| A1                                                           |
-+--------------------------------------------------------------+
-| 123456789012345678901234567890                               |
-| 123456789012345678901234567890                               |
-| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
-| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
-| abcdefghijklmnopqrstuvwxyzabcd                               |
-| abcdefghijklmnopqrstuvwxyzabcd                               |
-+--------------------------------------------------------------+
-6 rows selected.
-Running time elapsed:      1.54 Seconds
-SQL> 
-SQL> --验证插入int类型
-SQL> insert into T_TYPE_CHAR4 values(129);
 1 row affected
 Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_CHAR4
@@ -232,6 +181,63 @@ SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
++--------------------------------------------------------------+
+5 rows selected.
+Running time elapsed:      1.48 Seconds
+SQL> 
+SQL> --验证插入30个数字
+SQL> insert into T_TYPE_CHAR4 values('123456789012345678901234567890');
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> --查询表T_TYPE_CHAR4
+SQL> select * from T_TYPE_CHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
++--------------------------------------------------------------+
+6 rows selected.
+Running time elapsed:      1.52 Seconds
+SQL> 
+SQL> --验证插入31个数字，插入是否成功
+SQL> insert into T_TYPE_CHAR4 values('1234567890123456789012345678901');
+1 row affected
+Running time elapsed:      0.54 Seconds
+SQL> --查询表T_TYPE_CHAR4
+SQL> select * from T_TYPE_CHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
++--------------------------------------------------------------+
+7 rows selected.
+Running time elapsed:      2.15 Seconds
+SQL> 
+SQL> --验证插入int类型
+SQL> insert into T_TYPE_CHAR4 values(129);
+1 row affected
+Running time elapsed:      0.51 Seconds
+SQL> --查询表T_TYPE_CHAR4
+SQL> select * from T_TYPE_CHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
 | 129                                                          |
 | 123456789012345678901234567890                               |
 | 123456789012345678901234567890                               |
@@ -239,12 +245,35 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-7 rows selected.
-Running time elapsed:      2.04 Seconds
+8 rows selected.
+Running time elapsed:      2.46 Seconds
 SQL> 
 SQL> --验证插入double类型
 SQL> insert into T_TYPE_CHAR4 values(129.77);
+1 row affected
+Running time elapsed:      0.49 Seconds
+SQL> --查询表T_TYPE_CHAR4
+SQL> select * from T_TYPE_CHAR4;
++--------------------------------------------------------------+
+| A1                                                           |
++--------------------------------------------------------------+
+| 129.77                                                       |
+| 129                                                          |
+| 123456789012345678901234567890                               |
+| 123456789012345678901234567890                               |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
++--------------------------------------------------------------+
+9 rows selected.
+Running time elapsed:      2.33 Seconds
+SQL> 
+SQL> --验证插入date类型
+SQL> insert into T_TYPE_CHAR4 values(to_date('2020-05-08','yyyy-mm-dd'));
 1 row affected
 Running time elapsed:      0.52 Seconds
 SQL> --查询表T_TYPE_CHAR4
@@ -252,27 +281,6 @@ SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
 | A1                                                           |
 +--------------------------------------------------------------+
-| 129.77                                                       |
-| 129                                                          |
-| 123456789012345678901234567890                               |
-| 123456789012345678901234567890                               |
-| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
-| 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
-| abcdefghijklmnopqrstuvwxyzabcd                               |
-| abcdefghijklmnopqrstuvwxyzabcd                               |
-+--------------------------------------------------------------+
-8 rows selected.
-Running time elapsed:      2.04 Seconds
-SQL> 
-SQL> --验证插入date类型
-SQL> insert into T_TYPE_CHAR4 values(to_date('2020-05-08','yyyy-mm-dd'));
-1 row affected
-Running time elapsed:      0.44 Seconds
-SQL> --查询表T_TYPE_CHAR4
-SQL> select * from T_TYPE_CHAR4;
-+--------------------------------------------------------------+
-| A1                                                           |
-+--------------------------------------------------------------+
 | 2020-05-08                                                   |
 | 129.77                                                       |
 | 129                                                          |
@@ -282,14 +290,15 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-9 rows selected.
-Running time elapsed:      2.21 Seconds
+10 rows selected.
+Running time elapsed:      3.18 Seconds
 SQL> 
 SQL> --验证插入timestamp类型
 SQL> insert into T_TYPE_CHAR4 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.73 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -305,14 +314,15 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-10 rows selected.
-Running time elapsed:      2.75 Seconds
+11 rows selected.
+Running time elapsed:      2.74 Seconds
 SQL> 
 SQL> --验证插入boolean类型
 SQL> insert into T_TYPE_CHAR4 values(true);
 1 row affected
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -329,14 +339,15 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-11 rows selected.
-Running time elapsed:      3.60 Seconds
+12 rows selected.
+Running time elapsed:      2.99 Seconds
 SQL> 
 SQL> --验证插入boolean类型
 SQL> insert into T_TYPE_CHAR4 values(false);
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.64 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -354,14 +365,15 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-12 rows selected.
-Running time elapsed:      2.73 Seconds
+13 rows selected.
+Running time elapsed:      3.65 Seconds
 SQL> 
 SQL> --验证插入空值''                                                   
 SQL> insert into T_TYPE_CHAR4 values('');
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -380,14 +392,15 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-13 rows selected.
-Running time elapsed:      3.19 Seconds
+14 rows selected.
+Running time elapsed:      4.06 Seconds
 SQL> 
 SQL> --验证插入空格' '                                                   
 SQL> insert into T_TYPE_CHAR4 values(' ');
 1 row affected
-Running time elapsed:      0.98 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -407,14 +420,15 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-14 rows selected.
-Running time elapsed:      3.87 Seconds
+15 rows selected.
+Running time elapsed:      3.77 Seconds
 SQL> 
 SQL> --验证插入null                                                    
 SQL> insert into T_TYPE_CHAR4 values(null);
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -435,14 +449,15 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-15 rows selected.
-Running time elapsed:      3.82 Seconds
+16 rows selected.
+Running time elapsed:      4.62 Seconds
 SQL> 
 SQL> --验证插入NULL                                                   
 SQL> insert into T_TYPE_CHAR4 values(NULL);
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -464,9 +479,8 @@ SQL> select * from T_TYPE_CHAR4;
 | 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十 |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
 | abcdefghijklmnopqrstuvwxyzabcd                               |
+| abcdef                                                       |
 +--------------------------------------------------------------+
-16 rows selected.
-Running time elapsed:      4.33 Seconds
-Running time elapsed:     50.41 Seconds
-SQL> exit
-Disconnected.
+17 rows selected.
+Running time elapsed:      3.74 Seconds
+Running time elapsed:     59.75 Seconds
