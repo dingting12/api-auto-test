@@ -1,4 +1,4 @@
-SQLCli Release 0.0.55
+SQLCli Release 0.0.64
 SQL> connect admin/123456
 Database connected.
 SQL> start boolean/boolean.sql
@@ -10,22 +10,22 @@ SQL> set timing on
 Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> -- boolean数据类型验证
-   > --删除表
+   > --如果表已存在，则先删除
 SQL> drop table T_TYPE_BOOLEAN if exists;
 0 rows affected
-Running time elapsed:      0.63 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> 
 SQL> --创建表T_TYPE_BOOLEAN
 SQL> create table T_TYPE_BOOLEAN(
    > a1 boolean
    > );
 0 rows affected
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.09 Seconds
 SQL> 
 SQL> --验证boolean正常值true
 SQL> insert into T_TYPE_BOOLEAN values(true);
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +------+
@@ -34,12 +34,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True |
 +------+
 1 row selected.
-Running time elapsed:      0.65 Seconds
+Running time elapsed:      0.31 Seconds
 SQL> 
 SQL> --验证boolean正常值false
 SQL> insert into T_TYPE_BOOLEAN values(false);
 1 row affected
-Running time elapsed:      0.57 Seconds
+Running time elapsed:      0.65 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +-------+
@@ -49,12 +49,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 2 rows selected.
-Running time elapsed:      0.55 Seconds
+Running time elapsed:      0.57 Seconds
 SQL> 
 SQL> --验证插入字符型的'true'
 SQL> insert into T_TYPE_BOOLEAN values('true');
 1 row affected
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +-------+
@@ -65,12 +65,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 3 rows selected.
-Running time elapsed:      0.83 Seconds
+Running time elapsed:      0.76 Seconds
 SQL> 
 SQL> --验证插入字符型的'false'
 SQL> insert into T_TYPE_BOOLEAN values('false');
 1 row affected
-Running time elapsed:      0.58 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +-------+
@@ -82,7 +82,7 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 4 rows selected.
-Running time elapsed:      1.05 Seconds
+Running time elapsed:      1.12 Seconds
 SQL> 
 SQL> --插入表示"真"的字符串
 SQL> insert into T_TYPE_BOOLEAN values('t');
@@ -100,7 +100,7 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 5 rows selected.
-Running time elapsed:      1.27 Seconds
+Running time elapsed:      1.34 Seconds
 SQL> insert into T_TYPE_BOOLEAN values('yes');
 1 row affected
 Running time elapsed:      0.54 Seconds
@@ -117,12 +117,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 6 rows selected.
-Running time elapsed:      1.56 Seconds
+Running time elapsed:      1.61 Seconds
 SQL> 
 SQL> --插入表示"假"的字符串
 SQL> insert into T_TYPE_BOOLEAN values(0);
 1 row affected
-Running time elapsed:      0.58 Seconds
+Running time elapsed:      0.66 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +-------+
@@ -137,10 +137,10 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 7 rows selected.
-Running time elapsed:      1.80 Seconds
+Running time elapsed:      1.86 Seconds
 SQL> insert into T_TYPE_BOOLEAN values('f');
 1 row affected
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +-------+
@@ -156,10 +156,10 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 8 rows selected.
-Running time elapsed:      2.15 Seconds
+Running time elapsed:      2.36 Seconds
 SQL> insert into T_TYPE_BOOLEAN values('no');
 1 row affected
-Running time elapsed:      0.57 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +-------+
@@ -176,7 +176,7 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 9 rows selected.
-Running time elapsed:      2.34 Seconds
+Running time elapsed:      2.40 Seconds
 SQL> 
 SQL> --验证插入int类型
 SQL> insert into T_TYPE_BOOLEAN values(14567);
@@ -199,12 +199,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 10 rows selected.
-Running time elapsed:      2.51 Seconds
+Running time elapsed:      2.59 Seconds
 SQL> 
 SQL> --验证插入double类型
 SQL> insert into T_TYPE_BOOLEAN values(15.23);
 1 row affected
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +-------+
@@ -223,12 +223,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True  |
 +-------+
 11 rows selected.
-Running time elapsed:      3.04 Seconds
+Running time elapsed:      2.76 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入数字'1234'
 SQL> insert into T_TYPE_BOOLEAN values('1234');
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.85 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +--------+
@@ -248,12 +248,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 12 rows selected.
-Running time elapsed:      3.02 Seconds
+Running time elapsed:      3.01 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入英文字母'AAAbcd'
 SQL> insert into T_TYPE_BOOLEAN values('AAAbcd');
 1 row affected
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.57 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +--------+
@@ -274,12 +274,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 13 rows selected.
-Running time elapsed:      3.34 Seconds
+Running time elapsed:      3.33 Seconds
 SQL> 
 SQL> --验证插入varchar类型，插入汉字'北京'
 SQL> insert into T_TYPE_BOOLEAN values('北京');
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +--------+
@@ -301,12 +301,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 14 rows selected.
-Running time elapsed:      3.88 Seconds
+Running time elapsed:      3.87 Seconds
 SQL> 
 SQL> --验证插入date类型，格式yyyy-mm-dd
 SQL> insert into T_TYPE_BOOLEAN values(to_date('2020-05-08','yyyy-mm-dd'));
 1 row affected
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +--------+
@@ -329,12 +329,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 15 rows selected.
-Running time elapsed:      3.82 Seconds
+Running time elapsed:      3.81 Seconds
 SQL> 
 SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss
 SQL> insert into T_TYPE_BOOLEAN values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
 1 row affected
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +--------+
@@ -358,12 +358,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 16 rows selected.
-Running time elapsed:      4.43 Seconds
+Running time elapsed:      4.23 Seconds
 SQL> 
 SQL> --验证插入空值''                                                   
 SQL> insert into T_TYPE_BOOLEAN values('');     
 1 row affected
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.61 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +--------+
@@ -388,12 +388,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 17 rows selected.
-Running time elapsed:      4.27 Seconds
+Running time elapsed:      4.56 Seconds
 SQL> 
 SQL> --验证插入空格' '                                                   
 SQL> insert into T_TYPE_BOOLEAN values(' ');     
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.61 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;
 +--------+
@@ -419,12 +419,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 18 rows selected.
-Running time elapsed:      4.88 Seconds
+Running time elapsed:      5.01 Seconds
 SQL> 
 SQL> --验证插入null                                                    
 SQL> insert into T_TYPE_BOOLEAN values(null);  
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.60 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN;  
 +--------+
@@ -451,12 +451,12 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 19 rows selected.
-Running time elapsed:      4.66 Seconds
+Running time elapsed:      4.71 Seconds
 SQL> 
 SQL> --验证插入NULL                                                   
 SQL> insert into T_TYPE_BOOLEAN values(NULL);  
 1 row affected
-Running time elapsed:      0.54 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> --查询表T_TYPE_BOOLEAN
 SQL> select * from T_TYPE_BOOLEAN; 
 +--------+
@@ -484,7 +484,7 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 20 rows selected.
-Running time elapsed:      5.58 Seconds
+Running time elapsed:      5.84 Seconds
 SQL> 
 SQL> --验证boolean类型的异常值truew，是否报错
 SQL> insert into T_TYPE_BOOLEAN values(truew);
@@ -517,7 +517,13 @@ SQL> select * from T_TYPE_BOOLEAN;
 | True   |
 +--------+
 20 rows selected.
-Running time elapsed:      5.07 Seconds
-Running time elapsed:     71.74 Seconds
+Running time elapsed:      4.91 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_BOOLEAN if exists;
+0 rows affected
+Running time elapsed:      0.54 Seconds
+Running time elapsed:     73.30 Seconds
 SQL> exit
 Disconnected.

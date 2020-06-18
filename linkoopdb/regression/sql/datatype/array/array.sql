@@ -15,6 +15,7 @@ drop table T_TYPE_ARRAY6 if exists;
 drop table T_TYPE_ARRAY7 if exists;
 drop table T_TYPE_ARRAY8 if exists;
 drop table T_TYPE_ARRAY9 if exists;
+drop table T_ALL_DATATYPE if exists;
 
 --创建表T_TYPE_ARRAY1，验证整型数组
 create table T_TYPE_ARRAY1 (a1 int array,a2 smallint array,a3 bigint array);
@@ -71,6 +72,27 @@ create table T_TYPE_ARRAY9 (a1 clob(100) array);
 --验证多维嵌套数组，是否报错
 create table T_TYPE_ARRAY8 (a1 smallint[3][3] array);
 
+
+--验证所有数据类型
+create table T_ALL_DATATYPE (a1 smallint,a2 int,a3 bigint,a4 real,a5 double,a6 float,a7 decimal(10,2),a8 numeric(10,2),
+            a9 date,a10 timestamp(3),a11 char(10),a12 varchar(10),a13 boolean,
+            a14 bit(10),a15 binary(10),a16 varbinary(10),a17 clob(10M),a18 blob(10M),a19 int array);
+
+--验证insert操作
+insert into T_ALL_DATATYPE values (111,22222,3333333,11.11,222.22,333.333,444.44,5555.555,
+            to_date('2010-05-11','yyyy-mm-dd'),to_timestamp('2020-03-21 10:21:30.333','yyyy-mm-dd hh24:mi:ss.fff'),'aaa','bbbb',True,
+            b'1010101010','AABBHHKKgg','mmqqxxYYZZ','dhjshfdsjkfhdsk','aaa.jpg',array[111,222,333]);
+select * from T_ALL_DATATYPE;
+
+--验证update操作
+update T_ALL_DATATYPE set a1 = 888 where a1 = 111;
+
+--验证delete操作
+delete from T_ALL_DATATYPE WHERE a1 = 111;
+
+
+
+
 --最后删除创建的表
 drop table T_TYPE_ARRAY1 if exists;
 drop table T_TYPE_ARRAY2 if exists;
@@ -81,3 +103,4 @@ drop table T_TYPE_ARRAY6 if exists;
 drop table T_TYPE_ARRAY7 if exists;
 drop table T_TYPE_ARRAY8 if exists;
 drop table T_TYPE_ARRAY9 if exists;
+drop table T_ALL_DATATYPE if exists;
