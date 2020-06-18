@@ -1,0 +1,1396 @@
+SQLCli Release 0.0.64
+SQL> connect admin/123456
+Database connected.
+SQL> start timestamp/timestamp.sql
+SQL> --Description：timestamp data type
+   > --Date：2020-05-22
+   > --Author：李爱敏
+SQL> set echo on
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- timestamp数据类型验证
+   > --如果表已存在，则先删除
+SQL> drop table T_TYPE_TIMESTAMP if exists;
+0 rows affected
+Running time elapsed:      0.46 Seconds
+SQL> drop table T_TYPE_TIMESTAMP1 if exists;
+0 rows affected
+Running time elapsed:      0.44 Seconds
+SQL> drop table T_TYPE_TIMESTAMP2 if exists;
+0 rows affected
+Running time elapsed:      0.50 Seconds
+SQL> drop table T_TYPE_TIMESTAMP3 if exists;
+0 rows affected
+Running time elapsed:      0.50 Seconds
+SQL> drop table T_TYPE_TIMESTAMP4 if exists;
+0 rows affected
+Running time elapsed:      0.46 Seconds
+SQL> 
+SQL> --创建T_TYPE_TIMESTAMP表
+SQL> create table T_TYPE_TIMESTAMP(
+   > a1 timestamp
+   > );
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> 
+SQL> --验证timestamp的最小值0001:01:01 00:00:00
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('0001-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ff'));
+1 row affected
+Running time elapsed:      0.51 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 0001-01-01 00:00:00 |
++---------------------+
+1 row selected.
+Running time elapsed:      0.38 Seconds
+SQL> 
+SQL> --验证timestamp的最小值-0.000001s，是否报错
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('-0001-12-31 23:59:61.999999','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.47 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+2 rows selected.
+Running time elapsed:      0.56 Seconds
+SQL> 
+SQL> --验证timestamp的最大值9999-12-31 23:59:61.999999，闰秒
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:61.999999','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.47 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+3 rows selected.
+Running time elapsed:      0.82 Seconds
+SQL> 
+SQL> /****************这条用例临时屏蔽，因为值超出范围，用工具跑时会报格式错误，可先手动验证******************
+   > 
+   > --验证timestamp的最大值+0.000001s，是否报错
+   > --insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
+   > --查询表T_TYPE_TIMESTAMP
+   > --select * from T_TYPE_TIMESTAMP;
+   >  */
+   > 
+   > --验证timestamp的最大值9999-12-31 23:59:59
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:59','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.47 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+4 rows selected.
+Running time elapsed:      1.07 Seconds
+SQL> 
+SQL> /**********************这条用例临时屏蔽，因为值超出范围，用工具跑时会报格式错误，可先手动验证*****************
+   > 
+   > --验证timestamp的最大值+1s，是否报错
+   > --insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss'));
+   > --查询表T_TYPE_TIMESTAMP
+   > --select * from T_TYPE_TIMESTAMP;
+   >  */
+   > 
+   > --验证闰年2月份最后一天日期
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('2001-02-29 10:30:30','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.62 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+5 rows selected.
+Running time elapsed:      1.29 Seconds
+SQL> 
+SQL> --验证平年2月份最后一天日期
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('2001-02-28 10:30:30','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.57 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+6 rows selected.
+Running time elapsed:      1.54 Seconds
+SQL> 
+SQL> --大于28号时是否报错
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('2001-02-29 10:30:30','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.64 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+7 rows selected.
+Running time elapsed:      1.85 Seconds
+SQL> 
+SQL> --年，月，日，时，分，秒超出范围
+   > --月份超出范围
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1988-13-01 12:22:11','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.48 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+8 rows selected.
+Running time elapsed:      2.36 Seconds
+SQL> 
+SQL> --日期超出范围
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1988-12-35 12:33:23','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.54 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+9 rows selected.
+Running time elapsed:      2.33 Seconds
+SQL> 
+SQL> --小时超出范围
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1997-12-26 26:03:05','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.57 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+10 rows selected.
+Running time elapsed:      2.45 Seconds
+SQL> 
+SQL> --分钟超出范围
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1997-12-26 23:76:02','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.49 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+11 rows selected.
+Running time elapsed:      3.14 Seconds
+SQL> 
+SQL> --秒超出范围
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1997-12-26 23:16:88','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.48 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+12 rows selected.
+Running time elapsed:      2.94 Seconds
+SQL> 
+SQL> --验证timestamp的格式
+   > --验证timestamp的格式：24小时制，yyyy-mm-dd hh24:mi:ss
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.52 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+13 rows selected.
+Running time elapsed:      3.31 Seconds
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-2-8 5:3:1','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.54 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+14 rows selected.
+Running time elapsed:      3.89 Seconds
+SQL> 
+SQL> --验证timestamp格式：12小时制，yyyy-mm-dd hh12:mi:ss
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-dd hh12:mi:ss'));
+1 row affected
+Running time elapsed:      0.54 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+15 rows selected.
+Running time elapsed:      3.85 Seconds
+SQL> 
+SQL> --上午
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-dd hh12:mi:ss am'));
+1 row affected
+Running time elapsed:      0.53 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+16 rows selected.
+Running time elapsed:      4.33 Seconds
+SQL> 
+SQL> --下午
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-08 05:03:01','yyyy-mm-dd hh12:mi:ss pm'));
+1 row affected
+Running time elapsed:      0.57 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+17 rows selected.
+Running time elapsed:      4.49 Seconds
+SQL> 
+SQL> --验证timestamp的格式：yy-mm-dd hh24:mi:ss
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('94-01-01 05:03:11','yy-mm-dd hh24:mi:ss')); --年份用yy表示时，自动补齐为1994
+1 row affected
+Running time elapsed:      0.58 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+18 rows selected.
+Running time elapsed:      4.76 Seconds
+SQL> 
+SQL> --验证timestamp的格式：yyyymmdd hh24:mi:ss
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('19940208 13:34:51','yyyymmdd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.55 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+19 rows selected.
+Running time elapsed:      4.81 Seconds
+SQL> 
+SQL> --验证timestamp的格式：yyyy/mm/dd hh24:mi:ss
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994/02/18 15:13:31','yyyy/mm/dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.62 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-18 15:13:31 |
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+20 rows selected.
+Running time elapsed:      5.11 Seconds
+SQL> 
+SQL> --年，月，日，时，分，秒缺失
+   > --缺失年份
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('11-26 05:03:01','mm-dd hh24:mi:ss')); --缺失年份时默认为1970
+1 row affected
+Running time elapsed:      0.53 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1970-11-26 05:03:01 |
+| 1994-02-18 15:13:31 |
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+21 rows selected.
+Running time elapsed:      4.71 Seconds
+SQL> 
+SQL> --缺失月份
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-18 15:13:31','yyyy-dd hh24:mi:ss'));  --缺失月份时默认是1月
+1 row affected
+Running time elapsed:      1.07 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-01-18 15:13:31 |
+| 1970-11-26 05:03:01 |
+| 1994-02-18 15:13:31 |
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+22 rows selected.
+Running time elapsed:      5.49 Seconds
+SQL> 
+SQL> --缺失日期
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02 15:13:31','yyyy-mm hh24:mi:ss')); --缺失日期时默认是1日
+1 row affected
+Running time elapsed:      0.57 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-01 15:13:31 |
+| 1994-01-18 15:13:31 |
+| 1970-11-26 05:03:01 |
+| 1994-02-18 15:13:31 |
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+23 rows selected.
+Running time elapsed:      5.88 Seconds
+SQL> 
+SQL> --缺失小时
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-01 13:31','yyyy-mm-dd mi:ss')); --缺失小时时默认是0点
+1 row affected
+Running time elapsed:      0.63 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-01 00:13:31 |
+| 1994-02-01 15:13:31 |
+| 1994-01-18 15:13:31 |
+| 1970-11-26 05:03:01 |
+| 1994-02-18 15:13:31 |
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+24 rows selected.
+Running time elapsed:      6.06 Seconds
+SQL> 
+SQL> --缺失分钟
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-01 10:30','yyyy-mm-dd hh24:ss')); --缺失分钟时默认是0分
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-01 10:00:30 |
+| 1994-02-01 00:13:31 |
+| 1994-02-01 15:13:31 |
+| 1994-01-18 15:13:31 |
+| 1970-11-26 05:03:01 |
+| 1994-02-18 15:13:31 |
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+25 rows selected.
+Running time elapsed:      6.67 Seconds
+SQL> 
+SQL> --缺失秒
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('1994-02-01 10:50','yyyy-mm-dd hh24:mi')); --缺失秒时默认是0秒
+1 row affected
+Running time elapsed:      0.55 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1994-02-01 10:50:00 |
+| 1994-02-01 10:00:30 |
+| 1994-02-01 00:13:31 |
+| 1994-02-01 15:13:31 |
+| 1994-01-18 15:13:31 |
+| 1970-11-26 05:03:01 |
+| 1994-02-18 15:13:31 |
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+26 rows selected.
+Running time elapsed:      6.78 Seconds
+SQL> 
+SQL> 
+SQL> --带小数秒
+   > --默认小数秒timestamp
+SQL> create table T_TYPE_TIMESTAMP1 (a1 timestamp);--默认6位小数秒
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> 
+SQL> --精度范围内
+SQL> insert into T_TYPE_TIMESTAMP1 values(to_timestamp('2019-07-19 10:23:23.776666','yyyy-mm-dd hh24:mi:ss.ffffff'));
+1 row affected
+Running time elapsed:      0.48 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP1
+SQL> select * from T_TYPE_TIMESTAMP1;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+Running time elapsed:      0.29 Seconds
+SQL> 
+SQL> --超出精度，截断
+SQL> insert into T_TYPE_TIMESTAMP1 values(to_timestamp('2019-07-19 10:23:23.776666888888','yyyy-mm-dd hh24:mi:ss.ffffff'));
+1 row affected
+Running time elapsed:      0.48 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP1
+SQL> select * from T_TYPE_TIMESTAMP1;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
++--------+
+2 rows selected.
+Running time elapsed:      0.56 Seconds
+SQL> 
+SQL> --0位小数秒timestamp(0)
+SQL> create table T_TYPE_TIMESTAMP2 (a1 timestamp(0));
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> --精度范围内
+SQL> insert into T_TYPE_TIMESTAMP2 values(to_timestamp('2019-07-19 10:23:10','yyyy-mm-dd hh24:mi:ss.ff'));
+1 row affected
+Running time elapsed:      0.47 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP2
+SQL> select * from T_TYPE_TIMESTAMP2;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> --超出精度，截断
+SQL> insert into T_TYPE_TIMESTAMP2 values(to_timestamp('2019-07-19 10:23:20.8','yyyy-mm-dd hh24:mi:ss.ff'));
+1 row affected
+Running time elapsed:      0.47 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP2
+SQL> select * from T_TYPE_TIMESTAMP2;
++---------------------+
+| A1                  |
++---------------------+
+| 2019-07-19 10:23:20 |
+| <null>              |
++---------------------+
+2 rows selected.
+Running time elapsed:      0.50 Seconds
+SQL> 
+SQL> --3位小数秒timestamp(3)
+SQL> create table T_TYPE_TIMESTAMP3 (a1 timestamp(3));
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> 
+SQL> --精度范围内
+SQL> insert into T_TYPE_TIMESTAMP3 values(to_timestamp('2019-07-19 10:23:23.333','yyyy-mm-dd hh24:mi:ss.fff'));
+1 row affected
+Running time elapsed:      0.47 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP3
+SQL> select * from T_TYPE_TIMESTAMP3;
++---------------------+
+| A1                  |
++---------------------+
+| 2019-07-19 10:23:23 |
++---------------------+
+1 row selected.
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> --超出精度，截断
+SQL> insert into T_TYPE_TIMESTAMP3 values(to_timestamp('2019-07-19 10:23:23.3334','yyyy-mm-dd hh24:mi:ss.fff'));
+1 row affected
+Running time elapsed:      0.49 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP3
+SQL> select * from T_TYPE_TIMESTAMP3;
++---------------------+
+| A1                  |
++---------------------+
+| <null>              |
+| 2019-07-19 10:23:23 |
++---------------------+
+2 rows selected.
+Running time elapsed:      0.54 Seconds
+SQL> 
+SQL> --6位小数秒timestamp(6)
+SQL> create table T_TYPE_TIMESTAMP4 (a1 timestamp(6));
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> --精度范围内
+SQL> insert into T_TYPE_TIMESTAMP4 values(to_timestamp('2019-07-19 10:23:23.333666','yyyy-mm-dd hh24:mi:ss.ffffff'));
+1 row affected
+Running time elapsed:      0.45 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP4
+SQL> select * from T_TYPE_TIMESTAMP4;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> --超出精度，截断
+SQL> insert into T_TYPE_TIMESTAMP4 values(to_timestamp('2019-07-19 10:23:23.3336667','yyyy-mm-dd hh24:mi:ss.ffffff'));
+1 row affected
+Running time elapsed:      0.53 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP4
+SQL> select * from T_TYPE_TIMESTAMP4;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
++--------+
+2 rows selected.
+Running time elapsed:      0.54 Seconds
+SQL> 
+SQL> --插入不同数据类型
+   > --验证插入int类型
+SQL> insert into T_TYPE_TIMESTAMP values(20100208);
+1 row affected
+Running time elapsed:      0.46 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++---------------------+
+| A1                  |
++---------------------+
+| 1970-08-21 23:23:28 |
+| 1994-02-01 10:50:00 |
+| 1994-02-01 10:00:30 |
+| 1994-02-01 00:13:31 |
+| 1994-02-01 15:13:31 |
+| 1994-01-18 15:13:31 |
+| 1970-11-26 05:03:01 |
+| 1994-02-18 15:13:31 |
+| 1994-02-08 13:34:51 |
+| 1994-01-01 05:03:11 |
+| <null>              |
+| <null>              |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| 1994-02-08 05:03:01 |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| <null>              |
+| 2001-02-28 10:30:30 |
+| <null>              |
+| 9999-12-31 23:59:59 |
+| <null>              |
+| <null>              |
+| 0001-01-01 00:00:00 |
++---------------------+
+27 rows selected.
+Running time elapsed:      7.12 Seconds
+SQL> 
+SQL> --验证插入double类型
+SQL> insert into T_TYPE_TIMESTAMP values(138.92);
+1 row affected
+Running time elapsed:      0.46 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+28 rows selected.
+Running time elapsed:      7.51 Seconds
+SQL> 
+SQL> --验证插入varchar类型，插入数字'20100111'
+SQL> insert into T_TYPE_TIMESTAMP values('20100111');
+1 row affected
+Running time elapsed:      0.49 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+29 rows selected.
+Running time elapsed:      8.08 Seconds
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'AAAbcd'
+SQL> insert into T_TYPE_TIMESTAMP values('AAAbcd');
+1 row affected
+Running time elapsed:      0.45 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+30 rows selected.
+Running time elapsed:      7.98 Seconds
+SQL> 
+SQL> --验证插入varchar类型，插入汉字'北京'
+SQL> insert into T_TYPE_TIMESTAMP values('北京');
+1 row affected
+Running time elapsed:      0.66 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+31 rows selected.
+Running time elapsed:      7.95 Seconds
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd
+SQL> insert into T_TYPE_TIMESTAMP values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+Running time elapsed:      0.53 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| 2020-05-08 00:00:00        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+32 rows selected.
+Running time elapsed:      9.40 Seconds
+SQL> 
+SQL> --验证插入空值''                                                   
+SQL> insert into T_TYPE_TIMESTAMP values('');     
+1 row affected
+Running time elapsed:      0.49 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+33 rows selected.
+Running time elapsed:      9.29 Seconds
+SQL> 
+SQL> --验证插入空格' '                                                   
+SQL> insert into T_TYPE_TIMESTAMP values(' ');     
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+34 rows selected.
+Running time elapsed:      8.11 Seconds
+SQL> 
+SQL> --验证插入null                                                    
+SQL> insert into T_TYPE_TIMESTAMP values(null);  
+1 row affected
+Running time elapsed:      0.54 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;  
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+35 rows selected.
+Running time elapsed:      9.63 Seconds
+SQL> 
+SQL> --验证插入NULL                                                   
+SQL> insert into T_TYPE_TIMESTAMP values(NULL);  
+1 row affected
+Running time elapsed:      0.58 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+36 rows selected.
+Running time elapsed:      9.51 Seconds
+SQL> 
+SQL> --验证插入0000-00-00 00:00:00.000000
+SQL> insert into T_TYPE_TIMESTAMP values(to_timestamp('0000-00-00 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.68 Seconds
+SQL> --查询表T_TYPE_TIMESTAMP
+SQL> select * from T_TYPE_TIMESTAMP;
++----------------------------+
+| A1                         |
++----------------------------+
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2020-05-08 00:00:00        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 1970-01-01 08:02:18.920000 |
+| 1970-08-21 23:23:28        |
+| 1994-02-01 10:50:00        |
+| 1994-02-01 10:00:30        |
+| 1994-02-01 00:13:31        |
+| 1994-02-01 15:13:31        |
+| 1994-01-18 15:13:31        |
+| 1970-11-26 05:03:01        |
+| 1994-02-18 15:13:31        |
+| 1994-02-08 13:34:51        |
+| 1994-01-01 05:03:11        |
+| <null>                     |
+| <null>                     |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| 1994-02-08 05:03:01        |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| <null>                     |
+| 2001-02-28 10:30:30        |
+| <null>                     |
+| 9999-12-31 23:59:59        |
+| <null>                     |
+| <null>                     |
+| 0001-01-01 00:00:00        |
++----------------------------+
+37 rows selected.
+Running time elapsed:      9.69 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_TIMESTAMP if exists;
+0 rows affected
+Running time elapsed:      0.55 Seconds
+SQL> drop table T_TYPE_TIMESTAMP1 if exists;
+0 rows affected
+Running time elapsed:      0.53 Seconds
+SQL> drop table T_TYPE_TIMESTAMP2 if exists;
+0 rows affected
+Running time elapsed:      0.54 Seconds
+SQL> drop table T_TYPE_TIMESTAMP3 if exists;
+0 rows affected
+Running time elapsed:      0.60 Seconds
+SQL> drop table T_TYPE_TIMESTAMP4 if exists;
+0 rows affected
+Running time elapsed:      0.57 Seconds
+Running time elapsed:    218.36 Seconds
+SQL> exit
+Disconnected.

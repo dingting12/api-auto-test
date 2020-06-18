@@ -6,7 +6,7 @@ set echo on
 set timing on
 
 -- timestamp数据类型验证
---删除表
+--如果表已存在，则先删除
 drop table T_TYPE_TIMESTAMP if exists;
 drop table T_TYPE_TIMESTAMP1 if exists;
 drop table T_TYPE_TIMESTAMP2 if exists;
@@ -33,20 +33,26 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:61.999999','y
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
+/****************这条用例临时屏蔽，因为值超出范围，用工具跑时会报格式错误，可先手动验证******************
+
 --验证timestamp的最大值+0.000001s，是否报错
 --insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00.000000','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 --select * from T_TYPE_TIMESTAMP;
+ */
 
 --验证timestamp的最大值9999-12-31 23:59:59
 insert into T_TYPE_TIMESTAMP values(to_timestamp('9999-12-31 23:59:59','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
 select * from T_TYPE_TIMESTAMP;
 
+/**********************这条用例临时屏蔽，因为值超出范围，用工具跑时会报格式错误，可先手动验证*****************
+
 --验证timestamp的最大值+1s，是否报错
-insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss'));
+--insert into T_TYPE_TIMESTAMP values(to_timestamp('10000-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss'));
 --查询表T_TYPE_TIMESTAMP
-select * from T_TYPE_TIMESTAMP;
+--select * from T_TYPE_TIMESTAMP;
+ */
 
 --验证闰年2月份最后一天日期
 insert into T_TYPE_TIMESTAMP values(to_timestamp('2001-02-29 10:30:30','yyyy-mm-dd hh24:mi:ss'));
@@ -271,3 +277,9 @@ insert into T_TYPE_TIMESTAMP values(to_timestamp('0000-00-00 00:00:00.000000','y
 select * from T_TYPE_TIMESTAMP;
 
 
+--最后删除创建的表
+drop table T_TYPE_TIMESTAMP if exists;
+drop table T_TYPE_TIMESTAMP1 if exists;
+drop table T_TYPE_TIMESTAMP2 if exists;
+drop table T_TYPE_TIMESTAMP3 if exists;
+drop table T_TYPE_TIMESTAMP4 if exists;

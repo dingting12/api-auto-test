@@ -1,0 +1,236 @@
+SQLCli Release 0.0.55
+SQL> connect admin/123456
+Database connected.
+SQL> start array/array.sql
+SQL> -- Description：array data type
+   > -- Date：2020-06-16
+   > -- Author：李爱敏
+SQL> set echo on
+Running time elapsed:      0.00 Seconds
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> --如果表已存在，则先删除
+SQL> drop table T_TYPE_ARRAY1 if exists;
+0 rows affected
+Running time elapsed:      0.66 Seconds
+SQL> drop table T_TYPE_ARRAY2 if exists;
+0 rows affected
+Running time elapsed:      0.60 Seconds
+SQL> drop table T_TYPE_ARRAY3 if exists;
+0 rows affected
+Running time elapsed:      0.55 Seconds
+SQL> drop table T_TYPE_ARRAY4 if exists;
+0 rows affected
+Running time elapsed:      0.58 Seconds
+SQL> drop table T_TYPE_ARRAY5 if exists;
+0 rows affected
+Running time elapsed:      0.48 Seconds
+SQL> drop table T_TYPE_ARRAY6 if exists;
+0 rows affected
+Running time elapsed:      0.53 Seconds
+SQL> drop table T_TYPE_ARRAY7 if exists;
+0 rows affected
+Running time elapsed:      0.52 Seconds
+SQL> drop table T_TYPE_ARRAY8 if exists;
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> drop table T_TYPE_ARRAY9 if exists;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> 
+SQL> --创建表T_TYPE_ARRAY1，验证整型数组
+SQL> create table T_TYPE_ARRAY1 (a1 int array,a2 smallint array,a3 bigint array);
+0 rows affected
+Running time elapsed:      0.12 Seconds
+SQL> insert into T_TYPE_ARRAY1 values (array[111,2222,3333,4444],array[1,2,3],array[123456,789012,1234567890]);
+1 row affected
+Running time elapsed:      0.65 Seconds
+SQL> select * from T_TYPE_ARRAY1;
++---------------------------+--------------+---------------------------------+
+| A1                        | A2           | A3                              |
++---------------------------+--------------+---------------------------------+
+| ARRAY[111,2222,3333,4444] | ARRAY[1,2,3] | ARRAY[123456,789012,1234567890] |
++---------------------------+--------------+---------------------------------+
+1 row selected.
+Running time elapsed:      0.40 Seconds
+SQL> 
+SQL> --创建表T_TYPE_ARRAY2，验证浮点型数组
+SQL> create table T_TYPE_ARRAY2 (a1 real array,a2 double array,a3 float array,a4 decimal(4,1) array,a5 numeric(5,2) array);
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> insert into T_TYPE_ARRAY2 values (array[111.1,2222.2,3333.3,4444.4],array[11.11,22.22,33.33],array[111.111,222.222,333.333],array[111.1,222.2,333.3],array[111.11,222.22,333.33]);
+1 row affected
+Running time elapsed:      0.72 Seconds
+SQL> select * from T_TYPE_ARRAY2;
++-------------------------------------------+--------------------------------+--------------------------------------+--------------------------+-----------------------------+
+| A1                                        | A2                             | A3                                   | A4                       | A5                          |
++-------------------------------------------+--------------------------------+--------------------------------------+--------------------------+-----------------------------+
+| ARRAY[111.1E0,2222.2E0,3333.3E0,4444.4E0] | ARRAY[11.11E0,22.22E0,33.33E0] | ARRAY[111.111E0,222.222E0,333.333E0] | ARRAY[111.1,222.2,333.3] | ARRAY[111.11,222.22,333.33] |
++-------------------------------------------+--------------------------------+--------------------------------------+--------------------------+-----------------------------+
+1 row selected.
+Running time elapsed:      0.35 Seconds
+SQL> 
+SQL> --创建表T_TYPE_ARRAY3，验证字符型数组
+SQL> create table T_TYPE_ARRAY3 (a1 char(10) array,a2 varchar(20) array);
+0 rows affected
+Running time elapsed:      0.12 Seconds
+SQL> insert into T_TYPE_ARRAY3 values (array['111.11','abc','中国'],array['222.11','abcdef','我爱中国']);
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> select * from T_TYPE_ARRAY3;
++-------------------------------------------------+-------------------------------------+
+| A1                                              | A2                                  |
++-------------------------------------------------+-------------------------------------+
+| ARRAY['111.11    ','abc       ','中国        '] | ARRAY['222.11','abcdef','我爱中国'] |
++-------------------------------------------------+-------------------------------------+
+1 row selected.
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> --创建表T_TYPE_ARRAY4，验证日期型数组
+SQL> create table T_TYPE_ARRAY4 (a1 date array,a2 timestamp array);
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> insert into T_TYPE_ARRAY4 values (array['2020-06-11','2020-06-12','2020-06-13'],array['2020-06-11 11:20:30','2020-06-12 11:20:31']);
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> select * from T_TYPE_ARRAY4;
++-----------------------------------------------------------+------------------------------------------------------------------------------------+
+| A1                                                        | A2                                                                                 |
++-----------------------------------------------------------+------------------------------------------------------------------------------------+
+| ARRAY[DATE'2020-06-11',DATE'2020-06-12',DATE'2020-06-13'] | ARRAY[TIMESTAMP'2020-06-11 11:20:30.000000',TIMESTAMP'2020-06-12 11:20:31.000000'] |
++-----------------------------------------------------------+------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.37 Seconds
+SQL> 
+SQL> --创建表T_TYPE_ARRAY5，验证二进制型数组
+SQL> create table T_TYPE_ARRAY5 (a1 bit(5) array,a2 binary(5) array,a3 varbinary(5) array);
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> insert into T_TYPE_ARRAY5 values (array[b'10101',b'11111',b'10111'],array['aaaaa','bbbbb'],array['ccccc','ddddd']);
+1 row affected
+Running time elapsed:      0.49 Seconds
+SQL> select * from T_TYPE_ARRAY5;
++--------------------------+------------------------------------+------------------------------------+
+| A1                       | A2                                 | A3                                 |
++--------------------------+------------------------------------+------------------------------------+
+| ARRAY[X'a8',X'f8',X'b8'] | ARRAY[X'6161616161',X'6262626262'] | ARRAY[X'6363636363',X'6464646464'] |
++--------------------------+------------------------------------+------------------------------------+
+1 row selected.
+Running time elapsed:      0.35 Seconds
+SQL> 
+SQL> --创建表T_TYPE_ARRAY6，验证布尔型数组
+SQL> create table T_TYPE_ARRAY6 (a1 boolean array);
+0 rows affected
+Running time elapsed:      0.15 Seconds
+SQL> insert into T_TYPE_ARRAY6 values (array[True,False,True]);
+1 row affected
+Running time elapsed:      0.47 Seconds
+SQL> select * from T_TYPE_ARRAY6;
++------------------------+
+| A1                     |
++------------------------+
+| ARRAY[TRUE,FALSE,TRUE] |
++------------------------+
+1 row selected.
+Running time elapsed:      0.32 Seconds
+SQL> 
+SQL> --创建表T_TYPE_ARRAY7，验证不同数据类型组合数组
+SQL> create table T_TYPE_ARRAY7 (a1 int array,a2 decimal(5,2) array,a3 varchar(20) array,a4 date array,a5 timestamp array,a6 bit(5) array,a7 varbinary(5) array, a8 boolean array);
+0 rows affected
+Running time elapsed:      0.12 Seconds
+SQL> insert into T_TYPE_ARRAY7 values (array[1,2,3],array[11.11,22.22],array['123','abc','我爱中国'],array['2010-04-10','2010-11-12'],array['2010-09-11 09:10:12','2020-03-21 18:21:33'],array[b'11111',b'10101'],array['aaaaa','bbbbb'],array[True,False]);
+1 row affected
+Running time elapsed:      0.48 Seconds
+SQL> select * from T_TYPE_ARRAY7;
++--------------+--------------------+-------------------------------+------------------------------------------+------------------------------------------------------------------------------------+--------------------+------------------------------------+-------------------+
+| A1           | A2                 | A3                            | A4                                       | A5                                                                                 | A6                 | A7                                 | A8                |
++--------------+--------------------+-------------------------------+------------------------------------------+------------------------------------------------------------------------------------+--------------------+------------------------------------+-------------------+
+| ARRAY[1,2,3] | ARRAY[11.11,22.22] | ARRAY['123','abc','我爱中国'] | ARRAY[DATE'2010-04-10',DATE'2010-11-12'] | ARRAY[TIMESTAMP'2010-09-11 09:10:12.000000',TIMESTAMP'2020-03-21 18:21:33.000000'] | ARRAY[X'f8',X'a8'] | ARRAY[X'6161616161',X'6262626262'] | ARRAY[TRUE,FALSE] |
++--------------+--------------------+-------------------------------+------------------------------------------+------------------------------------------------------------------------------------+--------------------+------------------------------------+-------------------+
+1 row selected.
+Running time elapsed:      0.38 Seconds
+SQL> 
+SQL> --验证查询数组中的某个元素及下标越界是否报错
+   > --查询数组长度
+SQL> select size(a1) from T_TYPE_ARRAY7;
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> --查询数组第一个元素
+SQL> select a1[0] from T_TYPE_ARRAY7;
++----+
+| A1 |
++----+
+| 1  |
++----+
+1 row selected.
+Running time elapsed:      0.33 Seconds
+SQL> 
+SQL> --查询数组最后一个元素
+SQL> select a1[2] from T_TYPE_ARRAY7;
++----+
+| A1 |
++----+
+| 3  |
++----+
+1 row selected.
+Running time elapsed:      0.31 Seconds
+SQL> 
+SQL> --查询数组长度+1个元素，是否报错
+SQL> select a1[3] from T_TYPE_ARRAY7;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> --验证不支持的数据类型，是否报错
+SQL> create table T_TYPE_ARRAY8 (a1 blob(100) array);
+java.sql.SQLSyntaxErrorException: unexpected token: ARRAY in statement [create table T_TYPE_ARRAY8 (a1 blob(100) array)]
+Running time elapsed:      0.02 Seconds
+SQL> create table T_TYPE_ARRAY9 (a1 clob(100) array);
+java.sql.SQLSyntaxErrorException: unexpected token: ARRAY in statement [create table T_TYPE_ARRAY9 (a1 clob(100) array)]
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> --验证多维嵌套数组，是否报错
+SQL> create table T_TYPE_ARRAY8 (a1 smallint[3][3] array);
+java.sql.SQLSyntaxErrorException: unexpected token: [ in statement [create table T_TYPE_ARRAY8 (a1 smallint[3][3] array)]
+Running time elapsed:      0.02 Seconds
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_ARRAY1 if exists;
+0 rows affected
+Running time elapsed:      0.52 Seconds
+SQL> drop table T_TYPE_ARRAY2 if exists;
+0 rows affected
+Running time elapsed:      0.49 Seconds
+SQL> drop table T_TYPE_ARRAY3 if exists;
+0 rows affected
+Running time elapsed:      0.54 Seconds
+SQL> drop table T_TYPE_ARRAY4 if exists;
+0 rows affected
+Running time elapsed:      0.55 Seconds
+SQL> drop table T_TYPE_ARRAY5 if exists;
+0 rows affected
+Running time elapsed:      0.54 Seconds
+SQL> drop table T_TYPE_ARRAY6 if exists;
+0 rows affected
+Running time elapsed:      0.46 Seconds
+SQL> drop table T_TYPE_ARRAY7 if exists;
+0 rows affected
+Running time elapsed:      0.42 Seconds
+SQL> drop table T_TYPE_ARRAY8 if exists;
+0 rows affected
+Running time elapsed:      0.01 Seconds
+SQL> drop table T_TYPE_ARRAY9 if exists;
+0 rows affected
+Running time elapsed:      0.02 Seconds
+Running time elapsed:     17.10 Seconds

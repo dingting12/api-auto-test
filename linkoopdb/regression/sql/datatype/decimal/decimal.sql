@@ -6,7 +6,7 @@ set echo on
 set timing on
 
 -- decimal数据类型验证
---删除表
+--如果表已存在，则先删除
 drop table T_TYPE_DECIMAL1 if exists;
 drop table T_TYPE_DECIMAL2 if exists;
 drop table T_TYPE_DECIMAL3 if exists;
@@ -56,16 +56,16 @@ create table T_TYPE_DECIMAL3(
 a1 decimal(5,-2)
 );
 
---当n>38时
+--当n<1时
 --创建表T_TYPE_DECIMAL4，是否报错
 create table T_TYPE_DECIMAL4(
-a1 decimal(39,2)
+a1 decimal(0,2)
 );
 
---当n<1时
+--当n>38时
 --创建表T_TYPE_DECIMAL5，是否报错
 create table T_TYPE_DECIMAL5(
-a1 decimal(0,0)
+a1 decimal(39,2)
 );
 
 
@@ -163,3 +163,13 @@ insert into T_TYPE_DECIMAL1 values(NULL);
 --查询表T_TYPE_DECIMAL1
 select * from T_TYPE_DECIMAL1;
 
+
+
+--最后删除创建的表
+drop table T_TYPE_DECIMAL1 if exists;
+drop table T_TYPE_DECIMAL2 if exists;
+drop table T_TYPE_DECIMAL3 if exists;
+drop table T_TYPE_DECIMAL4 if exists;
+drop table T_TYPE_DECIMAL5 if exists;
+drop table T_TYPE_DECIMAL6 if exists;
+drop table T_TYPE_DECIMAL7 if exists;

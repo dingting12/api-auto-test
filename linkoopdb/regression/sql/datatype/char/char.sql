@@ -6,13 +6,13 @@ set echo on
 set timing on
 
 -- char数据类型验证
---删除表
+--如果表已存在，则先删除
 drop table T_TYPE_CHAR1 if exists;
 drop table T_TYPE_CHAR2 if exists;
 drop table T_TYPE_CHAR3 if exists;
 drop table T_TYPE_CHAR4 if exists;
 
---创建表T_TYPE_CHAR1，字符长度为64000
+--创建表T_TYPE_CHAR1，设置字符长度为64000
 create table T_TYPE_CHAR1 (
 name char(64000)
 );
@@ -21,45 +21,45 @@ name char(64000)
 --查询表T_TYPE_CHAR1
 select length(name) from T_TYPE_CHAR1;
 
---创建表T_TYPE_CHAR2，设置为默认长度，默认长度为1
+--创建表T_TYPE_CHAR2，设置字符长度大于64000，是否报错
 create table T_TYPE_CHAR2 (
-name char
+name char(64001)
+);
+
+--创建表T_TYPE_CHAR3，设置为默认长度，默认长度为1
+create table T_TYPE_CHAR3 (
+a1 char
 );
 
 --插入字符长度为1
-insert into T_TYPE_CHAR2 values('a');
---查询表T_TYPE_CHAR2
-select * from T_TYPE_CHAR2;
+insert into T_TYPE_CHAR3 values('a');
+--查询表T_TYPE_CHAR3
+select * from T_TYPE_CHAR3;
 
 --插入字符长度>1，是否报错
-insert into T_TYPE_CHAR2 values('ab');
---查询表T_TYPE_CHAR2
-select * from T_TYPE_CHAR2;
+insert into T_TYPE_CHAR3 values('ab');
+--查询表T_TYPE_CHAR3
+select * from T_TYPE_CHAR3;
 
---创建表T_TYPE_CHAR3
-create table T_TYPE_CHAR3(
-a1 char(5)
+--创建表T_TYPE_CHAR4，设置字符长度为30
+create table T_TYPE_CHAR4(
+a1 char(30)
 );
 
 --插入数据格式为双引号，报错
-insert into T_TYPE_CHAR3 values("asdfg");
---查询表T_TYPE_CHAR3
-select * from T_TYPE_CHAR3;
+insert into T_TYPE_CHAR4 values("abcdef");
+--查询表T_TYPE_CHAR4
+select * from T_TYPE_CHAR4;
 
 --插入数据格式为单引号
-insert into T_TYPE_CHAR3 values('asdfg');
---查询表T_TYPE_CHAR3
-select * from T_TYPE_CHAR3;
+insert into T_TYPE_CHAR4 values('abcdef');
+--查询表T_TYPE_CHAR4
+select * from T_TYPE_CHAR4;
 
 --插入的数据无引号
-insert into T_TYPE_CHAR3 values(asdfg);
---查询表T_TYPE_CHAR3
-select * from T_TYPE_CHAR3;
-
---创建表T_TYPE_CHAR4
-create table T_TYPE_CHAR4(
-a1 char(30)        
-);
+insert into T_TYPE_CHAR4 values(abcdef);
+--查询表T_TYPE_CHAR4
+select * from T_TYPE_CHAR4;
 
 --验证插入30个英文字母
 insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcd');
@@ -140,3 +140,10 @@ select * from T_TYPE_CHAR4;
 insert into T_TYPE_CHAR4 values(NULL);
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
+
+
+--最后删除创建的表
+drop table T_TYPE_CHAR1 if exists;
+drop table T_TYPE_CHAR2 if exists;
+drop table T_TYPE_CHAR3 if exists;
+drop table T_TYPE_CHAR4 if exists;

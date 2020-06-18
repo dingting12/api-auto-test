@@ -1,4 +1,4 @@
---Description:create oracle dblink
+--Description:涉及到创建dblink时，其他数据库的用户，密码，URL，用户权限相关case
 --Date：2020-06-15
 --Author：王煜
 
@@ -64,6 +64,11 @@ connect u_dblink_permission11/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 session save oracle_u_dblink_permission11
 
+--oracle u_dblink_permission12
+connect u_dblink_permission12/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+session save oracle_u_dblink_permission12
+
 --oracle u_dblink_password1
 connect u_dblink_password1/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -88,6 +93,11 @@ session save oracle_u_dblink_grammar_cover
 connect u_case_sensitivity/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 session save oracle_u_case_sensitivity
+
+--oracle system
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+session save oracle_system
 -------------------------------------------------分界线----------------------------------------------------
 session restore ldbnode73
 
@@ -542,4 +552,277 @@ UPDATE u_dblink_permission2.t_test_wy1 SET name ='下蛋公鸡，公鸡中的战
 
 SELECT * FROM u_dblink_permission2.t_dblink_wy1 ORDER BY id;
 
+session restore oracle_u_dblink_permission2
+
+SELECT * FROM u_dblink_permission2.t_dblink_wy1 ORDER BY id;
+
 session restore ldbnode73
+
+----用户有删除的权限
+DROP DATABASE LINK link_oracle_grammar_covered16 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered16 connect to 'u_dblink_permission11' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+DROP TABLE link_oracle_grammar_covered16.t_test_wy11 IF EXISTS CASCADE;
+
+CREATE TABLE link_oracle_grammar_covered16.t_test_wy11(id INT,name VARCHAR(200));
+
+INSERT INTO link_oracle_grammar_covered16.t_test_wy11 VALUES(1,'秋日棉花糖'),(2,'春日小红花');
+
+SELECT * FROM link_oracle_grammar_covered16.t_test_wy11 ORDER BY id;
+
+UPDATE link_oracle_grammar_covered16.t_test_wy11 SET name ='夏日小饼干' WHERE id=1;
+
+SELECT * FROM link_oracle_grammar_covered16.t_test_wy11 ORDER BY Id;
+
+DELETE FROM link_oracle_grammar_covered16.t_test_wy11 WHERE id=2;
+
+SELECT * FROM link_oracle_grammar_covered16.t_test_wy11 ORDER BY Id;
+
+DROP VIEW link_oracle_grammar_covered16.v_test_wy11 IF EXISTS CASCADE;
+
+CREATE VIEW link_oracle_grammar_covered16.v_test_wy11 AS
+SELECT * FROM link_oracle_grammar_covered16.t_test_wy11;
+
+SELECT * FROM link_oracle_grammar_covered16.v_test_wy11 ORDER BY id;
+
+session restore oracle_u_dblink_permission11
+
+SELECT * FROM u_dblink_permission2.t_dblink_wy1 ORDER BY id;
+
+DELETE FROM u_dblink_permission2.t_test_wy1 WHERE id=1;
+
+SELECT * FROM u_dblink_permission2.t_dblink_wy1 ORDER BY id;
+
+session restore oracle_u_dblink_permission2
+
+SELECT * FROM u_dblink_permission2.t_dblink_wy1 ORDER BY id;
+
+session restore ldbnode73
+
+----用户无任何权限
+DROP DATABASE LINK link_oracle_grammar_covered17 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered17 connect to 'u_dblink_permission' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+DROP TABLE link_oracle_grammar_covered17.t_test_wy11 IF EXISTS CASCADE;
+
+CREATE TABLE link_oracle_grammar_covered17.t_test_wy11(id INT,name VARCHAR(200));
+
+INSERT INTO link_oracle_grammar_covered17.t_test_wy11 VALUES(1,'秋日棉花糖'),(2,'春日小红花');
+
+SELECT * FROM link_oracle_grammar_covered17.t_test_wy11 ORDER BY id;
+
+UPDATE link_oracle_grammar_covered17.t_test_wy11 SET name ='夏日小饼干' WHERE id=1;
+
+SELECT * FROM link_oracle_grammar_covered17.t_test_wy11 ORDER BY Id;
+
+DELETE FROM link_oracle_grammar_covered17.t_test_wy11 WHERE id=2;
+
+SELECT * FROM link_oracle_grammar_covered17.t_test_wy11 ORDER BY Id;
+
+DROP VIEW link_oracle_grammar_covered17.v_test_wy11 IF EXISTS CASCADE;
+
+CREATE VIEW link_oracle_grammar_covered17.v_test_wy11 AS
+SELECT * FROM link_oracle_grammar_covered17.t_test_wy11;
+
+SELECT * FROM link_oracle_grammar_covered17.v_test_wy11 ORDER BY id;
+
+session restore oracle_u_dblink_permission
+
+SELECT * FROM u_dblink_permission.t_test_wy11 ORDER BY id;
+
+session restore ldbnode73
+
+---用户是否存在
+DROP DATABASE LINK link_oracle_grammar_covered23 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered23 connect to '最肯忘却故人事' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+--password
+
+---英文及大小写
+
+DROP DATABASE LINK link_oracle_grammar_covered18 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered18 connect to 'u_dblink_password1' identified by 'csHIKHBNUgdjK' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+DROP TABLE link_oracle_grammar_covered18.t_test_wy11 IF EXISTS CASCADE;
+
+CREATE TABLE link_oracle_grammar_covered18.t_test_wy11(id INT,name VARCHAR(200));
+
+INSERT INTO link_oracle_grammar_covered18.t_test_wy11 VALUES(1,'秋日棉花糖'),(2,'春日小红花');
+
+SELECT * FROM link_oracle_grammar_covered18.t_test_wy11 ORDER BY id;
+
+UPDATE link_oracle_grammar_covered18.t_test_wy11 SET name ='夏日小饼干' WHERE id=1;
+
+SELECT * FROM link_oracle_grammar_covered18.t_test_wy11 ORDER BY Id;
+
+DELETE FROM link_oracle_grammar_covered18.t_test_wy11 WHERE id=2;
+
+SELECT * FROM link_oracle_grammar_covered18.t_test_wy11 ORDER BY Id;
+
+DROP VIEW link_oracle_grammar_covered18.v_test_wy11 IF EXISTS CASCADE;
+
+CREATE VIEW link_oracle_grammar_covered18.v_test_wy11 AS
+SELECT * FROM link_oracle_grammar_covered18.t_test_wy11;
+
+SELECT * FROM link_oracle_grammar_covered18.v_test_wy11 ORDER BY id;
+
+session restore oracle_u_dblink_password1
+
+SELECT * FROM u_dblink_password1.t_test_wy11 ORDER BY id;
+
+SELECT * FROM u_dblink_password1.v_test_wy11 ORDER BY id;
+
+session restore ldbnode73
+
+---中文
+
+DROP DATABASE LINK link_oracle_grammar_covered19 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered19 connect to 'u_dblink_password2' identified by '这是一个密码' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+DROP TABLE link_oracle_grammar_covered19.t_test_wy11 IF EXISTS CASCADE;
+
+CREATE TABLE link_oracle_grammar_covered19.t_test_wy11(id INT,name VARCHAR(200));
+
+INSERT INTO link_oracle_grammar_covered19.t_test_wy11 VALUES(1,'秋日棉花糖'),(2,'春日小红花');
+
+SELECT * FROM link_oracle_grammar_covered19.t_test_wy11 ORDER BY id;
+
+UPDATE link_oracle_grammar_covered19.t_test_wy11 SET name ='夏日小饼干' WHERE id=1;
+
+SELECT * FROM link_oracle_grammar_covered19.t_test_wy11 ORDER BY Id;
+
+DELETE FROM link_oracle_grammar_covered19.t_test_wy11 WHERE id=2;
+
+SELECT * FROM link_oracle_grammar_covered19.t_test_wy11 ORDER BY Id;
+
+DROP VIEW link_oracle_grammar_covered19.v_test_wy11 IF EXISTS CASCADE;
+
+CREATE VIEW link_oracle_grammar_covered19.v_test_wy11 AS
+SELECT * FROM link_oracle_grammar_covered19.t_test_wy11;
+
+SELECT * FROM link_oracle_grammar_covered19.v_test_wy11 ORDER BY id;
+
+session restore oracle_u_dblink_password2
+
+SELECT * FROM u_dblink_password2.t_test_wy11 ORDER BY Id;
+
+SELECT * FROM u_dblink_password2.v_test_wy11 ORDER BY id;
+
+session restore ldbnode73
+
+---中英文混合加特殊字符加大小写
+
+DROP DATABASE LINK link_oracle_grammar_covered20 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered20 connect to 'u_dblink_password3' identified by '"^&*SDfbj%^$&^红烧冬1278_84"' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+DROP TABLE link_oracle_grammar_covered20.t_test_wy11 IF EXISTS CASCADE;
+
+CREATE TABLE link_oracle_grammar_covered20.t_test_wy11(id INT,name VARCHAR(200));
+
+INSERT INTO link_oracle_grammar_covered20.t_test_wy11 VALUES(1,'秋日棉花糖'),(2,'春日小红花');
+
+SELECT * FROM link_oracle_grammar_covered20.t_test_wy11 ORDER BY id;
+
+UPDATE link_oracle_grammar_covered20.t_test_wy11 SET name ='夏日小饼干' WHERE id=1;
+
+SELECT * FROM link_oracle_grammar_covered20.t_test_wy11 ORDER BY Id;
+
+DELETE FROM link_oracle_grammar_covered20.t_test_wy11 WHERE id=2;
+
+SELECT * FROM link_oracle_grammar_covered20.t_test_wy11 ORDER BY Id;
+
+DROP VIEW link_oracle_grammar_covered20.v_test_wy11 IF EXISTS CASCADE;
+
+CREATE VIEW link_oracle_grammar_covered20.v_test_wy11 AS
+SELECT * FROM link_oracle_grammar_covered20.t_test_wy11;
+
+SELECT * FROM link_oracle_grammar_covered20.v_test_wy11 ORDER BY id;
+
+session restore oracle_u_dblink_password3
+
+SELECT * FROM u_dblink_password3.t_test_wy11 ORDER BY Id;
+
+SELECT * FROM u_dblink_password3.v_test_wy11 ORDER BY id;
+
+session restore ldbnode73
+
+---密码是否正确
+DROP DATABASE LINK link_oracle_grammar_covered23 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered23 connect to 'u_dblink_password3' identified by '小菜鸟考上的' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+---修改其他数据库的用户的密码，查看dblink是否还能正常使用
+DROP DATABASE LINK link_oracle_grammar_covered24 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered24 connect to 'u_dblink_permission12' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+SELECT * FROM link_oracle_grammar_covered24.t_test_wy1 ORDER BY Id;
+
+SELECT * FROM link_oracle_grammar_covered24.v_test_wy1 ORDER BY id;
+
+session restore oracle_system
+
+ALTER USER u_dblink_permission12 IDENTIFIED BY 456789;
+
+session restore ldbnode73
+
+SELECT * FROM link_oracle_grammar_covered24.t_test_wy1 ORDER BY Id;
+
+SELECT * FROM link_oracle_grammar_covered24.v_test_wy1 ORDER BY id;
+
+DROP TABLE link_oracle_grammar_covered24.t_test_wy11 IF EXISTS CASCADE;
+
+CREATE TABLE link_oracle_grammar_covered24.t_test_wy11(id INT,name VARCHAR(200));
+
+INSERT INTO link_oracle_grammar_covered24.t_test_wy11 VALUES(1,'秋日棉花糖'),(2,'春日小红花');
+
+SELECT * FROM link_oracle_grammar_covered24.t_test_wy11 ORDER BY id;
+
+---其他数据库的用户密码过期后，查看dblink是否还能正常使用
+DROP DATABASE LINK link_oracle_grammar_covered25 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered25 connect to 'u_dblink_permission13' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+SELECT * FROM link_oracle_grammar_covered25.t_test_wy1 ORDER BY Id;
+
+SELECT * FROM link_oracle_grammar_covered25.v_test_wy1 ORDER BY id;
+
+session restore oracle_system
+
+ALTER USER u_dblink_permission13 password expire;
+
+session restore oracle_u_dblink_permission13
+
+SELECT * FROM u_dblink_permission13.v_test_wy1 ORDER BY id;
+
+session restore ldbnode73
+
+SELECT * FROM link_oracle_grammar_covered25.t_test_wy1 ORDER BY Id;
+
+SELECT * FROM link_oracle_grammar_covered25.v_test_wy1 ORDER BY id;
+
+DROP TABLE link_oracle_grammar_covered25.t_test_wy11 IF EXISTS CASCADE;
+
+CREATE TABLE link_oracle_grammar_covered25.t_test_wy11(id INT,name VARCHAR(200));
+
+INSERT INTO link_oracle_grammar_covered25.t_test_wy11 VALUES(1,'秋日棉花糖'),(2,'春日小红花');
+
+SELECT * FROM link_oracle_grammar_covered25.t_test_wy11 ORDER BY id;
+
+--CONNECTION URL
+
+---URL不存在
+DROP DATABASE LINK link_oracle_grammar_covered26 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered26 connect to 'u_dblink_permission13' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.76:1521:xe';
+
+---URL
+DROP DATABASE LINK link_oracle_grammar_covered27 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered27 connect to 'u_dblink_permission13' identified by '123456' using 'xcbmfdfyhuiyjsavc';

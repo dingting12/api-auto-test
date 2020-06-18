@@ -1,11 +1,11 @@
--- Description：Binary data type
+-- Description：array data type
 -- Date：2020-06-16
 -- Author：李爱敏
 
 set echo on
 set timing on
 
---删除表
+--如果表已存在，则先删除
 drop table T_TYPE_ARRAY1 if exists;
 drop table T_TYPE_ARRAY2 if exists;
 drop table T_TYPE_ARRAY3 if exists;
@@ -67,3 +67,17 @@ select a1[3] from T_TYPE_ARRAY7;
 --验证不支持的数据类型，是否报错
 create table T_TYPE_ARRAY8 (a1 blob(100) array);
 create table T_TYPE_ARRAY9 (a1 clob(100) array);
+
+--验证多维嵌套数组，是否报错
+create table T_TYPE_ARRAY8 (a1 smallint[3][3] array);
+
+--最后删除创建的表
+drop table T_TYPE_ARRAY1 if exists;
+drop table T_TYPE_ARRAY2 if exists;
+drop table T_TYPE_ARRAY3 if exists;
+drop table T_TYPE_ARRAY4 if exists;
+drop table T_TYPE_ARRAY5 if exists;
+drop table T_TYPE_ARRAY6 if exists;
+drop table T_TYPE_ARRAY7 if exists;
+drop table T_TYPE_ARRAY8 if exists;
+drop table T_TYPE_ARRAY9 if exists;

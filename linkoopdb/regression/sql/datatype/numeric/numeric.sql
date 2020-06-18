@@ -6,7 +6,7 @@ set echo on
 set timing on
 
 -- numeric数据类型验证
---删除表
+--如果表已存在，则先删除
 drop table T_TYPE_NUMERIC1 if exists;
 drop table T_TYPE_NUMERIC2 if exists;
 drop table T_TYPE_NUMERIC3 if exists;
@@ -162,3 +162,13 @@ select * from T_TYPE_NUMERIC1;
 insert into T_TYPE_NUMERIC1 values(NULL);
 --查询表T_TYPE_NUMERIC1
 select * from T_TYPE_NUMERIC1;
+
+
+--最后删除创建的表
+drop table T_TYPE_NUMERIC1 if exists;
+drop table T_TYPE_NUMERIC2 if exists;
+drop table T_TYPE_NUMERIC3 if exists;
+drop table T_TYPE_NUMERIC4 if exists;
+drop table T_TYPE_NUMERIC5 if exists;
+drop table T_TYPE_NUMERIC6 if exists;
+drop table T_TYPE_NUMERIC7 if exists;

@@ -6,7 +6,7 @@ set echo on
 set timing on
 
 -- BIT(n)数据类型验证
---删除表
+--如果表已存在，则先删除
 drop table T_TYPE_BIT1 if exists;
 drop table T_TYPE_BIT2 if exists;
 drop table T_TYPE_BIT3 if exists;
@@ -110,9 +110,17 @@ insert into T_TYPE_BIT6 values(NULL);
 select * from T_TYPE_BIT6;
 
 
+--最后删除创建的表
+drop table T_TYPE_BIT1 if exists;
+drop table T_TYPE_BIT2 if exists;
+drop table T_TYPE_BIT3 if exists;
+drop table T_TYPE_BIT4 if exists;
+drop table T_TYPE_BIT5 if exists;
+drop table T_TYPE_BIT6 if exists;
+
 
 --BINARY(n)数据类型，字节长度为n，n的最大值为64000
---删除表
+--如果表已存在，则先删除
 drop table T_TYPE_BINARY1 if exists;
 drop table T_TYPE_BINARY2 if exists;
 drop table T_TYPE_BINARY3 if exists;
@@ -192,8 +200,17 @@ insert into T_TYPE_BINARY3 values(NULL);
 select * from T_TYPE_BINARY3;
 
 
+--最后删除创建的表
+drop table T_TYPE_BINARY1 if exists;
+drop table T_TYPE_BINARY2 if exists;
+drop table T_TYPE_BINARY3 if exists;
+
+
+
+
+
 --验证VARBINARY(n)数据类型，字节长度为n+1，n的最大值为64000
---删除表
+--如果表已存在，则先删除
 drop table T_TYPE_VARBINARY1 if exists;
 drop table T_TYPE_VARBINARY2 if exists;
 drop table T_TYPE_VARBINARY3 if exists;
@@ -270,6 +287,11 @@ select * from T_TYPE_VARBINARY3;
 insert into T_TYPE_VARBINARY3 values(NULL);
 select * from T_TYPE_VARBINARY3;
 
+
+--最后删除创建的表
+drop table T_TYPE_VARBINARY1 if exists;
+drop table T_TYPE_VARBINARY2 if exists;
+drop table T_TYPE_VARBINARY3 if exists;
 
 
 
