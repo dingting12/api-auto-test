@@ -616,6 +616,59 @@ SELECT * FROM u_dblink_password3.t_dblink_wy1;
 
 SELECT * FROM u_dblink_password3.v_dblink_wy1 ORDER BY id;
 
+---修改其他数据库的用户的密码，查看dblink是否还能正常使用
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP USER u_dblink_permission12 CASCADE;
+
+CREATE USER u_dblink_permission12 IDENTIFIED BY "123456";
+
+GRANT dba TO u_dblink_permission12;
+
+connect u_dblink_permission12/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP VIEW u_dblink_permission12.v_dblink_wy1;
+
+DROP TABLE u_dblink_permission12.t_dblink_wy1;
+
+CREATE TABLE u_dblink_permission12.t_dblink_wy1(id INT,name VARCHAR(200));
+
+INSERT INTO u_dblink_permission12.t_dblink_wy1 VALUES(1,'我来试验一下');
+
+SELECT * FROM u_dblink_permission12.t_dblink_wy1 ORDER BY id;
+
+CREATE VIEW u_dblink_permission12.v_dblink_wy1 AS
+SELECT * FROM u_dblink_permission12.t_dblink_wy1;
+
+SELECT * FROM u_dblink_permission12.v_dblink_wy1 ORDER BY id;
+
+---其他数据库的用户密码过期后，查看dblink是否还能正常使用
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP USER u_dblink_permission13 CASCADE;
+
+CREATE USER u_dblink_permission13 IDENTIFIED BY "123456";
+
+GRANT dba TO u_dblink_permission13;
+
+connect u_dblink_permission13/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP VIEW u_dblink_permission13.v_dblink_wy1;
+
+DROP TABLE u_dblink_permission13.t_dblink_wy1;
+
+CREATE TABLE u_dblink_permission13.t_dblink_wy1(id INT,name VARCHAR(200));
+
+INSERT INTO u_dblink_permission13.t_dblink_wy1 VALUES(1,'我来试验一下');
+
+SELECT * FROM u_dblink_permission13.t_dblink_wy1 ORDER BY id;
+
+CREATE VIEW u_dblink_permission13.v_dblink_wy1 AS
+SELECT * FROM u_dblink_permission13.t_dblink_wy1;
+
+SELECT * FROM u_dblink_permission13.v_dblink_wy1 ORDER BY id;
+
+
 --建表
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -981,3 +1034,5 @@ CREATE TABLE u_case_sensitivity."t_dblink_sensitivity1"("id" INT,"name" VARCHAR2
 INSERT INTO u_case_sensitivity."t_dblink_sensitivity1" VALUES(1,'vcvcv');
 
 SELECT * FROM u_case_sensitivity."t_dblink_sensitivity1" ORDER BY "id";
+
+
