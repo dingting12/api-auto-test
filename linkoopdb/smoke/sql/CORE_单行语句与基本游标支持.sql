@@ -1,3 +1,5 @@
+loaddriver E:\pycharmProject\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
+connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
 --    Description: 测试单行语句与基本游标支持
 --    Date:         2020-06-10
 --    Author:       丁婷
