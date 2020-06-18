@@ -1359,8 +1359,8 @@ class SQLCli(object):
     # 设置一些选项
     def set_options(self, arg, **_):
         if arg is None:
-            raise Exception("Missing required argument. set parameter parameter_value.")
-        elif arg == "":
+            raise SQLCliException("Missing required argument. set parameter parameter_value.")
+        elif arg == "":      # 显示所有的配置
             m_Result = []
             for key, value in self.SQLExecuteHandler.options.items():
                 m_Result.append([str(key), str(value)])
@@ -1373,7 +1373,7 @@ class SQLCli(object):
         else:
             options_parameters = str(arg).split()
             if len(options_parameters) == 1:
-                raise Exception("Missing required argument. set parameter parameter_value.")
+                raise SQLCliException("Missing required argument. set parameter parameter_value.")
 
             # 处理DEBUG选项
             if options_parameters[0].upper() == "DEBUG":
@@ -1385,7 +1385,7 @@ class SQLCli(object):
 
             # 如果不是已知的选项，则直接抛出到SQL引擎
             if options_parameters[0].upper() in self.SQLExecuteHandler.options:
-                self.SQLExecuteHandler.options[options_parameters[0].upper()] = options_parameters[1].upper()
+                self.SQLExecuteHandler.options[options_parameters[0].upper()] = options_parameters[1]
                 yield (
                     None,
                     None,
@@ -1398,45 +1398,53 @@ class SQLCli(object):
     def execute_internal_command(self, arg, **_):
         # 创建数据文件, 根据末尾的rows来决定创建的行数
         # 此时，SQL语句中的回车换行符没有意义
-        matchObj = re.match(r"create\s+file\s+(.*?)\((.*)\)(\s+)?rows\s+(\d+)(\s+)?$",
+        matchObj = re.match(r"create\s+(.*?)\s+file\s+(.*?)\((.*)\)(\s+)?rows\s+(\d+)(\s+)?$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
-            # create file command  将根据格式要求创建需要的文件
-            Create_file(p_filename=str(matchObj.group(1)).replace('\r', '').replace('\n', ''),
-                        p_formula_str=str(matchObj.group(2).replace('\r', '').replace('\n', '').strip()),
-                        p_rows=int(matchObj.group(4)),
+            m_filetype = str(matchObj.group(1)).strip()
+            m_filename = str(matchObj.group(2)).strip().replace('\r', '').replace('\n', '')
+            m_formula_str = str(matchObj.group(3).replace('\r', '').replace('\n', '').strip())
+            m_rows = int(matchObj.group(5))
+            Create_file(p_filetype=m_filetype,
+                        p_filename=m_filename,
+                        p_formula_str=m_formula_str,
+                        p_rows=m_rows,
                         p_options=self.SQLExecuteHandler.options)
             yield (
                 None,
                 None,
                 None,
-                str(matchObj.group(4)) + ' rows created Successful.')
+                str(m_rows) + ' rows created Successful.')
             return
 
-        #  创建数据文件
-        matchObj = re.match(r"create\s+file\s+(.*?)\((.*)\)(\s+)?$",
+        matchObj = re.match(r"create\s+(.*?)\s+file\s+(.*?)\((.*)\)(\s+)?$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
-            # create file command  将根据格式要求创建需要的文件
-            Create_file(p_filename=str(matchObj.group(1)).replace('\r', '').replace('\n', ''),
-                        p_formula_str=str(matchObj.group(2)),
-                        p_rows=1,
+            m_filetype = str(matchObj.group(1)).strip()
+            m_filename = str(matchObj.group(2)).strip().replace('\r', '').replace('\n', '')
+            m_formula_str = str(matchObj.group(3).replace('\r', '').replace('\n', '').strip())
+            m_rows = 1
+            Create_file(p_filetype=m_filetype,
+                        p_filename=m_filename,
+                        p_formula_str=m_formula_str,
+                        p_rows=m_rows,
                         p_options=self.SQLExecuteHandler.options)
             yield (
                 None,
                 None,
                 None,
-                'file created Successful.')
+                str(m_rows) + ' rows created Successful.')
             return
 
         #  在不同的文件中进行相互转换
-        matchObj = re.match(r"create\s+file\s+(.*?)\s+from\s+(.*?)(\s+)?$",
+        matchObj = re.match(r"create\s+(.*?)\s+file\s+(.*?)\s+from\s+(.*?)file(.*?)(\s+)?$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
             # 在不同的文件中相互转换
-            Convert_file(p_srcfilename=str(matchObj.group(2)),
-                         p_dstfilename=str(matchObj.group(1)),
-                         p_options=self.SQLExecuteHandler.options)
+            Convert_file(p_srcfileType=str(matchObj.group(3)).strip(),
+                         p_srcfilename=str(matchObj.group(4)).strip(),
+                         p_dstfileType=str(matchObj.group(1)).strip(),
+                         p_dstfilename=str(matchObj.group(2)).strip())
             yield (
                 None,
                 None,
@@ -1445,7 +1453,7 @@ class SQLCli(object):
             return
 
         # 创建随机数Seed的缓存文件
-        matchObj = re.match(r"create\s+seeddatafile\s+(.*)\s+with\s+null\s+rows\s+(\d+)$",
+        matchObj = re.match(r"create\s+seeddatafile\s+(.*?)\s+with\s+null\s+rows\s+(\d+)$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
             m_strSeedFile = str(matchObj.group(1)).lstrip().rstrip()
@@ -1459,7 +1467,7 @@ class SQLCli(object):
             return
 
         # 创建随机数Seed的缓存文件
-        matchObj = re.match(r"create\s+seeddatafile\s+(.*)(\s+)?$",
+        matchObj = re.match(r"create\s+seeddatafile\s+(.*?)(\s+)?$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
             m_strSeedFile = str(matchObj.group(1))
