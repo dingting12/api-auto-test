@@ -25,7 +25,6 @@ SMOKETEST
 	LOgon And Execute SQL Script     admin/123456  DBLink-Postgres.sql
 	LOgon And Execute SQL Script     admin/123456  DBLink-SqlServer.sql
 	LOgon And Execute SQL Script     admin/123456  DBLink-TeraData.sql
-	LOgon And Execute SQL Script     admin/123456  LDB_EXT_External_Table-HDFS.sql
 	LOgon And Execute SQL Script     admin/123456  LDB_EXT_机器学习基本算子.sql
 	LOgon And Execute SQL Script     admin/123456  LDB_EXT_内置函数.sql
 	LOgon And Execute SQL Script     admin/123456  LDB_EXT_特征工程.sql
@@ -48,7 +47,6 @@ SMOKETEST
 	Compare Files		 DBLink-Postgres.log              DBLink-Postgres.ref 
 	Compare Files		 DBLink-SqlServer.log             DBLink-SqlServer.ref 
 	Compare Files		 DBLink-TeraData.log              DBLink-TeraData.ref 
-	Compare Files        LDB_EXT_External_Table-HDFS.log  LDB_EXT_External_Table-HDFS.ref 
 	Compare Files		 LDB_EXT_机器学习基本算子.log 	  LDB_EXT_机器学习基本算子.ref 
 	Compare Files		 LDB_EXT_内置函数.log        	  LDB_EXT_内置函数.ref 
 	Compare Files		 LDB_EXT_特征工程.log			  LDB_EXT_特征工程.ref 

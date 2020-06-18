@@ -22,12 +22,12 @@ insert into SQLSERVER_LINK_001.T_DBLink_SQLSERVER_001 values
 --测试增加字段
 alter table SQLSERVER_LINK_001.T_DBLink_SQLSERVER_001 add column c4 int;
 
-select data_type from information_schema.columns where table_schema = 'SQLSERVER_LINK_001' and table_name = 'T_DBLink_SQLSERVER_001' and column_name = 'C4';
+select data_type from information_schema.columns where table_schema = 'SQLSERVER_LINK_001' and table_name = 'T_DBLINK_SQLSERVER_001' and column_name = 'C4';
 
 --测试删除字段
 alter table SQLSERVER_LINK_001.T_DBLink_SQLSERVER_001 drop column c4;
 
-select count(*) from information_schema.columns where table_schema = 'SQLSERVER_LINK_001' and table_name = 'T_DBLink_SQLSERVER_001';
+select count(*) from information_schema.columns where table_schema = 'SQLSERVER_LINK_001' and table_name = 'T_DBLINK_SQLSERVER_001';
 
 --测试更新某一字段
 UPDATE SQLSERVER_LINK_001.T_DBLink_SQLSERVER_001 SET c2=123 where c1=45124;

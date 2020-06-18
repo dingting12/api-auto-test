@@ -32,12 +32,12 @@ insert into HIVE_LINK_001.T_DBLink_HIVE_001 values
 --测试增加字段
 alter table HIVE_LINK_001.T_DBLink_HIVE_001 add column c4 int;
 
-select data_type from information_schema.columns where table_schema = 'HIVE_LINK_001' and table_name = 'T_DBLink_HIVE_001' and column_name = 'C4';
+select data_type from information_schema.columns where table_schema = 'HIVE_LINK_001' and table_name = 'T_DBLINK_HIVE_001' and column_name = 'C4';
 
 --测试删除字段
 alter table HIVE_LINK_001.T_DBLink_HIVE_001 drop column c4;
 
-select count(*) from information_schema.columns where table_schema = 'HIVE_LINK_001' and table_name = 'T_DBLink_HIVE_001';
+select count(*) from information_schema.columns where table_schema = 'HIVE_LINK_001' and table_name = 'T_DBLINK_HIVE_001';
 
 --测试更新某一字段
 UPDATE HIVE_LINK_001.T_DBLink_HIVE_001 SET SAL=9010 where EMPNO=7782;

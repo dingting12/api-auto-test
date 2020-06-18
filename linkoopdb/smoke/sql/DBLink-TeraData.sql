@@ -35,12 +35,12 @@ insert into TERADATA_LINK_001.T_DBLink_TERADATA_001 values
 --测试增加字段
 alter table TERADATA_LINK_001.T_DBLink_TERADATA_001 add column c4 int;
 
-select data_type from information_schema.columns where table_schema = 'TERADATA_LINK_001' and table_name = 'T_DBLink_TERADATA_001' and column_name = 'C4';
+select data_type from information_schema.columns where table_schema = 'TERADATA_LINK_001' and table_name = 'T_DBLINK_TERADATA_001' and column_name = 'C4';
 
 --测试删除字段
 alter table TERADATA_LINK_001.T_DBLink_TERADATA_001 drop column c4;
 
-select count(*) from information_schema.columns where table_schema = 'TERADATA_LINK_001' and table_name = 'T_DBLink_TERADATA_001';
+select count(*) from information_schema.columns where table_schema = 'TERADATA_LINK_001' and table_name = 'T_DBLINK_TERADATA_001';
 
 --测试更新某一字段
 UPDATE TERADATA_LINK_001.T_DBLink_TERADATA_001 SET SAL=9010 where EMPNO=7782;

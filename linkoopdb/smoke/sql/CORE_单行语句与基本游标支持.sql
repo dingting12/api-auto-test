@@ -121,6 +121,8 @@ CREATE PROCEDURE sp_opencursor_test_002()
 /
  
  call sp_opencursor_test_002();
+ 
+select count(*) from t_procedure_test_003 where id = 100;
 
 drop procedure sp_opencursor_test_002 if exists cascade;
 drop table t_procedure_test_003 if exists cascade;
