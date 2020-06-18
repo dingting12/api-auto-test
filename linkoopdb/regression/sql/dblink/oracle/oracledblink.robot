@@ -13,5 +13,5 @@ OracleSetUp
 
 *** Test Cases ***
 CreateDBlinkTest
-    Execute SQL Script        the_DDL_of_oracle_dblink/create_oracle_dblink.sql
-    Compare Files             create_oracle_dblink.log  create_oracle_dblink.ref
+    Execute SQL Script        the_DDL_of_oracle_dblink/create_oracle_dblink1.sql
+    Compare Files             create_oracle_dblink1.log  create_oracle_dblink1.ref

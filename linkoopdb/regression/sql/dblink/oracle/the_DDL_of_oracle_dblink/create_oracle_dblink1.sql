@@ -1,4 +1,4 @@
---Description:create oracle dblink
+--Description:涉及到创建dblink时，其他数据库的用户，密码，URL，用户权限相关case
 --Date：2020-06-15
 --Author：王煜
 
@@ -815,4 +815,14 @@ INSERT INTO link_oracle_grammar_covered25.t_test_wy11 VALUES(1,'秋日棉花糖'
 
 SELECT * FROM link_oracle_grammar_covered25.t_test_wy11 ORDER BY id;
 
---connection url
+--CONNECTION URL
+
+---URL不存在
+DROP DATABASE LINK link_oracle_grammar_covered26 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered26 connect to 'u_dblink_permission13' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.76:1521:xe';
+
+---URL
+DROP DATABASE LINK link_oracle_grammar_covered27 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered27 connect to 'u_dblink_permission13' identified by '123456' using 'xcbmfdfyhuiyjsavc';
