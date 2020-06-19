@@ -4,9 +4,9 @@
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 --记录执行时间
-set timing on
+set TIMING on
 --返回结果
-set termout on
+set TERMOUT on
 --是否打印执行的SQL语句
 set ECHO ON
 
@@ -1035,7 +1035,9 @@ INSERT INTO u_case_sensitivity."t_dblink_sensitivity1" VALUES(1,'vcvcv');
 
 SELECT * FROM u_case_sensitivity."t_dblink_sensitivity1" ORDER BY "id";
 
---maxactive
+--properties
+
+---maxactive
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
 DROP USER u_dblink_maxactive CASCADE;
@@ -1155,3 +1157,44 @@ DROP TABLE u_dblink_maxactive.t_dblink_maxactive11;
 CREATE TABLE u_dblink_maxactive.t_dblink_maxactive11 AS (SELECT * FROM u_dblink_maxactive.t_dblink_maxactive1);
 
 SELECT COUNT(*) FROM u_dblink_maxactive.t_dblink_maxactive11;
+
+
+---schema
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP USER u_dblink_schema CASCADE;
+
+CREATE USER u_dblink_schema IDENTIFIED BY 123456;
+
+GRANT dba TO u_dblink_schema;
+
+connect u_dblink_schema/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP TABLE u_dblink_schema.t_test_schema1;
+
+CREATE TABLE u_dblink_schema.t_test_schema1(id INT,name VARCHAR2(200));
+
+INSERT INTO u_dblink_schema.t_test_schema1 VALUES(1,'等你下课');
+INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(2,'你又擦肩而过');
+
+SELECT * FROM u_dblink_schema.t_test_schema1 ORDER BY id;
+
+---otherUsers
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP USER u_dblink_otherUsers CASCADE;
+
+CREATE USER u_dblink_otherUsers IDENTIFIED BY 123456;
+
+GRANT dba TO u_dblink_otherUsers;
+
+connect u_dblink_otherUsers/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP TABLE u_dblink_otherUsers.t_test_otherusers1;
+
+CREATE TABLE u_dblink_otherUsers.t_test_otherusers1(id INT,name VARCHAR2(200));
+
+INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(1,'等你下课');
+INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(2,'你又擦肩而过');
+
+SELECT * FROM u_dblink_otherUsers.t_test_otherusers1 ORDER BY id;
