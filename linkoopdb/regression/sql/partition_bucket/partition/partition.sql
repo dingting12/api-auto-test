@@ -1,5 +1,5 @@
---Description:column_number
---Date：2020-06-09
+--Description:partition
+--Date：2020-06-18
 --Author：阮娜
 
 SET ECHO ON
