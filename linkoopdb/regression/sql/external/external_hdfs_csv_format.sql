@@ -1,0 +1,524 @@
+--    Description: 测试external hdfs csv格式
+--    Date:         2020-06-19
+--    Author:       丁婷
+
+drop table if exists t_external_hdfs_csv_deli_dt1;
+drop table if exists t_external_hdfs_csv_deli_dt2;
+drop table if exists t_external_hdfs_csv_deli_dt3;
+drop table if exists t_external_hdfs_csv_deli_dt4;
+drop table if exists t_external_hdfs_csv_deli_dt5;
+drop table if exists t_external_hdfs_csv_deli_dt6;
+drop table if exists t_external_hdfs_csv_deli_dt7;
+drop table if exists t_external_hdfs_csv_deli_dt8;
+drop table if exists t_external_hdfs_csv_deli_dt9;
+drop table if exists t_external_hdfs_csv_deli_dt10;
+drop table if exists t_external_hdfs_csv_deli_dt11;
+drop table if exists t_external_hdfs_csv_deli_dt12;
+drop table if exists t_external_hdfs_csv_deli_dt13;
+
+-- 测试EXTERNAL关键字未写，创建表需报错明确
+CREATE  TABLE t_external_hdfs_csv_deli_dt9(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' ;
+
+-- 测试EXTERNAL关键字写错，创建表需报错明确
+CREATE EXTERNAL1 TABLE t_external_hdfs_csv_deli_dt10(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' ;
+
+-- 测试format关键字未写，创建表需报错明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt11(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv');
+ 
+
+-- 测试format关键字写错，创建表需报错明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt12(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+ format1 'csv';
+ 
+ -- 测试format值写错，创建表需报错明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt13(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+ format 'csv1';
+ 
+-- 测试delimeter参数未写，创建表需报错明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt1(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' ;
+
+-- 测试delimeter参数为|
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt2(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|');
+
+select * from t_external_hdfs_csv_deli_dt2;
+
+
+-- 测试delimeter参数为空格
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt3(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP,
+  descs VARCHAR(200),
+  items INT
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv4.csv')
+format 'csv' (delimiter ' ');
+
+select * from t_external_hdfs_csv_deli_dt3;
+
+
+-- 测试delimeter参数为,
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt4(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP,
+  descs VARCHAR(200),
+  items INT
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv5.csv')
+format 'csv' (delimiter ',');
+
+select * from t_external_hdfs_csv_deli_dt4;
+
+
+-- 测试delimeter参数为@
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt5(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv6.csv')
+format 'csv' (delimiter '@');
+
+select * from t_external_hdfs_csv_deli_dt5;
+
+-- 测试delimeter参数为ASCII码BEL
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt6(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/BELASCII.csv')
+format 'csv' (delimiter '');
+
+select * from t_external_hdfs_csv_deli_dt6;
+
+-- 测试delimeter参数为@,数据中分隔符为为逗号
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt7(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv5.csv')
+format 'csv' (delimiter '@');
+
+select * from t_external_hdfs_csv_deli_dt7;
+
+-- 测试delimeter参数异常情况为||,报错需明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_deli_dt8(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '||');
+
+
+
+-- 测试参数header
+-- 删除表
+drop table if exists t_external_hdfs_csv_he_dt1;
+drop table if exists t_external_hdfs_csv_he_dt2;
+drop table if exists t_external_hdfs_csv_he_dt3;
+drop table if exists t_external_hdfs_csv_he_dt4;
+drop table if exists t_external_hdfs_csv_he_dt5;
+
+-- 测试参数header默认值为false
+CREATE EXTERNAL TABLE t_external_hdfs_csv_he_dt1(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|');
+
+select * from t_external_hdfs_csv_he_dt1;
+
+-- 测试参数header值为false
+CREATE EXTERNAL TABLE t_external_hdfs_csv_he_dt2(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|' header 'false');
+
+select * from t_external_hdfs_csv_he_dt2;
+
+-- 测试参数header为true,第一行都是字符串
+CREATE EXTERNAL TABLE t_external_hdfs_csv_he_dt3(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|' header 'true');
+
+select * from t_external_hdfs_csv_he_dt3;
+
+-- 测试参数header为true,但第一行不全是字符串
+CREATE EXTERNAL TABLE t_external_hdfs_csv_he_dt4(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv15.csv')
+format 'csv' (delimiter '|' header 'true');
+
+select * from t_external_hdfs_csv_he_dt4;
+
+
+-- 测试参数header异常值为truee
+CREATE EXTERNAL TABLE t_external_hdfs_csv_he_dt5(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv15.csv')
+format 'csv' (delimiter '|' header 'truee');
+
+select * from t_external_hdfs_csv_he_dt5;
+
+
+-- 测试参数quote
+-- 删除表
+drop table if exists t_external_hdfs_csv_quo_dt1;
+drop table if exists t_external_hdfs_csv_quo_dt2;
+drop table if exists t_external_hdfs_csv_quo_dt3;
+-- 测试quote为@
+CREATE EXTERNAL TABLE t_external_hdfs_csv_quo_dt1(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv10.csv')
+format 'csv' (delimiter '|' quote '@');
+
+select * from t_external_hdfs_csv_quo_dt1;
+
+-- 测试quote为@,被包裹的字段含有分隔符
+CREATE EXTERNAL TABLE t_external_hdfs_csv_quo_dt2(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv16.csv')
+format 'csv' (delimiter '|' quote '@');
+
+select * from t_external_hdfs_csv_quo_dt2;
+
+-- 测试quote异常情况为@@
+CREATE EXTERNAL TABLE t_external_hdfs_csv_quo_dt3(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv10.csv')
+format 'csv' (delimiter '|' quote '@@');
+
+
+-- 测试参数escape
+-- 删除表
+drop table if exists t_external_hdfs_csv_esc_dt1;
+drop table if exists t_external_hdfs_csv_esc_dt2;
+
+-- 测试参数escape为/
+CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt1(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|' ESCAPE '/' header 'true');
+
+select * from t_external_hdfs_csv_esc_dt1;
+
+
+-- 测试ESCAPE异常情况为//
+CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt2(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|' ESCAPE '//' header 'true');
+
+
+
+-- 测试参数NULL
+-- 删除表
+drop table if exists t_external_hdfs_csv_null_dt1;
+drop table if exists t_external_hdfs_csv_null_dt2;
+
+-- 测试NULL为!!!
+CREATE EXTERNAL TABLE t_external_hdfs_csv_null_dt1(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv12.csv')
+format 'csv' (delimiter '|' ESCAPE '$' header 'true' NULL '!!!');
+
+select * from t_external_hdfs_csv_null_dt1;
+
+-- 测试NULL为ds,数据中有dsdsddfs
+CREATE EXTERNAL TABLE t_external_hdfs_csv_null_dt2(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv12.csv')
+format 'csv' (delimiter '|' ESCAPE '$' header 'true' NULL 'ds');
+
+select * from t_external_hdfs_csv_null_dt2;
+
+
+-- 测试参数ignoreLeadingWhiteSpace
+-- 删除表
+drop table if exists t_external_hdfs_csv_ws_dt1;
+drop table if exists t_external_hdfs_csv_ws_dt2;
+drop table if exists t_external_hdfs_csv_ws_dt3;
+
+-- 测试ignoreLeadingWhiteSpace默认值为false
+CREATE EXTERNAL TABLE t_external_hdfs_csv_ws_dt1(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv')
+format 'csv' (delimiter '|' header 'true');
+
+select * from t_external_hdfs_csv_ws_dt1;
+
+-- 测试ignoreLeadingWhiteSpace值为true
+CREATE EXTERNAL TABLE t_external_hdfs_csv_ws_dt2(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv')
+format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+
+select * from t_external_hdfs_csv_ws_dt2;
+
+-- 测试ignoreLeadingWhiteSpace异常情况truee
+CREATE EXTERNAL TABLE t_external_hdfs_csv_ws_dt3(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv')
+format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'truee');
+
+
+-- 测试encoding
+-- 删除表
+--drop table if exists  t_external_hdfs_csv_enco_dt1;
+--drop table if exists  t_external_hdfs_csv_enco_dt2;
+--drop table if exists  t_external_hdfs_csv_enco_dt3;
+--drop table if exists  t_external_hdfs_csv_enco_dt4;
+--drop table if exists  t_external_hdfs_csv_enco_dt5;
+--drop table if exists  t_external_hdfs_csv_enco_dt6;
+--drop table if exists  t_external_hdfs_csv_enco_dt7;
+--drop table if exists  t_external_hdfs_csv_enco_dt8;
+--drop table if exists  t_external_hdfs_csv_enco_dt8;
+--drop table if exists  t_external_hdfs_csv_enco_dt10;
+--drop table if exists  t_external_hdfs_csv_enco_dt11;
+
+
+-- 创建DB表，数据和表都设置编码格式为ISO-8859-1
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt1(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_8859.csv')
+--format 'csv' (delimiter '|' encoding 'ISO-8859-1');
+--
+--select * from t_external_hdfs_csv_enco_dt1;
+
+
+-- 创建DB表，数据和表都设置编码格式为GB2312
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt2(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_2312.csv')
+--format 'csv' (delimiter '|' encoding 'GB2312');
+
+--select * from t_external_hdfs_csv_enco_dt2;
+
+---- 创建DB表，数据和表都设置编码格式为GBK
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt3(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_gbk.csv')
+--format 'csv' (delimiter '|' encoding 'GBK');
+--
+--select * from t_external_hdfs_csv_enco_dt3;
+--
+---- 创建DB表，数据和表都设置编码格式为UTF-16
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt4(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_utf16.csv')
+--format 'csv' (delimiter '|' encoding 'UTF-16');
+--
+--select * from t_external_hdfs_csv_enco_dt4;
+--
+---- 创建DB表，数据和表都设置编码格式为UTF-8
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt5(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_utf8.csv')
+--format 'csv' (delimiter '|' encoding 'UTF-8');
+--
+--select * from t_external_hdfs_csv_enco_dt5;
+--
+--
+---- 创建DB表，数据设置编码格式为ISO-8859-1,表设置为UTF-8
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt6(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_8859.csv')
+--format 'csv' (delimiter '|' encoding 'UTF-8');
+--
+--select * from t_external_hdfs_csv_enco_dt6;
+--
+--
+---- 创建DB表，数据设置编码格式为ISO-8859-1,表设置为GBK
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt7(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_8859.csv')
+--format 'csv' (delimiter '|' encoding 'GBK');
+--
+--select * from t_external_hdfs_csv_enco_dt7;
+--
+---- 创建DB表，数据设置编码格式为GBK,表设置为ISO-8859-1
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt8(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_gbk.csv')
+--format 'csv' (delimiter '|' encoding 'ISO-8859-1');
+--
+--select * from t_external_hdfs_csv_enco_dt8;
+--
+---- 创建DB表，数据设置编码格式为GBK,表设置为UTF-8
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt9(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_gbk.csv')
+--format 'csv' (delimiter '|' encoding 'UTF-8');
+--
+--select * from t_external_hdfs_csv_enco_dt9;
+--
+---- 创建DB表，数据设置编码格式为UTF-8,表设置为ISO-8859-1
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt10(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_utf8.csv')
+--format 'csv' (delimiter '|' encoding 'ISO-8859-1');
+--
+--select * from t_external_hdfs_csv_enco_dt10;
+--
+--
+---- 创建DB表，数据设置编码格式为UTF-8,表设置为GBK
+--CREATE EXTERNAL TABLE t_external_hdfs_csv_enco_dt11(
+--  id INT,
+--  name1 VARCHAR(200), 
+--  name2 VARCHAR(200), 
+--  name3 VARCHAR(200),
+--  name4 VARCHAR(200),
+--  sal DOUBLE,
+--  birthday TIMESTAMP
+--) location('hdfs://node73:8020/user/testdb73/external_file/encoding_utf8.csv')
+--format 'csv' (delimiter '|' encoding 'GBK');
+--
+--select * from t_external_hdfs_csv_enco_dt11;

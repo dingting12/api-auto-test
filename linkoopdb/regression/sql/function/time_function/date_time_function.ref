@@ -1,7 +1,7 @@
-SQLCli Release 0.0.62
+SQLCli Release 0.0.70
 SQL> connect admin/123456
 Database connected.
-SQL> start date_time_function.sql
+SQL> start time_function/date_time_function.sql
 SQL> --Description:日期时间函数补充测试用例
    > --Date：2020-06-09
    > --Author：贾路遥
@@ -18,90 +18,6 @@ SQL> INSERT INTO Test_Builtin_Function_2 VALUES(4,' q az xe'),(5,'S D B J Y '),(
 SQL> 
 SQL> 
 SQL> --to_date()函数
-SQL> SELECT to_date('2018-09-01','RRRRMMDD') FROM Test_Builtin_Function_2 limit 1;
-+--------+
-| C1     |
-+--------+
-| <null> |
-+--------+
-1 row selected.
-SQL> SELECT to_date('2018-09-01','RRRR-MM-DD') FROM Test_Builtin_Function_2 limit 1 ;
-+----------+
-| C1       |
-+----------+
-| 2018-9-1 |
-+----------+
-1 row selected.
-SQL> SELECT to_date('2018-09-01','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
-+----------+
-| C1       |
-+----------+
-| 2018-1-9 |
-+----------+
-1 row selected.
-SQL> SELECT to_date('2018-09-11','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
-+-----------+
-| C1        |
-+-----------+
-| 2018-11-9 |
-+-----------+
-1 row selected.
-SQL> SELECT to_date('2018-09-11','RRRR-MM') FROM Test_Builtin_Function_2 limit 1;
-+----------+
-| C1       |
-+----------+
-| 2018-9-1 |
-+----------+
-1 row selected.
-SQL> SELECT to_date('2018-09-11','RRRR-DD') FROM Test_Builtin_Function_2 limit 1;
-+----------+
-| C1       |
-+----------+
-| 2018-1-9 |
-+----------+
-1 row selected.
-SQL> SELECT to_date('2018-09-01','RRRRMM') FROM Test_Builtin_Function_2 limit 1;
-+--------+
-| C1     |
-+--------+
-| <null> |
-+--------+
-1 row selected.
-SQL> SELECT to_date('2018-09-01','RRRRDD') FROM Test_Builtin_Function_2 limit 1;
-+--------+
-| C1     |
-+--------+
-| <null> |
-+--------+
-1 row selected.
-SQL> SELECT to_date('2018-09-01','MMDD') FROM Test_Builtin_Function_2 limit 1;
-+--------+
-| C1     |
-+--------+
-| <null> |
-+--------+
-1 row selected.
-SQL> SELECT to_date('2018-09-01','RRRR') FROM Test_Builtin_Function_2 limit 1;
-+----------+
-| C1       |
-+----------+
-| 2018-1-1 |
-+----------+
-1 row selected.
-SQL> SELECT to_date('2018-09-01','MM') FROM Test_Builtin_Function_2 limit 1;
-+--------+
-| C1     |
-+--------+
-| <null> |
-+--------+
-1 row selected.
-SQL> SELECT to_date('2018-09-01','DD') FROM Test_Builtin_Function_2 limit 1;
-+--------+
-| C1     |
-+--------+
-| <null> |
-+--------+
-1 row selected.
 SQL> SELECT to_date('23-JUN-99','dd-MON-YY')FROM Test_Builtin_Function_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -239,7 +155,7 @@ SQL> SELECT to_date(CURRENT_TIMESTAMP) FROM Test_Builtin_Function_2 LIMIT 1;
 +-----------+
 | C1        |
 +-----------+
-| 2020-6-16 |
+| 2020-6-19 |
 +-----------+
 1 row selected.
 SQL> 
@@ -396,7 +312,7 @@ SQL> SELECT to_timestamp(CURRENT_DATE) FROM Test_Builtin_Function_2 LIMIT 1;
 +---------------------+
 | C1                  |
 +---------------------+
-| 2020-06-16 00:00:00 |
+| 2020-06-19 00:00:00 |
 +---------------------+
 1 row selected.
 SQL> 
@@ -471,12 +387,12 @@ SQL> SELECT ADD_MONTHS(timestamp '2011-01-01 00:00:00',true) FROM Test_Builtin_F
 java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'add_months(CAST(TIMESTAMP('2011-01-01 00:00:00.0') AS DATE), true)' due to data type mismatch: argument 2 requires int type, however, 'true' is of boolean type.;;
 'GlobalLimit (0 + 1)
 +- 'LocalLimit (0 + 1)
-   +- 'Project [add_months(cast(1293811200000000 as date), true) AS C1#43526]
+   +- 'Project [add_months(cast(1293811200000000 as date), true) AS C1#130934]
       +- Union
-         :- Project [ID#167313 AS ID#43524, NAME#167314 AS NAME#43525]
-         :  +- Relation[ID#167313,NAME#167314] parquet
-         +- Project [ID#167317 AS ID#43524, NAME#167318 AS NAME#43525]
-            +- Relation[ID#167317,NAME#167318] parquet
+         :- Project [ID#529701 AS ID#130932, NAME#529702 AS NAME#130933]
+         :  +- Relation[ID#529701,NAME#529702] parquet
+         +- Project [ID#529705 AS ID#130932, NAME#529706 AS NAME#130933]
+            +- Relation[ID#529705,NAME#529706] parquet
 
 SQL> 
 SQL> 
@@ -485,7 +401,7 @@ SQL> SELECT CURRENT_DATE FROM Test_Builtin_Function_2 LIMIT 1;
 +-----------+
 | C1        |
 +-----------+
-| 2020-6-16 |
+| 2020-6-19 |
 +-----------+
 1 row selected.
 SQL> 
@@ -495,7 +411,7 @@ SQL> SELECT CURRENT_TIMESTAMP FROM Test_Builtin_Function_2 LIMIT 1;
 +-------------------------------+
 | C1                            |
 +-------------------------------+
-| 2020-06-16T11:48:44.012+08:00 |
+| 2020-06-19T16:27:36.517+08:00 |
 +-------------------------------+
 1 row selected.
 SQL> SELECT CURRENT_TIMESTAMP(2) FROM Test_Builtin_Function_2 LIMIT 1;
@@ -569,74 +485,11 @@ SQL> SELECT DATE_ADD('2016-04-30 12:21:22', 5) FROM Test_Builtin_Function_2 LIMI
 SQL> 
 SQL> 
 SQL> --date_format()函数
-SQL> SELECT date_format('2018-09-01','RRRRMMDD') FROM Test_Builtin_Function_2 limit 1;
-+----------+
-| C1       |
-+----------+
-| 20180901 |
-+----------+
-1 row selected.
-SQL> SELECT date_format('2018-09-01','RRRR-MM-DD') FROM Test_Builtin_Function_2 limit 1;
-+------------+
-| C1         |
-+------------+
-| 2018-09-01 |
-+------------+
-1 row selected.
-SQL> SELECT date_format('2018-09-01','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
-+------------+
-| C1         |
-+------------+
-| 2018-01-09 |
-+------------+
-1 row selected.
-SQL> SELECT date_format('2018-09-11','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
-+------------+
-| C1         |
-+------------+
-| 2018-11-09 |
-+------------+
-1 row selected.
-SQL> SELECT date_format('2018-09-11','RRRR-MM') FROM Test_Builtin_Function_2 limit 1;
-+---------+
-| C1      |
-+---------+
-| 2018-09 |
-+---------+
-1 row selected.
-SQL> SELECT date_format('2018-09-11','RRRR-DD') FROM Test_Builtin_Function_2 limit 1;
-+---------+
-| C1      |
-+---------+
-| 2018-11 |
-+---------+
-1 row selected.
-SQL> SELECT date_format('2018-09-01','RRRRMM') FROM Test_Builtin_Function_2 limit 1;
-+--------+
-| C1     |
-+--------+
-| 201809 |
-+--------+
-1 row selected.
-SQL> SELECT date_format('2018-09-01','RRRRDD') FROM Test_Builtin_Function_2 limit 1;
-+--------+
-| C1     |
-+--------+
-| 201801 |
-+--------+
-1 row selected.
 SQL> SELECT date_format('2018-09-01','MMDD') FROM Test_Builtin_Function_2 limit 1;
 +------+
 | C1   |
 +------+
 | 0901 |
-+------+
-1 row selected.
-SQL> SELECT date_format('2018-09-01','RRRR') FROM Test_Builtin_Function_2 limit 1;
-+------+
-| C1   |
-+------+
-| 2018 |
 +------+
 1 row selected.
 SQL> SELECT date_format('2018-09-01','MM') FROM Test_Builtin_Function_2 limit 1;
@@ -963,13 +816,6 @@ SQL> SELECT date_sub('2016-07-30',-1000000000) FROM Test_Builtin_Function_2 LIMI
 time data '2739923-08-03 00:00' does not match format '%Y-%m-%d %H:%M:%S'
 SQL> 
 SQL> --date_trunc()函数
-SQL> SELECT date_trunc('2016-01-01 21:22:23', 'RRRR') from Test_Builtin_Function_2 LIMIT 1;;
-+--------+
-| C1     |
-+--------+
-| <null> |
-+--------+
-1 row selected.
 SQL> SELECT date_trunc('2016-11-01 21:22:23', 'YYYY-MM-DD HH24:MI:SS') from Test_Builtin_Function_2 LIMIT 1;
 +--------+
 | C1     |
@@ -1396,13 +1242,6 @@ SQL> SELECT unix_timestamp(date '2019-02-22') FROM Test_Builtin_Function_2 LIMIT
 +------------+
 1 row selected.
 SQL> SELECT unix_timestamp(date '2019-02-22','yyyymmdd') FROM Test_Builtin_Function_2 LIMIT 1;
-+------------+
-| C1         |
-+------------+
-| 1550764800 |
-+------------+
-1 row selected.
-SQL> SELECT unix_timestamp(date '2019-02-22','rrrrmmdd') FROM Test_Builtin_Function_2 LIMIT 1;
 +------------+
 | C1         |
 +------------+

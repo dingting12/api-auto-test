@@ -11,18 +11,6 @@ INSERT INTO Test_Builtin_Function_2 VALUES(4,' q az xe'),(5,'S D B J Y '),(6,'  
 
 --to_date()函数
 
-SELECT to_date('2018-09-01','RRRRMMDD') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-01','RRRR-MM-DD') FROM Test_Builtin_Function_2 limit 1 ;
-SELECT to_date('2018-09-01','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-11','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-11','RRRR-MM') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-11','RRRR-DD') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-01','RRRRMM') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-01','RRRRDD') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-01','MMDD') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-01','RRRR') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-01','MM') FROM Test_Builtin_Function_2 limit 1;
-SELECT to_date('2018-09-01','DD') FROM Test_Builtin_Function_2 limit 1;
 
 SELECT to_date('23-JUN-99','dd-MON-YY')FROM Test_Builtin_Function_2 LIMIT 1;
 
@@ -116,16 +104,7 @@ SELECT DATE_ADD('2016-04-30 12:21:22', 5) FROM Test_Builtin_Function_2 LIMIT 1;
 
 
 --date_format()函数
-SELECT date_format('2018-09-01','RRRRMMDD') FROM Test_Builtin_Function_2 limit 1;
-SELECT date_format('2018-09-01','RRRR-MM-DD') FROM Test_Builtin_Function_2 limit 1;
-SELECT date_format('2018-09-01','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
-SELECT date_format('2018-09-11','RRRR-DD-MM') FROM Test_Builtin_Function_2 limit 1;
-SELECT date_format('2018-09-11','RRRR-MM') FROM Test_Builtin_Function_2 limit 1;
-SELECT date_format('2018-09-11','RRRR-DD') FROM Test_Builtin_Function_2 limit 1;
-SELECT date_format('2018-09-01','RRRRMM') FROM Test_Builtin_Function_2 limit 1;
-SELECT date_format('2018-09-01','RRRRDD') FROM Test_Builtin_Function_2 limit 1;
 SELECT date_format('2018-09-01','MMDD') FROM Test_Builtin_Function_2 limit 1;
-SELECT date_format('2018-09-01','RRRR') FROM Test_Builtin_Function_2 limit 1;
 SELECT date_format('2018-09-01','MM') FROM Test_Builtin_Function_2 limit 1;
 SELECT date_format('2018-09-01','DD') FROM Test_Builtin_Function_2 limit 1;
 
@@ -188,7 +167,6 @@ SELECT date_sub('2016-07-30',1000000000) FROM Test_Builtin_Function_2 LIMIT 1;
 SELECT date_sub('2016-07-30',-1000000000) FROM Test_Builtin_Function_2 LIMIT 1;
 
 --date_trunc()函数
-SELECT date_trunc('2016-01-01 21:22:23', 'RRRR') from Test_Builtin_Function_2 LIMIT 1;;
 SELECT date_trunc('2016-11-01 21:22:23', 'YYYY-MM-DD HH24:MI:SS') from Test_Builtin_Function_2 LIMIT 1;
 SELECT date_trunc('2016-11-01 21:22:23', 'YYYY-MM-DD') from Test_Builtin_Function_2 LIMIT 1;
 SELECT date_trunc('2016-11-01 21:22:23', 'HH24:MI:SS') from Test_Builtin_Function_2 LIMIT 1;
@@ -304,7 +282,6 @@ SELECT trunc(timestamp '2009-02-12 00:02:33', 'day') FROM Test_Builtin_Function_
 --unix_timestamp()函数
 SELECT unix_timestamp(date '2019-02-22') FROM Test_Builtin_Function_2 LIMIT 1;
 SELECT unix_timestamp(date '2019-02-22','yyyymmdd') FROM Test_Builtin_Function_2 LIMIT 1;
-SELECT unix_timestamp(date '2019-02-22','rrrrmmdd') FROM Test_Builtin_Function_2 LIMIT 1;
 SELECT unix_timestamp(timestamp '2019-02-03 21:22:11') FROM Test_Builtin_Function_2 LIMIT 1;
 SELECT unix_timestamp(0) FROM Test_Builtin_Function_2 LIMIT 1;
 SELECT unix_timestamp('2018-09-01') FROM Test_Builtin_Function_2 LIMIT 1;
