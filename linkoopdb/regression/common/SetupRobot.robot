@@ -62,6 +62,3 @@ SQL Test Setup
 SQL Test Clnup
     # 检查SQL运行是否有错误
     Compare Check Result
-
-Dummy Test
-    Log to Console      ""

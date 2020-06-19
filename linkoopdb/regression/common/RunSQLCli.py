@@ -9,6 +9,10 @@ import shlex
 
 
 class RunSQLCli(object):
+    # TEST SUITE 在suite中引用，只会实例化一次
+    # 也就是说多test case都引用了这个类的方法，但是只有第一个test case调用的时候实例化
+    ROBOT_LIBRARY_SCOPE = 'TEST SUITE'
+
     __BreakWithSQLerror = False              # 是否遇到SQL错误就退出，默认是不退出
     __EnableConsoleOutPut = False             # 是否关闭在Console上的显示，默认是不关闭
     __SQLMapping = None                       # 映射文件列表
