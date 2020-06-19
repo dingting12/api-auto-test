@@ -1,8 +1,10 @@
 # -*- coding: UTF-8 -*-
 import os
 import re
+import sys
 
 from robot.api import logger
+from robot.errors import ExecutionFailed
 import shlex
 
 
@@ -291,6 +293,8 @@ class RunCompare(object):
         """
         if str(p_BreakWithDifference).upper() == 'TRUE':
             self.__BreakWithDifference = True
+        if str(p_BreakWithDifference).upper() == 'FALSE':
+            self.__BreakWithDifference = False
 
     def Compare_Skip(self, p_szSkipLine):
         """ 设置是否在比对的时候忽略某些特殊行  """
@@ -404,8 +408,15 @@ class RunCompare(object):
             m_szWorkFile = p_szWorkFile
         else:
             if "T_WORK" not in os.environ:
+                logger.info('===============   work log [' + p_szWorkFile + '] does not exist. ' +
+                            ' T_WORK env does not exist too ============')
                 if self.__BreakWithDifference:
-                    raise RuntimeError('===============   work log [' + p_szWorkFile + '] does not exist ============')
+                    raise ExecutionFailed(
+                        message=('===============   work log [' + p_szWorkFile + '] does not exist. ' +
+                                 ' T_WORK env does not exist too ============'),
+                        continue_on_failure=True
+                    )
+                return False
 
             # 传递的不是绝对路径，是相对路径
             (m_ShortWorkFileName, m_WorkFileExtension) = os.path.splitext(p_szWorkFile)
@@ -427,14 +438,16 @@ class RunCompare(object):
         # check if work file exist
         if not os.path.isfile(m_szWorkFile):
             self.__CompareFailedCount = self.__CompareFailedCount + 1
+            m_CompareResultFile = open(m_DifFullFileName, 'w')
+            m_CompareResultFile.write(
+                '===============   work log [' + p_szWorkFile + '] does not exist ============')
+            m_CompareResultFile.close()
             if self.__BreakWithDifference:
-                raise RuntimeError('===============   work log [' + p_szWorkFile + '] does not exist ============')
-            else:
-                m_CompareResultFile = open(m_DifFullFileName, 'w')
-                m_CompareResultFile.write(
-                    '===============   work log [' + p_szWorkFile + '] does not exist ============')
-                m_CompareResultFile.close()
-                return False
+                raise ExecutionFailed(
+                    message=('===============   work log [' + p_szWorkFile + '] does not exist ============'),
+                    continue_on_failure=True
+                )
+            return False
 
         # search reference log
         m_ReferenceLog = None
@@ -448,17 +461,18 @@ class RunCompare(object):
             m_ReferenceLog = p_szReferenceFile
         if not os.path.isfile(m_ReferenceLog):
             self.__CompareFailedCount = self.__CompareFailedCount + 1
+            logger.info('===============   reference log [' + m_ReferenceLog +
+                        '] does not exist ============')
+            m_CompareResultFile = open(m_DifFullFileName, 'w')
+            m_CompareResultFile.write('===============   reference log [' + m_ReferenceLog +
+                                      '] does not exist ============')
+            m_CompareResultFile.close()
             if self.__BreakWithDifference:
-                raise RuntimeError('===============   reference log [' + m_ReferenceLog +
-                                   '] does not exist ============')
-            else:
-                logger.info('===============   reference log [' + m_ReferenceLog +
-                            '] does not exist ============')
-                m_CompareResultFile = open(m_DifFullFileName, 'w')
-                m_CompareResultFile.write('===============   reference log [' + m_ReferenceLog +
-                                          '] does not exist ============')
-                m_CompareResultFile.close()
-                return False
+                raise ExecutionFailed(
+                    message=('===============   reference log [' + m_ReferenceLog + '] does not exist ============'),
+                    continue_on_failure=True
+                )
+            return False
 
         # compare file
         m_Comparer = POSIXCompare()
@@ -472,7 +486,13 @@ class RunCompare(object):
                 self.__CompareIgnoreCase,
                 self.__CompareIgnoreTailOrHeadBlank)
         except DiffException as de:
-            raise RuntimeError('Diff exception::' + de.message)
+            logger.info('Fatal Diff Exception:: ' + de.message)
+            if self.__BreakWithDifference:
+                raise ExecutionFailed(
+                    message=('Fatal Diff Exception:: ' + de.message),
+                    continue_on_failure=True
+                )
+            return False
 
         if m_CompareResult:
             m_CompareResultFile = open(m_SucFullFileName, 'w')
@@ -497,9 +517,11 @@ class RunCompare(object):
             m_CompareResultFile.close()
             logger.write("======= Diff file [" + m_DifFullFileName + "] <<<<<< ")
             if self.__BreakWithDifference:
-                raise RuntimeError('Got Difference. Please check [' + m_DifFullFileName + '] for more information.')
-            else:
-                return False
+                raise ExecutionFailed(
+                    message=('Got Difference. Please check [' + m_DifFullFileName + '] for more information.'),
+                    continue_on_failure=self.__BreakWithDifference
+                )
+            return False
 
 
 if __name__ == '__main__':
