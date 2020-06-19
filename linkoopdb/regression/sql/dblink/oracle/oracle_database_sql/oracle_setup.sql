@@ -1174,7 +1174,8 @@ DROP TABLE u_dblink_schema.t_test_schema1;
 
 CREATE TABLE u_dblink_schema.t_test_schema1(id INT,name VARCHAR2(200));
 
-INSERT INTO u_dblink_schema.t_test_schema1 VALUES(1,'等你下课'),(2,'你又擦肩而过');
+INSERT INTO u_dblink_schema.t_test_schema1 VALUES(1,'等你下课');
+INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(2,'你又擦肩而过');
 
 SELECT * FROM u_dblink_schema.t_test_schema1 ORDER BY id;
 
@@ -1193,6 +1194,7 @@ DROP TABLE u_dblink_otherUsers.t_test_otherusers1;
 
 CREATE TABLE u_dblink_otherUsers.t_test_otherusers1(id INT,name VARCHAR2(200));
 
-INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(1,'等你下课'),(2,'你又擦肩而过');
+INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(1,'等你下课');
+INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(2,'你又擦肩而过');
 
 SELECT * FROM u_dblink_otherUsers.t_test_otherusers1 ORDER BY id;
