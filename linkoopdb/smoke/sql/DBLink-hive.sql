@@ -1,6 +1,8 @@
 --    Description: 测试DBlink中的hive
 --    Date:         2020-06-11
 --    Author:       丁婷
+set echo on
+
 drop database link HIVE_LINK_001 if exists cascade;
 
 create database link HIVE_LINK_001  connect to 'hive' identified by 'hive' using 'hive' PROPERTIES ('database':'default');

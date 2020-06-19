@@ -1,6 +1,7 @@
 --    Description: OLAP_CUBE
 --    Date:         2020-06-12
 --    Author:       丁婷
+set echo on
 
 --652 T431 Extended grouping capabilities (previously "CUBE and ROLLUP operations")
 drop table if exists T_OLAP_CUBE_ROOLLUP_001;

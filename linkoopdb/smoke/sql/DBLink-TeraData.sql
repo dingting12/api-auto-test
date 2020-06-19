@@ -1,6 +1,8 @@
 --    Description: 测试DBlink中的TeraData
 --    Date:         2020-06-11
 --    Author:       丁婷
+set echo on
+
 drop database link TERADATA_LINK_001 if exists cascade;
 
 create database link TERADATA_LINK_001  CONNECT TO

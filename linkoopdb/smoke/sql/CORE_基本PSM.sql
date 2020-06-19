@@ -1,6 +1,7 @@
 --    Description: 基本PSM
 --    Date:         2020-06-10
 --    Author:       丁婷
+set echo on
 
 --259 T321-01 User-defined functions with no overloading
 DROP FUNCTION if exists function_test_001;

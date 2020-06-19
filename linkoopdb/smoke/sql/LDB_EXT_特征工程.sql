@@ -1,7 +1,7 @@
 --    Description: 测试特征工程
 --    Date:         2020-06-11
 --    Author:       丁婷
-
+set echo on
 
 --619 LDBX011-03 CountVectorizer
 drop table countvectorizer_data_001 if exists cascade;

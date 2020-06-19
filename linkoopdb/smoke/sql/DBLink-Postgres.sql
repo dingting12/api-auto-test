@@ -1,6 +1,8 @@
 --    Description: 测试DBlink中的Postgres
 --    Date:         2020-06-11
 --    Author:       丁婷
+set echo on
+
 drop database link POSTGRES_LINK_001 if exists cascade;
 
 create database link POSTGRES_LINK_001  connect to 'postgres' identified by '123456' using 'jdbc:postgresql://192.168.1.72:5432/postgres' properties ('caseSensitive':'true');

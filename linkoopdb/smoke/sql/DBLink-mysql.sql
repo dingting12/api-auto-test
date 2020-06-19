@@ -1,6 +1,8 @@
 --    Description: 测试DBlink中的mysql数据库
 --    Date:         2020-06-11
 --    Author:       丁婷
+set echo on
+
 drop database link MYSQL_LINK_001 if exists cascade;
 
 create database link MYSQL_LINK_001 connect to 'test' identified by '123456' using 'jdbc:mysql://192.168.1.72:3307/ldb_test';

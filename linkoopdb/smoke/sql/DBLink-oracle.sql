@@ -1,6 +1,7 @@
 --    Description: 测试DBlink中的oracle数据库
 --    Date:         2020-06-11
 --    Author:       丁婷
+set echo on
 
 drop database link ORACLE_LINK_001 if exists cascade;
 

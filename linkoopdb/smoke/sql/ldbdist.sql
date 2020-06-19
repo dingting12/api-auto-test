@@ -1,6 +1,7 @@
 --    Description: 测试ldbdist
 --    Date:         2020-06-16
 --    Author:       丁婷
+set echo on
 
 --测试2891 LDBX048-01-04 one machine
 DROP TABLE T_LDBDIST_SINGFILE_001 if exists;

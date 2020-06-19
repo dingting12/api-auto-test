@@ -1,6 +1,7 @@
 --    Description: 测试stored procedure
 --    Date:         2020-06-16
 --    Author:       丁婷
+set echo on
 
 --测试733 LDBX043
 drop TABLE t_diagnostics_tab1 IF EXISTS cascade;
