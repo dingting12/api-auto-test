@@ -1,0 +1,36 @@
+SQLCli Release 0.0.68
+SQL> loaddriver C:\Users\耿晨雨\Desktop\linkoopdb-jdbc-2.2.3.jar
+Driver loaded.
+SQL> connect admin/123456
+Database connected.
+SQL> start CORE_基本查询/E071-01 UNION DISTINCT table operator.sql
+SQL> -- 清空环境
+SQL> drop table t_union_distinct  IF  EXISTS;
+0 rows affected
+SQL> 
+SQL> -- 创建表
+SQL> CREATE TABLE IF NOT EXISTS t_union_distinct (EMPNO INT,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > COMM INT,
+   > DEPTNO INT);
+0 rows affected
+SQL> 
+SQL> -- 插入数据
+SQL> INSERT INTO t_union_distinct VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> INSERT INTO t_union_distinct VALUES (7499,'ALLEN','SALESMAN',7698,TO_DATE('1981-2-20','yyyy-mm-dd'),1600,300,30);
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> INSERT INTO t_union_distinct VALUES (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','yyyy-mm-dd'),1250,500,30);
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> select * from (
+   > select * from t_union_distinct
+   > union  distinct
+   > select * from t_union_distinct
+   > ) order by empno;
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> exit
+Disconnected.

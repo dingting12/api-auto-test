@@ -1,0 +1,35 @@
+SQLCli Release 0.0.68
+SQL> loaddriver C:\Users\耿晨雨\Desktop\linkoopdb-jdbc-2.2.3.jar
+Driver loaded.
+SQL> connect admin/123456
+Database connected.
+SQL> start CORE_数据类型/F051-04 Comparison predicate on DATE, TIME, and TIMESTAMP data types.sql
+SQL> -- 清空环境
+SQL> drop table t_timestamp_date IF  EXISTS;
+0 rows affected
+SQL> 
+SQL> -- 创建包含timestamp和date类型的数据表
+SQL> create table IF NOT EXISTS t_timestamp_date(t timestamp,d date);
+0 rows affected
+SQL> 
+SQL> -- 插入数据
+SQL> insert into t_timestamp_date values ('2019-01-01 10:10:30.123456','2019-01-01');
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> 
+SQL> -- 查询表数据
+SQL> select * from t_timestamp_date;
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> 
+SQL> -- 使用timestamp类型过滤数据
+SQL> select * from t_timestamp_date where t<'2020-01-01 10:10:10';
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> 
+SQL> -- 使用date类型过滤数据
+SQL> select * from  t_timestamp_date where d<'2020-01-01';
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> 
+SQL> -- 使用date和timestamp类型过滤数据
+SQL> select * from t_timestamp_date where t<'2020-01-01 10:10:10' and d<'2020-01-01';
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> exit
+Disconnected.
