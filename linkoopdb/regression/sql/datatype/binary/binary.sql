@@ -65,20 +65,20 @@ insert into T_TYPE_BIT6 values(b'1111111111');
 select * from T_TYPE_BIT6;
 
 --验证插入BINARY类型
-insert into T_TYPE_BIT6 values('abcdeabcde');
+insert into T_TYPE_BIT6 values('AABBFFHHgg');
 select * from T_TYPE_BIT6;
 
 -- 验证插入其他数据类型
 --验证插入int类型，是否报错
-insert into T_TYPE_BIT6 values(123);
+insert into T_TYPE_BIT6 values(12345);
 select * from T_TYPE_BIT6;
 
 --验证插入decimal类型，是否报错
-insert into T_TYPE_BIT6 values(123.5);
+insert into T_TYPE_BIT6 values(1234.56);
 select * from T_TYPE_BIT6;
 
---验证插入varchar类型，插入英文字母'abcdeabcde'，是否报错
-insert into T_TYPE_BIT6 values('abcdeabcde');
+--验证插入varchar类型，插入英文字母'xxxyyyZZZ'，是否报错
+insert into T_TYPE_BIT6 values('xxxyyyZZZ');
 select * from T_TYPE_BIT6;
 
 --验证插入date类型，格式yyyy-mm-dd，是否报错
@@ -127,26 +127,25 @@ drop table T_TYPE_BINARY3 if exists;
 
 --创建表T_TYPE_BINARY1，设置长度大于64000，是否报错
 create table T_TYPE_BINARY1 (a1 binary(64001));
-select * from T_TYPE_BINARY1;
 
 --创建表T_TYPE_BINARY2，设置长度为64000
 create table T_TYPE_BINARY2 (a1 binary(64000));
-insert into T_TYPE_BINARY2 values('abcdeabcde');
+insert into T_TYPE_BINARY2 values('AABBggkkQQxx');
 select * from T_TYPE_BINARY2;
 
 --创建表T_TYPE_BINARY3，设置长度为10
 create table T_TYPE_BINARY3 (a1 binary(10));
 
 --验证插入数据的字节数大于10，是否报错
-insert into T_TYPE_BINARY3 values('abcdeabcdea');
+insert into T_TYPE_BINARY3 values('AAFFHHmmyyz');
 select * from T_TYPE_BINARY3;
 
 --验证插入数据的字节数等于10
-insert into T_TYPE_BINARY3 values('abcdeabcde');
+insert into T_TYPE_BINARY3 values('AAFFHHmmyy');
 select * from T_TYPE_BINARY3;
 
 --验证插入数据的字节数小于10，右边用0补齐
-insert into T_TYPE_BINARY3 values('abcdeabcd');
+insert into T_TYPE_BINARY3 values('AAFFHHmmy');
 select * from T_TYPE_BINARY3;
 
 --验证插入数据的字节数为0，右边用0补齐
@@ -154,21 +153,21 @@ insert into T_TYPE_BINARY3 values('');
 select * from T_TYPE_BINARY3;
 
 --验证插入BIT类型
-insert into T_TYPE_BINARY3 values(b'1010101010');
+insert into T_TYPE_BINARY3 values(b'1010111101');
 select * from T_TYPE_BINARY3;
 
 
 -- 验证插入其他数据类型
 --验证插入int类型，是否报错
-insert into T_TYPE_BINARY3 values(123);
+insert into T_TYPE_BINARY3 values(12345);
 select * from T_TYPE_BINARY3;
 
 --验证插入decimal类型，是否报错
-insert into T_TYPE_BINARY3 values(1234.5);
+insert into T_TYPE_BINARY3 values(1234.56);
 select * from T_TYPE_BINARY3;
 
---验证插入varchar类型，插入英文字母'abcdeabcde'，是否报错
-insert into T_TYPE_BINARY3 values('abcdeabcde');
+--验证插入varchar类型，插入英文字母'xxxyyyZZZD'，是否报错
+insert into T_TYPE_BINARY3 values('xxxyyyZZZD');
 select * from T_TYPE_BINARY3;
 
 --验证插入date类型，格式yyyy-mm-dd，是否报错
@@ -220,22 +219,22 @@ create table T_TYPE_VARBINARY1 (a1 binary(64001));
 
 --创建表T_TYPE_VARBINARY1，设置长度为64000
 create table T_TYPE_VARBINARY2 (a1 binary(64000));
-insert into T_TYPE_VARBINARY2 values('abcdeabcde');
+insert into T_TYPE_VARBINARY2 values('AABBggkkQQxx');
 select * from T_TYPE_VARBINARY2;
 
 --创建表T_TYPE_VARBINARY3，设置长度为10
 create table T_TYPE_VARBINARY3 (a1 binary(10));
 
 --验证插入数据的字节数大于11，是否报错
-insert into T_TYPE_VARBINARY3 values('abcdeabcdeab');
+insert into T_TYPE_VARBINARY3 values('AAFFHHmmyyzz');
 select * from T_TYPE_VARBINARY3;
 
 --验证插入数据的字节数等于11
-insert into T_TYPE_VARBINARY3 values('abcdeabcdea');
+insert into T_TYPE_VARBINARY3 values('AAFFHHmmyyz');
 select * from T_TYPE_VARBINARY3;
 
 --验证插入数据的字节数小于11
-insert into T_TYPE_VARBINARY3 values('abcdeabcd');
+insert into T_TYPE_VARBINARY3 values('AAFFHHmmyy');
 select * from T_TYPE_VARBINARY3;
 
 --验证插入数据的字节数为0
@@ -248,15 +247,15 @@ select * from T_TYPE_VARBINARY3;
 
 -- 验证插入其他数据类型
 --验证插入int类型，是否报错
-insert into T_TYPE_VARBINARY3 values(123);
+insert into T_TYPE_VARBINARY3 values(12345);
 select * from T_TYPE_VARBINARY3;
 
 --验证插入decimal类型，是否报错
-insert into T_TYPE_VARBINARY3 values(1234.5);
+insert into T_TYPE_VARBINARY3 values(1234.56);
 select * from T_TYPE_VARBINARY3;
 
---验证插入varchar类型，插入英文字母'abcdeabcde'，是否报错
-insert into T_TYPE_VARBINARY3 values('abcdeabcde');
+--验证插入varchar类型，插入英文字母'xxxyyyZZZDD'，是否报错
+insert into T_TYPE_VARBINARY3 values('xxxyyyZZZDD');
 select * from T_TYPE_VARBINARY3;
 
 --验证插入date类型，格式yyyy-mm-dd，是否报错
