@@ -1,6 +1,7 @@
 --    Description: 测试视图
 --    Date:         2020-06-10
 --    Author:       丁婷
+set echo on
 
 -- 测试257 F081 UNION and EXCEPT in views
 drop view v_view_test_001 if exists cascade;

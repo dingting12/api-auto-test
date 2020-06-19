@@ -1,6 +1,8 @@
 --    Description: 测试分区，分桶，索引
 --    Date:         2020-06-16
 --    Author:       丁婷
+set echo on
+
 
 --测试分区,hdfs内部表
 drop table if exists T_PARTITION_HDFS_001;

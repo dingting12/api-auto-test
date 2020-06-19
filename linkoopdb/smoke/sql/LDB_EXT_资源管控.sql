@@ -1,6 +1,7 @@
 --    Description: 测试资源管控
 --    Date:         2020-06-12
 --    Author:       丁婷
+set echo on
 
 --398 LDBX033-02 LDBX033-03 Resource control through resource groups
 

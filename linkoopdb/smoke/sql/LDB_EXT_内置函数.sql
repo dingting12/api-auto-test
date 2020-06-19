@@ -1,6 +1,7 @@
 --    Description: 测试内置函数
 --    Date:         2020-06-11
 --    Author:       丁婷
+set echo on
 
 -- 测试327 LDBX070-01 Spark 2.3.0 built-in functions 
 drop table if exists T_Builtin_Function_001;

@@ -1,6 +1,7 @@
 --    Description: 测试机器学习算子
 --    Date:         2020-06-11
 --    Author:       丁婷
+set echo on
 
 -- 测试decision tree
 

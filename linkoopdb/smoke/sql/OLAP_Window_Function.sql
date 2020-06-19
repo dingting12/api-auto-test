@@ -1,6 +1,7 @@
 --    Description: 测试olap window function
 --    Date:         2020-06-16
 --    Author:       丁婷
+set echo on
 
 -- 74 LDBX070-12 window函数row_number()
 DROP TABLE T_ROW_NUMBER_001 IF EXISTS CASCADE;

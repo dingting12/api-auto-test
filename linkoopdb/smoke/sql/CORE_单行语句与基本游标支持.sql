@@ -1,6 +1,7 @@
 --    Description: 测试单行语句与基本游标支持
 --    Date:         2020-06-10
 --    Author:       丁婷
+set echo on
 
 --256 E111 Single row SELECT statement
 drop table if exists Test_Single_Row_001;

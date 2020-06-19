@@ -1,6 +1,7 @@
 --    Description: 测试子查询
 --    Date:         2020-06-10
 --    Author:       丁婷
+set echo on
 
 -- 测试402  F471  Scalar subquery values
 drop table T_db_subquery_001 if exists cascade;

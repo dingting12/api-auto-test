@@ -1,6 +1,8 @@
 --    Description: 测试DBlink中的sqlserver数据库
 --    Date:         2020-06-11
 --    Author:       丁婷
+set echo on
+
 drop database link SQLSERVER_LINK_001 if exists cascade;
 
 create database link SQLSERVER_LINK_001  connect to 'sa' identified by 'LinkoopDB123' using 'jdbc:sqlserver://192.168.1.72;Database=insen' properties ('schema':'dbo','caseSensitive':'true');

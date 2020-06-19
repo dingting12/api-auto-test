@@ -1,6 +1,7 @@
 --    Description: 测试schema ddl 
 --    Date:         2020-06-10
 --    Author:       丁婷
+set echo on
 
 --测试80 F311-01 CREATE SCHEMA，不支持数字开头
 drop schema if exists T_create_schema_001 cascade;

@@ -1,6 +1,7 @@
 --    Description: 测试null与基本完整性约束 ,包括F381-01,E141-07,F381-03,E131
 --    Date:         2020-06-09
 --    Author:       丁婷
+set echo on
 
 --测试242 F381-01 ALTER TABLE statement: ALTER COLUMN clause 
 
