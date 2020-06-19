@@ -194,3 +194,9 @@ SCHEMATEST
 	Compare Files        LDBX022-07 alter external table statement.log    						LDB_EXT_External_Table/LDBX022-07 alter external table statement.ref
 	Compare Files        LDBX022-08 create external table by parquet_hive.log    			  	LDB_EXT_External_Table/LDBX022-08 create external table by parquet_hive.ref
 	Compare Files        LDBX022-12 ORC file as external table.log                 				LDB_EXT_External_Table/LDBX022-12 ORC file as external table.ref
+
+    Compare Skip                       SQL> loaddriver。*
+	Compare Skip                       Driver loaded.
+
+
+
