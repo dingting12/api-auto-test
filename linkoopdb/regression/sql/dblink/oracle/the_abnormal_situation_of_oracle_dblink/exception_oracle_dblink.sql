@@ -123,3 +123,71 @@ DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
 
 CREATE DATABASE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
 PROPERTIES ('maxActive:10,otherUsers:工具人1号,caseSensitive:true');
+
+--dblink缺少部分关键字
+
+---缺少database
+DROP LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers':'工具人1号','caseSensitive':'true');
+
+---缺少link
+DROP DATABASE link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers':'工具人1号','caseSensitive':'true');
+
+---缺少connect
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 to 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers':'工具人1号','caseSensitive':'true');
+
+---缺少to
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 connect 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers':'工具人1号','caseSensitive':'true');
+
+---缺少identified
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers':'工具人1号','caseSensitive':'true');
+
+---缺少by
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers':'工具人1号','caseSensitive':'true');
+
+---缺少using
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified by '123456' 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers':'工具人1号','caseSensitive':'true');
+
+---缺少PROPERTIES
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+('maxActive':'10','otherUsers':'工具人1号','caseSensitive':'true');
+
+---maxActive缺少值
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive','otherUsers':'工具人1号','caseSensitive':'true');
+
+---otherUsers缺少值
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers','caseSensitive':'true');
+
+---caseSensitive缺少值
+DROP DATABASE LINK link_oracle_grammar_covered1000 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered1000 connect to 'u_dblink_maxactive' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+PROPERTIES ('maxActive':'10','otherUsers':'工具人1号','caseSensitive');

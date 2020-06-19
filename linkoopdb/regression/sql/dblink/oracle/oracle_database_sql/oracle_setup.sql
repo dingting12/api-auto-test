@@ -1158,7 +1158,6 @@ CREATE TABLE u_dblink_maxactive.t_dblink_maxactive11 AS (SELECT * FROM u_dblink_
 
 SELECT COUNT(*) FROM u_dblink_maxactive.t_dblink_maxactive11;
 
-
 ---schema
 connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
 
@@ -1198,3 +1197,81 @@ INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(1,'等你下课');
 INSERT INTO u_dblink_otherUsers.t_test_otherusers1 VALUES(2,'你又擦肩而过');
 
 SELECT * FROM u_dblink_otherUsers.t_test_otherusers1 ORDER BY id;
+
+---dblink读并发控制
+connect system/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP USER u_dblink_read_concurrent CASCADE;
+
+CREATE USER u_dblink_read_concurrent IDENTIFIED BY 123456;
+
+GRANT dba TO u_dblink_read_concurrent;
+
+connect u_dblink_read_concurrent/123456@jdbc:oracle:thin://192.168.1.72:1521:xe
+
+DROP TABLE u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+CREATE TABLE u_dblink_read_concurrent.t_dblink_read_concurrent1 (TUNIQUE NUMBER(10),
+                                  TINT1 INT,
+                                  TVARCHAR2 VARCHAR2(200),
+                                  TDOUBLE3 NUMBER(13,6),
+                                  TDECIMAL4 NUMBER(10,2),
+                                  TDATE5 DATE,
+                                  TTIMESTAMP6 TIMESTAMP,
+                                  TSMALLINT7 SMALLINT,
+                                  TBIGINT8 NUMBER(10),
+                                  TCHAR9 CHAR(20),
+                                  TNUMERIC10 NUMBER(13,6),
+                                  TFLOAT11 NUMBER(13,6),
+                                  TREAL12 NUMBER(13,6));
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(1,-899092547,'oVEc^3T4zIwg1ILtyiP8rkd7G#FvBwAXjwpLhu6cu*Kkc7Tf',1648926.2148723458,4116031.49,DATE '1987-06-02',TIMESTAMP '2020-06-18 16:27:17',-11095,-1932371658,'%IEA0HR',3773536.314954,1996385.2026839552,1224049.1147975207);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(2,-1403168017,'Epr6AcNJW*uY*2GiZrcGv#ak$BVacBVy*g#zl',2726162.144835754,14643319.71,DATE '2023-06-21',TIMESTAMP '2020-06-18 16:27:17',22621,-1480340730,'Q8BPh36^2hCdDnP3aO',6071569.247461,4663778.476250502,1903884.2548447768);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(3,-789490626,'(TwI)mWrPs2lU6(5$D%D^^HoelmxTjoW',2145892.981525481,78560196.91,DATE '2007-10-27',TIMESTAMP '2020-06-18 16:27:17',-12109,-524646332,'zoN*uAdlfc$XcW8S',3072306.826447,1502070.0616832613,244758.11515140504);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(4,1392375813,'Ms*f',4879191.878297356,74615663.75,DATE '1982-10-18',TIMESTAMP '2020-06-18 16:27:17',32329,-1737021348,'G3%hOz5*F8C%D5y',4375081.676359,5780860.287694029,6285177.537457812);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(5,-515651660,'Y7ZYAS5*)FOhAF#rWD%F',526456.634216947,25468271.21,DATE '2008-06-14',TIMESTAMP '2020-06-18 16:27:17',17288,-1472704848,'U413xX4cITZb^QAy',1878613.583271,5382541.993735052,6447347.412390448);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(6,387663444,'p7f$U#)IcQ$nHW5vVeOkbvaWDDuaQVm7(r5Mp5C',7572543.455808893,27145378.41,DATE '1982-08-29',TIMESTAMP '2020-06-18 16:27:17',30489,-1527676042,'^',41062.485755,4937302.6028597215,6951146.156716858);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(7,-2088054337,'d10VluN8W^wP*TDxDkC*bjJZ44Av3A2',1048631.2271054361,1560670.63,DATE '2000-07-09',TIMESTAMP '2020-06-18 16:27:17',-6361,1999798379,'hcJA^CsDAE)((',7238528.719465,1237817.6176910177,1013249.1776682566);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(8,520860823,'6KuWV)yHEar#*q%hnzqPPH5pm6C#',8512355.724419868,16271077.11,DATE '1970-01-15',TIMESTAMP '2020-06-18 16:27:17',-30518,-1756909766,'KyLFFtVPWD',2468710.528561,4439442.10005343,2853842.3877217392);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(9,2012515139,'wjHNqBvyPJAd6kv4c5xHO9hFKe9^NDSO6Lne',4223752.97563944,55782180.54,DATE '1998-11-03',TIMESTAMP '2020-06-18 16:27:17',-2835,-1164254851,'JXbAl#Bx)',1026047.771822,4227803.871756566,3242746.357411831);
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 VALUES(10,1927074565,'BbT^n9wPydjBHyf7aW*',6752701.0426634215,27792983.14,DATE '1980-08-17',TIMESTAMP '2020-06-18 16:27:17',30680,1681445272,'b4Uo',8157127.090337,4294028.845923988,3355026.935450707);
+
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+INSERT INTO u_dblink_read_concurrent.t_dblink_read_concurrent1 SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+SELECT COUNT(*) FROM u_dblink_read_concurrent.t_dblink_read_concurrent1;
+
+DROP TABLE u_dblink_read_concurrent.t_dblink_read_concurrent2;
+
+CREATE TABLE u_dblink_read_concurrent.t_dblink_read_concurrent2 AS (SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1);
+
+SELECT COUNT(*) FROM u_dblink_read_concurrent.t_dblink_read_concurrent2;
+
+DROP TABLE u_dblink_read_concurrent.t_dblink_read_concurrent3;
+
+CREATE TABLE u_dblink_read_concurrent.t_dblink_read_concurrent3 AS (SELECT * FROM u_dblink_read_concurrent.t_dblink_read_concurrent1);
+
+SELECT COUNT(*) FROM u_dblink_read_concurrent.t_dblink_read_concurrent3;
+
