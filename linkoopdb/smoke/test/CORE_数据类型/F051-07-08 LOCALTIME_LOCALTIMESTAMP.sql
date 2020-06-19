@@ -1,0 +1,3 @@
+call LOCALTIME
+
+call LOCALTIMESTAMP

@@ -200,4 +200,15 @@ SELECT * FROM link_oracle_grammar_covered41.t_dblink_wy1 ORDER BY id;
 ---对dblink表级别的参数
 
 ----dblink读并发控制
+DROP DATABASE LINK link_oracle_grammar_covered42 IF EXISTS CASCADE;
+
+CREATE DATABASE LINK link_oracle_grammar_covered42 connect to 'u_dblink_read_concurrent' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1 ORDER BY id LIMIT 5;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent2 ORDER BY id DESC LIMIT 5;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent3 ORDER BY id DESC LIMIT 5;
+
+
 

@@ -1,0 +1,39 @@
+SQLCli Release 0.0.68
+SQL> loaddriver C:\Users\耿晨雨\Desktop\linkoopdb-jdbc-2.2.3.jar
+Driver loaded.
+SQL> connect admin/123456
+Database connected.
+SQL> start CORE_基本schema管理/LDBX141-02 Copy model by copying files.sql
+SQL> -- 清空环境
+SQL> drop table DT_TRAINING_DATA  IF  EXISTS;
+0 rows affected
+SQL> drop model DT_MODEL IF  EXISTS;
+0 rows affected
+SQL> drop model DT_MODEL_NEW IF  EXISTS;
+0 rows affected
+SQL> CREATE TABLE DT_TRAINING_DATA(LABEL DOUBLE, FEATURES DOUBLE ARRAY);
+0 rows affected
+SQL> INSERT INTO DT_TRAINING_DATA VALUES
+   >  (0, ARRAY[1, 0, 0]),
+   >  (0, ARRAY[2, 0, 0]),
+   >  (0, ARRAY[3, 0, 0]),
+   >  (0, ARRAY[4, 0, 0]),
+   >  (1, ARRAY[0, 1, 0]),
+   >  (1, ARRAY[0, 2, 0]),
+   >  (1, ARRAY[0, 3, 0]),
+   >  (1, ARRAY[0, 4, 0]),
+   >  (2, ARRAY[0, 0, 1]),
+   >  (2, ARRAY[0, 0, 2]),
+   >  (2, ARRAY[0, 0, 3]),
+   >  (2, ARRAY[0, 0, 4]);
+12 rows affected
+SQL> CREATE MODEL DT_MODEL AS DECISION_TREE_TRAIN(DT_TRAINING_DATA);
+0 rows affected
+SQL> desc model DT_MODEL;
+0 rows affected
+SQL> CREATE MODEL PUBLIC.DT_MODEL_NEW LIKE PUBLIC.DT_MODEL WITH DATA;
+0 rows affected
+SQL> desc model DT_MODEL_NEW;
+0 rows affected
+SQL> exit
+Disconnected.

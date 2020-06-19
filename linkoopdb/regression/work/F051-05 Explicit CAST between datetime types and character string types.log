@@ -1,0 +1,27 @@
+SQLCli Release 0.0.68
+SQL> loaddriver C:\Users\耿晨雨\Desktop\linkoopdb-jdbc-2.2.3.jar
+Driver loaded.
+SQL> connect admin/123456
+Database connected.
+SQL> start CORE_数据类型/F051-05 Explicit CAST between datetime types and character string types.sql
+SQL> -- 清空环境
+SQL> drop table t_timestamp_date_cast IF  EXISTS;
+0 rows affected
+SQL> 
+SQL> -- 创建包含timestamp和date类型的数据表
+SQL> create table IF NOT EXISTS t_timestamp_date_cast(t timestamp,d date);
+0 rows affected
+SQL> 
+SQL> -- 插入数据
+SQL> insert into t_timestamp_date_cast values ('2019-01-01 10:10:30.123456','2019-01-01');
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> 
+SQL> -- timestamp类型显示转换成varchar类型
+SQL> select cast(t as varchar(50)) tvar from t_timestamp_date_cast;
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> 
+SQL> -- date类型显示转换成varchar类型
+SQL> select cast(d as varchar(50)) dvar from t_timestamp_date_cast;
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> exit
+Disconnected.

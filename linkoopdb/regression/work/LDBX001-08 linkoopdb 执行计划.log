@@ -1,0 +1,45 @@
+SQLCli Release 0.0.68
+SQL> loaddriver C:\Users\耿晨雨\Desktop\linkoopdb-jdbc-2.2.3.jar
+Driver loaded.
+SQL> connect admin/123456
+Database connected.
+SQL> start LDB EXT Statistics 采集/LDBX001-08 linkoopdb 执行计划.sql
+SQL> -- 清空环境
+SQL> drop table t_explain  IF  EXISTS;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 创建表
+SQL> CREATE TABLE IF NOT EXISTS t_explain (
+   > EMPNO INT,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > COMM INT,
+   > DEPTNO INT);
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 插入数据
+SQL> INSERT INTO t_explain VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> INSERT INTO t_explain VALUES (7499,'ALLEN','SALESMAN',7698,TO_DATE('1981-2-20','yyyy-mm-dd'),1600,300,30);
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> INSERT INTO t_explain VALUES (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','yyyy-mm-dd'),1250,500,30);
+java.sql.SQLException: java.net.ConnectException: Connection refused Caused by [Connection refused]
+SQL> explain plan for select * from t_explain;
+java.sql.SQLException: IO error: java.net.ConnectException: Connection refused Caused by [Connection refused]
+can not query formated sql: 
+select * from t_explain, java.net.ConnectException: Connection refused Caused by [Connection refused] Caused by [java.net.ConnectException: Connection refused Caused by [Connection refused]] in statement [select * from t_explain]
+SQL> explain plan for select a.*,b.* from t_explain a inner join t_explain b on a.empno=b.empno;
+java.sql.SQLException: IO error: java.net.ConnectException: Connection refused Caused by [Connection refused]
+can not query formated sql: 
+select a.*,b.* from t_explain a inner join t_explain b on a.empno=b.empno, java.net.ConnectException: Connection refused Caused by [Connection refused] Caused by [java.net.ConnectException: Connection refused Caused by [Connection refused]] in statement [select a.*,b.* from t_explain a inner join t_explain b on a.empno=b.empno]
+SQL> explain plan for select row_number() over(partition by 1 order by empno) id,a.* from t_explain a;
+java.sql.SQLException: IO error: java.net.ConnectException: Connection refused Caused by [Connection refused]
+can not query formated sql: 
+select row_number() over(partition by 1 order by empno) id,a.* from t_explain a, java.net.ConnectException: Connection refused Caused by [Connection refused] Caused by [java.net.ConnectException: Connection refused Caused by [Connection refused]] in statement [select row_number() over(partition by 1 order by empno) id,a.* from t_explain a]
+SQL> exit
+Disconnected.
