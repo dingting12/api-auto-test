@@ -1,0 +1,50 @@
+SQLCli Release 0.0.68
+SQL> loaddriver C:\Users\耿晨雨\Desktop\linkoopdb-jdbc-2.2.3.jar
+Driver loaded.
+SQL> connect admin/123456
+Database connected.
+SQL> start CORE_基本schema管理/T171 LIKE clause in table definition.sql
+SQL> -- 清空环境
+SQL> drop table t_create_like  IF  EXISTS;
+0 rows affected
+SQL> drop table t_create_like_hdfs IF  EXISTS;
+0 rows affected
+SQL> drop table t_create_like_hdfs2 IF  EXISTS;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 创建表
+SQL> CREATE TABLE IF NOT EXISTS t_create_like (
+   > EMPNO INT primary key,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > COMM INT,
+   > DEPTNO INT);
+0 rows affected
+SQL> CREATE TABLE t_create_like_hdfs(LIKE t_create_like INCLUDING IDENTITY INCLUDING DEFAULTS  INCLUDING GENERATED) ;
+0 rows affected
+SQL> CREATE TABLE t_create_like_hdfs2 (uid int, LIKE t_create_like INCLUDING IDENTITY INCLUDING DEFAULTS  INCLUDING GENERATED) ;
+0 rows affected
+SQL> select * from t_create_like_hdfs order by empno;
+0 rows selected.
+SQL> select * from t_create_like_hdfs2 order by empno;
+0 rows selected.
+SQL> show create table t_create_like_hdfs;
++--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE              | CREATE_TABLE                                                                                                                                                                        |
++--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_CREATE_LIKE_HDFS | CREATE TABLE IF NOT EXISTS PUBLIC.T_CREATE_LIKE_HDFS(EMPNO INTEGER PRIMARY KEY,ENAME VARCHAR(20),JOB VARCHAR(20),MGR INTEGER,HIREDATE DATE,SAL INTEGER,COMM INTEGER,DEPTNO INTEGER) |
++--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> show create table t_create_like_hdfs2;
++---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE               | CREATE_TABLE                                                                                                                                                                                     |
++---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_CREATE_LIKE_HDFS2 | CREATE TABLE IF NOT EXISTS PUBLIC.T_CREATE_LIKE_HDFS2(UID INTEGER,EMPNO INTEGER PRIMARY KEY,ENAME VARCHAR(20),JOB VARCHAR(20),MGR INTEGER,HIREDATE DATE,SAL INTEGER,COMM INTEGER,DEPTNO INTEGER) |
++---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> exit
+Disconnected.
