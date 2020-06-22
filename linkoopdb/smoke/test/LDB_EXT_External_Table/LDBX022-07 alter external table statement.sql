@@ -1,3 +1,4 @@
+set echo on
 
 drop table t_alter_parquet  IF  EXISTS;
 

@@ -1,3 +1,5 @@
+set echo on
+
 drop table t_external_parquet  IF  EXISTS;
 
 drop table t_external_hive  IF  EXISTS;

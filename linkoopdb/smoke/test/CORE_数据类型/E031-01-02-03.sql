@@ -1,3 +1,5 @@
+set echo on
+
 -- 清空环境
 drop table "t Delimited"  IF  EXISTS;
 drop table "t_Lower"  IF  EXISTS;

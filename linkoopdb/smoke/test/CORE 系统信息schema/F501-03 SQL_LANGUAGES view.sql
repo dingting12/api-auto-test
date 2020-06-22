@@ -1,3 +1,4 @@
+set echo on
 
 -- 验证SQL_LANGUAGES系统表是否可用
 select * from information_schema.SQL_LANGUAGES;

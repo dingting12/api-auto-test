@@ -1,3 +1,5 @@
+set echo on
+
 drop table t_Arithmetic  IF  EXISTS;
 
 CREATE TABLE t_Arithmetic(

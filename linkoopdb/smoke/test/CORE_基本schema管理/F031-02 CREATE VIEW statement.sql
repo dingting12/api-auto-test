@@ -1,3 +1,5 @@
+set echo on
+
 -- 清空环境
 drop view v2 IF  EXISTS;
 drop table t_view  IF  EXISTS;

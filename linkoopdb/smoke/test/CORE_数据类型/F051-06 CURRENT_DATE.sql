@@ -1,3 +1,4 @@
+set echo on
 
 -- 查询当前时间
 select current_date from dual;
