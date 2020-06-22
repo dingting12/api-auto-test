@@ -1,5 +1,4 @@
 set echo on
-
 -- 清空环境
 drop user user cascade;
 drop schema test IF  EXISTS cascade;

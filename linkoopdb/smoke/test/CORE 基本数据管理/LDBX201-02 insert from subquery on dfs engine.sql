@@ -1,5 +1,4 @@
 set echo on
-
 -- 清空环境
 drop table t_insert_subqery  IF  EXISTS;
 drop table t_insert_sink  IF  EXISTS;

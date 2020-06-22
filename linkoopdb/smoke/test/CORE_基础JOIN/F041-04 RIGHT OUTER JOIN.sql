@@ -1,5 +1,4 @@
 set echo on
-
 -- 清空环境
 drop table t_join_left IF  EXISTS;
 drop table t_join_right IF  EXISTS;

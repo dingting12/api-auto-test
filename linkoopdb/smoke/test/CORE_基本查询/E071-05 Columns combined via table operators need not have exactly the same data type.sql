@@ -1,5 +1,4 @@
 set echo on
-
 -- 清空环境
 drop table t_union_diff1  IF  EXISTS;
 drop table t_union_diff2  IF  EXISTS;
