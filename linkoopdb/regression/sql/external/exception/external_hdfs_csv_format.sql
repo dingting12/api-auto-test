@@ -1,6 +1,7 @@
 --    Description: 测试external hdfs csv格式
 --    Date:         2020-06-19
 --    Author:       丁婷
+set echo on
 
 drop table if exists t_external_hdfs_csv_001;
 drop table if exists t_external_hdfs_csv_002;
@@ -20,6 +21,9 @@ drop table if exists t_external_hdfs_csv_015;
 drop table if exists t_external_hdfs_csv_016;
 drop table if exists t_external_hdfs_csv_017;
 drop table if exists t_external_hdfs_csv_018;
+drop table if exists t_external_hdfs_csv_019;
+drop table if exists t_external_hdfs_csv_020;
+drop table if exists t_external_hdfs_csv_021;
 
 -- 测试EXTERNAL关键字未写，创建表需报错明确
 CREATE  TABLE t_external_hdfs_csv_001(
@@ -28,7 +32,7 @@ CREATE  TABLE t_external_hdfs_csv_001(
   sal DOUBLE,
   birthday TIMESTAMP
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
-format 'csv' ;
+format 'csv' (delimiter '|');
 
 -- 测试EXTERNAL关键字写错，创建表需报错明确
 CREATE EXTERNAL1 TABLE t_external_hdfs_csv_002(
@@ -37,7 +41,7 @@ CREATE EXTERNAL1 TABLE t_external_hdfs_csv_002(
   sal DOUBLE,
   birthday TIMESTAMP
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
-format 'csv' ;
+format 'csv'(delimiter '|');
 
 -- 测试format关键字未写，创建表需报错明确
 CREATE EXTERNAL TABLE t_external_hdfs_csv_003(
@@ -45,7 +49,7 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_003(
   name VARCHAR(200),
   sal DOUBLE,
   birthday TIMESTAMP
-) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv');
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')(delimiter '|');
  
 
 -- 测试format关键字写错，创建表需报错明确
@@ -55,7 +59,7 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_004(
   sal DOUBLE,
   birthday TIMESTAMP
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
- format1 'csv';
+ format1 'csv' (delimiter '|');
  
  -- 测试format值写错，创建表需报错明确
 CREATE EXTERNAL TABLE t_external_hdfs_csv_005(
@@ -64,59 +68,86 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_005(
   sal DOUBLE,
   birthday TIMESTAMP
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
- format 'csv1';
+ format 'csv1' (delimiter '|');
  
-  -- 测试format值双引号，创建表需报错明确
+ -- 测试format值双引号，创建表需报错明确
 CREATE EXTERNAL TABLE t_external_hdfs_csv_006(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
   birthday TIMESTAMP
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
- format "csv1";
- 
-   -- 测试format值不存在，创建表需报错明确
+format "csv" (delimiter '|');
+
+
+ -- 测试format值未写，创建表需报错明确
 CREATE EXTERNAL TABLE t_external_hdfs_csv_007(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
   birthday TIMESTAMP
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
- format;
- 
--- 测试location写错，创建表需报错明确
+format (delimiter '|');
+
+ -- 测试format关键字未写，创建表需报错明确
 CREATE EXTERNAL TABLE t_external_hdfs_csv_008(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
   birthday TIMESTAMP
-) location1('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
- format 'csv';
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+'csv' (delimiter '|');
  
- -- 测试location值不存在，创建表需报错明确
+-- 测试location值未写，创建表需报错明确
 CREATE EXTERNAL TABLE t_external_hdfs_csv_009(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
   birthday TIMESTAMP
 ) location
- format 'csv';
- 
- -- 测试location路径不存在，使用表需报错明确
+format 'csv' (delimiter '|');
+
+ -- 测试location未写，创建表需报错明确
 CREATE EXTERNAL TABLE t_external_hdfs_csv_010(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
   birthday TIMESTAMP
+) ('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|');
+
+ -- 测试location写错，创建表需报错明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_011(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location2('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|');
+
+ -- 测试location值写错，使用时报错明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_012(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
 ) location('hdfs://node73:8020/user/testdb731/external_file/show_csv1.csv')
- format 'csv';
- 
-select * from t_external_hdfs_csv_010;
- 
- 
+format 'csv' (delimiter '|');
+
+select * from t_external_hdfs_csv_012;
+
+
+ -- 测试location和值未写，使用时报错明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_013(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) 
+format 'csv' (delimiter '|');
  
 -- 测试delimeter参数未写，创建表需报错明确
-CREATE EXTERNAL TABLE t_external_hdfs_csv_011(
+CREATE EXTERNAL TABLE t_external_hdfs_csv_014(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
@@ -125,7 +156,7 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_011(
 format 'csv' ;
 
 -- 测试delimeter参数为|
-CREATE EXTERNAL TABLE t_external_hdfs_csv_012(
+CREATE EXTERNAL TABLE t_external_hdfs_csv_015(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
@@ -133,11 +164,11 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_012(
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
 format 'csv' (delimiter '|');
 
-select * from t_external_hdfs_csv_012;
+select * from t_external_hdfs_csv_015;
 
 
 -- 测试delimeter参数为空格
-CREATE EXTERNAL TABLE t_external_hdfs_csv_013(
+CREATE EXTERNAL TABLE t_external_hdfs_csv_016(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
@@ -147,11 +178,11 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_013(
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv4.csv')
 format 'csv' (delimiter ' ');
 
-select * from t_external_hdfs_csv_013;
+select * from t_external_hdfs_csv_016;
 
 
 -- 测试delimeter参数为,
-CREATE EXTERNAL TABLE t_external_hdfs_csv_014(
+CREATE EXTERNAL TABLE t_external_hdfs_csv_017(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
@@ -161,11 +192,11 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_014(
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv5.csv')
 format 'csv' (delimiter ',');
 
-select * from t_external_hdfs_csv_014;
+select * from t_external_hdfs_csv_017;
 
 
 -- 测试delimeter参数为@
-CREATE EXTERNAL TABLE t_external_hdfs_csv_015(
+CREATE EXTERNAL TABLE t_external_hdfs_csv_018(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
@@ -173,10 +204,10 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_015(
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv6.csv')
 format 'csv' (delimiter '@');
 
-select * from t_external_hdfs_csv_015;
+select * from t_external_hdfs_csv_018;
 
 -- 测试delimeter参数为ASCII码BEL
-CREATE EXTERNAL TABLE t_external_hdfs_csv_016(
+CREATE EXTERNAL TABLE t_external_hdfs_csv_019(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
@@ -184,10 +215,10 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_016(
 ) location('hdfs://node73:8020/user/testdb73/external_file/BELASCII.csv')
 format 'csv' (delimiter '');
 
-select * from t_external_hdfs_csv_016;
+select * from t_external_hdfs_csv_019;
 
 -- 测试delimeter参数为@,数据中分隔符为为逗号
-CREATE EXTERNAL TABLE t_external_hdfs_csv_017(
+CREATE EXTERNAL TABLE t_external_hdfs_csv_020(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
@@ -195,10 +226,10 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_017(
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv5.csv')
 format 'csv' (delimiter '@');
 
-select * from t_external_hdfs_csv_017;
+select * from t_external_hdfs_csv_020;
 
 -- 测试delimeter参数异常情况为||,报错需明确
-CREATE EXTERNAL TABLE t_external_hdfs_csv_018(
+CREATE EXTERNAL TABLE t_external_hdfs_csv_021(
   id INT,
   name VARCHAR(200),
   sal DOUBLE,
