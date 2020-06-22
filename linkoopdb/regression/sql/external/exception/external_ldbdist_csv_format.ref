@@ -1,0 +1,897 @@
+SQLCli Release 0.0.70
+SQL> connect admin/123456
+Database connected.
+SQL> start external_ldbdist_csv_format.sql
+SQL> --    Description: 测试ldbdist csv格式
+   > --    Date:         2020-06-19
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> drop table if exists t_external_ldbdist_csv_001;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_002;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_003;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_004;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_005;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_006;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_007;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_008;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_009;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_010;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_011;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_012;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_013;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_014;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_015;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_016;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_017;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_018;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_019;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_020;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_021;
+0 rows affected
+SQL> 
+SQL> -- 测试EXTERNAL关键字未写，创建表需报错明确
+SQL> CREATE  TABLE t_external_ldbdist_csv_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|');
+0 rows affected
+SQL> 
+SQL> -- 测试EXTERNAL关键字写错，创建表需报错明确
+SQL> CREATE EXTERNAL1 TABLE t_external_ldbdist_csv_002(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|');
+java.sql.SQLSyntaxErrorException: unexpected token: EXTERNAL1 in statement [CREATE EXTERNAL1 TABLE t_external_ldbdist_csv_002(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('ldbdist://node74:54321/show_csv1.csv')
+format 'csv' (delimiter '|')]
+SQL> 
+SQL> -- 测试format关键字未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_003(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv') (delimiter '|');
+0 rows affected
+SQL>  
+SQL> 
+SQL> -- 测试format关键字写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_004(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   >  format1 'csv' (delimiter '|');
+java.sql.SQLSyntaxErrorException: unexpected token: FORMAT1 : line: 7 in statement [CREATE EXTERNAL TABLE t_external_ldbdist_csv_004(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('ldbdist://node74:54321/show_csv1.csv')
+ format1 'csv' (delimiter '|')]
+SQL>  
+SQL>  -- 测试format值写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_005(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   >  format 'csv1' (delimiter '|');
+java.sql.SQLSyntaxErrorException: unexpected token: csv1 : line: 7 in statement [CREATE EXTERNAL TABLE t_external_ldbdist_csv_005(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('ldbdist://node74:54321/show_csv1.csv')
+ format 'csv1' (delimiter '|')]
+SQL>  
+SQL>  -- 测试format值双引号，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_006(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format "csv" (delimiter '|');
+0 rows affected
+SQL> 
+SQL> 
+SQL>  -- 测试format值未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_007(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format (delimiter '|');
+java.sql.SQLSyntaxErrorException: unexpected token: ( : line: 7 in statement [CREATE EXTERNAL TABLE t_external_ldbdist_csv_007(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('ldbdist://node74:54321/show_csv1.csv')
+format (delimiter '|')]
+SQL> 
+SQL>  -- 测试format关键字未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_008(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > 'csv' (delimiter '|');
+java.sql.SQLSyntaxErrorException: unexpected token: csv : line: 7 in statement [CREATE EXTERNAL TABLE t_external_ldbdist_csv_008(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('ldbdist://node74:54321/show_csv1.csv')
+'csv' (delimiter '|')]
+SQL>  
+SQL> -- 测试location值未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_009(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location
+   > format 'csv' (delimiter '|');
+java.sql.SQLSyntaxErrorException: unexpected token: FORMAT required: ( : line: 7 in statement [CREATE EXTERNAL TABLE t_external_ldbdist_csv_009(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location
+format 'csv' (delimiter '|')]
+SQL> 
+SQL>  -- 测试location未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_010(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) ('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|');
+java.sql.SQLSyntaxErrorException: unexpected token: ldbdist://node74:54321/show_csv1.csv : line: 6 in statement [CREATE EXTERNAL TABLE t_external_ldbdist_csv_010(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) ('ldbdist://node74:54321/show_csv1.csv')
+format 'csv' (delimiter '|')]
+SQL> 
+SQL>  -- 测试location写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_011(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location2('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv'(delimiter '|');
+java.sql.SQLSyntaxErrorException: unexpected token: LOCATION2 : line: 6 in statement [CREATE EXTERNAL TABLE t_external_ldbdist_csv_011(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location2('ldbdist://node74:54321/show_csv1.csv')
+format 'csv'(delimiter '|')]
+SQL> 
+SQL>  -- 测试location值写错，使用时报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_012(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:543121/show_csv1.csv')
+   > format 'csv'(delimiter '|');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_012;
+java.sql.SQLException: Worker execution: ldb worker caused error: port out of range:543121
+SQL> 
+SQL> 
+SQL>  -- 测试location和值未写，使用时报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_013(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) 
+   > format 'csv' (delimiter '|');
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 测试delimeter参数未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_014(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' ;
+0 rows affected
+SQL> 
+SQL> -- 测试delimeter参数为|
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_015(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_015;
++--------+----------+--------+---------------------+
+| ID     | NAME     | SAL    | BIRTHDAY            |
++--------+----------+--------+---------------------+
+| <null> | name     | <null> | <null>              |
+| 1      | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2      | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3      | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4      | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5      | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6      | <null>   | 43.54  | 2004-07-06 23:12:23 |
++--------+----------+--------+---------------------+
+7 rows selected.
+SQL> 
+SQL> 
+SQL> -- 测试delimeter参数为空格
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_016(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP,
+   >   descs VARCHAR(200),
+   >   items INT
+   > ) location('ldbdist://node74:54321/show_csv4.csv')
+   > format 'csv' (delimiter ' ');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_016;
++----+----------+--------+---------------------+----------+--------+
+| ID | NAME     | SAL    | BIRTHDAY            | DESCS    | ITEMS  |
++----+----------+--------+---------------------+----------+--------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 00:00:00 | 23:12:23 | <null> |
+| 2  | xcuh     | 89.234 | 2019-12-06 00:00:00 | 12:34:50 | <null> |
+| 3  | ckoijo   | 9802   | 1997-03-23 00:00:00 | 07:23:05 | <null> |
+| 4  | nnoij    | 123.34 | 1998-05-09 00:00:00 | 16:40:09 | <null> |
++----+----------+--------+---------------------+----------+--------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> -- 测试delimeter参数为,
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_017(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP,
+   >   descs VARCHAR(200),
+   >   items INT
+   > ) location('ldbdist://node74:54321/show_csv5.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_017;
++----+----------+--------+---------------------+----------------+-------+
+| ID | NAME     | SAL    | BIRTHDAY            | DESCS          | ITEMS |
++----+----------+--------+---------------------+----------------+-------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 23:12:23 | I am a boy     | 111   |
+| 2  | xcuh     | 89.234 | 2019-12-06 12:34:50 | I can't do it! | 222   |
+| 3  | ckoijo   | 9802   | 1997-03-23 07:23:05 | I think so     | 333   |
+| 4  | nnoij    | 123.34 | 1998-05-09 16:40:09 | It's crazy     | 444   |
++----+----------+--------+---------------------+----------------+-------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> -- 测试delimeter参数为@
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_018(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv6.csv')
+   > format 'csv' (delimiter '@');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_018;
++----+----------+--------+---------------------+
+| ID | NAME     | SAL    | BIRTHDAY            |
++----+----------+--------+---------------------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3  | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij    | 123.34 | 1998-05-09 16:40:09 |
++----+----------+--------+---------------------+
+4 rows selected.
+SQL> 
+SQL> -- 测试delimeter参数为ASCII码BEL
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_019(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/BELASCII.csv')
+   > format 'csv' (delimiter '');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_019;
++------+--------+----------+----------+
+| ID   | NAME   | SAL      | BIRTHDAY |
++------+--------+----------+----------+
+| 3213 | 45345  | 345345   | <null>   |
+| 333  | 454545 | 34545645 | <null>   |
++------+--------+----------+----------+
+2 rows selected.
+SQL> 
+SQL> -- 测试delimeter参数为@,数据中分隔符为为逗号
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_020(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv5.csv')
+   > format 'csv' (delimiter '@');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_020;
++--------+--------+--------+----------+
+| ID     | NAME   | SAL    | BIRTHDAY |
++--------+--------+--------+----------+
+| <null> | <null> | <null> | <null>   |
+| <null> | <null> | <null> | <null>   |
+| <null> | <null> | <null> | <null>   |
+| <null> | <null> | <null> | <null>   |
++--------+--------+--------+----------+
+4 rows selected.
+SQL> 
+SQL> -- 测试delimeter参数异常情况为||,报错需明确
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_021(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '||');
+0 rows affected
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 测试参数header
+   > -- 删除表
+SQL> drop table if exists t_external_ldbdist_csv_he_dt1;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_he_dt2;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_he_dt3;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_he_dt4;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_he_dt5;
+0 rows affected
+SQL> 
+SQL> -- 测试参数header默认值为false
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_he_dt1(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_he_dt1;
++--------+----------+--------+---------------------+
+| ID     | NAME     | SAL    | BIRTHDAY            |
++--------+----------+--------+---------------------+
+| <null> | name     | <null> | <null>              |
+| 1      | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2      | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3      | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4      | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5      | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6      | <null>   | 43.54  | 2004-07-06 23:12:23 |
++--------+----------+--------+---------------------+
+7 rows selected.
+SQL> 
+SQL> -- 测试参数header值为false
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_he_dt2(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|' header 'false');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_he_dt2;
++--------+----------+--------+---------------------+
+| ID     | NAME     | SAL    | BIRTHDAY            |
++--------+----------+--------+---------------------+
+| <null> | name     | <null> | <null>              |
+| 1      | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2      | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3      | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4      | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5      | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6      | <null>   | 43.54  | 2004-07-06 23:12:23 |
++--------+----------+--------+---------------------+
+7 rows selected.
+SQL> 
+SQL> -- 测试参数header为true,第一行都是字符串
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_he_dt3(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|' header 'true');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_he_dt3;
++----+----------+--------+---------------------+
+| ID | NAME     | SAL    | BIRTHDAY            |
++----+----------+--------+---------------------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3  | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5  | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6  | <null>   | 43.54  | 2004-07-06 23:12:23 |
++----+----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> -- 测试参数header为true,但第一行不全是字符串
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_he_dt4(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv15.csv')
+   > format 'csv' (delimiter '|' header 'true');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_he_dt4;
++----+----------+--------+---------------------+
+| ID | NAME     | SAL    | BIRTHDAY            |
++----+----------+--------+---------------------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3  | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5  | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6  | <null>   | 43.54  | 2004-07-06 23:12:23 |
++----+----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> 
+SQL> -- 测试参数header异常值为truee
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_he_dt5(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv15.csv')
+   > format 'csv' (delimiter '|' header 'truee');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_he_dt5;
+java.sql.SQLException: Worker execution: ldb worker caused error: header flag can be true or false
+SQL> 
+SQL> 
+SQL> -- 测试参数quote
+   > -- 删除表
+SQL> drop table if exists t_external_ldbdist_csv_quo_dt1;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_quo_dt2;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_quo_dt3;
+0 rows affected
+SQL> -- 测试quote为@
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_quo_dt1(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv10.csv')
+   > format 'csv' (delimiter '|' quote '@');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_quo_dt1;
++----+----------+--------+---------------------+
+| ID | NAME     | SAL    | BIRTHDAY            |
++----+----------+--------+---------------------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3  | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5  | /"ds     | <null> | 2004-07-06 23:12:23 |
+| 6  | <null>   | 43.54  | 2004-07-06 23:12:23 |
++----+----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> -- 测试quote为@,被包裹的字段含有分隔符
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_quo_dt2(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv16.csv')
+   > format 'csv' (delimiter '|' quote '@');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_quo_dt2;
++----+-----------+--------+---------------------+
+| ID | NAME      | SAL    | BIRTHDAY            |
++----+-----------+--------+---------------------+
+| 1  | dsds|ddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh      | 89.234 | 2019-12-06 12:34:50 |
+| 3  | ckoijo    | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij     | 123.34 | 1998-05-09 16:40:09 |
+| 5  | /"ds      | <null> | 2004-07-06 23:12:23 |
+| 6  | <null>    | 43.54  | 2004-07-06 23:12:23 |
++----+-----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> -- 测试quote异常情况为@@
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_quo_dt3(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv10.csv')
+   > format 'csv' (delimiter '|' quote '@@');
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 测试参数escape
+   > -- 删除表
+SQL> drop table if exists t_external_ldbdist_csv_esc_dt1;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_esc_dt2;
+0 rows affected
+SQL> 
+SQL> -- 测试参数escape为/
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt1(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|' ESCAPE '/' header 'true');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_esc_dt1;
++----+----------+--------+---------------------+
+| ID | NAME     | SAL    | BIRTHDAY            |
++----+----------+--------+---------------------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3  | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5  | "ds      | <null> | 2004-07-06 23:12:23 |
+| 6  | <null>   | 43.54  | 2004-07-06 23:12:23 |
++----+----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> 
+SQL> -- 测试ESCAPE异常情况为//
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt2(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv1.csv')
+   > format 'csv' (delimiter '|' ESCAPE '//' header 'true');
+0 rows affected
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 测试参数NULL
+   > -- 删除表
+SQL> drop table if exists t_external_ldbdist_csv_null_dt1;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_null_dt2;
+0 rows affected
+SQL> 
+SQL> -- 测试NULL为!!!
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_null_dt1(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv12.csv')
+   > format 'csv' (delimiter '|' ESCAPE '$' header 'true' NULL '!!!');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_null_dt1;
++----+----------+--------+---------------------+
+| ID | NAME     | SAL    | BIRTHDAY            |
++----+----------+--------+---------------------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3  | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5  | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6  | <null>   | 43.54  | 2004-07-06 23:12:23 |
++----+----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> -- 测试NULL为ds,数据中有dsdsddfs
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_null_dt2(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv12.csv')
+   > format 'csv' (delimiter '|' ESCAPE '$' header 'true' NULL 'ds');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_null_dt2;
++----+----------+--------+---------------------+
+| ID | NAME     | SAL    | BIRTHDAY            |
++----+----------+--------+---------------------+
+| 1  | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh     | 89.234 | 2019-12-06 12:34:50 |
+| 3  | ckoijo   | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| 5  | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6  | !!!      | 43.54  | 2004-07-06 23:12:23 |
++----+----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> 
+SQL> -- 测试参数ignoreLeadingWhiteSpace
+   > -- 删除表
+SQL> drop table if exists t_external_ldbdist_csv_ws_dt1;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_ws_dt2;
+0 rows affected
+SQL> drop table if exists t_external_ldbdist_csv_ws_dt3;
+0 rows affected
+SQL> 
+SQL> -- 测试ignoreLeadingWhiteSpace默认值为false
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_ws_dt1(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv17.csv')
+   > format 'csv' (delimiter '|' header 'true');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_ws_dt1;
++--------+----------+--------+---------------------+
+| ID     | NAME     | SAL    | BIRTHDAY            |
++--------+----------+--------+---------------------+
+| 1      | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2      |  xcuh    | 89.234 | 2019-12-06 12:34:50 |
+| 3      |  ckoijo  | 9802   | 1997-03-23 07:23:05 |
+| 4      | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| <null> | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6      | <null>   | 43.54  | <null>              |
++--------+----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> -- 测试ignoreLeadingWhiteSpace值为true
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_ws_dt2(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv17.csv')
+   > format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+0 rows affected
+SQL> select * from t_external_ldbdist_csv_ws_dt2;
++--------+----------+--------+---------------------+
+| ID     | NAME     | SAL    | BIRTHDAY            |
++--------+----------+--------+---------------------+
+| 1      | dsdsddfs | 23.45  | 2018-09-01 23:12:23 |
+| 2      |  xcuh    | 89.234 | 2019-12-06 12:34:50 |
+| 3      |  ckoijo  | 9802   | 1997-03-23 07:23:05 |
+| 4      | nnoij    | 123.34 | 1998-05-09 16:40:09 |
+| <null> | "/"ds"   | <null> | 2004-07-06 23:12:23 |
+| 6      | <null>   | 43.54  | <null>              |
++--------+----------+--------+---------------------+
+6 rows selected.
+SQL> 
+SQL> -- 测试ignoreLeadingWhiteSpace异常情况truee
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_ws_dt3(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv17.csv')
+   > format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'truee');
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 测试encoding
+   > -- 删除表
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt1;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt2;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt3;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt4;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt5;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt6;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt7;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt8;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt8;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt10;
+   > --drop table if exists  t_external_ldbdist_csv_enco_dt11;
+   > --
+   > --
+   > ---- 创建DB表，数据和表都设置编码格式为ISO-8859-1
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt1(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_8859.csv')
+   > --format 'csv' (delimiter '|' encoding 'ISO-8859-1');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt1;
+   > --
+   > --
+   > ---- 创建DB表，数据和表都设置编码格式为GB2312
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt2(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_2312.csv')
+   > --format 'csv' (delimiter '|' encoding 'GB2312');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt2;
+   > --
+   > ---- 创建DB表，数据和表都设置编码格式为GBK
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt3(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_gbk.csv')
+   > --format 'csv' (delimiter '|' encoding 'GBK');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt3;
+   > --
+   > ---- 创建DB表，数据和表都设置编码格式为UTF-16
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt4(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_utf16.csv')
+   > --format 'csv' (delimiter '|' encoding 'UTF-16');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt4;
+   > --
+   > ---- 创建DB表，数据和表都设置编码格式为UTF-8
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt5(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_utf8.csv')
+   > --format 'csv' (delimiter '|' encoding 'UTF-8');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt5;
+   > --
+   > --
+   > ---- 创建DB表，数据设置编码格式为ISO-8859-1,表设置为UTF-8
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt6(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_8859.csv')
+   > --format 'csv' (delimiter '|' encoding 'UTF-8');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt6;
+   > --
+   > --
+   > ---- 创建DB表，数据设置编码格式为ISO-8859-1,表设置为GBK
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt7(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_8859.csv')
+   > --format 'csv' (delimiter '|' encoding 'GBK');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt7;
+   > --
+   > ---- 创建DB表，数据设置编码格式为GBK,表设置为ISO-8859-1
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt8(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_gbk.csv')
+   > --format 'csv' (delimiter '|' encoding 'ISO-8859-1');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt8;
+   > --
+   > ---- 创建DB表，数据设置编码格式为GBK,表设置为UTF-8
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt9(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_gbk.csv')
+   > --format 'csv' (delimiter '|' encoding 'UTF-8');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt9;
+   > --
+   > ---- 创建DB表，数据设置编码格式为UTF-8,表设置为ISO-8859-1
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt10(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_utf8.csv')
+   > --format 'csv' (delimiter '|' encoding 'ISO-8859-1');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt10;
+   > --
+   > --
+   > ---- 创建DB表，数据设置编码格式为UTF-8,表设置为GBK
+   > --CREATE EXTERNAL TABLE t_external_ldbdist_csv_enco_dt11(
+   > --  id INT,
+   > --  name1 VARCHAR(200), 
+   > --  name2 VARCHAR(200), 
+   > --  name3 VARCHAR(200),
+   > --  name4 VARCHAR(200),
+   > --  sal DOUBLE,
+   > --  birthday TIMESTAMP
+   > --) location('ldbdist://node74:54321/encoding_utf8.csv')
+   > --format 'csv' (delimiter '|' encoding 'GBK');
+   > --
+   > --select * from t_external_ldbdist_csv_enco_dt11;
+   > --
+SQL> exit
+Disconnected.
