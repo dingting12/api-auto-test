@@ -1,0 +1,1261 @@
+SQLCli Release 0.0.70
+SQL> connect admin/123456
+Database connected.
+SQL> start binary/binary.sql
+SQL> -- Description：bit,binary,varbinary data type
+   > -- Date：2020-06-12
+   > -- Author：李爱敏
+SQL> set echo on
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- BIT(n)数据类型验证
+   > --如果表已存在，则先删除
+SQL> drop table T_TYPE_BIT1 if exists;
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> drop table T_TYPE_BIT2 if exists;
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> drop table T_TYPE_BIT3 if exists;
+0 rows affected
+Running time elapsed:      0.35 Seconds
+SQL> drop table T_TYPE_BIT4 if exists;
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> drop table T_TYPE_BIT5 if exists;
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> drop table T_TYPE_BIT6 if exists;
+0 rows affected
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT1，设置位数为默认值，默认为1
+SQL> create table T_TYPE_BIT1(a1 bit);
+0 rows affected
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> --验证插入数据的位数等于1
+SQL> insert into T_TYPE_BIT1 values(b'1');
+1 row affected
+Running time elapsed:      7.81 Seconds
+SQL> select * from T_TYPE_BIT1;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+Running time elapsed:      1.33 Seconds
+SQL> 
+SQL> --验证插入数据的位数大于1，是否报错
+SQL> insert into T_TYPE_BIT1 values(b'11');
+1 row affected
+Running time elapsed:      1.53 Seconds
+SQL> select * from T_TYPE_BIT1;
++------+
+| A1   |
++------+
+| True |
+| True |
++------+
+2 rows selected.
+Running time elapsed:      1.81 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT2，设置位数n为0，是否报错
+SQL> create table T_TYPE_BIT2(a1 bit(0));
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create table T_TYPE_BIT2(a1 bit(0))]
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT3，设置位数n为1
+SQL> create table T_TYPE_BIT2(a1 bit(1));
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> insert into T_TYPE_BIT3 values(b'1');
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_BIT3 in statement [insert into T_TYPE_BIT3 values(b'1')]
+Running time elapsed:     13.67 Seconds
+SQL> select * from T_TYPE_BIT3;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_BIT3 in statement [select * from T_TYPE_BIT3]
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT4，设置位数n为65，是否报错
+SQL> create table T_TYPE_BIT4(a1 bit(65));
+0 rows affected
+Running time elapsed:      0.18 Seconds
+SQL> insert into T_TYPE_BIT4 values(b'10101010101010101010101010101010101010101010101010101010101011111');
+1 row affected
+Running time elapsed:      1.25 Seconds
+SQL> select * from T_TYPE_BIT4;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+Running time elapsed:      1.03 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT5，设置位数n为64
+SQL> create table T_TYPE_BIT5(a1 bit(64));
+0 rows affected
+Running time elapsed:      0.23 Seconds
+SQL> insert into T_TYPE_BIT5 values(b'1010101010101010101010101010101010101010101010101010101010101111');
+1 row affected
+Running time elapsed:      1.33 Seconds
+SQL> select * from T_TYPE_BIT5;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+Running time elapsed:      0.73 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT6，设置位数n为10
+SQL> create table T_TYPE_BIT6(a1 bit(10));
+0 rows affected
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> --验证插入数据的位数大于10，是否报错
+SQL> insert into T_TYPE_BIT6 values(b'10101010101');
+1 row affected
+Running time elapsed:      1.24 Seconds
+SQL> select * from T_TYPE_BIT6;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+Running time elapsed:      0.64 Seconds
+SQL> 
+SQL> --验证插入数据的位数等于10
+SQL> insert into T_TYPE_BIT6 values(b'1010101010');
+1 row affected
+Running time elapsed:      1.19 Seconds
+SQL> select * from T_TYPE_BIT6;
++------+
+| A1   |
++------+
+| True |
+| True |
++------+
+2 rows selected.
+Running time elapsed:      1.59 Seconds
+SQL> 
+SQL> --验证插入数据的位数小于10，左边补0
+SQL> insert into T_TYPE_BIT6 values(b'10101010');
+1 row affected
+Running time elapsed:      0.54 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| <null> |
+| <null> |
++--------+
+3 rows selected.
+Running time elapsed:      1.76 Seconds
+SQL> 
+SQL> --验证插入非0,1的数字，是否报错
+SQL> insert into T_TYPE_BIT6 values(b'22334455');
+java.sql.SQLSyntaxErrorException: malformed bit string: b' in statement [insert into T_TYPE_BIT6 values(b'22334455')]
+Running time elapsed:      0.10 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| <null> |
+| <null> |
++--------+
+3 rows selected.
+Running time elapsed:      1.76 Seconds
+SQL> 
+SQL> --验证插入0000000000
+SQL> insert into T_TYPE_BIT6 values(b'0000000000');
+1 row affected
+Running time elapsed:      0.58 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+Running time elapsed:      1.74 Seconds
+SQL> 
+SQL> --验证插入1111111111
+SQL> insert into T_TYPE_BIT6 values(b'1111111111');
+1 row affected
+Running time elapsed:      1.27 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+5 rows selected.
+Running time elapsed:      2.51 Seconds
+SQL> 
+SQL> --验证插入BINARY类型
+SQL> insert into T_TYPE_BIT6 values('1111111000');
+1 row affected
+Running time elapsed:      0.81 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+Running time elapsed:      2.01 Seconds
+SQL> 
+SQL> -- 验证插入其他数据类型
+   > --验证插入int类型，是否报错
+SQL> insert into T_TYPE_BIT6 values(12345);
+java.sql.SQLException: value cannot be converted to target type
+Running time elapsed:      0.39 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+Running time elapsed:      2.14 Seconds
+SQL> 
+SQL> --验证插入decimal类型，是否报错
+SQL> insert into T_TYPE_BIT6 values(1234.56);
+java.sql.SQLException: value cannot be converted to target type
+Running time elapsed:      0.02 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+Running time elapsed:      1.78 Seconds
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'xxxyyyZZZ'，是否报错
+SQL> insert into T_TYPE_BIT6 values('xxxyyyZZZ');
+java.sql.SQLException: data exception: invalid character value for cast
+Running time elapsed:      0.02 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+Running time elapsed:      1.88 Seconds
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd，是否报错
+SQL> insert into T_TYPE_BIT6 values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+7 rows selected.
+Running time elapsed:      2.77 Seconds
+SQL> 
+SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss，是否报错
+SQL> insert into T_TYPE_BIT6 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.75 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+8 rows selected.
+Running time elapsed:      2.45 Seconds
+SQL> 
+SQL> --验证插入boolean类型，插入true，是否报错
+SQL> insert into T_TYPE_BIT6 values(true);
+java.sql.SQLException: value cannot be converted to target type
+Running time elapsed:      0.02 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+8 rows selected.
+Running time elapsed:      2.82 Seconds
+SQL> 
+SQL> --验证插入空值''
+SQL> insert into T_TYPE_BIT6 values('');
+1 row affected
+Running time elapsed:      0.76 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+9 rows selected.
+Running time elapsed:      2.96 Seconds
+SQL> 
+SQL> --验证插入空格' '
+SQL> insert into T_TYPE_BIT6 values(' ');
+java.sql.SQLException: data exception: invalid character value for cast
+Running time elapsed:      0.03 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+9 rows selected.
+Running time elapsed:      2.71 Seconds
+SQL> 
+SQL> --验证插入null
+SQL> insert into T_TYPE_BIT6 values(null);
+1 row affected
+Running time elapsed:      3.98 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+10 rows selected.
+Running time elapsed:      2.83 Seconds
+SQL> 
+SQL> --验证插入NULL
+SQL> insert into T_TYPE_BIT6 values(NULL);
+1 row affected
+Running time elapsed:      0.90 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+11 rows selected.
+Running time elapsed:      3.71 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_BIT1 if exists;
+0 rows affected
+Running time elapsed:      0.24 Seconds
+SQL> drop table T_TYPE_BIT2 if exists;
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> drop table T_TYPE_BIT3 if exists;
+0 rows affected
+Running time elapsed:      0.01 Seconds
+SQL> drop table T_TYPE_BIT4 if exists;
+0 rows affected
+Running time elapsed:      0.21 Seconds
+SQL> drop table T_TYPE_BIT5 if exists;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> drop table T_TYPE_BIT6 if exists;
+0 rows affected
+Running time elapsed:      0.13 Seconds
+SQL> 
+SQL> 
+SQL> --BINARY(n)数据类型，字节长度为n，n的最大值为64000
+   > --如果表已存在，则先删除
+SQL> drop table T_TYPE_BINARY1 if exists;
+0 rows affected
+Running time elapsed:      0.01 Seconds
+SQL> drop table T_TYPE_BINARY2 if exists;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> drop table T_TYPE_BINARY3 if exists;
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BINARY1，设置长度大于64000，是否报错
+SQL> create table T_TYPE_BINARY1 (a1 binary(64001));
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> insert into T_TYPE_BINARY1 values('AaBbFfEeDd0099');
+1 row affected
+Running time elapsed:      1.53 Seconds
+SQL> select * from T_TYPE_BINARY1;
++----------------+
+| A1             |
++----------------+
+| AaBbFfEeDd0099 |
++----------------+
+1 row selected.
+Running time elapsed:      0.48 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BINARY2，设置长度为64000
+SQL> create table T_TYPE_BINARY2 (a1 binary(64000));
+0 rows affected
+Running time elapsed:      0.31 Seconds
+SQL> insert into T_TYPE_BINARY2 values('AaBbFfEeDd0099');
+1 row affected
+Running time elapsed:      0.66 Seconds
+SQL> select * from T_TYPE_BINARY2;
++----------------+
+| A1             |
++----------------+
+| AaBbFfEeDd0099 |
++----------------+
+1 row selected.
+Running time elapsed:      0.56 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BINARY3，设置长度为10
+SQL> create table T_TYPE_BINARY3 (a1 binary(10));
+0 rows affected
+Running time elapsed:      0.15 Seconds
+SQL> 
+SQL> --验证插入数据的字节数大于10，是否报错
+SQL> insert into T_TYPE_BINARY3 values('AaFfEe00991');
+1 row affected
+Running time elapsed:      0.52 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| AaFfEe0099 |
++------------+
+1 row selected.
+Running time elapsed:      0.32 Seconds
+SQL> 
+SQL> --验证插入数据的字节数等于10
+SQL> insert into T_TYPE_BINARY3 values('AaFfEe0099');
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+2 rows selected.
+Running time elapsed:      0.61 Seconds
+SQL> 
+SQL> --验证插入数据的字节数小于10，右边用0补齐
+SQL> insert into T_TYPE_BINARY3 values('AaFfEe009');
+1 row affected
+Running time elapsed:      0.70 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+3 rows selected.
+Running time elapsed:      0.87 Seconds
+SQL> 
+SQL> --验证插入的字符不在a-f，A-F之间，是否报错
+SQL> insert into T_TYPE_BINARY3 values('GgHhZzQQ');
+1 row affected
+Running time elapsed:      0.51 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+4 rows selected.
+Running time elapsed:      1.18 Seconds
+SQL> 
+SQL> --验证插入数据的字节数为0，右边用0补齐
+SQL> insert into T_TYPE_BINARY3 values('');
+1 row affected
+Running time elapsed:      0.55 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+5 rows selected.
+Running time elapsed:      1.54 Seconds
+SQL> 
+SQL> --验证插入BIT类型
+SQL> insert into T_TYPE_BINARY3 values(b'1010111101');
+1 row affected
+Running time elapsed:      0.54 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+6 rows selected.
+Running time elapsed:      1.63 Seconds
+SQL> 
+SQL> 
+SQL> -- 验证插入其他数据类型
+   > --验证插入int类型，是否报错
+SQL> insert into T_TYPE_BINARY3 values(12345);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(12345 AS BINARY)' due to data type mismatch: cannot cast int to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(12345 as binary))]
+]
+Running time elapsed:      0.19 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+6 rows selected.
+Running time elapsed:      1.61 Seconds
+SQL> 
+SQL> --验证插入decimal类型，是否报错
+SQL> insert into T_TYPE_BINARY3 values(1234.56);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(1234.56BD AS BINARY)' due to data type mismatch: cannot cast decimal(6,2) to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(1234.56 as binary))]
+]
+Running time elapsed:      0.03 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+6 rows selected.
+Running time elapsed:      1.75 Seconds
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'xxxyyyZZZW'，是否报错
+SQL> insert into T_TYPE_BINARY3 values('xxxyyyZZZW');
+1 row affected
+Running time elapsed:      0.48 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| xxxyyyZZZW |
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+7 rows selected.
+Running time elapsed:      1.95 Seconds
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd，是否报错
+SQL> insert into T_TYPE_BINARY3 values(to_date('2020-05-08','yyyy-mm-dd'));
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(CAST(CAST(unix_timestamp('2020-05-08', 'yyyy-MM-dd') AS TIMESTAMP) AS DATE) AS BINARY)' due to data type mismatch: cannot cast date to binary;;
+'UnresolvedInlineTable [A1], [ArrayBuffer(cast(cast(cast(unix_timestamp(2020-05-08, yyyy-MM-dd, Some(Asia/Shanghai)) as timestamp) as date) as binary))]
+]
+Running time elapsed:      0.05 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| xxxyyyZZZW |
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+7 rows selected.
+Running time elapsed:      2.80 Seconds
+SQL> 
+SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss，是否报错
+SQL> insert into T_TYPE_BINARY3 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(CAST(unix_timestamp('2020-05-08 12:19:01', 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) AS BINARY)' due to data type mismatch: cannot cast timestamp to binary;;
+'UnresolvedInlineTable [A1], [ArrayBuffer(cast(cast(unix_timestamp(2020-05-08 12:19:01, yyyy-MM-dd HH:mm:ss, Some(Asia/Shanghai)) as timestamp) as binary))]
+]
+Running time elapsed:      0.03 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| xxxyyyZZZW |
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+7 rows selected.
+Running time elapsed:      1.84 Seconds
+SQL> 
+SQL> --验证插入boolean类型，插入true，是否报错
+SQL> insert into T_TYPE_BINARY3 values(true);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(true AS BINARY)' due to data type mismatch: cannot cast boolean to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(true as binary))]
+]
+Running time elapsed:      0.02 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| xxxyyyZZZW |
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+7 rows selected.
+Running time elapsed:      1.86 Seconds
+SQL> 
+SQL> --验证插入空值''
+SQL> insert into T_TYPE_BINARY3 values('');
+1 row affected
+Running time elapsed:      1.04 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+|            |
+| xxxyyyZZZW |
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+8 rows selected.
+Running time elapsed:      2.31 Seconds
+SQL> 
+SQL> --验证插入空格' '
+SQL> insert into T_TYPE_BINARY3 values(' ');
+1 row affected
+Running time elapsed:      0.58 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+|            |
+|            |
+| xxxyyyZZZW |
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+9 rows selected.
+Running time elapsed:      2.61 Seconds
+SQL> 
+SQL> --验证插入null
+SQL> insert into T_TYPE_BINARY3 values(null);
+1 row affected
+Running time elapsed:      0.52 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| <null>     |
+|            |
+|            |
+| xxxyyyZZZW |
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+10 rows selected.
+Running time elapsed:      3.88 Seconds
+SQL> 
+SQL> --验证插入NULL
+SQL> insert into T_TYPE_BINARY3 values(NULL);
+1 row affected
+Running time elapsed:      0.51 Seconds
+SQL> select * from T_TYPE_BINARY3;
++------------+
+| A1         |
++------------+
+| <null>     |
+| <null>     |
+|            |
+|            |
+| xxxyyyZZZW |
+| 疈         |
+|            |
+| GgHhZzQQ   |
+| AaFfEe009  |
+| AaFfEe0099 |
+| AaFfEe0099 |
++------------+
+11 rows selected.
+Running time elapsed:      3.45 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_BINARY1 if exists;
+0 rows affected
+Running time elapsed:      0.24 Seconds
+SQL> drop table T_TYPE_BINARY2 if exists;
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> drop table T_TYPE_BINARY3 if exists;
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> --验证VARBINARY(n)数据类型，字节长度为n+1，n的最大值为64000
+   > --如果表已存在，则先删除
+SQL> drop table T_TYPE_VARBINARY1 if exists;
+0 rows affected
+Running time elapsed:      0.02 Seconds
+SQL> drop table T_TYPE_VARBINARY2 if exists;
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> drop table T_TYPE_VARBINARY3 if exists;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> --创建表T_TYPE_VARBINARY1，设置长度大于64000，是否报错
+SQL> create table T_TYPE_VARBINARY1 (a1 varbinary(64001));
+0 rows affected
+Running time elapsed:      0.35 Seconds
+SQL> insert into T_TYPE_VARBINARY1 values('AaFf0099bb');
+1 row affected
+Running time elapsed:      1.29 Seconds
+SQL> select * from T_TYPE_VARBINARY1;
++------------+
+| A1         |
++------------+
+| AaFf0099bb |
++------------+
+1 row selected.
+Running time elapsed:      0.35 Seconds
+SQL> 
+SQL> --创建表T_TYPE_VARBINARY1，设置长度为64000
+SQL> create table T_TYPE_VARBINARY2 (a1 varbinary(64000));
+0 rows affected
+Running time elapsed:      0.24 Seconds
+SQL> insert into T_TYPE_VARBINARY2 values('AaFf0099bb');
+1 row affected
+Running time elapsed:      2.80 Seconds
+SQL> select * from T_TYPE_VARBINARY2;
++------------+
+| A1         |
++------------+
+| AaFf0099bb |
++------------+
+1 row selected.
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> --创建表T_TYPE_VARBINARY3，设置长度为10
+SQL> create table T_TYPE_VARBINARY3 (a1 varbinary(10));
+0 rows affected
+Running time elapsed:      0.24 Seconds
+SQL> 
+SQL> --验证插入数据的字节数大于10，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values('AaFf0099bbC');
+1 row affected
+Running time elapsed:      0.52 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| AaFf0099bbC |
++-------------+
+1 row selected.
+Running time elapsed:      0.29 Seconds
+SQL> 
+SQL> --验证插入数据的字节数等于10
+SQL> insert into T_TYPE_VARBINARY3 values('AaFf0099bb');
+1 row affected
+Running time elapsed:      1.01 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+2 rows selected.
+Running time elapsed:      0.64 Seconds
+SQL> select bit_length(a1)  from T_TYPE_VARBINARY3;
++----+
+| C1 |
++----+
+| 80 |
+| 88 |
++----+
+2 rows selected.
+Running time elapsed:      0.92 Seconds
+SQL> 
+SQL> --验证插入数据的字节数小于10
+SQL> insert into T_TYPE_VARBINARY3 values('AaFf0099b');
+1 row affected
+Running time elapsed:      1.58 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+3 rows selected.
+Running time elapsed:      0.94 Seconds
+SQL> 
+SQL> --验证插入的字符不在a-f，A-F之间，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values('GgHhZzQQ');
+1 row affected
+Running time elapsed:      3.61 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+4 rows selected.
+Running time elapsed:      1.24 Seconds
+SQL> 
+SQL> --验证插入数据的字节数为0
+SQL> insert into T_TYPE_VARBINARY3 values('');
+1 row affected
+Running time elapsed:      2.46 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+5 rows selected.
+Running time elapsed:      1.56 Seconds
+SQL> 
+SQL> --验证插入BIT类型
+SQL> insert into T_TYPE_VARBINARY3 values(b'1010101110');
+1 row affected
+Running time elapsed:      4.18 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+6 rows selected.
+Running time elapsed:      2.19 Seconds
+SQL> 
+SQL> -- 验证插入其他数据类型
+   > --验证插入int类型，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(12345);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(12345 AS BINARY)' due to data type mismatch: cannot cast int to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(12345 as binary))]
+]
+Running time elapsed:      0.92 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+6 rows selected.
+Running time elapsed:      1.71 Seconds
+SQL> 
+SQL> --验证插入decimal类型，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(1234.56);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(1234.56BD AS BINARY)' due to data type mismatch: cannot cast decimal(6,2) to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(1234.56 as binary))]
+]
+Running time elapsed:      0.03 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+6 rows selected.
+Running time elapsed:      1.66 Seconds
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'xxxyyyZZZww'，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values('xxxyyyZZww');
+1 row affected
+Running time elapsed:      2.29 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| xxxyyyZZww  |
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+7 rows selected.
+Running time elapsed:      1.92 Seconds
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(to_date('2020-05-08','yyyy-mm-dd'));
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(CAST(CAST(unix_timestamp('2020-05-08', 'yyyy-MM-dd') AS TIMESTAMP) AS DATE) AS BINARY)' due to data type mismatch: cannot cast date to binary;;
+'UnresolvedInlineTable [A1], [ArrayBuffer(cast(cast(cast(unix_timestamp(2020-05-08, yyyy-MM-dd, Some(Asia/Shanghai)) as timestamp) as date) as binary))]
+]
+Running time elapsed:      0.05 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| xxxyyyZZww  |
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+7 rows selected.
+Running time elapsed:      1.93 Seconds
+SQL> 
+SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(CAST(unix_timestamp('2020-05-08 12:19:01', 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) AS BINARY)' due to data type mismatch: cannot cast timestamp to binary;;
+'UnresolvedInlineTable [A1], [ArrayBuffer(cast(cast(unix_timestamp(2020-05-08 12:19:01, yyyy-MM-dd HH:mm:ss, Some(Asia/Shanghai)) as timestamp) as binary))]
+]
+Running time elapsed:      0.04 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| xxxyyyZZww  |
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+7 rows selected.
+Running time elapsed:      1.99 Seconds
+SQL> 
+SQL> --验证插入boolean类型，插入true，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(true);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(true AS BINARY)' due to data type mismatch: cannot cast boolean to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(true as binary))]
+]
+Running time elapsed:      0.02 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| xxxyyyZZww  |
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+7 rows selected.
+Running time elapsed:      2.01 Seconds
+SQL> 
+SQL> --验证插入空值''
+SQL> insert into T_TYPE_VARBINARY3 values('');
+1 row affected
+Running time elapsed:      3.55 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+|             |
+| xxxyyyZZww  |
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+8 rows selected.
+Running time elapsed:      2.08 Seconds
+SQL> 
+SQL> --验证插入空格' '
+SQL> insert into T_TYPE_VARBINARY3 values(' ');
+1 row affected
+Running time elapsed:      1.67 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+|             |
+|             |
+| xxxyyyZZww  |
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+9 rows selected.
+Running time elapsed:      2.26 Seconds
+SQL> 
+SQL> --验证插入null
+SQL> insert into T_TYPE_VARBINARY3 values(null);
+1 row affected
+Running time elapsed:      0.44 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+|             |
+|             |
+| xxxyyyZZww  |
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+10 rows selected.
+Running time elapsed:      2.94 Seconds
+SQL> 
+SQL> --验证插入NULL
+SQL> insert into T_TYPE_VARBINARY3 values(NULL);
+1 row affected
+Running time elapsed:      0.79 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| <null>      |
+|             |
+|             |
+| xxxyyyZZww  |
+| 珋          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+11 rows selected.
+Running time elapsed:      3.09 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_VARBINARY1 if exists;
+0 rows affected
+Running time elapsed:      0.25 Seconds
+SQL> drop table T_TYPE_VARBINARY2 if exists;
+0 rows affected
+Running time elapsed:      0.19 Seconds
+SQL> drop table T_TYPE_VARBINARY3 if exists;
+0 rows affected
+Running time elapsed:      0.16 Seconds
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> --验证BLOB数据类型
+   > --如果表已存在，则先删除
+SQL> drop table T_TYPE_BLOB1 if exists;
+0 rows affected
+Running time elapsed:      0.01 Seconds
+SQL> drop table T_TYPE_BLOB2 if exists;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> drop table T_TYPE_BLOB3 if exists;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> create table T_TYPE_BLOB1 (a1 blob(100),a2 blob(5K),a3 blob(5M),a4 blob(5G));
+0 rows affected
+Running time elapsed:      0.15 Seconds
+SQL> insert into T_TYPE_BLOB1 values ('abcdef','aaaaaaaa','bbbbbbbbbb','ccccccccccccccc');
+1 row affected
+Running time elapsed:      1.58 Seconds
+SQL> select * from T_TYPE_BLOB1;
++--------------+------------------+----------------------+--------------------------------+
+| A1           | A2               | A3                   | A4                             |
++--------------+------------------+----------------------+--------------------------------+
+| 616263646566 | 6161616161616161 | 62626262626262626262 | 636363636363636363636363636363 |
++--------------+------------------+----------------------+--------------------------------+
+1 row selected.
+Running time elapsed:      0.60 Seconds
+SQL> 
+SQL> --验证32个lob列
+SQL> create table T_TYPE_BLOB2 (a1 blob(100),a2 blob(5K),a3 blob(5M),a4 blob(1G),a5 clob(100),a6 clob(5K),a7 clob(5M),a8 clob(1G),a9 blob(100),a10 blob(100),a11 blob(100),a12 blob(100),a13 blob(100),a14 blob(100),a15 blob(100),a16 blob(100),a17 blob(100),a18 blob(100),a19 blob(100),a20 clob(100),a21 clob(5K),a22 clob(5K),a23 clob(5K),a24 clob(5K),a25 clob(5K),a26 clob(5K),a27 clob(5K),a28 clob(5K),a29 clob(5K),a30 blob(5M),a31 blob(5M),a32 blob(5M));
+0 rows affected
+Running time elapsed:      0.22 Seconds
+SQL> insert into T_TYPE_BLOB2 values ('aaaaaaaa','bbbbbbbbbb','ccccccccccccccc','ddddddddd','eeeeee','ffffff','ggggggggg','hhhhhhhh','iiiiiii','jjjjjjjj','kkkkkkkkk','lllllllll','mmmmmmmmmm','nnnnnnnn','oooooooo','ppppppp','qqqqqqq','rrrrr','ssssss','tttttt','uuuuuuu','vvvvvv','wwwwwww','xxxxx','yyyyyy','zzzzzz','aaaaa','bbbbbb','cccccc','ddddddd','eeeeeee','fffffff');
+1 row affected
+Running time elapsed:      0.95 Seconds
+SQL> select * from T_TYPE_BLOB2;
++------------------+----------------------+--------------------------------+--------------------+--------+--------+-----------+----------+----------------+------------------+--------------------+--------------------+----------------------+------------------+------------------+----------------+----------------+------------+--------------+--------+---------+--------+---------+-------+--------+--------+-------+--------+--------+----------------+----------------+----------------+
+| A1               | A2                   | A3                             | A4                 | A5     | A6     | A7        | A8       | A9             | A10              | A11                | A12                | A13                  | A14              | A15              | A16            | A17            | A18        | A19          | A20    | A21     | A22    | A23     | A24   | A25    | A26    | A27   | A28    | A29    | A30            | A31            | A32            |
++------------------+----------------------+--------------------------------+--------------------+--------+--------+-----------+----------+----------------+------------------+--------------------+--------------------+----------------------+------------------+------------------+----------------+----------------+------------+--------------+--------+---------+--------+---------+-------+--------+--------+-------+--------+--------+----------------+----------------+----------------+
+| 6161616161616161 | 62626262626262626262 | 636363636363636363636363636363 | 646464646464646464 | eeeeee | ffffff | ggggggggg | hhhhhhhh | 69696969696969 | 6a6a6a6a6a6a6a6a | 6b6b6b6b6b6b6b6b6b | 6c6c6c6c6c6c6c6c6c | 6d6d6d6d6d6d6d6d6d6d | 6e6e6e6e6e6e6e6e | 6f6f6f6f6f6f6f6f | 70707070707070 | 71717171717171 | 7272727272 | 737373737373 | tttttt | uuuuuuu | vvvvvv | wwwwwww | xxxxx | yyyyyy | zzzzzz | aaaaa | bbbbbb | cccccc | 64646464646464 | 65656565656565 | 66666666666666 |
++------------------+----------------------+--------------------------------+--------------------+--------+--------+-----------+----------+----------------+------------------+--------------------+--------------------+----------------------+------------------+------------------+----------------+----------------+------------+--------------+--------+---------+--------+---------+-------+--------+--------+-------+--------+--------+----------------+----------------+----------------+
+1 row selected.
+Running time elapsed:      1.28 Seconds
+SQL> 
+SQL> --验证lob列超过32个，是否报错
+SQL> create table T_TYPE_BLOB3 (a1 blob(100),a2 blob(5K),a3 blob(5M),a4 blob(1G),a5 clob(100),a6 clob(5K),a7 clob(5M),a8 clob(1G),a9 blob(100),a10 blob(100),a11 blob(100),a12 blob(100),a13 blob(100),a14 blob(100),a15 blob(100),a16 blob(100),a17 blob(100),a18 blob(100),a19 blob(100),a20 clob(100),a21 clob(5K),a22 clob(5K),a23 clob(5K),a24 clob(5K),a25 clob(5K),a26 clob(5K),a27 clob(5K),a28 clob(5K),a29 clob(5K),a30 blob(5M),a31 blob(5M),a32 blob(5M),a33 blob(5M));
+0 rows affected
+Running time elapsed:      1.63 Seconds
+SQL> insert into T_TYPE_BLOB3 values ('aaaaaaaa','bbbbbbbbbb','ccccccccccccccc','ddddddddd','eeeeee','ffffff','ggggggggg','hhhhhhhh','iiiiiii','jjjjjjjj','kkkkkkkkk','lllllllll','mmmmmmmmmm','nnnnnnnn','oooooooo','ppppppp','qqqqqqq','rrrrr','ssssss','tttttt','uuuuuuu','vvvvvv','wwwwwww','xxxxx','yyyyyy','zzzzzz','aaaaa','bbbbbb','cccccc','ddddddd','eeeeeee','fffffff','gggg');
+1 row affected
+Running time elapsed:      2.19 Seconds
+SQL> select * from T_TYPE_BLOB3;
++------------------+----------------------+--------------------------------+--------------------+--------+--------+-----------+----------+----------------+------------------+--------------------+--------------------+----------------------+------------------+------------------+----------------+----------------+------------+--------------+--------+---------+--------+---------+-------+--------+--------+-------+--------+--------+----------------+----------------+----------------+----------+
+| A1               | A2                   | A3                             | A4                 | A5     | A6     | A7        | A8       | A9             | A10              | A11                | A12                | A13                  | A14              | A15              | A16            | A17            | A18        | A19          | A20    | A21     | A22    | A23     | A24   | A25    | A26    | A27   | A28    | A29    | A30            | A31            | A32            | A33      |
++------------------+----------------------+--------------------------------+--------------------+--------+--------+-----------+----------+----------------+------------------+--------------------+--------------------+----------------------+------------------+------------------+----------------+----------------+------------+--------------+--------+---------+--------+---------+-------+--------+--------+-------+--------+--------+----------------+----------------+----------------+----------+
+| 6161616161616161 | 62626262626262626262 | 636363636363636363636363636363 | 646464646464646464 | eeeeee | ffffff | ggggggggg | hhhhhhhh | 69696969696969 | 6a6a6a6a6a6a6a6a | 6b6b6b6b6b6b6b6b6b | 6c6c6c6c6c6c6c6c6c | 6d6d6d6d6d6d6d6d6d6d | 6e6e6e6e6e6e6e6e | 6f6f6f6f6f6f6f6f | 70707070707070 | 71717171717171 | 7272727272 | 737373737373 | tttttt | uuuuuuu | vvvvvv | wwwwwww | xxxxx | yyyyyy | zzzzzz | aaaaa | bbbbbb | cccccc | 64646464646464 | 65656565656565 | 66666666666666 | 67676767 |
++------------------+----------------------+--------------------------------+--------------------+--------+--------+-----------+----------+----------------+------------------+--------------------+--------------------+----------------------+------------------+------------------+----------------+----------------+------------+--------------+--------+---------+--------+---------+-------+--------+--------+-------+--------+--------+----------------+----------------+----------------+----------+
+1 row selected.
+Running time elapsed:      1.52 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_BLOB1 if exists;
+0 rows affected
+Running time elapsed:      0.92 Seconds
+SQL> drop table T_TYPE_BLOB2 if exists;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> drop table T_TYPE_BLOB3 if exists;
+0 rows affected
+Running time elapsed:      0.07 Seconds
+Running time elapsed:    199.66 Seconds
