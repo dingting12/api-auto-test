@@ -1,5 +1,4 @@
 set echo on
-
 -- 清空环境
 drop table t_timestamp IF  EXISTS;
 drop table t_timestamp_0 IF  EXISTS;
