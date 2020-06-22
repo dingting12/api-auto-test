@@ -44,11 +44,13 @@ EXTERNALFORMATTEST
 	[Documentation]    测试外部表格式
     [Tags]     SQL-Test       external format test
     Logon And Execute SQL Script     admin/123456                            exception/external_hdfs_csv_format.sql
-				   Compare Files     external_table_basic_type-bigint.log    exception/external_hdfs_csv_format.ref
+				   Compare Files     external_hdfs_csv_format.log    exception/external_hdfs_csv_format.ref
 	LOgon And Execute SQL Script     admin/123456                            exception/external_hdfs_parquet_format.sql
-				   Compare Files     external_table_basic_type-int.log       exception/external_hdfs_parquet_format.ref
+				   Compare Files     external_hdfs_parquet_format.log       exception/external_hdfs_parquet_format.ref
 	LOgon And Execute SQL Script     admin/123456                            exception/external_ldbdist_csv_format.sql
-				   Compare Files     external_table_basic_type-char.log      exception/external_ldbdist_csv_format.ref
+				   Compare Files     external_ldbdist_csv_format.log      exception/external_ldbdist_csv_format.ref
+	LOgon And Execute SQL Script     admin/123456                            exception/external_hdfs_orc_format.sql
+				   Compare Files     external_hdfs_orc_format.log       exception/external_hdfs_orc_format.ref
 	
 
 *** Keywords ***
