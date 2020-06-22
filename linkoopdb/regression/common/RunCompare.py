@@ -215,6 +215,10 @@ class POSIXCompare:
 
 
 class RunCompare(object):
+    # TEST SUITE 在suite中引用，只会实例化一次
+    # 也就是说多test case都引用了这个类的方法，但是只有第一个test case调用的时候实例化
+    ROBOT_LIBRARY_SCOPE = 'TEST SUITE'
+
     __Reference_LogDirLists = None
     __SkipLines = []
     __BreakWithDifference = False             # 是否在遇到比对错误的时候抛出运行例外
@@ -515,7 +519,7 @@ class RunCompare(object):
                     else:
                         logger.write("    " + line + "\n")
             m_CompareResultFile.close()
-            logger.write("======= Diff file [" + m_DifFullFileName + "] <<<<<< ")
+            logger.write("======= Diff file [" + m_DifFullFileName + "] <<<<< ")
             if self.__BreakWithDifference:
                 raise ExecutionFailed(
                     message=('Got Difference. Please check [' + m_DifFullFileName + '] for more information.'),

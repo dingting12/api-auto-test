@@ -1,0 +1,175 @@
+SQLCli Release 0.0.64
+SQL> connect admin/123456
+Database connected.
+SQL> start S011-01 USER_DEFINED_TYPES view.sql
+SQL> set echo on
+SQL> -- 清空环境
+SQL> drop table udt_tab_sint IF EXISTS CASCADE;
+0 rows affected
+SQL> drop table udt_tab_DOU IF EXISTS CASCADE;
+0 rows affected
+SQL> drop table udt_tab_date IF EXISTS CASCADE;
+0 rows affected
+SQL> drop table udt_tab_var IF EXISTS CASCADE;
+0 rows affected
+SQL> drop table udt_tab_struct IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TYPE udt_sint IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TYPE udt_dou IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TYPE udt_date IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TYPE udt_var IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TYPE udt_struct IF EXISTS CASCADE;
+0 rows affected
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 创建SMALLINT类型的自定义类型
+SQL> CREATE TYPE udt_sint AS SMALLINT;
+0 rows affected
+SQL> 
+SQL> -- 验证类型是否创建成功，并且验证类型
+SQL> select data_type from INFORMATION_SCHEMA.USER_DEFINED_TYPES where user_defined_type_name = 'UDT_SINT';
++-----------+
+| DATA_TYPE |
++-----------+
+| SMALLINT  |
++-----------+
+1 row selected.
+SQL> 
+SQL> -- 创建包含SMALLINT类型的自定义类型的表
+SQL> create table udt_tab_sint(t udt_sint);
+0 rows affected
+SQL> 
+SQL> -- 插入数据
+SQL> insert into udt_tab_sint values (1);
+1 row affected
+SQL> 
+SQL> -- 查询结果
+SQL> select * from udt_tab_sint;
++---+
+| T |
++---+
+| 1 |
++---+
+1 row selected.
+SQL> 
+SQL> -- 创建DOUBLE类型的自定义类型
+SQL> CREATE TYPE udt_dou AS DOUBLE;
+0 rows affected
+SQL> 
+SQL> -- 验证类型是否创建成功，并且验证类型
+SQL> select data_type from INFORMATION_SCHEMA.USER_DEFINED_TYPES where user_defined_type_name = 'UDT_DOU';
++------------------+
+| DATA_TYPE        |
++------------------+
+| DOUBLE PRECISION |
++------------------+
+1 row selected.
+SQL> 
+SQL> -- 创建包含DOUBLE类型的自定义类型的表
+SQL> create table udt_tab_DOU(t t udt_dou);
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: T in statement [create table udt_tab_DOU(t t udt_dou)]
+SQL> 
+SQL> -- 插入数据
+SQL> insert into udt_tab_DOU values (2.3);
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: UDT_TAB_DOU in statement [insert into udt_tab_DOU values (2.3)]
+SQL> 
+SQL> -- 查询结果
+SQL> select * from udt_tab_DOU;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: UDT_TAB_DOU in statement [select * from udt_tab_DOU]
+SQL> 
+SQL> -- 创建DATE类型的自定义类型
+SQL> CREATE TYPE udt_date AS DATE;
+0 rows affected
+SQL> 
+SQL> -- 验证类型是否创建成功，并且验证类型
+SQL> select data_type from INFORMATION_SCHEMA.USER_DEFINED_TYPES where user_defined_type_name = 'UDT_DATE';
++-----------+
+| DATA_TYPE |
++-----------+
+| DATE      |
++-----------+
+1 row selected.
+SQL> 
+SQL> -- 创建包含DATE类型的自定义类型的表
+SQL> create table udt_tab_date(t udt_date);
+0 rows affected
+SQL> 
+SQL> -- 插入数据
+SQL> insert into udt_tab_date values ('2019-01-01');
+1 row affected
+SQL> 
+SQL> -- 查询结果
+SQL> select * from udt_tab_date;
++----------+
+| T        |
++----------+
+| 2019-1-1 |
++----------+
+1 row selected.
+SQL> 
+SQL> -- 创建VARCHAR类型的自定义类型
+SQL> CREATE TYPE udt_var AS varchar(50);
+0 rows affected
+SQL> 
+SQL> -- 验证类型是否创建成功，并且验证类型
+SQL> select data_type from INFORMATION_SCHEMA.USER_DEFINED_TYPES where user_defined_type_name = 'UDT_VAR';
++-------------------+
+| DATA_TYPE         |
++-------------------+
+| CHARACTER VARYING |
++-------------------+
+1 row selected.
+SQL> 
+SQL> -- 创建包含VARCHAR类型的自定义类型的表
+SQL> create table udt_tab_var(t udt_var);
+0 rows affected
+SQL> 
+SQL> -- 插入数据
+SQL> insert into udt_tab_var values ('1');
+1 row affected
+SQL> 
+SQL> -- 查询结果
+SQL> select * from udt_tab_var;
++---+
+| T |
++---+
+| 1 |
++---+
+1 row selected.
+SQL> 
+SQL> -- 创建struct类型的自定义类型
+SQL> CREATE TYPE IF NOT EXISTS udt_struct(col1 INT, col2 varchar(50), col3 double, col4 date);
+0 rows affected
+SQL> 
+SQL> -- 验证类型是否创建成功，并且验证类型
+SQL> select data_type from INFORMATION_SCHEMA.USER_DEFINED_TYPES where user_defined_type_name = 'UDT_STRUCT';
++----------------------------------------------------------------+
+| DATA_TYPE                                                      |
++----------------------------------------------------------------+
+| STRUCTURE(COL1 INTEGER,COL2 VARCHAR(50),COL3 DOUBLE,COL4 DATE) |
++----------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> -- 创建包含struct类型的自定义类型的表
+SQL> create table udt_tab_struct(col1 udt_var,col2 udt_struct);
+0 rows affected
+SQL> 
+SQL> -- 插入数据
+SQL> INSERT INTO udt_tab_struct VALUES('a',NEW udt_struct(1,'b',2.3,'2020-01-01'));
+1 row affected
+SQL> 
+SQL> -- 查询结果
+SQL> select * from udt_tab_struct;
++------+---------------------------------------------------------------------------------------------------------+
+| COL1 | COL2                                                                                                    |
++------+---------------------------------------------------------------------------------------------------------+
+| a    | (1, 'b', 2.3, <jpype._jclass.com.datapps.linkoopdb.jdbc.impl.JDBCSqlDate object at 0x000001D8FBCA6148>) |
++------+---------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> exit
+Disconnected.

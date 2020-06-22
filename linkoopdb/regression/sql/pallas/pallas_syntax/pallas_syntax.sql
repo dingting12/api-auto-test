@@ -10,7 +10,10 @@ DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
 DROP TABLE T_SYNTAX IF EXISTS;
 
 -- 正常
-CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8','linkoopdb.pallas.shard_duplicate_number':'3','linkoopdb.pallas.min_shard_duplicate_number':'2') ENGINE PALLAS;
+CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties(
+'upsert':'true','perinsertnum':'200000','peringestnum':'2000000','txnnum':'500000',
+'linkoopdb.pallas.shard_number':'8','linkoopdb.pallas.shard_duplicate_number':'3',
+'linkoopdb.pallas.min_shard_duplicate_number':'2') ENGINE PALLAS;
 
 -- create拼错
 CREAT TABLE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALLAS;
@@ -20,6 +23,9 @@ CREATE TABALE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALLAS;
 
 -- 缺少engine
 CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) PALLAS;
+
+-- engine拼错
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) EGINE PALLAS;
 
 -- pallas拼错
 CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALAS;
@@ -111,8 +117,14 @@ CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(linkoopdb.pallas.shard_
 -- =
 CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number'='8') ENGINE PALLAS;
 
--- properties 多个key之间隔开符号异常
+-- properties 多个key之间隔开符号错误
 CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8';'linkoopdb.pallas.shard_duplicate_number':'3') ENGINE PALLAS;
+
+-- linkoopdb.pallas.shard_duplicate_number错误
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8';'shard_duplicate_number':'3') ENGINE PALLAS;
+
+-- linkoopdb.pallas.min_shard_duplicate_number错误
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8';'min_shard_duplicate_number':'3') ENGINE PALLAS;
 
 -- properties缺少括号
 CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'linkoopdb.pallas.shard_number':'8' ENGINE PALLAS;
@@ -161,3 +173,80 @@ CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard
 
 -- min_shard_duplicate_number等于shard_duplicate_number
 CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8','linkoopdb.pallas.shard_duplicate_number':'3','linkoopdb.pallas.min_shard_duplicate_number':'3') ENGINE PALLAS;
+
+-- upsert拼错
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('upset':'true') ENGINE PALLAS;
+
+-- upsert值为数字
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('upsert':'1') ENGINE PALLAS;
+
+-- upsert值为非true/false字母
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('upsert':'aaa') ENGINE PALLAS;
+
+-- upsert值为特殊字符
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('upsert':'@') ENGINE PALLAS;
+
+-- perinsertnum拼错
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsernum':'100000') ENGINE PALLAS;
+
+-- perinsertnum为负数
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'-100000') ENGINE PALLAS;
+
+-- perinsertnum为浮点数
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'100000.77') ENGINE PALLAS;
+
+-- perinsertnum为字母
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'a') ENGINE PALLAS;
+
+-- perinsertnum为特殊字符
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'&') ENGINE PALLAS;
+
+-- peringestnum拼错
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('peringest_num':'100000') ENGINE PALLAS;
+
+-- peringestnum为0
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('peringestnum':'0') ENGINE PALLAS;
+
+-- peringestnum为浮点数
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('peringestnum':'100000.5') ENGINE PALLAS;
+
+-- peringestnum为字母
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('peringestnum':'b') ENGINE PALLAS;
+
+-- peringestnum为特殊字符
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('peringestnum':'!') ENGINE PALLAS;
+
+-- txnnum拼错
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('txnum':'500000') ENGINE PALLAS;
+
+-- txnnum为负数
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('txnnum':'-500000') ENGINE PALLAS;
+
+-- txnnum为浮点数
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('txnnum':'500000.34') ENGINE PALLAS;
+
+-- txnnum为字母
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('txnnum':'K') ENGINE PALLAS;
+
+-- txnnum为特殊字符
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('txnnum':'#') ENGINE PALLAS;
+
+-- linkoopdb.pallas.dict_compress_enabled错误
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('dict_compress_enabled':'true') ENGINE PALLAS;
+
+-- linkoopdb.pallas.dict_compress_enabled值为数字
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'1') ENGINE PALLAS;
+
+-- linkoopdb.pallas.dict_compress_enabled为非true/false字母
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'aaa') ENGINE PALLAS;
+
+-- linkoopdb.pallas.dict_compress_enabled值为特殊字符
+CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'@') ENGINE PALLAS;
+
+
+
+
+
+
+
+

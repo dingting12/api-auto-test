@@ -1,0 +1,242 @@
+SQLCli Release 0.0.70
+SQL> connect admin/123456
+Database connected.
+SQL> start external_hdfs_orc_format.sql
+SQL> --    Description: 测试external hdfs orc格式
+   > --    Date:         2020-06-22
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> drop table if exists t_external_hdfs_orc_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_002;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_003;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_004;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_005;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_006;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_007;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_008;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_009;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_010;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_011;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_012;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_013;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_014;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 测试EXTERNAL关键字未写，创建表需报错明确
+SQL> CREATE  TABLE t_external_hdfs_orc_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > format 'orc';
+0 rows affected
+SQL> 
+SQL> -- 测试EXTERNAL关键字写错，创建表需报错明确
+SQL> CREATE EXTERNAL1 TABLE t_external_hdfs_orc_002(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > format 'orc';
+java.sql.SQLSyntaxErrorException: unexpected token: EXTERNAL1 in statement [CREATE EXTERNAL1 TABLE t_external_hdfs_orc_002(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+format 'orc']
+SQL> 
+SQL> -- 测试format关键字未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_003(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1');
+0 rows affected
+SQL>  
+SQL> 
+SQL> -- 测试format关键字写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_004(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   >  format1 'orc' ;
+java.sql.SQLSyntaxErrorException: unexpected token: FORMAT1 : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_orc_004(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+ format1 'orc' ]
+SQL>  
+SQL>  -- 测试format值写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_005(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb731/external_file/show_orc1')
+   >  format 'orc1' ;
+java.sql.SQLSyntaxErrorException: unexpected token: orc1 : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_orc_005(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb731/external_file/show_orc1')
+ format 'orc1' ]
+SQL>  
+SQL>  -- 测试format值双引号，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_006(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > format "orc" ;
+0 rows affected
+SQL> 
+SQL> 
+SQL>  -- 测试format值未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_007(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > format ;
+java.sql.SQLSyntaxErrorException: unexpected end of statement : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_orc_007(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+format ]
+SQL> 
+SQL>  -- 测试format关键字未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_008(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > 'orc' ;
+java.sql.SQLSyntaxErrorException: unexpected token: orc : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_orc_008(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+'orc' ]
+SQL>  
+SQL> -- 测试location值未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_009(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location
+   > format 'orc';
+java.sql.SQLSyntaxErrorException: unexpected token: FORMAT required: ( : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_orc_009(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location
+format 'orc']
+SQL> 
+SQL>  -- 测试location未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_010(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) ('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > format 'orc';
+java.sql.SQLSyntaxErrorException: unexpected token: hdfs://node73:8020/user/testdb73/external_file/show_orc1 : line: 6 in statement [CREATE EXTERNAL TABLE t_external_hdfs_orc_010(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) ('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+format 'orc']
+SQL> 
+SQL>  -- 测试location写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_011(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location2('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > format 'orc';
+java.sql.SQLSyntaxErrorException: unexpected token: LOCATION2 : line: 6 in statement [CREATE EXTERNAL TABLE t_external_hdfs_orc_011(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location2('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+format 'orc']
+SQL> 
+SQL>  -- 测试location值写错，使用时报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_012(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb731/external_file/show_orc1')
+   > format 'orc';
+0 rows affected
+SQL> select * from t_external_hdfs_orc_012;
+java.sql.SQLException: Worker execution: ldb worker caused error: Path does not exist: hdfs://node73:8020/user/testdb731/external_file/show_orc1;
+SQL> 
+SQL> 
+SQL>  -- 测试location和值未写，使用时报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_013(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) 
+   > format 'orc';
+0 rows affected
+SQL> 
+SQL> 
+SQL>  -- 测试location和值未写，使用时报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_014(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > format 'orc';
+0 rows affected
+SQL> select * from  t_external_hdfs_orc_014 order by id;
++----+-----------+--------+---------------------+
+| ID | NAME      | SAL    | BIRTHDAY            |
++----+-----------+--------+---------------------+
+| 1  | zhangsan1 | 8910.5 | 1980-12-01 10:10:10 |
+| 2  | zhangsan2 | 8920.5 | 1982-10-01 20:30:10 |
+| 3  | zhangsan3 | 8930.5 | 1980-03-01 13:18:10 |
+| 4  | zhangsan4 | 8940.5 | 1980-04-01 19:13:10 |
++----+-----------+--------+---------------------+
+4 rows selected.
+SQL> exit
+Disconnected.

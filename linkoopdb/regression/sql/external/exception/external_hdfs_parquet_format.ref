@@ -1,0 +1,416 @@
+SQLCli Release 0.0.70
+SQL> connect admin/123456
+Database connected.
+SQL> start external_hdfs_parquet_format.sql
+SQL> --    Description: 测试external hdfs parquet格式
+   > --    Date:         2020-06-19
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> drop table if exists t_external_hdfs_parquet_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_002;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_003;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_004;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_005;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_006;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_007;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_008;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_009;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_010;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_011;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_012;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_013;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_014;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_015;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_016;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_017;
+0 rows affected
+SQL> 
+SQL> -- 测试EXTERNAL关键字未写，创建表需报错明确
+SQL> CREATE  TABLE t_external_hdfs_parquet_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet' ;
+0 rows affected
+SQL> 
+SQL> -- 测试EXTERNAL关键字写错，创建表需报错明确
+SQL> CREATE EXTERNAL1 TABLE t_external_hdfs_parquet_002(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet' ;
+java.sql.SQLSyntaxErrorException: unexpected token: EXTERNAL1 in statement [CREATE EXTERNAL1 TABLE t_external_hdfs_parquet_002(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+format 'parquet' ]
+SQL> 
+SQL> -- 测试format关键字未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_003(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet');
+0 rows affected
+SQL>  
+SQL> 
+SQL> -- 测试format关键字写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_004(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format1 'parquet' ;
+java.sql.SQLSyntaxErrorException: unexpected token: FORMAT1 : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_parquet_004(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+format1 'parquet' ]
+SQL>  
+SQL>  -- 测试format值写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_005(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquetq' ;
+java.sql.SQLSyntaxErrorException: unexpected token: parquetq : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_parquet_005(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+format 'parquetq' ]
+SQL> 
+SQL>  -- 测试format值双引号，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_006(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format "parquet" ;
+0 rows affected
+SQL> 
+SQL> 
+SQL>  -- 测试format值未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_007(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format;
+java.sql.SQLSyntaxErrorException: unexpected end of statement : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_parquet_007(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+format]
+SQL> 
+SQL>  -- 测试format关键字未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_016(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > 'csv';
+java.sql.SQLSyntaxErrorException: unexpected token: csv : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_parquet_016(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+'csv']
+SQL> 
+SQL>  -- 测试location值未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_008(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location
+   > format 'parquet';
+java.sql.SQLSyntaxErrorException: unexpected token: FORMAT required: ( : line: 7 in statement [CREATE EXTERNAL TABLE t_external_hdfs_parquet_008(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location
+format 'parquet']
+SQL> 
+SQL>  -- 测试location未写，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_009(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) ('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet';
+java.sql.SQLSyntaxErrorException: unexpected token: hdfs://node73:8020/user/testdb73/external_file/ldb_parquet : line: 6 in statement [CREATE EXTERNAL TABLE t_external_hdfs_parquet_009(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) ('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+format 'parquet']
+SQL> 
+SQL>  -- 测试location写错，创建表需报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_010(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location2('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet';
+java.sql.SQLSyntaxErrorException: unexpected token: LOCATION2 : line: 6 in statement [CREATE EXTERNAL TABLE t_external_hdfs_parquet_010(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location2('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+format 'parquet']
+SQL> 
+SQL>  -- 测试location值写错，使用时报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_011(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb731/external_file/ldb_parquet')
+   > format 'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_011;
+java.sql.SQLException: Worker execution: ldb worker caused error: db catalyst: adapt to spark error: cache error : java.util.concurrent.ExecutionException: org.apache.spark.sql.AnalysisException: Path does not exist: hdfs://node73:8020/user/testdb731/external_file/ldb_parquet;
+	at com.google.common.util.concurrent.AbstractFuture.getDoneValue(AbstractFuture.java:503)
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:462)
+	at com.google.common.util.concurrent.AbstractFuture$TrustedFuture.get(AbstractFuture.java:79)
+	at com.google.common.util.concurrent.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:142)
+	at com.google.common.cache.LocalCache$Segment.getAndRecordStats(LocalCache.java:2453)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2417)
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2299)
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2212)
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4147)
+	at com.google.common.cache.LocalCache$LocalManualCache.get(LocalCache.java:5053)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertLogicalRelation(LogicalPlanConverter.java:1256)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:217)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertProject(LogicalPlanConverter.java:1671)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:203)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2535)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2501)
+	at com.datapps.linkoopdb.worker.spark.SparkSessionManager.submitStatement(SparkSessionManager.java:194)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2482)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.receiveMessage(SparkWorker.java:629)
+	at sun.reflect.GeneratedMethodAccessor30.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:302)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:198)
+	at com.caucho.hessian.server.HessianServlet.invoke(HessianServlet.java:423)
+	at com.caucho.hessian.server.HessianServlet.service(HessianServlet.java:403)
+	at org.spark_project.jetty.servlet.ServletHolder.handle(ServletHolder.java:848)
+	at org.spark_project.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:584)
+	at org.spark_project.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
+	at org.spark_project.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
+	at org.spark_project.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
+	at org.spark_project.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.spark_project.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
+	at org.spark_project.jetty.server.Server.handle(Server.java:539)
+	at org.spark_project.jetty.server.HttpChannel.handle(HttpChannel.java:333)
+	at org.spark_project.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.spark_project.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:283)
+	at org.spark_project.jetty.io.FillInterest.fillable(FillInterest.java:108)
+	at org.spark_project.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.spark.sql.AnalysisException: Path does not exist: hdfs://node73:8020/user/testdb731/external_file/ldb_parquet;
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary$1.apply(DataSource.scala:558)
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary$1.apply(DataSource.scala:545)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:241)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:241)
+	at scala.collection.immutable.List.foreach(List.scala:392)
+	at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:241)
+	at scala.collection.immutable.List.flatMap(List.scala:355)
+	at org.apache.spark.sql.execution.datasources.DataSource.org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary(DataSource.scala:545)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:359)
+	at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:225)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:212)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:643)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:642)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.lambda$convertLogicalRelation$87(LogicalPlanConverter.java:1271)
+	at com.google.common.cache.LocalCache$LocalManualCache$1.load(LocalCache.java:5058)
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3708)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2416)
+	... 39 more
+
+SQL> 
+SQL> 
+SQL>  -- 测试location和值未写，使用时报错明确
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_017(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) 
+   > format 'parquet';
+0 rows affected
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 测试参数recursiveFileLookup默认值为false，ignoreCorruptFiles和ignoreMissingFiles为true
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_012(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet' ;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 由于hdfs://node73:8020/user/testdb73/external_file/ldb_parquet路径下存在transactions-log文件，因此需设置以下两个参数
+SQL> set session work 'ldb.source.files.ignoreCorruptFiles' true;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreMissingFiles' true;
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_012 order by id;
++----+-----------+--------+---------------------+
+| ID | NAME      | SAL    | BIRTHDAY            |
++----+-----------+--------+---------------------+
+| 1  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 2  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 3  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 4  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 5  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 6  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 7  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 8  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 9  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 10 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 11 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 12 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 13 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
++----+-----------+--------+---------------------+
+13 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 测试参数recursiveFileLookup默认值为false,ignoreCorruptFiles和ignoreMissingFiles为false
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_013(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet' ;
+0 rows affected
+SQL> 
+SQL> -- 由于hdfs://node73:8020/user/testdb73/external_file/ldb_parquet路径下存在transactions-log文件，因此需设置以下两个参数
+SQL> set session work 'ldb.source.files.ignoreCorruptFiles' false;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreMissingFiles' false;
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_013;
+java.sql.SQLException: General error: Query by the way of large result set, the query process appears an exception
+SQL> 
+SQL> 
+SQL> -- 测试参数recursiveFileLookup值为true,ignoreCorruptFiles和ignoreMissingFiles为true
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_014(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet' properties(
+   > 'recursiveFileLookup':'true');;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreCorruptFiles' true;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreMissingFiles' true;
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_014 order by id;
++----+-----------+--------+---------------------+
+| ID | NAME      | SAL    | BIRTHDAY            |
++----+-----------+--------+---------------------+
+| 1  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 1  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 2  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 2  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 3  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 3  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 4  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 4  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 5  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 5  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 6  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 6  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 7  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 7  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 8  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 8  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 9  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 9  | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 10 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 10 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 11 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 11 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 12 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 12 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 13 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
+| 13 | zhangsan1 | 8910.5 | 2020-05-20 11:21:01 |
++----+-----------+--------+---------------------+
+26 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 测试参数recursiveFileLookup值为true,ignoreCorruptFiles和ignoreMissingFiles为false
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_015(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet' properties(
+   > 'recursiveFileLookup':'true');;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreCorruptFiles' false;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreMissingFiles' false;
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_015;
+java.sql.SQLException: General error: Query by the way of large result set, the query process appears an exception
+SQL> exit
+Disconnected.
