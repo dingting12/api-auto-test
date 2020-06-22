@@ -1,3 +1,5 @@
+set echo on
+
 drop table t_column IF  EXISTS;
 
 create table IF NOT EXISTS t_column(col1 int,col2 varchar(50),col3 date,col4 double);

@@ -1,3 +1,5 @@
+set echo on
+
 -- 清空环境
 drop table t_ANALYZE_delete  IF  EXISTS;
 

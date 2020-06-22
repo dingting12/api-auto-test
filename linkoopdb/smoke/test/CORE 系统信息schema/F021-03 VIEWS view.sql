@@ -1,3 +1,5 @@
+set echo on
+
 drop view t_view IF  EXISTS;
 drop table t_view_tab IF  EXISTS;
 

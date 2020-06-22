@@ -1,3 +1,5 @@
+set echo on
+
 -- 开启转义
 set session escape on;
 

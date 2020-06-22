@@ -1,3 +1,5 @@
+set echo on
+
 -- 清空环境
 drop table DT_TRAINING_DATA  IF  EXISTS;
 drop model DT_MODEL IF  EXISTS;

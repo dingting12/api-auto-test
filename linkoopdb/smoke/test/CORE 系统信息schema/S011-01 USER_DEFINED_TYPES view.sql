@@ -1,3 +1,5 @@
+set echo on
+
 -- 清空环境
 drop table udt_tab_sint IF EXISTS CASCADE;
 drop table udt_tab_DOU IF EXISTS CASCADE;
