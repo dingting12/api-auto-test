@@ -1,5 +1,4 @@
 set echo on
-
 -- 清空环境
 drop table t_where  IF  EXISTS;
 

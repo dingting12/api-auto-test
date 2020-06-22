@@ -1,5 +1,4 @@
 set echo on
-
 -- 创建用户
 drop user user cascade;
 
