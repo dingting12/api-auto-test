@@ -1,0 +1,384 @@
+SQLCli Release 0.0.70
+SQL> connect admin/123456
+Database connected.
+SQL> start varbinary/varbinary.sql
+SQL> -- Description：varbinary data type
+   > -- Date：2020-06-12
+   > -- Author：李爱敏
+SQL> set echo on
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> --验证VARBINARY(n)数据类型，字节长度为n+1，n的最大值为64000
+   > --如果表已存在，则先删除
+SQL> drop table T_TYPE_VARBINARY1 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_VARBINARY2 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_VARBINARY3 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> --创建表T_TYPE_VARBINARY1，设置长度大于64000，是否报错
+SQL> create table T_TYPE_VARBINARY1 (a1 varbinary(64001));
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> insert into T_TYPE_VARBINARY1 values('AaFf0099bb');
+1 row affected
+Running time elapsed:      0.43 Seconds
+SQL> select * from T_TYPE_VARBINARY1;
++------------+
+| A1         |
++------------+
+| AaFf0099bb |
++------------+
+1 row selected.
+Running time elapsed:      0.27 Seconds
+SQL> 
+SQL> --创建表T_TYPE_VARBINARY1，设置长度为64000
+SQL> create table T_TYPE_VARBINARY2 (a1 varbinary(64000));
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> insert into T_TYPE_VARBINARY2 values('AaFf0099bb');
+1 row affected
+Running time elapsed:      0.46 Seconds
+SQL> select * from T_TYPE_VARBINARY2;
++------------+
+| A1         |
++------------+
+| AaFf0099bb |
++------------+
+1 row selected.
+Running time elapsed:      0.27 Seconds
+SQL> 
+SQL> --创建表T_TYPE_VARBINARY3，设置长度为10
+SQL> create table T_TYPE_VARBINARY3 (a1 varbinary(10));
+0 rows affected
+Running time elapsed:      0.18 Seconds
+SQL> 
+SQL> --验证插入数据的字节数大于10，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values('AaFf0099bbC');
+1 row affected
+Running time elapsed:      0.51 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| AaFf0099bbC |
++-------------+
+1 row selected.
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> --验证插入数据的字节数等于10
+SQL> insert into T_TYPE_VARBINARY3 values('AaFf0099bb');
+1 row affected
+Running time elapsed:      0.53 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+2 rows selected.
+Running time elapsed:      0.51 Seconds
+SQL> select bit_length(a1)  from T_TYPE_VARBINARY3;
++----+
+| C1 |
++----+
+| 80 |
+| 88 |
++----+
+2 rows selected.
+Running time elapsed:      0.60 Seconds
+SQL> 
+SQL> --验证插入数据的字节数小于10
+SQL> insert into T_TYPE_VARBINARY3 values('AaFf0099b');
+1 row affected
+Running time elapsed:      0.46 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+3 rows selected.
+Running time elapsed:      0.75 Seconds
+SQL> 
+SQL> --验证插入的字符不在a-f，A-F之间，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values('GgHhZzQQ');
+1 row affected
+Running time elapsed:      0.48 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+4 rows selected.
+Running time elapsed:      0.98 Seconds
+SQL> 
+SQL> --验证插入数据的字节数为0
+SQL> insert into T_TYPE_VARBINARY3 values('');
+1 row affected
+Running time elapsed:      0.53 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+5 rows selected.
+Running time elapsed:      1.29 Seconds
+SQL> 
+SQL> --验证插入BIT类型
+SQL> insert into T_TYPE_VARBINARY3 values(b'1010101110');
+1 row affected
+Running time elapsed:      0.79 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+6 rows selected.
+Running time elapsed:      1.44 Seconds
+SQL> 
+SQL> -- 验证插入其他数据类型
+   > --验证插入int类型，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(12345);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(12345 AS BINARY)' due to data type mismatch: cannot cast int to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(12345 as binary))]
+]
+Running time elapsed:      0.03 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+6 rows selected.
+Running time elapsed:      2.44 Seconds
+SQL> 
+SQL> --验证插入decimal类型，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(1234.56);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(1234.56BD AS BINARY)' due to data type mismatch: cannot cast decimal(6,2) to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(1234.56 as binary))]
+]
+Running time elapsed:      0.01 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+6 rows selected.
+Running time elapsed:      1.26 Seconds
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'xxxyyyZZZww'，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values('xxxyyyZZww');
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| xxxyyyZZww  |
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+7 rows selected.
+Running time elapsed:      1.59 Seconds
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(to_date('2020-05-08','yyyy-mm-dd'));
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(CAST(CAST(unix_timestamp('2020-05-08', 'yyyy-MM-dd') AS TIMESTAMP) AS DATE) AS BINARY)' due to data type mismatch: cannot cast date to binary;;
+'UnresolvedInlineTable [A1], [ArrayBuffer(cast(cast(cast(unix_timestamp(2020-05-08, yyyy-MM-dd, Some(Asia/Shanghai)) as timestamp) as date) as binary))]
+]
+Running time elapsed:      0.04 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| xxxyyyZZww  |
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+7 rows selected.
+Running time elapsed:      1.55 Seconds
+SQL> 
+SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(CAST(unix_timestamp('2020-05-08 12:19:01', 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) AS BINARY)' due to data type mismatch: cannot cast timestamp to binary;;
+'UnresolvedInlineTable [A1], [ArrayBuffer(cast(cast(unix_timestamp(2020-05-08 12:19:01, yyyy-MM-dd HH:mm:ss, Some(Asia/Shanghai)) as timestamp) as binary))]
+]
+Running time elapsed:      0.01 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| xxxyyyZZww  |
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+7 rows selected.
+Running time elapsed:      1.52 Seconds
+SQL> 
+SQL> --验证插入boolean类型，插入true，是否报错
+SQL> insert into T_TYPE_VARBINARY3 values(true);
+java.sql.SQLException: S1000 General error Caused by [cannot resolve 'CAST(true AS BINARY)' due to data type mismatch: cannot cast boolean to binary;;
+'UnresolvedInlineTable [A1], [Buffer(cast(true as binary))]
+]
+Running time elapsed:      0.01 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| xxxyyyZZww  |
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+7 rows selected.
+Running time elapsed:      1.48 Seconds
+SQL> 
+SQL> --验证插入空值''
+SQL> insert into T_TYPE_VARBINARY3 values('');
+1 row affected
+Running time elapsed:      0.54 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+|             |
+| xxxyyyZZww  |
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+8 rows selected.
+Running time elapsed:      1.75 Seconds
+SQL> 
+SQL> --验证插入空格' '
+SQL> insert into T_TYPE_VARBINARY3 values(' ');
+1 row affected
+Running time elapsed:      0.45 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+|             |
+|             |
+| xxxyyyZZww  |
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+9 rows selected.
+Running time elapsed:      1.95 Seconds
+SQL> 
+SQL> --验证插入null
+SQL> insert into T_TYPE_VARBINARY3 values(null);
+1 row affected
+Running time elapsed:      0.45 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+|             |
+|             |
+| xxxyyyZZww  |
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+10 rows selected.
+Running time elapsed:      2.19 Seconds
+SQL> 
+SQL> --验证插入NULL
+SQL> insert into T_TYPE_VARBINARY3 values(NULL);
+1 row affected
+Running time elapsed:      0.47 Seconds
+SQL> select * from T_TYPE_VARBINARY3;
++-------------+
+| A1          |
++-------------+
+| <null>      |
+| <null>      |
+|             |
+|             |
+| xxxyyyZZww  |
+| ��          |
+|             |
+| GgHhZzQQ    |
+| AaFf0099b   |
+| AaFf0099bb  |
+| AaFf0099bbC |
++-------------+
+11 rows selected.
+Running time elapsed:      2.38 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_VARBINARY1 if exists;
+0 rows affected
+Running time elapsed:      0.19 Seconds
+SQL> drop table T_TYPE_VARBINARY2 if exists;
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> drop table T_TYPE_VARBINARY3 if exists;
+0 rows affected
+Running time elapsed:      0.13 Seconds
+SQL> exit
+Disconnected.

@@ -1,0 +1,448 @@
+SQLCli Release 0.0.70
+SQL> connect admin/123456
+Database connected.
+SQL> start bit/bit.sql
+SQL> -- Description：bit data type
+   > -- Date：2020-06-12
+   > -- Author：李爱敏
+SQL> set echo on
+SQL> set timing on
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- BIT(n)数据类型验证
+   > --如果表已存在，则先删除
+SQL> drop table T_TYPE_BIT1 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_BIT2 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_BIT3 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_BIT4 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_BIT5 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_BIT6 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT1，设置位数为默认值，默认为1
+SQL> create table T_TYPE_BIT1(a1 bit);
+0 rows affected
+Running time elapsed:      0.20 Seconds
+SQL> 
+SQL> --验证插入数据的位数等于1
+SQL> insert into T_TYPE_BIT1 values(b'1');
+1 row affected
+Running time elapsed:      0.44 Seconds
+SQL> select * from T_TYPE_BIT1;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> --验证插入数据的位数大于1，是否报错
+SQL> insert into T_TYPE_BIT1 values(b'11');
+1 row affected
+Running time elapsed:      0.46 Seconds
+SQL> select * from T_TYPE_BIT1;
++------+
+| A1   |
++------+
+| True |
+| True |
++------+
+2 rows selected.
+Running time elapsed:      0.55 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT2，设置位数n为0，是否报错
+SQL> create table T_TYPE_BIT2(a1 bit(0));
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create table T_TYPE_BIT2(a1 bit(0))]
+Running time elapsed:      0.01 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT3，设置位数n为1
+SQL> create table T_TYPE_BIT2(a1 bit(1));
+0 rows affected
+Running time elapsed:      0.19 Seconds
+SQL> insert into T_TYPE_BIT3 values(b'1');
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_BIT3 in statement [insert into T_TYPE_BIT3 values(b'1')]
+Running time elapsed:      0.00 Seconds
+SQL> select * from T_TYPE_BIT3;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_TYPE_BIT3 in statement [select * from T_TYPE_BIT3]
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT4，设置位数n为65，是否报错
+SQL> create table T_TYPE_BIT4(a1 bit(65));
+0 rows affected
+Running time elapsed:      0.21 Seconds
+SQL> insert into T_TYPE_BIT4 values(b'10101010101010101010101010101010101010101010101010101010101011111');
+1 row affected
+Running time elapsed:      0.60 Seconds
+SQL> select * from T_TYPE_BIT4;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+Running time elapsed:      0.29 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT5，设置位数n为64
+SQL> create table T_TYPE_BIT5(a1 bit(64));
+0 rows affected
+Running time elapsed:      0.33 Seconds
+SQL> insert into T_TYPE_BIT5 values(b'1010101010101010101010101010101010101010101010101010101010101111');
+1 row affected
+Running time elapsed:      0.45 Seconds
+SQL> select * from T_TYPE_BIT5;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> --创建表T_TYPE_BIT6，设置位数n为10
+SQL> create table T_TYPE_BIT6(a1 bit(10));
+0 rows affected
+Running time elapsed:      0.15 Seconds
+SQL> 
+SQL> --验证插入数据的位数大于10，是否报错
+SQL> insert into T_TYPE_BIT6 values(b'10101010101');
+1 row affected
+Running time elapsed:      0.87 Seconds
+SQL> select * from T_TYPE_BIT6;
++------+
+| A1   |
++------+
+| True |
++------+
+1 row selected.
+Running time elapsed:      0.31 Seconds
+SQL> 
+SQL> --验证插入数据的位数等于10
+SQL> insert into T_TYPE_BIT6 values(b'1010101010');
+1 row affected
+Running time elapsed:      0.53 Seconds
+SQL> select * from T_TYPE_BIT6;
++------+
+| A1   |
++------+
+| True |
+| True |
++------+
+2 rows selected.
+Running time elapsed:      0.53 Seconds
+SQL> 
+SQL> --验证插入数据的位数小于10，左边补0
+SQL> insert into T_TYPE_BIT6 values(b'10101010');
+1 row affected
+Running time elapsed:      0.49 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| <null> |
+| <null> |
++--------+
+3 rows selected.
+Running time elapsed:      0.82 Seconds
+SQL> 
+SQL> --验证插入非0,1的数字，是否报错
+SQL> insert into T_TYPE_BIT6 values(b'22334455');
+java.sql.SQLSyntaxErrorException: malformed bit string: b' in statement [insert into T_TYPE_BIT6 values(b'22334455')]
+Running time elapsed:      0.00 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| <null> |
+| <null> |
++--------+
+3 rows selected.
+Running time elapsed:      0.78 Seconds
+SQL> 
+SQL> --验证插入0000000000
+SQL> insert into T_TYPE_BIT6 values(b'0000000000');
+1 row affected
+Running time elapsed:      0.48 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+Running time elapsed:      1.02 Seconds
+SQL> 
+SQL> --验证插入1111111111
+SQL> insert into T_TYPE_BIT6 values(b'1111111111');
+1 row affected
+Running time elapsed:      0.52 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+5 rows selected.
+Running time elapsed:      1.06 Seconds
+SQL> 
+SQL> --验证插入BINARY类型
+SQL> insert into T_TYPE_BIT6 values('1111111000');
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+Running time elapsed:      1.36 Seconds
+SQL> 
+SQL> -- 验证插入其他数据类型
+   > --验证插入int类型，是否报错
+SQL> insert into T_TYPE_BIT6 values(12345);
+java.sql.SQLException: value cannot be converted to target type
+Running time elapsed:      0.06 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+Running time elapsed:      1.30 Seconds
+SQL> 
+SQL> --验证插入decimal类型，是否报错
+SQL> insert into T_TYPE_BIT6 values(1234.56);
+java.sql.SQLException: value cannot be converted to target type
+Running time elapsed:      0.01 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+Running time elapsed:      1.29 Seconds
+SQL> 
+SQL> --验证插入varchar类型，插入英文字母'xxxyyyZZZ'，是否报错
+SQL> insert into T_TYPE_BIT6 values('xxxyyyZZZ');
+java.sql.SQLException: data exception: invalid character value for cast
+Running time elapsed:      0.01 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+6 rows selected.
+Running time elapsed:      1.28 Seconds
+SQL> 
+SQL> --验证插入date类型，格式yyyy-mm-dd，是否报错
+SQL> insert into T_TYPE_BIT6 values(to_date('2020-05-08','yyyy-mm-dd'));
+1 row affected
+Running time elapsed:      0.57 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+7 rows selected.
+Running time elapsed:      1.59 Seconds
+SQL> 
+SQL> --验证插入timestamp类型，格式yyyy-mm-dd hh24:mi:ss，是否报错
+SQL> insert into T_TYPE_BIT6 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
+1 row affected
+Running time elapsed:      0.50 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+8 rows selected.
+Running time elapsed:      1.72 Seconds
+SQL> 
+SQL> --验证插入boolean类型，插入true，是否报错
+SQL> insert into T_TYPE_BIT6 values(true);
+java.sql.SQLException: value cannot be converted to target type
+Running time elapsed:      0.03 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+8 rows selected.
+Running time elapsed:      1.72 Seconds
+SQL> 
+SQL> --验证插入空值''
+SQL> insert into T_TYPE_BIT6 values('');
+1 row affected
+Running time elapsed:      0.45 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+9 rows selected.
+Running time elapsed:      2.65 Seconds
+SQL> 
+SQL> --验证插入空格' '
+SQL> insert into T_TYPE_BIT6 values(' ');
+java.sql.SQLException: data exception: invalid character value for cast
+Running time elapsed:      0.03 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+9 rows selected.
+Running time elapsed:      1.92 Seconds
+SQL> 
+SQL> --验证插入null
+SQL> insert into T_TYPE_BIT6 values(null);
+1 row affected
+Running time elapsed:      0.52 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+10 rows selected.
+Running time elapsed:      2.23 Seconds
+SQL> 
+SQL> --验证插入NULL
+SQL> insert into T_TYPE_BIT6 values(NULL);
+1 row affected
+Running time elapsed:      0.45 Seconds
+SQL> select * from T_TYPE_BIT6;
++--------+
+| A1     |
++--------+
+| <null> |
+| <null> |
+| False  |
+| <null> |
+| <null> |
+| True   |
+| True   |
+| False  |
+| True   |
+| <null> |
+| <null> |
++--------+
+11 rows selected.
+Running time elapsed:      2.40 Seconds
+SQL> 
+SQL> 
+SQL> --最后删除创建的表
+SQL> drop table T_TYPE_BIT1 if exists;
+0 rows affected
+Running time elapsed:      0.12 Seconds
+SQL> drop table T_TYPE_BIT2 if exists;
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> drop table T_TYPE_BIT3 if exists;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> drop table T_TYPE_BIT4 if exists;
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> drop table T_TYPE_BIT5 if exists;
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> drop table T_TYPE_BIT6 if exists;
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> exit
+Disconnected.

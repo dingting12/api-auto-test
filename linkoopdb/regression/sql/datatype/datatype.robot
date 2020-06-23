@@ -4,8 +4,7 @@ Suite Setup       SQL Test Setup
 Suite Teardown    SQL Test Clnup
 
 *** Settings ***
-Documentation    RobotFrameWork文档实例
-...              这里的文档内容会出现在报告里面
+Documentation    基本数据类型
 Force Tags       DATATYPE
 
 
@@ -21,6 +20,7 @@ BigintTest-HDFS
     [Tags]     DATATYPE   HDFS
     Logon And Execute SQL Script       admin/123456  bigint/bigint.sql          bigint_hdfs.log
     Compare Files                      bigint_hdfs.log                          bigint/bigint_hdfs.ref
+
 BinaryTest-HDFS
     [Documentation]    数据类型-BINARY-HDFS
     [Tags]     DATATYPE   HDFS
