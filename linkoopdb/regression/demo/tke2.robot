@@ -17,7 +17,6 @@ Demo1
 Demo2
     [Documentation]    演示程序2， SQL测试，输出信息将显示在控制台上
     SQLCli Enable ConsoleOutput    True
-    Compare Enable ConsoleOutput   True
 
     Execute SQL Script             tke2.sql            tke2_hdfs_2.log
     Compare Files                  tke2_hdfs_2.log     tke2.ref
