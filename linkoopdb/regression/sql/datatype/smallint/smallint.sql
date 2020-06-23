@@ -23,7 +23,6 @@ select * from T_TYPE_SMALLINT;
 insert into T_TYPE_SMALLINT values(-32769);   
 --查询表T_TYPE_SMALLINT
 select * from T_TYPE_SMALLINT;
-truncate table T_TYPE_SMALLINT;
 
 --验证samllint类型最大值32767
 insert into T_TYPE_SMALLINT values(32767);    

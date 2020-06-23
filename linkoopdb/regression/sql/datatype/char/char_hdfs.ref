@@ -1,4 +1,4 @@
-SQLCli Release 0.0.55
+SQLCli Release 0.0.70
 SQL> connect admin/123456
 Database connected.
 SQL> start char/char.sql
@@ -13,48 +13,48 @@ SQL> -- char数据类型验证
    > --如果表已存在，则先删除
 SQL> drop table T_TYPE_CHAR1 if exists;
 0 rows affected
-Running time elapsed:      0.03 Seconds
+Running time elapsed:      0.00 Seconds
 SQL> drop table T_TYPE_CHAR2 if exists;
 0 rows affected
-Running time elapsed:      0.15 Seconds
+Running time elapsed:      0.00 Seconds
 SQL> drop table T_TYPE_CHAR3 if exists;
 0 rows affected
-Running time elapsed:      0.04 Seconds
+Running time elapsed:      0.00 Seconds
 SQL> drop table T_TYPE_CHAR4 if exists;
 0 rows affected
-Running time elapsed:      0.05 Seconds
+Running time elapsed:      0.00 Seconds
 SQL> 
 SQL> --创建表T_TYPE_CHAR1，设置字符长度为64000
 SQL> create table T_TYPE_CHAR1 (
    > name char(64000)
    > );
 0 rows affected
-Running time elapsed:      0.33 Seconds
+Running time elapsed:      0.19 Seconds
 SQL> 
 SQL> --通过脚本往表T_TYPE_CHAR1中插入64000个随机字符
    > --查询表T_TYPE_CHAR1
 SQL> select length(name) from T_TYPE_CHAR1;
 0 rows selected.
-Running time elapsed:      0.13 Seconds
+Running time elapsed:      0.15 Seconds
 SQL> 
 SQL> --创建表T_TYPE_CHAR2，设置字符长度大于64000，是否报错
 SQL> create table T_TYPE_CHAR2 (
    > name char(64001)
    > );
 0 rows affected
-Running time elapsed:      0.12 Seconds
+Running time elapsed:      0.19 Seconds
 SQL> 
 SQL> --创建表T_TYPE_CHAR3，设置为默认长度，默认长度为1
 SQL> create table T_TYPE_CHAR3 (
    > a1 char
    > );
 0 rows affected
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.16 Seconds
 SQL> 
 SQL> --插入字符长度为1
 SQL> insert into T_TYPE_CHAR3 values('a');
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.92 Seconds
 SQL> --查询表T_TYPE_CHAR3
 SQL> select * from T_TYPE_CHAR3;
 +----+
@@ -63,12 +63,12 @@ SQL> select * from T_TYPE_CHAR3;
 | a  |
 +----+
 1 row selected.
-Running time elapsed:      0.40 Seconds
+Running time elapsed:      0.32 Seconds
 SQL> 
 SQL> --插入字符长度>1，是否报错
 SQL> insert into T_TYPE_CHAR3 values('ab');
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.64 Seconds
 SQL> --查询表T_TYPE_CHAR3
 SQL> select * from T_TYPE_CHAR3;
 +----+
@@ -78,28 +78,28 @@ SQL> select * from T_TYPE_CHAR3;
 | a  |
 +----+
 2 rows selected.
-Running time elapsed:      0.65 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> 
 SQL> --创建表T_TYPE_CHAR4，设置字符长度为30
 SQL> create table T_TYPE_CHAR4(
    > a1 char(30)
    > );
 0 rows affected
-Running time elapsed:      0.23 Seconds
+Running time elapsed:      0.24 Seconds
 SQL> 
 SQL> --插入数据格式为双引号，报错
 SQL> insert into T_TYPE_CHAR4 values("abcdef");
 java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: abcdef in statement [insert into T_TYPE_CHAR4 values("abcdef")]
-Running time elapsed:      0.14 Seconds
+Running time elapsed:      0.00 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 0 rows selected.
-Running time elapsed:      0.07 Seconds
+Running time elapsed:      0.08 Seconds
 SQL> 
 SQL> --插入数据格式为单引号
 SQL> insert into T_TYPE_CHAR4 values('abcdef');
 1 row affected
-Running time elapsed:      0.65 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------+
@@ -108,12 +108,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                         |
 +--------------------------------+
 1 row selected.
-Running time elapsed:      0.37 Seconds
+Running time elapsed:      0.30 Seconds
 SQL> 
 SQL> --插入的数据无引号
 SQL> insert into T_TYPE_CHAR4 values(abcdef);
 java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: ABCDEF in statement [insert into T_TYPE_CHAR4 values(abcdef)]
-Running time elapsed:      0.06 Seconds
+Running time elapsed:      0.00 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------+
@@ -122,12 +122,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                         |
 +--------------------------------+
 1 row selected.
-Running time elapsed:      0.32 Seconds
+Running time elapsed:      0.30 Seconds
 SQL> 
 SQL> --验证插入30个英文字母
 SQL> insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcd');
 1 row affected
-Running time elapsed:      0.59 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------+
@@ -137,12 +137,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                         |
 +--------------------------------+
 2 rows selected.
-Running time elapsed:      0.70 Seconds
+Running time elapsed:      0.61 Seconds
 SQL> 
 SQL> --验证插入31个英文字母，插入是否成功
 SQL> insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcde');
 1 row affected
-Running time elapsed:      0.93 Seconds
+Running time elapsed:      0.78 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------+
@@ -153,12 +153,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                         |
 +--------------------------------+
 3 rows selected.
-Running time elapsed:      0.84 Seconds
+Running time elapsed:      0.75 Seconds
 SQL> 
 SQL> --验证插入30个汉字
 SQL> insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十');
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -170,12 +170,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 4 rows selected.
-Running time elapsed:      1.09 Seconds
+Running time elapsed:      1.07 Seconds
 SQL> 
 SQL> --验证插入31个汉字，插入是否成功
 SQL> insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
 1 row affected
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.45 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -188,12 +188,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 5 rows selected.
-Running time elapsed:      1.29 Seconds
+Running time elapsed:      1.28 Seconds
 SQL> 
 SQL> --验证插入30个数字
 SQL> insert into T_TYPE_CHAR4 values('123456789012345678901234567890');
 1 row affected
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.42 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -207,12 +207,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 6 rows selected.
-Running time elapsed:      1.82 Seconds
+Running time elapsed:      1.44 Seconds
 SQL> 
 SQL> --验证插入31个数字，插入是否成功
 SQL> insert into T_TYPE_CHAR4 values('1234567890123456789012345678901');
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.75 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -227,12 +227,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 7 rows selected.
-Running time elapsed:      1.72 Seconds
+Running time elapsed:      1.93 Seconds
 SQL> 
 SQL> --验证插入int类型
 SQL> insert into T_TYPE_CHAR4 values(129);
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.43 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -248,12 +248,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 8 rows selected.
-Running time elapsed:      2.13 Seconds
+Running time elapsed:      3.08 Seconds
 SQL> 
 SQL> --验证插入double类型
 SQL> insert into T_TYPE_CHAR4 values(129.77);
 1 row affected
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.70 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -270,12 +270,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 9 rows selected.
-Running time elapsed:      2.37 Seconds
+Running time elapsed:      2.32 Seconds
 SQL> 
 SQL> --验证插入date类型
 SQL> insert into T_TYPE_CHAR4 values(to_date('2020-05-08','yyyy-mm-dd'));
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.41 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -293,12 +293,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 10 rows selected.
-Running time elapsed:      2.86 Seconds
+Running time elapsed:      2.24 Seconds
 SQL> 
 SQL> --验证插入timestamp类型
 SQL> insert into T_TYPE_CHAR4 values(TO_TIMESTAMP('2020-05-08 12:19:01', 'yyyy-mm-dd hh24:mi:ss'));
 1 row affected
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.43 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -317,12 +317,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 11 rows selected.
-Running time elapsed:      3.15 Seconds
+Running time elapsed:      2.49 Seconds
 SQL> 
 SQL> --验证插入boolean类型
 SQL> insert into T_TYPE_CHAR4 values(true);
 1 row affected
-Running time elapsed:      0.56 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -342,12 +342,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 12 rows selected.
-Running time elapsed:      2.97 Seconds
+Running time elapsed:      2.74 Seconds
 SQL> 
 SQL> --验证插入boolean类型
 SQL> insert into T_TYPE_CHAR4 values(false);
 1 row affected
-Running time elapsed:      0.77 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -368,12 +368,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 13 rows selected.
-Running time elapsed:      3.53 Seconds
+Running time elapsed:      3.04 Seconds
 SQL> 
 SQL> --验证插入空值''                                                   
 SQL> insert into T_TYPE_CHAR4 values('');
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -395,12 +395,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 14 rows selected.
-Running time elapsed:      4.37 Seconds
+Running time elapsed:      3.22 Seconds
 SQL> 
 SQL> --验证插入空格' '                                                   
 SQL> insert into T_TYPE_CHAR4 values(' ');
 1 row affected
-Running time elapsed:      0.71 Seconds
+Running time elapsed:      0.66 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -423,12 +423,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 15 rows selected.
-Running time elapsed:      4.07 Seconds
+Running time elapsed:      3.33 Seconds
 SQL> 
 SQL> --验证插入null                                                    
 SQL> insert into T_TYPE_CHAR4 values(null);
 1 row affected
-Running time elapsed:      0.96 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -452,12 +452,12 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 16 rows selected.
-Running time elapsed:      4.09 Seconds
+Running time elapsed:      3.56 Seconds
 SQL> 
 SQL> --验证插入NULL                                                   
 SQL> insert into T_TYPE_CHAR4 values(NULL);
 1 row affected
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.41 Seconds
 SQL> --查询表T_TYPE_CHAR4
 SQL> select * from T_TYPE_CHAR4;
 +--------------------------------------------------------------+
@@ -482,20 +482,22 @@ SQL> select * from T_TYPE_CHAR4;
 | abcdef                                                       |
 +--------------------------------------------------------------+
 17 rows selected.
-Running time elapsed:      4.91 Seconds
+Running time elapsed:      3.91 Seconds
 SQL> 
 SQL> 
 SQL> --最后删除创建的表
 SQL> drop table T_TYPE_CHAR1 if exists;
 0 rows affected
-Running time elapsed:      0.69 Seconds
+Running time elapsed:      0.14 Seconds
 SQL> drop table T_TYPE_CHAR2 if exists;
 0 rows affected
-Running time elapsed:      0.61 Seconds
+Running time elapsed:      0.09 Seconds
 SQL> drop table T_TYPE_CHAR3 if exists;
 0 rows affected
-Running time elapsed:      0.54 Seconds
+Running time elapsed:      0.08 Seconds
 SQL> drop table T_TYPE_CHAR4 if exists;
 0 rows affected
-Running time elapsed:      0.56 Seconds
-Running time elapsed:     60.55 Seconds
+Running time elapsed:      0.07 Seconds
+Running time elapsed:     50.41 Seconds
+SQL> exit
+Disconnected.

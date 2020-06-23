@@ -15,12 +15,13 @@ drop table T_TYPE_DECIMAL5 if exists;
 drop table T_TYPE_DECIMAL6 if exists;
 drop table T_TYPE_DECIMAL7 if exists;
 
+
+--验证DECIMAL(n,m)
 --创建表T_TYPE_DECIMAL1
 create table T_TYPE_DECIMAL1(
 a1 decimal(5,2)
 );
 
---验证DECIMAL(n,m)
 --根据n的值进行判断，当1=<n<=38时
 --判断m的值，当0=<m<=n时
 --整数部分的长度>n-m，是否报错
@@ -68,19 +69,18 @@ create table T_TYPE_DECIMAL5(
 a1 decimal(39,2)
 );
 
-
 --验证DECIMAL(n)，默认为DECIMAL(n,0)
 --创建表T_TYPE_DECIMAL6
 create table T_TYPE_DECIMAL6(
 a1 decimal(6)
 );
 
---整数部分的长度>n，是否报错
+--整数部分的长度>6，是否报错
 insert into T_TYPE_DECIMAL6 values(1234567.9876);
 --查询表T_TYPE_DECIMAL6
 select * from T_TYPE_DECIMAL6;
 
---整数部分的长度<=n，精确到整数位，小数部分四舍五入
+--整数部分的长度<=6，精确到整数位，小数部分四舍五入
 insert into T_TYPE_DECIMAL6 values(1234.9876);
 --查询表T_TYPE_DECIMAL6
 select * from T_TYPE_DECIMAL6;

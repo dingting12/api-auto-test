@@ -36,7 +36,7 @@ insert into T_TYPE_CHAR3 values('a');
 --查询表T_TYPE_CHAR3
 select * from T_TYPE_CHAR3;
 
---插入字符长度>1，是否报错
+--插入字符长度>1，是否截断
 insert into T_TYPE_CHAR3 values('ab');
 --查询表T_TYPE_CHAR3
 select * from T_TYPE_CHAR3;
@@ -56,7 +56,7 @@ insert into T_TYPE_CHAR4 values('abcdef');
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
 
---插入的数据无引号
+--插入的数据无引号，报错
 insert into T_TYPE_CHAR4 values(abcdef);
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
@@ -66,7 +66,7 @@ insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcd');
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
 
---验证插入31个英文字母，插入是否成功
+--验证插入31个英文字母，是否截断
 insert into T_TYPE_CHAR4 values('abcdefghijklmnopqrstuvwxyzabcde');
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
@@ -76,7 +76,7 @@ insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五�
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
 
---验证插入31个汉字，插入是否成功
+--验证插入31个汉字，是否截断
 insert into T_TYPE_CHAR4 values('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一');
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
@@ -86,7 +86,7 @@ insert into T_TYPE_CHAR4 values('123456789012345678901234567890');
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
 
---验证插入31个数字，插入是否成功
+--验证插入31个数字，是否截断
 insert into T_TYPE_CHAR4 values('1234567890123456789012345678901');
 --查询表T_TYPE_CHAR4
 select * from T_TYPE_CHAR4;
