@@ -11,7 +11,7 @@ Library          OperatingSystem
 *** Test Cases ***
 PrivilegeTest
 	[Documentation]    基本安全与授权测试
-    [Tags]     SQL-Test       smoke test
+    [Tags]     PRIVILEGE       smoke test
 	LOgon And Execute SQL Script     admin/123456  CORE 基本安全与授权/E081-01 SELECT privilege at the table level.sql                                                            E081-01 SELECT privilege at the table level.log
 	Compare Files        E081-01 SELECT privilege at the table level.log        										CORE 基本安全与授权/E081-01 SELECT privilege at the table level.ref
 
@@ -53,7 +53,7 @@ BaseDataTest
 
 SystemSchemaTest
 	[Documentation]    系统信息schema测试
-    [Tags]     SQL-Test       smoke test
+    [Tags]     SYSTABLE       smoke test
 	LOgon And Execute SQL Script     admin/123456  CORE 系统信息schema/F021 在系统表中标注schema是否大小写敏感.sql                                                                F021 在系统表中标注schema是否大小写敏感.log
 	Compare Files        F021 在系统表中标注schema是否大小写敏感.log    												CORE 系统信息schema/F021 在系统表中标注schema是否大小写敏感.ref
 
@@ -195,7 +195,7 @@ QueryTest
 
 JoinTest
 	[Documentation]    基础JOIN测试
-    [Tags]     SQL-Test       smoke test
+    [Tags]     JOIN       smoke test
 	LOgon And Execute SQL Script     admin/123456  CORE_基础JOIN/F041-01 Inner join (but not necessarily the INNER keyword).sql                                                   F041-01 Inner join (but not necessarily the INNER keyword).log
 	Compare Files        F041-01 Inner join (but not necessarily the INNER keyword).log                  				CORE_基础JOIN/F041-01 Inner join (but not necessarily the INNER keyword).ref
 
@@ -222,7 +222,7 @@ JoinTest
 
 DataTypeTest
 	[Documentation]    数据类型测试
-    [Tags]     SQL-Test       smoke test
+    [Tags]     DATATYPE       smoke test
 	LOgon And Execute SQL Script     admin/123456  CORE_数据类型/E011-04 Arithmetic operators.sql                                                                                 E011-04 Arithmetic operators.log
      Compare Files   	 E011-04 Arithmetic operators.log                                              					CORE_数据类型/E011-04 Arithmetic operators.ref
 
@@ -264,7 +264,7 @@ DataTypeTest
 
 SetFunctionTest
 	[Documentation]    集合函数测试
-    [Tags]     SQL-Test       smoke test
+    [Tags]     FUNCTION       smoke test
 	LOgon And Execute SQL Script     admin/123456  CORE_集合函数/E091-01 AVG.sql                                                                                                  E091-01 AVG.log
 	Compare Files        E091-01 AVG.log                  																CORE_集合函数/E091-01 AVG.ref
 
@@ -301,7 +301,7 @@ StatisticsTest
 
 ExternalTabTest
 	[Documentation]    External_Table测试
-    [Tags]     SQL-Test       smoke test
+    [Tags]     EXTERNAL       smoke test
 	LOgon And Execute SQL Script     admin/123456  LDB_EXT_External_Table/LDBX022-07 alter external table statement.sql                                                           LDBX022-07 alter external table statement.log
 	Compare Files        LDBX022-07 alter external table statement.log    												LDB_EXT_External_Table/LDBX022-07 alter external table statement.ref
 

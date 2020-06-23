@@ -35,4 +35,4 @@ select a.*,b.* from t_join_left a
 	right outer join t_join_right b on a.col1=b.col1 order by col1;
 	
 select a.*,b.* from t_join_left a 
-	right outer join t_join_right b on a.col1!=b.col1 order by col1;
+	right outer join t_join_right b on a.col1!=b.col1 order by a.col1,b.col1;
