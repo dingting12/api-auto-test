@@ -8,6 +8,7 @@ Test Setup       SQL Test Setup
 Test Teardown    SQL Test Clnup
 Library          OperatingSystem
 
+
 *** Test Cases ***
 PrivilegeTest
 	[Documentation]    基本安全与授权测试
@@ -310,3 +311,9 @@ ExternalTabTest
 
 	LOgon And Execute SQL Script     admin/123456  LDB_EXT_External_Table/LDBX022-12 ORC file as external table.sql                                                               LDBX022-12 ORC file as external table.log
 	Compare Files        LDBX022-12 ORC file as external table.log                 										LDB_EXT_External_Table/LDBX022-12 ORC file as external table.ref
+
+*** Keywords ***
+SQL Test Setup
+    SQLCli Enable ConsoleOutput        True
+    Compare Skip                       ^[| 当前时间戳].*
+    Compare Skip                       ^[| 当前时间].*
