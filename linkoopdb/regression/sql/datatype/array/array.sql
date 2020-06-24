@@ -86,9 +86,11 @@ select * from T_ALL_DATATYPE;
 
 --验证update操作
 update T_ALL_DATATYPE set a1 = 888 where a1 = 111;
+select * from T_ALL_DATATYPE;
 
 --验证delete操作
 delete from T_ALL_DATATYPE WHERE a1 = 111;
+select * from T_ALL_DATATYPE;
 
 
 

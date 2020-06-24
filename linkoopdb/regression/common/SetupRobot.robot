@@ -5,6 +5,7 @@ Documentation     SetupRobot.py
 Library           RunSQLCli.py
 Library           RunCompare.py
 Library           SetupRobot.py
+Library           RunHDFSCommand.py
 Library           OperatingSystem
 
 

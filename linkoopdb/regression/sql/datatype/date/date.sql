@@ -162,17 +162,17 @@ insert into T_TYPE_DATE values(NULL);
 select * from T_TYPE_DATE;
 
 --验证插入0000-00-00
-insert into T_TYPE_TIMESTAMP values(to_date('0000-00-00','yyyy-mm-dd'));
+insert into T_TYPE_DATE values(to_date('0000-00-00','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
 --会话变量：ALLOW_INVALID_DATES
---开启，无效日期直接报invalid date/time error
+--关闭，无效日期直接报invalid date/time error
 insert into T_TYPE_DATE values(to_date('1967-13-01','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
---禁用，无效日期转换为0000-00-00，并报warning
+--开启，无效日期设置为null，并报warning
 insert into T_TYPE_DATE values(to_date('1967-13-01','yyyy-mm-dd'));
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;

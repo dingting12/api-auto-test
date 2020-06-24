@@ -200,15 +200,372 @@ SELECT * FROM link_oracle_grammar_covered41.t_dblink_wy1 ORDER BY id;
 ---对dblink表级别的参数
 
 ----dblink读并发控制
+
+-----设置参数
+
+------part
+
+-------part分区正常情况
+
 DROP DATABASE LINK link_oracle_grammar_covered42 IF EXISTS CASCADE;
 
 CREATE DATABASE LINK link_oracle_grammar_covered42 connect to 'u_dblink_read_concurrent' identified by '123456' using 'jdbc:oracle:thin:@192.168.1.72:1521:xe';
 
-SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1 ORDER BY id LIMIT 5;
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1 ORDER BY TUNIQUE LIMIT 5;
 
-SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent2 ORDER BY id DESC LIMIT 5;
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1;
 
-SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent3 ORDER BY id DESC LIMIT 5;
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1 LIMIT 10;
 
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent1
+SET PROPERTIES('part1':'TUNIQUE=1','part2':'TUNIQUE=2','part3':'TUNIQUE=3','part4':'TUNIQUE=4','part5':'TUNIQUE=5',
+               'part6':'TUNIQUE=6','part7':'TUNIQUE=7','part8':'TUNIQUE=8','part9':'TUNIQUE=9','part10':'TUNIQUE=10');
 
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1 ORDER BY TUNIQUE LIMIT 5;
 
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent1
+UNSET PROPERTIES ('part1','part2','part3','part4','part5','part6','part7','part8','part9','part10');
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent1
+SET PROPERTIES('part1':'TUNIQUE>=1 and TUNIQUE<=2','part2':'TUNIQUE>=3 and TUNIQUE<=4',
+               'part3':'TUNIQUE>=5 and TUNIQUE<=6','part4':'TUNIQUE>=7 and TUNIQUE<=8','part5':'TUNIQUE>=9 and TUNIQUE<=10');
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1 ORDER BY TUNIQUE LIMIT 5;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent1
+UNSET PROPERTIES ('part1','part2','part3','part4','part5');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent1
+SET PROPERTIES('part1':'TUNIQUE>=1 and TUNIQUE<=3','part2':'TUNIQUE>=4 and TUNIQUE<=6','part3':'TUNIQUE>=7 and TUNIQUE<=10');
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1 ORDER BY TUNIQUE LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent1
+UNSET PROPERTIES ('part1','part2','part3');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent1 ORDER BY TUNIQUE LIMIT 10;
+
+-------part中支持的字段类型，外部表中含有10万条数据
+DROP TABLE external_oracle_dblink1 IF EXISTS CASCADE;
+
+CREATE EXTERNAL TABLE external_oracle_dblink1(
+tint INT,tvarchar VARCHAR(200),tdouble DOUBLE,
+tdecimal DECIMAL(10,2),tdate DATE,ttimestamp TIMESTAMP,
+tsmallint SMALLINT,tbigint BIGINT,tchar CHAR(50),
+tnumeric NUMERIC(13,6),tfloat FLOAT,treal REAL)
+LOCATION('ldbdist://192.168.1.73:54322/testdata_oracledblink.csv') FORMAT 'csv' (DELIMITER ',');
+
+SELECT COUNT(*) FROM external_oracle_dblink1;
+
+DROP TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4 IF EXISTS CASCADE;
+
+CREATE TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4 AS (SELECT * FROM external_oracle_dblink1) WITH DATA;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tint LIMIT 10;
+
+--------SMALLINT
+SELECT MAX(tsmallint),MIN(tsmallint) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tsmallint>=-32766 and tsmallint<=-20000','part2':'tsmallint>=-19999 and tsmallint<=-10000',
+               'part3':'tsmallint>=-9999 and tsmallint<=0','part4':'tsmallint>=1 and tsmallint<=10000',
+               'part5':'tsmallint>=10001 and tsmallint<=20000','part6':'tsmallint>=20001 and tsmallint<=30000',
+               'part7':'tsmallint>=30001 and tsmallint<=31000','part8':'tsmallint>=31001 and tsmallint<=32766');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tint LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4','part5','part6','part7','part8');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tint LIMIT 10;
+
+--------INT
+SELECT MAX(tint),MIN(tint) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tint>=-2147480213 and tint<=-2000000000','part2':'tint>=-1999999999 and tint<=-1000000000',
+               'part3':'tint>=-999999999 and tint<=0','part4':'tint>=1 and tint<=1000000000',
+               'part5':'tint>=1000000001 and tint<=2000000000','part6':'tint>=2000000001 and tint<=3000000000',
+               'part7':'tint>=3000000001 and tint<=3100000000','part8':'tint>=3100000001 and tint<=2147447041');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tint LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4','part5','part6','part7','part8');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tint LIMIT 10;
+
+--------BIGINT
+SELECT MAX(tbigint),MIN(tbigint) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tbigint>=-2147420267 and tbigint<=-2000000000','part2':'tbigint>=-1999999999 and tbigint<=-1000000000',
+               'part3':'tbigint>=-999999999 and tbigint<=0','part4':'tbigint>=1 and tbigint<=1000000000',
+               'part5':'tbigint>=1000000001 and tbigint<=2000000000','part6':'tbigint>=2000000001 and tbigint<=3000000000',
+               'part7':'tbigint>=3000000001 and tbigint<=3100000000','part8':'tbigint>=3100000001 and tbigint<=2147458172');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tbigint LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4','part5','part6','part7','part8');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tbigint LIMIT 10;
+
+--------DOUBLE
+SELECT MAX(tdouble),MIN(tdouble) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tdouble>=-2147420267 and tdouble<=-2000000000','part2':'tdouble>=-1999999999 and tdouble<=-1000000000',
+               'part3':'tdouble>=-999999999 and tdouble<=0','part4':'tdouble>=1 and tdouble<=1000000000',
+               'part5':'tdouble>=1000000001 and tdouble<=2000000000','part6':'tdouble>=2000000001 and tdouble<=3000000000',
+               'part7':'tdouble>=3000000001 and tdouble<=3100000000','part8':'tdouble>=3100000001 and tdouble<=2147458172');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tdouble LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4','part5','part6','part7','part8');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tdouble LIMIT 10;
+
+--------FLOAT
+SELECT MAX(tfloat),MIN(tfloat) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tfloat>=142.1316680908 and tfloat<=1000000','part2':'tfloat>=1000001 and tfloat<=2000000',
+               'part3':'tfloat>=2000001 and tfloat<=3000000','part4':'tfloat>=3000001 and tfloat<=9999958');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tfloat LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tfloat LIMIT 10;
+
+--------REAL
+SELECT MAX(treal),MIN(treal) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'treal>=30 and treal<2000000','part2':'treal>=2000000 and treal<4000000',
+               'part3':'treal>=4000000 and treal<8000000','part4':'treal>=8000000 and treal<=9999977');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY treal LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY treal LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'treal>=31.1516132721 and treal<2000000','part2':'treal>=2000000 and treal<4000000',
+               'part3':'treal>=4000000 and treal<8000000','part4':'treal>=8000000 and treal<=9999976.258133976');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY treal LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY treal LIMIT 10;
+
+--------DECIMAL
+SELECT MAX(tdecimal),MIN(tdecimal) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tdecimal>=203.79 and tdecimal<2000000','part2':'tdecimal>=2000000 and tdecimal<4000000',
+               'part3':'tdecimal>=4000000 and tdecimal<8000000','part4':'tdecimal>=8000000 and tdecimal<=99997919.59');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tdecimal LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tdecimal LIMIT 10;
+
+--------NUMERIC
+SELECT MAX(tnumeric),MIN(tnumeric) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tnumeric>=3.568651 and tnumeric<2000000','part2':'tnumeric>=2000000 and tnumeric<4000000',
+               'part3':'tnumeric>=4000000 and tnumeric<8000000','part4':'tnumeric>=8000000 and tnumeric<=9999660.184282');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tnumeric LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tnumeric LIMIT 10;
+
+--------CHAR
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 WHERE tchar LIKE '%c%';
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tchar like '%c%'','part2':'tchar like '%b%'',
+               'part3':'tchar like '%d%'','part4':'tchar like '%e%'');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tnumeric LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tnumeric LIMIT 10;
+
+--------VARCHAR
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 WHERE tvarchar LIKE '%c%';
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tvarchar like '%c%'','part2':'tvarchar like '%b%'',
+               'part3':'tvarchar like '%d%'','part4':'tvarchar like '%e%'');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tnumeric LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3','part4');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tnumeric LIMIT 10;
+
+--------DATE
+/*ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+SET PROPERTIES('part1':'tdate>='1970-01-01' and tdate<''2000-12-31'','part2':'tdate>='2001-01-01' and tdate<'2010-12-31'',
+               'part3':'tdate>='2011-01-01' and tdate<='2040-12-29'');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tdate LIMIT 10;
+
+ALTER TABLE link_oracle_grammar_covered42.t_dblink_read_concurrent4
+UNSET PROPERTIES('part1','part2','part3');
+
+SHOW TABLE PROPERTIES link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT COUNT(*) FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4;
+
+SELECT * FROM link_oracle_grammar_covered42.t_dblink_read_concurrent4 ORDER BY tdate desc LIMIT 10;*/
+
+--------TIMESTAMP
+
+-------part中多字段类型组合
+
+-------part分区异常情况
+--------当各个part有重合时
+--------part中的参数大小写对表的影响
+--------part中的含有不存在的字段名
+--------part中规定的范围中不存在数据
+--------part中字段属性与范围的比较值不匹配
+--------多个part中分别含有不同的字段
+--------properties中除了part开头的参数外还有其他参数混在其中
+--------当执行一次分区后，不进行unset操作，再次进行分区操作
+
+------fetchsize
+
+-----取消参数
+
+-----查询参数

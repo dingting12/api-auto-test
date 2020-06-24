@@ -1,6 +1,7 @@
 set echo on
 -- 清空环境
 drop table t_subquery  IF  EXISTS;
+drop table t_sink  IF  EXISTS;
 
 -- 创建表
 CREATE TABLE IF NOT EXISTS t_subquery (
