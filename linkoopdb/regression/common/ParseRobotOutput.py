@@ -60,8 +60,8 @@ if __name__ == '__main__':
         sys.exit(0)
 
     # 解析XML文件
-    suite = ExecutionResult(sys.argv[1]).suite
-    #Results = ExecutionResult("C:\\Work\\linkoop\\linkoop-auto-test\\linkoopdb\\regression\\work\\output.xml").suite
+    Results = ExecutionResult(sys.argv[1]).suite
+    # Results = ExecutionResult("C:\\Work\\linkoop\\linkoop-auto-test\\linkoopdb\\regression\\work\\output.xml").suite
     # 连接mysql数据库
     mydb = mysql.connector.connect(
         host="node10",
