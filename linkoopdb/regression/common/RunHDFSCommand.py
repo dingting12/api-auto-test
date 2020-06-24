@@ -4,6 +4,8 @@ from pathlib import Path
 from hdfs.client import Client
 from hdfs.util import HdfsError
 import traceback
+from glob import glob
+import sys
 
 
 class HDFSException(Exception):
@@ -40,13 +42,15 @@ class RunHDFSCommand(object):
     def HDFS_Upload(self, local_path, hdfs_path=""):
         if self.m_HDFS_Handler is None:
             raise HDFSException("Please Connect HDFS first.")
-        try:
-            self.m_HDFS_Handler.upload(hdfs_path, local_path, overwrite=True, cleanup=True)
-        except HdfsError as he:
-            raise HDFSException(repr(he))
-        except Exception as oe:
-            print('traceback.print_exc():\n%s' % traceback.print_exc())
-            print('traceback.format_exc():\n%s' % traceback.format_exc())
+
+        for file in glob(local_path):
+            try:
+                self.m_HDFS_Handler.upload(hdfs_path, file, overwrite=True, cleanup=True)
+            except HdfsError as he:
+                raise HDFSException(repr(he))
+            except Exception as oe:
+                print('traceback.print_exc():\n%s' % traceback.print_exc())
+                print('traceback.format_exc():\n%s' % traceback.format_exc())
 
     # 从hdfs获取文件到本地
     def HDFS_Download(self, hdfs_path="", local_path=""):

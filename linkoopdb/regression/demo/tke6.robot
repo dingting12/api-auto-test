@@ -1,6 +1,7 @@
 *** Settings ***
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       run keywords   SQL Test Setup   AND   Custom Prepare
+Test Setup       run keywords   SQL Test Setup
+...              AND   Custom Prepare
 Test Teardown    SQL Test Clnup
 
 *** Settings ***
@@ -16,4 +17,4 @@ Demo5
 *** Keywords ***
 Custom Prepare
     HDFS Connnect              %{T_WORK_HDFS}
-    HDFS Upload                data/test.dat
+    HDFS Upload                data/*.dat
