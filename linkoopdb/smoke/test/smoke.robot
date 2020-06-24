@@ -4,7 +4,7 @@ Documentation    RobotFrameWork文档实例
 
 # 引用公共函数
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       SQL Test Setup
+Test Setup       My Test Setup
 Test Teardown    SQL Test Clnup
 Library          OperatingSystem
 
@@ -313,7 +313,8 @@ ExternalTabTest
 	Compare Files        LDBX022-12 ORC file as external table.log                 										LDB_EXT_External_Table/LDBX022-12 ORC file as external table.ref
 
 *** Keywords ***
-SQL Test Setup
+My Test Setup
+    SQL Test Setup
     SQLCli Enable ConsoleOutput        True
     Compare Skip                       ^[| 当前时间戳].*
     Compare Skip                       ^[| 当前时间].*
