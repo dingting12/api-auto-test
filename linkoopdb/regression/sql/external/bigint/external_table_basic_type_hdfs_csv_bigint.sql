@@ -188,7 +188,7 @@ drop table if exists t_external_hdfs_csv_bigint_018;
 
 create external table t_external_hdfs_csv_bigint_018(
 a1 bigint  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL.csv')
+)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL1.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_bigint_018;
