@@ -1,0 +1,64 @@
+SQLCli Release 0.0.70
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_parquet_boolean.sql
+SQL> --    Description: boolean边界值测试,boolean的范围true/false
+   > --    Date:         2020-06-23
+   > --    Author:       丁婷
+   > -- hdfs external parquet
+SQL> set echo on 
+SQL> 
+SQL> -- 测试boolean的varchar，date,timestamp,boolean以及''等异常值
+SQL> drop table if exists t_external_hdfs_parquet_boolean_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_boolean_002;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_boolean_001(
+   > a1 boolean,
+   > a2 boolean,
+   > a3 boolean,
+   > a4 boolean,
+   > a5 boolean,
+   > a6 boolean,
+   > a7 boolean,
+   > a8 boolean,
+   > a9 boolean,
+   > a10 boolean,
+   > a11 boolean,
+   > a12 boolean,
+   > a13 boolean
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_boolean_001;
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+------+------+-------+
+| A1     | A2     | A3     | A4     | A5     | A6     | A7     | A8     | A9     | A10    | A11  | A12  | A13   |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+------+------+-------+
+| <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | True | True | False |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+------+------+-------+
+1 row selected.
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_boolean_002(
+   > a1 boolean,
+   > a2 boolean,
+   > a3 boolean,
+   > a4 boolean,
+   > a5 boolean,
+   > a6 boolean,
+   > a7 boolean,
+   > a8 boolean,
+   > a9 boolean,
+   > a10 boolean,
+   > a11 boolean,
+   > a12 boolean
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/boolean1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_boolean_002;
++------+-------+------+------+--------+------+------+------+-------+-------+-------+--------+
+| A1   | A2    | A3   | A4   | A5     | A6   | A7   | A8   | A9    | A10   | A11   | A12    |
++------+-------+------+------+--------+------+------+------+-------+-------+-------+--------+
+| True | False | True | True | <null> | True | True | True | False | False | False | <null> |
++------+-------+------+------+--------+------+------+------+-------+-------+-------+--------+
+1 row selected.
+SQL> exit
+Disconnected.

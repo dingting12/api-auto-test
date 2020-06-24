@@ -6,7 +6,7 @@
 set echo on
 
 
--- 测试smallint边界值±1，超过smallint范围的double,以及超出smallint范围的varchar类型数字
+-- 测试int边界值±1，超过int范围的double,以及超出int范围的varchar类型数字
 drop table if exists t_external_hdfs_orc_int_001;
 drop table if exists t_external_hdfs_orc_int_002;
 
@@ -21,7 +21,7 @@ LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/int1') FORMAT
 select * from t_external_hdfs_orc_int_001;
 
 
--- 测试smallint的varchar，date,timestamp,boolean以及''等异常值
+-- 测试int的varchar，date,timestamp,boolean以及''等异常值
 CREATE EXTERNAL TABLE t_external_hdfs_orc_int_002(
 a1 int,
 a2 int,

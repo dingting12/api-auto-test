@@ -1,0 +1,59 @@
+SQLCli Release 0.0.70
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_parquet_smallint.sql
+SQL> --    Description: smallint边界值测试,smallint的数据范围为-32,768/32,767
+   > --    Date:         2020-06-23
+   > --    Author:       丁婷
+   > --    hdfs external parquet格式
+SQL> set echo on 
+SQL> 
+SQL> -- 测试smallint边界值±1，超过smallint范围的double,以及超出smallint范围的varchar类型数字
+SQL> drop table if exists t_external_hdfs_parquet_small_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_small_002;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_small_001(
+   > a1 smallint,
+   > a2 smallint,
+   > a3 smallint,
+   > a4 smallint
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/small1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_small_001;
++-------+--------+--------+--------+
+| A1    | A2     | A3     | A4     |
++-------+--------+--------+--------+
+| 32767 | -32768 | -32768 | <null> |
++-------+--------+--------+--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试smallint的varchar，date,timestamp,boolean以及''等异常值
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_small_002(
+   > a1 smallint,
+   > a2 smallint,
+   > a3 smallint,
+   > a4 smallint,
+   > a5 smallint,
+   > a6 smallint,
+   > a7 smallint,
+   > a8 smallint,
+   > a9 smallint,
+   > a10 smallint,
+   > a11 smallint,
+   > a12 smallint,
+   > a13 smallint
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_small_002;
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-------+-----+-----+
+| A1     | A2     | A3     | A4     | A5     | A6     | A7     | A8     | A9     | A10    | A11   | A12 | A13 |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-------+-----+-----+
+| <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | -8779 | 1   | 0   |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-------+-----+-----+
+1 row selected.
+SQL> exit
+Disconnected.
