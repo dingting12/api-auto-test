@@ -5,6 +5,9 @@
 # 描述   :    集成在Jenkins中，用来在JOB开始前设置相关环境信息
 # -------------------------------------------------------------------------------
 
+# 关闭调试信息
+set +x
+
 # 环境变量
 PY_HOME=/opt/anaconda3/
 PY_BIN=$PY_HOME/bin/python
@@ -36,6 +39,7 @@ fi
 rm -r -f "$T_WORK"
 mkdir -p "$T_WORK"
 
+echo Query catalog to get build tag for label ["$Label_ID"]
 # 切换当前工作目录为T_WORK下, 并执行环境设置脚本
 $PY_BIN "$TEST_ROOT"/regression/common/SetupLabelBuildTag.py "$Label_ID" > "$T_WORK"/__tempenv__.sh
 if [ "$(grep -c Successful "$T_WORK"/__tempenv__.sh)" -eq 1 ]; then
