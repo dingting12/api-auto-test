@@ -21,6 +21,18 @@ CREATE TPCH EXTERNAL TABLE
     Logon And Execute SQL Script       admin/123456  prepare/external.sql  external.log
 #    Compare Files                      external.log  prepare/external.ref
 
+CREATE TPCH TABLE
+    [Documentation]    CREATE TPCH TABLE
+    Logon And Execute SQL Script       admin/123456  prepare/create.sql  create.log
+
+LOAD DATA
+    [Documentation]    LOAD DATA
+    Logon And Execute SQL Script       admin/123456  prepare/load.sql  load.log
+
+TPCH QUERIES
+    [Documentation]    TPCH QUERIES
+    Logon And Execute SQL Script       admin/123456  prepare/*.sql  querise.log
+
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True
