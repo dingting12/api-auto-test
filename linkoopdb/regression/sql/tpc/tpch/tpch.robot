@@ -31,7 +31,7 @@ LOAD DATA
 
 TPCH QUERIES
     [Documentation]    TPCH QUERIES
-    Logon And Execute SQL Script       admin/123456  prepare/*.sql  querise.log
+    Logon And Execute SQL Script       admin/123456  queries/*.sql  queries.log
 
 *** Keywords ***
 Setup Custom Settings
