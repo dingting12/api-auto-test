@@ -13,5 +13,5 @@ do
 done
 cd "$(dirname "$1")" || { echo "Failed to enter test directory"; exit 1; }
 $ROBOT_BIN --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO\
-    --outputdir "$T_WORK" -o "$m_output_xmlfilename".xml $1
+    --outputdir "$T_WORK" -o "$m_output_xmlfilename" $1
 
