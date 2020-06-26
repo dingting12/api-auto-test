@@ -39,11 +39,11 @@ mkdir -p "$T_WORK"
 # 切换当前工作目录为T_WORK下, 并执行环境设置脚本
 $PY_BIN "$TEST_ROOT"/regression/common/SetupLabelBuildTag.py "$Label_ID" > "$T_WORK"/__tempenv__.sh
 if [ "$(grep -c Successful "$T_WORK"/__tempenv__.sh)" -eq 1 ]; then
-    cd "$T_WORK" || { echo "Failed to cd $T_WORK"; exit 255; }
-    source __tempenv__.sh
-    cat __tempenv__.sh
+    # shellcheck disable=SC1090
+    source "$T_WORK"/__tempenv__.sh
+    cat "$T_WORK"/__tempenv__.sh
 else
     echo "SetupLabelBuildTag failed ..."
-    cat __tempenv__.sh
+    cat "$T_WORK"/__tempenv__.sh
     exit 255
 fi
