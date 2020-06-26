@@ -31,12 +31,12 @@ LOAD DATA
 
 TPCH QUERIES
     [Documentation]    TPCH QUERIES
-    Logon And Execute SQL Script       admin/123456  queries/*.sql  queries.log
+    Logon And Execute SQL Script       admin/123456  queries/1.sql  1.log
 
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True
-
+    SQLCli Enable ConsoleOutput        True
 
 
 

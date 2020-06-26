@@ -15,19 +15,19 @@ create table part  (
         p_size        integer ,
         p_container   char(10) ,
         p_retailprice decimal(15,2) ,
-        p_comment     varchar(23) ,PRIMARY KEY (`p_partkey`) );
+        p_comment     varchar(23) ,PRIMARY KEY (p_partkey) );
 
 
 create table nation  (
     n_nationkey  integer not null,
         n_name       char(25) ,
         n_regionkey  integer not null,
-        n_comment    varchar(152),PRIMARY KEY (`n_nationkey`));
+        n_comment    varchar(152),PRIMARY KEY (n_nationkey));
 
 create table region  (
     r_regionkey  integer not null,
         r_name       char(25) ,
-        r_comment    varchar(152),PRIMARY KEY (`r_regionkey`));
+        r_comment    varchar(152),PRIMARY KEY (r_regionkey));
 
 create table supplier (
     s_suppkey     integer not null,
@@ -36,14 +36,14 @@ create table supplier (
         s_nationkey   integer not null,
         s_phone       char(15) ,
         s_acctbal     decimal(15,2) ,
-        s_comment     varchar(101),PRIMARY KEY (`s_suppkey`));
+        s_comment     varchar(101),PRIMARY KEY (s_suppkey));
 
 create table partsupp (
         ps_partkey     integer not null,
         ps_suppkey     integer not null,
         ps_availqty    integer ,
         ps_supplycost  decimal(15,2)  ,
-        ps_comment     varchar(199),PRIMARY KEY (`ps_partkey`,`ps_suppkey`));
+        ps_comment     varchar(199),PRIMARY KEY (ps_partkey,ps_suppkey));
 
 create table customer (
     c_custkey     integer not null,
@@ -53,7 +53,7 @@ create table customer (
         c_phone       char(15) ,
         c_acctbal     decimal(15,2)   ,
         c_mktsegment  char(10) ,
-        c_comment     varchar(117),PRIMARY KEY (`c_custkey`));
+        c_comment     varchar(117),PRIMARY KEY (c_custkey));
 
 create table orders  (
     o_orderkey       integer not null,
@@ -64,7 +64,7 @@ create table orders  (
         o_orderpriority  char(15) ,
         o_clerk          char(15) ,
         o_shippriority   integer ,
-        o_comment        varchar(79),PRIMARY KEY (`o_orderkey`) );
+        o_comment        varchar(79),PRIMARY KEY (o_orderkey) );
 
 create table lineitem (
     l_orderkey    integer not null,
@@ -82,4 +82,4 @@ create table lineitem (
         l_receiptdate date ,
         l_shipinstruct char(25) ,
         l_shipmode     char(10) ,
-        l_comment      varchar(44),PRIMARY KEY (`l_orderkey`,`l_linenumber`) );
+        l_comment      varchar(44),PRIMARY KEY (l_orderkey,l_linenumber) );
