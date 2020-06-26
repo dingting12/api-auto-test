@@ -1,42 +1,18 @@
--- $ID$
--- TPC-H/TPC-R Global Sales Opportunity Query (Q22)
--- Functional Query Definition
--- Approved February 1998
-
 select
-	cntrycode,
-	count(*) as numcust,
-	sum(c_acctbal) as totacctbal
+	sum(l_extendedprice) / 7.0 as avg_yearly
 from
-	(
+	lineitem,
+	part
+where
+	p_partkey = l_partkey
+	and p_brand = 'Brand#23'
+	and p_container = 'MED BOX'
+	and l_quantity < (
 		select
-			substring(c_phone from 1 for 2) as cntrycode,
-			c_acctbal
+			0.2 * avg(l_quantity)
 		from
-			customer
+			lineitem
 		where
-			substring(c_phone from 1 for 2) in
-				(':1', ':2', ':3', ':4', ':5', ':6', ':7')
-			and c_acctbal > (
-				select
-					avg(c_acctbal)
-				from
-					customer
-				where
-					c_acctbal > 0.00
-					and substring(c_phone from 1 for 2) in
-						(':1', ':2', ':3', ':4', ':5', ':6', ':7')
-			)
-			and not exists (
-				select
-					*
-				from
-					orders
-				where
-					o_custkey = c_custkey
-			)
-	) as custsale
-group by
-	cntrycode
-order by
-	cntrycode;
+			l_partkey = p_partkey
+	)
+

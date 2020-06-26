@@ -1,45 +1,43 @@
--- $ID$
--- TPC-H/TPC-R Suppliers Who Kept Orders Waiting Query (Q21)
--- Functional Query Definition
--- Approved February 1998
-
-select
-	s_name,
-	count(*) as numwait
-from
-	supplier,
-	lineitem l1,
-	orders,
-	nation
-where
-	s_suppkey = l1.l_suppkey
-	and o_orderkey = l1.l_orderkey
-	and o_orderstatus = 'F'
-	and l1.l_receiptdate > l1.l_commitdate
-	and exists (
-		select
-			*
-		from
-			lineitem l2
-		where
-			l2.l_orderkey = l1.l_orderkey
-			and l2.l_suppkey <> l1.l_suppkey
-	)
-	and not exists (
-		select
-			*
-		from
-			lineitem l3
-		where
-			l3.l_orderkey = l1.l_orderkey
-			and l3.l_suppkey <> l1.l_suppkey
-			and l3.l_receiptdate > l3.l_commitdate
-	)
-	and s_nationkey = n_nationkey
-	and n_name = ':1'
-group by
-	s_name
-order by
-	numwait desc,
-	s_name;
-limit 100
+select s_name, count(1) as numwait
+from (
+  select s_name 
+  from (
+    select s_name, t2.l_orderkey, l_suppkey, t2.count_suppkey, t2.max_suppkey
+    from (
+      select l_orderkey, count(distinct l_suppkey) as count_suppkey, max(l_suppkey) as max_suppkey
+      from lineitem where l_receiptdate > l_commitdate
+      group by l_orderkey     
+    ) t2 right outer join (
+      select s_name, l_orderkey, l_suppkey 
+      from (
+        select s_name, t1.l_orderkey, l_suppkey, t1.count_suppkey, t1.max_suppkey
+        from (
+         select l_orderkey, count(distinct l_suppkey) as count_suppkey, max(l_suppkey) as max_suppkey
+         from lineitem group by l_orderkey
+        ) t1 join (
+          select s_name, l_orderkey, l_suppkey
+          from orders o join (
+            select s_name, l_orderkey, l_suppkey
+            from nation n join supplier s
+            on s.s_nationkey = n.n_nationkey
+               and n.n_name = 'SAUDI ARABIA'
+            join lineitem l
+            on s.s_suppkey = l.l_suppkey
+            where
+            l.l_receiptdate > l.l_commitdate
+          ) l1 on o.o_orderkey = l1.l_orderkey
+                  and o.o_orderstatus = 'F'
+       ) l2 on l2.l_orderkey = t1.l_orderkey
+    ) a
+    where
+      (count_suppkey > 1) or ((count_suppkey=1)
+      and (l_suppkey <> max_suppkey))
+   ) l3 on l3.l_orderkey = t2.l_orderkey
+  ) b
+  where
+    (count_suppkey is null) or ((count_suppkey=1)
+    and (l_suppkey = max_suppkey))
+) c
+group by s_name
+order by numwait desc, s_name
+limit 100;
