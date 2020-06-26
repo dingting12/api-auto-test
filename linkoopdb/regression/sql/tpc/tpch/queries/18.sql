@@ -2,8 +2,7 @@
 -- TPC-H/TPC-R Large Volume Customer Query (Q18)
 -- Function Query Definition
 -- Approved February 1998
-:x
-:o
+
 select
 	c_name,
 	c_custkey,

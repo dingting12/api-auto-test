@@ -2,8 +2,7 @@
 -- TPC-H/TPC-R Shipping Priority Query (Q3)
 -- Functional Query Definition
 -- Approved February 1998
-:x
-:o
+
 select
 	l_orderkey,
 	sum(l_extendedprice * (1 - l_discount)) as revenue,
