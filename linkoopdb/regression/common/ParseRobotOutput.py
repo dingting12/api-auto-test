@@ -19,8 +19,8 @@ def load_testresults(p_dbHandler, p_szSuite):
             m_Build_ID = os.environ["Build_ID"]
         else:
             m_Build_ID = None
-        if "Build_URL" in os.environ:
-            m_Build_URL = os.environ["Build_URL"]
+        if "BUILD_URL" in os.environ:
+            m_Build_URL = os.environ["BUILD_URL"]
         else:
             m_Build_URL = None
         if "Label_ID" in os.environ:
