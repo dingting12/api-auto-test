@@ -5,14 +5,14 @@
 set echo on
 set timing on
 
-DROP TABLE ex_csv_part IF EXISTS;
-DROP TABLE ex_csv_customer IF EXISTS;
-DROP TABLE ex_csv_lineitem IF EXISTS;
-DROP TABLE ex_csv_nation IF EXISTS;
-DROP TABLE ex_csv_orders IF EXISTS;
-DROP TABLE ex_csv_region IF EXISTS;
-DROP TABLE ex_csv_supplier IF EXISTS;
-DROP TABLE ex_csv_partsupp IF EXISTS;
+DROP TABLE ext_csv_part IF EXISTS;
+DROP TABLE ext_csv_customer IF EXISTS;
+DROP TABLE ext_csv_lineitem IF EXISTS;
+DROP TABLE ext_csv_nation IF EXISTS;
+DROP TABLE ext_csv_orders IF EXISTS;
+DROP TABLE ext_csv_region IF EXISTS;
+DROP TABLE ext_csv_supplier IF EXISTS;
+DROP TABLE ext_csv_partsupp IF EXISTS;
 DROP TABLE part IF EXISTS;
 DROP TABLE customer IF EXISTS;
 DROP TABLE lineitem IF EXISTS;
