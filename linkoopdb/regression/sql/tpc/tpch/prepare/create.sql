@@ -56,7 +56,7 @@ create table customer (
         c_comment     varchar(117),PRIMARY KEY (c_custkey));
 
 create table orders  (
-    o_orderkey       integer not null,
+    o_orderkey       bigint not null,
         o_custkey        integer not null,
         o_orderstatus    char(1) ,
         o_totalprice     decimal(15,2) ,
@@ -67,7 +67,7 @@ create table orders  (
         o_comment        varchar(79),PRIMARY KEY (o_orderkey) );
 
 create table lineitem (
-    l_orderkey    integer not null,
+    l_orderkey    bigint not null,
         l_partkey     integer not null,
         l_suppkey     integer not null,
         l_linenumber  integer not null,

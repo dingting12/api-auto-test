@@ -58,7 +58,7 @@ create external table ext_csv_customer (
         c_comment     varchar(117) ) location ('TPCH_HDFS_PATH/customer.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_orders  (
-    o_orderkey       integer not null,
+    o_orderkey       bigint not null,
         o_custkey        integer not null,
         o_orderstatus    char(1) ,
         o_totalprice     decimal(15,2) ,
@@ -69,7 +69,7 @@ create external table ext_csv_orders  (
         o_comment        varchar(79) ) location ('TPCH_HDFS_PATH/orders.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_lineitem (
-    l_orderkey    integer not null,
+    l_orderkey    bigint not null,
         l_partkey     integer not null,
         l_suppkey     integer not null,
         l_linenumber  integer not null,
