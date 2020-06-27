@@ -5,6 +5,9 @@
 set echo on
 set timing on
 
+-- HDFS URL:
+-- hdfs://node73:8020/data/tpch-1g-csv
+
 create external table ext_csv_part  (
     p_partkey     integer not null,
         p_name        varchar(55) ,
@@ -15,18 +18,18 @@ create external table ext_csv_part  (
         p_container   char(10) ,
         p_retailprice decimal(15,2) ,
         p_comment     varchar(23))
-        location ('hdfs://node73:8020/data/tpch-1g-csv/part.tbl') format 'csv' (DELIMITER '|');
+        location ('TPCH_HDFS_PATH/part.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_nation  (
     n_nationkey  integer not null,
         n_name       char(25) ,
         n_regionkey  integer not null,
-        n_comment    varchar(152)) location ('hdfs://node73:8020/data/tpch-1g-csv/nation.tbl') format 'csv' (DELIMITER '|');
+        n_comment    varchar(152)) location ('TPCH_HDFS_PATH/nation.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_region  (
     r_regionkey  integer not null,
         r_name       char(25) ,
-        r_comment    varchar(152)) location ('hdfs://node73:8020/data/tpch-1g-csv/region.tbl') format 'csv' (DELIMITER '|');
+        r_comment    varchar(152)) location ('TPCH_HDFS_PATH/region.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_supplier (
     s_suppkey     integer not null,
@@ -35,14 +38,14 @@ create external table ext_csv_supplier (
         s_nationkey   integer not null,
         s_phone       char(15) ,
         s_acctbal     decimal(15,2) ,
-        s_comment     varchar(101) ) location ('hdfs://node73:8020/data/tpch-1g-csv/supplier.tbl') format 'csv' (DELIMITER '|');
+        s_comment     varchar(101) ) location ('TPCH_HDFS_PATH/supplier.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_partsupp (
         ps_partkey     integer not null,
         ps_suppkey     integer not null,
         ps_availqty    integer ,
         ps_supplycost  decimal(15,2)  ,
-        ps_comment     varchar(199)  ) location ('hdfs://node73:8020/data/tpch-1g-csv/partsupp.tbl') format 'csv' (DELIMITER '|');
+        ps_comment     varchar(199)  ) location ('TPCH_HDFS_PATH/partsupp.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_customer (
     c_custkey     integer not null,
@@ -52,7 +55,7 @@ create external table ext_csv_customer (
         c_phone       char(15) ,
         c_acctbal     decimal(15,2)   ,
         c_mktsegment  char(10) ,
-        c_comment     varchar(117) ) location ('hdfs://node73:8020/data/tpch-1g-csv/customer.tbl') format 'csv' (DELIMITER '|');
+        c_comment     varchar(117) ) location ('TPCH_HDFS_PATH/customer.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_orders  (
     o_orderkey       integer not null,
@@ -63,7 +66,7 @@ create external table ext_csv_orders  (
         o_orderpriority  char(15) ,
         o_clerk          char(15) ,
         o_shippriority   integer ,
-        o_comment        varchar(79) ) location ('hdfs://node73:8020/data/tpch-1g-csv/orders.tbl') format 'csv' (DELIMITER '|');
+        o_comment        varchar(79) ) location ('TPCH_HDFS_PATH/orders.tbl') format 'csv' (DELIMITER '|');
 
 create external table ext_csv_lineitem (
     l_orderkey    integer not null,
@@ -81,4 +84,4 @@ create external table ext_csv_lineitem (
         l_receiptdate date ,
         l_shipinstruct char(25) ,
         l_shipmode     char(10) ,
-        l_comment      varchar(44) ) location ('hdfs://node73:8020/data/tpch-1g-csv/lineitem.tbl') format 'csv' (DELIMITER '|');
+        l_comment      varchar(44) ) location ('TPCH_HDFS_PATH/lineitem.tbl') format 'csv' (DELIMITER '|');
