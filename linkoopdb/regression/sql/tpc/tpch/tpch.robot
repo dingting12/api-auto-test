@@ -18,7 +18,8 @@ DROP TPCH TABLE
 
 CREATE TPCH EXTERNAL TABLE
     [Documentation]    CREATE TPCH EXTERNAL TABLE
-    Logon And Execute SQL Script       admin/123456  prepare/external.sql  external.log
+    SQLCli Set SQLMAPPING               prepare/tpch_hdfs_path.map
+    Logon And Execute SQL Script        admin/123456  prepare/external.sql  external.log
 #    Compare Files                      external.log  prepare/external.ref
 
 CREATE TPCH TABLE
