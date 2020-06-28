@@ -368,7 +368,55 @@ CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt2(
 ) location('ldbdist://node74:54321/show_csv1.csv')
 format 'csv' (delimiter '|' ESCAPE '//' header 'true');
 
+--测试转义未开启的show create table
+set session escape off;
 
+DROP TABLE IF EXISTS t_external_ldbdist_csv_esc_dt3;
+ 
+CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt3(
+"A" INTEGER ,
+"B" VARCHAR(50) 
+)
+LOCATION ('ldbdist://node74:54321/json.csv')
+FORMAT 'csv'( DELIMITER '\,' ESCAPE '\\' QUOTE '\"');
+
+SELECT * FROM t_external_ldbdist_csv_esc_dt3;
+
+
+show CREATE TABLE t_external_ldbdist_csv_esc_dt3;
+
+--测试转义开启的show create table
+set session escape on;
+
+DROP TABLE IF EXISTS t_external_ldbdist_csv_esc_dt4;
+DROP TABLE IF EXISTS t_external_ldbdist_csv_esc_dt5;
+
+--测试转义字符为\\
+CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt4(
+"A" INTEGER ,
+"B" VARCHAR(50) 
+)
+LOCATION ('ldbdist://node74:54321/json.csv')
+FORMAT 'csv'( DELIMITER '\,' ESCAPE '\\' QUOTE '\'');
+
+SELECT * FROM t_external_ldbdist_csv_esc_dt4;
+
+
+show CREATE TABLE t_external_ldbdist_csv_esc_dt4;
+
+CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt5(
+"A" INTEGER ,
+"B" VARCHAR(50) 
+)
+LOCATION ('ldbdist://node74:54321/json.csv')
+FORMAT 'csv'( DELIMITER '\,' ESCAPE '\'' QUOTE '\'');
+
+SELECT * FROM t_external_ldbdist_csv_esc_dt5;
+
+
+show CREATE TABLE t_external_ldbdist_csv_esc_dt5;
+
+set session escape off;
 
 -- 测试参数NULL
 -- 删除表

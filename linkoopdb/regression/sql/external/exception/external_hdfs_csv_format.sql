@@ -24,6 +24,7 @@ drop table if exists t_external_hdfs_csv_018;
 drop table if exists t_external_hdfs_csv_019;
 drop table if exists t_external_hdfs_csv_020;
 drop table if exists t_external_hdfs_csv_021;
+drop table if exists t_external_hdfs_csv_022;
 
 -- 测试EXTERNAL关键字未写，创建表需报错明确
 CREATE  TABLE t_external_hdfs_csv_001(
@@ -135,6 +136,17 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_012(
 format 'csv' (delimiter '|');
 
 select * from t_external_hdfs_csv_012;
+
+-- 测试location值无权限，使用时报错明确
+CREATE EXTERNAL TABLE t_external_hdfs_csv_022(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/node74/stream74/linkoopdb/data/show_csv1.csv')
+format 'csv' (delimiter '|');
+
+select * from t_external_hdfs_csv_022;
 
 
  -- 测试location和值未写，使用时报错明确
@@ -366,6 +378,57 @@ CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt2(
   birthday TIMESTAMP
 ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
 format 'csv' (delimiter '|' ESCAPE '//' header 'true');
+
+--测试转义未开启的show create table
+set session escape off;
+
+DROP TABLE IF EXISTS t_external_hdfs_csv_esc_dt3;
+ 
+CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt3(
+"A" INTEGER ,
+"B" VARCHAR(50) 
+)
+LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv')
+FORMAT 'csv'( DELIMITER '\,' ESCAPE '\\' QUOTE '\"');
+
+SELECT * FROM t_external_hdfs_csv_esc_dt3;
+
+
+show CREATE TABLE t_external_hdfs_csv_esc_dt3;
+
+--测试转义开启的show create table
+set session escape on;
+
+DROP TABLE IF EXISTS t_external_hdfs_csv_esc_dt4;
+DROP TABLE IF EXISTS t_external_hdfs_csv_esc_dt5;
+
+--测试转义字符为\\
+CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt4(
+"A" INTEGER ,
+"B" VARCHAR(50) 
+)
+LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv')
+FORMAT 'csv'( DELIMITER '\,' ESCAPE '\\' QUOTE '\'');
+
+SELECT * FROM t_external_hdfs_csv_esc_dt4;
+
+
+show CREATE TABLE t_external_hdfs_csv_esc_dt4;
+
+CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt5(
+"A" INTEGER ,
+"B" VARCHAR(50) 
+)
+LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv')
+FORMAT 'csv'( DELIMITER '\,' ESCAPE '\'' QUOTE '\'');
+
+SELECT * FROM t_external_hdfs_csv_esc_dt5;
+
+
+show CREATE TABLE t_external_hdfs_csv_esc_dt5;
+
+set session escape off;
+
 
 
 
