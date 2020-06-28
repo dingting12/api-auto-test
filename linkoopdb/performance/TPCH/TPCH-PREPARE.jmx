@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="4.0" jmeter="4.0 r1823414">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="node" elementType="Argument">
+            <stringProp name="Argument.name">node</stringProp>
+            <stringProp name="Argument.value">192.168.1.74</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">linkoopdb host</stringProp>
+          </elementProp>
+          <elementProp name="a" elementType="Argument">
+            <stringProp name="Argument.name">a</stringProp>
+            <stringProp name="Argument.value">admin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">dba user</stringProp>
+          </elementProp>
+          <elementProp name="TPCH" elementType="Argument">
+            <stringProp name="Argument.name">TPCH</stringProp>
+            <stringProp name="Argument.value">TPCH</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="TPCH_HDFS_PATH" elementType="Argument">
+            <stringProp name="Argument.name">TPCH_HDFS_PATH</stringProp>
+            <stringProp name="Argument.value">hdfs://node73:8020/data/tpch-1g-csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="admin" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">500000</stringProp>
+        <stringProp name="dataSource">${a}</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">1000000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">6000000</stringProp>
+        <stringProp name="username">${a}</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="TPCH" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">500000</stringProp>
+        <stringProp name="dataSource">${TPCH}</stringProp>
+        <stringProp name="dbUrl">jdbc:linkoopdb:tcp://${node}:9105/ldb</stringProp>
+        <stringProp name="driver">com.datapps.linkoopdb.jdbc.JdbcDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">1000000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">6000000</stringProp>
+        <stringProp name="username">${TPCH}</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="TPCH" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CREATE USER" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="drop user TPCH if exists cascade;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">drop user TPCH if exists cascade;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE USER TPCH PASSWORD &apos;123456&apos;;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">CREATE USER TPCH PASSWORD &apos;123456&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="grant change_authorization to TPCH;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">grant change_authorization to TPCH;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="connect user TPCH password &apos;123456&apos;;" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">connect user TPCH password &apos;123456&apos;;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="DROP TABLE" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="DROP TABLE" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DROP TABLE ext_csv_part IF EXISTS;
+DROP TABLE ext_csv_customer IF EXISTS;
+DROP TABLE ext_csv_lineitem IF EXISTS;
+DROP TABLE ext_csv_nation IF EXISTS;
+DROP TABLE ext_csv_orders IF EXISTS;
+DROP TABLE ext_csv_region IF EXISTS;
+DROP TABLE ext_csv_supplier IF EXISTS;
+DROP TABLE ext_csv_partsupp IF EXISTS;
+DROP TABLE part IF EXISTS;
+DROP TABLE customer IF EXISTS;
+DROP TABLE lineitem IF EXISTS;
+DROP TABLE nation IF EXISTS;
+DROP TABLE orders IF EXISTS;
+DROP TABLE region IF EXISTS;
+DROP TABLE supplier IF EXISTS;
+DROP TABLE partsupp IF EXISTS;
+DROP VIEW revenue0 IF EXISTS;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CREATE EXTERNAL TABLE" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE EXTERNAL TABLE" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create external table ext_csv_part  (
+    p_partkey     integer not null,
+        p_name        varchar(55) ,
+        p_mfgr        char(25) ,
+        p_brand       char(10) ,
+        p_type        varchar(25) ,
+        p_size        integer ,
+        p_container   char(10) ,
+        p_retailprice decimal(15,2) ,
+        p_comment     varchar(23))
+        location (&apos;${TPCH_HDFS_PATH}/part.tbl&apos;) format &apos;csv&apos; (DELIMITER &apos;|&apos;);
+
+create external table ext_csv_nation  (
+    n_nationkey  integer not null,
+        n_name       char(25) ,
+        n_regionkey  integer not null,
+        n_comment    varchar(152)) location (&apos;${TPCH_HDFS_PATH}/nation.tbl&apos;) format &apos;csv&apos; (DELIMITER &apos;|&apos;);
+
+create external table ext_csv_region  (
+    r_regionkey  integer not null,
+        r_name       char(25) ,
+        r_comment    varchar(152)) location (&apos;${TPCH_HDFS_PATH}/region.tbl&apos;) format &apos;csv&apos; (DELIMITER &apos;|&apos;);
+
+create external table ext_csv_supplier (
+    s_suppkey     integer not null,
+        s_name        char(25) ,
+        s_address     varchar(40) ,
+        s_nationkey   integer not null,
+        s_phone       char(15) ,
+        s_acctbal     decimal(15,2) ,
+        s_comment     varchar(101) ) location (&apos;${TPCH_HDFS_PATH}/supplier.tbl&apos;) format &apos;csv&apos; (DELIMITER &apos;|&apos;);
+
+create external table ext_csv_partsupp (
+        ps_partkey     integer not null,
+        ps_suppkey     integer not null,
+        ps_availqty    integer ,
+        ps_supplycost  decimal(15,2)  ,
+        ps_comment     varchar(199)  ) location (&apos;${TPCH_HDFS_PATH}/partsupp.tbl&apos;) format &apos;csv&apos; (DELIMITER &apos;|&apos;);
+
+create external table ext_csv_customer (
+    c_custkey     integer not null,
+        c_name        varchar(25) ,
+        c_address     varchar(40) ,
+        c_nationkey   integer not null,
+        c_phone       char(15) ,
+        c_acctbal     decimal(15,2)   ,
+        c_mktsegment  char(10) ,
+        c_comment     varchar(117) ) location (&apos;${TPCH_HDFS_PATH}/customer.tbl&apos;) format &apos;csv&apos; (DELIMITER &apos;|&apos;);
+
+create external table ext_csv_orders  (
+    o_orderkey       bigint not null,
+        o_custkey        integer not null,
+        o_orderstatus    char(1) ,
+        o_totalprice     decimal(15,2) ,
+        o_orderdate      date ,
+        o_orderpriority  char(15) ,
+        o_clerk          char(15) ,
+        o_shippriority   integer ,
+        o_comment        varchar(79) ) location (&apos;${TPCH_HDFS_PATH}/orders.tbl&apos;) format &apos;csv&apos; (DELIMITER &apos;|&apos;);
+
+create external table ext_csv_lineitem (
+    l_orderkey    bigint not null,
+        l_partkey     integer not null,
+        l_suppkey     integer not null,
+        l_linenumber  integer not null,
+        l_quantity    decimal(15,2) ,
+        l_extendedprice  decimal(15,2) ,
+        l_discount    decimal(15,2) ,
+        l_tax         decimal(15,2) ,
+        l_returnflag  char(1) ,
+        l_linestatus  char(1) ,
+        l_shipdate    date ,
+        l_commitdate  date ,
+        l_receiptdate date ,
+        l_shipinstruct char(25) ,
+        l_shipmode     char(10) ,
+        l_comment      varchar(44) ) location (&apos;${TPCH_HDFS_PATH}/lineitem.tbl&apos;) format &apos;csv&apos; (DELIMITER &apos;|&apos;);</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="CREATE HDFS TABLE" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE HDFS TABLE" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">create table part  (
+    p_partkey     integer not null,
+        p_name        varchar(55) ,
+        p_mfgr        char(25) ,
+        p_brand       char(10) ,
+        p_type        varchar(25) ,
+        p_size        integer ,
+        p_container   char(10) ,
+        p_retailprice decimal(15,2) ,
+        p_comment     varchar(23) ,PRIMARY KEY (p_partkey) );
+
+
+create table nation  (
+    n_nationkey  integer not null,
+        n_name       char(25) ,
+        n_regionkey  integer not null,
+        n_comment    varchar(152),PRIMARY KEY (n_nationkey));
+
+create table region  (
+    r_regionkey  integer not null,
+        r_name       char(25) ,
+        r_comment    varchar(152),PRIMARY KEY (r_regionkey));
+
+create table supplier (
+    s_suppkey     integer not null,
+        s_name        char(25) ,
+        s_address     varchar(40) ,
+        s_nationkey   integer not null,
+        s_phone       char(15) ,
+        s_acctbal     decimal(15,2) ,
+        s_comment     varchar(101),PRIMARY KEY (s_suppkey));
+
+create table partsupp (
+        ps_partkey     integer not null,
+        ps_suppkey     integer not null,
+        ps_availqty    integer ,
+        ps_supplycost  decimal(15,2)  ,
+        ps_comment     varchar(199),PRIMARY KEY (ps_partkey,ps_suppkey));
+
+create table customer (
+    c_custkey     integer not null,
+        c_name        varchar(25) ,
+        c_address     varchar(40) ,
+        c_nationkey   integer not null,
+        c_phone       char(15) ,
+        c_acctbal     decimal(15,2)   ,
+        c_mktsegment  char(10) ,
+        c_comment     varchar(117),PRIMARY KEY (c_custkey));
+
+create table orders  (
+    o_orderkey       bigint not null,
+        o_custkey        integer not null,
+        o_orderstatus    char(1) ,
+        o_totalprice     decimal(15,2) ,
+        o_orderdate      date ,
+        o_orderpriority  char(15) ,
+        o_clerk          char(15) ,
+        o_shippriority   integer ,
+        o_comment        varchar(79),PRIMARY KEY (o_orderkey) );
+
+create table lineitem (
+    l_orderkey    bigint not null,
+        l_partkey     integer not null,
+        l_suppkey     integer not null,
+        l_linenumber  integer not null,
+        l_quantity    decimal(15,2) ,
+        l_extendedprice  decimal(15,2) ,
+        l_discount    decimal(15,2) ,
+        l_tax         decimal(15,2) ,
+        l_returnflag  char(1) ,
+        l_linestatus  char(1) ,
+        l_shipdate    date ,
+        l_commitdate  date ,
+        l_receiptdate date ,
+        l_shipinstruct char(25) ,
+        l_shipmode     char(10) ,
+        l_comment      varchar(44),PRIMARY KEY (l_orderkey,l_linenumber) );</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="LOAD DATA" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="LOAD DATA" enabled="true">
+            <stringProp name="dataSource">${a}</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">insert into part select * from ext_csv_part;
+
+insert into supplier select * from ext_csv_supplier;
+
+insert into partsupp select * from ext_csv_partsupp;
+
+insert into customer select * from ext_csv_customer;
+
+insert into orders select * from ext_csv_orders;
+
+insert into lineitem select * from ext_csv_lineitem;
+
+insert into nation select * from ext_csv_nation;
+
+insert into region select * from ext_csv_region;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
