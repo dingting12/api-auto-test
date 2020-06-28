@@ -1,0 +1,419 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_csv_real.sql
+SQL> --    Description: real边界值测试,double的范围-1.79769313486231E+308,-2.22507385850720E-308, 0,2.22507385850720E-308 ~ 1.79769313486231E+308
+   > --    Date:         2020-06-23
+   > --    Author:       丁婷
+   > --    hdfs external csv格式
+SQL> set echo on 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_001表
+SQL> drop table if exists t_external_hdfs_csv_real_001;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_001，测试超出边界值-1.79769313486231E+308-1
+SQL> create external table t_external_hdfs_csv_real_001(
+   > a1 double
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/real_001.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> -- 查询t_external_hdfs_csv_real_001，应报错,实际返回空值
+SQL> SELECT * FROM t_external_hdfs_csv_real_001;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_002表
+SQL> drop table if exists t_external_hdfs_csv_real_002;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_002，测试超出边界值1.79769313486231E+308+1
+SQL> create external table t_external_hdfs_csv_real_002(
+   > a1 double 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/real_002.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL>   -- 查询t_external_hdfs_csv_real_002，应报错,实际返回空值
+SQL> SELECT * FROM t_external_hdfs_csv_real_002;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_019表
+SQL> drop table if exists t_external_hdfs_csv_real_019;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_019，测试超出边界值 -2.22507385850720E-308-1E-308
+SQL> create external table t_external_hdfs_csv_real_019(
+   > a1 double
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/real_006.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> -- 查询t_external_hdfs_csv_real_019，应报错,实际返回空值
+SQL> SELECT * FROM t_external_hdfs_csv_real_019;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_004表
+SQL> drop table if exists t_external_hdfs_csv_real_020;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_020，测试超出边界值2.22507385850720E-308-1E-308
+SQL> create external table t_external_hdfs_csv_real_020(
+   > a1 double 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/real_007.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> -- 查询t_external_hdfs_csv_real_020，应报错,实际返回空值
+SQL> SELECT * FROM t_external_hdfs_csv_real_020;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_003表
+SQL> drop table if exists t_external_hdfs_csv_real_003;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_003，测试有效位为15位，超出有效位四舍五入，值为123.12345678912391
+SQL> create external table t_external_hdfs_csv_real_003(
+   > a1 real
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/real_003.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_003的数据,实际返回123.1234567891239
+SQL> select * from t_external_hdfs_csv_real_003;
++-------------+
+| A1          |
++-------------+
+| 123.1234568 |
++-------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_004表，测试int类型，值为1147483647
+SQL> drop table if exists t_external_hdfs_csv_real_004;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_004
+SQL> create external table t_external_hdfs_csv_real_004(
+   > a1 real   
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/real_004.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_004的数据，返回1147483647
+SQL> select * from t_external_hdfs_csv_real_004;
++------------+
+| A1         |
++------------+
+| 1147483647 |
++------------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_005表
+SQL> drop table if exists t_external_hdfs_csv_real_005;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_005，测试varchar英文字母，值为'asdf'
+SQL> create external table t_external_hdfs_csv_real_005(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzimu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_005的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_005;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_006表
+SQL> drop table if exists t_external_hdfs_csv_real_006;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_006，测试varchar中文字符，值为'你好'
+SQL> create external table t_external_hdfs_csv_real_006(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwen.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_006的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_006;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_007表
+SQL> drop table if exists t_external_hdfs_csv_real_007;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_007，测试varchar中英文字符，值为'你好asdf'
+SQL> create external table t_external_hdfs_csv_real_007(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongyinghunhe.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_007的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_007;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_008表
+SQL> drop table if exists t_external_hdfs_csv_real_008;
+0 rows affected
+SQL> 
+SQL> -- 创建表 t_external_hdfs_csv_real_008，测试varchar英文特殊字符，值为'#$%^'
+SQL> create external table t_external_hdfs_csv_real_008(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询 t_external_hdfs_csv_real_008 的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_008;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除 t_external_hdfs_csv_real_009 表
+SQL> drop table if exists t_external_hdfs_csv_real_009;
+0 rows affected
+SQL> 
+SQL> -- 创建表 t_external_hdfs_csv_real_009 ，测试varreal中文特殊字符，值为'@#￥%……'
+SQL> create external table t_external_hdfs_csv_real_009(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询 t_external_hdfs_csv_real_009 的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_009;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除 t_external_hdfs_csv_real_010 表
+SQL> drop table if exists t_external_hdfs_csv_real_010;
+0 rows affected
+SQL> 
+SQL> -- 创建表 t_external_hdfs_csv_real_010，测试varchar为数字，值为'123456789'
+SQL> create external table t_external_hdfs_csv_real_010(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/real_005.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> --查询 t_external_hdfs_csv_real_010 的数据,实际返回空值
+SQL> SELECT * FROM t_external_hdfs_csv_real_010;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_011表
+SQL> drop table if exists t_external_hdfs_csv_real_011;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_011，测试date类型，值为2020-05-08
+SQL> create external table t_external_hdfs_csv_real_011(
+   > a1 real  
+   > )location('hdfs://node73:8011/user/testdb73/external_file/csv_type/type_date.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_011的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_011;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.net.ConnectException: Connection refused
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_012表
+SQL> drop table if exists t_external_hdfs_csv_real_012;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_012，测试timestamp，值为2020-05-08 12:19:01
+SQL> create external table t_external_hdfs_csv_real_012(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_timestamp.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_012的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_012;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除 t_external_hdfs_csv_real_013 表
+SQL> drop table if exists t_external_hdfs_csv_real_013;
+0 rows affected
+SQL> 
+SQL> -- 创建表 t_external_hdfs_csv_real_013，测试boolean类型，值为false
+SQL> create external table t_external_hdfs_csv_real_013(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_false.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询 t_external_hdfs_csv_real_013 的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_013;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_014表
+SQL> drop table if exists t_external_hdfs_csv_real_014;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_014，测试boolean类型，值为true
+SQL> create external table t_external_hdfs_csv_real_014(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_true.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_014的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_014;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_015表
+SQL> drop table if exists t_external_hdfs_csv_real_015;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_015，测试空值
+SQL> create external table t_external_hdfs_csv_real_015(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongzhi.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_015的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_015;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL>  
+SQL>  
+SQL> -- 删除t_external_hdfs_csv_real_016表
+SQL> drop table if exists t_external_hdfs_csv_real_016;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_016，测试空格 
+SQL> create external table t_external_hdfs_csv_real_016(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongge.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_016的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_016;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_017表
+SQL> drop table if exists t_external_hdfs_csv_real_017;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_017，测试null 
+SQL> create external table t_external_hdfs_csv_real_017(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_null.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_017的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_017;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_real_018表
+SQL> drop table if exists t_external_hdfs_csv_real_018;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_real_018，测试NULL  
+SQL> create external table t_external_hdfs_csv_real_018(
+   > a1 real  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_real_018的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_real_018;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> exit
+Disconnected.

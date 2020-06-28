@@ -18,10 +18,10 @@ a1 varchar(64001)
 )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/varchar1')
 FORMAT 'parquet';
 
--- 测试长度为64000，数据大小为100000
+-- 测试长度为10，数据大小为20
 create external table t_external_hdfs_parquet_varchar_002(
 a1 varchar(10) 
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/varchar1')
+)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/char2')
 FORMAT 'parquet';
 
 -- 返回10个字符
@@ -33,7 +33,7 @@ CREATE EXTERNAL TABLE t_external_hdfs_parquet_varchar_003(
 a1 varchar(30),
 a2 varchar(30),
 a3 varchar(30),
-a4 varchar(30)
+a4 varchar(30),
 a5 varchar(30)
 )
 LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/char1') FORMAT 'parquet';

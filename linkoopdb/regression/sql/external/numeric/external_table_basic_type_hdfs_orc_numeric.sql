@@ -15,7 +15,7 @@ drop table if exists t_external_hdfs_orc_numeric_006;
 drop table if exists t_external_hdfs_orc_numeric_007;
 drop table if exists t_external_hdfs_orc_numeric_008;
 drop table if exists t_external_hdfs_orc_numeric_009;
-drop table if exists t_external_hdfs_orc_numeric_010
+drop table if exists t_external_hdfs_orc_numeric_010;
 drop table if exists t_external_hdfs_orc_numeric_011;
 drop table if exists t_external_hdfs_orc_numeric_012;
 

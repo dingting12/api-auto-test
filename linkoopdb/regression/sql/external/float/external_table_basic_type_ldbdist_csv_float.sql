@@ -129,7 +129,7 @@ a1 float
 format 'csv' (delimiter ',');
   
 --查询 t_external_ldbdist_csv_float_008 的数据,实际返回空值
-select * from t_external_ldbdist_csv_float_008
+select * from t_external_ldbdist_csv_float_008;
 
 
 -- 删除 t_external_ldbdist_csv_float_009 表

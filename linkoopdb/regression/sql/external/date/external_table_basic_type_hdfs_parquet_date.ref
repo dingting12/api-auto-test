@@ -1,0 +1,62 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_parquet_date.sql
+SQL> --    Description: date边界值测试,date的数值范围是0001-01-01/9999-12-31
+   > --    Date:         2020-06-23
+   > --    Author:       丁婷
+SQL> set echo on 
+SQL> 
+SQL> -- hdfs external parquet 
+   > 
+   > -- 删除表
+SQL> drop table if exists t_external_hdfs_parquet_date_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_date_002;
+0 rows affected
+SQL> 
+SQL> -- 测试异常值以及其他数据类型
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_date_001(
+   > a1 date,
+   > a2 date,
+   > a3 date,
+   > a4 date,
+   > a5 date,
+   > a6 date,
+   > a7 date
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/date1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_date_001;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'CAST(`A3` AS DATE)' due to data type mismatch: cannot cast int to date;;
+'Project [A1#197163, A2#197164, A3#197165, A4#197166, A5#197167, A6#197168, A7#197169]
++- 'Project [cast(A1#814796 as date) AS A1#197163, cast(A2#814797 as date) AS A2#197164, cast(A3#814798 as date) AS A3#197165, cast(A4#814799 as date) AS A4#197166, cast(A5#814800 as date) AS A5#197167, cast(A6#814801 as date) AS A6#197168, cast(A7#814802 as date) AS A7#197169]
+   +- Relation[A1#814796,A2#814797,A3#814798,A4#814799,A5#814800,A6#814801,A7#814802] parquet
+
+SQL> 
+SQL> -- 测试varchar，date,timestamp,boolean以及''等异常值
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_date_002(
+   > a1 date,
+   > a2 date,
+   > a3 date,
+   > a4 date,
+   > a5 date,
+   > a6 date,
+   > a7 date,
+   > a8 date,
+   > a9 date,
+   > a10 date,
+   > a11 date,
+   > a12 date,
+   > a13 date
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_date_002;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'CAST(`A12` AS DATE)' due to data type mismatch: cannot cast boolean to date;;
+'Project [A1#197170, A2#197171, A3#197172, A4#197173, A5#197174, A6#197175, A7#197176, A8#197177, A9#197178, A10#197179, A11#197180, A12#197181, A13#197182]
++- 'Project [cast(A1#814810 as date) AS A1#197170, cast(A2#814811 as date) AS A2#197171, cast(A3#814812 as date) AS A3#197172, cast(A4#814813 as date) AS A4#197173, cast(A5#814814 as date) AS A5#197174, cast(A6#814815 as date) AS A6#197175, cast(A7#814816 as date) AS A7#197176, cast(A8#814817 as date) AS A8#197177, cast(A9#814818 as date) AS A9#197178, A10#814819 AS A10#197179, cast(A11#814820 as date) AS A11#197180, cast(A12#814821 as date) AS A12#197181, cast(A13#814822 as date) AS A13#197182]
+   +- Relation[A1#814810,A2#814811,A3#814812,A4#814813,A5#814814,A6#814815,A7#814816,A8#814817,A9#814818,A10#814819,A11#814820,A12#814821,A13#814822] parquet
+
+SQL> exit
+Disconnected.

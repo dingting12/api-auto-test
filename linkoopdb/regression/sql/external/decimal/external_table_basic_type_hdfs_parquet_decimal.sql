@@ -18,7 +18,7 @@ drop table if exists t_external_hdfs_parquet_decimal_006;
 drop table if exists t_external_hdfs_parquet_decimal_007;
 drop table if exists t_external_hdfs_parquet_decimal_008;
 drop table if exists t_external_hdfs_parquet_decimal_009;
-drop table if exists t_external_hdfs_parquet_decimal_010
+drop table if exists t_external_hdfs_parquet_decimal_010;
 drop table if exists t_external_hdfs_parquet_decimal_011;
 drop table if exists t_external_hdfs_parquet_decimal_012;
 

@@ -1,0 +1,61 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_orc_date.sql
+SQL> --    Description: date边界值测试,date的数值范围是0001-01-01/9999-12-31
+   > --    Date:         2020-05-28
+   > --    Author:       丁婷
+   > -- hdfs external orc 
+SQL> set echo on 
+SQL> 
+SQL> -- 删除表
+SQL> drop table if exists t_external_hdfs_orc_date_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_date_002;
+0 rows affected
+SQL> 
+SQL> -- 测试异常值以及其他数据类型
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_date_001(
+   > a1 date,
+   > a2 date,
+   > a3 date,
+   > a4 date,
+   > a5 date,
+   > a6 date,
+   > a7 date
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/date1') FORMAT 'orc';
+0 rows affected
+SQL> select * from t_external_hdfs_orc_date_001;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'CAST(`A3` AS DATE)' due to data type mismatch: cannot cast int to date;;
+'Project [A1#197143, A2#197144, A3#197145, A4#197146, A5#197147, A6#197148, A7#197149]
++- 'Project [cast(A1#814756 as date) AS A1#197143, cast(A2#814757 as date) AS A2#197144, cast(A3#814758 as date) AS A3#197145, cast(A4#814759 as date) AS A4#197146, cast(A5#814760 as date) AS A5#197147, cast(A6#814761 as date) AS A6#197148, cast(A7#814762 as date) AS A7#197149]
+   +- Relation[A1#814756,A2#814757,A3#814758,A4#814759,A5#814760,A6#814761,A7#814762] orc
+
+SQL> 
+SQL> -- 测试varchar，date,timestamp,boolean以及''等异常值
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_date_002(
+   > a1 date,
+   > a2 date,
+   > a3 date,
+   > a4 date,
+   > a5 date,
+   > a6 date,
+   > a7 date,
+   > a8 date,
+   > a9 date,
+   > a10 date,
+   > a11 date,
+   > a12 date,
+   > a13 date
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/common1') FORMAT 'orc';
+0 rows affected
+SQL> select * from t_external_hdfs_orc_date_002;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'CAST(`A12` AS DATE)' due to data type mismatch: cannot cast boolean to date;;
+'Project [A1#197150, A2#197151, A3#197152, A4#197153, A5#197154, A6#197155, A7#197156, A8#197157, A9#197158, A10#197159, A11#197160, A12#197161, A13#197162]
++- 'Project [cast(A1#814770 as date) AS A1#197150, cast(A2#814771 as date) AS A2#197151, cast(A3#814772 as date) AS A3#197152, cast(A4#814773 as date) AS A4#197153, cast(A5#814774 as date) AS A5#197154, cast(A6#814775 as date) AS A6#197155, cast(A7#814776 as date) AS A7#197156, cast(A8#814777 as date) AS A8#197157, cast(A9#814778 as date) AS A9#197158, A10#814779 AS A10#197159, cast(A11#814780 as date) AS A11#197160, cast(A12#814781 as date) AS A12#197161, cast(A13#814782 as date) AS A13#197162]
+   +- Relation[A1#814770,A2#814771,A3#814772,A4#814773,A5#814774,A6#814775,A7#814776,A8#814777,A9#814778,A10#814779,A11#814780,A12#814781,A13#814782] orc
+
+SQL> exit
+Disconnected.

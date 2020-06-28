@@ -1,0 +1,424 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_csv_float.sql
+SQL> --    hdfs external csv格式
+   > --    Description: smallint边界值测试,smallint的数据范围为-32,768/32,767
+   > --    Date:         2020-06-23
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> 
+SQL> --float边界值测试,float的范围-3.402823E+38 ~ -1.175494E-38, 0,1.175494E-38 ~ 3.402823E+38
+   > -- 删除t_external_hdfs_csv_float_001表
+SQL> drop table if exists t_external_hdfs_csv_float_001;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_001，测试超出边界值-3.402823E+38-1
+SQL> create external table t_external_hdfs_csv_float_001(
+   > a1 float
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/float_001.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> --查询t_external_hdfs_csv_float_001的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_float_001;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_002表
+SQL> drop table if exists t_external_hdfs_csv_float_002;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_002，测试超出边界值3.402823E+38+1
+SQL> create external table t_external_hdfs_csv_float_002(
+   > a1 float 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/float_002.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_002的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_float_002;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_019表
+SQL> drop table if exists t_external_hdfs_csv_float_019;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_019，测试超出边界值-1.175494E-38-1E-38
+SQL> create external table t_external_hdfs_csv_float_019(
+   > a1 float 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/float_006.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_019的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_float_019;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_020表
+SQL> drop table if exists t_external_hdfs_csv_float_020;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_020，测试超出边界值1.175494E-38-1E-38
+SQL> create external table t_external_hdfs_csv_float_020(
+   > a1 float 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/float_007.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_020的数据，实际返回空值
+SQL> select * from t_external_hdfs_csv_float_020;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_003表
+SQL> drop table if exists t_external_hdfs_csv_float_003;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_003，测试有效位为7位，超出有效位四舍五入，值为123.1234567
+SQL> create external table t_external_hdfs_csv_float_003(
+   > a1 float
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/float_003.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_003的数据，实际返回123.12345886230469
+SQL> select * from t_external_hdfs_csv_float_003;
++----------+
+| A1       |
++----------+
+| 123.1235 |
++----------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_004表，测试int类型，值为1147483647
+SQL> drop table if exists t_external_hdfs_csv_float_004;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_004
+SQL> create external table t_external_hdfs_csv_float_004(
+   > a1 float   
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/float_004.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_004的数据，返回1147483648
+SQL> select * from t_external_hdfs_csv_float_004;
++--------------+
+| A1           |
++--------------+
+| 1.147484e+09 |
++--------------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_005表
+SQL> drop table if exists t_external_hdfs_csv_float_005;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_005，测试varchar英文字母，值为'asdf'
+SQL> create external table t_external_hdfs_csv_float_005(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzimu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_005的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_005;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_006表
+SQL> drop table if exists t_external_hdfs_csv_float_006;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_006，测试varchar中文字符，值为'你好'
+SQL> create external table t_external_hdfs_csv_float_006(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwen.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_006的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_006;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_007表
+SQL> drop table if exists t_external_hdfs_csv_float_007;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_007，测试varchar中英文字符，值为'你好asdf'
+SQL> create external table t_external_hdfs_csv_float_007(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongyinghunhe.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_007的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_007;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_008表
+SQL> drop table if exists t_external_hdfs_csv_float_008;
+0 rows affected
+SQL> 
+SQL> -- 创建表 t_external_hdfs_csv_float_008，测试varchar英文特殊字符，值为'#$%^'
+SQL> create external table t_external_hdfs_csv_float_008(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询 t_external_hdfs_csv_float_008 的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_008;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除 t_external_hdfs_csv_float_009 表
+SQL> drop table if exists t_external_hdfs_csv_float_009;
+0 rows affected
+SQL> 
+SQL> -- 创建表 t_external_hdfs_csv_float_009 ，测试varfloat中文特殊字符，值为'@#￥%……'
+SQL> create external table t_external_hdfs_csv_float_009(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwenzifu.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询 t_external_hdfs_csv_float_009 的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_009;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除 t_external_hdfs_csv_float_010 表
+SQL> drop table if exists t_external_hdfs_csv_float_010;
+0 rows affected
+SQL> 
+SQL> -- 创建表 t_external_hdfs_csv_float_010，测试varchar为数字，值为'123456789'
+SQL> create external table t_external_hdfs_csv_float_010(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/float_005.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL> 
+SQL> --查询 t_external_hdfs_csv_float_010 的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_010;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_011表
+SQL> drop table if exists t_external_hdfs_csv_float_011;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_011，测试date类型，值为1111-01-01
+SQL> create external table t_external_hdfs_csv_float_011(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_date.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_011的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_011;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_012表
+SQL> drop table if exists t_external_hdfs_csv_float_012;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_012，测试timestamp，值为2020-01-01 12:01:01
+SQL> create external table t_external_hdfs_csv_float_012(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_timestamp.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_012的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_012;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除 t_external_hdfs_csv_float_013 表
+SQL> drop table if exists t_external_hdfs_csv_float_013;
+0 rows affected
+SQL> 
+SQL> -- 创建表 t_external_hdfs_csv_float_013，测试boolean类型，值为false
+SQL> create external table t_external_hdfs_csv_float_013(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_false.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询 t_external_hdfs_csv_float_013 的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_013;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_014表
+SQL> drop table if exists t_external_hdfs_csv_float_014;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_014，测试boolean类型，值为true
+SQL> create external table t_external_hdfs_csv_float_014(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_true.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_014的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_014;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_015表
+SQL> drop table if exists t_external_hdfs_csv_float_015;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_015，测试空值
+SQL> create external table t_external_hdfs_csv_float_015(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongzhi.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_015的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_015;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL>  
+SQL>  
+SQL> -- 删除t_external_hdfs_csv_float_016表
+SQL> drop table if exists t_external_hdfs_csv_float_016;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_016，测试空格 
+SQL> create external table t_external_hdfs_csv_float_016(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongge.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_016的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_016;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_017表
+SQL> drop table if exists t_external_hdfs_csv_float_017;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_017，测试null 
+SQL> create external table t_external_hdfs_csv_float_017(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_null.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_017的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_017;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 删除t_external_hdfs_csv_float_018表
+SQL> drop table if exists t_external_hdfs_csv_float_018;
+0 rows affected
+SQL> 
+SQL> -- 创建表t_external_hdfs_csv_float_018，测试NULL  
+SQL> create external table t_external_hdfs_csv_float_018(
+   > a1 float  
+   > )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL.csv')
+   > format 'csv' (delimiter ',');
+0 rows affected
+SQL>   
+SQL> --查询t_external_hdfs_csv_float_018的数据,实际返回空值
+SQL> select * from t_external_hdfs_csv_float_018;
++--------+
+| A1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> exit
+Disconnected.

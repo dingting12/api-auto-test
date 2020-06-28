@@ -20,12 +20,12 @@ drop table if exists t_external_ldbdist_csv_varchar_002;
 
 -- 创建表t_external_ldbdist_csv_varchar_002，测试长度为64000，数据大小为100000，使用成功
 create external table t_external_ldbdist_csv_varchar_002(
-a1 varchar(10) 
+a1 varchar(64000) 
 )location('ldbdist://node74:54321/csv/varchar_001.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_002的数据
-select * from t_external_ldbdist_csv_varchar_002;
+select length(a1) from t_external_ldbdist_csv_varchar_002;
 
 
 -- 删除t_external_ldbdist_csv_varchar_003表

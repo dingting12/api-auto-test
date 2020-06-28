@@ -1,0 +1,64 @@
+SQLCli Release 0.0.74
+SQL> loaddriver F:\聚云位智\2020聚云\linkoopdb driver\linkoopdb-jdbc-2.2.3.jar
+driver file [F:\聚云位智\2020聚云\linkoopdb] does not exist.
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_orc_float.sql
+SQL> --    hdfs external orc格式
+   > --    Description: smallint边界值测试,smallint的数据范围为-32,768/32,767
+   > --    Date:         2020-06-23
+   > --    Author:       丁婷
+SQL> set echo on 
+SQL> 
+SQL> -- 测试float边界值±1，有效位数
+SQL> drop table if exists t_external_hdfs_orc_float_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_orc_float_002;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_float_001(
+   > a1 float,
+   > a2 float,
+   > a3 float,
+   > a4 float,
+   > a5 float,
+   > a6 float,
+   > a7 float
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/float1') FORMAT 'orc';
+0 rows affected
+SQL> select * from t_external_hdfs_orc_float_001;
++--------+--------+--------+--------+----------+--------------+--------------+
+| A1     | A2     | A3     | A4     | A5       | A6           | A7           |
++--------+--------+--------+--------+----------+--------------+--------------+
+| <null> | <null> | <null> | <null> | 123.1235 | 1.147484e+09 | 1.234568e+08 |
++--------+--------+--------+--------+----------+--------------+--------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试smallint的varchar，date,timestamp,boolean以及''等异常值
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_float_002(
+   > a1 float,
+   > a2 float,
+   > a3 float,
+   > a4 float,
+   > a5 float,
+   > a6 float,
+   > a7 float,
+   > a8 float,
+   > a9 float,
+   > a10 float,
+   > a11 float,
+   > a12 float,
+   > a13 float
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/common1') FORMAT 'orc';
+0 rows affected
+SQL> select * from t_external_hdfs_orc_float_002;
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------------+-----+-----+
+| A1     | A2     | A3     | A4     | A5     | A6     | A7     | A8     | A9     | A10    | A11          | A12 | A13 |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------------+-----+-----+
+| <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | 1.588911e+09 | 1   | 0   |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------------+-----+-----+
+1 row selected.
+SQL> exit
+Disconnected.

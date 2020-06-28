@@ -19,13 +19,13 @@ format 'csv' (delimiter ',');
 -- 删除t_external_ldbdist_csv_char_002表
 drop table if exists t_external_ldbdist_csv_char_002;
 
--- 创建表t_external_ldbdist_csv_char_002，测试长度为64000，数据大小为100000
+-- 创建表t_external_ldbdist_csv_char_002，测试长度为10，数据大小为100000
 create external table t_external_ldbdist_csv_char_002(
 a1 char(10) 
 )location('ldbdist://node74:54321/csv/varchar_001.csv')
 format 'csv' (delimiter ',');
   
---查询t_external_ldbdist_csv_char_002的数据,实际返回100000
+--查询t_external_ldbdist_csv_char_002的数据,实际返回10
 select * from t_external_ldbdist_csv_char_002;
 
 
@@ -72,7 +72,7 @@ select * from t_external_ldbdist_csv_char_005;
 -- 删除t_external_ldbdist_csv_char_007表
 drop table if exists t_external_ldbdist_csv_char_007;
 
--- 创建表t_external_ldbdist_csv_char_007，测试varchar中文字符，值为'你好'
+-- 创建表t_external_ldbdist_csv_char_007，测试varchar中文字符，值为你好
 create external table t_external_ldbdist_csv_char_007(
 a1 char(30)  
 )location('ldbdist://node74:54321/csv/varchar_zhongwen.csv')
@@ -85,7 +85,7 @@ select * from t_external_ldbdist_csv_char_007;
 -- 删除t_external_ldbdist_csv_char_008表
 drop table if exists t_external_ldbdist_csv_char_008;
 
--- 创建表t_external_ldbdist_csv_char_008，测试varchar中英文字符，值为'你好asdf'
+-- 创建表t_external_ldbdist_csv_char_008，测试varchar中英文字符，值为你好asdf
 create external table t_external_ldbdist_csv_char_008(
 a1 char(30)  
 )location('ldbdist://node74:54321/csv/varchar_zhongyinghunhe.csv')
@@ -98,7 +98,7 @@ select * from t_external_ldbdist_csv_char_008;
 -- 删除t_external_ldbdist_csv_char_009表
 drop table if exists t_external_ldbdist_csv_char_009;
 
--- 创建表t_external_ldbdist_csv_char_009，测试varchar英文特殊字符，值为'#$%^'
+-- 创建表t_external_ldbdist_csv_char_009，测试varchar英文特殊字符，值为#$%^
 create external table t_external_ldbdist_csv_char_009(
 a1 char(30)   
 )location('ldbdist://node74:54321/csv/varchar_yingwenzifu.csv')
@@ -111,7 +111,7 @@ select * from t_external_ldbdist_csv_char_009;
 -- 删除t_external_ldbdist_csv_char_010表
 drop table if exists t_external_ldbdist_csv_char_010;
 
--- 创建表t_external_ldbdist_csv_char_010，测试varchar中文特殊字符，值为'@#￥%……'
+-- 创建表t_external_ldbdist_csv_char_010，测试varchar中文特殊字符，值为@#￥%……
 create external table t_external_ldbdist_csv_char_010(
 a1 char(30)  
 )location('ldbdist://node74:54321/csv/varchar_zhongwenzifu.csv')
@@ -132,7 +132,7 @@ format 'csv' (delimiter ',');
 --查询t_external_ldbdist_csv_char_011的数据，实际返回为'123456789'
 select * from t_external_ldbdist_csv_char_011;
 
--- 创建表t_external_ldbdist_csv_char_012，测试date类型，时间为2020-01-01
+-- 创建表t_external_ldbdist_csv_char_012，测试date类型，时间为2020-05-08
 create external table t_external_ldbdist_csv_char_012(
 a1 char(30)  
 )location('ldbdist://node74:54321/csv/type_date.csv')
@@ -145,7 +145,7 @@ select * from t_external_ldbdist_csv_char_012;
 -- 删除t_external_ldbdist_csv_char_013表
 drop table if exists t_external_ldbdist_csv_char_013;
 
--- 创建表t_external_ldbdist_csv_char_013，测试timestamp类型,时间为2020-01-01 00:00:01
+-- 创建表t_external_ldbdist_csv_char_013，测试timestamp类型,时间为2020-05-08 12:19:01
 create external table t_external_ldbdist_csv_char_013(
 a1 char(30)  
 )location('ldbdist://node74:54321/csv/type_timestamp.csv')

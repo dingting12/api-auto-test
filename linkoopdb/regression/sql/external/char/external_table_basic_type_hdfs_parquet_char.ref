@@ -1,0 +1,87 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_parquet_char.sql
+SQL> --    Description: char边界值测试,char的范围64000
+   > --    Date:         2020-06-23
+   > --    Author:       丁婷
+   > --    hdfs external parquet格式
+SQL> set echo on 
+SQL> 
+SQL> -- 删除表
+SQL> drop table if exists t_external_hdfs_parquet_char_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_char_002;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_char_003;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_char_004;
+0 rows affected
+SQL> 
+SQL> -- 测试创建长度大于64000,创建报错
+SQL> create external table t_external_hdfs_parquet_char_001(
+   > a1 char(64001)
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/char1')
+   > FORMAT 'parquet';
+0 rows affected
+SQL> 
+SQL> -- 测试长度为10，数据大小为100000
+SQL> create external table t_external_hdfs_parquet_char_002(
+   > a1 char(10) 
+   > )location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/char1')
+   > FORMAT 'parquet';
+0 rows affected
+SQL> 
+SQL> -- 返回10个字符
+SQL> select * from t_external_ldbdist_csv_char_002;
++------------+
+| A1         |
++------------+
+| KOWjsLYXdn |
++------------+
+1 row selected.
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_char_003(
+   > a1 char(30),
+   > a2 char(30),
+   > a3 char(30),
+   > a4 char(30),
+   > a5 char(30)
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/char1') FORMAT 'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_char_003;
++--------------------------------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+
+| A1                             | A2                             | A3                             | A4                             | A5                             |
++--------------------------------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+
+| "asdf"                         | 'asdf'                         | 123456789                      | 1.1474836472E9                 | 1147483647                     |
++--------------------------------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试varchar，date,timestamp,boolean以及''等异常值
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_char_004(
+   > a1 char(30),
+   > a2 char(30),
+   > a3 char(30),
+   > a4 char(30),
+   > a5 char(30),
+   > a6 char(30),
+   > a7 char(30),
+   > a8 char(30),
+   > a9 char(30),
+   > a10 char(30),
+   > a11 char(30),
+   > a12 char(30),
+   > a13 char(30)
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_char_004;
++--------------------------------+----------------------------------+----------------------------------+--------------------------------+---------------------------------+--------------------------------+--------------------------------+--------+--------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+
+| A1                             | A2                               | A3                               | A4                             | A5                              | A6                             | A7                             | A8     | A9     | A10                            | A11                            | A12                            | A13                            |
++--------------------------------+----------------------------------+----------------------------------+--------------------------------+---------------------------------+--------------------------------+--------------------------------+--------+--------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+
+| asdf                           | 你好                             | 你好asdf                         | #$%^                           | @#￥%……                         |                                |                                | <null> | <null> | 2020-05-08                     | 2020-05-08 12:19:01            | true                           | false                          |
++--------------------------------+----------------------------------+----------------------------------+--------------------------------+---------------------------------+--------------------------------+--------------------------------+--------+--------+--------------------------------+--------------------------------+--------------------------------+--------------------------------+
+1 row selected.
+SQL> exit
+Disconnected.

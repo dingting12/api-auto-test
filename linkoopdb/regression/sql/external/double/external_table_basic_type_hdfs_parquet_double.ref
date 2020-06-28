@@ -1,0 +1,61 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start external_table_basic_type_hdfs_parquet_double.sql
+SQL> --    Description: double边界值测试,double的范围-1.79769313486231E+308,-2.22507385850720E-308, 0,2.22507385850720E-308 ~ 1.79769313486231E+308
+   > --    Date:         2020-05-28
+   > --    Author:       丁婷
+   > --    hdfs external parquet格式
+SQL> set echo on
+SQL> 
+SQL> -- 测试float边界值±1，有效位数
+SQL> drop table if exists t_external_hdfs_parquet_double_001;
+0 rows affected
+SQL> drop table if exists t_external_hdfs_parquet_double_002;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_double_001(
+   > a1 double,
+   > a2 double,
+   > a3 double,
+   > a4 double,
+   > a5 double,
+   > a6 double
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/real1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_double_001;
++--------+--------+--------+--------+-------------+------------+
+| A1     | A2     | A3     | A4     | A5          | A6         |
++--------+--------+--------+--------+-------------+------------+
+| <null> | <null> | <null> | <null> | 123.1234568 | 1147483647 |
++--------+--------+--------+--------+-------------+------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- 测试smallint的varchar，date,timestamp,boolean以及''等异常值
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_double_002(
+   > a1 double,
+   > a2 double,
+   > a3 double,
+   > a4 double,
+   > a5 double,
+   > a6 double,
+   > a7 double,
+   > a8 double,
+   > a9 double,
+   > a10 double,
+   > a11 double,
+   > a12 double,
+   > a13 double
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_double_002;
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+------------+-----+-----+
+| A1     | A2     | A3     | A4     | A5     | A6     | A7     | A8     | A9     | A10    | A11        | A12 | A13 |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+------------+-----+-----+
+| <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | <null> | 1588911541 | 1   | 0   |
++--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+------------+-----+-----+
+1 row selected.
+SQL> exit
+Disconnected.

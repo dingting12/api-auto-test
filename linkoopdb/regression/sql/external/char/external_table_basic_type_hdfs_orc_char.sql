@@ -17,10 +17,10 @@ a1 char(64001)
 )location('hdfs://node73:8020/user/testdb73/external_file/type_orc/char1')
 FORMAT 'orc';
 
--- 测试长度为64000，数据大小为100000
+-- 测试长度为10，数据大小为20
 create external table t_external_hdfs_orc_char_002(
 a1 char(10) 
-)location('hdfs://node73:8020/user/testdb73/external_file/type_orc/char1')
+)location('hdfs://node73:8020/user/testdb73/external_file/type_orc/char2')
 FORMAT 'orc';
 
 -- 返回10个字符
@@ -32,7 +32,7 @@ CREATE EXTERNAL TABLE t_external_hdfs_orc_char_003(
 a1 char(30),
 a2 char(30),
 a3 char(30),
-a4 char(30)
+a4 char(30),
 a5 char(30)
 )
 LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/char1') FORMAT 'orc';

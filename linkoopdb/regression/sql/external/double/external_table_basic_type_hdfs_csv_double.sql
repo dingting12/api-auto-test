@@ -15,7 +15,7 @@ a1 double
 format 'csv' (delimiter ',');
 
 -- 查询t_external_hdfs_csv_double_001，应报错,实际返回空值
-SELECT * FROM t_external_hdfs_csv_double_001
+SELECT * FROM t_external_hdfs_csv_double_001;
 
 -- 删除t_external_hdfs_csv_double_002表
 drop table if exists t_external_hdfs_csv_double_002;
@@ -40,7 +40,7 @@ a1 double
 format 'csv' (delimiter ',');
 
 -- 查询t_external_hdfs_csv_double_019，应报错,实际返回空值
-SELECT * FROM t_external_hdfs_csv_double_019
+SELECT * FROM t_external_hdfs_csv_double_019;
 
 -- 删除t_external_hdfs_csv_double_004表
 drop table if exists t_external_hdfs_csv_double_020;
@@ -128,7 +128,7 @@ a1 double
 format 'csv' (delimiter ',');
   
 --查询 t_external_hdfs_csv_double_008 的数据,实际返回空值
-select * from t_external_hdfs_csv_double_008
+select * from t_external_hdfs_csv_double_008;
 
 
 -- 删除 t_external_hdfs_csv_double_009 表

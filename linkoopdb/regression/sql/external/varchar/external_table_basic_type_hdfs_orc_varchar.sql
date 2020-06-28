@@ -20,7 +20,7 @@ FORMAT 'orc';
 -- 测试长度为64000，数据大小为100000
 create external table t_external_hdfs_orc_varchar_002(
 a1 varchar(10) 
-)location('hdfs://node73:8020/user/testdb73/external_file/type_orc/varchar1')
+)location('hdfs://node73:8020/user/testdb73/external_file/type_orc/char2')
 FORMAT 'orc';
 
 -- 返回10个字符
@@ -32,7 +32,7 @@ CREATE EXTERNAL TABLE t_external_hdfs_orc_varchar_003(
 a1 varchar(30),
 a2 varchar(30),
 a3 varchar(30),
-a4 varchar(30)
+a4 varchar(30),
 a5 varchar(30)
 )
 LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/char1') FORMAT 'orc';

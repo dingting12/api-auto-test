@@ -129,7 +129,7 @@ select * from t_external_hdfs_csv_date_010;
 -- 删除t_external_hdfs_csv_date_010表
 drop table if exists t_external_hdfs_csv_date_012;
 
--- 创建表t_external_hdfs_csv_date_012，测试超出date范围的timestamp类型，值为10001-01-01 01:01:01
+-- 创建表t_external_hdfs_csv_date_012，测试超出date范围的timestamp类型，值为2020-01-01 01:01:01
 create external table t_external_hdfs_csv_date_012(
 a1 date  
 )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/date_012.csv')

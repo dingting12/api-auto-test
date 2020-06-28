@@ -66,7 +66,7 @@ format 'csv' (delimiter ',');
 -- 删除t_external_hdfs_csv_numeric_006表
 drop table if exists t_external_hdfs_csv_numeric_006;
 
--- 创建表t_external_hdfs_csv_numeric_006，测试m大于n,创建失败，实际报错precision or scale out of range in statement
+-- 创建表t_external_hdfs_csv_numeric_006，测试m大于n,创建失败，实际创建成功
 create external table t_external_hdfs_csv_numeric_006(
 a1 numeric(3,6)  
 )location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')

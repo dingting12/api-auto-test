@@ -15,7 +15,7 @@ a1 double
 format 'csv' (delimiter ',');
 
 -- 查询t_external_ldbdist_csv_real_001，应报错,实际返回空值
-SELECT * FROM t_external_ldbdist_csv_real_001
+SELECT * FROM t_external_ldbdist_csv_real_001;
 
 -- 删除t_external_ldbdist_csv_real_002表
 drop table if exists t_external_ldbdist_csv_real_002;
@@ -40,7 +40,7 @@ a1 double
 format 'csv' (delimiter ',');
 
 -- 查询t_external_ldbdist_csv_real_019，应报错,实际返回空值
-SELECT * FROM t_external_ldbdist_csv_real_019
+SELECT * FROM t_external_ldbdist_csv_real_019;
 
 -- 删除t_external_ldbdist_csv_real_004表
 drop table if exists t_external_ldbdist_csv_real_020;
@@ -54,58 +54,6 @@ format 'csv' (delimiter ',');
 -- 查询t_external_ldbdist_csv_real_020，应报错,实际返回空值
 SELECT * FROM t_external_ldbdist_csv_real_020;
 
-
-
-
--- ldbdist csv 
--- 删除t_external_ldbdist_csv_real_001表
-drop table if exists t_external_ldbdist_csv_real_001;
-
--- 创建表t_external_ldbdist_csv_real_001，测试超出边界值-1.79769313486231E+308-1
-create external table t_external_ldbdist_csv_real_001(
-a1 double
-)location('ldbdist://node74:54321/csv/real_001.csv')
-format 'csv' (delimiter ',');
-
--- 查询t_external_ldbdist_csv_real_001，应报错,实际返回空值
-SELECT * FROM t_external_ldbdist_csv_real_001
-
--- 删除t_external_ldbdist_csv_real_002表
-drop table if exists t_external_ldbdist_csv_real_002;
-
--- 创建表t_external_ldbdist_csv_real_002，测试超出边界值1.79769313486231E+308+1
-create external table t_external_ldbdist_csv_real_002(
-a1 double 
-)location('ldbdist://node74:54321/csv/real_002.csv')
-format 'csv' (delimiter ',');
-
-  -- 查询t_external_ldbdist_csv_real_002，应报错,实际返回空值
-SELECT * FROM t_external_ldbdist_csv_real_002;
-
-
--- 删除t_external_ldbdist_csv_real_019表
-drop table if exists t_external_ldbdist_csv_real_019;
-
--- 创建表t_external_ldbdist_csv_real_019，测试超出边界值 -2.22507385850720E-308-1E-308
-create external table t_external_ldbdist_csv_real_019(
-a1 double
-)location('ldbdist://node74:54321/csv/real_006.csv')
-format 'csv' (delimiter ',');
-
--- 查询t_external_ldbdist_csv_real_019，应报错,实际返回空值
-SELECT * FROM t_external_ldbdist_csv_real_019
-
--- 删除t_external_ldbdist_csv_real_004表
-drop table if exists t_external_ldbdist_csv_real_020;
-
--- 创建表t_external_ldbdist_csv_real_020，测试超出边界值2.22507385850720E-308-1E-308
-create external table t_external_ldbdist_csv_real_020(
-a1 double 
-)location('ldbdist://node74:54321/csv/real_007.csv')
-format 'csv' (delimiter ',');
-
-  -- 查询t_external_ldbdist_csv_real_020，应报错,实际返回空值
-SELECT * FROM t_external_ldbdist_csv_real_020;
 
 -- 删除t_external_ldbdist_csv_real_003表
 drop table if exists t_external_ldbdist_csv_real_003;
@@ -181,7 +129,7 @@ a1 real
 format 'csv' (delimiter ',');
   
 --查询 t_external_ldbdist_csv_real_008 的数据,实际返回空值
-select * from t_external_ldbdist_csv_real_008
+select * from t_external_ldbdist_csv_real_008;
 
 
 -- 删除 t_external_ldbdist_csv_real_009 表
@@ -214,7 +162,7 @@ drop table if exists t_external_ldbdist_csv_real_011;
 -- 创建表t_external_ldbdist_csv_real_011，测试date类型，值为2020-05-08
 create external table t_external_ldbdist_csv_real_011(
 a1 real  
-)location('hdfs://node73:8011/user/testdb73/external_file/csv_type/type_date.csv')
+)location('ldbdist://node74:54321/csv/type_date.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_real_011的数据,实际返回空值
