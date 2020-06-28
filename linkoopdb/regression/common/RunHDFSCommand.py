@@ -5,7 +5,7 @@ from hdfs.client import Client
 from hdfs.util import HdfsError
 import traceback
 from glob import glob
-import sys
+from robot.api import logger
 
 
 class HDFSException(Exception):
@@ -45,14 +45,12 @@ class RunHDFSCommand(object):
 
         for file in glob(local_path):
             try:
+                logger.info("Will upload file [" + str(file) + "] to [" + str(hdfs_path) + "] .... ")
                 self.m_HDFS_Handler.upload(hdfs_path, file, overwrite=True, cleanup=True)
             except HdfsError as he:
                 print('traceback.print_exc():\n%s' % traceback.print_exc())
                 print('traceback.format_exc():\n%s' % traceback.format_exc())
                 raise HDFSException(repr(he))
-            except Exception as oe:
-                print('traceback.print_exc():\n%s' % traceback.print_exc())
-                print('traceback.format_exc():\n%s' % traceback.format_exc())
 
     # 从hdfs获取文件到本地
     def HDFS_Download(self, hdfs_path="", local_path=""):
@@ -83,8 +81,9 @@ class RunHDFSCommand(object):
         self.m_HDFS_WebFSURL = self.m_HDFS_Protocal + "://" + self.m_HDFS_NodePort
         self.m_HDFS_WebFSDir = p_szURL[len(self.m_HDFS_WebFSURL):]
         self.m_HDFS_Handler = Client(self.m_HDFS_WebFSURL,
-                                self.m_HDFS_WebFSDir,
-                                proxy=None, session=None)
+                                     self.m_HDFS_WebFSDir,
+                                     proxy=None, session=None)
+
 
 if __name__ == '__main__':
     myCompare = RunHDFSCommand()
