@@ -1,4 +1,4 @@
-SQLCli Release 0.0.64
+SQLCli Release 0.0.74
 SQL> connect admin/123456
 Database connected.
 SQL> start S011-01 USER_DEFINED_TYPES view.sql
@@ -71,16 +71,21 @@ SQL> select data_type from INFORMATION_SCHEMA.USER_DEFINED_TYPES where user_defi
 1 row selected.
 SQL> 
 SQL> -- 创建包含DOUBLE类型的自定义类型的表
-SQL> create table udt_tab_DOU(t t udt_dou);
-java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: T in statement [create table udt_tab_DOU(t t udt_dou)]
+SQL> create table udt_tab_DOU(t udt_dou);
+0 rows affected
 SQL> 
 SQL> -- 插入数据
 SQL> insert into udt_tab_DOU values (2.3);
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: UDT_TAB_DOU in statement [insert into udt_tab_DOU values (2.3)]
+1 row affected
 SQL> 
 SQL> -- 查询结果
 SQL> select * from udt_tab_DOU;
-java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: UDT_TAB_DOU in statement [select * from udt_tab_DOU]
++-----+
+| T   |
++-----+
+| 2.3 |
++-----+
+1 row selected.
 SQL> 
 SQL> -- 创建DATE类型的自定义类型
 SQL> CREATE TYPE udt_date AS DATE;
@@ -165,11 +170,11 @@ SQL> INSERT INTO udt_tab_struct VALUES('a',NEW udt_struct(1,'b',2.3,'2020-01-01'
 SQL> 
 SQL> -- 查询结果
 SQL> select * from udt_tab_struct;
-+------+---------------------------------------------------------------------------------------------------------+
-| COL1 | COL2                                                                                                    |
-+------+---------------------------------------------------------------------------------------------------------+
-| a    | (1, 'b', 2.3, <jpype._jclass.com.datapps.linkoopdb.jdbc.impl.JDBCSqlDate object at 0x000001D8FBCA6148>) |
-+------+---------------------------------------------------------------------------------------------------------+
++------+-------------------------------------+
+| COL1 | COL2                                |
++------+-------------------------------------+
+| a    | STRUCTURE(1,'b',2.3,DATE'2020-1-1') |
++------+-------------------------------------+
 1 row selected.
 SQL> exit
 Disconnected.
