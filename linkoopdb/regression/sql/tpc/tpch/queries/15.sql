@@ -29,3 +29,5 @@ where
 	)
 order by
 	s_suppkey;
+
+DROP VIEW revenue0 IF EXISTS;
