@@ -1,18 +1,37 @@
 select
-	sum(l_extendedprice) / 7.0 as avg_yearly
+	cntrycode,
+	count(*) as numcust,
+	sum(c_acctbal) as totacctbal
 from
-	lineitem,
-	part
-where
-	p_partkey = l_partkey
-	and p_brand = 'Brand#23'
-	and p_container = 'MED BOX'
-	and l_quantity < (
+	(
 		select
-			0.2 * avg(l_quantity)
+			substring(c_phone from 1 for 2) as cntrycode,
+			c_acctbal
 		from
-			lineitem
+			customer
 		where
-			l_partkey = p_partkey
-	)
-
+			substring(c_phone from 1 for 2) in
+				('24', '29', '19', '22', '16', '30', '31')
+			and c_acctbal > (
+				select
+					avg(c_acctbal)
+				from
+					customer
+				where
+					c_acctbal > 0.00
+					and substring(c_phone from 1 for 2) in
+						('24', '29', '19', '22', '16', '30', '31')
+			)
+			and not exists (
+				select
+					*
+				from
+					orders
+				where
+					o_custkey = c_custkey
+			)
+	) as custsale
+group by
+	cntrycode
+order by
+	cntrycode;
