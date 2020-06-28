@@ -6,6 +6,8 @@ from hdfs.util import HdfsError
 import traceback
 from glob import glob
 from robot.api import logger
+import sys
+import time
 
 
 class HDFSException(Exception):
@@ -39,14 +41,28 @@ class RunHDFSCommand(object):
         self.m_HDFS_Handler.delete(hdfs_path)
 
     # 上传文件到hdfs
-    def HDFS_Upload(self, local_path, hdfs_path=""):
+    def HDFS_Upload(self, local_path, hdfs_path=None):
         if self.m_HDFS_Handler is None:
             raise HDFSException("Please Connect HDFS first.")
 
         for file in glob(local_path):
             try:
                 logger.info("Will upload file [" + str(file) + "] to [" + str(hdfs_path) + "] .... ")
-                self.m_HDFS_Handler.upload(hdfs_path, file, overwrite=True, cleanup=True)
+                if hdfs_path is None:
+                    m_hdfs_filepath = ""
+                    m_hdfs_filename = os.path.basename(file)
+                else:
+                    if hdfs_path.endswith("/"):
+                        m_hdfs_filepath = hdfs_path
+                        m_hdfs_filename = os.path.basename(file)
+                    else:
+                        m_hdfs_filepath = os.path.dirname(hdfs_path)
+                        m_hdfs_filename = os.path.basename(hdfs_path)
+                self.m_HDFS_Handler.upload(
+                    os.path.join(self.m_HDFS_WebFSDir, m_hdfs_filepath, m_hdfs_filename).replace('\\', '/'),
+                    file,
+                    overwrite=True,
+                    cleanup=True)
             except HdfsError as he:
                 print('traceback.print_exc():\n%s' % traceback.print_exc())
                 print('traceback.format_exc():\n%s' % traceback.format_exc())
@@ -80,6 +96,8 @@ class RunHDFSCommand(object):
         self.m_HDFS_NodePort = p_szURL[len(self.m_HDFS_Protocal) + 3:].split("/")[0]
         self.m_HDFS_WebFSURL = self.m_HDFS_Protocal + "://" + self.m_HDFS_NodePort
         self.m_HDFS_WebFSDir = p_szURL[len(self.m_HDFS_WebFSURL):]
+        logger.info("Will connect to [" + str(self.m_HDFS_WebFSURL) + "]," +
+                    "Rootdir is [" + str(self.m_HDFS_WebFSDir) + "] .... ")
         self.m_HDFS_Handler = Client(self.m_HDFS_WebFSURL,
                                      self.m_HDFS_WebFSDir,
                                      proxy=None, session=None)

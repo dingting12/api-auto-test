@@ -26,10 +26,9 @@ EXTERNALTYPETEST
 
 *** Keywords ***
 Setup Custom Settings
-    Compare Enable ConsoleOutput        True
 	SQLCli Enable ConsoleOutput         True
     SQLCli Set SQLMAPPING               ../external_sql.map
 
 Upload csv files
-    HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}
+    HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
     HDFS Upload                ../data/bigint/*.csv
