@@ -47,6 +47,8 @@ class RunHDFSCommand(object):
             try:
                 self.m_HDFS_Handler.upload(hdfs_path, file, overwrite=True, cleanup=True)
             except HdfsError as he:
+                print('traceback.print_exc():\n%s' % traceback.print_exc())
+                print('traceback.format_exc():\n%s' % traceback.format_exc())
                 raise HDFSException(repr(he))
             except Exception as oe:
                 print('traceback.print_exc():\n%s' % traceback.print_exc())

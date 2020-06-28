@@ -4,25 +4,32 @@ Documentation    RobotFrameWork文档实例
 
 # 引用公共函数
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
+Test Setup       run keywords
+...              SQL Test Setup   AND
+...              Setup Custom Settings   AND
+...              Upload csv files
 Test Teardown    SQL Test Clnup
-Library          OperatingSystem
+
 
 *** Test Cases ***
 EXTERNALTYPETEST   
 	[Documentation]    测试外部表类型
     [Tags]     SQL-Test       external type bigint test
     Logon And Execute SQL Script     admin/123456                                         external_table_basic_type_hdfs_csv_bigint.sql
-				   Compare Files     external_table_basic_type_hdfs_csv_bigint.log        external_table_basic_type_hdfs_csv_bigint.ref
-	Logon And Execute SQL Script     admin/123456                                         external_table_basic_type_hdfs_orc_bigint.sql
-				   Compare Files     external_table_basic_type_hdfs_orc_bigint.log        external_table_basic_type_hdfs_orc_bigint.ref
-	Logon And Execute SQL Script     admin/123456                                         external_table_basic_type_hdfs_parquet_bigint.sql
-				   Compare Files     external_table_basic_type_hdfs_parquet_bigint.log    external_table_basic_type_hdfs_parquet_bigint.ref	
-	Logon And Execute SQL Script     admin/123456                                         external_table_basic_type_ldbdist_csv_bigint.sql
-				   Compare Files     external_table_basic_type_ldbdist_csv_bigint.log     external_table_basic_type_ldbdist_csv_bigint.ref				   
+#				   Compare Files     external_table_basic_type_hdfs_csv_bigint.log        external_table_basic_type_hdfs_csv_bigint.ref
+#	Logon And Execute SQL Script     admin/123456                                         external_table_basic_type_hdfs_orc_bigint.sql
+#				   Compare Files     external_table_basic_type_hdfs_orc_bigint.log        external_table_basic_type_hdfs_orc_bigint.ref
+#	Logon And Execute SQL Script     admin/123456                                         external_table_basic_type_hdfs_parquet_bigint.sql
+#				   Compare Files     external_table_basic_type_hdfs_parquet_bigint.log    external_table_basic_type_hdfs_parquet_bigint.ref
+#	Logon And Execute SQL Script     admin/123456                                         external_table_basic_type_ldbdist_csv_bigint.sql
+#				   Compare Files     external_table_basic_type_ldbdist_csv_bigint.log     external_table_basic_type_ldbdist_csv_bigint.ref
 
 *** Keywords ***
 Setup Custom Settings
-    Compare Enable ConsoleOutput       True 
-	SQLCli Enable ConsoleOutput        True
+    Compare Enable ConsoleOutput        True
+	SQLCli Enable ConsoleOutput         True
+    SQLCli Set SQLMAPPING               ../external_sql.map
 
+Upload csv files
+    HDFS Connnect              %{HDFSWEB_URL}
+    HDFS Upload                ../data/bigint/*.csv
