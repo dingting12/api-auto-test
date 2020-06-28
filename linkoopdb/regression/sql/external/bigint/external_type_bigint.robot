@@ -31,5 +31,5 @@ Setup Custom Settings
     SQLCli Set SQLMAPPING               ../external_sql.map
 
 Upload csv files
-    HDFS Connnect              %{HDFSWEB_URL}
+    HDFS Connnect              %{HDFSWEB_ROOTURL}/%{WORKSPACE}
     HDFS Upload                ../data/bigint/*.csv

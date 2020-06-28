@@ -9,6 +9,7 @@ import time
 import os
 from time import strftime, localtime
 from multiprocessing import Lock
+import traceback
 
 
 class SQLExecute(object):
@@ -39,7 +40,7 @@ class SQLExecute(object):
                         'TIMING': 'OFF', 'TIME': 'OFF', 'TERMOUT': 'ON',
                         'FEEDBACK': 'ON', "ARRAYSIZE": 10000, 'SQLREWRITE': 'ON', "DEBUG": 'OFF',
                         'KAFKA_SERVERS': None,
-                        "CLOB_LONG": 20, 'FLOAT_FORMAT': '%.7g', 'DOUBLE_FORMAT': '%0.10g'}
+                        "LOB_LENGTH": 20, 'FLOAT_FORMAT': '%.7g', 'DOUBLE_FORMAT': '%0.10g'}
 
     def set_logfile(self, p_logfile):
         self.logfile = p_logfile
@@ -73,7 +74,9 @@ class SQLExecute(object):
 
             # 如果运行在脚本模式下，需要在控制台回显SQL
             if p_sqlscript is not None:
-                click.secho(SQLFormatWithPrefix(m_CommentSQL), file=self.Console)
+                click.echo(SQLFormatWithPrefix(m_CommentSQL), file=self.Console)
+            if self.logger is not None:
+                self.logger.info(SQLFormatWithPrefix(m_CommentSQL))
 
             # 如果打开了回显，并且指定了输出文件，且SQL被改写过，输出改写后的SQL
             if self.options["SQLREWRITE"].upper() == 'ON':
@@ -85,7 +88,7 @@ class SQLExecute(object):
                         click.echo(SQLFormatWithPrefix(
                             "Your SQL has been changed to:\n" + sql, 'REWROTED '), file=self.logfile)
                     if p_sqlscript is not None:
-                        click.secho(SQLFormatWithPrefix(
+                        click.echo(SQLFormatWithPrefix(
                             "Your SQL has been changed to:\n" + sql, 'REWROTED '), file=self.Console)
 
             # 如果是空语句，不在执行
@@ -131,6 +134,7 @@ class SQLExecute(object):
                                 str(e).find("SQLSyntaxErrorException") != -1 or
                                 str(e).find("SQLException") != -1 or
                                 str(e).find("SQLDataException") != -1 or
+                                str(e).find("SQLTransactionRollbackException") != -1 or
                                 str(e).find('time data') != -1
                         ):
                             # SQL 语法错误
@@ -177,6 +181,9 @@ class SQLExecute(object):
                     )
                     raise e
                 else:
+                    if "SQLCLI_DEBUG" in os.environ:
+                        print('traceback.print_exc():\n%s' % traceback.print_exc())
+                        print('traceback.format_exc():\n%s' % traceback.format_exc())
                     yield None, None, None, str(e.message)
 
             # 记录结束时间
@@ -219,12 +226,55 @@ class SQLExecute(object):
             status = "{0} row{1} selected."
             m_arraysize = int(self.options["ARRAYSIZE"])
             rowset = list(cursor.fetchmany(m_arraysize))
-            if self.options['TERMOUT'] != 'OFF':
+            if self.options['TERMOUT'].upper() != 'OFF':
                 for row in rowset:
                     m_row = []
                     for column in row:
-                        if str(type(column)).find('JDBCClobClient') != -1:
-                            m_row.append(column.getSubString(1, int(self.options["CLOB_LONG"])))
+                        if str(type(column)).find('jarray') != -1:
+                            m_ColumnValue = "STRUCTURE("
+                            for m_nPos in range(0, len(column)):
+                                m_ColumnType = str(type(column[m_nPos]))
+                                if m_nPos == 0:
+                                    if m_ColumnType.find('str') != -1:
+                                        m_ColumnValue = m_ColumnValue + "'" + str(column[m_nPos]) + "'"
+                                    elif m_ColumnType.find('JDBCSqlDate') != -1:
+                                        m_ColumnValue = m_ColumnValue + "DATE'" + str(column[m_nPos]) + "'"
+                                    elif str(type(column)).find("Float") != -1:
+                                        m_ColumnValue = m_ColumnValue + self.options["FLOAT_FORMAT"] % column[m_nPos]
+                                    elif str(type(column)).find("Double") != -1:
+                                        m_ColumnValue = m_ColumnValue + self.options["DOUBLE_FORMAT"] % column[m_nPos]
+                                    else:
+                                        m_ColumnValue = m_ColumnValue + str(column[m_nPos])
+                                else:
+                                    if m_ColumnType.find('str') != -1:
+                                        m_ColumnValue = m_ColumnValue + ",'" + str(column[m_nPos]) + "'"
+                                    elif m_ColumnType.find('JDBCSqlDate') != -1:
+                                        m_ColumnValue = m_ColumnValue + ",DATE'" + str(column[m_nPos]) + "'"
+                                    elif str(type(column)).find("Float") != -1:
+                                        m_ColumnValue = m_ColumnValue + "," + \
+                                                        self.options["FLOAT_FORMAT"] % column[m_nPos]
+                                    elif str(type(column)).find("Double") != -1:
+                                        m_ColumnValue = m_ColumnValue + "," + \
+                                                        self.options["DOUBLE_FORMAT"] % column[m_nPos]
+                                    else:
+                                        m_ColumnValue = m_ColumnValue + "," + str(column[m_nPos])
+                            m_ColumnValue = m_ColumnValue + ")"
+                            m_row.append(m_ColumnValue)
+                        elif str(type(column)).find('JDBCClobClient') != -1:
+                            m_Length = column.length()
+                            m_ColumnValue = column.getSubString(1, int(self.options["LOB_LENGTH"]))
+                            if m_Length > int(self.options["LOB_LENGTH"]):
+                                m_ColumnValue = m_ColumnValue + "..."
+                            m_row.append(m_ColumnValue)
+                        elif str(type(column)).find('JDBCBlobClient') != -1:
+                            # 对于二进制数据，用16进制数来显示
+                            # 2: 意思是去掉Hex前面的0x字样
+                            m_Length = column.length()
+                            m_ColumnValue = "".join([hex(int(i))[2:]
+                                                     for i in column.getBytes(1, int(self.options["LOB_LENGTH"]))])
+                            if m_Length > int(self.options["LOB_LENGTH"]):
+                                m_ColumnValue = m_ColumnValue + "..."
+                            m_row.append(m_ColumnValue)
                         elif str(type(column)).find("Float") != -1:
                             m_row.append(self.options["FLOAT_FORMAT"] % column)
                         elif str(type(column)).find("Double") != -1:
