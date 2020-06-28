@@ -13,3 +13,4 @@ connect USER/123456;
 -- 创建库
 create schema test;
 
+disconnect;

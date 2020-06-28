@@ -11,10 +11,11 @@ Force Tags       Demo
 
 *** Test Cases ***
 Demo5
+    [Tags]             feature:E402
     [Documentation]    演示程序6, 使用Robot函数来实现HDFS数据操作
     Log To Console     "Hello"
 
 *** Keywords ***
 Custom Prepare
-    HDFS Connnect              %{T_WORK_HDFS}
-    HDFS Upload                data/*.dat
+    HDFS Connnect              %{HDFSWEB_ROOTURL}
+    HDFS Upload                data/test.dat

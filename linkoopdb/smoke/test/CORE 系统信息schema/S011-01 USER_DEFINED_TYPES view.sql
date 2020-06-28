@@ -35,7 +35,7 @@ CREATE TYPE udt_dou AS DOUBLE;
 select data_type from INFORMATION_SCHEMA.USER_DEFINED_TYPES where user_defined_type_name = 'UDT_DOU';
 
 -- 创建包含DOUBLE类型的自定义类型的表
-create table udt_tab_DOU(t t udt_dou);
+create table udt_tab_DOU(t udt_dou);
 
 -- 插入数据
 insert into udt_tab_DOU values (2.3);

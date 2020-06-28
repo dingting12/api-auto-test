@@ -44,6 +44,8 @@ select * from test.t_grant_select order by empno;
 
 GRANT SELECT ON test.t_grant_select TO user1;
 
+disconnect;
+
 connect user1/123456;
 
 select * from test.t_grant_select order by empno;

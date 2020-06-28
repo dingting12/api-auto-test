@@ -46,3 +46,4 @@ connect user/123456;
 
 select * from test.t_REVOKE order by empno;
 
+disconnect;
