@@ -5,10 +5,11 @@ with revenue0 as
 	from
 		lineitem
 	where
-		l_shipdate >= date '1996-01-01'
-		and l_shipdate < date '1996-01-01' + interval '3' month
+		l_shipdate >= date '1995-06-01'
+		and l_shipdate < date '1995-06-01' + interval '3' month
 	group by
-		l_suppkey) select
+		l_suppkey)
+select
 	s_suppkey,
 	s_name,
 	s_address,
