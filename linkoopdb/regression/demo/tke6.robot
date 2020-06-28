@@ -17,10 +17,5 @@ Demo5
 
 *** Keywords ***
 Custom Prepare
-    HDFS Connnect              %{T_WORK_HDFS}
-    HDFS CD                    aa
-    HDFS Upload                data/aa.dat
-
-    HDFS Connnect              %{T_WORK_HDFS}
-    HDFS CD                    bb
-    HDFS Upload                data/bb.dat
+    HDFS Connnect              %{HDFSWEB_ROOTURL}
+    HDFS Upload                data/test.dat
