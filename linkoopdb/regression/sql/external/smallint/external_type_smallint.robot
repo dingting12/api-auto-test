@@ -32,7 +32,7 @@ Upload csv files
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
     HDFS Upload                ../data/smallint_csv/*.csv
     HDFS Upload                ../data/smallint1_orc/*  smallint1_orc/
-    HDFS Upload                ../data/smallint1_parquet/* smallint1_parquet/
-    HDFS Upload                ../data/common_orc/* common_orc/
-    HDFS Upload                ../data/common_parquet/* common_parquet/
+    HDFS Upload                ../data/smallint1_parquet/*  smallint1_parquet/
+    HDFS Upload                ../data/common_orc/*  common_orc/
+    HDFS Upload                ../data/common_parquet/*  common_parquet/
 
