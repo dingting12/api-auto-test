@@ -31,7 +31,7 @@ Setup Custom Settings
 Upload csv files
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
     HDFS Upload                ../data/int_csv/*.csv
-    HDFS Upload                ../data/int1_orc/*
-    HDFS Upload                ../data/int1_parquet/*
-    HDFS Upload                ../data/common_orc/*
-    HDFS Upload                ../data/common_parquet/*
+    HDFS Upload                ../data/int1_orc/* int1_orc/
+    HDFS Upload                ../data/int1_parquet/* int1_parquet/
+    HDFS Upload                ../data/common_orc/* common_orc/
+    HDFS Upload                ../data/common_parquet/* common_parquet/
