@@ -15,7 +15,7 @@ a2 bigint,
 a3 bigint,
 a4 bigint
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/bigint1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/bigint1') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_bigint_001;
 
@@ -36,7 +36,7 @@ a11 bigint,
 a12 bigint,
 a13 bigint
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/common1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common1') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_bigint_002;
 
