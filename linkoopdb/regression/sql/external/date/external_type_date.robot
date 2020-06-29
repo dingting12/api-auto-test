@@ -29,7 +29,8 @@ Setup Custom Settings
 	SQLCli Enable ConsoleOutput         True
     SQLCli Set SQLMAPPING               ../external_sql.map
 	Compare Skip                        ^['Project ].*
-
+    Compare Skip						^[\+\-].*
+	
 Upload csv files
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
     HDFS Upload                ../data/date_csv/*.csv
