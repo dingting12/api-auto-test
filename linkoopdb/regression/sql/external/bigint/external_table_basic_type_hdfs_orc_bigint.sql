@@ -15,7 +15,7 @@ a2 bigint,
 a3 bigint,
 a4 bigint
 )
-LOCATION ('HDFSRPC_URL/bigint1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/bigint_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_bigint_001;
 
@@ -36,7 +36,7 @@ a11 bigint,
 a12 bigint,
 a13 bigint
 )
-LOCATION ('HDFSRPC_URL/common1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_bigint_002;
 

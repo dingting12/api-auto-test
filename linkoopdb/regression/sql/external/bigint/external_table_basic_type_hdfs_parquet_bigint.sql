@@ -15,7 +15,7 @@ a2 bigint,
 a3 bigint,
 a4 bigint
 )
-LOCATION ('HDFSRPC_URL/bigint1') FORMAT 'parquet';
+LOCATION ('HDFSRPC_URL/bigint_parquet') FORMAT 'parquet';
 
 select * from t_external_hdfs_parquet_bigint_001;
 
@@ -36,7 +36,7 @@ a11 bigint,
 a12 bigint,
 a13 bigint
 )
-LOCATION ('HDFSRPC_URL/common1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_bigint_002;
 
