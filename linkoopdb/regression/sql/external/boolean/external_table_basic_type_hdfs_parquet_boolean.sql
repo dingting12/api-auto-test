@@ -24,7 +24,7 @@ a11 boolean,
 a12 boolean,
 a13 boolean
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_boolean_001;
 
@@ -42,6 +42,6 @@ a10 boolean,
 a11 boolean,
 a12 boolean
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/boolean1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/boolean_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_boolean_002;

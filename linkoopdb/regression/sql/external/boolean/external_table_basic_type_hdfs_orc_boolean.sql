@@ -23,7 +23,7 @@ a11 boolean,
 a12 boolean,
 a13 boolean
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/common1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_boolean_001;
 
@@ -41,6 +41,6 @@ a10 boolean,
 a11 boolean,
 a12 boolean
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/boolean1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/boolean_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_boolean_002;
