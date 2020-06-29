@@ -131,7 +131,7 @@ a1 decimal(39)
 format 'csv' (delimiter ',');
   
 
-
+drop table if exists t_external_hdfs_csv_decimal_012;
 -- 创建表t_external_hdfs_csv_decimal_012，测试decimal(n),n设置为5,值为123456大于5，报错，实际返回空值
 create external table t_external_hdfs_csv_decimal_012(
 a1 decimal(5)  

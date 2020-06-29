@@ -132,6 +132,7 @@ format 'csv' (delimiter ',');
 --查询t_external_hdfs_csv_varchar_011的数据，实际返回为'123456789'
 select * from t_external_hdfs_csv_varchar_011;
 
+drop table if exists t_external_hdfs_csv_varchar_012;
 -- 创建表t_external_hdfs_csv_varchar_012，测试date类型，时间为2020-05-08
 create external table t_external_hdfs_csv_varchar_012(
 a1 varchar(30)  

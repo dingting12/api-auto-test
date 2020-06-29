@@ -162,7 +162,7 @@ drop table if exists t_external_hdfs_csv_real_011;
 -- 创建表t_external_hdfs_csv_real_011，测试date类型，值为2020-05-08
 create external table t_external_hdfs_csv_real_011(
 a1 real  
-)location('hdfs://node73:8011/user/testdb73/external_file/csv_type/type_date.csv')
+)location('HDFSRPC_URL/type_date.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_real_011的数据,实际返回空值

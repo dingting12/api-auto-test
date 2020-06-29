@@ -135,7 +135,7 @@ format 'csv' (delimiter ',');
 --查询t_external_hdfs_csv_boolean_010的数据,实际结果是返回空值
 select * from t_external_hdfs_csv_boolean_010;
 
-
+drop table if exists t_external_hdfs_csv_boolean_012;
 -- 创建表t_external_hdfs_csv_boolean_012，测试date类型，时间为2020-01-01
 create external table t_external_hdfs_csv_boolean_012(
 a1 boolean  
