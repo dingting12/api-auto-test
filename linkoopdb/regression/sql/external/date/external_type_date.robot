@@ -24,9 +24,11 @@ EXTERNALTYPETEST
 				   Compare Files     external_table_basic_type_ldbdist_csv_date.log     external_table_basic_type_ldbdist_csv_date.ref				   
 
 *** Keywords ***
+
 Setup Custom Settings
 	SQLCli Enable ConsoleOutput         True
     SQLCli Set SQLMAPPING               ../external_sql.map
+	Compare Skip                        ^['Project ].*
 
 Upload csv files
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
