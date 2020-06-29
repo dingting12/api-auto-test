@@ -21,7 +21,7 @@ a6 timestamp,
 a7 timestamp,
 a8 timestamp
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/timestamp1') FORMAT'orc';
+LOCATION ('HDFSRPC_URL/timestamp1_orc') FORMAT'orc';
 
 select * from t_external_hdfs_orc_timestamp_001;
 
@@ -43,6 +43,6 @@ a11 timestamp,
 a12 timestamp,
 a13 timestamp
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/common1') FORMAT'orc';
+LOCATION ('HDFSRPC_URL/common_orc') FORMAT'orc';
 
 select * from t_external_hdfs_orc_timestamp_002;

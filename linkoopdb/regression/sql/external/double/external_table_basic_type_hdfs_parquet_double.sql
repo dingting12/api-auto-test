@@ -17,7 +17,7 @@ a4 double,
 a5 double,
 a6 double
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/real1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/real1_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_double_001;
 
@@ -38,6 +38,6 @@ a11 double,
 a12 double,
 a13 double
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_double_002;

@@ -15,7 +15,7 @@ a2 smallint,
 a3 smallint,
 a4 smallint
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/small1') FORMAT'orc';
+LOCATION ('HDFSRPC_URL/smallint1_orc') FORMAT'orc';
 
 select * from t_external_hdfs_orc_small_001;
 
@@ -36,6 +36,6 @@ a11 smallint,
 a12 smallint,
 a13 smallint
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/common1') FORMAT'orc';
+LOCATION ('HDFSRPC_URL/common_orc') FORMAT'orc';
 
 select * from t_external_hdfs_orc_small_002;

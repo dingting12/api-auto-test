@@ -15,7 +15,7 @@ a2 smallint,
 a3 smallint,
 a4 smallint
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/small1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/smallint1_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_small_001;
 
@@ -36,6 +36,6 @@ a11 smallint,
 a12 smallint,
 a13 smallint
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_small_002;

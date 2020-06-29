@@ -4,9 +4,11 @@ Documentation    RobotFrameWork文档实例
 
 # 引用公共函数
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
+Test Setup       run keywords
+...              SQL Test Setup   AND
+...              Setup Custom Settings   AND
+...              Upload csv files
 Test Teardown    SQL Test Clnup
-Library          OperatingSystem
 
 *** Test Cases ***
 EXTERNALTYPETEST   
@@ -23,6 +25,13 @@ EXTERNALTYPETEST
 
 *** Keywords ***
 Setup Custom Settings
-    Compare Enable ConsoleOutput       True 
-	SQLCli Enable ConsoleOutput        True
+	SQLCli Enable ConsoleOutput         True
+    SQLCli Set SQLMAPPING               ../external_sql.map
 
+Upload csv files
+    HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
+    HDFS Upload                ../data/real_csv/*.csv
+    HDFS Upload                ../data/real1_orc/*
+    HDFS Upload                ../data/real1_parquet/*
+    HDFS Upload                ../data/common_orc/*
+    HDFS Upload                ../data/common_parquet/*

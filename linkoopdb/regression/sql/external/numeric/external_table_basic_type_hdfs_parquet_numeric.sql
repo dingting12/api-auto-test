@@ -23,19 +23,19 @@ drop table if exists t_external_hdfs_parquet_numeric_012;
 -- 创建表t_external_ldbdist_csv_numeric_001，测试总长度n>38,创建失败,实际成功
 create external table t_external_hdfs_parquet_numeric_001(
 a1 numeric(39,1)
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+)location('HDFSRPC_URL/numeric1_parquet_parquet')
 FORMAT'parquet';
 
 -- 测试总长度n<1,创建失败，实际创建失败，报precision or scale out of range in statement
 create external table t_external_hdfs_parquet_numeric_002(
 a1 numeric(0,0) 
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+)location('HDFSRPC_URL/numeric1_parquet_parquet')
 FORMAT'parquet';
 
 -- 测试整数部分长度>n-m,例如234.01，应报错,实际返回空值
 create external table t_external_hdfs_parquet_numeric_003(
 a1 numeric(4,2)  
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+)location('HDFSRPC_URL/numeric1_parquet')
 FORMAT'parquet';
   
 --查询t_external_ldbdist_csv_numeric_003的数据
@@ -45,33 +45,33 @@ select * from t_external_hdfs_parquet_numeric_003;
 --测试m小于0,创建失败，实际报错precision or scale out of range in statement
 create external table t_external_hdfs_parquet_numeric_004(
 a1 numeric(2,-1)  
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+)location('HDFSRPC_URL/numeric1_parquet')
 FORMAT'parquet';
 
 
 --测试m大于n,创建失败，实际报错precision or scale out of range in statement
 create external table t_external_hdfs_parquet_numeric_005(
 a1 numeric(3,6)  
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+)location('HDFSRPC_URL/numeric1_parquet')
 FORMAT'parquet';
 
 
 -- 测试(*,m),创建失败，实际报错 unexpected token: * 
 create external table t_external_hdfs_parquet_numeric_006(
 a1 numeric(*,m)  
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+)location('HDFSRPC_URL/numeric1_parquet')
 FORMAT'parquet';
 
 --测试(*),创建失败，实际报错unexpected token: * 
 create external table t_external_hdfs_parquet_numeric_007(
 a1 numeric(*)  
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+)location('HDFSRPC_URL/numeric1_parquet')
 FORMAT'parquet';
   
 -- 测试numeric(n),n设置为39,创建报错，实际创建成功
 create external table t_external_hdfs_parquet_numeric_008(
 a1 numeric(39)  
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric1')
+)location('HDFSRPC_URL/numeric1_parquet')
 FORMAT'parquet';
   
   
@@ -80,7 +80,7 @@ FORMAT'parquet';
 --测试numeric默认值是否为(5,0),值为123456，实际为123456
 create external table t_external_hdfs_parquet_numeric_009(
 a1 numeric  
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric2')
+)location('HDFSRPC_URL/numeric2_parquet')
 FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_numeric_009;
@@ -88,7 +88,7 @@ select * from t_external_hdfs_parquet_numeric_009;
 --测试numeric(n),n设置为5,值为123456大于5，报错，实际返回空值 
 create external table t_external_hdfs_parquet_numeric_010(
 a1 numeric(5)  
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric2')
+)location('HDFSRPC_URL/numeric2_parquet')
 FORMAT'parquet';
   
 select * from t_external_hdfs_parquet_numeric_010;
@@ -102,7 +102,7 @@ a4 numeric(5),
 a5 numeric(5),
 a6 numeric(20) ,
 a7 numeric(20),
-)location('hdfs://node73:8020/user/testdb73/external_file/type_parquet/numeric3')
+)location('HDFSRPC_URL/numeric3_parquet')
 FORMAT'parquet';
   
 select * from t_external_hdfs_parquet_numeric_011;
@@ -124,6 +124,6 @@ a11 numeric,
 a12 numeric,
 a13 numeric
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_numeric_012;

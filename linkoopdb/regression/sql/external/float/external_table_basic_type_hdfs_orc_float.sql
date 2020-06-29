@@ -17,7 +17,7 @@ a5 float,
 a6 float,
 a7 float
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/float1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/float1_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_float_001;
 
@@ -38,7 +38,7 @@ a11 float,
 a12 float,
 a13 float
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/common1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_float_002;
 

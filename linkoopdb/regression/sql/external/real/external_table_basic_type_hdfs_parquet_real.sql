@@ -17,7 +17,7 @@ a4 real,
 a5 real,
 a6 real
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/real1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/real1_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_real_001;
 
@@ -38,6 +38,6 @@ a11 real,
 a12 real,
 a13 real
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_real_002;

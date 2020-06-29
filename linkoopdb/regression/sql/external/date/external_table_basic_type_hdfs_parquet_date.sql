@@ -20,7 +20,7 @@ a5 date,
 a6 date,
 a7 date
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/date1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/date_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_date_001;
 
@@ -40,6 +40,6 @@ a11 date,
 a12 date,
 a13 date
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_date_002;

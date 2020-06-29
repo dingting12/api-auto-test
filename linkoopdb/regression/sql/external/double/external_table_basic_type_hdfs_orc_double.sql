@@ -17,7 +17,7 @@ a4 double,
 a5 double,
 a6 double
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/real1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/real1_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_double_001;
 
@@ -38,6 +38,6 @@ a11 double,
 a12 double,
 a13 double
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_orc/common1') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_double_002;

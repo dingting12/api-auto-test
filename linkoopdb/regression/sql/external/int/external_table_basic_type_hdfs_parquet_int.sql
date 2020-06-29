@@ -15,7 +15,7 @@ a2 int,
 a3 int,
 a4 int
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/int1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/int1_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_int_001;
 
@@ -36,6 +36,6 @@ a11 int,
 a12 int,
 a13 int
 )
-LOCATION ('hdfs://node73:8020/user/testdb73/external_file/type_parquet/common1') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_int_002;

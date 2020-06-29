@@ -13,7 +13,7 @@ drop table if exists t_external_hdfs_csv_decimal_001;
 -- 创建表t_external_hdfs_csv_decimal_001，测试总长度n>38,创建失败,实际成功
 create external table t_external_hdfs_csv_decimal_001(
 a1 decimal(39,1)
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_001.csv')
+)location('HDFSRPC_URL/decimal_001.csv')
 format 'csv' (delimiter ',');
 
 
@@ -23,7 +23,7 @@ drop table if exists t_external_hdfs_csv_decimal_002;
 -- 创建表t_external_hdfs_csv_decimal_002，测试总长度n<1,创建失败，实际创建失败，报precision or scale out of range in statement
 create external table t_external_hdfs_csv_decimal_002(
 a1 decimal(0,0) 
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_001.csv')
+)location('HDFSRPC_URL/decimal_001.csv')
 format 'csv' (delimiter ',');
   
 
@@ -34,7 +34,7 @@ drop table if exists t_external_hdfs_csv_decimal_003;
 -- 创建表t_external_hdfs_csv_decimal_003，测试整数部分长度>n-m,例如234.01，应报错,实际返回空值
 create external table t_external_hdfs_csv_decimal_003(
 a1 decimal(4,2)  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_001.csv')
+)location('HDFSRPC_URL/decimal_001.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_003的数据
@@ -47,7 +47,7 @@ drop table if exists t_external_hdfs_csv_decimal_004;
 -- 创建表t_external_hdfs_csv_decimal_004，测试小数部分长度>m,例如23.7389,小数点后m位向右的数字被舍入，实际结果为23.74
 create external table t_external_hdfs_csv_decimal_004(
 a1 decimal(4,2)   
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')
+)location('HDFSRPC_URL/decimal_002.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_004的数据
@@ -60,7 +60,7 @@ drop table if exists t_external_hdfs_csv_decimal_005;
 -- 创建表t_external_hdfs_csv_decimal_005，测试m小于0,创建失败，实际报错precision or scale out of range in statement
 create external table t_external_hdfs_csv_decimal_005(
 a1 decimal(2,-1)  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')
+)location('HDFSRPC_URL/decimal_002.csv')
 format 'csv' (delimiter ',');
   
 
@@ -70,7 +70,7 @@ drop table if exists t_external_hdfs_csv_decimal_006;
 -- 创建表t_external_hdfs_csv_decimal_006，测试m大于n,创建失败，实际报错precision or scale out of range in statement
 create external table t_external_hdfs_csv_decimal_006(
 a1 decimal(3,6)  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_002.csv')
+)location('HDFSRPC_URL/decimal_002.csv')
 format 'csv' (delimiter ',');
 
 
@@ -81,7 +81,7 @@ drop table if exists t_external_hdfs_csv_decimal_007;
 -- 创建表t_external_hdfs_csv_decimal_007，测试decimal默认值是否为(5,0),值为12345,12345.19，实际结果为12345
 create external table t_external_hdfs_csv_decimal_007(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_003.csv')
+)location('HDFSRPC_URL/decimal_003.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_007的数据
@@ -94,7 +94,7 @@ drop table if exists t_external_hdfs_csv_decimal_008;
 -- 创建表t_external_hdfs_csv_decimal_008，测试decimal默认值是否为(5,0),值为123456，实际为123456
 create external table t_external_hdfs_csv_decimal_008(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+)location('HDFSRPC_URL/decimal_004.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_008的数据
@@ -107,7 +107,7 @@ drop table if exists t_external_hdfs_csv_decimal_009;
 -- 创建表t_external_hdfs_csv_decimal_009，测试(*,m),创建失败，实际报错 unexpected token: * 
 create external table t_external_hdfs_csv_decimal_009(
 a1 decimal(*,m)  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+)location('HDFSRPC_URL/decimal_004.csv')
 format 'csv' (delimiter ',');
 
 
@@ -117,7 +117,7 @@ drop table if exists t_external_hdfs_csv_decimal_010;
 -- 创建表t_external_hdfs_csv_decimal_010，测试(*),创建失败，实际报错unexpected token: * 
 create external table t_external_hdfs_csv_decimal_010(
 a1 decimal(*)  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+)location('HDFSRPC_URL/decimal_004.csv')
 format 'csv' (delimiter ',');
   
 
@@ -127,7 +127,7 @@ drop table if exists t_external_hdfs_csv_decimal_011;
 -- 创建表t_external_hdfs_csv_decimal_011，测试decimal(n),n设置为39,创建报错，实际创建成功
 create external table t_external_hdfs_csv_decimal_011(
 a1 decimal(39)  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+)location('HDFSRPC_URL/decimal_004.csv')
 format 'csv' (delimiter ',');
   
 
@@ -135,7 +135,7 @@ format 'csv' (delimiter ',');
 -- 创建表t_external_hdfs_csv_decimal_012，测试decimal(n),n设置为5,值为123456大于5，报错，实际返回空值
 create external table t_external_hdfs_csv_decimal_012(
 a1 decimal(5)  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_004.csv')
+)location('HDFSRPC_URL/decimal_004.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_012的数据
@@ -149,7 +149,7 @@ drop table if exists t_external_hdfs_csv_decimal_013;
 create external table t_external_hdfs_csv_decimal_013(
 a1 decimal(5)
 
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_005.csv')
+)location('HDFSRPC_URL/decimal_005.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_013的数据
@@ -162,7 +162,7 @@ drop table if exists t_external_hdfs_csv_decimal_015;
 -- 创建表t_external_hdfs_csv_decimal_015，测试空值
 create external table t_external_hdfs_csv_decimal_015(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongzhi.csv')
+)location('HDFSRPC_URL/type_kongzhi.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_015的数据，实际返回空值
@@ -175,7 +175,7 @@ drop table if exists t_external_hdfs_csv_decimal_016;
 -- 创建表t_external_hdfs_csv_decimal_016，测试空格 
 create external table t_external_hdfs_csv_decimal_016(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongge.csv')
+)location('HDFSRPC_URL/type_kongge.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_016的数据，实际返回空值
@@ -188,7 +188,7 @@ drop table if exists t_external_hdfs_csv_decimal_017;
 -- 创建表t_external_hdfs_csv_decimal_017，测试null 
 create external table t_external_hdfs_csv_decimal_017(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_null.csv')
+)location('HDFSRPC_URL/type_null.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_017的数据，实际返回空值
@@ -201,7 +201,7 @@ drop table if exists t_external_hdfs_csv_decimal_018;
 -- 创建表t_external_hdfs_csv_decimal_018，测试NULL  
 create external table t_external_hdfs_csv_decimal_018(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL.csv')
+)location('HDFSRPC_URL/type_NULL1.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_018的数据，实际返回空值
@@ -214,7 +214,7 @@ drop table if exists t_external_hdfs_csv_decimal_019;
 -- 创建表t_external_hdfs_csv_decimal_019，测试int类型，值为1147483647
 create external table t_external_hdfs_csv_decimal_019(
 a1 decimal(10)  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_006.csv')
+)location('HDFSRPC_URL/decimal_006.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_019的数据，返回1147483647
@@ -226,7 +226,7 @@ drop table if exists t_external_hdfs_csv_decimal_020;
 -- 创建表t_external_hdfs_csv_decimal_020，测试date类型，值为2020-01-01
 create external table t_external_hdfs_csv_decimal_020(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_date.csv')
+)location('HDFSRPC_URL/type_date.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_020的数据，实际返回空值
@@ -239,7 +239,7 @@ drop table if exists t_external_hdfs_csv_decimal_021;
 -- 创建表t_external_hdfs_csv_decimal_021，测试boolean类型，值为false
 create external table t_external_hdfs_csv_decimal_021(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_false.csv')
+)location('HDFSRPC_URL/boolean_false.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_021的数据，实际返回空值
@@ -252,7 +252,7 @@ drop table if exists t_external_hdfs_csv_decimal_022;
 -- 创建表t_external_hdfs_csv_decimal_022，测试boolean类型，值为true
 create external table t_external_hdfs_csv_decimal_022(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_true.csv')
+)location('HDFSRPC_URL/boolean_true.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_022的数据，实际返回空值
@@ -265,7 +265,7 @@ drop table if exists t_external_hdfs_csv_decimal_023;
 -- 创建表t_external_hdfs_csv_decimal_023，测试timestamp，值为2020-05-08 12:19:01
 create external table t_external_hdfs_csv_decimal_023(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_timestamp.csv')
+)location('HDFSRPC_URL/type_timestamp.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_023的数据，实际返回空值
@@ -277,7 +277,7 @@ drop table if exists t_external_hdfs_csv_decimal_024;
 -- 创建表t_external_hdfs_csv_decimal_024，测试varchar英文字母，值为'asdf'
 create external table t_external_hdfs_csv_decimal_024(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzimu.csv')
+)location('HDFSRPC_URL/varchar_yingwenzimu.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_024的数据，实际返回空值
@@ -290,7 +290,7 @@ drop table if exists t_external_hdfs_csv_decimal_025;
 -- 创建表t_external_hdfs_csv_decimal_025，测试varchar中文字符，值为'你好'
 create external table t_external_hdfs_csv_decimal_025(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwen.csv')
+)location('HDFSRPC_URL/varchar_zhongwen.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_025的数据，实际返回空值
@@ -303,7 +303,7 @@ drop table if exists t_external_hdfs_csv_decimal_026;
 -- 创建表t_external_hdfs_csv_decimal_026，测试varchar中英文字符，值为'你好asdf'
 create external table t_external_hdfs_csv_decimal_026(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongyinghunhe.csv')
+)location('HDFSRPC_URL/varchar_zhongyinghunhe.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_026的数据，实际返回空值
@@ -316,7 +316,7 @@ drop table if exists t_external_hdfs_csv_decimal_027;
 -- 创建表t_external_hdfs_csv_decimal_027，测试varchar英文特殊字符，值为'#$%^'
 create external table t_external_hdfs_csv_decimal_027(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzifu.csv')
+)location('HDFSRPC_URL/varchar_yingwenzifu.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_027的数据，实际返回空值
@@ -329,7 +329,7 @@ drop table if exists t_external_hdfs_csv_decimal_028;
 -- 创建表t_external_hdfs_csv_decimal_028，测试varchar中文特殊字符，值为'@#￥%……'
 create external table t_external_hdfs_csv_decimal_028(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwenzifu.csv')
+)location('HDFSRPC_URL/varchar_zhongwenzifu.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_decimal_028的数据，实际返回空值
@@ -341,7 +341,7 @@ drop table if exists t_external_hdfs_csv_decimal_029;
 -- 创建表t_external_hdfs_csv_decimal_029，测试varchar为数字，值为'123456789'
 create external table t_external_hdfs_csv_decimal_029(
 a1 decimal  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/decimal_007.csv')
+)location('HDFSRPC_URL/decimal_007.csv')
 format 'csv' (delimiter ',');
 
 --查询t_external_hdfs_csv_decimal_029的数据，实际返回空值
