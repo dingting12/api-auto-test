@@ -42,6 +42,6 @@ a11 timestamp,
 a12 timestamp,
 a13 timestamp
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_timestamp_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_timestamp_002;

@@ -38,6 +38,6 @@ a11 real,
 a12 real,
 a13 real
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_real_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_real_002;

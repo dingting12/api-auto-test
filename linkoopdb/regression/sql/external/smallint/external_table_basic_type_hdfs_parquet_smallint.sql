@@ -36,6 +36,6 @@ a11 smallint,
 a12 smallint,
 a13 smallint
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_smallint_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_small_002;

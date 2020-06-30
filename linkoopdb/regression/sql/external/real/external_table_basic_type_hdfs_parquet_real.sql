@@ -38,6 +38,6 @@ a11 real,
 a12 real,
 a13 real
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_real_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_real_002;

@@ -10,7 +10,7 @@ drop table if exists t_external_hdfs_csv_int_001;
 
 create external table t_external_hdfs_csv_int_001(
 a1 int  
-)location('HDFSRPC_URL/int_001.csv')
+)location('HDFSRPC_URL/int_csv/int_001.csv')
 format 'csv' (delimiter ',');
 
 select * from t_external_hdfs_csv_int_001;
@@ -21,7 +21,7 @@ drop table if exists t_external_hdfs_csv_int_002;
 
 create external table t_external_hdfs_csv_int_002(
 a1 int  
-)location('HDFSRPC_URL/int_002.csv')
+)location('HDFSRPC_URL/int_csv/int_002.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_002;
@@ -32,7 +32,7 @@ drop table if exists t_external_hdfs_csv_int_003;
 
 create external table t_external_hdfs_csv_int_003(
 a1 int  
-)location('HDFSRPC_URL/int_003.csv')
+)location('HDFSRPC_URL/int_csv/int_003.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_003;
@@ -43,7 +43,7 @@ drop table if exists t_external_hdfs_csv_int_005;
 
 create external table t_external_hdfs_csv_int_005(
 a1 int  
-)location('HDFSRPC_URL/int_005.csv')
+)location('HDFSRPC_URL/int_csv/int_005.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_005;
@@ -55,7 +55,7 @@ drop table if exists t_external_hdfs_csv_int_006;
 
 create external table t_external_hdfs_csv_int_006(
 a1 int  
-)location('HDFSRPC_URL/varchar_yingwenzimu.csv')
+)location('HDFSRPC_URL/int_csv/varchar_yingwenzimu.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_006;
@@ -66,7 +66,7 @@ drop table if exists t_external_hdfs_csv_int_007;
 
 create external table t_external_hdfs_csv_int_007(
 a1 int  
-)location('HDFSRPC_URL/varchar_zhongwen.csv')
+)location('HDFSRPC_URL/int_csv/varchar_zhongwen.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_007;
@@ -77,7 +77,7 @@ drop table if exists t_external_hdfs_csv_int_008;
 
 create external table t_external_hdfs_csv_int_008(
 a1 int  
-)location('HDFSRPC_URL/varchar_zhongyinghunhe.csv')
+)location('HDFSRPC_URL/int_csv/varchar_zhongyinghunhe.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_008;
@@ -88,7 +88,7 @@ drop table if exists t_external_hdfs_csv_int_009;
 
 create external table t_external_hdfs_csv_int_009(
 a1 int  
-)location('HDFSRPC_URL/varchar_yingwenzifu.csv')
+)location('HDFSRPC_URL/int_csv/varchar_yingwenzifu.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_009;
@@ -99,7 +99,7 @@ drop table if exists t_external_hdfs_csv_int_010;
 
 create external table t_external_hdfs_csv_int_010(
 a1 int  
-)location('HDFSRPC_URL/varchar_zhongwenzifu.csv')
+)location('HDFSRPC_URL/int_csv/varchar_zhongwenzifu.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_010;
@@ -111,7 +111,7 @@ drop table if exists t_external_hdfs_csv_int_011;
 
 create external table t_external_hdfs_csv_int_011(
 a1 int  
-)location('HDFSRPC_URL/type_date.csv')
+)location('HDFSRPC_URL/int_csv/type_date.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_011;
@@ -122,7 +122,7 @@ drop table if exists t_external_hdfs_csv_int_012;
 
 create external table t_external_hdfs_csv_int_012(
 a1 int  
-)location('HDFSRPC_URL/type_timestamp.csv')
+)location('HDFSRPC_URL/int_csv/type_timestamp.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_012;
@@ -133,7 +133,7 @@ drop table if exists t_external_hdfs_csv_int_013;
 
 create external table t_external_hdfs_csv_int_013(
 a1 int  
-)location('HDFSRPC_URL/boolean_true.csv')
+)location('HDFSRPC_URL/int_csv/boolean_true.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_013;
@@ -144,7 +144,7 @@ drop table if exists t_external_hdfs_csv_int_014;
 
 create external table t_external_hdfs_csv_int_014(
 a1 int  
-)location('HDFSRPC_URL/boolean_false.csv')
+)location('HDFSRPC_URL/int_csv/boolean_false.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_014;
@@ -155,7 +155,7 @@ drop table if exists t_external_hdfs_csv_int_015;
 
 create external table t_external_hdfs_csv_int_015(
 a1 int  
-)location('HDFSRPC_URL/type_kongzhi.csv')
+)location('HDFSRPC_URL/int_csv/type_kongzhi.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_015;
@@ -166,7 +166,7 @@ drop table if exists t_external_hdfs_csv_int_016;
 
 create external table t_external_hdfs_csv_int_016(
 a1 int  
-)location('HDFSRPC_URL/type_kongge.csv')
+)location('HDFSRPC_URL/int_csv/type_kongge.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_016;
@@ -177,7 +177,7 @@ drop table if exists t_external_hdfs_csv_int_017;
 
 create external table t_external_hdfs_csv_int_017(
 a1 int  
-)location('HDFSRPC_URL/type_null.csv')
+)location('HDFSRPC_URL/int_csv/type_null.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_017;
@@ -188,7 +188,7 @@ drop table if exists t_external_hdfs_csv_int_018;
 
 create external table t_external_hdfs_csv_int_018(
 a1 int  
-)location('HDFSRPC_URL/type_NULL1.csv')
+)location('HDFSRPC_URL/int_csv/type_NULL1.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_hdfs_csv_int_018;

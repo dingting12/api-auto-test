@@ -30,8 +30,8 @@ Setup Custom Settings
 
 Upload csv files
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
-    HDFS Upload                ../data/boolean_csv/*.csv  
+    HDFS Upload                ../data/boolean_csv/*.csv  boolean_csv/
     HDFS Upload                ../data/boolean_orc/*   boolean_orc/
     HDFS Upload                ../data/boolean_parquet/*  boolean_parquet/
-    HDFS Upload                ../data/common_orc/*   common_orc/
-    HDFS Upload                ../data/common_parquet/*  common_parquet/
+    HDFS Upload                ../data/common_orc/*   common_boolean_orc/
+    HDFS Upload                ../data/common_parquet/*  common_boolean_parquet/

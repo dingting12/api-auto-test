@@ -17,7 +17,7 @@ a4 double,
 a5 double,
 a6 double
 )
-LOCATION ('HDFSRPC_URL/real1_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/double1_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_double_001;
 
@@ -38,6 +38,6 @@ a11 double,
 a12 double,
 a13 double
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_double_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_double_002;

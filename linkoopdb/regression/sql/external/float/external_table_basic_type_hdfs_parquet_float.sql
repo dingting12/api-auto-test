@@ -39,7 +39,7 @@ a11 float,
 a12 float,
 a13 float
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_float_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_float_002;
 

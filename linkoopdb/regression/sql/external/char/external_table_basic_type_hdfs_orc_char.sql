@@ -56,6 +56,6 @@ a11 char(30),
 a12 char(30),
 a13 char(30)
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_char_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_char_004;

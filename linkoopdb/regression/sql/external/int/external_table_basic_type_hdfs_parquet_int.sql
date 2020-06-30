@@ -36,6 +36,6 @@ a11 int,
 a12 int,
 a13 int
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_int_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_int_002;
