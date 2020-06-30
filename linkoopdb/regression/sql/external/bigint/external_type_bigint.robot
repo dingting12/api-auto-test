@@ -35,5 +35,5 @@ Upload csv files
     HDFS Upload                ../data/bigint_orc/*     bigint_orc/
     HDFS Upload                ../data/bigint_parquet/*  bigint_parquet/
     HDFS Upload                ../data/common_orc/*     common_bigint_orc/  
-    HDFS Upload                ../data/common_parquet/* common_bigint_parquet/
+    HDFS Upload                ../data/common_parquet/*  common_bigint_parquet/
 	
