@@ -12,11 +12,18 @@ function run_robot_file() {
   # 需要传递一个参数，就是robot文件的名字
   TEST_MAIN=$1
 
+	# 过滤掉所有包含Regress_Friendly No信息的Robot文件，不运行
+  m_Regress_Friendly=$(grep -c -i -E "^\.\.\..*Regress_Friendly.*No" "$TEST_MAIN")
+  if [[ $m_Regress_Friendly -gt 0 ]];then
+    echo Ignore file ["$TEST_MAIN"] ..., Regress_Friendly is no.
+    return
+  fi
+
   # 根据传递的文件名称来建立工作目录
-  TEST_NAME=`basename $TEST_MAIN`
+  TEST_NAME=$(basename $"TEST_MAIN")
   TEST_NAME=${TEST_NAME%.*}
   export T_WORK=$T_UP_T_WORK/sub_$TEST_NAME
-  mkdir -p $T_WORK
+  mkdir -p "$T_WORK"
 
   # 进入程序目录，开始运行程序
   cd "$(dirname "$TEST_MAIN")" || { echo "Failed to enter test directory"; exit 1; }
