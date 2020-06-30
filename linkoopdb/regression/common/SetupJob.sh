@@ -58,17 +58,17 @@ run=0
 
 # 将进程的添加到队列里的函数
 function push() {
-	Qarr=(${Qarr[@]} "$1")
+	Qarr=("${Qarr[@]}" "$1")
     run=${#Qarr[@]}
 }
 
 # 检测队列里的进程是否运行完毕
 function check() {
-	oldQ=(${Qarr[@]})
+	oldQ=("${Qarr[@]}")
 	Qarr=()
 	for p in "${oldQ[@]}";do
 		if [[ -d "/proc/$p" ]];then
-			Qarr=(${Qarr[@]} "$p")
+			Qarr=("${Qarr[@]}" "$p")
 		fi
 	done
 	run=${#Qarr[@]}
@@ -78,4 +78,4 @@ function check() {
 T_UP_T_WORK=$T_WORK
 
 # 显示测试开始时间
-date
+echo JOB started at .... "$(date)"

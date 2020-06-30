@@ -16,6 +16,19 @@ do
     fi
 done
 
+# 根据传递的文件名称来建立工作目录
+TEST_MAIN=$1
+TEST_NAME=`basename $TEST_MAIN`
+TEST_NAME=${TEST_NAME%.*}
+export T_WORK=$T_UP_T_WORK/sub_$TEST_NAME
+mkdir -p $T_WORK
+
+echo ======================================
+echo $TEST_NAME
+echo $T_WORK
+echo $MAX_PROCESSES
+echo ======================================
+
 # 开始i运行脚本
 cd "$(dirname "$1")" || { echo "Failed to enter test directory"; exit 1; }
 echo "$ROBOT_BIN" --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO\
