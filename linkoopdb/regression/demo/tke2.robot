@@ -4,8 +4,9 @@ Test Setup       SQL Test Setup
 Test Teardown    SQL Test Clnup
 
 *** Settings ***
-Documentation    RobotFrameWork文档实例
-...              这里的文档内容会出现在报告里面
+Documentation    测试套件说明
+...              演示程序
+...              Regress_Friendly    NO   # 表示这个程序不参与整体回归测试，正常Case请删除此行
 Force Tags       Demo
 
 *** Test Cases ***
