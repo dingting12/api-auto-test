@@ -13,10 +13,10 @@ function run_robot_file() {
   TEST_MAIN=$1
 
 	# 过滤掉所有包含Regress_Friendly No信息的Robot文件，不运行
-  m_Regress_Friendly=$(grep -c -i -E "^\.\.\..*Regress_Friendly.*No" "$TEST_MAIN")
+  m_Regress_Friendly=$(grep -c -i -E "^\.\.\..*Regress_Friendly.*No" "$TEST_MAIN"||true)
   if [[ $m_Regress_Friendly -gt 0 ]];then
     echo Ignore file ["$TEST_MAIN"] ..., Regress_Friendly is no.
-    return
+    return 0
   fi
 
   # 根据传递的文件名称来建立工作目录
