@@ -75,7 +75,7 @@ drop table if exists t_external_ldbdist_csv_varchar_007;
 create external table t_external_ldbdist_csv_varchar_007(
 a1 varchar(30)  
 )location('ldbdist://node74:54321/csv/varchar_zhongwen.csv')
-format 'csv' (delimiter ',' encoding 'utf-8');
+format 'csv' (delimiter ',' );
   
 --查询t_external_ldbdist_csv_varchar_007的数据,实际返回你好
 select * from t_external_ldbdist_csv_varchar_007;
@@ -88,7 +88,7 @@ drop table if exists t_external_ldbdist_csv_varchar_008;
 create external table t_external_ldbdist_csv_varchar_008(
 a1 varchar(30)  
 )location('ldbdist://node74:54321/csv/varchar_zhongyinghunhe.csv')
-format 'csv' (delimiter ',' encoding 'utf-8');
+format 'csv' (delimiter ',' );
   
 --查询t_external_ldbdist_csv_varchar_008的数据，返回值为你好asdf
 select * from t_external_ldbdist_csv_varchar_008;
