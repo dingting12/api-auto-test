@@ -191,7 +191,7 @@ drop table if exists t_external_hdfs_csv_boolean_017;
 -- 创建表t_external_hdfs_csv_boolean_017，测试null 
 create external table t_external_hdfs_csv_boolean_017(
 a1 boolean  
-)location('HDFSRPC_URL/boolean_csv/type_null.csv')
+)location('HDFSRPC_URL/boolean_csv/type_1null.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_hdfs_csv_boolean_017的数据,实际结果是返回空值
