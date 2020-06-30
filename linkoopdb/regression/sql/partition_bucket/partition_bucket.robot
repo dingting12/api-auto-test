@@ -21,6 +21,7 @@ Partition-HDFS
 *** Keywords ***
 Setup Custom Settings
 	SQLCli Enable ConsoleOutput         True
+	SQLCli Set SQLMAPPING               ../partition_bucket_sql.map
 
 Upload csv files
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
