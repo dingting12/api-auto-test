@@ -116,6 +116,16 @@ insert into T_TYPE_DATE values('20100111');
 --查询表T_TYPE_DATE
 select * from T_TYPE_DATE;
 
+--验证插入varchar类型，插入数字'2020-06-29'，可以隐式转换为date
+insert into T_TYPE_DATE values('2020-06-29');
+--查询表T_TYPE_DATE
+select * from T_TYPE_DATE;
+
+--验证插入varchar类型，插入数字'2018-02-29'，可以隐式转换为date，但是18年2月没有29日
+insert into T_TYPE_DATE values('2018-02-29');
+--查询表T_TYPE_DATE
+select * from T_TYPE_DATE;
+
 --验证插入varchar类型，插入英文字母'AAAbcd'
 insert into T_TYPE_DATE values('AAAbcd');
 --查询表T_TYPE_DATE
