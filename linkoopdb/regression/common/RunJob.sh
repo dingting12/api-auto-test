@@ -1,56 +1,38 @@
 #!/bin/bash
-
 # -------------------------------------------------------------------------------
-# 文件名称:    ReportJob.sh
-# 描述   :    集成在Jenkins中，用来在JOB完成后汇总相关报表信息
+# 文件名称:    RunJob.sh
+# 描述   :    集成在Jenkins中，用来运行Robot文件
 # -------------------------------------------------------------------------------
 
 # 关闭调试信息
 set +x
 
-# 等待所有进程结束
-wait
+# 根据传递的文件名称来建立工作目录
+TEST_MAIN=$1
+TEST_NAME=`basename $TEST_MAIN`
+TEST_NAME=${TEST_NAME%.*}
+export T_WORK=$T_UP_T_WORK/sub_$TEST_NAME
+mkdir -p $T_WORK
 
-# 显示测试结束时间
-echo JOB stoped at .... "$(date)"
-
-# 开始汇总报表数据,备份测试结果文件
-cd "$T_WORK" || { echo "Failed to enter test directory"; exit 1; }
-m_OutputDirList=""
-for dir in sub_*
-do
-    [[ -e "$dir" ]] || break
-    if [[ ! -d "$dir" ]]
-    then
-       continue
-    fi
-
-    if [ -f $dir/output.xml ]; then
-        m_OutputDirList="$m_OutputDirList $dir/output.xml"
-    else
-        # 指定的测试没有完成
-        echo "Test Failed . $dir/output.xml missed"
-    fi
-
-    # 备份测试结果文件到上层目录
-    rm -f "$T_WORK"/output.xml
-    rm -f "$T_WORK"/log.html
-    rm -f "$T_WORK"/report.html
-    cp -f $dir/*perf $dir/*sav $dir/*dif $dir/*suc $dir/*sql $dir/*log $dir/*out \
-            $dir/*json $dir/*html $T_WORK 2>/dev/null || true
-done
-
-# 如果没有任何的JOB运行，则测试失败
-echo Will merge all rebot report files to one ...
-if [ X"$m_OutputDirList" = "X" ]; then
-    echo "All test failed. Job blowout."
-    exit 255
+# 进入程序目录，开始运行程序
+cd "$(dirname "$TEST_MAIN")" || { echo "Failed to enter test directory"; exit 1; }
+if [ "$MAX_PROCESSES" -eq 1 ]; then
+    echo "Run test case $TEST_MAIN ... "
+    echo "$ROBOT_BIN" --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO\
+        --outputdir "$T_WORK" -o output.xml "$TEST_MAIN"
+    $ROBOT_BIN --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO\
+        --outputdir "$T_WORK" -o output.xml "$TEST_MAIN"
 else
-    echo $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList"
-    $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml $m_OutputDirList || true
+    # 不再打印屏幕输出，而是直接输出信息到__stdout,以及__stderr中
+    echo "Run test case in queue $TEST_MAIN ... "
+    $ROBOT_BIN --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO --outputdir "$T_WORK" \
+          "$TEST_MAIN" > "$T_WORK"/"$TEST_NAME".__stdout 2>"$T_WORK"/"$TEST_NAME".__stderr || true &
+    push $!
+    while [[ "$run" -ge $MAX_PROCESSES ]];do
+        check
+        sleep 1
+    done
 fi
 
-# 将测试结果数据插入到统计数据库中
-echo Will insert into robot test result to report database ...
-echo $PY_BIN "$TEST_ROOT"/regression/common/ParseRobotOutput.py "$T_WORK"/output.xml
-$PY_BIN "$TEST_ROOT"/regression/common/ParseRobotOutput.py "$T_WORK"/output.xml
+# 重置T_WORK变量
+export T_WORK=$T_UP_T_WORK
