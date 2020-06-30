@@ -47,7 +47,7 @@ if [ X"$m_OutputDirList" = "X" ]; then
     exit 255
 else
     echo $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList"
-    $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList" || true
+    $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml $m_OutputDirList || true
 fi
 
 # 将测试结果数据插入到统计数据库中
