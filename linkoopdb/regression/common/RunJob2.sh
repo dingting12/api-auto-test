@@ -42,3 +42,6 @@ else
         sleep 1
     done
 fi
+
+# 重置T_WORK变量
+export T_WORK=$T_UP_T_WORK
