@@ -7,22 +7,10 @@
 # 关闭调试信息
 set +x
 
-# 循环处理所有传入的参数
-for arg in "$@"
-do
-  echo $arg
-  if [ -d "$arg" ]
-  then
-    find "$arg" -name '*.robot' -exec sh -c '
-        TEST_MAIN=$1
-        ' sh {} \;
-  else
-    extension=${arg##*.}
-    if [ "X"$extension == "Xrobot" ]
-    then
-      TEST_MAIN=$arg
-    fi
-  fi
+# 具体的robot处理
+function run_robot_file() {
+  # 需要传递一个参数，就是robot文件的名字
+  TEST_MAIN=$1
 
   # 根据传递的文件名称来建立工作目录
   TEST_NAME=`basename $TEST_MAIN`
@@ -52,5 +40,22 @@ do
 
   # 重置T_WORK变量
   export T_WORK=$T_UP_T_WORK
-done
+}
 
+# 主程序，循环处理所有传入的参数
+for arg in "$@"
+do
+  echo $arg
+  if [ -d "$arg" ]
+  then
+    find "$arg" -name '*.robot' -exec sh -c '
+        run_robot_file $1
+        ' sh {} \;
+  else
+    extension=${arg##*.}
+    if [ "X"$extension == "Xrobot" ]
+    then
+      run_robot_file $arg
+    fi
+  fi
+done
