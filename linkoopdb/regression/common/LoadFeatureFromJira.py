@@ -1,6 +1,7 @@
 from jira import JIRA
 import mysql.connector
 import datetime
+import sys
 
 
 jira = JIRA(server='http://node9:8900', basic_auth=('shi.zhao', '123456'))
@@ -9,10 +10,17 @@ projects = jira.projects()
 
 Features = []
 jql = 'project = "LinkoopDB"'
-issues = jira.search_issues(jql, fields='', maxResults=3000)
+issues = jira.search_issues(jql, fields='', maxResults=8000)
+#for row in issues:
+#    if str(row.fields.issuetype).strip() == "新功能":
+#
+#    print("XXXX " + str(dir(row)))
+#    print("LLLL " + str(dir(row.fields)))
+#    print("issue_type " + str(row.fields.issuetype))
+
 for issue in issues:
     m_IssueSummary = str(issue.fields.summary)
-    if m_IssueSummary.startswith('E') or m_IssueSummary.startswith('F'):
+    if str(issue.fields.issuetype).strip() == "新功能":
         m_FeatureID = m_IssueSummary.split()[0]
         m_FeatureSummary = m_IssueSummary[len(m_FeatureID):].lstrip()
         if m_FeatureID.find('-') != -1:
@@ -23,6 +31,12 @@ for issue in issues:
         Features.append({'Feature_ID': m_FeatureID, 'Feature_Summary': m_FeatureSummary,
                          'UpLevel_FeatureID': m_UpLevel_FeatureID,
                          'Feature_Desc': m_FeatureDesc})
+
+for row in Features:
+    print("Row=" + str(row))
+print("TotalSize = " + str(len(Features)))
+if True:
+    sys.exit(0)
 
 # 连接mysql数据库
 mydb = mysql.connector.connect(

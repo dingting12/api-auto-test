@@ -51,3 +51,31 @@ else
     cat "$T_WORK"/__tempenv__.sh
     exit 255
 fi
+
+# 存放进程的队列, 当前运行进程数
+Qarr=();
+run=0
+
+# 将进程的添加到队列里的函数
+function push() {
+	Qarr=(${Qarr[@]} "$1")
+    run=${#Qarr[@]}
+}
+
+# 检测队列里的进程是否运行完毕
+function check() {
+	oldQ=(${Qarr[@]})
+	Qarr=()
+	for p in "${oldQ[@]}";do
+		if [[ -d "/proc/$p" ]];then
+			Qarr=(${Qarr[@]} "$p")
+		fi
+	done
+	run=${#Qarr[@]}
+}
+
+# 备份T_WORK目录信息，随后在子目录中运行
+T_UP_T_WORK=$T_WORK
+
+# 显示测试开始时间
+date
