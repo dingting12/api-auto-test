@@ -48,9 +48,10 @@ do
   echo $arg
   if [ -d "$arg" ]
   then
-    find "$arg" -name '*.robot' -exec sh -c '
-        run_robot_file $1
-        ' sh {} \;
+    for robot_file in $(find "$arg" -name '*.robot')
+    do
+      run_robot_file $robot_file
+    done
   else
     extension=${arg##*.}
     if [ "X"$extension == "Xrobot" ]
