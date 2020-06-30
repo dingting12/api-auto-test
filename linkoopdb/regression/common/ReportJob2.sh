@@ -15,6 +15,7 @@ wait
 echo JOB stoped at .... "$(date)"
 
 # 开始汇总报表数据,备份测试结果文件
+cd "$T_WORK" || { echo "Failed to enter test directory"; exit 1; }
 for dir in sub_*
 do
     [[ -e "$dir" ]] || break
