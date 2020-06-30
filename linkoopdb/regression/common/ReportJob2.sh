@@ -16,6 +16,7 @@ echo JOB stoped at .... "$(date)"
 
 # 开始汇总报表数据,备份测试结果文件
 cd "$T_WORK" || { echo "Failed to enter test directory"; exit 1; }
+m_OutputDirList=""
 for dir in sub_*
 do
     [[ -e "$dir" ]] || break
@@ -39,9 +40,15 @@ do
             $dir/*json $dir/*html $T_WORK 2>/dev/null || true
 done
 
+# 如果没有任何的JOB运行，则测试失败
 echo Will merge all rebot report files to one ...
-echo $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList"
-$REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList" || true
+if [ X"$m_OutputDirList" = "X" ]; then
+    echo "All test failed. Job blowout."
+    exit 255
+else
+    echo $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList"
+    $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList" || true
+fi
 
 # 将测试结果数据插入到统计数据库中
 echo Will insert into robot test result to report database ...

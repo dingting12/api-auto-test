@@ -35,6 +35,11 @@ if [ X"$Label_ID" = "X" ]; then
     exit 255
 fi
 
+# 如果没有定义最大进程数，则最大进程数按照1（不并发）来计算
+if [ X"$MAX_PROCESSES" = "X" ]; then
+    MAX_PROCESSES=1
+fi
+
 # 建立T_WORK目录，如果之前存在，则清空目录
 rm -r -f "$T_WORK"
 mkdir -p "$T_WORK"

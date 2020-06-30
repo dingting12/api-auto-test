@@ -7,15 +7,6 @@
 # 关闭调试信息
 set +x
 
-# 找到可用的文件名
-for ((i=1; i<=1000; i ++))
-do
-    if [ ! -f "$T_WORK"/output"$i".xml ]; then
-         m_output_xmlfilename=output"$i".xml
-         break
-    fi
-done
-
 # 根据传递的文件名称来建立工作目录
 TEST_MAIN=$1
 TEST_NAME=`basename $TEST_MAIN`
@@ -28,9 +19,9 @@ cd "$(dirname "$TEST_MAIN")" || { echo "Failed to enter test directory"; exit 1;
 echo "Run test case $TEST_MAIN ... "
 if [ "$MAX_PROCESSES" -eq 1 ]; then
     echo "$ROBOT_BIN" --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO\
-        --outputdir "$T_WORK" -o "$m_output_xmlfilename" "$TEST_MAIN"
+        --outputdir "$T_WORK" -o output.xml "$TEST_MAIN"
     $ROBOT_BIN --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO\
-        --outputdir "$T_WORK" -o "$m_output_xmlfilename" "$TEST_MAIN"
+        --outputdir "$T_WORK" -o output.xml "$TEST_MAIN"
 else
     # 不再打印屏幕输出，而是直接输出信息到__stdout,以及__stderr中
     echo "Run test case in queue $TEST_MAIN ... "
