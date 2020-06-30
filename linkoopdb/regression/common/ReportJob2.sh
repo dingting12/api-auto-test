@@ -8,6 +8,12 @@
 # 关闭调试信息
 set +x
 
+# 等待所有进程结束
+wait
+
+# 显示测试结束时间
+echo JOB stoped at .... "$(date)"
+
 # 开始汇总报表数据,备份测试结果文件
 for dir in sub_*
 do
@@ -25,15 +31,16 @@ do
     fi
 
     # 备份测试结果文件到上层目录
-    cp -f $dir/*sav $dir/*dif $dir/*suc $dir/*sql $dir/*log $dir/*out $dir/*json $dir/*html $T_WORK 2>/dev/null || true
     rm -f "$T_WORK"/output.xml
     rm -f "$T_WORK"/log.html
     rm -f "$T_WORK"/report.html
+    cp -f $dir/*perf $dir/*sav $dir/*dif $dir/*suc $dir/*sql $dir/*log $dir/*out \
+            $dir/*json $dir/*html $T_WORK 2>/dev/null || true
 done
 
 echo Will merge all rebot report files to one ...
-echo $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$T_WORK"/output[0-9]*.xml
-$REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$T_WORK"/output[0-9]*.xml || true
+echo $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList"
+$REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList" || true
 
 # 将测试结果数据插入到统计数据库中
 echo Will insert into robot test result to report database ...
