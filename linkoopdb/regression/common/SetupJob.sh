@@ -39,6 +39,7 @@ fi
 if [ X"$MAX_PROCESSES" = "X" ]; then
     MAX_PROCESSES=1
 fi
+echo Max Processes is : [ "$MAX_PROCESSES" ]
 
 # 建立T_WORK目录，如果之前存在，则清空目录
 rm -r -f "$T_WORK"
