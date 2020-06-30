@@ -17,7 +17,7 @@ a4 double,
 a5 double,
 a6 double
 )
-LOCATION ('HDFSRPC_URL/real1_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/double1_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_double_001;
 
@@ -38,6 +38,6 @@ a11 double,
 a12 double,
 a13 double
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_double_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_double_002;

@@ -38,28 +38,28 @@ SQL>
 SQL> -- 创建表t_external_ldbdist_csv_numeric_001，测试总长度n>38,创建失败,实际成功
 SQL> create external table t_external_hdfs_parquet_numeric_001(
    > a1 numeric(39,1)
-   > )location('HDFSRPC_URL/numeric1_parquet_parquet')
+   > )location('HDFSRPC_URL/numeric1_parquet')
    > FORMAT'parquet';
 REWROTED SQL> Your SQL has been changed to:
 REWROTED    > create external table t_external_hdfs_parquet_numeric_001(
 REWROTED    > a1 numeric(39,1)
-REWROTED    > )location('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/numeric1_parquet_parquet')
+REWROTED    > )location('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/numeric1_parquet')
 REWROTED    > FORMAT'parquet'
 0 rows affected
 SQL> 
 SQL> -- 测试总长度n<1,创建失败，实际创建失败，报precision or scale out of range in statement
 SQL> create external table t_external_hdfs_parquet_numeric_002(
    > a1 numeric(0,0) 
-   > )location('HDFSRPC_URL/numeric1_parquet_parquet')
+   > )location('HDFSRPC_URL/numeric1_parquet')
    > FORMAT'parquet';
 REWROTED SQL> Your SQL has been changed to:
 REWROTED    > create external table t_external_hdfs_parquet_numeric_002(
 REWROTED    > a1 numeric(0,0) 
-REWROTED    > )location('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/numeric1_parquet_parquet')
+REWROTED    > )location('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/numeric1_parquet')
 REWROTED    > FORMAT'parquet'
 java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [create external table t_external_hdfs_parquet_numeric_002(
 a1 numeric(0,0) 
-)location('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/numeric1_parquet_parquet')
+)location('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/numeric1_parquet')
 FORMAT'parquet']
 SQL> 
 SQL> -- 测试整数部分长度>n-m,例如234.01，应报错,实际返回空值
@@ -244,7 +244,7 @@ SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_numeric_012(
    > a12 numeric,
    > a13 numeric
    > )
-   > LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+   > LOCATION ('HDFSRPC_URL/common_numeric_parquet') FORMAT'parquet';
 REWROTED SQL> Your SQL has been changed to:
 REWROTED    > CREATE EXTERNAL TABLE t_external_hdfs_parquet_numeric_012(
 REWROTED    > a1 numeric,
@@ -261,7 +261,7 @@ REWROTED    > a11 numeric,
 REWROTED    > a12 numeric,
 REWROTED    > a13 numeric
 REWROTED    > )
-REWROTED    > LOCATION ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/common_parquet') FORMAT'parquet'
+REWROTED    > LOCATION ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/common_numeric_parquet') FORMAT'parquet'
 0 rows affected
 SQL> select * from t_external_hdfs_parquet_numeric_012;
 +--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+------------+-----+-----+

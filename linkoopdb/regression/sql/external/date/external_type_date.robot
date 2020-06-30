@@ -33,8 +33,8 @@ Setup Custom Settings
 	
 Upload csv files
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
-    HDFS Upload                ../data/date_csv/*.csv
+    HDFS Upload                ../data/date_csv/*.csv  date_csv/
     HDFS Upload                ../data/date_orc/*  date_orc/
     HDFS Upload                ../data/date_parquet/*  date_parquet/
-    HDFS Upload                ../data/common_orc/*  common_orc/
-    HDFS Upload                ../data/common_parquet/*  common_parquet/
+    HDFS Upload                ../data/common_orc/*  common_date_orc/
+    HDFS Upload                ../data/common_parquet/*  common_date_parquet/

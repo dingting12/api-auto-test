@@ -15,13 +15,13 @@ drop table if exists t_external_hdfs_parquet_varchar_004;
 -- 测试创建长度大于64000,创建报错
 create external table t_external_hdfs_parquet_varchar_001(
 a1 varchar(64001)
-)location('HDFSRPC_URL/char1_parquet')
+)location('HDFSRPC_URL/varchar1_parquet')
 FORMAT 'parquet';
 
 -- 测试长度为10，数据大小为20
 create external table t_external_hdfs_parquet_varchar_002(
 a1 varchar(10) 
-)location('HDFSRPC_URL/char2_parquet')
+)location('HDFSRPC_URL/varchar2_parquet')
 FORMAT 'parquet';
 
 -- 返回10个字符
@@ -36,7 +36,7 @@ a3 varchar(30),
 a4 varchar(30),
 a5 varchar(30)
 )
-LOCATION ('HDFSRPC_URL/char1_parquet') FORMAT 'parquet';
+LOCATION ('HDFSRPC_URL/varchar1_parquet') FORMAT 'parquet';
 
 select * from t_external_hdfs_parquet_char_003;
 
@@ -57,7 +57,7 @@ a11 varchar(30),
 a12 varchar(30),
 a13 varchar(30)
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_varchar_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_varchar_004;
 

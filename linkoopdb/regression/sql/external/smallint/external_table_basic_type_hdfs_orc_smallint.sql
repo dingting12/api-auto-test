@@ -36,6 +36,6 @@ a11 smallint,
 a12 smallint,
 a13 smallint
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT'orc';
+LOCATION ('HDFSRPC_URL/common_smallint_orc') FORMAT'orc';
 
 select * from t_external_hdfs_orc_small_002;

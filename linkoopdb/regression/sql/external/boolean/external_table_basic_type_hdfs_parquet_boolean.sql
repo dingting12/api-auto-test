@@ -24,7 +24,7 @@ a11 boolean,
 a12 boolean,
 a13 boolean
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_boolean_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_boolean_001;
 

@@ -23,7 +23,7 @@ a11 boolean,
 a12 boolean,
 a13 boolean
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_boolean_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_boolean_001;
 

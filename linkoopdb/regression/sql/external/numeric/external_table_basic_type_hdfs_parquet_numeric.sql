@@ -23,13 +23,13 @@ drop table if exists t_external_hdfs_parquet_numeric_012;
 -- 创建表t_external_ldbdist_csv_numeric_001，测试总长度n>38,创建失败,实际成功
 create external table t_external_hdfs_parquet_numeric_001(
 a1 numeric(39,1)
-)location('HDFSRPC_URL/numeric1_parquet_parquet')
+)location('HDFSRPC_URL/numeric1_parquet')
 FORMAT'parquet';
 
 -- 测试总长度n<1,创建失败，实际创建失败，报precision or scale out of range in statement
 create external table t_external_hdfs_parquet_numeric_002(
 a1 numeric(0,0) 
-)location('HDFSRPC_URL/numeric1_parquet_parquet')
+)location('HDFSRPC_URL/numeric1_parquet')
 FORMAT'parquet';
 
 -- 测试整数部分长度>n-m,例如234.01，应报错,实际返回空值
@@ -124,6 +124,6 @@ a11 numeric,
 a12 numeric,
 a13 numeric
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_numeric_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_numeric_012;

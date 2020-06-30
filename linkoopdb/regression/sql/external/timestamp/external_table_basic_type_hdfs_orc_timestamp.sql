@@ -43,6 +43,6 @@ a11 timestamp,
 a12 timestamp,
 a13 timestamp
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT'orc';
+LOCATION ('HDFSRPC_URL/common_timestamp_orc') FORMAT'orc';
 
 select * from t_external_hdfs_orc_timestamp_002;

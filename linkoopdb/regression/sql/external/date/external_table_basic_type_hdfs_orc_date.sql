@@ -39,6 +39,6 @@ a11 date,
 a12 date,
 a13 date
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_date_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_date_002;

@@ -40,6 +40,6 @@ a11 date,
 a12 date,
 a13 date
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_date_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_date_002;

@@ -30,8 +30,8 @@ Setup Custom Settings
 
 Upload csv files
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
-    HDFS Upload                ../data/float_csv/*.csv
+    HDFS Upload                ../data/float_csv/*.csv  float_csv/
     HDFS Upload                ../data/float1_orc/*  float1_orc/
     HDFS Upload                ../data/float1_parquet/*  float1_parquet/
-    HDFS Upload                ../data/common_orc/*  common_orc/
-    HDFS Upload                ../data/common_parquet/*  common_parquet/
+    HDFS Upload                ../data/common_orc/*  common_float_orc/
+    HDFS Upload                ../data/common_parquet/*  common_float_parquet/

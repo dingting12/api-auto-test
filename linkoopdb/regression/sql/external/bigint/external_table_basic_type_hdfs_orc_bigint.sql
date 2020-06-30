@@ -36,7 +36,7 @@ a11 bigint,
 a12 bigint,
 a13 bigint
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_bigint_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_bigint_002;
 

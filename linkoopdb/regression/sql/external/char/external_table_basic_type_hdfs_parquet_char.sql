@@ -56,6 +56,6 @@ a11 char(30),
 a12 char(30),
 a13 char(30)
 )
-LOCATION ('HDFSRPC_URL/common_parquet') FORMAT'parquet';
+LOCATION ('HDFSRPC_URL/common_char_parquet') FORMAT'parquet';
 
 select * from t_external_hdfs_parquet_char_004;

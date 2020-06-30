@@ -14,13 +14,13 @@ drop table if exists t_external_hdfs_orc_varchar_004;
 -- 测试创建长度大于64000,创建报错
 create external table t_external_hdfs_orc_varchar_001(
 a1 varchar(64001)
-)location('HDFSRPC_URL/char1_orc')
+)location('HDFSRPC_URL/varchar1_orc')
 FORMAT 'orc';
 
 -- 测试长度为64000，数据大小为100000
 create external table t_external_hdfs_orc_varchar_002(
 a1 varchar(10) 
-)location('HDFSRPC_URL/char2_orc')
+)location('HDFSRPC_URL/varchar2_orc')
 FORMAT 'orc';
 
 -- 返回10个字符
@@ -35,7 +35,7 @@ a3 varchar(30),
 a4 varchar(30),
 a5 varchar(30)
 )
-LOCATION ('HDFSRPC_URL/char1_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/varchar1_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_char_003;
 
@@ -56,7 +56,7 @@ a11 varchar(30),
 a12 varchar(30),
 a13 varchar(30)
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT'orc';
+LOCATION ('HDFSRPC_URL/common_varchar_orc') FORMAT'orc';
 
 select * from t_external_hdfs_orc_varchar_004;
 

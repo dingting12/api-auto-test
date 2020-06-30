@@ -37,6 +37,6 @@ a11 int,
 a12 int,
 a13 int
 )
-LOCATION ('HDFSRPC_URL/common_orc') FORMAT 'orc';
+LOCATION ('HDFSRPC_URL/common_int_orc') FORMAT 'orc';
 
 select * from t_external_hdfs_orc_int_002;
