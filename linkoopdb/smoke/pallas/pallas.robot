@@ -51,6 +51,17 @@ Consistent_hash_based_distributed_primary_index_for_pallas table
 	Logon And Execute SQL Script        admin/123456                                              1032_LDBX102-03_Consistent_hash_based_distributed_primary_index_for_pallas table/COMPOSITE_PRIMARY_KEY.sql
 				   Compare Files        COMPOSITE_PRIMARY_KEY.log                                 1032_LDBX102-03_Consistent_hash_based_distributed_primary_index_for_pallas table/COMPOSITE_PRIMARY_KEY.ref
 
+2003_LDBX101-19_Create_schema_using_pallas_engine				 
+    [Tags]     feature: LDBX101-19     Create_schema_using_pallas_engine
+    Logon And Execute SQL Script        admin/123456                                              2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_DBLINK.sql
+				   Compare Files        CREATE_DBLINK.log                                         2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_DBLINK.ref
+	Logon And Execute SQL Script        admin/123456                                              2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_TABLE.sql
+				   Compare Files        CREATE_TABLE.log     									  2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_TABLE.ref
+	Logon And Execute SQL Script        admin/123456                                              2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_VIEW.sql
+				   Compare Files        CREATE_VIEW.log                                           2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_VIEW.ref
+	Logon And Execute SQL Script        admin/123456                                              2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_EXTERNAL_TABLE.sql
+				   Compare Files        CREATE_EXTERNAL_TABLE.log                                 2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_EXTERNAL_TABLE.ref
+				   
   
 *** Keywords ***
 Setup Custom Settings
