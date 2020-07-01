@@ -1,0 +1,50 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 770_LDBX102-01_Primary_index_for_pallas_table/770_Primary_index_for_pallas_table.sql
+SQL> --    Description: 测试Primary index for pallas table
+   > --    Date:         2020-06-30
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> 
+SQL> -- 测试pallas主键
+SQL> DROP TABLE IF EXISTS T_PALLAS_PK_001;
+0 rows affected
+SQL> create table T_PALLAS_PK_001 (
+   > a int,
+   > b varchar(100),
+   > PRIMARY KEY(b)
+   > ) engine pallas;
+0 rows affected
+SQL> INSERT INTO T_PALLAS_PK_001 VALUES 
+   > (1,'a'),
+   > (2,'b'),
+   > (3,'c'),
+   > (4,'cc'),
+   > (5,'d'),
+   > (5,'e'),
+   > (NULL,'null'),
+   > (6,'f'),
+   > (null,'g');
+9 rows affected
+SQL> INSERT INTO T_PALLAS_PK_001 VALUES (88,null);
+java.sql.SQLException: integrity constraint violation: NOT NULL check constraint: Column B
+SQL> select a,b from T_PALLAS_PK_001 order by a,b;
++--------+------+
+| A      | B    |
++--------+------+
+| <null> | g    |
+| <null> | null |
+| 1      | a    |
+| 2      | b    |
+| 3      | c    |
+| 4      | cc   |
+| 5      | d    |
+| 5      | e    |
+| 6      | f    |
++--------+------+
+9 rows selected.
+SQL> INSERT INTO T_PALLAS_PK_001 VALUES (1,'a');
+java.sql.SQLException: transaction rollback: Write is failed!, transaction rollback: Write is failed! Found duplicate primary key:(_LDBID_=A4B2B18F6124) Caused by [transaction rollback: Write is failed! Found duplicate primary key:(_LDBID_=A4B2B18F6124)]
+SQL> exit
+Disconnected.

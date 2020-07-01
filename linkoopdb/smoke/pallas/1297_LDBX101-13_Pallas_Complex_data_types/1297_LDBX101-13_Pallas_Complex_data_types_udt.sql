@@ -60,4 +60,4 @@ select count(*) from T_PALLAS_COMPLEXTYPE_UDT_001 where st.sal > 1500;
 
 select count(*) from (select id from T_PALLAS_COMPLEXTYPE_UDT_001 order by st.empno desc,id);
 
-select st.ename,st.sal from T_PALLAS_COMPLEXTYPE_UDT_002 where st.sal = 2450 and st.deptno in (select st.deptno from T_PALLAS_COMPLEXTYPE_UDT_002);
+select st.ename,st.sal from T_PALLAS_COMPLEXTYPE_UDT_001 where st.sal = 2450 and st.deptno in (select st.deptno from T_PALLAS_COMPLEXTYPE_UDT_002);
