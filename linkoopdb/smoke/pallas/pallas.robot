@@ -26,10 +26,13 @@ Pallas_Complex_data_types
 				   Compare Files       1297_LDBX101-13_Pallas_Complex_data_types_array.log         1297_LDBX101-13_Pallas_Complex_data_types/1297_LDBX101-13_Pallas_Complex_data_types_array.ref
     Logon And Execute SQL Script       admin/123456                                                1297_LDBX101-13_Pallas_Complex_data_types/1297_LDBX101-13_Pallas_Complex_data_types_udt.sql
 				   Compare Files       1297_LDBX101-13_Pallas_Complex_data_types_udt.log           1297_LDBX101-13_Pallas_Complex_data_types/1297_LDBX101-13_Pallas_Complex_data_types_udt.ref			   				   				   
-	
-				 
-	
 
+	
+Pallas_Update_by_subquery				 
+ [Tags]     feature: LDBX101-12      Pallas_Update_by_subquery
+    Logon And Execute SQL Script       admin/123456                                                1296_LDBX101-12_Pallas_Update_by_subquery/1296_LDBX101-12_Pallas_Update_by_subquery.sql
+				   Compare Files       1296_LDBX101-12_Pallas_Update_by_subquery.log         1296_LDBX101-12_Pallas_Update_by_subquery/1296_LDBX101-12_Pallas_Update_by_subquery.ref
+   
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True 

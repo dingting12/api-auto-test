@@ -1,0 +1,228 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 770_LDBX102-01_Primary_index_for_pallas_table/770_Primary_index_for_pallas_table_upsert.sql
+SQL> --    Description: 测试Primary index for pallas table
+   > --    Date:         2020-06-30
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> 
+SQL> -- 测试单个主键带upsert,upsert为true
+SQL> DROP TABLE T_PALLAS_UPSERT_001 IF EXISTS CASCADE; 
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_UPSERT_001(
+   >    id INT PRIMARY KEY,
+   >    name VARCHAR(50),
+   >    sal NUMERIC(10,2),
+   >    deptid INT,
+   >    birthdate DATE
+   >  )properties ('upsert':'true')engine pallas;
+0 rows affected
+SQL> INSERT INTO T_PALLAS_UPSERT_001 VALUES
+   > (1,'cd',2301.2,10,DATE '1990-01-23'),
+   > (2,'qwr',3610.35,20,DATE '1991-03-09'),
+   > (3,'ciy',1000.00,30,DATE '1992-10-06'),
+   > (4,'hhh',85263.23,40,DATE '1993-12-30');
+4 rows affected
+SQL> SELECT * FROM T_PALLAS_UPSERT_001 ORDER BY id,name;	 
++----+------+----------+--------+------------+
+| ID | NAME | SAL      | DEPTID | BIRTHDATE  |
++----+------+----------+--------+------------+
+| 1  | cd   | 2301.2   | 10     | 1990-1-23  |
+| 2  | qwr  | 3610.35  | 20     | 1991-3-9   |
+| 3  | ciy  | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh  | 85263.23 | 40     | 1993-12-30 |
++----+------+----------+--------+------------+
+4 rows selected.
+SQL> INSERT INTO T_PALLAS_UPSERT_001 VALUES(1,'wowow',500.09,50,DATE '1800-01-01');  
+1 row affected
+SQL> INSERT INTO T_PALLAS_UPSERT_001 VALUES(10,'owni',2389.23,100,DATE '1983-01-01');
+1 row affected
+SQL> select * from T_PALLAS_UPSERT_001 ORDER BY id,name;	
++----+-------+----------+--------+------------+
+| ID | NAME  | SAL      | DEPTID | BIRTHDATE  |
++----+-------+----------+--------+------------+
+| 1  | wowow | 500.09   | 50     | 1800-1-1   |
+| 2  | qwr   | 3610.35  | 20     | 1991-3-9   |
+| 3  | ciy   | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh   | 85263.23 | 40     | 1993-12-30 |
+| 10 | owni  | 2389.23  | 100    | 1983-1-1   |
++----+-------+----------+--------+------------+
+5 rows selected.
+SQL> UPDATE T_PALLAS_UPSERT_001
+   > SET id=13,name='qoqo'
+   > WHERE id=3;
+java.sql.SQLException: AS_DML001 pallas dml error: can not update primary key because the table is upsert mode
+SQL> select * from T_PALLAS_UPSERT_001 ORDER BY id,name;	
++----+-------+----------+--------+------------+
+| ID | NAME  | SAL      | DEPTID | BIRTHDATE  |
++----+-------+----------+--------+------------+
+| 1  | wowow | 500.09   | 50     | 1800-1-1   |
+| 2  | qwr   | 3610.35  | 20     | 1991-3-9   |
+| 3  | ciy   | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh   | 85263.23 | 40     | 1993-12-30 |
+| 10 | owni  | 2389.23  | 100    | 1983-1-1   |
++----+-------+----------+--------+------------+
+5 rows selected.
+SQL> DROP TABLE T_PALLAS_UPSERT_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 测试单个主键带upsert,upsert为false
+SQL> DROP TABLE T_PALLAS_UPSERT_002 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_UPSERT_002(
+   >    id INT PRIMARY KEY,
+   >    name VARCHAR(50),
+   >    sal NUMERIC(10,2),
+   >    deptid INT,
+   >    birthdate DATE
+   >  )properties ('upsert':'false')engine pallas;
+0 rows affected
+SQL> INSERT INTO T_PALLAS_UPSERT_002 VALUES
+   > (1,'cd',2301.2,10,DATE '1990-01-23'),
+   > (2,'qwr',3610.35,20,DATE '1991-03-09'),
+   > (3,'ciy',1000.00,30,DATE '1992-10-06'),
+   > (4,'hhh',85263.23,40,DATE '1993-12-30');
+4 rows affected
+SQL> SELECT * FROM T_PALLAS_UPSERT_002 ORDER BY id,name;	 
++----+------+----------+--------+------------+
+| ID | NAME | SAL      | DEPTID | BIRTHDATE  |
++----+------+----------+--------+------------+
+| 1  | cd   | 2301.2   | 10     | 1990-1-23  |
+| 2  | qwr  | 3610.35  | 20     | 1991-3-9   |
+| 3  | ciy  | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh  | 85263.23 | 40     | 1993-12-30 |
++----+------+----------+--------+------------+
+4 rows selected.
+SQL> INSERT INTO T_PALLAS_UPSERT_002 VALUES(1,'wowow',500.09,50,DATE '1800-01-01');  
+java.sql.SQLException: transaction rollback: Write is failed!, transaction rollback: Write is failed! Found duplicate primary key:(_LDBID_=8FBBDD0E3124) Caused by [transaction rollback: Write is failed! Found duplicate primary key:(_LDBID_=8FBBDD0E3124)]
+SQL> INSERT INTO T_PALLAS_UPSERT_002 VALUES(10,'owni',2389.23,100,DATE '1983-01-01');
+1 row affected
+SQL> select * from T_PALLAS_UPSERT_002 ORDER BY id,name;	 
++----+------+----------+--------+------------+
+| ID | NAME | SAL      | DEPTID | BIRTHDATE  |
++----+------+----------+--------+------------+
+| 1  | cd   | 2301.2   | 10     | 1990-1-23  |
+| 2  | qwr  | 3610.35  | 20     | 1991-3-9   |
+| 3  | ciy  | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh  | 85263.23 | 40     | 1993-12-30 |
+| 10 | owni | 2389.23  | 100    | 1983-1-1   |
++----+------+----------+--------+------------+
+5 rows selected.
+SQL> DROP TABLE T_PALLAS_UPSERT_002 IF EXISTS CASCADE;
+0 rows affected
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 测试多个主键带upsert,upsert为true
+SQL> DROP TABLE T_PALLAS_UPSERT_003 IF EXISTS CASCADE; 
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_UPSERT_003(
+   >    id INT,
+   >    name VARCHAR(50),
+   >    sal NUMERIC(10,2),
+   >    deptid INT,
+   >    birthdate DATE,
+   >    PRIMARY KEY(id,name)
+   >  )properties ('upsert':'true')engine pallas;
+0 rows affected
+SQL> INSERT INTO T_PALLAS_UPSERT_003 VALUES
+   > (1,'cd',2301.2,10,DATE '1990-01-23'),
+   > (2,'qwr',3610.35,20,DATE '1991-03-09'),
+   > (3,'ciy',1000.00,30,DATE '1992-10-06'),
+   > (4,'hhh',85263.23,40,DATE '1993-12-30');
+4 rows affected
+SQL> SELECT * FROM T_PALLAS_UPSERT_003 ORDER BY id,name;	 
++----+------+----------+--------+------------+
+| ID | NAME | SAL      | DEPTID | BIRTHDATE  |
++----+------+----------+--------+------------+
+| 1  | cd   | 2301.2   | 10     | 1990-1-23  |
+| 2  | qwr  | 3610.35  | 20     | 1991-3-9   |
+| 3  | ciy  | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh  | 85263.23 | 40     | 1993-12-30 |
++----+------+----------+--------+------------+
+4 rows selected.
+SQL> INSERT INTO T_PALLAS_UPSERT_003 VALUES(1,'wowow',500.09,50,DATE '1800-01-01');  
+1 row affected
+SQL> INSERT INTO T_PALLAS_UPSERT_003 VALUES(2,'qwr',2389.23,100,DATE '1983-01-01');
+1 row affected
+SQL> select * from T_PALLAS_UPSERT_003 ORDER BY id,name;	 
++----+-------+----------+--------+------------+
+| ID | NAME  | SAL      | DEPTID | BIRTHDATE  |
++----+-------+----------+--------+------------+
+| 1  | cd    | 2301.2   | 10     | 1990-1-23  |
+| 1  | wowow | 500.09   | 50     | 1800-1-1   |
+| 2  | qwr   | 2389.23  | 100    | 1983-1-1   |
+| 3  | ciy   | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh   | 85263.23 | 40     | 1993-12-30 |
++----+-------+----------+--------+------------+
+5 rows selected.
+SQL> UPDATE T_PALLAS_UPSERT_003
+   > SET id=13,name='qoqo'
+   > WHERE id=3;
+java.sql.SQLException: AS_DML001 pallas dml error: can not update primary key because the table is upsert mode
+SQL> select * from T_PALLAS_UPSERT_003 ORDER BY id,name;	
++----+-------+----------+--------+------------+
+| ID | NAME  | SAL      | DEPTID | BIRTHDATE  |
++----+-------+----------+--------+------------+
+| 1  | cd    | 2301.2   | 10     | 1990-1-23  |
+| 1  | wowow | 500.09   | 50     | 1800-1-1   |
+| 2  | qwr   | 2389.23  | 100    | 1983-1-1   |
+| 3  | ciy   | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh   | 85263.23 | 40     | 1993-12-30 |
++----+-------+----------+--------+------------+
+5 rows selected.
+SQL> DROP TABLE T_PALLAS_UPSERT_003 IF EXISTS CASCADE;
+0 rows affected
+SQL> 
+SQL> 
+SQL> 
+SQL> -- 测试多个主键带upsert,upsert为false
+SQL> DROP TABLE T_PALLAS_UPSERT_004 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_UPSERT_004(
+   >    id INT,
+   >    name VARCHAR(50),
+   >    sal NUMERIC(10,2),
+   >    deptid INT,
+   >    birthdate DATE,
+   >    PRIMARY KEY(id,name)
+   >  )properties ('upsert':'false')engine pallas;
+0 rows affected
+SQL> INSERT INTO T_PALLAS_UPSERT_004 VALUES
+   > (1,'cd',2301.2,10,DATE '1990-01-23'),
+   > (2,'qwr',3610.35,20,DATE '1991-03-09'),
+   > (3,'ciy',1000.00,30,DATE '1992-10-06'),
+   > (4,'hhh',85263.23,40,DATE '1993-12-30');
+4 rows affected
+SQL> SELECT * FROM T_PALLAS_UPSERT_004 ORDER BY id,name;	 
++----+------+----------+--------+------------+
+| ID | NAME | SAL      | DEPTID | BIRTHDATE  |
++----+------+----------+--------+------------+
+| 1  | cd   | 2301.2   | 10     | 1990-1-23  |
+| 2  | qwr  | 3610.35  | 20     | 1991-3-9   |
+| 3  | ciy  | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh  | 85263.23 | 40     | 1993-12-30 |
++----+------+----------+--------+------------+
+4 rows selected.
+SQL> INSERT INTO T_PALLAS_UPSERT_004 VALUES(1,'wowow',500.09,50,DATE '1800-01-01');  
+1 row affected
+SQL> INSERT INTO T_PALLAS_UPSERT_004 VALUES(2,'qwr',2389.23,100,DATE '1983-01-01');
+java.sql.SQLException: transaction rollback: Write is failed!, transaction rollback: Write is failed! Found duplicate primary key:(_LDBID_=EA08C9FA322471777224) Caused by [transaction rollback: Write is failed! Found duplicate primary key:(_LDBID_=EA08C9FA322471777224)]
+SQL> select * from T_PALLAS_UPSERT_004 ORDER BY id,name;	 
++----+-------+----------+--------+------------+
+| ID | NAME  | SAL      | DEPTID | BIRTHDATE  |
++----+-------+----------+--------+------------+
+| 1  | cd    | 2301.2   | 10     | 1990-1-23  |
+| 1  | wowow | 500.09   | 50     | 1800-1-1   |
+| 2  | qwr   | 3610.35  | 20     | 1991-3-9   |
+| 3  | ciy   | 1000.0   | 30     | 1992-10-6  |
+| 4  | hhh   | 85263.23 | 40     | 1993-12-30 |
++----+-------+----------+--------+------------+
+5 rows selected.
+SQL> DROP TABLE T_PALLAS_UPSERT_004 IF EXISTS CASCADE;
+0 rows affected
+SQL> exit
+Disconnected.
