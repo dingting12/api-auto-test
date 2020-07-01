@@ -1,0 +1,44 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_TABLE.sql
+SQL> --    Description: 测试pallas create table
+   > --    Date:         2020-07-01
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> DROP SCHEMA S_PALLAS_SCHEMA_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE SCHEMA S_PALLAS_SCHEMA_001 engine pallas;
+0 rows affected
+SQL> 
+SQL> --创建除lob与binary类型外的所有数据类型的表，检查是否为pallas表
+SQL> DROP TABLE S_PALLAS_SCHEMA_001.T_PALLAS_TABLE_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE S_PALLAS_SCHEMA_001.T_PALLAS_TABLE_001(
+   > tid SMALLINT,
+   > eid INTEGER,
+   > tbigint BIGINT,
+   > treal REAL,
+   > tdouble DOUBLE,
+   > tfloat FLOAT,
+   > tdecimal DECIMAL(20,2),
+   > tnumeric NUMERIC(38,30),
+   > tdate DATE,
+   > ttimestamp TIMESTAMP,
+   > tvarchar VARCHAR(200),
+   > tchar CHAR(200),
+   > tboolean BOOLEAN,
+   > PRIMARY KEY(tid,eid,tvarchar)
+   > );
+0 rows affected
+SQL> INSERT INTO S_PALLAS_SCHEMA_001.T_PALLAS_TABLE_001 VALUES(1,1,1,1.234,1.23456,1.234567,123456789012345678.12,12345678.123456,'2010-08-07','1999-09-09 11:11:11','才能到交付给dsbjbdu%^&$^的保时捷的csdjhk','ddsajk打算北京你78678^&**第三年 dsda sd',true);
+1 row affected
+SQL> show CREATE TABLE S_PALLAS_SCHEMA_001.T_PALLAS_TABLE_001;
++--------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE              | CREATE_TABLE                                                                                                                                                                                                                                                                                                                          |
++--------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_PALLAS_TABLE_001 | CREATE TABLE IF NOT EXISTS S_PALLAS_SCHEMA_001.T_PALLAS_TABLE_001(TID SMALLINT,EID INTEGER,TBIGINT BIGINT,TREAL DOUBLE,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(20,2),TNUMERIC NUMERIC(38,30),TDATE DATE,TTIMESTAMP TIMESTAMP,TVARCHAR VARCHAR(200),TCHAR CHAR(200),TBOOLEAN BOOLEAN,PRIMARY KEY(TID,EID,TVARCHAR)) ENGINE PALLAS |
++--------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> exit
+Disconnected.

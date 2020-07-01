@@ -1,0 +1,60 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_EXTERNAL_TABLE.sql
+SQL> --    Description: 测试pallas create external table
+   > --    Date:         2020-07-01
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> DROP SCHEMA S_PALLAS_SCHEMA_004 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE SCHEMA S_PALLAS_SCHEMA_004 engine pallas;
+0 rows affected
+SQL> DROP TABLE S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TABLE S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_002 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_001(
+   >    id INT,
+   >    name VARCHAR(200),
+   >    desc1 VARCHAR(200),
+   >    desc2 VARCHAR(200)
+   > )location ('/user/testdb73/external_file/test_split/diffengine_test1.csv') format 'csv' (delimiter '|');
+0 rows affected
+SQL> show CREATE TABLE S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_001;
++-----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                                                                                                                                                                                              |
++-----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_EXTERNAL_PALLAS_001 | CREATE EXTERNAL TABLE IF NOT EXISTS S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_001(ID INTEGER,NAME VARCHAR(200),DESC1 VARCHAR(200),DESC2 VARCHAR(200)) LOCATION ('/user/testdb73/external_file/test_split/diffengine_test1.csv') FORMAT 'csv' (DELIMITER '|' ) |
++-----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT * FROM S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_001 ORDER BY id;
++----+-------+------------+------------+
+| ID | NAME  | DESC1      | DESC2      |
++----+-------+------------+------------+
+| 1  | dsd   | 第十三届   | 多少年     |
+| 2  | csd   | 第十名吗   | 充电宝你   |
+| 3  | ncmxh | 下半年名称 | 聪明你看了 |
++----+-------+------------+------------+
+3 rows selected.
+SQL> CREATE TABLE S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_002 AS 
+   > (SELECT * FROM S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_001) WITH DATA;
+0 rows affected
+SQL> SELECT * FROM S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_002 ORDER BY id;
++----+-------+------------+------------+
+| ID | NAME  | DESC1      | DESC2      |
++----+-------+------------+------------+
+| 1  | dsd   | 第十三届   | 多少年     |
+| 2  | csd   | 第十名吗   | 充电宝你   |
+| 3  | ncmxh | 下半年名称 | 聪明你看了 |
++----+-------+------------+------------+
+3 rows selected.
+SQL> show CREATE TABLE S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_002;
++-----------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                                                                                           |
++-----------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_EXTERNAL_PALLAS_002 | CREATE TABLE IF NOT EXISTS S_PALLAS_SCHEMA_004.T_EXTERNAL_PALLAS_002(ID INTEGER,NAME VARCHAR(200),DESC1 VARCHAR(200),DESC2 VARCHAR(200)) ENGINE PALLAS |
++-----------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> exit
+Disconnected.
