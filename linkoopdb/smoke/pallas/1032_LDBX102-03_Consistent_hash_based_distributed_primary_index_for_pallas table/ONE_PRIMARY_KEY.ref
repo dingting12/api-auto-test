@@ -1,0 +1,97 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 1032_LDBX102-03_Consistent_hash_based_distributed_primary_index_for_pallas table/ONE_PRIMARY_KEY.sql
+SQL> --    Description: 测试 Consistent hash based distributed primary index for pallas table的one primary key
+   > --    Date:         2020-07-01
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> 
+SQL> --测试int
+SQL> DROP TABLE T_PALLAS_ONE_PK_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TABLE T_PALLAS_ONE_PK_002 IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TABLE T_PALLAS_ONE_PK_003 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_ONE_PK_001(
+   >     tsmallint SMALLINT,
+   >     tint int primary key,
+   >     tbigint bigint,
+   >     treal REAL,
+   >     tdouble double,
+   >     tfloat float,
+   >     tdecimal decimal(6,2),
+   >     tnumeric numeric(6,2),
+   >     tdate date,
+   >     ttimestamp timestamp,
+   >     tvarchar varchar(50),
+   >     tchar char(50)
+   > ) engine pallas; 
+0 rows affected
+SQL> INSERT INTO T_PALLAS_ONE_PK_001 VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,DATE '2019-01-01',TIMESTAMP '2019-01-01 01:01:01','1111q','1111w');
+1 row affected
+SQL> CREATE TABLE T_PALLAS_ONE_PK_002(
+   >     tsmallint SMALLINT,
+   >     tint int,
+   >     tbigint bigint,
+   >     treal REAL,
+   >     tdouble double,
+   >     tfloat float,
+   >     tdecimal decimal(6,2),
+   >     tnumeric numeric(6,2),
+   >     tdate date,
+   >     ttimestamp timestamp,
+   >     tvarchar varchar(50),
+   >     tchar char(50)
+   > );
+0 rows affected
+SQL> INSERT INTO T_PALLAS_ONE_PK_002 VALUES(2,2,2,2.2,2.2,2.2,2.22,2.22,DATE '2019-02-02',TIMESTAMP '2019-02-02 02:02:02','2222q','2222w');
+1 row affected
+SQL> INSERT INTO T_PALLAS_ONE_PK_002 VALUES(3,3,3,3.3,3.3,3.3,3.33,3.33,DATE '2019-03-03',TIMESTAMP '2019-03-03 03:03:03','3333q','3333w');
+1 row affected
+SQL> INSERT INTO T_PALLAS_ONE_PK_001 SELECT * FROM T_PALLAS_ONE_PK_002;
+2 rows affected
+SQL> SELECT * FROM T_PALLAS_ONE_PK_001 ORDER BY tint,tvarchar;
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+| TSMALLINT | TINT | TBIGINT | TREAL | TDOUBLE | TFLOAT | TDECIMAL | TNUMERIC | TDATE    | TTIMESTAMP          | TVARCHAR | TCHAR                                              |
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+| 1         | 1    | 1       | 1.1   | 1.1     | 1.1    | 1.11     | 1.11     | 2019-1-1 | 2019-01-01 01:01:01 | 1111q    | 1111w                                              |
+| 2         | 2    | 2       | 2.2   | 2.2     | 2.2    | 2.22     | 2.22     | 2019-2-2 | 2019-02-02 02:02:02 | 2222q    | 2222w                                              |
+| 3         | 3    | 3       | 3.3   | 3.3     | 3.3    | 3.33     | 3.33     | 2019-3-3 | 2019-03-03 03:03:03 | 3333q    | 3333w                                              |
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+3 rows selected.
+SQL> CREATE TABLE T_PALLAS_ONE_PK_003(
+   >     tsmallint SMALLINT,
+   >     tint int primary key,
+   >     tbigint bigint,
+   >     treal REAL,
+   >     tdouble double,
+   >     tfloat float,
+   >     tdecimal decimal(6,2),
+   >     tnumeric numeric(6,2),
+   >     tdate date,
+   >     ttimestamp timestamp,
+   >     tvarchar varchar(50),
+   >     tchar char(50)
+   > )engine pallas;
+0 rows affected
+SQL> INSERT INTO T_PALLAS_ONE_PK_003 VALUES(2,2,2,2.2,2.2,2.2,2.22,2.22,DATE '2019-02-02',TIMESTAMP '2019-02-02 02:02:02','2222q','2222w');
+1 row affected
+SQL> INSERT INTO T_PALLAS_ONE_PK_003 VALUES(3,3,3,3.3,3.3,3.3,3.33,3.33,DATE '2019-03-03',TIMESTAMP '2019-03-03 03:03:03','3333q','3333w');
+1 row affected
+SQL> DELETE FROM T_PALLAS_ONE_PK_001 WHERE tint<>1;
+2 rows affected
+SQL> INSERT INTO T_PALLAS_ONE_PK_001 SELECT * FROM T_PALLAS_ONE_PK_003;
+2 rows affected
+SQL> SELECT * FROM T_PALLAS_ONE_PK_001 ORDER BY tint,tvarchar;
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+| TSMALLINT | TINT | TBIGINT | TREAL | TDOUBLE | TFLOAT | TDECIMAL | TNUMERIC | TDATE    | TTIMESTAMP          | TVARCHAR | TCHAR                                              |
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+| 1         | 1    | 1       | 1.1   | 1.1     | 1.1    | 1.11     | 1.11     | 2019-1-1 | 2019-01-01 01:01:01 | 1111q    | 1111w                                              |
+| 2         | 2    | 2       | 2.2   | 2.2     | 2.2    | 2.22     | 2.22     | 2019-2-2 | 2019-02-02 02:02:02 | 2222q    | 2222w                                              |
+| 3         | 3    | 3       | 3.3   | 3.3     | 3.3    | 3.33     | 3.33     | 2019-3-3 | 2019-03-03 03:03:03 | 3333q    | 3333w                                              |
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+3 rows selected.
+SQL> exit
+Disconnected.
