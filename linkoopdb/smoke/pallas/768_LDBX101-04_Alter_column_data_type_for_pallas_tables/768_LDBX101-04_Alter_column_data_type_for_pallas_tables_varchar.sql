@@ -67,8 +67,8 @@ select data_type from information_schema.columns where table_name = 'T_PALLAS_AL
 select c11 from T_PALLAS_ALTER_TYPE_VARCHAR_001;
 
 
---转为character large object
-alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c20 set data type character large object(100);
+--转为varbinary(100)
+alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c20 set data type varbinary(100);
 
 select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_VARCHAR_001' and column_name = 'C20';
 
