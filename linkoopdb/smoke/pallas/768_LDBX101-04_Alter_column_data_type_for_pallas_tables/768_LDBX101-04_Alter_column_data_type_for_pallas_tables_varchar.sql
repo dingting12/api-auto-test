@@ -31,7 +31,7 @@ c21 varchar(20),
 c22 varchar(20)
 )engine pallas;
 
-insert into T_PALLAS_ALTER_TYPE_VARCHAR_001 values (1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8,9.9,10.10,11.11,12.12,13.13,14.14,15.15,16.16,17.17,18.18,19.19,20.20,21.21,22.22);
+insert into T_PALLAS_ALTER_TYPE_VARCHAR_001 values ('q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','q21','q22');
 
 
 --转为smallint
@@ -59,8 +59,8 @@ select data_type from information_schema.columns where table_name = 'T_PALLAS_AL
 select c8 from T_PALLAS_ALTER_TYPE_VARCHAR_001;
 
 
---转为varchar
-alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c11 set data type varchar(200);
+--转为char
+alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c11 set data type char(200);
 
 select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_VARCHAR_001' and column_name = 'C11';
 

@@ -1,0 +1,134 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_varchar.sql
+SQL> --    Description: 测试Distributed index on pallas
+   > --    Date:         2020-07-02 
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> drop table T_PALLAS_ALTER_TYPE_VARCHAR_001 if exists cascade;
+0 rows affected
+SQL> create table T_PALLAS_ALTER_TYPE_VARCHAR_001 (
+   > c1 varchar(20),
+   > c2 varchar(20),
+   > c3 varchar(20),
+   > c4 varchar(20),
+   > c5 varchar(20),
+   > c6 varchar(20),
+   > c7 varchar(20),
+   > c8 varchar(20),
+   > c9 varchar(20),
+   > c10 varchar(20),
+   > c11 varchar(20),
+   > c12 varchar(20),
+   > c13 varchar(20),
+   > c14 varchar(20),
+   > c15 varchar(20),
+   > c16 varchar(20),
+   > c17 varchar(20),
+   > c18 varchar(20),
+   > c19 varchar(20),
+   > c20 varchar(20),
+   > c21 varchar(20),
+   > c22 varchar(20)
+   > )engine pallas;
+0 rows affected
+SQL> insert into T_PALLAS_ALTER_TYPE_VARCHAR_001 values (1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8,9.9,10.10,11.11,12.12,13.13,14.14,15.15,16.16,17.17,18.18,19.19,20.20,21.21,22.22);
+1 row affected
+SQL> 
+SQL> 
+SQL> --转为smallint
+SQL> alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c1 set data type smallint;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, TEXT can not be converted to INT16 Caused by [TEXT can not be converted to INT16]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_VARCHAR_001' and column_name = 'C1';
++-------------------+
+| DATA_TYPE         |
++-------------------+
+| CHARACTER VARYING |
++-------------------+
+1 row selected.
+SQL> select c1 from T_PALLAS_ALTER_TYPE_VARCHAR_001;
++-----+
+| C1  |
++-----+
+| 1.1 |
++-----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为double
+SQL> alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c5 set data type double;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, TEXT can not be converted to DOUBLE Caused by [TEXT can not be converted to DOUBLE]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_VARCHAR_001' and column_name = 'C5';
++-------------------+
+| DATA_TYPE         |
++-------------------+
+| CHARACTER VARYING |
++-------------------+
+1 row selected.
+SQL> select c5 from T_PALLAS_ALTER_TYPE_VARCHAR_001;
++-----+
+| C5  |
++-----+
+| 5.5 |
++-----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为date
+SQL> alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c8 set data type date;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, TEXT can not be converted to DATE Caused by [TEXT can not be converted to DATE]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_VARCHAR_001' and column_name = 'C8';
++-------------------+
+| DATA_TYPE         |
++-------------------+
+| CHARACTER VARYING |
++-------------------+
+1 row selected.
+SQL> select c8 from T_PALLAS_ALTER_TYPE_VARCHAR_001;
++-----+
+| C8  |
++-----+
+| 8.8 |
++-----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为varchar
+SQL> alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c11 set data type varchar(200);
+0 rows affected
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_VARCHAR_001' and column_name = 'C11';
++-------------------+
+| DATA_TYPE         |
++-------------------+
+| CHARACTER VARYING |
++-------------------+
+1 row selected.
+SQL> select c11 from T_PALLAS_ALTER_TYPE_VARCHAR_001;
++-------+
+| C11   |
++-------+
+| 11.11 |
++-------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为character large object
+SQL> alter table T_PALLAS_ALTER_TYPE_VARCHAR_001 alter column c20 set data type character large object(100);
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, TEXT can not be converted to BLOB Caused by [TEXT can not be converted to BLOB]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_VARCHAR_001' and column_name = 'C20';
++-------------------+
+| DATA_TYPE         |
++-------------------+
+| CHARACTER VARYING |
++-------------------+
+1 row selected.
+SQL> select c20 from T_PALLAS_ALTER_TYPE_VARCHAR_001;
++-------+
+| C20   |
++-------+
+| 20.20 |
++-------+
+1 row selected.
+SQL> exit
+Disconnected.

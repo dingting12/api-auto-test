@@ -7,31 +7,31 @@ set echo on
 drop table T_PALLAS_ALTER_TYPE_BINARY_001 if exists cascade;
 
 create table T_PALLAS_ALTER_TYPE_BINARY_001 (
-c1 decimal(10,2),
-c2 decimal(10,2),
-c3 decimal(10,2),
-c4 decimal(10,2),
-c5 decimal(10,2),
-c6 decimal(10,2),
-c7 decimal(10,2),
-c8 decimal(10,2),
-c9 decimal(10,2),
-c10 decimal(10,2),
-c11 decimal(10,2),
-c12 decimal(10,2),
-c13 decimal(10,2),
-c14 decimal(10,2),
-c15 decimal(10,2),
-c16 decimal(10,2),
-c17 decimal(10,2),
-c18 decimal(10,2),
-c19 decimal(10,2),
-c20 decimal(10,2),
-c21 decimal(10,2),
-c22 decimal(10,2)
+c1 binary(100),
+c2 binary(100),
+c3 binary(100),
+c4 binary(100),
+c5 binary(100),
+c6 binary(100),
+c7 binary(100),
+c8 binary(100),
+c9 binary(100),
+c10 binary(100),
+c11 binary(100),
+c12 binary(100),
+c13 binary(100),
+c14 binary(100),
+c15 binary(100),
+c16 binary(100),
+c17 binary(100),
+c18 binary(100),
+c19 binary(100),
+c20 binary(100),
+c21 binary(100),
+c22 binary(100)
 )engine pallas;
 
-insert into T_PALLAS_ALTER_TYPE_BINARY_001 values (1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8,9.9,10.10,11.11,12.12,13.13,14.14,15.15,16.16,17.17,18.18,19.19,20.20,21.21,22.22);
+insert into TEST_ALTERDATATYPE_T14 values ('0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890');
 
 
 --转为smallint
