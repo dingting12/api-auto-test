@@ -1,0 +1,136 @@
+SQLCli Release 0.0.74
+SQL> loaddriver F:\聚云位智\2020聚云\linkoopdb driver\linkoopdb-jdbc-2.2.3.jar
+driver file [F:\聚云位智\2020聚云\linkoopdb] does not exist.
+SQL> connect admin/123456
+Database connected.
+SQL> start 768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_binary.sql
+SQL> --    Description: 测试Distributed index on pallas
+   > --    Date:         2020-07-02 
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> drop table T_PALLAS_ALTER_TYPE_BINARY_001 if exists cascade;
+0 rows affected
+SQL> create table T_PALLAS_ALTER_TYPE_BINARY_001 (
+   > c1 binary(100),
+   > c2 binary(100),
+   > c3 binary(100),
+   > c4 binary(100),
+   > c5 binary(100),
+   > c6 binary(100),
+   > c7 binary(100),
+   > c8 binary(100),
+   > c9 binary(100),
+   > c10 binary(100),
+   > c11 binary(100),
+   > c12 binary(100),
+   > c13 binary(100),
+   > c14 binary(100),
+   > c15 binary(100),
+   > c16 binary(100),
+   > c17 binary(100),
+   > c18 binary(100),
+   > c19 binary(100),
+   > c20 binary(100),
+   > c21 binary(100),
+   > c22 binary(100)
+   > )engine pallas;
+0 rows affected
+SQL> insert into T_PALLAS_ALTER_TYPE_BINARY_001 values ('0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890','0x1234567890');
+1 row affected
+SQL> 
+SQL> 
+SQL> --转为smallint
+SQL> alter table T_PALLAS_ALTER_TYPE_BINARY_001 alter column c1 set data type smallint;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, BYTES can not be converted to INT16 Caused by [BYTES can not be converted to INT16]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_BINARY_001' and column_name = 'C1';
++-----------+
+| DATA_TYPE |
++-----------+
+| BINARY    |
++-----------+
+1 row selected.
+SQL> select c1 from T_PALLAS_ALTER_TYPE_BINARY_001;
++--------------+
+| C1           |
++--------------+
+| 0x1234567890 |
++--------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为double
+SQL> alter table T_PALLAS_ALTER_TYPE_BINARY_001 alter column c5 set data type double;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, BYTES can not be converted to DOUBLE Caused by [BYTES can not be converted to DOUBLE]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_BINARY_001' and column_name = 'C5';
++-----------+
+| DATA_TYPE |
++-----------+
+| BINARY    |
++-----------+
+1 row selected.
+SQL> select c5 from T_PALLAS_ALTER_TYPE_BINARY_001;
++--------------+
+| C5           |
++--------------+
+| 0x1234567890 |
++--------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为date
+SQL> alter table T_PALLAS_ALTER_TYPE_BINARY_001 alter column c8 set data type date;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, BYTES can not be converted to DATE Caused by [BYTES can not be converted to DATE]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_BINARY_001' and column_name = 'C8';
++-----------+
+| DATA_TYPE |
++-----------+
+| BINARY    |
++-----------+
+1 row selected.
+SQL> select c8 from T_PALLAS_ALTER_TYPE_BINARY_001;
++--------------+
+| C8           |
++--------------+
+| 0x1234567890 |
++--------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为varchar
+SQL> alter table T_PALLAS_ALTER_TYPE_BINARY_001 alter column c11 set data type varchar(200);
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, BYTES can not be converted to TEXT Caused by [BYTES can not be converted to TEXT]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_BINARY_001' and column_name = 'C11';
++-----------+
+| DATA_TYPE |
++-----------+
+| BINARY    |
++-----------+
+1 row selected.
+SQL> select c11 from T_PALLAS_ALTER_TYPE_BINARY_001;
++--------------+
+| C11          |
++--------------+
+| 0x1234567890 |
++--------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为character large object
+SQL> alter table T_PALLAS_ALTER_TYPE_BINARY_001 alter column c20 set data type character large object(100);
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, BYTES can not be converted to BLOB Caused by [BYTES can not be converted to BLOB]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_BINARY_001' and column_name = 'C20';
++-----------+
+| DATA_TYPE |
++-----------+
+| BINARY    |
++-----------+
+1 row selected.
+SQL> select c20 from T_PALLAS_ALTER_TYPE_BINARY_001;
++--------------+
+| C20          |
++--------------+
+| 0x1234567890 |
++--------------+
+1 row selected.
+SQL> exit
+Disconnected.

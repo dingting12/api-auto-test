@@ -1,0 +1,134 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_int.sql
+SQL> --    Description: 测试Distributed index on pallas
+   > --    Date:         2020-07-02 
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> drop table T_PALLAS_ALTER_TYPE_INT_001 if exists cascade;
+0 rows affected
+SQL> create table T_PALLAS_ALTER_TYPE_INT_001 (
+   > c1 int,
+   > c2 int,
+   > c3 int,
+   > c4 int,
+   > c5 int,
+   > c6 int,
+   > c7 int,
+   > c8 int,
+   > c9 int,
+   > c10 int,
+   > c11 int,
+   > c12 int,
+   > c13 int,
+   > c14 int,
+   > c15 int,
+   > c16 int,
+   > c17 int,
+   > c18 int,
+   > c19 int,
+   > c20 int,
+   > c21 int,
+   > c22 int
+   > ) engine pallas;
+0 rows affected
+SQL> insert into T_PALLAS_ALTER_TYPE_INT_001 values (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22);
+1 row affected
+SQL> 
+SQL> 
+SQL> --转为smallint
+SQL> alter table T_PALLAS_ALTER_TYPE_INT_001 alter column c1 set data type smallint;
+0 rows affected
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_INT_001' and column_name = 'C1';
++-----------+
+| DATA_TYPE |
++-----------+
+| SMALLINT  |
++-----------+
+1 row selected.
+SQL> select c1 from T_PALLAS_ALTER_TYPE_INT_001;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为double
+SQL> alter table T_PALLAS_ALTER_TYPE_INT_001 alter column c5 set data type double;
+0 rows affected
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_INT_001' and column_name = 'C5';
++------------------+
+| DATA_TYPE        |
++------------------+
+| DOUBLE PRECISION |
++------------------+
+1 row selected.
+SQL> select c5 from T_PALLAS_ALTER_TYPE_INT_001;
++----+
+| C5 |
++----+
+| 5  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为date
+SQL> alter table T_PALLAS_ALTER_TYPE_INT_001 alter column c8 set data type date;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, INT32 can not be converted to DATE Caused by [INT32 can not be converted to DATE]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_INT_001' and column_name = 'C8';
++-----------+
+| DATA_TYPE |
++-----------+
+| INTEGER   |
++-----------+
+1 row selected.
+SQL> select c8 from T_PALLAS_ALTER_TYPE_INT_001;
++----+
+| C8 |
++----+
+| 8  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为varchar
+SQL> alter table T_PALLAS_ALTER_TYPE_INT_001 alter column c11 set data type varchar(200);
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, INT32 can not be converted to TEXT Caused by [INT32 can not be converted to TEXT]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_INT_001' and column_name = 'C11';
++-----------+
+| DATA_TYPE |
++-----------+
+| INTEGER   |
++-----------+
+1 row selected.
+SQL> select c11 from T_PALLAS_ALTER_TYPE_INT_001;
++-----+
+| C11 |
++-----+
+| 11  |
++-----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为character large object
+SQL> alter table T_PALLAS_ALTER_TYPE_INT_001 alter column c20 set data type character large object(100);
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, INT32 can not be converted to BLOB Caused by [INT32 can not be converted to BLOB]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_INT_001' and column_name = 'C20';
++-----------+
+| DATA_TYPE |
++-----------+
+| INTEGER   |
++-----------+
+1 row selected.
+SQL> select c20 from T_PALLAS_ALTER_TYPE_INT_001;
++-----+
+| C20 |
++-----+
+| 20  |
++-----+
+1 row selected.
+SQL> exit
+Disconnected.

@@ -1,0 +1,134 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_decimal.sql
+SQL> --    Description: 测试Distributed index on pallas
+   > --    Date:         2020-07-02 
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> drop table T_PALLAS_ALTER_TYPE_DECIMAL_001 if exists cascade;
+0 rows affected
+SQL> create table T_PALLAS_ALTER_TYPE_DECIMAL_001 (
+   > c1 decimal(10,2),
+   > c2 decimal(10,2),
+   > c3 decimal(10,2),
+   > c4 decimal(10,2),
+   > c5 decimal(10,2),
+   > c6 decimal(10,2),
+   > c7 decimal(10,2),
+   > c8 decimal(10,2),
+   > c9 decimal(10,2),
+   > c10 decimal(10,2),
+   > c11 decimal(10,2),
+   > c12 decimal(10,2),
+   > c13 decimal(10,2),
+   > c14 decimal(10,2),
+   > c15 decimal(10,2),
+   > c16 decimal(10,2),
+   > c17 decimal(10,2),
+   > c18 decimal(10,2),
+   > c19 decimal(10,2),
+   > c20 decimal(10,2),
+   > c21 decimal(10,2),
+   > c22 decimal(10,2)
+   > )engine pallas;
+0 rows affected
+SQL> insert into T_PALLAS_ALTER_TYPE_DECIMAL_001 values (1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8,9.9,10.10,11.11,12.12,13.13,14.14,15.15,16.16,17.17,18.18,19.19,20.20,21.21,22.22);
+1 row affected
+SQL> 
+SQL> 
+SQL> --转为smallint
+SQL> alter table T_PALLAS_ALTER_TYPE_DECIMAL_001 alter column c1 set data type smallint;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, DECIMAL(10,2) can not be converted to INT16 Caused by [DECIMAL(10,2) can not be converted to INT16]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_DECIMAL_001' and column_name = 'C1';
++-----------+
+| DATA_TYPE |
++-----------+
+| DECIMAL   |
++-----------+
+1 row selected.
+SQL> select c1 from T_PALLAS_ALTER_TYPE_DECIMAL_001;
++-----+
+| C1  |
++-----+
+| 1.1 |
++-----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为double
+SQL> alter table T_PALLAS_ALTER_TYPE_DECIMAL_001 alter column c5 set data type double;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, DECIMAL(10,2) can not be converted to DOUBLE Caused by [DECIMAL(10,2) can not be converted to DOUBLE]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_DECIMAL_001' and column_name = 'C5';
++-----------+
+| DATA_TYPE |
++-----------+
+| DECIMAL   |
++-----------+
+1 row selected.
+SQL> select c5 from T_PALLAS_ALTER_TYPE_DECIMAL_001;
++-----+
+| C5  |
++-----+
+| 5.5 |
++-----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为date
+SQL> alter table T_PALLAS_ALTER_TYPE_DECIMAL_001 alter column c8 set data type date;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, DECIMAL(10,2) can not be converted to DATE Caused by [DECIMAL(10,2) can not be converted to DATE]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_DECIMAL_001' and column_name = 'C8';
++-----------+
+| DATA_TYPE |
++-----------+
+| DECIMAL   |
++-----------+
+1 row selected.
+SQL> select c8 from T_PALLAS_ALTER_TYPE_DECIMAL_001;
++-----+
+| C8  |
++-----+
+| 8.8 |
++-----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为varchar
+SQL> alter table T_PALLAS_ALTER_TYPE_DECIMAL_001 alter column c11 set data type varchar(200);
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, DECIMAL(10,2) can not be converted to TEXT Caused by [DECIMAL(10,2) can not be converted to TEXT]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_DECIMAL_001' and column_name = 'C11';
++-----------+
+| DATA_TYPE |
++-----------+
+| DECIMAL   |
++-----------+
+1 row selected.
+SQL> select c11 from T_PALLAS_ALTER_TYPE_DECIMAL_001;
++-------+
+| C11   |
++-------+
+| 11.11 |
++-------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --转为character large object
+SQL> alter table T_PALLAS_ALTER_TYPE_DECIMAL_001 alter column c20 set data type character large object(100);
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, DECIMAL(10,2) can not be converted to BLOB Caused by [DECIMAL(10,2) can not be converted to BLOB]
+SQL> select data_type from information_schema.columns where table_name = 'T_PALLAS_ALTER_TYPE_DECIMAL_001' and column_name = 'C20';
++-----------+
+| DATA_TYPE |
++-----------+
+| DECIMAL   |
++-----------+
+1 row selected.
+SQL> select c20 from T_PALLAS_ALTER_TYPE_DECIMAL_001;
++------+
+| C20  |
++------+
+| 20.2 |
++------+
+1 row selected.
+SQL> exit
+Disconnected.

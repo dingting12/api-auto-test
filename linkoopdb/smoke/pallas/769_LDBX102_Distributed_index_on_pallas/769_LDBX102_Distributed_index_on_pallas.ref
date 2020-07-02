@@ -1,0 +1,95 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 769_LDBX102_Distributed_index_on_pallas/769_LDBX102_Distributed_index_on_pallas.sql
+SQL> --    Description: 测试Distributed index on pallas
+   > --    Date:         2020-07-02 
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> DROP TABLE T_PALLAS_INDEX_TABLE_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP INDEX TEST_INDEX_PALLAS_001 IF EXISTS;
+0 rows affected
+SQL> DROP INDEX TEST_INDEX_PALLAS_002 IF EXISTS;
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_INDEX_TABLE_001(
+   >     tsmallint SMALLINT,
+   >     tint int PRIMARY KEY,
+   >     tbigint bigint,
+   >     treal REAL,
+   >     tdouble double,
+   >     tfloat float,
+   >     tdecimal decimal(6,2),
+   >     tnumeric numeric(6,2),
+   >     tdate date,
+   >     ttimestamp timestamp,
+   >     tvarchar varchar(50),
+   >     tchar char(50)
+   > ) engine pallas; 
+0 rows affected
+SQL> 
+SQL> --测试int类型
+SQL> INSERT INTO T_PALLAS_INDEX_TABLE_001 VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,'2015-04-02','2034-06-09 11:20:03','dsd','fdfd');
+1 row affected
+SQL> SELECT * FROM T_PALLAS_INDEX_TABLE_001 order by tint;
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+| TSMALLINT | TINT | TBIGINT | TREAL | TDOUBLE | TFLOAT | TDECIMAL | TNUMERIC | TDATE    | TTIMESTAMP          | TVARCHAR | TCHAR                                              |
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+| 1         | 1    | 1       | 1.1   | 1.1     | 1.1    | 1.11     | 1.11     | 2015-4-2 | 2034-06-09 11:20:03 | dsd      | fdfd                                               |
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+1 row selected.
+SQL> CREATE INDEX TEST_INDEX_PALLAS_001 ON T_PALLAS_INDEX_TABLE_001(tint);
+0 rows affected
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_PALLAS_INDEX_TABLE_001' 
+   > group by index_name order by index_name ASC;
++----+---------+----+
+| C1 | C2      | C3 |
++----+---------+----+
+| 1  | _LDBID_ | 1  |
+| 1  | TINT    | 1  |
++----+---------+----+
+2 rows selected.
+SQL> SELECT ttimestamp,tdate FROM T_PALLAS_INDEX_TABLE_001
+   > WHERE tint=1;
++---------------------+----------+
+| TTIMESTAMP          | TDATE    |
++---------------------+----------+
+| 2034-06-09 11:20:03 | 2015-4-2 |
++---------------------+----------+
+1 row selected.
+SQL> 
+SQL> --测试numeric and timestamp and varchar
+SQL> INSERT INTO T_PALLAS_INDEX_TABLE_001 VALUES(16,16,16,16.6,16.6,16.16,16.16,16.16,'2456-07-03','2004-11-21 12:20:03','dsi98ds','20dsd5');
+1 row affected
+SQL> SELECT * FROM T_PALLAS_INDEX_TABLE_001 order by tint;
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+| TSMALLINT | TINT | TBIGINT | TREAL | TDOUBLE | TFLOAT | TDECIMAL | TNUMERIC | TDATE    | TTIMESTAMP          | TVARCHAR | TCHAR                                              |
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+| 1         | 1    | 1       | 1.1   | 1.1     | 1.1    | 1.11     | 1.11     | 2015-4-2 | 2034-06-09 11:20:03 | dsd      | fdfd                                               |
+| 16        | 16   | 16      | 16.6  | 16.6    | 16.16  | 16.16    | 16.16    | 2456-7-3 | 2004-11-21 12:20:03 | dsi98ds  | 20dsd5                                             |
++-----------+------+---------+-------+---------+--------+----------+----------+----------+---------------------+----------+----------------------------------------------------+
+2 rows selected.
+SQL> CREATE INDEX TEST_INDEX_PALLAS_002 ON T_PALLAS_INDEX_TABLE_001(tnumeric,ttimestamp,tvarchar);
+0 rows affected
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_PALLAS_INDEX_TABLE_001'  
+   > group by index_name order by index_name ASC;
++----+------------------------------+-------+
+| C1 | C2                           | C3    |
++----+------------------------------+-------+
+| 1  | _LDBID_                      | 1     |
+| 1  | TINT                         | 1     |
+| 3  | TNUMERIC;TTIMESTAMP;TVARCHAR | 1;2;3 |
++----+------------------------------+-------+
+3 rows selected.
+SQL> SELECT ttimestamp,tdate FROM T_PALLAS_INDEX_TABLE_001
+   > WHERE tnumeric=16.16 and ttimestamp='2004-11-21 12:20:03' and tvarchar='dsi98ds';
++---------------------+----------+
+| TTIMESTAMP          | TDATE    |
++---------------------+----------+
+| 2004-11-21 12:20:03 | 2456-7-3 |
++---------------------+----------+
+1 row selected.
+SQL> exit
+Disconnected.
