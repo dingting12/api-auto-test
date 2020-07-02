@@ -78,12 +78,12 @@ Node(shard)_status_monitoring(basic)
 				   Compare Files        1286_LDBX045-08_Node(shard)_status_monitoring(basic).log  1286_LDBX045-08_Node(shard)_status_monitoring(basic)/1286_LDBX045-08_Node(shard)_status_monitoring(basic).ref				   				   
  
 Distributed_index_on_pallas
-[Tags]     feature: LDBX102      Distributed_index_on_pallas
+    [Tags]     feature: LDBX102      Distributed_index_on_pallas
     Logon And Execute SQL Script        admin/123456                                              769_LDBX102_Distributed_index_on_pallas/769_LDBX102_Distributed_index_on_pallas.sql
 				   Compare Files        769_LDBX102_Distributed_index_on_pallas.log               769_LDBX102_Distributed_index_on_pallas/769_LDBX102_Distributed_index_on_pallas.ref				   			
 
 Alter_column_data_type_for_pallas_tables
-[Tags]     feature: LDBX101-04      Alter_column_data_type_for_pallas_tables
+    [Tags]     feature: LDBX101-04      Alter_column_data_type_for_pallas_tables
     Logon And Execute SQL Script        admin/123456                                                              768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_int.sql
 				   Compare Files        768_LDBX101-04_Alter_column_data_type_for_pallas_tables_int.log           768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_int.ref	
     Logon And Execute SQL Script        admin/123456                                                              768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_binary.sql
@@ -93,7 +93,10 @@ Alter_column_data_type_for_pallas_tables
     Logon And Execute SQL Script        admin/123456                                                              768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_timestamp.sql
     			   Compare Files        768_LDBX101-04_Alter_column_data_type_for_pallas_tables_timestamp.log     768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_timestamp.ref				
     Logon And Execute SQL Script        admin/123456                                                              768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_varchar.sql
-				   Compare Files        768_LDBX101-04_Alter_column_data_type_for_pallas_tables_varchar.log       768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_varchar.ref								   
+				   Compare Files        768_LDBX101-04_Alter_column_data_type_for_pallas_tables_varchar.log       768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_varchar.ref	
+
+
+				   
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True 
