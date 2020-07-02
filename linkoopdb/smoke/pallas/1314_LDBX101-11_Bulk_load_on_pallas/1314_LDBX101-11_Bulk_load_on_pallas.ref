@@ -1,0 +1,158 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 1314_LDBX101-11_Bulk_load_on_pallas/1314_LDBX101-11_Bulk_load_on_pallas.sql
+SQL> --    Description: 测试Bulk load on pallas
+   > --    Date:         2020-07-02
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> drop table T_PALLAS_LOAD_001 if exists;
+0 rows affected
+SQL> drop table T_PALLAS_LOAD_002 if exists;
+0 rows affected
+SQL> drop table T_PALLAS_LOAD_003 if exists;
+0 rows affected
+SQL> drop table T_PALLAS_LOAD_004 if exists;
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_LOAD_001(
+   > id int PRIMARY KEY,
+   > name varchar(200),
+   > sal bigint,
+   > birthday timestamp
+   > )engine pallas;
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_LOAD_002(
+   > id int PRIMARY KEY,
+   > name varchar(200),
+   > sal bigint,
+   > birthday timestamp
+   > )engine pallas;
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_LOAD_003(
+   > id int,
+   > name varchar(200),
+   > sal bigint,
+   > birthday timestamp
+   > );
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_LOAD_004(
+   > id int,
+   > name varchar(200),
+   > sal bigint,
+   > birthday timestamp
+   > );
+0 rows affected
+SQL> insert into T_PALLAS_LOAD_001 values
+   > (1,'zhangsan1',8901,'1980-12-09 19:01:04'),
+   > (2,'zhangsan2',8201,'1981-12-09 19:01:04'),
+   > (3,'zhangsan3',8301,'1982-12-09 19:01:04'),
+   > (4,'zhangsan4',8401,'1983-12-09 19:01:04'),
+   > (5,'zhangsan5',8501,'1984-12-09 19:01:04'),
+   > (6,'zhangsan6',8971,'1985-12-09 19:01:04'),
+   > (7,'zhangsan7',9901,'1986-12-09 19:01:04'),
+   > (8,'zhangsan8',7901,'1987-12-09 19:01:04'),
+   > (9,'zhangsan9',6941,'1988-12-09 19:01:04'),
+   > (10,'zhangsan10',9951,'1989-12-09 19:01:04'),
+   > (11,'zhangsan11',5901,'1983-12-09 19:01:04'),
+   > (12,'zhangsan12',7901,'1982-12-09 19:01:04'),
+   > (13,'zhangsan13',4901,'1986-12-09 19:01:04'),
+   > (14,'zhangsan14',6901,'1982-12-09 19:01:04'),
+   > (15,'zhangsan15',5901,'1986-12-09 19:01:04');
+15 rows affected
+SQL> insert into T_PALLAS_LOAD_003 values
+   > (1,'wangsi1',8901,'1980-12-09 19:01:04'),
+   > (2,'wangsi2',8201,'1981-12-09 19:01:04'),
+   > (3,'wangsi3',8301,'1982-12-09 19:01:04'),
+   > (4,'wangsi4',8401,'1983-12-09 19:01:04'),
+   > (5,'wangsi5',8501,'1984-12-09 19:01:04'),
+   > (6,'wangsi6',8971,'1985-12-09 19:01:04'),
+   > (7,'wangsi7',9901,'1986-12-09 19:01:04'),
+   > (8,'wangsi8',7901,'1987-12-09 19:01:04'),
+   > (9,'wangsi9',6941,'1988-12-09 19:01:04'),
+   > (10,'wangsi10',9951,'1989-12-09 19:01:04'),
+   > (11,'wangsi11',5901,'1983-12-09 19:01:04'),
+   > (12,'wangsi12',7901,'1982-12-09 19:01:04'),
+   > (13,'wangsi13',4901,'1986-12-09 19:01:04'),
+   > (14,'wangsi14',6901,'1982-12-09 19:01:04'),
+   > (15,'wangsi15',5901,'1986-12-09 19:01:04');
+15 rows affected
+SQL> 
+SQL> 
+SQL> --源表为hdfs，目标表为pallas
+SQL> delete from T_PALLAS_LOAD_002;
+0 rows affected
+SQL> load INTO T_PALLAS_LOAD_002 SELECT * FROM T_PALLAS_LOAD_003;
+15 rows affected
+SQL> select * from T_PALLAS_LOAD_002 order by id;
++----+----------+------+---------------------+
+| ID | NAME     | SAL  | BIRTHDAY            |
++----+----------+------+---------------------+
+| 1  | wangsi1  | 8901 | 1980-12-09 19:01:04 |
+| 2  | wangsi2  | 8201 | 1981-12-09 19:01:04 |
+| 3  | wangsi3  | 8301 | 1982-12-09 19:01:04 |
+| 4  | wangsi4  | 8401 | 1983-12-09 19:01:04 |
+| 5  | wangsi5  | 8501 | 1984-12-09 19:01:04 |
+| 6  | wangsi6  | 8971 | 1985-12-09 19:01:04 |
+| 7  | wangsi7  | 9901 | 1986-12-09 19:01:04 |
+| 8  | wangsi8  | 7901 | 1987-12-09 19:01:04 |
+| 9  | wangsi9  | 6941 | 1988-12-09 19:01:04 |
+| 10 | wangsi10 | 9951 | 1989-12-09 19:01:04 |
+| 11 | wangsi11 | 5901 | 1983-12-09 19:01:04 |
+| 12 | wangsi12 | 7901 | 1982-12-09 19:01:04 |
+| 13 | wangsi13 | 4901 | 1986-12-09 19:01:04 |
+| 14 | wangsi14 | 6901 | 1982-12-09 19:01:04 |
+| 15 | wangsi15 | 5901 | 1986-12-09 19:01:04 |
++----+----------+------+---------------------+
+15 rows selected.
+SQL> 
+SQL> 
+SQL> --源表为pallas，目标表为pallas
+SQL> delete from T_PALLAS_LOAD_002;
+15 rows affected
+SQL> select * from T_PALLAS_LOAD_002 order by id;
+0 rows selected.
+SQL> load INTO T_PALLAS_LOAD_002 SELECT * FROM T_PALLAS_LOAD_001;
+15 rows affected
+SQL> select * from T_PALLAS_LOAD_002 order by id;
++----+------------+------+---------------------+
+| ID | NAME       | SAL  | BIRTHDAY            |
++----+------------+------+---------------------+
+| 1  | zhangsan1  | 8901 | 1980-12-09 19:01:04 |
+| 2  | zhangsan2  | 8201 | 1981-12-09 19:01:04 |
+| 3  | zhangsan3  | 8301 | 1982-12-09 19:01:04 |
+| 4  | zhangsan4  | 8401 | 1983-12-09 19:01:04 |
+| 5  | zhangsan5  | 8501 | 1984-12-09 19:01:04 |
+| 6  | zhangsan6  | 8971 | 1985-12-09 19:01:04 |
+| 7  | zhangsan7  | 9901 | 1986-12-09 19:01:04 |
+| 8  | zhangsan8  | 7901 | 1987-12-09 19:01:04 |
+| 9  | zhangsan9  | 6941 | 1988-12-09 19:01:04 |
+| 10 | zhangsan10 | 9951 | 1989-12-09 19:01:04 |
+| 11 | zhangsan11 | 5901 | 1983-12-09 19:01:04 |
+| 12 | zhangsan12 | 7901 | 1982-12-09 19:01:04 |
+| 13 | zhangsan13 | 4901 | 1986-12-09 19:01:04 |
+| 14 | zhangsan14 | 6901 | 1982-12-09 19:01:04 |
+| 15 | zhangsan15 | 5901 | 1986-12-09 19:01:04 |
++----+------------+------+---------------------+
+15 rows selected.
+SQL> 
+SQL> --源表为hdfs，目标表为hdfs
+SQL> delete from T_PALLAS_LOAD_004;
+0 rows affected
+SQL> select * from T_PALLAS_LOAD_004 order by id;
+0 rows selected.
+SQL> load INTO T_PALLAS_LOAD_004 SELECT * FROM T_PALLAS_LOAD_003;
+java.sql.SQLException: General error: only pallas table can be loaded in statement [load INTO T_PALLAS_LOAD_004 SELECT * FROM T_PALLAS_LOAD_003]
+SQL> select * from T_PALLAS_LOAD_004 order by id;
+0 rows selected.
+SQL> 
+SQL> --源表为pallas，目标表为hdfs
+SQL> delete from T_PALLAS_LOAD_004;
+0 rows affected
+SQL> select * from T_PALLAS_LOAD_004 order by id;
+0 rows selected.
+SQL> load INTO T_PALLAS_LOAD_004 SELECT * FROM T_PALLAS_LOAD_001;
+java.sql.SQLException: General error: only pallas table can be loaded in statement [load INTO T_PALLAS_LOAD_004 SELECT * FROM T_PALLAS_LOAD_001]
+SQL> select * from T_PALLAS_LOAD_004 order by id;
+0 rows selected.
+SQL> exit
+Disconnected.

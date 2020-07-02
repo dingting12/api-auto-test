@@ -1,0 +1,66 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 1286_LDBX045-08_Node(shard)_status_monitoring(basic)/1286_LDBX045-08_Node(shard)_status_monitoring(basic).sql
+SQL> --    Description: 测试Node(shard) status monitoring(basic)
+   > --    Date:         2020-07-02
+   > --    Author:       丁婷
+SQL> set echo on
+SQL> SELECT DOMAIN,PORT,STATE,ALIGN_SHARD_NUM,HOST,STORAGE_PATH FROM INFORMATION_SCHEMA.storage_nodes ORDER BY port;
++--------------+------+-------+-----------------+--------------+------------------------+
+| DOMAIN       | PORT | STATE | ALIGN_SHARD_NUM | HOST         | STORAGE_PATH           |
++--------------+------+-------+-----------------+--------------+------------------------+
+| 192.168.1.74 | 9801 | 1     | 0               | 192.168.1.74 | /data1/stream74_pallas |
+| 192.168.1.74 | 9802 | 1     | 0               | 192.168.1.74 | /data2/stream74_pallas |
+| 192.168.1.74 | 9803 | 1     | 0               | 192.168.1.74 | /data3/stream74_pallas |
++--------------+------+-------+-----------------+--------------+------------------------+
+3 rows selected.
+SQL> DROP TABLE T_PALLAS_NODEMONITOR_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE T_PALLAS_NODEMONITOR_001(
+   > id int,
+   > name varchar(200),
+   > sal double
+   > )engine pallas;
+0 rows affected
+SQL> INSERT INTO T_PALLAS_NODEMONITOR_001 VALUES
+   > (1,'qq',12.32),
+   > (2,'aa',34.454);
+2 rows affected
+SQL> SELECT shard_dup_num FROM INFORMATION_SCHEMA.storage_tables
+   > WHERE table_name='T_PALLAS_NODEMONITOR_001';
++---------------+
+| SHARD_DUP_NUM |
++---------------+
+| 3             |
++---------------+
+1 row selected.
+SQL> SELECT count(*) FROM INFORMATION_SCHEMA.storage_shards
+   > WHERE table_name='T_PALLAS_NODEMONITOR_001';
++----+
+| C1 |
++----+
+| 12 |
++----+
+1 row selected.
+SQL> SELECT host,port FROM INFORMATION_SCHEMA.storage_shards
+   > WHERE table_name='T_PALLAS_NODEMONITOR_001' order by port;
++--------------+------+
+| HOST         | PORT |
++--------------+------+
+| 192.168.1.74 | 9801 |
+| 192.168.1.74 | 9801 |
+| 192.168.1.74 | 9801 |
+| 192.168.1.74 | 9801 |
+| 192.168.1.74 | 9802 |
+| 192.168.1.74 | 9802 |
+| 192.168.1.74 | 9802 |
+| 192.168.1.74 | 9802 |
+| 192.168.1.74 | 9803 |
+| 192.168.1.74 | 9803 |
+| 192.168.1.74 | 9803 |
+| 192.168.1.74 | 9803 |
++--------------+------+
+12 rows selected.
+SQL> exit
+Disconnected.
