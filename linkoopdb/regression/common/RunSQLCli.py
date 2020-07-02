@@ -116,7 +116,7 @@ class RunSQLCli(object):
         if str(p_ConsoleOutput).upper() == 'FALSE':
             self.__EnableConsoleOutPut = False
 
-    def SQLCli_Set_SQLMAPPING(self, p_szSQLMapping):
+    def SQLCli_Set_SQLMAPPING(self, p_szSQLMapping=""):
         """ 设置SQLMAPPING文件  """
         """
         输入参数：

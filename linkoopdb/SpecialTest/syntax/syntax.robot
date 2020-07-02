@@ -32,6 +32,13 @@ SyntaxCoverageHDFSTest-DataTypeConversion
     Logon And Execute SQL Script    admin/123456                  DataTypeConversion.sql    DataTypeConversion_hdfs.log
     Compare Files                   DataTypeConversion_hdfs.log   DataTypeConversion.ref
 
+SyntaxCoverageHDFSTest-BasicSynatx-H1000
+    [Documentation]    语法覆盖-HDFS-BasicSynatx-H1000
+    [Tags]   Smoke   HDFS
+
+    Logon And Execute SQL Script    admin/123456     basic_SQLSynatx.sql        basic_synatx_H1000.log
+    Compare Files                   basic_synatx_H1000.log            basic_synatx.ref
+
 SyntaxCoveragePallasTest-GroupBy
     [Documentation]    语法覆盖-Pallas-GroupBy
     [Tags]   Smoke   Pallas
@@ -58,13 +65,6 @@ SyntaxCoveragePallasTest-DataTypeConversion
     SQLCli Set SQLMAPPING           pallas256.map,synatx_tabname.map
     Logon And Execute SQL Script    admin/123456                  DataTypeConversion.sql   DataTypeConversion_pallas.log
     Compare Files                   DataTypeConversion_pallas.log   DataTypeConversion.ref
-
-SyntaxCoverageHDFSTest-BasicSynatx-H1000
-    [Documentation]    语法覆盖-HDFS-BasicSynatx-H1000
-    [Tags]   Smoke   HDFS
-
-    Logon And Execute SQL Script    admin/123456     basic_SQLSynatx.sql        basic_synatx_H1000.log
-    Compare Files                   basic_synatx_H1000.log            basic_synatx.ref
 
 SyntaxCoveragePallasTest-BasicSynatx-P1000
     [Documentation]    语法覆盖-Pallas-BasicSynatx-P1000-Pallas
