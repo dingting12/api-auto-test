@@ -51,7 +51,9 @@ Consistent_hash_based_distributed_primary_index_for_pallas table
 	Logon And Execute SQL Script        admin/123456                                              1032_LDBX102-03_Consistent_hash_based_distributed_primary_index_for_pallas table/COMPOSITE_PRIMARY_KEY.sql
 				   Compare Files        COMPOSITE_PRIMARY_KEY.log                                 1032_LDBX102-03_Consistent_hash_based_distributed_primary_index_for_pallas table/COMPOSITE_PRIMARY_KEY.ref
 
-2003_LDBX101-19_Create_schema_using_pallas_engine				 
+
+
+Create_schema_using_pallas_engine				 
     [Tags]     feature: LDBX101-19     Create_schema_using_pallas_engine
     Logon And Execute SQL Script        admin/123456                                              2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_DBLINK.sql
 				   Compare Files        CREATE_DBLINK.log                                         2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_DBLINK.ref
@@ -61,8 +63,21 @@ Consistent_hash_based_distributed_primary_index_for_pallas table
 				   Compare Files        CREATE_VIEW.log                                           2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_VIEW.ref
 	Logon And Execute SQL Script        admin/123456                                              2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_EXTERNAL_TABLE.sql
 				   Compare Files        CREATE_EXTERNAL_TABLE.log                                 2003_LDBX101-19_Create_schema_using_pallas_engine/CREATE_EXTERNAL_TABLE.ref
-				   
-  
+
+
+
+Bulk_load_on_pallas				 
+    [Tags]     feature: LDBX101-11      Bulk_load_on_pallas
+    Logon And Execute SQL Script        admin/123456                                              1314_LDBX101-11_Bulk_load_on_pallas/1314_LDBX101-11_Bulk_load_on_pallas.sql
+				   Compare Files        1314_LDBX101-11_Bulk_load_on_pallas.log                   1314_LDBX101-11_Bulk_load_on_pallas/1314_LDBX101-11_Bulk_load_on_pallas.ref
+
+
+Node(shard)_status_monitoring(basic)				 
+    [Tags]     feature: LDBX045-08      Node(shard)_status_monitoring(basic)
+    Logon And Execute SQL Script        admin/123456                                              1286_LDBX045-08_Node(shard)_status_monitoring(basic)/1286_LDBX045-08_Node(shard)_status_monitoring(basic).sql
+				   Compare Files        1286_LDBX045-08_Node(shard)_status_monitoring(basic).log  1286_LDBX045-08_Node(shard)_status_monitoring(basic)/1286_LDBX045-08_Node(shard)_status_monitoring(basic).ref				   				   
+ 
+ 
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True 
