@@ -32,8 +32,9 @@ echo REBOT_BIN="$REBOT_BIN"
 # shellcheck disable=SC2154
 if [ X"$Label_ID" = "X" ]; then
     echo "Please enter your label_id before run test ..."
-    exit 255
+    return
 fi
+echo Query catalog to get build tag for label ["$Label_ID"]
 
 # 如果没有定义最大进程数，则最大进程数按照1（不并发）来计算
 if [ X"$MAX_PROCESSES" = "X" ]; then
@@ -45,18 +46,25 @@ echo Max Processes is : [ "$MAX_PROCESSES" ]
 rm -r -f "$T_WORK"
 mkdir -p "$T_WORK"
 
-echo Query catalog to get build tag for label ["$Label_ID"]
 # 切换当前工作目录为T_WORK下, 并执行环境设置脚本
-$PY_BIN "$TEST_ROOT"/regression/common/SetupLabelBuildTag.py "$Label_ID" > "$T_WORK"/__tempenv__.sh
-if [ "$(grep -c Successful "$T_WORK"/__tempenv__.sh)" -eq 1 ]; then
-    # shellcheck disable=SC1090
-    source "$T_WORK"/__tempenv__.sh
-    cat "$T_WORK"/__tempenv__.sh
-else
-    echo "SetupLabelBuildTag failed ..."
-    cat "$T_WORK"/__tempenv__.sh
-    exit 255
-fi
+$PY_BIN "$TEST_ROOT"/regression/common/SetupLabelBuildTag.py "$Label_ID" | grep '^Env' |awk '{print $2}' \
+            > "$T_WORK"/__buildtag__.txt
+cat "$T_WORK"/__buildtag__.txt
+cat "$T_WORK"/__buildtag__.txt|awk '{print "export "$0}' > "$T_WORK"/__tempenv__.sh
+source "$T_WORK"/__tempenv__.sh
+
+# 检查数据库版本
+echo "CALL DATABASE_VERSION();" > $T_WORK/checkdatabaseversion.sql
+database_version=$($SQLCLI_BIN --logon admin/123456 --nologo \
+  --execute $T_WORK/checkdatabaseversion.sql|grep ^\||grep -v @p0|awk '{print $2}')
+
+# 生成数据库环境信息文件
+cat > "$T_WORK"/environment.properties << EOF
+Label_ID="$Label_ID"
+MAX_PROCESSES="$MAX_PROCESSES"
+DATABASE_VERSION="$database_version"
+EOF
+cat "$T_WORK"/__buildtag__.txt >> "$T_WORK"/environment.properties
 
 # 存放进程的队列, 当前运行进程数
 Qarr=();
@@ -85,3 +93,4 @@ T_UP_T_WORK=$T_WORK
 
 # 显示测试开始时间
 echo JOB started at .... "$(date)"
+

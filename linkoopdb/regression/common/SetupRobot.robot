@@ -1,7 +1,6 @@
 *** Settings ***
 Documentation     SetupRobot.py
-...               Regress_Friendly      No
-...               Feature_ID
+...               Regress_Friendly    NO   # 表示这个程序不参与整体回归测试，正常Case请删除此行
 Library           RunSQLCli.py
 Library           RunCompare.py
 Library           SetupRobot.py
@@ -23,6 +22,10 @@ SQL Test Setup
     # 小心： 如果SQL中包含返回内容较多的查询，这样打开将导致测试报告文件很大，可能会变得无法阅读
     # 默认是关闭状态，即不显示SQLCli的输出
     SQLCli Enable ConsoleOutput        False
+
+    # 控制SQLCli是否记录perf日志，打开后，会在LOG目录下生成一个perf文件
+    # 默认是打开状态，即记录perf信息
+    SQLCli Enable PerfLog              True
 
     # 控制Compare过程中如果发生比对不一致现象，是否将不一致的结果输出在控制台上。
     # 如果在Jenkins中运行，则打开后同样会在Jenkins的控制台上显示出来
