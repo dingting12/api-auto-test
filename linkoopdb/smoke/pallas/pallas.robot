@@ -123,7 +123,13 @@ Library          OperatingSystem
 776_LDBX101-01_Basic_table_on_pallas
     [Tags]     feature: LDBX101-01     Basic_table_on_pallas
     Logon And Execute SQL Script        admin/123456                                  776_LDBX101-01_Basic_table_on_pallas/776_LDBX101-01_Basic_table_on_pallas.sql
-				   Compare Files        776_LDBX101-01_Basic_table_on_pallas.log      776_LDBX101-01_Basic_table_on_pallas/776_LDBX101-01_Basic_table_on_pallas.ref	
+				   Compare Files        776_LDBX101-01_Basic_table_on_pallas.log      776_LDBX101-01_Basic_table_on_pallas/776_LDBX101-01_Basic_table_on_pallas.ref
+
+
+746_LDBX102-02_Secondary_index_for_pallas_tables
+    [Tags]     feature: LDBX102-02     Secondary_index_for_pallas_tables
+    Logon And Execute SQL Script        admin/123456                                              746_LDBX102-02_Secondary_index_for_pallas_tables/746_LDBX102-02_Secondary_index_for_pallas_tables.sql
+				   Compare Files        746_LDBX102-02_Secondary_index_for_pallas_tables.log      746_LDBX102-02_Secondary_index_for_pallas_tables/746_LDBX102-02_Secondary_index_for_pallas_tables.ref				   
 				   
 *** Keywords ***
 Setup Custom Settings
