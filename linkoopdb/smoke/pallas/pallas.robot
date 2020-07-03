@@ -96,6 +96,34 @@ Alter_column_data_type_for_pallas_tables
 				   Compare Files        768_LDBX101-04_Alter_column_data_type_for_pallas_tables_varchar.log       768_LDBX101-04_Alter_column_data_type_for_pallas_tables/768_LDBX101-04_Alter_column_data_type_for_pallas_tables_varchar.ref	
 
 
+CreateInsert_pallas_table_by_subquery
+    [Tags]     feature: LDBX101-05      CreateInsert_pallas_table_by_subquery
+    Logon And Execute SQL Script        admin/123456                                  995_LDBX101-05_CreateInsert_pallas_table_by_subquery/NO_PK_PALLAS_TO_PALLAS.sql
+				   Compare Files        NO_PK_PALLAS_TO_PALLAS.log                    995_LDBX101-05_CreateInsert_pallas_table_by_subquery/NO_PK_PALLAS_TO_PALLAS.ref	
+    Logon And Execute SQL Script        admin/123456                                  995_LDBX101-05_CreateInsert_pallas_table_by_subquery/NO_PK_HDFS_TO_PALLAS.sql
+    			   Compare Files        NO_PK_HDFS_TO_PALLAS.log        			  995_LDBX101-05_CreateInsert_pallas_table_by_subquery/NO_PK_HDFS_TO_PALLAS.ref				
+    Logon And Execute SQL Script        admin/123456                                  995_LDBX101-05_CreateInsert_pallas_table_by_subquery/ONE_PK_PALLAS_TO_PALLAS.sql
+    			   Compare Files        ONE_PK_PALLAS_TO_PALLAS.log                   995_LDBX101-05_CreateInsert_pallas_table_by_subquery/ONE_PK_PALLAS_TO_PALLAS.ref				
+    Logon And Execute SQL Script        admin/123456                                  995_LDBX101-05_CreateInsert_pallas_table_by_subquery/ONE_PK_HDFS_TO_PALLAS.sql
+    			   Compare Files        ONE_PK_HDFS_TO_PALLAS.log     				  995_LDBX101-05_CreateInsert_pallas_table_by_subquery/ONE_PK_HDFS_TO_PALLAS.ref				
+    Logon And Execute SQL Script        admin/123456                                  995_LDBX101-05_CreateInsert_pallas_table_by_subquery/COMPOSITE_PK_PALLAS_TO_PALLAS.sql
+				   Compare Files        COMPOSITE_PK_PALLAS_TO_PALLAS.log             995_LDBX101-05_CreateInsert_pallas_table_by_subquery/COMPOSITE_PK_PALLAS_TO_PALLAS.ref	
+	Logon And Execute SQL Script        admin/123456                                  995_LDBX101-05_CreateInsert_pallas_table_by_subquery/COMPOSITE_PK_HDFS_TO_PALLAS.sql
+				   Compare Files        COMPOSITE_PK_HDFS_TO_PALLAS.log               995_LDBX101-05_CreateInsert_pallas_table_by_subquery/COMPOSITE_PK_HDFS_TO_PALLAS.ref	
+
+
+Alter_pallas_table
+    [Tags]     feature: LDBX101-03      Alter_pallas_table
+    Logon And Execute SQL Script        admin/123456                                  767_LDBX101-03_Alter_pallas_table/NO_PRIMARY_KEY.sql
+				   Compare Files        NO_PRIMARY_KEY.log                            767_LDBX101-03_Alter_pallas_table/NO_PRIMARY_KEY.ref	
+    Logon And Execute SQL Script        admin/123456                                  767_LDBX101-03_Alter_pallas_table/ONE_PRIMARY_KEY.sql
+    			   Compare Files        ONE_PRIMARY_KEY.log        			          767_LDBX101-03_Alter_pallas_table/ONE_PRIMARY_KEY.ref	
+
+
+Basic_table_on_pallas
+    [Tags]     feature: LDBX101-01     Basic_table_on_pallas
+    Logon And Execute SQL Script        admin/123456                                  776_LDBX101-01_Basic_table_on_pallas/776_LDBX101-01_Basic_table_on_pallas.sql
+				   Compare Files        776_LDBX101-01_Basic_table_on_pallas.log      776_LDBX101-01_Basic_table_on_pallas/776_LDBX101-01_Basic_table_on_pallas.ref	
 				   
 *** Keywords ***
 Setup Custom Settings
