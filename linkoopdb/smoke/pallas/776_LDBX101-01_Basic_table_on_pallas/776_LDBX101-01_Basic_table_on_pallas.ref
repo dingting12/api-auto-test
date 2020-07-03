@@ -1,0 +1,81 @@
+SQLCli Release 0.0.78
+SQL> connect admin/123456
+Database connected.
+SQL> start 776_LDBX101-01_Basic_table_on_pallas/776_LDBX101-01_Basic_table_on_pallas.sql
+SQL> --Description: 测试Basic table on pallas
+   > --Date:         2020-07-03
+   > --Author:       丁婷
+SQL> set echo on
+SQL> DROP TABLE IF EXISTS T_PALLAS_BASIC_001;
+0 rows affected
+SQL> create table T_PALLAS_BASIC_001 (
+   > tinteger integer, 
+   > tsmallint smallint, 
+   > tbigint bigint, 
+   > treal real,
+   > tdouble double,
+   > tfloat float, 
+   > tchar char(255), 
+   > tvarchar varchar(8000),
+   > PRIMARY KEY(tinteger)
+   > ) engine pallas;
+0 rows affected
+SQL> insert into T_PALLAS_BASIC_001 values 
+   > (3321,-357,-6525,1.3E4,-1.7E6,1.4E2,'verygood8','long char haha8'),
+   > (111,111,111,111,111,111,'111','111'); 
+2 rows affected
+SQL> select * from T_PALLAS_BASIC_001 order by tinteger;
++----------+-----------+---------+-------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+| TINTEGER | TSMALLINT | TBIGINT | TREAL | TDOUBLE  | TFLOAT | TCHAR                                                                                                                                                                                                                                                           | TVARCHAR        |
++----------+-----------+---------+-------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+| 111      | 111       | 111     | 111   | 111      | 111    | 111                                                                                                                                                                                                                                                             | 111             |
+| 3321     | -357      | -6525   | 13000 | -1700000 | 140    | verygood8                                                                                                                                                                                                                                                       | long char haha8 |
++----------+-----------+---------+-------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+2 rows selected.
+SQL> insert into T_PALLAS_BASIC_001 values 
+   > (33221,357,6525,2.6E4,1.8E6,3.4E2,'pallas1','pallas2');
+1 row affected
+SQL> select * from T_PALLAS_BASIC_001 order by tinteger;
++----------+-----------+---------+-------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+| TINTEGER | TSMALLINT | TBIGINT | TREAL | TDOUBLE  | TFLOAT | TCHAR                                                                                                                                                                                                                                                           | TVARCHAR        |
++----------+-----------+---------+-------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+| 111      | 111       | 111     | 111   | 111      | 111    | 111                                                                                                                                                                                                                                                             | 111             |
+| 3321     | -357      | -6525   | 13000 | -1700000 | 140    | verygood8                                                                                                                                                                                                                                                       | long char haha8 |
+| 33221    | 357       | 6525    | 26000 | 1800000  | 340    | pallas1                                                                                                                                                                                                                                                         | pallas2         |
++----------+-----------+---------+-------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+3 rows selected.
+SQL> UPDATE T_PALLAS_BASIC_001 SET TSMALLINT = 358,TBIGINT = 6666,TREAL = 2.7e4,
+   > TDOUBLE = 8.8654E6, TCHAR = 'UPDATEPALLAS1' ,TVARCHAR = 'UPDATE2PALLAS2' WHERE TINTEGER = 33221
+   > 
+   > select * from T_PALLAS_BASIC_001 order by tinteger;
+java.sql.SQLSyntaxErrorException: unexpected token: SELECT : line: 4 in statement [UPDATE T_PALLAS_BASIC_001 SET TSMALLINT = 358,TBIGINT = 6666,TREAL = 2.7e4,
+TDOUBLE = 8.8654E6, TCHAR = 'UPDATEPALLAS1' ,TVARCHAR = 'UPDATE2PALLAS2' WHERE TINTEGER = 33221
+
+select * from T_PALLAS_BASIC_001 order by tinteger]
+SQL> UPDATE T_PALLAS_BASIC_001 SET TINTEGER = 3333 WHERE TCHAR = 'verygood8'
+   > 
+   > select * from T_PALLAS_BASIC_001 order by tinteger;
+java.sql.SQLSyntaxErrorException: unexpected token: SELECT : line: 3 in statement [UPDATE T_PALLAS_BASIC_001 SET TINTEGER = 3333 WHERE TCHAR = 'verygood8'
+
+select * from T_PALLAS_BASIC_001 order by tinteger]
+SQL> insert into T_PALLAS_BASIC_001 values 
+   > (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+1 row affected
+SQL> select * from T_PALLAS_BASIC_001 order by tinteger;
++----------+-----------+---------+--------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+| TINTEGER | TSMALLINT | TBIGINT | TREAL  | TDOUBLE  | TFLOAT | TCHAR                                                                                                                                                                                                                                                           | TVARCHAR        |
++----------+-----------+---------+--------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+| 1        | <null>    | <null>  | <null> | <null>   | <null> | <null>                                                                                                                                                                                                                                                          | <null>          |
+| 111      | 111       | 111     | 111    | 111      | 111    | 111                                                                                                                                                                                                                                                             | 111             |
+| 3321     | -357      | -6525   | 13000  | -1700000 | 140    | verygood8                                                                                                                                                                                                                                                       | long char haha8 |
+| 33221    | 357       | 6525    | 26000  | 1800000  | 340    | pallas1                                                                                                                                                                                                                                                         | pallas2         |
++----------+-----------+---------+--------+----------+--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+4 rows selected.
+SQL> DELETE FROM T_PALLAS_BASIC_001 WHERE TINTEGER = 111 
+   > 
+   > select * from T_PALLAS_BASIC_001 order by tinteger;
+java.sql.SQLSyntaxErrorException: unexpected token: SELECT : line: 3 in statement [DELETE FROM T_PALLAS_BASIC_001 WHERE TINTEGER = 111 
+
+select * from T_PALLAS_BASIC_001 order by tinteger]
+SQL> exit
+Disconnected.

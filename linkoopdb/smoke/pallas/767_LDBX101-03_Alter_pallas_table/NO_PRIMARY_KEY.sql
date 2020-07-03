@@ -21,7 +21,7 @@ CREATE TABLE T_PALLAS_ALTER_INT_002(
 alter table T_PALLAS_ALTER_INT_002 add column t1 int;
 
 SELECT data_type from INFORMATION_SCHEMA.columns 
-where table_name = 'TEST_ALTERPALLASTABLE_T1' and column_name = 'T1';
+where table_name = 'T_PALLAS_ALTER_INT_002' and column_name = 'T1';
 
 INSERT INTO T_PALLAS_ALTER_INT_002 VALUES 
 (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','yyyy-mm-dd'),1250,500,30,1);
@@ -31,7 +31,7 @@ select count(*) from T_PALLAS_ALTER_INT_002;
 alter table T_PALLAS_ALTER_INT_002 drop column t1;
 
 SELECT data_type from INFORMATION_SCHEMA.columns 
-where table_name = 'TEST_ALTERPALLASTABLE_T1' and column_name = 'T1';
+where table_name = 'T_PALLAS_ALTER_INT_002' and column_name = 'T1';
 
 ALTER TABLE T_PALLAS_ALTER_INT_002
 ALTER COLUMN ENAME RENAME TO MNAME;

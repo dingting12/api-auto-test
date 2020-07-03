@@ -1,0 +1,72 @@
+SQLCli Release 0.0.78
+SQL> connect admin/123456
+Database connected.
+SQL> start 995_LDBX101-05_CreateInsert_pallas_table_by_subquery/NO_PK_PALLAS_TO_PALLAS.sql
+SQL> --Description: 测试no primary key and the original table is pallas and create pallas table by subquery
+   > --Date:         2020-07-03
+   > --Author:       丁婷
+SQL> set echo on
+SQL> DROP TABLE T_NO_PK_PALLAS_TO_PALLAS_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TABLE T_NO_PK_PALLAS_TO_PALLAS_002 IF EXISTS CASCADE;
+0 rows affected
+SQL> DROP TABLE T_NO_PK_PALLAS_TO_PALLAS_003 IF EXISTS CASCADE;
+0 rows affected
+SQL> CREATE TABLE T_NO_PK_PALLAS_TO_PALLAS_001(
+   >    tsmallint SMALLINT,
+   >    tint int,
+   >    tbigint bigint,
+   >    treal REAL,
+   >    tdouble double,
+   >    tfloat float,
+   >    tdecimal decimal(6,2),
+   >    tnumeric numeric(6,2),
+   >    tdate date,
+   >    ttimestamp timestamp,
+   >    tvarchar varchar(50),
+   >    tchar char(50)     
+   > )engine pallas;
+0 rows affected
+SQL> INSERT INTO T_NO_PK_PALLAS_TO_PALLAS_001 VALUES(1,1,1,1.1,1.1,1.1,1.11,1.11,'2015-04-02',timestamp '2034-06-09 11:20:03','dsd','fdfd');
+1 row affected
+SQL> INSERT INTO T_NO_PK_PALLAS_TO_PALLAS_001 VALUES(2,2,2,2.2,2.2,2.2,2.22,2.22,'2016-08-12',timestamp '2012-12-09 11:21:23','hjhj','osjjs');
+1 row affected
+SQL> INSERT INTO T_NO_PK_PALLAS_TO_PALLAS_001 VALUES(3,3,3,3.3,3.3,3.3,3.33,3.33,'2017-11-30',timestamp '2109-07-12 09:00:03','biiyq','noone');
+1 row affected
+SQL> CREATE TABLE T_NO_PK_PALLAS_TO_PALLAS_002 AS(SELECT * FROM T_NO_PK_PALLAS_TO_PALLAS_001) WITH DATA engine pallas;
+0 rows affected
+SQL> show create table T_NO_PK_PALLAS_TO_PALLAS_002;
++------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                        | CREATE_TABLE                                                                                                                                                                                                                                                                          |
++------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_NO_PK_PALLAS_TO_PALLAS_002 | CREATE TABLE IF NOT EXISTS PUBLIC.T_NO_PK_PALLAS_TO_PALLAS_002(TSMALLINT SMALLINT,TINT INTEGER,TBIGINT BIGINT,TREAL DOUBLE,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(6,2),TNUMERIC NUMERIC(6,2),TDATE DATE,TTIMESTAMP TIMESTAMP,TVARCHAR VARCHAR(50),TCHAR CHAR(50)) ENGINE PALLAS |
++------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT count(*) FROM T_NO_PK_PALLAS_TO_PALLAS_002;
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
+SQL> CREATE TABLE T_NO_PK_PALLAS_TO_PALLAS_003 AS(SELECT * FROM T_NO_PK_PALLAS_TO_PALLAS_001) WITH NO DATA engine pallas;
+0 rows affected
+SQL> INSERT INTO T_NO_PK_PALLAS_TO_PALLAS_003(tsmallint,ttimestamp) 
+   >   SELECT tsmallint,ttimestamp FROM T_NO_PK_PALLAS_TO_PALLAS_001;
+3 rows affected
+SQL> SELECT COUNT(*) FROM T_NO_PK_PALLAS_TO_PALLAS_003; 
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
+SQL> show create table T_NO_PK_PALLAS_TO_PALLAS_003;
++------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                        | CREATE_TABLE                                                                                                                                                                                                                                                                          |
++------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_NO_PK_PALLAS_TO_PALLAS_003 | CREATE TABLE IF NOT EXISTS PUBLIC.T_NO_PK_PALLAS_TO_PALLAS_003(TSMALLINT SMALLINT,TINT INTEGER,TBIGINT BIGINT,TREAL DOUBLE,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(6,2),TNUMERIC NUMERIC(6,2),TDATE DATE,TTIMESTAMP TIMESTAMP,TVARCHAR VARCHAR(50),TCHAR CHAR(50)) ENGINE PALLAS |
++------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> exit
+Disconnected.
