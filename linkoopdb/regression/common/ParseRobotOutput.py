@@ -42,7 +42,9 @@ def load_testresults(p_dbHandler, p_szSuite):
             "Suite_Path": str(test.source),
             "Test_Doc": str(test.doc),
             "Start_Date": datetime.datetime.strptime(test.starttime[0:17], '%Y%m%d %H:%M:%S'),
-            "End_Date": datetime.datetime.strptime(test.endtime[0:17], '%Y%m%d %H:%M:%S')
+            "End_Date": datetime.datetime.strptime(test.endtime[0:17], '%Y%m%d %H:%M:%S'),
+            "Database_Version": os.environ["DATABASE_VERSION"],
+            "SQL_Count": int(os.environ["SQL_COUNT"])
         }
         columns = ",".join(data.keys())
         values = ', '.join(['%s'] * len(data))
