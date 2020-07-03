@@ -1,7 +1,6 @@
 *** Settings ***
 Documentation     SetupRobot.py
-...               Regress_Friendly      No
-...               Feature_ID
+...               Regress_Friendly    NO   # 表示这个程序不参与整体回归测试，正常Case请删除此行
 Library           RunSQLCli.py
 Library           RunCompare.py
 Library           SetupRobot.py
