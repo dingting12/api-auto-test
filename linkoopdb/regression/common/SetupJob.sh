@@ -50,7 +50,8 @@ mkdir -p "$T_WORK"
 $PY_BIN "$TEST_ROOT"/regression/common/SetupLabelBuildTag.py "$Label_ID" | grep '^Env' |awk '{print $2}' \
             > "$T_WORK"/__buildtag__.txt
 cat "$T_WORK"/__buildtag__.txt
-cat "$T_WORK"/__buildtag__.txt|awk '{print "export "$0}'|source
+cat "$T_WORK"/__buildtag__.txt|awk '{print "export "$0}' > "$T_WORK"/__tempenv__.sh
+source "$T_WORK"/__tempenv__.sh
 
 # 检查数据库版本
 echo "CALL DATABASE_VERSION();" > $T_WORK/checkdatabaseversion.sql
