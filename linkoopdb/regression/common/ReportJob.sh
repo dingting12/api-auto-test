@@ -36,7 +36,7 @@ do
     rm -f "$T_WORK"/output.xml
     rm -f "$T_WORK"/log.html
     rm -f "$T_WORK"/report.html
-    cp -f $dir/*perf $dir/*sav $dir/*dif $dir/*suc $dir/*sql $dir/*log $dir/*out \
+    \cp -f $dir/*perf $dir/*sav $dir/*dif $dir/*suc $dir/*sql $dir/*log $dir/*out \
             $dir/*json $dir/*html $T_WORK 2>/dev/null || true
 done
 
@@ -52,7 +52,7 @@ fi
 
 # 查看数据库版本信息
 echo DATABASE_VERSION="$DATABASE_VERSION"
-echo SQL_COUNT="$(cat -- *perf|grep -v ^Script |wc -l)"
+SQL_COUNT="$(cat -- *perf|grep -v ^Script |wc -l)"
 export DATABASE_VERSION="$DATABASE_VERSION"
 export SQL_COUNT="$SQL_COUNT"
 
