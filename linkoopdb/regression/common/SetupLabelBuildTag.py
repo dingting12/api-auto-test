@@ -28,5 +28,5 @@ mydb.close()
 
 m_Build_Tags = json.loads(result[0]["Build_Tag"])
 for key, value in m_Build_Tags.items():
-    print("export " + str(key) + '=' + str(value))
+    print(str(key).strip() + '=' + str(value).strip())
 print("# Successful!")
