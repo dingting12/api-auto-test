@@ -55,14 +55,14 @@ source "$T_WORK"/__tempenv__.sh
 
 # 检查数据库版本
 echo "CALL DATABASE_VERSION();" > $T_WORK/checkdatabaseversion.sql
-database_version=$($SQLCLI_BIN --logon admin/123456 --nologo \
+DATABASE_VERSION=$($SQLCLI_BIN --logon admin/123456 --nologo \
   --execute $T_WORK/checkdatabaseversion.sql|grep ^\||grep -v @p0|awk '{print $2}')
 
 # 生成数据库环境信息文件
 cat > "$T_WORK"/environment.properties << EOF
 Label_ID="$Label_ID"
 MAX_PROCESSES="$MAX_PROCESSES"
-DATABASE_VERSION="$database_version"
+DATABASE_VERSION="$DATABASE_VERSION"
 EOF
 cat "$T_WORK"/__buildtag__.txt >> "$T_WORK"/environment.properties
 

@@ -50,6 +50,10 @@ else
     $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml $m_OutputDirList || true
 fi
 
+# 查看数据库版本信息
+echo DATABASE_VERSION="$DATABASE_VERSION"
+echo SQL_COUNT="$(cat -- *perf|grep -v ^Script |wc -l)"
+
 # 将测试结果数据插入到统计数据库中
 echo Will insert into robot test result to report database ...
 echo $PY_BIN "$TEST_ROOT"/regression/common/ParseRobotOutput.py "$T_WORK"/output.xml
