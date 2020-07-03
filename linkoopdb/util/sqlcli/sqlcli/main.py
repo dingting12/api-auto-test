@@ -129,7 +129,10 @@ class SQLCli(object):
         self.SQLExecuteHandler.logfile = self.logfile
         self.SQLExecuteHandler.Console = self.Console
         self.SQLExecuteHandler.SQLPerfFile = self.m_SQLPerf
-        self.SQLExecuteHandler.m_Worker_Name = WorkerName
+        if WorkerName is None:
+            self.SQLExecuteHandler.m_Worker_Name = "MAIN"
+        else:
+            self.SQLExecuteHandler.m_Worker_Name = WorkerName
         self.SQLExecuteHandler.logger = self.logger
         self.SQLMappingHandler.Console = self.Console
 
@@ -1454,12 +1457,17 @@ class SQLCli(object):
             return
 
         # 创建随机数Seed的缓存文件
-        matchObj = re.match(r"create\s+seeddatafile\s+(.*?)\s+with\s+null\s+rows\s+(\d+)$",
+        matchObj = re.match(r"create\s+(integer|string)\s+seeddatafile\s+(.*?)\s+"
+                            r"length\s+(\d+)\s+rows\s+(\d+)\s+with\s+null\s+rows\s+(\d+)$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
-            m_strSeedFile = str(matchObj.group(1)).lstrip().rstrip()
-            m_nNullValueCount = int(matchObj.group(2))
-            Create_SeedCacheFile(p_szSeedName=m_strSeedFile, p_nNullValueCount=m_nNullValueCount)
+            m_DataType = str(matchObj.group(1)).lstrip().rstrip()
+            m_SeedFileName = str(matchObj.group(2)).lstrip().rstrip()
+            m_DataLength = int(matchObj.group(3))
+            m_nRows = int(matchObj.group(4))
+            m_nNullValueCount = int(matchObj.group(5))
+            Create_SeedCacheFile(p_szDataType=m_DataType, p_nDataLength=m_DataLength, p_nRows=m_nRows,
+                                 p_szSeedName=m_SeedFileName, p_nNullValueCount=m_nNullValueCount)
             yield (
                 None,
                 None,
@@ -1468,11 +1476,16 @@ class SQLCli(object):
             return
 
         # 创建随机数Seed的缓存文件
-        matchObj = re.match(r"create\s+seeddatafile\s+(.*?)(\s+)?$",
+        matchObj = re.match(r"create\s+(integer|string)\s+seeddatafile\s+(.*?)\s+"
+                            r"length\s+(\d+)\s+rows\s+(\d+)(\s+)?$",
                             arg, re.IGNORECASE | re.DOTALL)
         if matchObj:
-            m_strSeedFile = str(matchObj.group(1))
-            Create_SeedCacheFile(p_szSeedName=m_strSeedFile)
+            m_DataType = str(matchObj.group(1)).lstrip().rstrip()
+            m_SeedFileName = str(matchObj.group(2)).lstrip().rstrip()
+            m_DataLength = int(matchObj.group(3))
+            m_nRows = int(matchObj.group(4))
+            Create_SeedCacheFile(p_szDataType=m_DataType, p_nDataLength=m_DataLength, p_nRows=m_nRows,
+                                 p_szSeedName=m_SeedFileName)
             yield (
                 None,
                 None,
@@ -1628,7 +1641,8 @@ class SQLCli(object):
         if self.sqlmap is not None:   # 如果传递的参数，有Mapping，以参数为准，先加载参数中的Mapping文件
             self.SQLMappingHandler.Load_SQL_Mappings(self.sqlscript, self.sqlmap)
         elif "SQLCLI_SQLMAPPING" in os.environ:     # 如果没有参数，则以环境变量中的信息为准
-            self.SQLMappingHandler.Load_SQL_Mappings(self.sqlscript, os.environ["SQLCLI_SQLMAPPING"])
+            if len(os.environ["SQLCLI_SQLMAPPING"].strip()) > 0:
+                self.SQLMappingHandler.Load_SQL_Mappings(self.sqlscript, os.environ["SQLCLI_SQLMAPPING"])
         else:  # 任何地方都没有sql mapping信息，设置QUERYREWRITE为OFF
             self.SQLExecuteHandler.options["SQLREWRITE"] = "OFF"
 

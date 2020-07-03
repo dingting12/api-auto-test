@@ -230,7 +230,7 @@ class SQLExecute(object):
                 for row in rowset:
                     m_row = []
                     for column in row:
-                        if str(type(column)).find('jarray') != -1:
+                        if str(type(column)).find('java.lang.Object[]') != -1:
                             m_ColumnValue = "STRUCTURE("
                             for m_nPos in range(0, len(column)):
                                 m_ColumnType = str(type(column[m_nPos]))
@@ -328,14 +328,14 @@ class SQLExecute(object):
 
         # 多进程，多线程写入，考虑锁冲突
         self.m_PerfFileLocker.acquire()
-        if self.SQLPerfFileHandle is None:
-            if self.m_Worker_Name.upper() == "MAIN":
-                self.SQLPerfFileHandle = open(self.SQLPerfFile, "w", encoding="utf-8")
-                self.SQLPerfFileHandle.write("Started\telapsed\tSQLPrefix\tSQLStatus\tErrorMessage\tthread_name\n")
-                self.SQLPerfFileHandle.close()
+        if not os.path.exists(self.SQLPerfFile):
+            # 如果文件不存在，创建文件，并写入文件头信息
+            self.SQLPerfFileHandle = open(self.SQLPerfFile, "a", encoding="utf-8")
+            self.SQLPerfFileHandle.write("Started\telapsed\tSQLPrefix\tSQLStatus\tErrorMessage\tthread_name\n")
+            self.SQLPerfFileHandle.close()
+
         # 打开Perf文件
         self.SQLPerfFileHandle = open(self.SQLPerfFile, "a", encoding="utf-8")
-
         # 写入内容信息
         self.SQLPerfFileHandle.write(
             "'" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p_SQLResult["StartedTime"])) + "'\t" +
