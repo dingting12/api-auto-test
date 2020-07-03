@@ -53,6 +53,8 @@ fi
 # 查看数据库版本信息
 echo DATABASE_VERSION="$DATABASE_VERSION"
 echo SQL_COUNT="$(cat -- *perf|grep -v ^Script |wc -l)"
+export DATABASE_VERSION="$DATABASE_VERSION"
+export SQL_COUNT="$SQL_COUNT"
 
 # 将测试结果数据插入到统计数据库中
 echo Will insert into robot test result to report database ...
