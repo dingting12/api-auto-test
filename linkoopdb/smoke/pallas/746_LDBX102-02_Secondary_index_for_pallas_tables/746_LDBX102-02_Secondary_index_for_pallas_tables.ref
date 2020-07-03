@@ -1,0 +1,139 @@
+SQLCli Release 0.0.79
+SQL> connect admin/123456
+Database connected.
+SQL> start 746_LDBX102-02_Secondary_index_for_pallas_tables/746_LDBX102-02_Secondary_index_for_pallas_tables.sql
+SQL> --Description: 测试Secondary index
+   > --Date:         2020-07-03
+   > --Author:       丁婷
+SQL> set echo on
+SQL> 
+SQL> --pallas表无主键
+SQL> drop table T_SECONDARY_INDEX_PALLAS_001 if exists CASCADE;
+0 rows affected
+SQL> create table T_SECONDARY_INDEX_PALLAS_001(a int, b varchar(100)) engine pallas;
+0 rows affected
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_001'
+   > group by index_name order by index_name ASC;
++----+---------+----+
+| C1 | C2      | C3 |
++----+---------+----+
+| 1  | _LDBID_ | 1  |
++----+---------+----+
+1 row selected.
+SQL> alter table T_SECONDARY_INDEX_PALLAS_001 add constraint c1 unique(a, b);
+0 rows affected
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_001'
+   > group by index_name order by index_name ASC;
++----+---------+-----+
+| C1 | C2      | C3  |
++----+---------+-----+
+| 2  | A;B     | 1;2 |
+| 1  | _LDBID_ | 1   |
++----+---------+-----+
+2 rows selected.
+SQL> alter table T_SECONDARY_INDEX_PALLAS_001 add column c double;
+0 rows affected
+SQL> create index idx001 on T_SECONDARY_INDEX_PALLAS_001(b, c);
+0 rows affected
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_001' 
+   > group by index_name order by index_name ASC;
++----+---------+-----+
+| C1 | C2      | C3  |
++----+---------+-----+
+| 2  | B;C     | 1;2 |
+| 2  | A;B     | 1;2 |
+| 1  | _LDBID_ | 1   |
++----+---------+-----+
+3 rows selected.
+SQL> alter index idx001 rename to idx0001;
+0 rows affected
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_001' 
+   > group by index_name order by index_name ASC;
++----+---------+-----+
+| C1 | C2      | C3  |
++----+---------+-----+
+| 2  | B;C     | 1;2 |
+| 2  | A;B     | 1;2 |
+| 1  | _LDBID_ | 1   |
++----+---------+-----+
+3 rows selected.
+SQL> select table_name, index_name, column_name, ordinal_position
+   > from  INFORMATION_SCHEMA.SYSTEM_INDEXINFO where index_name = 'IDX0001' 
+   > order by ordinal_position ASC;
++------------------------------+------------+-------------+------------------+
+| TABLE_NAME                   | INDEX_NAME | COLUMN_NAME | ORDINAL_POSITION |
++------------------------------+------------+-------------+------------------+
+| T_SECONDARY_INDEX_PALLAS_001 | IDX0001    | B           | 1                |
+| T_SECONDARY_INDEX_PALLAS_001 | IDX0001    | C           | 2                |
++------------------------------+------------+-------------+------------------+
+2 rows selected.
+SQL> drop index idx0001;
+0 rows affected
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_001'  
+   > group by index_name order by index_name ASC;
++----+---------+-----+
+| C1 | C2      | C3  |
++----+---------+-----+
+| 2  | A;B     | 1;2 |
+| 1  | _LDBID_ | 1   |
++----+---------+-----+
+2 rows selected.
+SQL> 
+SQL> 
+SQL> --pallas表有主键
+SQL> drop table T_SECONDARY_INDEX_PALLAS_002 if exists CASCADE;
+0 rows affected
+SQL> create table T_SECONDARY_INDEX_PALLAS_002(
+   > a int, 
+   > b varchar(100), 
+   > c double unique, 
+   > d varchar(100),
+   > primary key(d), 
+   > constraint c1 unique(a, b)
+   > ) engine pallas;
+java.sql.SQLException: external routine exception: object name already exists: C1
+SQL> select * from (select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_002' 
+   > group by index_name order by index_name asc) order by c2;
+0 rows selected.
+SQL> create index idx002 on T_SECONDARY_INDEX_PALLAS_002(a, d);
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: T_SECONDARY_INDEX_PALLAS_002 in statement [create index idx002 on T_SECONDARY_INDEX_PALLAS_002(a, d)]
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_002' 
+   > group by index_name order by index_name asc;
+0 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --给pallas加主键
+SQL> drop table T_SECONDARY_INDEX_PALLAS_003 if exists CASCADE;
+0 rows affected
+SQL> create table T_SECONDARY_INDEX_PALLAS_003(a int, b varchar(100)) engine pallas;
+0 rows affected
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_003' 
+   > group by index_name order by index_name asc;
++----+---------+----+
+| C1 | C2      | C3 |
++----+---------+----+
+| 1  | _LDBID_ | 1  |
++----+---------+----+
+1 row selected.
+SQL> alter table T_SECONDARY_INDEX_PALLAS_003 add column c varchar(100) primary KEY;
+java.sql.SQLTransactionRollbackException: 01 9001 ddl error: DDL caused transaction commit uncompleted!, primary key definition not allowed Caused by [primary key definition not allowed]
+SQL> select count(*), GROUP_CONCAT(column_name SEPARATOR ';'), group_concat(ordinal_position separator ';')  
+   > FROM INFORMATION_SCHEMA.SYSTEM_INDEXINFO where table_name='T_SECONDARY_INDEX_PALLAS_003' 
+   > group by index_name order by index_name asc;
++----+---------+----+
+| C1 | C2      | C3 |
++----+---------+----+
+| 1  | _LDBID_ | 1  |
++----+---------+----+
+1 row selected.
+SQL> exit
+Disconnected.
