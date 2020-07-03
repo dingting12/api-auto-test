@@ -32,7 +32,7 @@ echo REBOT_BIN="$REBOT_BIN"
 # shellcheck disable=SC2154
 if [ X"$Label_ID" = "X" ]; then
     echo "Please enter your label_id before run test ..."
-    exit 255
+    return
 fi
 echo Query catalog to get build tag for label ["$Label_ID"]
 
@@ -59,7 +59,7 @@ database_version=$($SQLCLI_BIN --logon admin/123456 --nologo \
   --execute $T_WORK/checkdatabaseversion.sql|grep ^\||grep -v @p0|awk '{print $2}')
 
 # 生成数据库环境信息文件
-cat $T_WORK/environment.properties << EOF
+cat > "$T_WORK"/environment.properties << EOF
 Label_ID="$Label_ID"
 MAX_PROCESSES="$MAX_PROCESSES"
 DATABASE_VERSION="$database_version"
