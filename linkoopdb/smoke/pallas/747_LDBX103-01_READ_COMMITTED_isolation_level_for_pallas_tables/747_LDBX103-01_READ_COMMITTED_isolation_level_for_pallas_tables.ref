@@ -1,0 +1,231 @@
+SQLCli Release 0.0.79
+SQL> connect admin/123456
+Database connected.
+SQL> start 747_LDBX103-01_READ_COMMITTED_isolation_level_for_pallas_tables/747_LDBX103-01_READ_COMMITTED_isolation_level_for_pallas_tables.sql
+SQL> --Description: 测试READ COMMITTED isolation
+   > --Date:         2020-07-06
+   > --Author:       丁婷
+SQL> drop user test_user1 if exists CASCADE;
+0 rows affected
+SQL> drop user test_user2 if exists CASCADE;
+0 rows affected
+SQL> create user test_user1 password '123456';
+0 rows affected
+SQL> create user test_user2 password '123456';
+0 rows affected
+SQL> grant DBA to test_user1;
+0 rows affected
+SQL> grant DBA to test_user2;
+0 rows affected
+SQL> connect test_user1/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
+Database connected.
+SQL> session save pallas1node74;
+Session saved Successful.
+SQL> connect test_user2/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
+Database connected.
+SQL> session save pallas2node74;
+Session saved Successful.
+SQL> session restore pallas1node74;
+Session restored Successful.
+SQL> set autocommit TRUE;
+0 rows affected
+SQL> DROP TABLE T_PALLAS_READ_COMMIT_001 IF EXISTS CASCADE;
+0 rows affected
+SQL> create table T_PALLAS_READ_COMMIT_001(
+   > a int, 
+   > b varchar(100), 
+   > c double
+   > ) engine pallas;
+0 rows affected
+SQL> insert into T_PALLAS_READ_COMMIT_001 values
+   > (1, 'table1_1', 1.1), 
+   > (2, 'table1_2', 1.2), 
+   > (3, 'table1_3', 1.3),
+   > (11, 'table1_11', 1.4), 
+   > (12, 'table1_12', 1.5), 
+   > (13, 'table1_13', 1.6),
+   > (21, 'table1_21', 1.7), 
+   > (22, 'table1_22', 1.8), 
+   > (23, 'table1_23', 1.9),
+   > (31, 'table1_31', 2.0), 
+   > (32, 'table1_32', 2.1),
+   > (33, 'table1_33', 2.2),
+   > (41, 'table1_41', 2.3),
+   > (42, 'table1_42', 2.4), 
+   > (43, 'table1_43', 2.5),
+   > (51, 'table1_51', 2.6), 
+   > (52, 'table1_52', 2.7), 
+   > (53, 'table1_53', 2.8),
+   > (61, 'table1_61', 2.9), 
+   > (62, 'table1_62', 3.0), 
+   > (63, 'table1_63', 3.1);
+21 rows affected
+SQL> select * from T_PALLAS_READ_COMMIT_001 order by a ASC;
++----+-----------+-----+
+| A  | B         | C   |
++----+-----------+-----+
+| 1  | table1_1  | 1.1 |
+| 2  | table1_2  | 1.2 |
+| 3  | table1_3  | 1.3 |
+| 11 | table1_11 | 1.4 |
+| 12 | table1_12 | 1.5 |
+| 13 | table1_13 | 1.6 |
+| 21 | table1_21 | 1.7 |
+| 22 | table1_22 | 1.8 |
+| 23 | table1_23 | 1.9 |
+| 31 | table1_31 | 2   |
+| 32 | table1_32 | 2.1 |
+| 33 | table1_33 | 2.2 |
+| 41 | table1_41 | 2.3 |
+| 42 | table1_42 | 2.4 |
+| 43 | table1_43 | 2.5 |
+| 51 | table1_51 | 2.6 |
+| 52 | table1_52 | 2.7 |
+| 53 | table1_53 | 2.8 |
+| 61 | table1_61 | 2.9 |
+| 62 | table1_62 | 3   |
+| 63 | table1_63 | 3.1 |
++----+-----------+-----+
+21 rows selected.
+SQL> select count(*) from T_PALLAS_READ_COMMIT_001 ;
++----+
+| C1 |
++----+
+| 21 |
++----+
+1 row selected.
+SQL> set autocommit FALSE;
+0 rows affected
+SQL> 
+SQL> --测试insert
+SQL> insert into T_PALLAS_READ_COMMIT_001 values
+   > (81, 'table1_81', 4.2), 
+   > (82, 'table1_82', 4.3), 
+   > (83, 'table1_83', 4.4);
+3 rows affected
+SQL> SELECT COUNT(*) FROM T_PALLAS_READ_COMMIT_001;
++----+
+| C1 |
++----+
+| 24 |
++----+
+1 row selected.
+SQL> session restore pallas2node74;
+Session restored Successful.
+SQL> SELECT COUNT(*) FROM TEST_USER1.T_PALLAS_READ_COMMIT_001;
++----+
+| C1 |
++----+
+| 21 |
++----+
+1 row selected.
+SQL> session restore pallas1node74;
+Session restored Successful.
+SQL> COMMIT;
+0 rows affected
+SQL> SELECT COUNT(*) FROM T_PALLAS_READ_COMMIT_001;
++----+
+| C1 |
++----+
+| 24 |
++----+
+1 row selected.
+SQL> session restore pallas2node74;
+Session restored Successful.
+SQL> SELECT COUNT(*) FROM TEST_USER1.T_PALLAS_READ_COMMIT_001;
++----+
+| C1 |
++----+
+| 24 |
++----+
+1 row selected.
+SQL> session restore pallas1node74;
+Session restored Successful.
+SQL> 
+SQL> --测试delete
+SQL> DELETE FROM T_PALLAS_READ_COMMIT_001 
+   > WHERE a=2;
+1 row affected
+SQL> SELECT COUNT(*) FROM T_PALLAS_READ_COMMIT_001;
++----+
+| C1 |
++----+
+| 23 |
++----+
+1 row selected.
+SQL> session restore pallas2node74;
+Session restored Successful.
+SQL> SELECT COUNT(*) FROM TEST_USER1.T_PALLAS_READ_COMMIT_001;
++----+
+| C1 |
++----+
+| 24 |
++----+
+1 row selected.
+SQL> session restore pallas1node74;
+Session restored Successful.
+SQL> COMMIT;
+0 rows affected
+SQL> SELECT COUNT(*) FROM T_PALLAS_READ_COMMIT_001;
++----+
+| C1 |
++----+
+| 23 |
++----+
+1 row selected.
+SQL> session restore pallas2node74;
+Session restored Successful.
+SQL> SELECT COUNT(*) FROM TEST_USER1.T_PALLAS_READ_COMMIT_001;
++----+
+| C1 |
++----+
+| 23 |
++----+
+1 row selected.
+SQL> session restore pallas1node74;
+Session restored Successful.
+SQL> 
+SQL> --测试update
+SQL> UPDATE T_PALLAS_READ_COMMIT_001 
+   > SET b='wwww' WHERE a=1;
+1 row affected
+SQL> SELECT b FROM T_PALLAS_READ_COMMIT_001 WHERE a=1;
++------+
+| B    |
++------+
+| wwww |
++------+
+1 row selected.
+SQL> session restore pallas2node74;
+Session restored Successful.
+SQL> SELECT b FROM TEST_USER1.T_PALLAS_READ_COMMIT_001 WHERE a=1;
++----------+
+| B        |
++----------+
+| table1_1 |
++----------+
+1 row selected.
+SQL> session restore pallas1node74;
+Session restored Successful.
+SQL> COMMIT;
+0 rows affected
+SQL> SELECT b FROM T_PALLAS_READ_COMMIT_001 WHERE a=1;
++------+
+| B    |
++------+
+| wwww |
++------+
+1 row selected.
+SQL> session restore pallas2node74;
+Session restored Successful.
+SQL> SELECT b FROM TEST_USER1.T_PALLAS_READ_COMMIT_001 WHERE a=1;
++------+
+| B    |
++------+
+| wwww |
++------+
+1 row selected.
+SQL> session restore pallas1node74;
+Session restored Successful.
+SQL> exit
+Disconnected.
