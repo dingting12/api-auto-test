@@ -2,8 +2,8 @@
 --Date:         2020-07-06
 --Author:       丁婷
 
-drop user test_user1 if exists;
-drop user test_user2 if exists;
+drop user test_user1 if exists CASCADE;
+drop user test_user2 if exists CASCADE;
 
 create user test_user1 password '123456';
 create user test_user2 password '123456';
@@ -109,21 +109,21 @@ session restore pallas1node74;
 UPDATE T_PALLAS_READ_COMMIT_001 
 SET b='wwww' WHERE a=1;
 
-SELECT COUNT(*) FROM T_PALLAS_READ_COMMIT_001;
+SELECT b FROM T_PALLAS_READ_COMMIT_001 WHERE a=1;
 
 session restore pallas2node74;
 
-SELECT COUNT(*) FROM TEST_USER1.T_PALLAS_READ_COMMIT_001;
+SELECT b FROM T_PALLAS_READ_COMMIT_001 WHERE a=1;
 
 session restore pallas1node74;
 
 COMMIT;
 
-SELECT COUNT(*) FROM T_PALLAS_READ_COMMIT_001;
+SELECT b FROM T_PALLAS_READ_COMMIT_001 WHERE a=1;
 
 session restore pallas2node74;
 
-SELECT COUNT(*) FROM TEST_USER1.T_PALLAS_READ_COMMIT_001;
+SELECT b FROM T_PALLAS_READ_COMMIT_001 WHERE a=1;
 
 session restore pallas1node74;
 
