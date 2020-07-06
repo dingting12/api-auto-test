@@ -7,6 +7,8 @@ drop user test_user2 if exists;
 
 create user test_user1 password '123456';
 create user test_user2 password '123456';
+grant DBA to test_user1;
+grant DBA to test_user2;
 
 connect test_user1/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
 
