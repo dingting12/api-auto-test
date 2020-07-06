@@ -20,9 +20,9 @@ function run_robot_file() {
   fi
 
   # 根据传递的文件名称来建立工作目录
-  TEST_NAME=$(basename $"TEST_MAIN")
+  TEST_NAME=$(basename "$TEST_MAIN")
   TEST_NAME=${TEST_NAME%.*}
-  export T_WORK=$T_UP_T_WORK/sub_$TEST_NAME
+  export T_WORK=$T_UP_T_WORK/sub_"$TEST_NAME"
   mkdir -p "$T_WORK"
 
   # 进入程序目录，开始运行程序
