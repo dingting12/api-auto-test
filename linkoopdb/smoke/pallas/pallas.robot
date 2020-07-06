@@ -129,7 +129,12 @@ Library          OperatingSystem
 746_LDBX102-02_Secondary_index_for_pallas_tables
     [Tags]     feature: LDBX102-02     Secondary_index_for_pallas_tables
     Logon And Execute SQL Script        admin/123456                                              746_LDBX102-02_Secondary_index_for_pallas_tables/746_LDBX102-02_Secondary_index_for_pallas_tables.sql
-				   Compare Files        746_LDBX102-02_Secondary_index_for_pallas_tables.log      746_LDBX102-02_Secondary_index_for_pallas_tables/746_LDBX102-02_Secondary_index_for_pallas_tables.ref				   
+				   Compare Files        746_LDBX102-02_Secondary_index_for_pallas_tables.log      746_LDBX102-02_Secondary_index_for_pallas_tables/746_LDBX102-02_Secondary_index_for_pallas_tables.ref	
+
+747_LDBX103-01_READ_COMMITTED_isolation_level_for_pallas_tables
+    [Tags]     feature: LDBX103-01     READ_COMMITTED_isolation_level_for_pallas_tables
+    Logon And Execute SQL Script        admin/123456                                                          747_LDBX103-01_READ_COMMITTED_isolation_level_for_pallas_tables/747_LDBX103-01_READ_COMMITTED_isolation_level_for_pallas_tables.sql
+				   Compare Files        747_LDBX103-01_READ_COMMITTED_isolation_level_for_pallas_tables.log   747_LDBX103-01_READ_COMMITTED_isolation_level_for_pallas_tables/747_LDBX103-01_READ_COMMITTED_isolation_level_for_pallas_tables.ref				   				   
 				   
 *** Keywords ***
 Setup Custom Settings
