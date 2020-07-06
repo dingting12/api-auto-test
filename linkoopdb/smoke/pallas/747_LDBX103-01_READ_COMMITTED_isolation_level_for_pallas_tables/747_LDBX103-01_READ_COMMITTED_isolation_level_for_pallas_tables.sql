@@ -5,14 +5,14 @@
 drop user test_user1 if exists;
 drop user test_user2 if exists;
 
-create user test_user1 password 123456;
-create user test_user2 password 123456;
+create user test_user1 password '123456';
+create user test_user2 password '123456';
 
 connect test_user1/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
 
 session save pallas1node74;
 
-connect test_user1/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
+connect test_user2/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
 
 session save pallas2node74;
 
