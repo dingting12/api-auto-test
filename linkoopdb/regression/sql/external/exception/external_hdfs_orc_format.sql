@@ -16,7 +16,6 @@ drop table if exists t_external_hdfs_orc_011;
 drop table if exists t_external_hdfs_orc_012;
 drop table if exists t_external_hdfs_orc_013;
 drop table if exists t_external_hdfs_orc_014;
-drop table if exists t_external_hdfs_orc_015;
 
 
 -- 测试EXTERNAL关键字未写，创建表需报错明确
@@ -129,17 +128,6 @@ CREATE EXTERNAL TABLE t_external_hdfs_orc_012(
 format 'orc';
 
 select * from t_external_hdfs_orc_012;
-
--- 测试location值无权限，使用时报错明确
-CREATE EXTERNAL TABLE t_external_hdfs_orc_015(
-  id INT,
-  name VARCHAR(200),
-  sal DOUBLE,
-  birthday TIMESTAMP
-) location('hdfs://node73:8020/node74/stream74/linkoopdb/data/type_orc1')
-format 'orc';
-
-select * from t_external_hdfs_orc_015;
 
 
  -- 测试location和值未写，使用时报错明确
