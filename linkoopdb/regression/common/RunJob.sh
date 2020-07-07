@@ -21,8 +21,12 @@ function run_robot_file() {
 
   # 根据传递的文件名称来建立工作目录
   TEST_NAME=$(basename "$TEST_MAIN")
-  TEST_NAME=${TEST_NAME%.*}
+  TEST_NAME=${TEST_NAME%.*}"_$RANDOM$RANDOM"
   export T_WORK=$T_UP_T_WORK/sub_"$TEST_NAME"
+  if [ -d "T_WORK" ]
+  then
+    echo "Failed to create empty sub directory. Fatal exist.  .."
+  fi
   mkdir -p "$T_WORK"
 
   # 进入程序目录，开始运行程序
