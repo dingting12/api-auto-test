@@ -1,4 +1,4 @@
-SQLCli Release 0.0.70
+SQLCli Release 0.0.79
 SQL> connect admin/123456
 Database connected.
 SQL> start external_hdfs_csv_format.sql
@@ -49,6 +49,7 @@ SQL> drop table if exists t_external_hdfs_csv_020;
 SQL> drop table if exists t_external_hdfs_csv_021;
 0 rows affected
 SQL> 
+SQL> 
 SQL> -- 测试EXTERNAL关键字未写，创建表需报错明确
 SQL> CREATE  TABLE t_external_hdfs_csv_001(
    >   id INT,
@@ -57,7 +58,13 @@ SQL> CREATE  TABLE t_external_hdfs_csv_001(
    >   birthday TIMESTAMP
    > ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
    > format 'csv' (delimiter '|');
-0 rows affected
+java.sql.SQLSyntaxErrorException: invalid property name: HDFS table can not define property: DELIMITER in statement [CREATE  TABLE t_external_hdfs_csv_001(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/show_csv1.csv')
+format 'csv' (delimiter '|')]
 SQL> 
 SQL> -- 测试EXTERNAL关键字写错，创建表需报错明确
 SQL> CREATE EXTERNAL1 TABLE t_external_hdfs_csv_002(
@@ -219,6 +226,7 @@ SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_012(
 0 rows affected
 SQL> select * from t_external_hdfs_csv_012;
 java.sql.SQLException: Worker execution: ldb worker caused error: Path does not exist: hdfs://node73:8020/user/testdb731/external_file/show_csv1.csv;
+SQL> 
 SQL> 
 SQL> 
 SQL>  -- 测试location和值未写，使用时报错明确
@@ -601,6 +609,88 @@ SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt2(
    > format 'csv' (delimiter '|' ESCAPE '//' header 'true');
 0 rows affected
 SQL> 
+SQL> --测试转义未开启的show create table
+SQL> set session escape off;
+0 rows affected
+SQL> DROP TABLE IF EXISTS t_external_hdfs_csv_esc_dt3;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt3(
+   > "A" INTEGER ,
+   > "B" VARCHAR(50) 
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv')
+   > FORMAT 'csv'( DELIMITER '\,' ESCAPE '\\' QUOTE '\"');
+0 rows affected
+SQL> SELECT * FROM t_external_hdfs_csv_esc_dt3;
++----+---------------+
+| A  | B             |
++----+---------------+
+| 57 | '{"speed":0.0 |
++----+---------------+
+1 row selected.
+SQL> show CREATE TABLE t_external_hdfs_csv_esc_dt3;
++-----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                       | CREATE_TABLE                                                                                                                                                                                                                   |
++-----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_EXTERNAL_HDFS_CSV_ESC_DT3 | CREATE EXTERNAL TABLE IF NOT EXISTS PUBLIC.T_EXTERNAL_HDFS_CSV_ESC_DT3("A" INTEGER,"B" VARCHAR(50)) LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv') FORMAT 'csv' (QUOTE '\"' DELIMITER '\,' ESCAPE '\\' ) |
++-----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> --测试转义开启的show create table
+SQL> set session escape on;
+0 rows affected
+SQL> DROP TABLE IF EXISTS t_external_hdfs_csv_esc_dt4;
+0 rows affected
+SQL> DROP TABLE IF EXISTS t_external_hdfs_csv_esc_dt5;
+0 rows affected
+SQL> 
+SQL> --测试转义字符为\\
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt4(
+   > "A" INTEGER ,
+   > "B" VARCHAR(50) 
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv')
+   > FORMAT 'csv'( DELIMITER '\,' ESCAPE '\\' QUOTE '\'');
+0 rows affected
+SQL> SELECT * FROM t_external_hdfs_csv_esc_dt4;
++----+------------------------------+
+| A  | B                            |
++----+------------------------------+
+| 57 | {"speed":0.0,"heading:90.0"} |
++----+------------------------------+
+1 row selected.
+SQL> show CREATE TABLE t_external_hdfs_csv_esc_dt4;
++-----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                       | CREATE_TABLE                                                                                                                                                                                                                |
++-----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_EXTERNAL_HDFS_CSV_ESC_DT4 | CREATE EXTERNAL TABLE IF NOT EXISTS PUBLIC.T_EXTERNAL_HDFS_CSV_ESC_DT4("A" INTEGER,"B" VARCHAR(50)) LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv') FORMAT 'csv' (QUOTE ''' DELIMITER ',' ESCAPE '\' ) |
++-----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_esc_dt5(
+   > "A" INTEGER ,
+   > "B" VARCHAR(50) 
+   > )
+   > LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv')
+   > FORMAT 'csv'( DELIMITER '\,' ESCAPE '\'' QUOTE '\'');
+0 rows affected
+SQL> SELECT * FROM t_external_hdfs_csv_esc_dt5;
++----+------------------------------+
+| A  | B                            |
++----+------------------------------+
+| 57 | {"speed":0.0,"heading:90.0"} |
++----+------------------------------+
+1 row selected.
+SQL> show CREATE TABLE t_external_hdfs_csv_esc_dt5;
++-----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                       | CREATE_TABLE                                                                                                                                                                                                                |
++-----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_EXTERNAL_HDFS_CSV_ESC_DT5 | CREATE EXTERNAL TABLE IF NOT EXISTS PUBLIC.T_EXTERNAL_HDFS_CSV_ESC_DT5("A" INTEGER,"B" VARCHAR(50)) LOCATION ('hdfs://node73:8020/user/testdb73/external_file/json.csv') FORMAT 'csv' (QUOTE ''' DELIMITER ',' ESCAPE ''' ) |
++-----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> set session escape off;
+0 rows affected
+SQL> 
+SQL> 
 SQL> 
 SQL> 
 SQL> -- 测试参数NULL
@@ -717,6 +807,89 @@ SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_ws_dt3(
    > ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv')
    > format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'truee');
 0 rows affected
+SQL> drop table t_external_hdfs_csv_privi_001 if exists;
+0 rows affected
+SQL> 
+SQL> -- 测试无访问权限的异常情况
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_privi_001(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/privi/show_csv17.csv')
+   > format 'csv' (delimiter '|' header 'true');
+0 rows affected
+SQL> select * from t_external_hdfs_csv_privi_001;
+java.sql.SQLException: Worker execution: ldb worker caused error: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=stream74, access=EXECUTE, inode="/user/testdb73/external_file/privi":hdfs:hdfs:drwx------
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkFsPermission(DefaultAuthorizationProvider.java:279)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.check(DefaultAuthorizationProvider.java:260)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkTraverse(DefaultAuthorizationProvider.java:201)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkPermission(DefaultAuthorizationProvider.java:154)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:152)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:3877)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.checkPermission(FSNamesystem.java:6779)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.getFileInfo(FSNamesystem.java:4395)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.getFileInfo(NameNodeRpcServer.java:908)
+	at org.apache.hadoop.hdfs.server.namenode.AuthorizationProviderProxyClientProtocol.getFileInfo(AuthorizationProviderProxyClientProtocol.java:531)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.getFileInfo(ClientNamenodeProtocolServerSideTranslatorPB.java:861)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:617)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1073)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2281)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2277)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1917)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2275)
+
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径前置空格
+SQL> drop table t_external_hdfs_csv_pre_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_pre_space_001(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location(' hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv')
+   > format 'csv' (delimiter '|' header 'true');
+0 rows affected
+SQL> select * from  t_external_hdfs_csv_pre_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.net.URISyntaxException: Illegal character in scheme name at index 0:  hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径后置空格
+SQL> drop table t_external_hdfs_csv_post_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_csv_post_space_001(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv ')
+   > format 'csv' (delimiter '|' header 'true');
+0 rows affected
+SQL> select * from  t_external_hdfs_csv_post_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: Path does not exist: hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv ;
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径前后置空格
+SQL> drop table t_external_csv_pre_post_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_csv_pre_post_space_001(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location(' hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv ')
+   > format 'csv' (delimiter '|' header 'true');
+0 rows affected
+SQL> select * from  t_external_csv_pre_post_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.net.URISyntaxException: Illegal character in scheme name at index 0:  hdfs://node73:8020/user/testdb73/external_file/show_csv17.csv%20
 SQL> 
 SQL> 
 SQL> -- 测试encoding

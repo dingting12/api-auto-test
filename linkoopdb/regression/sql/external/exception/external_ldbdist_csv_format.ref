@@ -1,4 +1,4 @@
-SQLCli Release 0.0.70
+SQLCli Release 0.0.79
 SQL> connect admin/123456
 Database connected.
 SQL> start external_ldbdist_csv_format.sql
@@ -57,7 +57,13 @@ SQL> CREATE  TABLE t_external_ldbdist_csv_001(
    >   birthday TIMESTAMP
    > ) location('ldbdist://node74:54321/show_csv1.csv')
    > format 'csv' (delimiter '|');
-0 rows affected
+java.sql.SQLSyntaxErrorException: invalid property name: HDFS table can not define property: DELIMITER in statement [CREATE  TABLE t_external_ldbdist_csv_001(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('ldbdist://node74:54321/show_csv1.csv')
+format 'csv' (delimiter '|')]
 SQL> 
 SQL> -- 测试EXTERNAL关键字写错，创建表需报错明确
 SQL> CREATE EXTERNAL1 TABLE t_external_ldbdist_csv_002(
@@ -602,7 +608,86 @@ SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt2(
    > format 'csv' (delimiter '|' ESCAPE '//' header 'true');
 0 rows affected
 SQL> 
+SQL> --测试转义未开启的show create table
+SQL> set session escape off;
+0 rows affected
+SQL> DROP TABLE IF EXISTS t_external_ldbdist_csv_esc_dt3;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt3(
+   > "A" INTEGER ,
+   > "B" VARCHAR(50) 
+   > )
+   > LOCATION ('ldbdist://node74:54321/json.csv')
+   > FORMAT 'csv'( DELIMITER '\,' ESCAPE '\\' QUOTE '\"');
+0 rows affected
+SQL> SELECT * FROM t_external_ldbdist_csv_esc_dt3;
++----+---------------+
+| A  | B             |
++----+---------------+
+| 57 | '{"speed":0.0 |
++----+---------------+
+1 row selected.
+SQL> show CREATE TABLE t_external_ldbdist_csv_esc_dt3;
++--------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                          | CREATE_TABLE                                                                                                                                                                                              |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_EXTERNAL_LDBDIST_CSV_ESC_DT3 | CREATE EXTERNAL TABLE IF NOT EXISTS PUBLIC.T_EXTERNAL_LDBDIST_CSV_ESC_DT3("A" INTEGER,"B" VARCHAR(50)) LOCATION ('ldbdist://node74:54321/json.csv') FORMAT 'csv' (QUOTE '\"' DELIMITER '\,' ESCAPE '\\' ) |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
 SQL> 
+SQL> --测试转义开启的show create table
+SQL> set session escape on;
+0 rows affected
+SQL> DROP TABLE IF EXISTS t_external_ldbdist_csv_esc_dt4;
+0 rows affected
+SQL> DROP TABLE IF EXISTS t_external_ldbdist_csv_esc_dt5;
+0 rows affected
+SQL> 
+SQL> --测试转义字符为\\
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt4(
+   > "A" INTEGER ,
+   > "B" VARCHAR(50) 
+   > )
+   > LOCATION ('ldbdist://node74:54321/json.csv')
+   > FORMAT 'csv'( DELIMITER '\,' ESCAPE '\\' QUOTE '\'');
+0 rows affected
+SQL> SELECT * FROM t_external_ldbdist_csv_esc_dt4;
++----+------------------------------+
+| A  | B                            |
++----+------------------------------+
+| 57 | {"speed":0.0,"heading:90.0"} |
++----+------------------------------+
+1 row selected.
+SQL> show CREATE TABLE t_external_ldbdist_csv_esc_dt4;
++--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                          | CREATE_TABLE                                                                                                                                                                                           |
++--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_EXTERNAL_LDBDIST_CSV_ESC_DT4 | CREATE EXTERNAL TABLE IF NOT EXISTS PUBLIC.T_EXTERNAL_LDBDIST_CSV_ESC_DT4("A" INTEGER,"B" VARCHAR(50)) LOCATION ('ldbdist://node74:54321/json.csv') FORMAT 'csv' (QUOTE ''' DELIMITER ',' ESCAPE '\' ) |
++--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_esc_dt5(
+   > "A" INTEGER ,
+   > "B" VARCHAR(50) 
+   > )
+   > LOCATION ('ldbdist://node74:54321/json.csv')
+   > FORMAT 'csv'( DELIMITER '\,' ESCAPE '\'' QUOTE '\'');
+0 rows affected
+SQL> SELECT * FROM t_external_ldbdist_csv_esc_dt5;
++----+------------------------------+
+| A  | B                            |
++----+------------------------------+
+| 57 | {"speed":0.0,"heading:90.0"} |
++----+------------------------------+
+1 row selected.
+SQL> show CREATE TABLE t_external_ldbdist_csv_esc_dt5;
++--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE                          | CREATE_TABLE                                                                                                                                                                                           |
++--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_EXTERNAL_LDBDIST_CSV_ESC_DT5 | CREATE EXTERNAL TABLE IF NOT EXISTS PUBLIC.T_EXTERNAL_LDBDIST_CSV_ESC_DT5("A" INTEGER,"B" VARCHAR(50)) LOCATION ('ldbdist://node74:54321/json.csv') FORMAT 'csv' (QUOTE ''' DELIMITER ',' ESCAPE ''' ) |
++--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> set session escape off;
+0 rows affected
 SQL> 
 SQL> -- 测试参数NULL
    > -- 删除表
@@ -719,6 +804,69 @@ SQL> CREATE EXTERNAL TABLE t_external_ldbdist_csv_ws_dt3(
    > format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'truee');
 0 rows affected
 SQL> 
+SQL> 
+SQL> --测试无权限访问
+SQL> drop table t_external_ldbdist_privi_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_privi_001(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv18.csv')
+   > format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+0 rows affected
+SQL> select * from t_external_ldbdist_privi_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.lang.RuntimeException: Cannot open file [http://node74:54321/show_csv18.csv]. 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径前置空格
+SQL> drop table t_external_ldbdist_pre_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_pre_space_001(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location(' ldbdist://node74:54321/show_csv17.csv')
+   > format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+0 rows affected
+SQL> select * from t_external_ldbdist_pre_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.net.URISyntaxException: Illegal character in scheme name at index 0:  ldbdist://node74:54321/show_csv17.csv
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径后置空格
+SQL> drop table t_external_ldbdist_post_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_post_space_001(
+   >     id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('ldbdist://node74:54321/show_csv17.csv ')
+   > format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+0 rows affected
+SQL> select * from  t_external_ldbdist_post_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: Unknown Exception with code: 500
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径前后置空格
+SQL> drop table t_external_ldbdist_pre_post_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_ldbdist_pre_post_space_001(
+   >   id INT,
+   >   name VARCHAR(200), 
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location(' ldbdist://node74:54321/show_csv17.csv ')
+   > format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+0 rows affected
+SQL> select * from  t_external_ldbdist_pre_post_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.net.URISyntaxException: Illegal character in scheme name at index 0:  ldbdist://node74:54321/show_csv17.csv%20
 SQL> 
 SQL> -- 测试encoding
    > -- 删除表

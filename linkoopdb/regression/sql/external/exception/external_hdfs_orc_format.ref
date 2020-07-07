@@ -1,4 +1,4 @@
-SQLCli Release 0.0.70
+SQLCli Release 0.0.79
 SQL> connect admin/123456
 Database connected.
 SQL> start external_hdfs_orc_format.sql
@@ -238,5 +238,89 @@ SQL> select * from  t_external_hdfs_orc_014 order by id;
 | 4  | zhangsan4 | 8940.5 | 1980-04-01 19:13:10 |
 +----+-----------+--------+---------------------+
 4 rows selected.
+SQL> 
+SQL> 
+SQL>  -- 测试无访问权限的异常情况
+SQL> drop table t_external_hdfs_orc_privi_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_privi_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/privi/show_orc1')
+   > format 'orc';
+0 rows affected
+SQL> select * from  t_external_hdfs_orc_privi_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=stream74, access=EXECUTE, inode="/user/testdb73/external_file/privi":hdfs:hdfs:drwx------
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkFsPermission(DefaultAuthorizationProvider.java:279)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.check(DefaultAuthorizationProvider.java:260)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkTraverse(DefaultAuthorizationProvider.java:201)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkPermission(DefaultAuthorizationProvider.java:154)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:152)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:3877)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.checkPermission(FSNamesystem.java:6779)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.getFileInfo(FSNamesystem.java:4395)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.getFileInfo(NameNodeRpcServer.java:908)
+	at org.apache.hadoop.hdfs.server.namenode.AuthorizationProviderProxyClientProtocol.getFileInfo(AuthorizationProviderProxyClientProtocol.java:531)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.getFileInfo(ClientNamenodeProtocolServerSideTranslatorPB.java:861)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:617)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1073)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2281)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2277)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1917)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2275)
+
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径前置空格
+SQL> drop table t_external_hdfs_orc_pre_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_pre_space_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location(' hdfs://node73:8020/user/testdb73/external_file/show_orc1')
+   > format 'orc';
+0 rows affected
+SQL> select * from  t_external_hdfs_orc_pre_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.net.URISyntaxException: Illegal character in scheme name at index 0:  hdfs://node73:8020/user/testdb73/external_file/show_orc1
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径后置空格
+SQL> drop table t_external_hdfs_orc_post_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_orc_post_space_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/show_orc1 ')
+   > format 'orc';
+0 rows affected
+SQL> select * from  t_external_hdfs_orc_post_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: Path does not exist: hdfs://node73:8020/user/testdb73/external_file/show_orc1 ;
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径前后置空格
+SQL> drop table t_external_orc_pre_post_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_orc_pre_post_space_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location(' hdfs://node73:8020/user/testdb73/external_file/show_orc1 ')
+   > format 'orc';
+0 rows affected
+SQL> select * from  t_external_orc_pre_post_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.net.URISyntaxException: Illegal character in scheme name at index 0:  hdfs://node73:8020/user/testdb73/external_file/show_orc1%20
 SQL> exit
 Disconnected.

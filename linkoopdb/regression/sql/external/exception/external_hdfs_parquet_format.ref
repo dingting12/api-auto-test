@@ -1,4 +1,4 @@
-SQLCli Release 0.0.70
+SQLCli Release 0.0.79
 SQL> connect admin/123456
 Database connected.
 SQL> start external_hdfs_parquet_format.sql
@@ -225,12 +225,12 @@ java.sql.SQLException: Worker execution: ldb worker caused error: db catalyst: a
 	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:217)
 	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertProject(LogicalPlanConverter.java:1671)
 	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:203)
-	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2535)
-	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2501)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2529)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2495)
 	at com.datapps.linkoopdb.worker.spark.SparkSessionManager.submitStatement(SparkSessionManager.java:194)
-	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2482)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2476)
 	at com.datapps.linkoopdb.worker.spark.SparkWorker.receiveMessage(SparkWorker.java:629)
-	at sun.reflect.GeneratedMethodAccessor30.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor41.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.lang.reflect.Method.invoke(Method.java:497)
 	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:302)
@@ -276,6 +276,7 @@ Caused by: org.apache.spark.sql.AnalysisException: Path does not exist: hdfs://n
 	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2416)
 	... 39 more
 
+SQL> 
 SQL> 
 SQL> 
 SQL>  -- 测试location和值未写，使用时报错明确
@@ -412,5 +413,306 @@ SQL> set session work 'ldb.source.files.ignoreMissingFiles' false;
 0 rows affected
 SQL> select * from t_external_hdfs_parquet_015;
 java.sql.SQLException: General error: Query by the way of large result set, the query process appears an exception
+SQL> drop table t_external_hdfs_parquet_privi_001 if exists;
+0 rows affected
+SQL> 
+SQL> -- 测试无访问权限的异常情况
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_privi_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/privi/ldb_parquet')
+   > format 'parquet' ;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreCorruptFiles' true;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreMissingFiles' true;
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_privi_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: db catalyst: adapt to spark error: cache error : java.util.concurrent.ExecutionException: org.apache.hadoop.security.AccessControlException: Permission denied: user=stream74, access=EXECUTE, inode="/user/testdb73/external_file/privi":hdfs:hdfs:drwx------
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkFsPermission(DefaultAuthorizationProvider.java:279)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.check(DefaultAuthorizationProvider.java:260)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkTraverse(DefaultAuthorizationProvider.java:201)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkPermission(DefaultAuthorizationProvider.java:154)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:152)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:3877)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.checkPermission(FSNamesystem.java:6779)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.getFileInfo(FSNamesystem.java:4395)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.getFileInfo(NameNodeRpcServer.java:908)
+	at org.apache.hadoop.hdfs.server.namenode.AuthorizationProviderProxyClientProtocol.getFileInfo(AuthorizationProviderProxyClientProtocol.java:531)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.getFileInfo(ClientNamenodeProtocolServerSideTranslatorPB.java:861)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:617)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1073)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2281)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2277)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1917)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2275)
+
+	at com.google.common.util.concurrent.AbstractFuture.getDoneValue(AbstractFuture.java:503)
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:462)
+	at com.google.common.util.concurrent.AbstractFuture$TrustedFuture.get(AbstractFuture.java:79)
+	at com.google.common.util.concurrent.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:142)
+	at com.google.common.cache.LocalCache$Segment.getAndRecordStats(LocalCache.java:2453)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2417)
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2299)
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2212)
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4147)
+	at com.google.common.cache.LocalCache$LocalManualCache.get(LocalCache.java:5053)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertLogicalRelation(LogicalPlanConverter.java:1256)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:217)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertProject(LogicalPlanConverter.java:1671)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:203)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertSort(LogicalPlanConverter.java:1596)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:213)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2529)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2495)
+	at com.datapps.linkoopdb.worker.spark.SparkSessionManager.submitStatement(SparkSessionManager.java:194)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2476)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.receiveMessage(SparkWorker.java:629)
+	at sun.reflect.GeneratedMethodAccessor41.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:302)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:198)
+	at com.caucho.hessian.server.HessianServlet.invoke(HessianServlet.java:423)
+	at com.caucho.hessian.server.HessianServlet.service(HessianServlet.java:403)
+	at org.spark_project.jetty.servlet.ServletHolder.handle(ServletHolder.java:848)
+	at org.spark_project.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:584)
+	at org.spark_project.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
+	at org.spark_project.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
+	at org.spark_project.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
+	at org.spark_project.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.spark_project.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
+	at org.spark_project.jetty.server.Server.handle(Server.java:539)
+	at org.spark_project.jetty.server.HttpChannel.handle(HttpChannel.java:333)
+	at org.spark_project.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.spark_project.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:283)
+	at org.spark_project.jetty.io.FillInterest.fillable(FillInterest.java:108)
+	at org.spark_project.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.hadoop.security.AccessControlException: Permission denied: user=stream74, access=EXECUTE, inode="/user/testdb73/external_file/privi":hdfs:hdfs:drwx------
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkFsPermission(DefaultAuthorizationProvider.java:279)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.check(DefaultAuthorizationProvider.java:260)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkTraverse(DefaultAuthorizationProvider.java:201)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkPermission(DefaultAuthorizationProvider.java:154)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:152)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:3877)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.checkPermission(FSNamesystem.java:6779)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.getFileInfo(FSNamesystem.java:4395)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.getFileInfo(NameNodeRpcServer.java:908)
+	at org.apache.hadoop.hdfs.server.namenode.AuthorizationProviderProxyClientProtocol.getFileInfo(AuthorizationProviderProxyClientProtocol.java:531)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.getFileInfo(ClientNamenodeProtocolServerSideTranslatorPB.java:861)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:617)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1073)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2281)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2277)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1917)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2275)
+
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:422)
+	at org.apache.hadoop.ipc.RemoteException.instantiateException(RemoteException.java:106)
+	at org.apache.hadoop.ipc.RemoteException.unwrapRemoteException(RemoteException.java:73)
+	at org.apache.hadoop.hdfs.DFSClient.getFileInfo(DFSClient.java:2110)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$22.doCall(DistributedFileSystem.java:1305)
+	at org.apache.hadoop.hdfs.DistributedFileSystem$22.doCall(DistributedFileSystem.java:1301)
+	at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+	at org.apache.hadoop.hdfs.DistributedFileSystem.getFileStatus(DistributedFileSystem.java:1317)
+	at org.apache.hadoop.fs.FileSystem.exists(FileSystem.java:1426)
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary$1.apply(DataSource.scala:557)
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary$1.apply(DataSource.scala:545)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:241)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:241)
+	at scala.collection.immutable.List.foreach(List.scala:392)
+	at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:241)
+	at scala.collection.immutable.List.flatMap(List.scala:355)
+	at org.apache.spark.sql.execution.datasources.DataSource.org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary(DataSource.scala:545)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:359)
+	at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:225)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:212)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:643)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:642)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.lambda$convertLogicalRelation$87(LogicalPlanConverter.java:1271)
+	at com.google.common.cache.LocalCache$LocalManualCache$1.load(LocalCache.java:5058)
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3708)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2416)
+	... 41 more
+Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=stream74, access=EXECUTE, inode="/user/testdb73/external_file/privi":hdfs:hdfs:drwx------
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkFsPermission(DefaultAuthorizationProvider.java:279)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.check(DefaultAuthorizationProvider.java:260)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkTraverse(DefaultAuthorizationProvider.java:201)
+	at org.apache.hadoop.hdfs.server.namenode.DefaultAuthorizationProvider.checkPermission(DefaultAuthorizationProvider.java:154)
+	at org.apache.hadoop.hdfs.server.namenode.FSPermissionChecker.checkPermission(FSPermissionChecker.java:152)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirectory.checkPermission(FSDirectory.java:3877)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.checkPermission(FSNamesystem.java:6779)
+	at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.getFileInfo(FSNamesystem.java:4395)
+	at org.apache.hadoop.hdfs.server.namenode.NameNodeRpcServer.getFileInfo(NameNodeRpcServer.java:908)
+	at org.apache.hadoop.hdfs.server.namenode.AuthorizationProviderProxyClientProtocol.getFileInfo(AuthorizationProviderProxyClientProtocol.java:531)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolServerSideTranslatorPB.getFileInfo(ClientNamenodeProtocolServerSideTranslatorPB.java:861)
+	at org.apache.hadoop.hdfs.protocol.proto.ClientNamenodeProtocolProtos$ClientNamenodeProtocol$2.callBlockingMethod(ClientNamenodeProtocolProtos.java)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Server$ProtoBufRpcInvoker.call(ProtobufRpcEngine.java:617)
+	at org.apache.hadoop.ipc.RPC$Server.call(RPC.java:1073)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2281)
+	at org.apache.hadoop.ipc.Server$Handler$1.run(Server.java:2277)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1917)
+	at org.apache.hadoop.ipc.Server$Handler.run(Server.java:2275)
+
+	at org.apache.hadoop.ipc.Client.call(Client.java:1475)
+	at org.apache.hadoop.ipc.Client.call(Client.java:1412)
+	at org.apache.hadoop.ipc.ProtobufRpcEngine$Invoker.invoke(ProtobufRpcEngine.java:229)
+	at com.sun.proxy.$Proxy10.getFileInfo(Unknown Source)
+	at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.getFileInfo(ClientNamenodeProtocolTranslatorPB.java:771)
+	at sun.reflect.GeneratedMethodAccessor85.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:191)
+	at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:102)
+	at com.sun.proxy.$Proxy11.getFileInfo(Unknown Source)
+	at org.apache.hadoop.hdfs.DFSClient.getFileInfo(DFSClient.java:2108)
+	... 63 more
+
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径前置空格
+SQL> drop table t_external_hdfs_parquet_pre_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_pre_space_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location(' hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+   > format 'parquet' ;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreCorruptFiles' true;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreMissingFiles' true;
+0 rows affected
+SQL> select * from t_external_hdfs_parquet_pre_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.lang.IllegalArgumentException: java.net.URISyntaxException: Illegal character in scheme name at index 0:  hdfs://node73:8020/user/testdb73/external_file/ldb_parquet
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径后置空格
+SQL> drop table t_external_hdfs_parquet_post_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_hdfs_parquet_post_space_001(
+   >    id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet ')
+   > format 'parquet' ;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreCorruptFiles' true;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreMissingFiles' true;
+0 rows affected
+SQL> select * from  t_external_hdfs_parquet_post_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: db catalyst: adapt to spark error: cache error : java.util.concurrent.ExecutionException: org.apache.spark.sql.AnalysisException: Path does not exist: hdfs://node73:8020/user/testdb73/external_file/ldb_parquet ;
+	at com.google.common.util.concurrent.AbstractFuture.getDoneValue(AbstractFuture.java:503)
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:462)
+	at com.google.common.util.concurrent.AbstractFuture$TrustedFuture.get(AbstractFuture.java:79)
+	at com.google.common.util.concurrent.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:142)
+	at com.google.common.cache.LocalCache$Segment.getAndRecordStats(LocalCache.java:2453)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2417)
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2299)
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2212)
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4147)
+	at com.google.common.cache.LocalCache$LocalManualCache.get(LocalCache.java:5053)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertLogicalRelation(LogicalPlanConverter.java:1256)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:217)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertProject(LogicalPlanConverter.java:1671)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:203)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convertSort(LogicalPlanConverter.java:1596)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.convert(LogicalPlanConverter.java:213)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.buildDatasetByRelNode(SparkWorker.java:2529)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.lambda$getIterByRelNode$29(SparkWorker.java:2495)
+	at com.datapps.linkoopdb.worker.spark.SparkSessionManager.submitStatement(SparkSessionManager.java:194)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.getIterByRelNode(SparkWorker.java:2476)
+	at com.datapps.linkoopdb.worker.spark.SparkWorker.receiveMessage(SparkWorker.java:629)
+	at sun.reflect.GeneratedMethodAccessor41.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:302)
+	at com.caucho.hessian.server.HessianSkeleton.invoke(HessianSkeleton.java:198)
+	at com.caucho.hessian.server.HessianServlet.invoke(HessianServlet.java:423)
+	at com.caucho.hessian.server.HessianServlet.service(HessianServlet.java:403)
+	at org.spark_project.jetty.servlet.ServletHolder.handle(ServletHolder.java:848)
+	at org.spark_project.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:584)
+	at org.spark_project.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
+	at org.spark_project.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
+	at org.spark_project.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
+	at org.spark_project.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.spark_project.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
+	at org.spark_project.jetty.server.Server.handle(Server.java:539)
+	at org.spark_project.jetty.server.HttpChannel.handle(HttpChannel.java:333)
+	at org.spark_project.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.spark_project.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:283)
+	at org.spark_project.jetty.io.FillInterest.fillable(FillInterest.java:108)
+	at org.spark_project.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
+	at org.spark_project.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
+	at org.spark_project.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.spark.sql.AnalysisException: Path does not exist: hdfs://node73:8020/user/testdb73/external_file/ldb_parquet ;
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary$1.apply(DataSource.scala:558)
+	at org.apache.spark.sql.execution.datasources.DataSource$$anonfun$org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary$1.apply(DataSource.scala:545)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:241)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:241)
+	at scala.collection.immutable.List.foreach(List.scala:392)
+	at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:241)
+	at scala.collection.immutable.List.flatMap(List.scala:355)
+	at org.apache.spark.sql.execution.datasources.DataSource.org$apache$spark$sql$execution$datasources$DataSource$$checkAndGlobPathIfNecessary(DataSource.scala:545)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:359)
+	at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:225)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:212)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:643)
+	at org.apache.spark.sql.DataFrameReader.parquet(DataFrameReader.scala:642)
+	at com.datapps.linkoopdb.worker.spark.converter.LogicalPlanConverter.lambda$convertLogicalRelation$87(LogicalPlanConverter.java:1271)
+	at com.google.common.cache.LocalCache$LocalManualCache$1.load(LocalCache.java:5058)
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3708)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2416)
+	... 41 more
+
+SQL> 
+SQL> 
+SQL> 
+SQL> --测试路径前后置空格
+SQL> drop table t_external_parquet_pre_post_space_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE t_external_parquet_pre_post_space_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location(' hdfs://node73:8020/user/testdb73/external_file/ldb_parquet ')
+   > format 'parquet' ;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreCorruptFiles' true;
+0 rows affected
+SQL> set session work 'ldb.source.files.ignoreMissingFiles' true;
+0 rows affected
+SQL> select * from  t_external_parquet_pre_post_space_001 order by id;
+java.sql.SQLException: Worker execution: ldb worker caused error: java.lang.IllegalArgumentException: java.net.URISyntaxException: Illegal character in scheme name at index 0:  hdfs://node73:8020/user/testdb73/external_file/ldb_parquet%20
 SQL> exit
 Disconnected.
