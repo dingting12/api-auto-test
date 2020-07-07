@@ -219,3 +219,75 @@ format 'parquet' properties(
 set session work 'ldb.source.files.ignoreCorruptFiles' false;
 set session work 'ldb.source.files.ignoreMissingFiles' false;
 select * from t_external_hdfs_parquet_015;
+
+
+
+drop table t_external_hdfs_parquet_privi_001 if exists;
+
+-- 测试无访问权限的异常情况
+CREATE EXTERNAL TABLE t_external_hdfs_parquet_privi_001(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/privi/ldb_parquet')
+format 'parquet' ;
+
+set session work 'ldb.source.files.ignoreCorruptFiles' true;
+set session work 'ldb.source.files.ignoreMissingFiles' true;
+
+select * from t_external_hdfs_parquet_privi_001 order by id;
+
+
+
+--测试路径前置空格
+drop table t_external_hdfs_parquet_pre_space_001 if exists;
+
+CREATE EXTERNAL TABLE t_external_hdfs_parquet_pre_space_001(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location(' hdfs://node73:8020/user/testdb73/external_file/ldb_parquet')
+format 'parquet' ;
+
+set session work 'ldb.source.files.ignoreCorruptFiles' true;
+set session work 'ldb.source.files.ignoreMissingFiles' true;
+
+select * from t_external_hdfs_parquet_pre_space_001 order by id;
+
+
+
+--测试路径后置空格
+drop table t_external_hdfs_parquet_post_space_001 if exists;
+
+CREATE EXTERNAL TABLE t_external_hdfs_parquet_post_space_001(
+   id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('hdfs://node73:8020/user/testdb73/external_file/ldb_parquet ')
+format 'parquet' ;
+
+set session work 'ldb.source.files.ignoreCorruptFiles' true;
+set session work 'ldb.source.files.ignoreMissingFiles' true;
+
+select * from  t_external_hdfs_parquet_post_space_001 order by id;
+
+
+
+--测试路径前后置空格
+drop table t_external_parquet_pre_post_space_001 if exists;
+
+CREATE EXTERNAL TABLE t_external_parquet_pre_post_space_001(
+  id INT,
+  name VARCHAR(200),
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location(' hdfs://node73:8020/user/testdb73/external_file/ldb_parquet ')
+format 'parquet' ;
+
+set session work 'ldb.source.files.ignoreCorruptFiles' true;
+set session work 'ldb.source.files.ignoreMissingFiles' true;
+
+select * from  t_external_parquet_pre_post_space_001 order by id;

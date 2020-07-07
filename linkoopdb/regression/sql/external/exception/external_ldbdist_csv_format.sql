@@ -484,6 +484,68 @@ CREATE EXTERNAL TABLE t_external_ldbdist_csv_ws_dt3(
 format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'truee');
 
 
+--测试无权限访问
+drop table t_external_ldbdist_privi_001 if exists;
+
+CREATE EXTERNAL TABLE t_external_ldbdist_privi_001(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('ldbdist://node74:54321/show_csv18.csv')
+format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+
+
+select * from t_external_ldbdist_privi_001 order by id;
+
+
+
+
+--测试路径前置空格
+drop table t_external_ldbdist_pre_space_001 if exists;
+
+CREATE EXTERNAL TABLE t_external_ldbdist_pre_space_001(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location(' ldbdist://node74:54321/show_csv17.csv')
+format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+
+
+select * from t_external_ldbdist_pre_space_001 order by id;
+
+
+
+--测试路径后置空格
+drop table t_external_ldbdist_post_space_001 if exists;
+
+CREATE EXTERNAL TABLE t_external_ldbdist_post_space_001(
+    id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location('ldbdist://node74:54321/show_csv17.csv ')
+format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+
+
+select * from  t_external_ldbdist_post_space_001 order by id;
+
+
+
+--测试路径前后置空格
+drop table t_external_ldbdist_pre_post_space_001 if exists;
+
+CREATE EXTERNAL TABLE t_external_ldbdist_pre_post_space_001(
+  id INT,
+  name VARCHAR(200), 
+  sal DOUBLE,
+  birthday TIMESTAMP
+) location(' ldbdist://node74:54321/show_csv17.csv ')
+format 'csv' (delimiter '|' header 'true' ignoreLeadingWhiteSpace 'true');
+
+select * from  t_external_ldbdist_pre_post_space_001 order by id;
+
 -- 测试encoding
 -- 删除表
 --drop table if exists  t_external_ldbdist_csv_enco_dt1;
