@@ -37,4 +37,7 @@ Upload csv files
 	HDFS Upload                ../data/char2_parquet/*  varchar2_parquet/
     HDFS Upload                ../data/common_orc/*  common_varchar_orc/
     HDFS Upload                ../data/common_parquet/*  common_varchar_parquet/
+    SSH Connect                 %{LDBSSH_ROOTURL}/%{JOB_BASE_NAME}/
+    #SSH Upload                  ../data/common_orc/*  common_varchar_orc/
+
 
