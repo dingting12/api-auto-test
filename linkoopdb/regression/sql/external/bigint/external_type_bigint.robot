@@ -7,7 +7,8 @@ Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       run keywords
 ...              SQL Test Setup   AND
 ...              Setup Custom Settings   AND
-...              Upload csv files
+...              Upload csv files   AND
+...              Upload ldbdist files   
 Test Teardown    SQL Test Clnup
 
 
@@ -37,3 +38,7 @@ Upload csv files
     HDFS Upload                ../data/common_orc/*     common_bigint_orc/  
     HDFS Upload                ../data/common_parquet/*  common_bigint_parquet/
 	
+
+Upload ldbdist files
+    SSH Connect                      %{LDBSSH_ROOTURL}/%{JOB_BASE_NAME}/
+    SSH Upload                       ../data/bigint_csv/*.csv   csv/
