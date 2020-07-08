@@ -10,7 +10,7 @@ drop table if exists t_external_ldbdist_csv_int_001;
 
 create external table t_external_ldbdist_csv_int_001(
 a1 int  
-)location('ldbdist://node74:54321/csv/int_001.csv')
+)location('LDBDIST_URL/csv/int_001.csv')
 format 'csv' (delimiter ',');
 
 select * from t_external_ldbdist_csv_int_001;
@@ -21,7 +21,7 @@ drop table if exists t_external_ldbdist_csv_int_002;
 
 create external table t_external_ldbdist_csv_int_002(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/int_002.csv')
+)location('LDBDIST_URL/csv/int_002.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_002;
@@ -32,7 +32,7 @@ drop table if exists t_external_ldbdist_csv_int_003;
 
 create external table t_external_ldbdist_csv_int_003(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/int_003.csv')
+)location('LDBDIST_URL/csv/int_003.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_003;
@@ -43,7 +43,7 @@ drop table if exists t_external_ldbdist_csv_int_005;
 
 create external table t_external_ldbdist_csv_int_005(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/int_005.csv')
+)location('LDBDIST_URL/csv/int_005.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_005;
@@ -55,7 +55,7 @@ drop table if exists t_external_ldbdist_csv_int_006;
 
 create external table t_external_ldbdist_csv_int_006(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzimu.csv')
+)location('LDBDIST_URL/csv/varchar_yingwenzimu.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_006;
@@ -66,7 +66,7 @@ drop table if exists t_external_ldbdist_csv_int_007;
 
 create external table t_external_ldbdist_csv_int_007(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwen.csv')
+)location('LDBDIST_URL/csv/varchar_zhongwen.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_007;
@@ -77,7 +77,7 @@ drop table if exists t_external_ldbdist_csv_int_008;
 
 create external table t_external_ldbdist_csv_int_008(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongyinghunhe.csv')
+)location('LDBDIST_URL/csv/varchar_zhongyinghunhe.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_008;
@@ -88,7 +88,7 @@ drop table if exists t_external_ldbdist_csv_int_009;
 
 create external table t_external_ldbdist_csv_int_009(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_yingwenzifu.csv')
+)location('LDBDIST_URL/csv/varchar_yingwenzifu.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_009;
@@ -99,7 +99,7 @@ drop table if exists t_external_ldbdist_csv_int_010;
 
 create external table t_external_ldbdist_csv_int_010(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/varchar_zhongwenzifu.csv')
+)location('LDBDIST_URL/csv/varchar_zhongwenzifu.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_010;
@@ -111,7 +111,7 @@ drop table if exists t_external_ldbdist_csv_int_011;
 
 create external table t_external_ldbdist_csv_int_011(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_date.csv')
+)location('LDBDIST_URL/csv/type_date.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_011;
@@ -122,7 +122,7 @@ drop table if exists t_external_ldbdist_csv_int_012;
 
 create external table t_external_ldbdist_csv_int_012(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_timestamp.csv')
+)location('LDBDIST_URL/csv/type_timestamp.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_012;
@@ -133,7 +133,7 @@ drop table if exists t_external_ldbdist_csv_int_013;
 
 create external table t_external_ldbdist_csv_int_013(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_true.csv')
+)location('LDBDIST_URL/csv/boolean_true.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_013;
@@ -144,7 +144,7 @@ drop table if exists t_external_ldbdist_csv_int_014;
 
 create external table t_external_ldbdist_csv_int_014(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/boolean_false.csv')
+)location('LDBDIST_URL/csv/boolean_false.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_014;
@@ -155,7 +155,7 @@ drop table if exists t_external_ldbdist_csv_int_015;
 
 create external table t_external_ldbdist_csv_int_015(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongzhi.csv')
+)location('LDBDIST_URL/csv/type_kongzhi.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_015;
@@ -166,7 +166,7 @@ drop table if exists t_external_ldbdist_csv_int_016;
 
 create external table t_external_ldbdist_csv_int_016(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_kongge.csv')
+)location('LDBDIST_URL/csv/type_kongge.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_016;
@@ -177,7 +177,7 @@ drop table if exists t_external_ldbdist_csv_int_017;
 
 create external table t_external_ldbdist_csv_int_017(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_null.csv')
+)location('LDBDIST_URL/csv/type_null.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_017;
@@ -188,7 +188,7 @@ drop table if exists t_external_ldbdist_csv_int_018;
 
 create external table t_external_ldbdist_csv_int_018(
 a1 int  
-)location('hdfs://node73:8020/user/testdb73/external_file/csv_type/type_NULL.csv')
+)location('LDBDIST_URL/csv/type_NULL1.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_int_018;

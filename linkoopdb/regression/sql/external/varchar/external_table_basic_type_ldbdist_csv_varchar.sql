@@ -11,7 +11,7 @@ drop table if exists t_external_ldbdist_csv_varchar_001;
 -- 创建表t_external_ldbdist_csv_varchar_001，测试创建长度大于64000，实际创建成功
 create external table t_external_ldbdist_csv_varchar_001(
 a1 varchar(64001)
-)location('ldbdist://node74:54321/csv/varchar_001.csv')
+)location('LDBDIST_URL/csv/varchar_001.csv')
 format 'csv' (delimiter ',');
 
 
@@ -21,7 +21,7 @@ drop table if exists t_external_ldbdist_csv_varchar_002;
 -- 创建表t_external_ldbdist_csv_varchar_002，测试长度为64000，数据大小为100000，使用成功
 create external table t_external_ldbdist_csv_varchar_002(
 a1 varchar(64000) 
-)location('ldbdist://node74:54321/csv/varchar_001.csv')
+)location('LDBDIST_URL/csv/varchar_001.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_002的数据
@@ -34,7 +34,7 @@ drop table if exists t_external_ldbdist_csv_varchar_003;
 -- 创建表t_external_ldbdist_csv_varchar_003，测试值带双引号,"asdf"
 create external table t_external_ldbdist_csv_varchar_003(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_003.csv')
+)location('LDBDIST_URL/csv/varchar_003.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_003的数据,实际结果返回asdf
@@ -47,7 +47,7 @@ drop table if exists t_external_ldbdist_csv_varchar_004;
 -- 创建表t_external_ldbdist_csv_varchar_004，测试值为单引号，值为'asdf'
 create external table t_external_ldbdist_csv_varchar_004(
 a1 varchar(30)   
-)location('ldbdist://node74:54321/csv/varchar_004.csv')
+)location('LDBDIST_URL/csv/varchar_004.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_004的数据,返回结果为'asdf'
@@ -60,7 +60,7 @@ drop table if exists t_external_ldbdist_csv_varchar_005;
 -- 创建表t_external_ldbdist_csv_varchar_005，测试值不带引号，为asdf
 create external table t_external_ldbdist_csv_varchar_005(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_005.csv')
+)location('LDBDIST_URL/csv/varchar_005.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_005的数据,实际返回结果为asdf
@@ -74,7 +74,7 @@ drop table if exists t_external_ldbdist_csv_varchar_007;
 -- 创建表t_external_ldbdist_csv_varchar_007，测试varvarchar中文字符，值为'你好'
 create external table t_external_ldbdist_csv_varchar_007(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_zhongwen.csv')
+)location('LDBDIST_URL/csv/varchar_zhongwen.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_007的数据,实际返回你好
@@ -87,7 +87,7 @@ drop table if exists t_external_ldbdist_csv_varchar_008;
 -- 创建表t_external_ldbdist_csv_varchar_008，测试varvarchar中英文字符，值为'你好asdf'
 create external table t_external_ldbdist_csv_varchar_008(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_zhongyinghunhe.csv')
+)location('LDBDIST_URL/csv/varchar_zhongyinghunhe.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_008的数据，返回值为你好asdf
@@ -100,7 +100,7 @@ drop table if exists t_external_ldbdist_csv_varchar_009;
 -- 创建表t_external_ldbdist_csv_varchar_009，测试varvarchar英文特殊字符，值为'#$%^'
 create external table t_external_ldbdist_csv_varchar_009(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_yingwenzifu.csv')
+)location('LDBDIST_URL/csv/varchar_yingwenzifu.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_009的数据，实际返回为#$%^
@@ -113,7 +113,7 @@ drop table if exists t_external_ldbdist_csv_varchar_010;
 -- 创建表t_external_ldbdist_csv_varchar_010，测试varvarchar中文特殊字符，值为'@#￥%……'
 create external table t_external_ldbdist_csv_varchar_010(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_zhongwenzifu.csv')
+)location('LDBDIST_URL/csv/varchar_zhongwenzifu.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_010的数据，实际返回为@#￥%……
@@ -125,7 +125,7 @@ drop table if exists t_external_ldbdist_csv_varchar_011;
 -- 创建表t_external_ldbdist_csv_varchar_011，测试varchar为数字，值为'123456789'
 create external table t_external_ldbdist_csv_varchar_011(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_007.csv')
+)location('LDBDIST_URL/csv/varchar_007.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_011的数据，实际返回为'123456789'
@@ -134,7 +134,7 @@ select * from t_external_ldbdist_csv_varchar_011;
 -- 创建表t_external_ldbdist_csv_varchar_012，测试date类型，时间为2020-05-08
 create external table t_external_ldbdist_csv_varchar_012(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/type_date.csv')
+)location('LDBDIST_URL/csv/type_date.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_012的数据，实际返回为2020-05-08
@@ -147,7 +147,7 @@ drop table if exists t_external_ldbdist_csv_varchar_013;
 -- 创建表t_external_ldbdist_csv_varchar_013，测试timestamp类型,时间为2020-01-01 00:00:01
 create external table t_external_ldbdist_csv_varchar_013(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/type_timestamp.csv')
+)location('LDBDIST_URL/csv/type_timestamp.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_013的数据，实际返回 为2020-05-08 12:19:01
@@ -160,7 +160,7 @@ drop table if exists t_external_ldbdist_csv_varchar_015;
 -- 创建表t_external_ldbdist_csv_varchar_015，测试空值
 create external table t_external_ldbdist_csv_varchar_015(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/type_kongzhi.csv')
+)location('LDBDIST_URL/csv/type_kongzhi.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_015的数据，实际返回为''
@@ -173,7 +173,7 @@ drop table if exists t_external_ldbdist_csv_varchar_016;
 -- 创建表t_external_ldbdist_csv_varchar_016，测试空格 
 create external table t_external_ldbdist_csv_varchar_016(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/type_kongge.csv')
+)location('LDBDIST_URL/csv/type_kongge.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_016的数据,实际返回为' '
@@ -186,7 +186,7 @@ drop table if exists t_external_ldbdist_csv_varchar_017;
 -- 创建表t_external_ldbdist_csv_varchar_017，测试null 
 create external table t_external_ldbdist_csv_varchar_017(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/type_null.csv')
+)location('LDBDIST_URL/csv/type_null.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_017的数据，实际返回为null
@@ -199,7 +199,7 @@ drop table if exists t_external_ldbdist_csv_varchar_018;
 -- 创建表t_external_ldbdist_csv_varchar_018，测试NULL  
 create external table t_external_ldbdist_csv_varchar_018(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/type_NULL.csv')
+)location('LDBDIST_URL/csv/type_NULL1.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_018的数据，实际返回为NULL
@@ -212,7 +212,7 @@ drop table if exists t_external_ldbdist_csv_varchar_019;
 -- 创建表t_external_ldbdist_csv_varchar_019，测试int类型，值为1147483647
 create external table t_external_ldbdist_csv_varchar_019(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_008.csv')
+)location('LDBDIST_URL/csv/varchar_008.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_019的数据,实际返回为1147483647
@@ -224,7 +224,7 @@ drop table if exists t_external_ldbdist_csv_varchar_020;
 -- 创建表t_external_ldbdist_csv_varchar_020，测试double类型，值为 1147483647.2
 create external table t_external_ldbdist_csv_varchar_020(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/varchar_009.csv')
+)location('LDBDIST_URL/csv/varchar_009.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_020的数据，实际返回为 1147483647.2
@@ -237,7 +237,7 @@ drop table if exists t_external_ldbdist_csv_varchar_021;
 -- 创建表t_external_ldbdist_csv_varchar_021，测试boolean类型，值为false
 create external table t_external_ldbdist_csv_varchar_021(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/boolean_false.csv')
+)location('LDBDIST_URL/csv/boolean_false.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_021的数据，实际返回为false
@@ -250,7 +250,7 @@ drop table if exists t_external_ldbdist_csv_varchar_022;
 -- 创建表t_external_ldbdist_csv_varchar_022，测试boolean类型，值为true
 create external table t_external_ldbdist_csv_varchar_022(
 a1 varchar(30)  
-)location('ldbdist://node74:54321/csv/boolean_true.csv')
+)location('LDBDIST_URL/csv/boolean_true.csv')
 format 'csv' (delimiter ',');
   
 --查询t_external_ldbdist_csv_varchar_022的数据,实际返回为true
@@ -262,7 +262,7 @@ drop table if exists t_external_ldbdist_csv_varchar_023;
 -- 创建表 t_external_ldbdist_csv_varchar_023，测试长度为10，字符长度为20
 create external table t_external_ldbdist_csv_varchar_023(
 a1 varchar(10)
-)location('ldbdist://node74:54321/csv/varchar_002.csv')
+)location('LDBDIST_URL/csv/varchar_002.csv')
 format 'csv' (delimiter ',');
   
 --查询 t_external_ldbdist_csv_varchar_023 的数据,实际返回1234567890
