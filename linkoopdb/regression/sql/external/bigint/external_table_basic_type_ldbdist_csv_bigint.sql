@@ -188,7 +188,7 @@ drop table if exists t_external_ldbdist_csv_bigint_018;
 
 create external table t_external_ldbdist_csv_bigint_018(
 a1 bigint  
-)location('LDBDIST_URL/csv/type_NULL.csv')
+)location('LDBDIST_URL/csv/type_NULL1.csv')
 format 'csv' (delimiter ',');
   
 select * from t_external_ldbdist_csv_bigint_018;
