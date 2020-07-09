@@ -7,10 +7,15 @@ Test Teardown    SQL Test Clnup
 Force Tags       STREAM
 
 *** Test Cases ***
-JoinTest-kafka&hdfs
-    [Documentation]    kafka source join hdfs source isnert into kafka sink
+JoinTest-kafka&jdbc
+    [Documentation]    kafka source join mysql source insert into kafka sink
     Logon And Execute SQL Script    admin/123456              kafka_join_mysql_into_kafka.sql           kafka_join_mysql_into_kafka.log
     Compare Files                   kafka_join_mysql_into_kafka.log       kafka_join_mysql_into_kafka.ref
+
+JoinTest-kafka&hdfs
+    [Documentation]    kafka source join hdfs source insert into kafka sink
+    Logon And Execute SQL Script    admin/123456              kafka_join_hdfs_into_kafka.sql          kafka_join_hdfs_into_kafka.log
+    Compare Files                   kafka_join_hdfs_into_kafka.log       kafka_join_hdfs_into_kafka.ref
 	
 
 *** Keywords ***
