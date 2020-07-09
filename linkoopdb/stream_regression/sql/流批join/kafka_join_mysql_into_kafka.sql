@@ -8,6 +8,7 @@ drop stream if exists S_KAFKA_WEB_RETURNS_NEW;
 drop stream if exists S_FILE_customer_new;
 drop stream if exists RESULT_KAFKA;
 drop stream if exists RESULT_KAFKA_source;
+drop table if exists t_join_result;
 
 --创建kafka source
 CREATE stream S_KAFKA_WEB_RETURNS_NEW(
@@ -41,7 +42,7 @@ CREATE stream S_KAFKA_WEB_RETURNS_NEW(
  'connector': 'kafka',
  'version': 'universal',
  'topic': 'WEB_RETURN',
- 'group.id': '20200709',
+ 'group.id': 'random_str',
  'bootstrap.servers': 'node10:9092',
  'format':'csv',
  'separator':'|'
@@ -84,25 +85,29 @@ CREATE STREAM S_mysql_customer_new(
 CREATE STREAM PUBLIC.RESULT_KAFKA(WR_RETURNED_DATE_SK INTEGER,WR_ITEM_SK INTEGER,WR_REFUNDED_CDEMO_SK INTEGER,C_CUSTOMER_SK INTEGER,C_CUSTOMER_ID CHAR(16),C_CURRENT_CDEMO_SK INTEGER)properties(
  'type': 'sink',
  'connector': 'kafka',
- 'version': '0.10',
+ 'version': 'universal',
  'topic': 'KAFKA_JOIN_SINK',
- 'group.id': 'kafka_sink',
+ 'group.id': 'random_str',
  'bootstrap.servers': 'node10:9092',
  'format':'csv',
  'separator':'|'
 );
 
---创建kafka source用来查询条数
+--创建kafka source
 CREATE STREAM PUBLIC.RESULT_KAFKA_source(WR_RETURNED_DATE_SK INTEGER,WR_ITEM_SK INTEGER,WR_REFUNDED_CDEMO_SK INTEGER,C_CUSTOMER_SK INTEGER,C_CUSTOMER_ID CHAR(16),C_CURRENT_CDEMO_SK INTEGER)properties(
  'type': 'source',
  'connector': 'kafka',
- 'version': '0.10',
+ 'version': 'universal',
  'topic': 'KAFKA_JOIN_SINK',
- 'group.id': '456',
+ 'group.id': 'random_str',
  'bootstrap.servers': 'node10:9092',
  'format':'csv',
  'separator':'|'
 );
+
+
+--创建table存放结果数据
+CREATE table t_join_result(WR_RETURNED_DATE_SK INTEGER,WR_ITEM_SK INTEGER,WR_REFUNDED_CDEMO_SK INTEGER,C_CUSTOMER_SK INTEGER,C_CUSTOMER_ID CHAR(16),C_CURRENT_CDEMO_SK INTEGER)
 
 --设置并行度
 set session STREAM_EXECUTE_PARALLELISM 16;
@@ -119,15 +124,8 @@ from S_KAFKA_WEB_RETURNS_NEW  LEFT JOIN  S_mysql_customer_new
 on 
   c_current_cdemo_sk = wr_refunded_cdemo_sk WHERE 
    c_birth_month =1 AND c_current_cdemo_sk IS NOT null;
-   
+
 sleep 600
-
-
-set session STREAM_QUERY_LATENCY_MILLS 600000;
-
-select count(*) from RESULT_PALLAS;
-
-sleep 20
 
 SELECT JOBID FROM INFORMATION_SCHEMA.SYSTEM_STREAM_JOBSTATUS 
 WHERE	JOBSTATE = 'RUNNING'
@@ -140,10 +138,10 @@ AND     SESSIONID IN
 
 cancel job "%lastsqlresult.LastSQLResult[0][0]%"
 
---设置异步查询kafka source的条数
---set session stream_async_query_enable TRUE;
---SELECT count(*) FROM RESULT_KAFKA_source;
---sleep 10000
---call sys_stream_snapshot('${JOB_ID_g1}',1);
---sleep 10000
---call sys_stream_retrieve_result('${JOB_ID_g1}',1);
+--将结果数据插入到ldb table中
+insert into t_join_result select * from RESULT_KAFKA_source;
+
+sleep 30
+
+--查询数据条数
+select count(*) from RESULT_KAFKA_source;

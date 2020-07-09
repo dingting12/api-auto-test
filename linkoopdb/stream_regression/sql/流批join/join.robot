@@ -2,7 +2,7 @@
 Documentation    流批join
 ...              测试不同类型的流表和维表join，并将得到的结果插入到不同的source中，验证结果是否正确
 Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
+Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings   AND   Setup Random Settings
 Test Teardown    SQL Test Clnup
 Force Tags       STREAM
 
@@ -16,3 +16,8 @@ JoinTest-kafka&hdfs
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True
+
+*** Keywords ***
+Setup Random Settings
+	SQLCli Enable ConsoleOutput         True
+    SQLCli Set SQLMAPPING               random.map
