@@ -16,7 +16,7 @@ Demo1
     Compare Files                  tke2_hdfs.log     tke2.ref
 
 Demo2
-    [Tags]             feature:E402
+    [Tags]             feature:F201
     [Documentation]    演示程序2， SQL测试，输出信息将显示在控制台上
     SQLCli Enable ConsoleOutput    True
 
@@ -24,7 +24,7 @@ Demo2
     Compare Files                  tke2_hdfs_2.log     tke2.ref
 
 Demo3
-    [Tags]             feature:E401
+    [Tags]             feature:F302
     [Documentation]    演示程序3， 使用SQLMAPPING来实现Pallas引擎的测试
     SQLCli Set SQLMAPPING          tke2_pallas.map
     Execute SQL Script             tke2.sql          tke2_pallas.log
