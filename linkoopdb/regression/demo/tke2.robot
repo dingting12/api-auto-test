@@ -6,7 +6,7 @@ Test Teardown    SQL Test Clnup
 *** Settings ***
 Documentation    测试套件说明
 ...              演示程序
-Force Tags       Demo
+Force Tags       owner:赵石
 
 *** Test Cases ***
 Demo1

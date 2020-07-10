@@ -9,12 +9,18 @@ import sys
 def load_testresults(p_dbHandler, p_SuiteResults, p_PerfResults):
     for test in p_SuiteResults.tests:  # 遍历所有测试
         Features = None
+        m_Owner = "Unknown"
         for tag in test.tags:
             if tag.startswith("feature:"):
                 if Features is None:
                     Features = tag[len("feature:"):]
                 else:
                     Features = Features + "," + tag[len("feature:"):]
+            if tag.startswith("owner:"):
+                m_Owner = tag[len("owner:"):]
+        if Features is None:
+            Features = "Unknown"
+
         if "Build_ID" in os.environ:
             m_Build_ID = os.environ["Build_ID"]
         else:
@@ -41,6 +47,15 @@ def load_testresults(p_dbHandler, p_SuiteResults, p_PerfResults):
             m_DATABASE_VERSION = os.environ["DATABASE_VERSION"]
         else:
             m_DATABASE_VERSION = "Unknown"
+        # Suite_Path 基于TestRoot的相对目录
+        if "TEST_ROOT" in os.environ:
+            m_Suite_Path = test.source.replace(os.environ["TEST_ROOT"], "")
+        else:
+            m_Suite_Path = test.source
+        m_Suite_Path = m_Suite_Path.replace("\\", "/")
+        if m_Suite_Path.startswith("/"):
+            m_Suite_Path = m_Suite_Path[1:]
+
         data = {
             "Build_ID": m_Build_ID,
             "Build_URL": m_Build_URL,
@@ -49,12 +64,13 @@ def load_testresults(p_dbHandler, p_SuiteResults, p_PerfResults):
             "Test_Name": test.name,
             "Test_Status": test.status,
             "Feature_ID": str(Features),
-            "Suite_Path": str(test.source),
+            "Suite_Path": m_Suite_Path,
             "Test_Doc": str(test.doc),
             "Start_Date": datetime.datetime.strptime(test.starttime[0:17], '%Y%m%d %H:%M:%S'),
             "End_Date": datetime.datetime.strptime(test.endtime[0:17], '%Y%m%d %H:%M:%S'),
             "Database_Version": m_DATABASE_VERSION,
             "SQL_Count": m_SQLCount,
+            "Owner": m_Owner,
         }
         columns = ",".join(data.keys())
         values = ', '.join(['%s'] * len(data))
@@ -71,7 +87,8 @@ if __name__ == '__main__':
         print("Missed parameter:  ParseRobotOutput [output.xml] [output.perf]")
         sys.exit(0)
 
-    # RobotResults = ExecutionResult("C:\\Work\\linkoop\\linkoop-auto-test\\linkoopdb\\regression\\work\\output.xml").suite
+    # RobotResults =
+    #     ExecutionResult("C:\\Work\\linkoop\\linkoop-auto-test\\linkoopdb\\regression\\work\\output.xml").suite
     # with open("C:\\Work\\linkoop\\linkoop-auto-test\\linkoopdb\\regression\\work\\output.perf", 'r') as f:
 
     # 解析XML文件
