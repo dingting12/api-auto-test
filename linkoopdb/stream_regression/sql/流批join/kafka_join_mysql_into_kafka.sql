@@ -73,7 +73,7 @@ CREATE STREAM S_mysql_customer_new(
   'connector': 'jdbc',
   'tableName': 'customer',
   'driver': 'com.mysql.jdbc.Driver',
-  'dbUrl': 'jdbc:mysql://node72:3306/poc',
+  'dbUrl': 'jdbc:mysql://192.168.1.72:3306/poc',
   'username': 'test',
   'password': '123456',
   'fetchSize': '10000',
