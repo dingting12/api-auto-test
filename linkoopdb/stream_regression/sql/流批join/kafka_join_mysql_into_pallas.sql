@@ -1,7 +1,3 @@
-loaddriver F:\db_ex\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
-
-connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.62:59105/ldb
-
 __internal__ create kafka server node10:9092;
 __internal__ drop kafka topic KAFKA_JOIN_SINK;
 __internal__ create kafka topic KAFKA_JOIN_SINK Partitions 16 replication_factor 1;
@@ -75,7 +71,7 @@ CREATE STREAM S_mysql_customer_new(
   'connector': 'jdbc',
   'tableName': 'customer',
   'driver': 'com.mysql.jdbc.Driver',
-  'dbUrl': 'jdbc:mysql://node72:3306/poc',
+  'dbUrl': 'jdbc:mysql://192.168.1.72:3306/poc',
   'username': 'test',
   'password': '123456',
   'fetchSize': '10000',
