@@ -5,7 +5,7 @@ sleep 3
 
 --删除表结构
 drop stream if exists S_KAFKA_WEB_RETURNS_NEW;
-drop stream if exists S_FILE_customer_new;
+drop stream if exists S_mysql_customer_new;
 drop stream if exists RESULT_KAFKA;
 drop stream if exists RESULT_KAFKA_source;
 drop table if exists t_join_result;
