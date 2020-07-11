@@ -9,7 +9,7 @@ Suite Teardown   SQL Test Clnup
 
 *** Settings ***
 Documentation    TPCH
-Force Tags       TPCH
+Force Tags       TPCH  owner:赵石
 
 
 *** Test Cases ***

@@ -4,7 +4,7 @@ Documentation    RobotFrameWork文档实例
 # 引用公共函数
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       SQL Test Setup
-Force Tags       DBLINK,owner:王煜
+Force Tags       DBLINK   owner:王煜
 
 *** Test Cases ***
 OracleSetUp

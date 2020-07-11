@@ -7,7 +7,7 @@ Suite Teardown    SQL Test Clnup
 
 *** Settings ***
 Documentation    TPCH
-Force Tags       TPCH,owner:满意
+Force Tags       TPCH  owner:满意
 
 
 *** Test Cases ***
@@ -36,9 +36,6 @@ TPCH QUERIES
     Logon And Execute SQL Script       admin/123456  queries/9.sql  9.log
     Logon And Execute SQL Script       admin/123456  queries/10.sql  10.log
     Logon And Execute SQL Script       admin/123456  queries/11.sql  11.log
-    Logon And Execute SQL Script       admin/123456  queries/12.sql  12.log
-    Logon And Execute SQL Script       admin/123456  queries/13.sql  13.log
-    Logon And Execute SQL Script       admin/123456  queries/14.sql  14.log
 
 *** Keywords ***
 Setup Custom Settings

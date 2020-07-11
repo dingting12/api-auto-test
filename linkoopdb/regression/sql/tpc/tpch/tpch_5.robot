@@ -32,13 +32,10 @@ Force Tags       TPCH  owner:满意
 
 TPCH QUERIES
     [Documentation]    TPCH QUERIES
-    Logon And Execute SQL Script       admin/123456  queries/1.sql  1.log
-    Logon And Execute SQL Script       admin/123456  queries/2.sql  2.log
-    Logon And Execute SQL Script       admin/123456  queries/3.sql  3.log
-    Logon And Execute SQL Script       admin/123456  queries/4.sql  4.log
-    Logon And Execute SQL Script       admin/123456  queries/5.sql  5.log
-    Logon And Execute SQL Script       admin/123456  queries/6.sql  6.log
-    Logon And Execute SQL Script       admin/123456  queries/7.sql  7.log
+    Logon And Execute SQL Script       admin/123456  queries/19.sql  19.log
+    Logon And Execute SQL Script       admin/123456  queries/20.sql  20.log
+    Logon And Execute SQL Script       admin/123456  queries/21.sql  21.log
+    Logon And Execute SQL Script       admin/123456  queries/22.sql  22.log
 
 *** Keywords ***
 Setup Custom Settings

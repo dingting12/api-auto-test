@@ -5,7 +5,7 @@ Suite Teardown    SQL Test Clnup
 
 *** Settings ***
 Documentation    PALLAS建表语法回归测试
-Force Tags       SQL-Test
+Force Tags       SQL-Test  owner:阮娜
 
 
 *** Test Cases ***
