@@ -7,7 +7,7 @@ Suite Teardown    SQL Test Clnup
 
 *** Settings ***
 Documentation    TPCH
-Force Tags       TPCH
+Force Tags       TPCH,owner:满意
 
 
 *** Test Cases ***
@@ -39,38 +39,8 @@ TPCH QUERIES
     Logon And Execute SQL Script       admin/123456  queries/5.sql  5.log
     Logon And Execute SQL Script       admin/123456  queries/6.sql  6.log
     Logon And Execute SQL Script       admin/123456  queries/7.sql  7.log
-    Logon And Execute SQL Script       admin/123456  queries/8.sql  8.log
-    Logon And Execute SQL Script       admin/123456  queries/9.sql  9.log
-    Logon And Execute SQL Script       admin/123456  queries/10.sql  10.log
-    Logon And Execute SQL Script       admin/123456  queries/11.sql  11.log
-    Logon And Execute SQL Script       admin/123456  queries/12.sql  12.log
-    Logon And Execute SQL Script       admin/123456  queries/13.sql  13.log
-    Logon And Execute SQL Script       admin/123456  queries/14.sql  14.log
-    Logon And Execute SQL Script       admin/123456  queries/15.sql  15.log
-    Logon And Execute SQL Script       admin/123456  queries/16.sql  16.log
-    Logon And Execute SQL Script       admin/123456  queries/17.sql  17.log
-    Logon And Execute SQL Script       admin/123456  queries/18.sql  18.log
-    Logon And Execute SQL Script       admin/123456  queries/19.sql  19.log
-    Logon And Execute SQL Script       admin/123456  queries/20.sql  20.log
-    Logon And Execute SQL Script       admin/123456  queries/21.sql  21.log
-    Logon And Execute SQL Script       admin/123456  queries/22.sql  22.log
 
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True
     SQLCli Enable ConsoleOutput        True
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

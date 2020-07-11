@@ -4,7 +4,7 @@ Documentation    流批join
 Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings   AND   Setup Random Settings
 Test Teardown    SQL Test Clnup
-Force Tags       STREAM
+Force Tags       STREAM,owner:贾路遥
 
 *** Test Cases ***
 JoinTest-kafka&jdbc-kafka

@@ -8,7 +8,7 @@ Suite Teardown    SQL Test Clnup
 
 *** Settings ***
 Documentation    HDFS分区分桶回归测试
-Force Tags       SQL-Test
+Force Tags       SQL-Test,owner:阮娜
 
 
 *** Test Cases ***
