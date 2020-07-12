@@ -38,15 +38,16 @@ function run_robot_file() {
       $ROBOT_BIN --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO\
           --outputdir "$T_WORK" -o output.xml "$TEST_MAIN"
   else
-      # 不再打印屏幕输出，而是直接输出信息到__stdout,以及__stderr中
-      echo "Run test case in queue $TEST_MAIN ... "
-      $ROBOT_BIN --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO --outputdir "$T_WORK" \
-            "$TEST_MAIN" > "$T_WORK"/"$TEST_NAME".__stdout 2>"$T_WORK"/"$TEST_NAME".__stderr || true &
-      push $!
+      # 检查队列中的进程数量，如果已经达到最大进程数，则等待
       while [[ "$run" -ge $MAX_PROCESSES ]];do
           check
           sleep 1
       done
+      # 多进程模式下不再打印屏幕输出，而是直接输出信息到__stdout,以及__stderr中
+      echo "Run test case in queue $TEST_MAIN ... "
+      $ROBOT_BIN --listener allure_robotframework\;"$T_WORK" --loglevel DEBUG:INFO --outputdir "$T_WORK" \
+            "$TEST_MAIN" > "$T_WORK"/"$TEST_NAME".__stdout 2>"$T_WORK"/"$TEST_NAME".__stderr || true &
+      push $!    # 将上一个进程的PID放入队列中
   fi
 
   # 重置T_WORK变量
