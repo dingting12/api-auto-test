@@ -26,6 +26,19 @@ do
     fi
 
     if [ -f $dir/output.xml ]; then
+        # 检查XML文件是否合法，测试被意外终止的XML将格式不对，导致后面无法Merge
+        xmllint --noout $dir/output.xml > xmllint.log 2>xmllint.log||true
+        if [ "$(cat xmllint.log|wc -l)" -ne 0 ]; then
+            echo $dir/output.xml is bad format, Test Failed.
+        else
+            m_OutputDirList="$m_OutputDirList $dir/output.xml"
+        fi
+    else
+        # 指定的测试没有完成
+        echo "Test Failed . $dir/output.xml missed"
+    fi
+
+    if [ -f $dir/output.xml ]; then
         m_OutputDirList="$m_OutputDirList $dir/output.xml"
     else
         # 指定的测试没有完成
