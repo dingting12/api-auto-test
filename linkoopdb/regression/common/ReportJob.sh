@@ -38,13 +38,6 @@ do
         echo "Test Failed . $dir/output.xml missed"
     fi
 
-    if [ -f $dir/output.xml ]; then
-        m_OutputDirList="$m_OutputDirList $dir/output.xml"
-    else
-        # 指定的测试没有完成
-        echo "Test Failed . $dir/output.xml missed"
-    fi
-
     # 备份测试结果文件到上层目录
     rm -f "$T_WORK"/output.xml
     rm -f "$T_WORK"/log.html
