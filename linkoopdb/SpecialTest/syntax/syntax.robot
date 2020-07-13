@@ -5,7 +5,7 @@ Test Teardown    SQL Test Clnup
 
 *** Settings ***
 Documentation    SQL语法基本测试
-Force Tags       SQL-Test
+Force Tags       owner:赵石
 
 *** Test Cases ***
 SyntaxCoverageHDFSTest-GroupBy

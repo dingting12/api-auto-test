@@ -5,6 +5,7 @@ import traceback
 
 from sqlcli.main import SQLCli
 from robot.api import logger
+from robot.running.context import EXECUTION_CONTEXTS
 import shlex
 
 
@@ -240,6 +241,10 @@ class RunSQLCli(object):
                 myConsole = sys.__stdout__
                 myHeadLessMode = False
                 mylogger = logger
+            m_SuiteName = os.path.basename(str(EXECUTION_CONTEXTS.current.variables['${SUITE_SOURCE}']))
+            m_TestName = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
+            m_WorkerName = m_SuiteName+":"+m_TestName
+
             cli = SQLCli(logon=p_szLogonString,
                          sqlscript=m_szSQLScript_FileName,
                          logfilename=m_szLogOutPutFullFileName,
@@ -248,7 +253,8 @@ class RunSQLCli(object):
                          logger=mylogger,
                          sqlmap=self.__SQLMapping,
                          breakwitherror=self.__BreakWithSQLError,
-                         sqlperf=m_szPerfOutPutFullFileName)
+                         sqlperf=m_szPerfOutPutFullFileName,
+                         WorkerName=m_WorkerName)
             m_Result = cli.run_cli()
             sys.__stdout__.write('===== End SQLCli with result [' + str(m_Result) + '] \n')
             if self.__BreakWithSQLError and not m_Result and not self.__EnableConsoleOutPut:

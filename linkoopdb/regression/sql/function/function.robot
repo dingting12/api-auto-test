@@ -4,7 +4,7 @@ Documentation    函数测试
 Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
 Test Teardown    SQL Test Clnup
-Force Tags       FUNCTION
+Force Tags       FUNCTION  owner:贾路遥
 
 *** Test Cases ***
 FunctionTestHdfsTest-String

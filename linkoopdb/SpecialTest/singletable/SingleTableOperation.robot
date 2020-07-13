@@ -4,6 +4,7 @@ Documentation    单表查询
 Metadata         Version    0.1
 # 引用公共函数
 Resource          ../../regression/common/SetupRobot.robot
+Force Tags       owner:贾路遥
 
 *** Test Cases ***
 SingleTableOperationTest

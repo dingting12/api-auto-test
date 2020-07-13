@@ -7,7 +7,8 @@ Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
 Test Teardown    SQL Test Clnup
 Library          OperatingSystem
-				   
+Force Tags       owner:丁婷
+
 *** Test Cases ***
 EXTERNALFORMATTEST   
 	[Documentation]    测试外部表格式

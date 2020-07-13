@@ -6,6 +6,8 @@ Resource         %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       SQL Test Setup
 Test Teardown    SQL Test Clnup
 Library          OperatingSystem
+Force Tags       owner:阮娜
+
 
 *** Test Cases ***
 VarcharSizeTest

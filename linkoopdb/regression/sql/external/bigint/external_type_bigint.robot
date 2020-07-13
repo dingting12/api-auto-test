@@ -10,7 +10,7 @@ Test Setup       run keywords
 ...              Upload csv files   AND
 ...              Upload ldbdist files   
 Test Teardown    SQL Test Clnup
-
+Force Tags       owner:丁婷
 
 *** Test Cases ***
 external type bigint test   

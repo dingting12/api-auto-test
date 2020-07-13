@@ -57,6 +57,8 @@ SQL Test Setup
     Compare Skip                       SQLCli Release .*
     #     start                start开始的是在具体执行某一个脚本，在执行中由于路径名不同，具体start后面的信息也会不同，所以不再比对
     Compare Skip                       SQL\> start .*
+    #     在HDFS和LDB运行中，可能会由于运行JOB的不同，WORKSPACE的不同，导致动态的location不同
+    Compare Skip                       .*location.*
 
     # 每次Case运行前重置日志比对不一致的次数
     Compare Reset FailedCount

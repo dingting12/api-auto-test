@@ -9,7 +9,8 @@ Suite Teardown   SQL Test Clnup
 
 *** Settings ***
 Documentation    TPCH
-Force Tags       TPCH
+...              Regress_Friendly    NO   # 表示这个程序不参与整体回归测试
+Force Tags       TPCH  owner:赵石
 
 
 *** Test Cases ***

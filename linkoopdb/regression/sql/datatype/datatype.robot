@@ -5,8 +5,7 @@ Suite Teardown    SQL Test Clnup
 
 *** Settings ***
 Documentation    基本数据类型
-Force Tags       DATATYPE
-
+Force Tags       DATATYPE   owner:李爱敏
 
 *** Test Cases ***
 ArrayTest-HDFS

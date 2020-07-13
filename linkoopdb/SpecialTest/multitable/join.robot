@@ -4,6 +4,7 @@ Documentation    两表联结
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
 Test Teardown    SQL Test Clnup
+Force Tags       owner:耿晨宇
 
 *** Test Cases ***
 JoinTest
