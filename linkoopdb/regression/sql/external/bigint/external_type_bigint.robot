@@ -13,7 +13,7 @@ Test Teardown    SQL Test Clnup
 
 
 *** Test Cases ***
-EXTERNALTYPETEST   
+external type bigint test   
 	[Documentation]    测试外部表类型
     [Tags]     SQL-Test       external type bigint test
     Logon And Execute SQL Script     admin/123456                                         external_table_basic_type_hdfs_csv_bigint.sql

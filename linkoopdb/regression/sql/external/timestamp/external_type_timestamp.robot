@@ -12,7 +12,7 @@ Test Setup       run keywords
 Test Teardown    SQL Test Clnup
 
 *** Test Cases ***
-EXTERNALTYPETEST   
+external type timestamp test   
 	[Documentation]    测试外部表类型
     [Tags]     SQL-Test       external type timestamp test
     Logon And Execute SQL Script     admin/123456                                          external_table_basic_type_hdfs_csv_timestamp.sql

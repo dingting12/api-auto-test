@@ -12,7 +12,7 @@ Test Setup       run keywords
 Test Teardown    SQL Test Clnup
 
 *** Test Cases ***
-EXTERNALTYPETEST   
+external type numeric test   
 	[Documentation]    测试外部表类型
     [Tags]     SQL-Test       external type numeric test
     Logon And Execute SQL Script     admin/123456                                          external_table_basic_type_hdfs_csv_numeric.sql
