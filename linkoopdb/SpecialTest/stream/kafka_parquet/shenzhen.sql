@@ -148,7 +148,7 @@ CLIENTIP VARCHAR(128),
 SERVERIP VARCHAR(128),
 ctime timestamp,
 atime timestamp
-)LOCATION ('hdfs:///node62/shenzhen') FORMAT 'parquet';
+)LOCATION ('hdfs:///node62/shenzhen/test_2020-00-14-2020-00-15_table') FORMAT 'parquet';
 
 select * from t_parquet;
 
