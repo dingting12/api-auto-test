@@ -68,7 +68,7 @@ ctime timestamp
  'proctime':'atime',
  'bootstrap.servers': 'node10:9092',
  'format':'csv',
- 'separator':'|'
+ 'separator':','
 );
 
 CREATE STREAM S_PARQUET_SINK(
