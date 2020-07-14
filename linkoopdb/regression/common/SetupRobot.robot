@@ -15,8 +15,8 @@ SQL Test Setup
     # 默认是不终止，即使SQL有错误，整个SQL也会被执行完毕
     SQLCli Break When Error            False
 
-    # 控制日志比对是否在遇到不一致现象的时候，就立即终止本Case的后续测试工作
-    # 默认是不终止，即使比对发生错误，测试也会继续运行下去
+    # 控制日志比对是否在遇到不一致现象的时候，是否在Jeenkins中直接抛出比对错误
+    # 默认是抛出
     Compare Break When Difference      True
 
     # 控制SQLCli控制台是否显示输出，如果在Jenkins中运行，则打开后同样会在Jenkins的控制台上显示出来
@@ -60,12 +60,9 @@ SQL Test Setup
     #     在HDFS和LDB运行中，可能会由于运行JOB的不同，WORKSPACE的不同，导致动态的location不同
     Compare Skip                       .*location.*
 
-    # 每次Case运行前重置日志比对不一致的次数
-    Compare Reset FailedCount
-
     # Case运行在脚本所在的目录下，切换当前工作目录
     SetupRoot CD CurrentDirectory      ${SUITE SOURCE}
 
 SQL Test Clnup
-    # 检查SQL运行是否有错误
-    Compare Check Result
+    # 暂时空置
+    Log to Console "Test Completed."
