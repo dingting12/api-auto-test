@@ -1,3 +1,7 @@
+drop stream if exists s_kafka_source;
+drop stream if exists S_PARQUET_SINK;
+drop table if exists t_parquet;
+
 __internal__ create fs file temp.csv
 (
 {random_ascii_letters_and_digits(17)},
