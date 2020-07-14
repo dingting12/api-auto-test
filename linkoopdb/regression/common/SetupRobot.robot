@@ -65,4 +65,4 @@ SQL Test Setup
 
 SQL Test Clnup
     # 暂时空置
-    Log to Console "Test Completed."
+    Log to Console      "Test Completed."
