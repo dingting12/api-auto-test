@@ -450,6 +450,7 @@ class RunCompare(object):
                 if self.__CurrentTestName__ == str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}']):
                     self.__CompareFailedCount = self.__CompareFailedCount + 1
                 else:
+                    self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
                     self.Compare_Reset_FailedCount()
                     self.__CompareFailedCount = self.__CompareFailedCount + 1
             m_CompareResultFile = open(m_DifFullFileName, 'w')
@@ -482,6 +483,7 @@ class RunCompare(object):
                 if self.__CurrentTestName__ == str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}']):
                     self.__CompareFailedCount = self.__CompareFailedCount + 1
                 else:
+                    self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
                     self.Compare_Reset_FailedCount()
                     self.__CompareFailedCount = self.__CompareFailedCount + 1
             logger.info('===============   reference log [' + m_ReferenceLog +
@@ -531,6 +533,7 @@ class RunCompare(object):
                 if self.__CurrentTestName__ == str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}']):
                     self.__CompareFailedCount = self.__CompareFailedCount + 1
                 else:
+                    self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
                     self.Compare_Reset_FailedCount()
                     self.__CompareFailedCount = self.__CompareFailedCount + 1
             logger.write("======= Diff file [" + m_DifFullFileName + "] >>>>> ")
