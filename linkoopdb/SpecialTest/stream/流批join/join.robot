@@ -9,23 +9,23 @@ Force Tags       STREAM   owner:贾路遥
 *** Test Cases ***
 JoinTest-kafka&jdbc-kafka
     [Documentation]    kafka source join mysql source insert into kafka sink
-    Logon And Execute SQL Script    admin/123456              kafka_join_mysql_into_kafka.sql           kafka_join_mysql_into_kafka.log
-    Compare Files                   kafka_join_mysql_into_kafka.log       kafka_join_mysql_into_kafka.ref
+    Logon And Execute SQL Script    admin/123456              kafka_source/kafka_join_mysql_into_kafka.sql           kafka_join_mysql_into_kafka.log
+    Compare Files                   kafka_join_mysql_into_kafka.log       kafka_source/kafka_join_mysql_into_kafka.ref
 
 JoinTest-kafka&hdfs-kafka
     [Documentation]    kafka source join hdfs source insert into kafka sink
-    Logon And Execute SQL Script    admin/123456              kafka_join_hdfs_into_kafka.sql          kafka_join_hdfs_into_kafka.log
-    Compare Files                   kafka_join_hdfs_into_kafka.log       kafka_join_hdfs_into_kafka.ref
+    Logon And Execute SQL Script    admin/123456              kafka_source/kafka_join_hdfs_into_kafka.sql          kafka_join_hdfs_into_kafka.log
+    Compare Files                   kafka_join_hdfs_into_kafka.log       kafka_source/kafka_join_hdfs_into_kafka.ref
 	
 JoinTest-kafka&hdfs-pallas
     [Documentation]    kafka source join hdfs source insert into kafka sink
-    Logon And Execute SQL Script    admin/123456              kafka_join_hdfs_into_pallas.sql          kafka_join_hdfs_into_pallas.log
-    Compare Files                   kafka_join_hdfs_into_pallas.log       kafka_join_hdfs_into_pallas.ref
+    Logon And Execute SQL Script    admin/123456              kafka_source/kafka_join_hdfs_into_pallas.sql          kafka_join_hdfs_into_pallas.log
+    Compare Files                   kafka_join_hdfs_into_pallas.log       kafka_source/kafka_join_hdfs_into_pallas.ref
 	
 JoinTest-kafka&jdbc-palls
     [Documentation]    kafka source join hdfs source insert into kafka sink
-    Logon And Execute SQL Script    admin/123456              kafka_join_mysql_into_pallas.sql          kafka_join_mysql_into_pallas.log
-    Compare Files                   kafka_join_mysql_into_pallas.log       kafka_join_mysql_into_pallas.ref
+    Logon And Execute SQL Script    admin/123456              kafka_source/kafka_join_mysql_into_pallas.sql          kafka_join_mysql_into_pallas.log
+    Compare Files                   kafka_join_mysql_into_pallas.log       kafka_source/kafka_join_mysql_into_pallas.ref
 	
 
 *** Keywords ***

@@ -1,7 +1,3 @@
-__internal__ create kafka server node10:9092;
-__internal__ drop kafka topic KAFKA_JOIN_SINK;
-__internal__ create kafka topic KAFKA_JOIN_SINK Partitions 16 replication_factor 1;
-sleep 3
 --删除表结构
 drop stream if exists S_KAFKA_WEB_RETURNS_NEW;
 drop stream if exists S_FILE_customer_new;
@@ -105,6 +101,7 @@ on
    
 sleep 600
 
+--停止任务
 SELECT JOBID FROM INFORMATION_SCHEMA.SYSTEM_STREAM_JOBSTATUS 
 WHERE	JOBSTATE = 'RUNNING'
 AND     SESSIONID IN 
