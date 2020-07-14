@@ -10,13 +10,11 @@ Library          OperatingSystem
 Force Tags       owner:丁婷
 
 *** Test Cases ***
-SMOKETEST   
-	[Documentation]    冒烟测试
-    [Tags]     SQL-Test       smoke test   
-	LOgon And Execute SQL Script     admin/123456  CORE_null与基本完整性约束.sql 
-    LOgon And Execute SQL Script     admin/123456  CORE_Schema_DDL.sql  	
-	Compare Files        CORE_null与基本完整性约束.log    		 CORE_null与基本完整性约束.ref 
-	Compare Files        CORE_Schema_DDL.sql.log    			  CORE_Schema_DDL.sql.ref 
-		
+PrivilegeTest
+	[Documentation]    基本安全与授权测试
+    [Tags]     PRIVILEGE       smoke test
+	LOgon And Execute SQL Script     admin/123456  ../test/CORE 基本安全与授权/E081-01 SELECT privilege at the table level.sql                                                            E081-01 SELECT privilege at the table level.log
+	Compare Files        E081-01 SELECT privilege at the table level.log        										../test/CORE 基本安全与授权/E081-01 SELECT privilege at the table level.ref
+
 
 
