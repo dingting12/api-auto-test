@@ -1,13 +1,7 @@
-__internal__ create kafka server node10:9092;
-__internal__ drop kafka topic KAFKA_JOIN_SINK;
-__internal__ create kafka topic KAFKA_JOIN_SINK Partitions 16 replication_factor 1;
-sleep 3
-
 --删除表结构
 drop stream if exists S_KAFKA_WEB_RETURNS_NEW;
 drop stream if exists S_mysql_customer_new;
-drop stream if exists RESULT_KAFKA;
-drop stream if exists RESULT_KAFKA_source;
+drop stream if exists RESULT_PALLAS;
 drop table if exists t_join_result;
 
 --创建kafka source
@@ -77,34 +71,14 @@ CREATE STREAM S_mysql_customer_new(
   'username': 'test',
   'password': '123456',
   'fetchSize': '10000',
-  'dataType':'static',
-  'cacheStrategy':'all'
+  'dataType':'static'
 );
 
 --创建结果表
-CREATE STREAM PUBLIC.RESULT_KAFKA(WR_RETURNED_DATE_SK INTEGER,WR_ITEM_SK INTEGER,WR_REFUNDED_CDEMO_SK INTEGER,C_CUSTOMER_SK INTEGER,C_CUSTOMER_ID CHAR(16),C_CURRENT_CDEMO_SK INTEGER)properties(
- 'type': 'sink',
- 'connector': 'kafka',
- 'version': 'universal',
- 'topic': 'KAFKA_JOIN_SINK',
- 'group.id': 'random_str',
- 'bootstrap.servers': 'node10:9092',
- 'format':'csv',
- 'separator':'|'
+CREATE STREAM PUBLIC.RESULT_PALLAS(WR_RETURNED_DATE_SK INTEGER,WR_ITEM_SK INTEGER,WR_REFUNDED_CDEMO_SK INTEGER,C_CUSTOMER_SK INTEGER,C_CUSTOMER_ID CHAR(16),C_CURRENT_CDEMO_SK INTEGER,ATIME TIMESTAMP)properties(
+  'connector':'pallas',
+  'linkoopdb.pallas.shard_number' : '128'
 );
-
---创建kafka source
-CREATE STREAM PUBLIC.RESULT_KAFKA_source(WR_RETURNED_DATE_SK INTEGER,WR_ITEM_SK INTEGER,WR_REFUNDED_CDEMO_SK INTEGER,C_CUSTOMER_SK INTEGER,C_CUSTOMER_ID CHAR(16),C_CURRENT_CDEMO_SK INTEGER)properties(
- 'type': 'source',
- 'connector': 'kafka',
- 'version': 'universal',
- 'topic': 'KAFKA_JOIN_SINK',
- 'group.id': 'random_str',
- 'bootstrap.servers': 'node10:9092',
- 'format':'csv',
- 'separator':'|'
-);
-
 
 --创建table存放结果数据
 CREATE table t_join_result(WR_RETURNED_DATE_SK INTEGER,WR_ITEM_SK INTEGER,WR_REFUNDED_CDEMO_SK INTEGER,C_CUSTOMER_SK INTEGER,C_CUSTOMER_ID CHAR(16),C_CURRENT_CDEMO_SK INTEGER);
@@ -112,21 +86,23 @@ CREATE table t_join_result(WR_RETURNED_DATE_SK INTEGER,WR_ITEM_SK INTEGER,WR_REF
 --设置并行度
 set session STREAM_EXECUTE_PARALLELISM 16;
 
---将join的结果插入到kafka sink中
-insert into RESULT_KAFKA select
+--将join的结果插入到pallas sink中
+insert into RESULT_PALLAS select
 wr_returned_date_sk,
 wr_item_sk,
 wr_refunded_cdemo_sk,
 c_customer_sk,
 c_customer_id,
-c_current_cdemo_sk
+c_current_cdemo_sk,
+atime
 from S_KAFKA_WEB_RETURNS_NEW  LEFT JOIN  S_mysql_customer_new 
 on 
   c_current_cdemo_sk = wr_refunded_cdemo_sk WHERE 
    c_birth_month =1 AND c_current_cdemo_sk IS NOT null;
-
+   
 sleep 600
 
+--停止任务
 SELECT JOBID FROM INFORMATION_SCHEMA.SYSTEM_STREAM_JOBSTATUS 
 WHERE	JOBSTATE = 'RUNNING'
 AND     SESSIONID IN 
@@ -139,7 +115,7 @@ AND     SESSIONID IN
 cancel job "%lastsqlresult.LastSQLResult[0][0]%"
 
 --将结果数据插入到ldb table中
-insert into t_join_result select * from RESULT_KAFKA_source;
+insert into t_join_result select * from RESULT_PALLAS;
 
 sleep 30
 
