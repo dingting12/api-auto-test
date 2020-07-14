@@ -53,8 +53,14 @@ if [ X"$m_OutputDirList" = "X" ]; then
     echo "All test failed. Job blowout."
     exit 255
 else
-    echo $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml "$m_OutputDirList"
-    $REBOT_BIN -d "$T_WORK" -o "$T_WORK"/output.xml $m_OutputDirList || true
+    echo $REBOT_BIN -d "$T_WORK" --tagstatexclude "owner*" --tagstatexclude "feature*" \
+               --reporttitle "测试报告-$BUILD_TAG" --logtitle "测试日志-$BUILD_TAG" \
+               --name "测试结果" --suitestatlevel 2 \
+               -o "$T_WORK"/output.xml $m_OutputDirList
+    $REBOT_BIN -d "$T_WORK" --tagstatexclude "owner*" --tagstatexclude "feature*"\
+               --reporttitle "测试报告-$BUILD_TAG" --logtitle "测试日志-$BUILD_TAG" \
+               --name "测试结果" --suitestatlevel 2 \
+               -o "$T_WORK"/output.xml $m_OutputDirList || true
 fi
 
 # 将所有的perf文件合并成1个output.perf文件
