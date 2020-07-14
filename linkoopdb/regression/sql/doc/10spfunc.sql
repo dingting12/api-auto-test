@@ -5,8 +5,7 @@
 -- 10.1 用户自定义函数(UDF)
 drop jar 'testUdf-0.0.1-SNAPSHOT.jar';
 
-add jar '$TEST_ROOT/regression/sql/doc/testUdf-0.0.1-SNAPSHOT.jar' not check
-exists;
+add jar '$TEST_ROOT/regression/sql/doc/testUdf-0.0.1-SNAPSHOT.jar' not check exists;
 
 drop function function_test_int if exists;
 
@@ -15,7 +14,8 @@ drop table db_udf_int if exists;
 
 CREATE FUNCTION function_test_int(price int) RETURNS int
 LANGUAGE JAVA DETERMINISTIC NO SQL
-EXTERNAL NAME ' com.datapps.dbudf.testdbudf.UDFint';
+EXTERNAL NAME 'com.datapps.dbudf.testdbudf.UDFbigint';
+/
 
 CREATE TABLE db_udf_int(price int);
 
