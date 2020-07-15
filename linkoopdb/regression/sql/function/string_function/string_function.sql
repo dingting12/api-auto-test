@@ -110,7 +110,7 @@ SELECT to_date('2018-09-01','YYYY-MONTH-DD') FROM Test_Builtin_2 limit 1;
 
 --函数嵌套使用
 SELECT to_date(to_timestamp('2018-11-22 23:12:13','YYYY-MM-DD HH24:MI:SS')) FROM Test_Builtin_2 limit 1;
-SELECT to_date(CURRENT_TIMESTAMP) FROM Test_Builtin_2 LIMIT 1;
+SELECT '当前日期',to_date(CURRENT_TIMESTAMP) FROM Test_Builtin_2 LIMIT 1;
 
 
 --TO_TIMESTAMP()函数
@@ -138,7 +138,7 @@ SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12:SS') FROM Test_Built
 --函数嵌套使用
 SELECT to_timestamp(to_date('2018-11-22','YYYY-MM-DD')) FROM Test_Builtin_2 limit 1;
 SELECT to_timestamp(to_date(ADD_MONTHS(timestamp '2011-01-01 21:01:33',6))) FROM Test_Builtin_2 LIMIT 1;
-SELECT to_timestamp(CURRENT_DATE) FROM Test_Builtin_2 LIMIT 1;
+SELECT '当前时间',to_timestamp(CURRENT_DATE) FROM Test_Builtin_2 LIMIT 1;
 
 
 --substring()函数

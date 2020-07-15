@@ -30,3 +30,7 @@ FunctionTestHdfsTest-Builtin
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True
+	Compare Skip                       ^[| 当前时间].*
+    Compare Skip                       ^[| 当前日期].*
+
+
