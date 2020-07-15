@@ -28,7 +28,7 @@ __internal__ create fs file temp.csv
 {random_ascii_letters_and_digits(50)},
 {random_ascii_letters_and_digits(50)},
 {random_ascii_letters_and_digits(50)},
-{current_timestamp()}
+{current_timestamp(%Y-%m-%d %H:%M:%S.%f)}
 ) rows 100000;
 __internal__ create kafka server node10:9092;
 __internal__ drop kafka topic shenzhen;
