@@ -27,13 +27,14 @@ select function_test_int(price) from db_udf_int ;
 
 --10.2 UDT
 --10.2.2. 创建UDT
-DROP TYPE udt_wy_1 IF EXISTS CASCADE;
-DROP TYPE tdv_type IF EXISTS CASCADE;
 drop table TDV_TABLE IF EXISTS CASCADE;
+DROP TYPE udt_wy_1 IF EXISTS CASCADE;
+DROP TYPE tdv_type_1 IF EXISTS CASCADE;
+
 
 CREATE TYPE udt_wy_1 AS SMALLINT;
 
-CREATE TYPE IF NOT EXISTS tdv_type(
+CREATE TYPE IF NOT EXISTS tdv_type_1(
 col1 INT, 
 col2 INT, 
 col3 VARCHAR(200)
@@ -41,10 +42,10 @@ col3 VARCHAR(200)
 
 CREATE TABLE TDV_TABLE(
 col1 udt_wy_1,
-col2 tdv_type
+col2 tdv_type_1
 );
 
-INSERT INTO TDV_TABLE VALUES(2,NEW tdv_type(9527, 9528, 'Teradata-syntaxtest'));
+INSERT INTO TDV_TABLE VALUES(2,NEW tdv_type_1(9527, 9528, 'Teradata-syntaxtest'));
 
 select * from TDV_TABLE;
 
@@ -62,6 +63,7 @@ ELSE
 SET pmsg = 'Negative Value';
 END IF;
 END;
+/
 
 CALL test_value(3, pmsg);
 
@@ -75,6 +77,7 @@ BEGIN
 SET V3 = V1 + 2;
 SET V2 = V2 * V2;
 END;
+/
 
 CALL call_test1 (3,4,V3);
 
@@ -91,6 +94,7 @@ CREATE PROCEDURE test_call1(IN w1 INTEGER, OUT w2 INTEGER)
 BEGIN
 SET w2 = 100/w1 + 100;
 END;
+/
 
 CALL test_call1(4,w2);
 
@@ -104,11 +108,13 @@ DECLARE a INTEGER;
 SET a = v1 + 2;
 CALL test_call1(:a,:v2);
 END;
+/
 
 CALL test_call2(2,v2);
 
 CALL v2;
 
+DROP PROCEDURE test_declare_variable IF EXISTS CASCADE;
 
 DROP TYPE udt_wy_1 IF EXISTS CASCADE;
 
@@ -123,7 +129,7 @@ CREATE TABLE TDV_TABLE(col1 udt_wy_1, col2 tdv_type);
 
 INSERT INTO TDV_TABLE VALUES(2,NEW tdv_type(9527, 9528, 'Teradata-syntax-test'));
 
-DROP PROCEDURE test_declare_variable IF EXISTS CASCADE;
+
 
 create procedure test_declare_variable(var1 udt_wy_1)
 modifies sql data
@@ -131,12 +137,23 @@ block_1: begin atomic
 declare var2 tdv_type default new tdv_type(9527, 9528, 'Teradata-syntax-test');
 insert into tdv_table values(var1, var2);
 end block_1;
+/
 
 call test_declare_variable(1);
 
+select * from tdv_table order by col1;
+
 call test_declare_variable(2);
 
+select * from tdv_table order by col1;
+
 call test_declare_variable(3);
+
+select * from tdv_table order by col1;
+
+
+
+
 
 DROP PROCEDURE test_value IF EXISTS CASCADE;
 
@@ -150,10 +167,15 @@ ELSE
 SET pmsg = 'Negative Value';
 END IF;
 END;
+/
 
-call test_value(-1)
-call test_value(1)
-call test_value(0)
+call test_value(-1,pmsg);
+call pmsg;
+call test_value(1,pmsg);
+call pmsg;
+call test_value(0,pmsg);
+call pmsg;
+
 
 DROP PROCEDURE sp_log IF EXISTS CASCADE;
 
@@ -163,9 +185,10 @@ WHILE p1 > 0 DO
 SET p1 = p1 - 1;
 END WHILE
 END;
+/
 
-call sp_log(5)
-call p1
+call sp_log(5);
+call p1;
 
 DROP PROCEDURE sp_loop IF EXISTS CASCADE;
 
@@ -179,13 +202,16 @@ CREATE PROCEDURE sp_loop ()
   END IF;
   END LOOP loop_label;
   END;
+/
 
 CALL sp_loop();
 
 --测试repeat
+DROP PROCEDURE test_repeat_statement IF EXISTS CASCADE;
+
 DROP table trs_table IF EXISTS ;
 
-DROP PROCEDURE test_repeat_statement IF EXISTS CASCADE;
+
 
 CREATE TABLE trs_table(COL1 INT);
 
@@ -198,8 +224,11 @@ CREATE PROCEDURE test_repeat_statement()
   SET VAR_1 = VAR_1 + 1;
   UNTIL VAR_1 > 10 END REPEAT repeat_label;
   END label_1;
+/
 
 CALL test_repeat_statement();
+
+select * from trs_table order by COL1;
 
 --测试ITERATE
 DROP table tis_table IF EXISTS ;
@@ -228,8 +257,12 @@ CREATE PROCEDURE test_iterate_statement()
   INSERT INTO tis_table VALUES(-1, -1);
   END WHILE while_1_lable;
   END label_1;
+/
 
 CALL test_iterate_statement();
+
+select * from tis_table order by COL1;
+
 
 --测试标签使用
 DROP PROCEDURE sp_loop IF EXISTS CASCADE;
@@ -244,6 +277,7 @@ CREATE PROCEDURE sp_loop ()
   END IF;
   END LOOP loop_label;
   END;
+/
 
 call sp_loop ();
 
@@ -277,8 +311,15 @@ now(),now(),34700);
   END IF;
   SET name=(SELECT LAST_NAME FROM employee WHERE EMPLOYEE_NUMBER=1025);
 END;
+/
 
-call Test_changedata_p1();
+call Test_changedata_p1(flag,name);
+
+call flag;
+
+call name;
+
+select * from employee order by employee_number;
 
 
 --10.3.4 游标的定义与使用
@@ -311,8 +352,10 @@ SET newvar = newvar + 1;
 END FOR;
 SET prowcount = newvar;
 END;
+/
 
 CALL sp_cur5(prowcount);
+
 CALL prowcount;
 
 
@@ -356,6 +399,7 @@ IF VAR1 = 6 THEN
 END WHILE;
 CLOSE projcursor;
 END;
+/
 
 call sp_opencursor_wy_1();
 
@@ -400,6 +444,7 @@ test_proc_cursor_employee
  END IF;
  END FOR;
 END;
+/
 
 call upd_cur1();
 
@@ -458,6 +503,8 @@ is failed! Found duplitcate primary key');
   ELSE SET spmsg='transaction successed'
   END IF;
 END;
+/
+
 
 DELETE FROM transaction_errorlog;
 
@@ -468,6 +515,9 @@ CALL spmsg;
 SELECT * FROM transaction_sample ORDER BY id; 
 
 SELECT * FROM transaction_errorlog; 
+
+
+
 
 
 DROP TABLE t_project_wy_1 IF EXISTS CASCADE;
@@ -492,6 +542,7 @@ OPEN projcursor;
 FETCH projcursor INTO var1, var2;
 CLOSE projcursor;
 END;
+/
 
 call sp_test1();
 
@@ -502,7 +553,7 @@ DYNAMIC RESULT SETS number
 BEGIN
   statement
 END;
-
+/
 
 DROP TABLE t_test1 IF EXISTS CASCADE;
 
@@ -537,6 +588,7 @@ BEGIN
   OPEN cur2;
   OPEN cur3;
 END;
+/
 
 CALL sp_test11();
 
@@ -588,8 +640,11 @@ begin
   insert AC_TBL (:ACTIVITY_COUNT);
   UPDATE ac SET id = p1_wy1 where id = :ACTIVITY_COUNT;
 END;
+/
 
-call test_activitycount_p7(1,'zhangsan');
+call test_activitycount_p7(p1_wy1,1,'zhangsan');
+
+call p1_wy1;
 
 --SQLCODE,SQLSTATE demo
 drop PROCEDURE p_sqlstate_wy1 IF EXISTS CASCADE;
@@ -605,8 +660,11 @@ BEGIN
 department_number = :deptnum_wy1;
   INSERT INTO t_sqlstate_errorlog_wy1 VALUES (0, 'ok');
 END;
+/
 
-call p_sqlstate_wy1(1);
+call p_sqlstate_wy1(1,lastnm_wy1);
+
+call lastnm_wy1;
 
 
 --10.3.6. SELECT INTO的使用
@@ -634,9 +692,10 @@ BEGIN
   AND hire_date=hdate
   AND salary_amount=sal;
 END;
+/
+call test_proc_select(1,'lily','2020-7-14',43901743.12,lname);
 
-call test_proc_select(1,'lily','2020-7-14',43901743.12);
-
+call lname;
 
 --10.3.7. 存储过程中的诊断语句
 drop table tab1 IF EXISTS CASCADE;
@@ -650,10 +709,12 @@ IF (rowcount = 0) THEN
 SET OParam = 0;
 END IF;
 END;
-
+/
 CREATE TABLE tab1 (c1 INTEGER);
 
 CALL getdiag1(OParam, NULL);
+
+call OParam;
 
 
 drop PROCEDURE setsignalsp1 IF EXISTS CASCADE;
@@ -687,6 +748,20 @@ SET balance = bal_amt
 WHERE accountno == acno;
 END IF;
 END cs1;
+/
+
+call setsignalsp1(acno,amt,Message,Class);
+
+call acno;
+
+call amt;
+
+call Message;
+
+call Class;
+
+
+
 
 drop PROCEDURE resignalsp1 IF EXISTS CASCADE;
 
@@ -710,9 +785,23 @@ SET OParam1 = 0;
 CALL resignalsp2(cnt); /* returns exception '45000' */
 END cs2;
 END cs1;
+/
+
+call resignalsp1(OParam1,pcondno,count);
+
+call OParam1;
+
+call pcondno;
+
+call count;
 
 
 --10.3.8. 存储过程的异常情况处理
+drop table t_sqlstate_errorlog_wy2 if exists;
+CREATE TABLE t_sqlstate_errorlog_wy2(
+  Sql_code INT,
+  Sql_State CHAR(5)
+);
 DROP PROCEDURE p_sqlstate_wy3 IF EXISTS CASCADE;
 CREATE PROCEDURE p_sqlstate_wy3 (IN empnum_wy3 INTEGER, OUT lastnm_wy3
 VARCHAR(20))
@@ -738,8 +827,24 @@ employee_number = :empnum_wy3;
   INSERT INTO t_sqlstate_errorlog_wy2 VALUES (:SQLCODE, :SQLSTATE
 ,'Successful');
 END;
+/
+
+call p_sqlstate_wy3(2,lastnm_wy3);
+
+call lastnm_wy3;
+
+
+
+
 
 DROP PROCEDURE p_sqlstate_wy2 IF EXISTS CASCADE;
+DROP table t_sqlstate_errorlog_wy1 IF EXISTS CASCADE;
+
+CREATE TABLE t_sqlstate_errorlog_wy1(
+  Sql_code INT,
+  Sql_State CHAR(5)
+);
+
 CREATE PROCEDURE p_sqlstate_wy2 (IN deptnum_wy2 INTEGER, OUT lastnm_wy2
 CHAR(20))
 BEGIN
@@ -751,6 +856,14 @@ BEGIN
 department_number = :deptnum_wy2;
   INSERT INTO t_sqlstate_errorlog_wy1 VALUES (:SQLCODE, :SQLSTATE);
 END;
+/
+
+call p_sqlstate_wy2(2,lastnm_wy2);
+
+call lastnm_wy2;
+
+
+
 
 
 DROP PROCEDURE new_customer IF EXISTS CASCADE;
@@ -765,6 +878,8 @@ CURRENT_TIMESTAMP);
 SET temp_id = IDENTITY();
 INSERT INTO ADDRESSES VALUES (DEFAULT, temp_id, address);
 END
+/
+
 
 
 DROP TABLE t_proc_wy_tab1 IF EXISTS CASCADE;
@@ -796,4 +911,9 @@ INSERT INTO t_proc_wy_tab1 VALUES (IOParam1);
 INSERT INTO t_proc_wy_tab1 VALUES (IOParam1);
 END L1;
 END Loutermost;
-CALL sp_label_han1(1,'sdas');
+/
+CALL sp_label_han1(IOParam1,IOParam2);
+
+call IOParam1;
+
+call IOParam2;

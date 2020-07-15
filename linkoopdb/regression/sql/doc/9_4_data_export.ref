@@ -1,0 +1,78 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 9_4_data_export.sql
+SQL> --Description: doc 9.4 data export
+   > --Date：2020-07-14
+   > --Author：丁婷
+   > 
+   > --9.4.2. 导出到HDFS
+SQL> drop table T_data_export_001 if exists;
+0 rows affected
+SQL> drop table T_data_export_002 if exists;
+0 rows affected
+SQL> CREATE TABLE T_data_export_001 (
+   > ID INT, 
+   > NAME VARCHAR(10)
+   > ) ;
+0 rows affected
+SQL> insert into T_data_export_001 values 
+   > (1,'zhangsan'),
+   > (2,'lisi');
+2 rows affected
+SQL> select * from T_data_export_001 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 2  | lisi     |
++----+----------+
+2 rows selected.
+SQL> CREATE EXTERNAL TABLE T_data_export_002 (
+   > ID INT, 
+   > NAME VARCHAR(10)
+   > ) 
+   > LOCATION('hdfs:///user/testdb73/external_file/doc/csv_test') FORMAT 'csv' (DELIMITER ',');
+0 rows affected
+SQL> delete from T_data_export_002;
+4 rows affected
+SQL> INSERT INTO T_data_export_002 SELECT * FROM T_data_export_001;
+6 rows affected
+SQL> select * from T_data_export_002 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 1  | zhangsan |
+| 1  | zhangsan |
+| 2  | lisi     |
+| 2  | lisi     |
+| 2  | lisi     |
++----+----------+
+6 rows selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --9.4.3. 导出到其他数据库
+SQL> DROP DATABASE LINK ORACLE_LINK_EXPORT_001 if exists cascade;
+0 rows affected
+SQL> CREATE DATABASE LINK ORACLE_LINK_EXPORT_001 CONNECT TO 'testlink1' IDENTIFIED BY
+   > '123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe' properties
+   > ('maxActive':'5');
+0 rows affected
+SQL> DROP table ORACLE_LINK_EXPORT_001.T_DATA_EXPORT_001 if exists;
+0 rows affected
+SQL> CREATE TABLE ORACLE_LINK_EXPORT_001.T_DATA_EXPORT_001(ID INT,NAME VARCHAR(20));
+0 rows affected
+SQL> INSERT INTO ORACLE_LINK_EXPORT_001.T_DATA_EXPORT_001 SELECT * FROM T_data_export_001;
+2 rows affected
+SQL> select * from ORACLE_LINK_EXPORT_001.T_DATA_EXPORT_001 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 2  | lisi     |
++----+----------+
+2 rows selected.
+SQL> exit
+Disconnected.

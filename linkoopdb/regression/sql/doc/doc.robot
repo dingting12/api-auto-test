@@ -13,8 +13,8 @@ Force Tags       owner:丁婷
 doc test   
 	[Documentation]    测试用户手册例子
     [Tags]     SQL-Test       external type test
-    Logon And Execute SQL Script     admin/123456    10spfunc.sql
-				   Compare Files     10spfunc.log    10spfunc.ref
+	Logon And Execute SQL Script     admin/123456           9_4_data_export.sql
+				   Compare Files     9_4_data_export.log    9_4_data_export.ref
 	
 	
 
