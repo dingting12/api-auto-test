@@ -32,6 +32,7 @@ __internal__ create fs file temp.csv
 ) rows 100000;
 __internal__ create kafka server node10:9092;
 __internal__ drop kafka topic shenzhen;
+sleep 3
 __internal__ create kafka topic shenzhen Partitions 20 replication_factor 1;
 sleep 3
 __internal__ create kafka message from file temp.csv to topic shenzhen;
