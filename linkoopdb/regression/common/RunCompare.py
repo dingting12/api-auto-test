@@ -2,7 +2,6 @@
 import os
 import re
 
-from robot.running.context import EXECUTION_CONTEXTS
 from robot.api import logger
 from robot.errors import ExecutionFailed
 import shlex
@@ -227,32 +226,9 @@ class RunCompare(object):
     __CompareWithMask = False                 # 是否在比对的时候利用正则表达式
     __CompareIgnoreCase = False               # 是否再比对的时候忽略大小写
     __CompareIgnoreTailOrHeadBlank = False    # 是否忽略对比的前后空格
-    __CompareFailedCount = 0                  # Compare已经失败的个次数
-    __CurrentTestName__ = None                # 当前的测试名称
 
     def __init__(self):
         pass
-
-    def Compare_Reset_FailedCount(self):
-        """ 清零之前统计的日志比对失败次数  """
-        """
-        输入参数：
-             无
-        返回值：
-            无
-        """
-        self.__CompareFailedCount = 0
-
-    def Compare_Check_Result(self):
-        """ 检查日志比对的失败次数，如果不是0，即抛出异常  """
-        """
-        输入参数：
-             无
-        返回值：
-            无
-        """
-        if self.__CompareFailedCount != 0:
-            raise RuntimeError("Total [" + str(self.__CompareFailedCount) + "] difs Found. Please double check.")
 
     def Compare_Ignore_EmptyLine(self, p_IgnoreEmptyLine):
         """ 设置是否在比对的时候忽略空白行  """
@@ -442,17 +418,6 @@ class RunCompare(object):
 
         # check if work file exist
         if not os.path.isfile(m_szWorkFile):
-            if self.__CurrentTestName__ is None:
-                self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
-                self.Compare_Reset_FailedCount()
-                self.__CompareFailedCount = self.__CompareFailedCount + 1
-            else:
-                if self.__CurrentTestName__ == str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}']):
-                    self.__CompareFailedCount = self.__CompareFailedCount + 1
-                else:
-                    self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
-                    self.Compare_Reset_FailedCount()
-                    self.__CompareFailedCount = self.__CompareFailedCount + 1
             m_CompareResultFile = open(m_DifFullFileName, 'w')
             m_CompareResultFile.write(
                 '===============   work log [' + p_szWorkFile + '] does not exist ============')
@@ -475,17 +440,6 @@ class RunCompare(object):
         if m_ReferenceLog is None:
             m_ReferenceLog = p_szReferenceFile
         if not os.path.isfile(m_ReferenceLog):
-            if self.__CurrentTestName__ is None:
-                self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
-                self.Compare_Reset_FailedCount()
-                self.__CompareFailedCount = self.__CompareFailedCount + 1
-            else:
-                if self.__CurrentTestName__ == str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}']):
-                    self.__CompareFailedCount = self.__CompareFailedCount + 1
-                else:
-                    self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
-                    self.Compare_Reset_FailedCount()
-                    self.__CompareFailedCount = self.__CompareFailedCount + 1
             logger.info('===============   reference log [' + m_ReferenceLog +
                         '] does not exist ============')
             m_CompareResultFile = open(m_DifFullFileName, 'w')
@@ -525,17 +479,6 @@ class RunCompare(object):
             return True
 
         if not m_CompareResult:
-            if self.__CurrentTestName__ is None:
-                self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
-                self.Compare_Reset_FailedCount()
-                self.__CompareFailedCount = self.__CompareFailedCount + 1
-            else:
-                if self.__CurrentTestName__ == str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}']):
-                    self.__CompareFailedCount = self.__CompareFailedCount + 1
-                else:
-                    self.__CurrentTestName__ = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
-                    self.Compare_Reset_FailedCount()
-                    self.__CompareFailedCount = self.__CompareFailedCount + 1
             logger.write("======= Diff file [" + m_DifFullFileName + "] >>>>> ")
             m_CompareResultFile = open(m_DifFullFileName, 'w', encoding="utf-8")
             for line in m_CompareResultList[::-1]:

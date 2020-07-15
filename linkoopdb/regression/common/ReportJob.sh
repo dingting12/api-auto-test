@@ -44,7 +44,7 @@ do
     rm -f "$T_WORK"/report.html
     # cp前面的\是为了放置系统环境上对cp进行的alias影响
     \cp -f $dir/*perf $dir/*sav $dir/*dif $dir/*suc $dir/*sql $dir/*log $dir/*out \
-            $dir/*json $dir/*html $T_WORK 2>/dev/null || true
+            $dir/*err $dir/*json $dir/*html $T_WORK 2>/dev/null || true
 done
 
 # 如果没有任何的JOB运行，则测试失败
