@@ -121,6 +121,8 @@ set session STREAM_EXECUTE_PARALLELISM 20;
 
 insert into S_PARQUET_SINK select * from s_kafka_source;
 
+set session work 'ldb.source.files.ignoreCorruptFiles' true;
+
 CREATE EXTERNAL TABLE t_parquet(
 TS_15M VARCHAR(17),
 MSISDN BIGINT,
@@ -148,7 +150,6 @@ CLIENTIP VARCHAR(128),
 SERVERIP VARCHAR(128),
 ctime timestamp,
 atime timestamp
-)LOCATION ('hdfs:///node62/shenzhen/test_2020-00-14-2020-00-15_table') FORMAT 'parquet';
+)LOCATION ('hdfs:///node62/shenzhen') FORMAT 'parquet' properties('recursiveFileLookup':'true');
 
 select * from t_parquet;
-
