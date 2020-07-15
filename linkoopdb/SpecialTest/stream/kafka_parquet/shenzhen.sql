@@ -107,7 +107,7 @@ atime timestamp
    'type': 'sink',
    'connector':'filesystem',
    'format':'parquet',
-   'path':'hdfs:///node62/shenzhen',
+   'path':'hdfs:///node74/stream74/linkoopdb/data/shenzhen',
    'write-mode':'time',
    'batch-rollover-interval':'1D',
    'time-format':'yyyy-mm-dd',
@@ -151,6 +151,6 @@ CLIENTIP VARCHAR(128),
 SERVERIP VARCHAR(128),
 ctime timestamp,
 atime timestamp
-)LOCATION ('hdfs:///node62/shenzhen') FORMAT 'parquet' properties('recursiveFileLookup':'true');
+)LOCATION ('hdfs:///node74/stream74/linkoopdb/data/shenzhen') FORMAT 'parquet' properties('recursiveFileLookup':'true');
 
 select * from t_parquet;
