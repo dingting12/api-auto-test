@@ -153,3 +153,6 @@ atime timestamp
 )LOCATION ('hdfs:///node62/shenzhen') FORMAT 'parquet' properties('recursiveFileLookup':'true');
 
 select * from t_parquet;
+
+__internal__ create kafka server node10:9092;
+__internal__ drop kafka topic shenzhen;
