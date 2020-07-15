@@ -27,4 +27,4 @@ __internal__ create kafka message topic shenzhen
 {CLIENTIP:random_ascii_letters_and_digits(50)},
 {SERVERIP:random_ascii_letters_and_digits(50)},
 {ctime:current_timestamp(%Y-%m-%d %H:%M:%S.%f)}
-) rows 100000;
+) rows 1000000;
