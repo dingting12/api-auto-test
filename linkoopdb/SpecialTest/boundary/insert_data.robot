@@ -10,7 +10,7 @@ Force Tags       owner:阮娜
 
 *** Test Cases ***
 InsertDataTest
-    [Tags]     SQL-Test       insert data test
+    [Tags]     SPECIALRUN
     Logon And Execute SQL Script    admin/123456  insert_data.sql   insert_data.log
     Compare Files             insert_data.log  insert_data.ref
 
