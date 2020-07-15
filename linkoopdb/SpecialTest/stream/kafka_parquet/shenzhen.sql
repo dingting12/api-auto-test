@@ -4,9 +4,9 @@ drop table if exists t_parquet;
 
 __internal__ create kafka server node10:9092;
 __internal__ drop kafka topic shenzhen;
-sleep 3
+sleep 5
 __internal__ create kafka topic shenzhen Partitions 20 replication_factor 1;
-sleep 3
+sleep 5
 __internal__ create kafka message topic shenzhen
 (
 {TS_15M:random_ascii_letters_and_digits(17)},
