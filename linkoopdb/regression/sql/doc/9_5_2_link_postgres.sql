@@ -12,18 +12,20 @@ grant change_authorization to user_postgres_001;
 
 connect user user_postgres_001 password '123456';
 
-create database link POSTGRES_LINK_DOC_001 connect to 'postgres' identified by 'linkoopdb' using 'jdbc:postgresql://192.168.1.72:5432/test' properties('schema':'manyi','caseSensitive':'true');
+drop database link POSTGRES_LINK_DOC_001 if exists cascade;
+
+create database link POSTGRES_LINK_DOC_001 connect to 'postgres' identified by '123456' using 'jdbc:postgresql://192.168.1.72:5432/test' properties('schema':'manyi','caseSensitive':'true');
 
 RELOAD DATABASE LINK POSTGRES_LINK_DOC_001;
 
 DROP DATABASE LINK POSTGRES_LINK_DOC_001 if exists cascade;
 
 create database link POSTGRES_LINK_DOC_001 connect to 'postgres' identified by
-'linkoopdb' using 'jdbc:postgresql://192.168.1.72:5432/test' properties
+'123456' using 'jdbc:postgresql://192.168.1.72:5432/test' properties
 ('schema':'manyi','caseSensitive':'true');
 
 ALTER DATABASE LINK POSTGRES_LINK_DOC_001 CONNECT TO 'postgres' IDENTIFIED BY
-'123456' USING 'jdbc:postgresql://localhost:5432/postgres';
+'123456' USING 'jdbc:postgresql://192.168.1.72:5432/test';
 
 
 
@@ -174,8 +176,7 @@ drop DATABASE LINK POSTGRES_LINK_DOC_002 if exists cascade;
 CREATE USER user_postgres_002 PASSWORD '123456';
 
 create database link POSTGRES_LINK_DOC_002 connect to 'postgres' identified by
-'linkoopdb' using 'jdbc:postgresql://192.168.1.72:5432/test'properties
-('schema':'manyi','caseSensitive':'true');
+'123456' using 'jdbc:postgresql://192.168.1.72:5432/test';
 
 
 DROP table POSTGRES_LINK_DOC_002.T_TEST_PS_002 if exists;
