@@ -1,0 +1,74 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 9_6_5_external_mysql.sql
+SQL> --Description: doc 9.6.5 external mysql
+   > --Date：2020-07-14
+   > --Author：丁婷
+SQL> drop table MYSQL_1 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE MYSQL_1 (
+   > COLUMN1 INT,
+   > COLUMN2 VARCHAR(20) ) FORMAT 'JDBC' PROPERTIES ('table':'MYSQL_TEST_001','driver':'com.mysql.jdbc.Driver',
+   > 'url':'jdbc:mysql://192.168.1.72:3306/test','user':'test','password':'123456');
+0 rows affected
+SQL> select * from MYSQL_1 order by COLUMN1;
++---------+----------+
+| COLUMN1 | COLUMN2  |
++---------+----------+
+| 1       | zhangsan |
+| 2       | lisi     |
++---------+----------+
+2 rows selected.
+SQL> drop table MYSQL_1 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE MYSQL_1 (
+   > COLUMN1 INT,
+   > COLUMN2 VARCHAR(20) ) FORMAT 'JDBC' PROPERTIES ('table':'mysql_test_002','driver':'com.mysql.jdbc.Driver',
+   > 'url':'jdbc:mysql://192.168.1.72:3306/test','user':'test','password':'123456','caseSensitive':'true');
+0 rows affected
+SQL> select * from MYSQL_1 order by COLUMN1;
++---------+---------+
+| COLUMN1 | COLUMN2 |
++---------+---------+
+| 1       | wangwu  |
+| 2       | zhaoliu |
++---------+---------+
+2 rows selected.
+SQL> drop table MYSQL_2 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE MYSQL_2 BY
+   > jdbc('table':'MYSQL_TEST_001',
+   > 'driver':'com.mysql.jdbc.Driver',
+   > 'url':'jdbc:mysql://192.168.1.72:3306/test',
+   > 'user':'test',
+   > 'password':'123456');
+0 rows affected
+SQL> select * from MYSQL_2 order by COLUMN1;
++---------+----------+
+| COLUMN1 | COLUMN2  |
++---------+----------+
+| 1       | zhangsan |
+| 2       | lisi     |
++---------+----------+
+2 rows selected.
+SQL> drop table MYSQL_2 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE MYSQL_2 BY
+   > jdbc('table':'mysql_test_002',
+   > 'driver':'com.mysql.jdbc.Driver',
+   > 'url':'jdbc:mysql://192.168.1.72:3306/test',
+   > 'user':'test',
+   > 'password':'123456',
+   > 'caseSensitive':'true');
+0 rows affected
+SQL> select * from MYSQL_2 order by COLUMN1;
++---------+---------+
+| COLUMN1 | COLUMN2 |
++---------+---------+
+| 1       | wangwu  |
+| 2       | zhaoliu |
++---------+---------+
+2 rows selected.
+SQL> exit
+Disconnected.

@@ -1,0 +1,303 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 9_5_3_link_sqlserver.sql
+SQL> --Description: doc 9.5.3 link sqlserver
+   > --Date：2020-07-14
+   > --Author：丁婷
+SQL> drop user user_sqlserver_001 if exists cascade; 
+0 rows affected
+SQL> CREATE USER user_sqlserver_001 PASSWORD '123456';
+0 rows affected
+SQL> GRANT CREATE_SCHEMA TO user_sqlserver_001;
+0 rows affected
+SQL> grant change_authorization to user_sqlserver_001; 
+0 rows affected
+SQL> connect user user_sqlserver_001 password '123456';
+Database connected.
+SQL> CREATE DATABASE LINK SQLSERVER_LINK_DOC_001 CONNECT TO 'sa' IDENTIFIED BY
+   > 'LinkoopDB123' USING 'jdbc:sqlserver://192.168.1.72;Database=insen' PROPERTIES
+   > ('schema':'dbo');
+0 rows affected
+SQL> RELOAD DATABASE LINK SQLSERVER_LINK_DOC_001;
+0 rows affected
+SQL> DROP DATABASE LINK SQLSERVER_LINK_DOC_001  CASCADE;
+0 rows affected
+SQL> CREATE DATABASE LINK SQLSERVER_LINK_DOC_001 CONNECT TO 'sa' IDENTIFIED BY
+   > 'LinkoopDB123' USING 'jdbc:sqlserver://192.168.1.72;Database=insen' PROPERTIES
+   > ('schema':'dbo');
+0 rows affected
+SQL> ALTER DATABASE LINK SQLSERVER_LINK_DOC_001 CONNECT TO 'sa' IDENTIFIED BY
+   > 'LinkoopDB123' USING 'jdbc:sqlserver://192.168.1.72;Database=tempdb' PROPERTIES
+   > ('schema':'dbo');
+0 rows affected
+SQL> drop table SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001 if exists cascade;
+0 rows affected
+SQL> CREATE TABLE SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001 (
+   > ID INT,
+   > NAME VARCHAR(20));
+0 rows affected
+SQL> INSERT INTO SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001 VALUES (1,'zs');
+1 row affected
+SQL> SELECT * FROM SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001; 
++----+------+
+| ID | NAME |
++----+------+
+| 1  | zs   |
++----+------+
+1 row selected.
+SQL> UPDATE SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001 SET ID =2;
+1 row affected
+SQL> SELECT * FROM SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001; 
++----+------+
+| ID | NAME |
++----+------+
+| 2  | zs   |
++----+------+
+1 row selected.
+SQL> DELETE FROM SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001; 
+1 row affected
+SQL> SELECT * FROM SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001; 
+0 rows selected.
+SQL> INSERT INTO SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001 VALUES (1,'zs');
+1 row affected
+SQL> drop table SQLSERVER_LINK_DOC_001.V_VIEW1 if exists;
+0 rows affected
+SQL> CREATE VIEW SQLSERVER_LINK_DOC_001.V_VIEW1 AS SELECT * from SQLSERVER_LINK_DOC_001.T_TEST_SQLSERVER_001;
+0 rows affected
+SQL> SELECT * FROM SQLSERVER_LINK_DOC_001.V_VIEW1; 
++----+------+
+| ID | NAME |
++----+------+
+| 1  | zs   |
++----+------+
+1 row selected.
+SQL> drop table SQLSERVER_LINK_DOC_001.test_add_column if exists cascade;
+0 rows affected
+SQL> create table SQLSERVER_LINK_DOC_001.test_add_column(col1 int, col2 int, col3 int);
+0 rows affected
+SQL> alter table SQLSERVER_LINK_DOC_001.test_add_column add column col4 int; 
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.test_add_column;
++-----------------+----------------------------------------------------------------------------------------------------------+
+| TABLE           | CREATE_TABLE                                                                                             |
++-----------------+----------------------------------------------------------------------------------------------------------+
+| TEST_ADD_COLUMN | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ADD_COLUMN(COL1 INTEGER,COL2 INTEGER,COL3 INTEGER,COL4 INTEGER) |
++-----------------+----------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> drop table SQLSERVER_LINK_DOC_001.test_drop_column if exists cascade;
+0 rows affected
+SQL> create table SQLSERVER_LINK_DOC_001.test_drop_column (col1 int, col2 int, col3 int);
+0 rows affected
+SQL> alter table SQLSERVER_LINK_DOC_001.test_drop_column drop column col1;
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.test_drop_column;
++------------------+---------------------------------------------------------------------------------+
+| TABLE            | CREATE_TABLE                                                                    |
++------------------+---------------------------------------------------------------------------------+
+| TEST_DROP_COLUMN | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_DROP_COLUMN(COL2 INTEGER,COL3 INTEGER) |
++------------------+---------------------------------------------------------------------------------+
+1 row selected.
+SQL> drop table SQLSERVER_LINK_DOC_001.test_rename_column if exists cascade;
+0 rows affected
+SQL> create table SQLSERVER_LINK_DOC_001.test_rename_column (col1 int, col2 int, col3
+   > int);
+0 rows affected
+SQL> alter table SQLSERVER_LINK_DOC_001.test_rename_column alter column col1 rename to
+   > new_col1;
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.test_rename_column;
++--------------------+----------------------------------------------------------------------------------------------------+
+| TABLE              | CREATE_TABLE                                                                                       |
++--------------------+----------------------------------------------------------------------------------------------------+
+| TEST_RENAME_COLUMN | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_RENAME_COLUMN(NEW_COL1 INTEGER,COL2 INTEGER,COL3 INTEGER) |
++--------------------+----------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> drop table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE if exists cascade;
+0 rows affected
+SQL> create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(c1 int, c2 int, c3 int);
+0 rows affected
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > tinyint;
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+-----------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                            |
++-------------------+-----------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 TINYINT) |
++-------------------+-----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > smallint;
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+------------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                             |
++-------------------+------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 SMALLINT) |
++-------------------+------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > bigint;
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+----------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                           |
++-------------------+----------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 BIGINT) |
++-------------------+----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > real;
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+----------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                           |
++-------------------+----------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 DOUBLE) |
++-------------------+----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > float;
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+---------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                          |
++-------------------+---------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 FLOAT) |
++-------------------+---------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > decimal(5,3);
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+----------------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                                 |
++-------------------+----------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 DECIMAL(5,3)) |
++-------------------+----------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > numeric(5,3);
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+----------------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                                 |
++-------------------+----------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 NUMERIC(5,3)) |
++-------------------+----------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > char(10);
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+------------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                             |
++-------------------+------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 CHAR(10)) |
++-------------------+------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE alter column C3 set data type
+   > varchar(10);
+0 rows affected
+SQL> show create table SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE;
++-------------------+---------------------------------------------------------------------------------------------+
+| TABLE             | CREATE_TABLE                                                                                |
++-------------------+---------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE | CREATE TABLE SQLSERVER_LINK_DOC_001.TEST_ALT_COL_TYPE(C1 INTEGER,C2 INTEGER,C3 VARCHAR(10)) |
++-------------------+---------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> drop table SQLSERVER_LINK_DOC_001.TEST_PK if exists cascade;
+0 rows affected
+SQL> drop table SQLSERVER_LINK_DOC_001.TEST_UN if exists cascade;
+0 rows affected
+SQL> create table SQLSERVER_LINK_DOC_001.TEST_PK (id int not null, name VARCHAR(20) ,
+   > age int );
+0 rows affected
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_PK add constraint pk_S2 primary key(id);
+0 rows affected
+SQL> select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='TEST_PK' and CONSTRAINT_NAME='PK_S2';
++--------------------+------------------------+-----------------+-----------------+---------------+------------------------+------------+---------------+--------------------+
+| CONSTRAINT_CATALOG | CONSTRAINT_SCHEMA      | CONSTRAINT_NAME | CONSTRAINT_TYPE | TABLE_CATALOG | TABLE_SCHEMA           | TABLE_NAME | IS_DEFERRABLE | INITIALLY_DEFERRED |
++--------------------+------------------------+-----------------+-----------------+---------------+------------------------+------------+---------------+--------------------+
+| PUBLIC             | SQLSERVER_LINK_DOC_001 | PK_S2           | PRIMARY KEY     | PUBLIC        | SQLSERVER_LINK_DOC_001 | TEST_PK    | NO            | NO                 |
++--------------------+------------------------+-----------------+-----------------+---------------+------------------------+------------+---------------+--------------------+
+1 row selected.
+SQL> create table SQLSERVER_LINK_DOC_001.TEST_UN (id int , name VARCHAR(20), age int );
+0 rows affected
+SQL> ALTER TABLE SQLSERVER_LINK_DOC_001.TEST_UN ADD CONSTRAINT uc_S3 UNIQUE (name,
+   > age);
+0 rows affected
+SQL> select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='TEST_UN' and CONSTRAINT_NAME='UC_S3';
++--------------------+------------------------+-----------------+-----------------+---------------+------------------------+------------+---------------+--------------------+
+| CONSTRAINT_CATALOG | CONSTRAINT_SCHEMA      | CONSTRAINT_NAME | CONSTRAINT_TYPE | TABLE_CATALOG | TABLE_SCHEMA           | TABLE_NAME | IS_DEFERRABLE | INITIALLY_DEFERRED |
++--------------------+------------------------+-----------------+-----------------+---------------+------------------------+------------+---------------+--------------------+
+| PUBLIC             | SQLSERVER_LINK_DOC_001 | UC_S3           | UNIQUE          | PUBLIC        | SQLSERVER_LINK_DOC_001 | TEST_UN    | NO            | NO                 |
++--------------------+------------------------+-----------------+-----------------+---------------+------------------------+------------+---------------+--------------------+
+1 row selected.
+SQL> drop table SQLSERVER_LINK_DOC_001.TEST_01 if exists cascade;
+0 rows affected
+SQL> drop table SQLSERVER_LINK_DOC_001.TEST_02 if exists cascade;
+0 rows affected
+SQL> create table SQLSERVER_LINK_DOC_001.TEST_01 (id int not null, name VARCHAR(20),
+   > age int );
+0 rows affected
+SQL> create table SQLSERVER_LINK_DOC_001.TEST_02 (id int , name VARCHAR(20), age int
+   > not null);
+0 rows affected
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_01 add constraint pk_S4 primary key(id);
+0 rows affected
+SQL> alter table SQLSERVER_LINK_DOC_001.TEST_02 add constraint pk_S5 primary key(age);
+0 rows affected
+SQL> ALTER TABLE SQLSERVER_LINK_DOC_001.TEST_01 ADD CONSTRAINT fk_S4 FOREIGN KEY(ID)
+   > REFERENCES SQLSERVER_LINK_DOC_001.TEST_02(age);
+0 rows affected
+SQL> connect user admin password '123456';
+Database connected.
+SQL> drop user user_sqlserver_002 if exists cascade;
+0 rows affected
+SQL> drop DATABASE LINK SQLSERVER_LINK_DOC_002 if exists cascade;
+0 rows affected
+SQL> CREATE USER user_sqlserver_002 PASSWORD '123456';
+0 rows affected
+SQL> CREATE DATABASE LINK SQLSERVER_LINK_DOC_002 CONNECT TO 'sa' IDENTIFIED BY
+   > 'LinkoopDB123' USING 'jdbc:sqlserver://192.168.1.72;Database=insen' PROPERTIES
+   > ('schema':'dbo');
+0 rows affected
+SQL> DROP table SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002 if exists;
+0 rows affected
+SQL> CREATE TABLE SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002 (
+   > ID INT,
+   > NAME VARCHAR(20)
+   > );
+0 rows affected
+SQL> GRANT INSERT,SELECT,UPDATE,DELETE ON SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002 TO user_sqlserver_002;
+0 rows affected
+SQL> grant change_authorization to user_sqlserver_002; 
+0 rows affected
+SQL> connect user user_sqlserver_002 password '123456';
+Database connected.
+SQL> insert into SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002 values(1,'zhangsan');
+1 row affected
+SQL> select * from SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
++----+----------+
+1 row selected.
+SQL> UPDATE SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002 SET ID = 2;
+1 row affected
+SQL> select * from SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 2  | zhangsan |
++----+----------+
+1 row selected.
+SQL> delete from SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002;
+1 row affected
+SQL> select * from SQLSERVER_LINK_DOC_002.T_TEST_SQLSERVER_002;
+0 rows selected.
+SQL> exit
+Disconnected.

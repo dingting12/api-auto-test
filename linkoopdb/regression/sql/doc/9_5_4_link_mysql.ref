@@ -1,0 +1,292 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 9_5_4_link_mysql.sql
+SQL> --Description: doc 9.5.4 link mysql
+   > --Date：2020-07-14
+   > --Author：丁婷
+SQL> drop user user_mysql_001 if exists cascade; 
+0 rows affected
+SQL> CREATE USER user_mysql_001 PASSWORD '123456';
+0 rows affected
+SQL> GRANT CREATE_SCHEMA TO user_mysql_001;
+0 rows affected
+SQL> grant change_authorization to user_mysql_001; 
+0 rows affected
+SQL> connect user user_mysql_001 password '123456';
+Database connected.
+SQL> CREATE DATABASE LINK MYSQL_LINK_DOC_001 CONNECT TO 'test' IDENTIFIED BY
+   > '123456' USING 'jdbc:mysql://192.168.1.72:3306/test' PROPERTIES
+   > ('caseSensitive':'true');
+0 rows affected
+SQL> RELOAD DATABASE LINK MYSQL_LINK_DOC_001;
+0 rows affected
+SQL> DROP DATABASE LINK MYSQL_LINK_DOC_001 if exists cascade; 
+0 rows affected
+SQL> CREATE DATABASE LINK MYSQL_LINK_DOC_001 CONNECT TO 'test' IDENTIFIED BY
+   > '123456' USING 'jdbc:mysql://192.168.1.72:3306/test' PROPERTIES
+   > ('caseSensitive':'true');
+0 rows affected
+SQL> ALTER DATABASE LINK MYSQL_LINK_DOC_001 CONNECT TO 'admin' IDENTIFIED BY
+   > '123456' USING 'jdbc:mysql://192.168.1.72:3306/test' PROPERTIES
+   > ('caseSensitive':'true');
+0 rows affected
+SQL> drop table  MYSQL_LINK_DOC_001.T_TEST_001 if exists cascade;
+0 rows affected
+SQL> CREATE TABLE MYSQL_LINK_DOC_001.T_TEST_001 (
+   > ID INT,
+   > NAME VARCHAR(20));
+0 rows affected
+SQL> INSERT INTO MYSQL_LINK_DOC_001.T_TEST_001 VALUES (1,'zs');
+1 row affected
+SQL> SELECT * FROM MYSQL_LINK_DOC_001.T_TEST_001; 
++----+------+
+| ID | NAME |
++----+------+
+| 1  | zs   |
++----+------+
+1 row selected.
+SQL> UPDATE MYSQL_LINK_DOC_001.T_TEST_001 SET ID = 2; 
+1 row affected
+SQL> SELECT * FROM MYSQL_LINK_DOC_001.T_TEST_001; 
++----+------+
+| ID | NAME |
++----+------+
+| 2  | zs   |
++----+------+
+1 row selected.
+SQL> DELETE FROM MYSQL_LINK_DOC_001.T_TEST_001; 
+1 row affected
+SQL> SELECT * FROM MYSQL_LINK_DOC_001.T_TEST_001; 
+0 rows selected.
+SQL> INSERT INTO MYSQL_LINK_DOC_001.T_TEST_001 VALUES (1,'zs');
+1 row affected
+SQL> drop view MYSQL_LINK_DOC_001.V_VIEW1 if exists;
+0 rows affected
+SQL> CREATE VIEW MYSQL_LINK_DOC_001.V_VIEW1 AS SELECT * from MYSQL_LINK_DOC_001.T_TEST_001; 
+0 rows affected
+SQL> SELECT * FROM MYSQL_LINK_DOC_001.V_VIEW1;
++----+------+
+| ID | NAME |
++----+------+
+| 1  | zs   |
++----+------+
+1 row selected.
+SQL> drop table MYSQL_LINK_DOC_001.TEST_COL_001 if exists;
+0 rows affected
+SQL> create table MYSQL_LINK_DOC_001.TEST_COL_001 ( c1 int, c2 VARCHAR(20), c3 smallint );
+0 rows affected
+SQL> alter table MYSQL_LINK_DOC_001.TEST_COL_001 add c5 float;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_COL_001;
++--------------+----------------------------------------------------------------------------------------------+
+| TABLE        | CREATE_TABLE                                                                                 |
++--------------+----------------------------------------------------------------------------------------------+
+| TEST_COL_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_COL_001(C1 INTEGER,C2 VARCHAR(20),C3 SMALLINT,C5 FLOAT) |
++--------------+----------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> ALTER TABLE MYSQL_LINK_DOC_001.TEST_COL_001 DROP COLUMN c3;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_COL_001;
++--------------+----------------------------------------------------------------------------------+
+| TABLE        | CREATE_TABLE                                                                     |
++--------------+----------------------------------------------------------------------------------+
+| TEST_COL_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_COL_001(C1 INTEGER,C2 VARCHAR(20),C5 FLOAT) |
++--------------+----------------------------------------------------------------------------------+
+1 row selected.
+SQL> ALTER table MYSQL_LINK_DOC_001.TEST_COL_001 ALTER c2 RENAME TO salary;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_COL_001;
++--------------+--------------------------------------------------------------------------------------+
+| TABLE        | CREATE_TABLE                                                                         |
++--------------+--------------------------------------------------------------------------------------+
+| TEST_COL_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_COL_001(C1 INTEGER,SALARY VARCHAR(20),C5 FLOAT) |
++--------------+--------------------------------------------------------------------------------------+
+1 row selected.
+SQL> drop table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 if exists;
+0 rows affected
+SQL> create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 ( id int, name VARCHAR(20), age
+   > int );
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+------------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                                   |
++-----------------------+------------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME VARCHAR(20),AGE INTEGER) |
++-----------------------+------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > date;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+-----------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                            |
++-----------------------+-----------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME DATE,AGE INTEGER) |
++-----------------------+-----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > timestamp;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+----------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                                 |
++-----------------------+----------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME TIMESTAMP,AGE INTEGER) |
++-----------------------+----------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > varchar(38);
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+------------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                                   |
++-----------------------+------------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME VARCHAR(38),AGE INTEGER) |
++-----------------------+------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > DOUBLE;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+-------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                              |
++-----------------------+-------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME DOUBLE,AGE INTEGER) |
++-----------------------+-------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > decimal;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+------------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                                   |
++-----------------------+------------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME DECIMAL(38),AGE INTEGER) |
++-----------------------+------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > char(20);
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+---------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                                |
++-----------------------+---------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME CHAR(20),AGE INTEGER) |
++-----------------------+---------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > float;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                             |
++-----------------------+------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME FLOAT,AGE INTEGER) |
++-----------------------+------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > smallint;
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+---------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                                |
++-----------------------+---------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME SMALLINT,AGE INTEGER) |
++-----------------------+---------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001 alter column name set data type
+   > DOUBLE; 
+0 rows affected
+SQL> show create table MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001;
++-----------------------+-------------------------------------------------------------------------------------------+
+| TABLE                 | CREATE_TABLE                                                                              |
++-----------------------+-------------------------------------------------------------------------------------------+
+| TEST_ALT_COL_TYPE_001 | CREATE TABLE MYSQL_LINK_DOC_001.TEST_ALT_COL_TYPE_001(ID INTEGER,NAME DOUBLE,AGE INTEGER) |
++-----------------------+-------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> drop table MYSQL_LINK_DOC_001.TEST_PK_001 if exists;
+0 rows affected
+SQL> create table MYSQL_LINK_DOC_001.TEST_PK_001 (id int, name VARCHAR(20), age int );
+0 rows affected
+SQL> alter table MYSQL_LINK_DOC_001.TEST_PK_001 add constraint pk_t02 primary key(id);
+0 rows affected
+SQL> select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='TEST_PK_001' and CONSTRAINT_NAME='PK_T02';
++--------------------+--------------------+-----------------+-----------------+---------------+--------------------+-------------+---------------+--------------------+
+| CONSTRAINT_CATALOG | CONSTRAINT_SCHEMA  | CONSTRAINT_NAME | CONSTRAINT_TYPE | TABLE_CATALOG | TABLE_SCHEMA       | TABLE_NAME  | IS_DEFERRABLE | INITIALLY_DEFERRED |
++--------------------+--------------------+-----------------+-----------------+---------------+--------------------+-------------+---------------+--------------------+
+| PUBLIC             | MYSQL_LINK_DOC_001 | PK_T02          | PRIMARY KEY     | PUBLIC        | MYSQL_LINK_DOC_001 | TEST_PK_001 | NO            | NO                 |
++--------------------+--------------------+-----------------+-----------------+---------------+--------------------+-------------+---------------+--------------------+
+1 row selected.
+SQL> drop table MYSQL_LINK_DOC_001.TEST_UN_001 if exists;
+0 rows affected
+SQL> create table MYSQL_LINK_DOC_001.TEST_UN_001 (id int, name VARCHAR(20), age int );
+0 rows affected
+SQL> ALTER TABLE MYSQL_LINK_DOC_001.TEST_UN_001 ADD CONSTRAINT uc_t03 UNIQUE (name,age);
+0 rows affected
+SQL> select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='TEST_UN_001' and CONSTRAINT_NAME='UC_T03';
++--------------------+--------------------+-----------------+-----------------+---------------+--------------------+-------------+---------------+--------------------+
+| CONSTRAINT_CATALOG | CONSTRAINT_SCHEMA  | CONSTRAINT_NAME | CONSTRAINT_TYPE | TABLE_CATALOG | TABLE_SCHEMA       | TABLE_NAME  | IS_DEFERRABLE | INITIALLY_DEFERRED |
++--------------------+--------------------+-----------------+-----------------+---------------+--------------------+-------------+---------------+--------------------+
+| PUBLIC             | MYSQL_LINK_DOC_001 | UC_T03          | UNIQUE          | PUBLIC        | MYSQL_LINK_DOC_001 | TEST_UN_001 | NO            | NO                 |
++--------------------+--------------------+-----------------+-----------------+---------------+--------------------+-------------+---------------+--------------------+
+1 row selected.
+SQL> drop table MYSQL_LINK_DOC_001.TEST_FOR_01 if exists;
+0 rows affected
+SQL> drop table MYSQL_LINK_DOC_001.TEST_FOR_02 if exists;
+0 rows affected
+SQL> create table MYSQL_LINK_DOC_001.TEST_FOR_01 ( id int, name VARCHAR(20), age int );
+0 rows affected
+SQL> create table MYSQL_LINK_DOC_001.TEST_FOR_02 ( id int, name VARCHAR(20), age int );
+0 rows affected
+SQL> alter table MYSQL_LINK_DOC_001.TEST_FOR_01 add constraint pk_t04 primary key(id);
+0 rows affected
+SQL> alter table MYSQL_LINK_DOC_001.TEST_FOR_02 add constraint pk_t05 primary key(age);
+0 rows affected
+SQL> ALTER TABLE MYSQL_LINK_DOC_001.TEST_FOR_01 ADD CONSTRAINT fk_t04 FOREIGN KEY(ID)
+   > REFERENCES MYSQL_LINK_DOC_001.TEST_FOR_02(age);
+0 rows affected
+SQL> connect user admin password '123456';
+Database connected.
+SQL> disconnect user_mysql_002;
+SQL> drop user user_mysql_002 if exists cascade;
+java.sql.SQLSyntaxErrorException: cannot drop a user that is currently connected in statement [drop user user_mysql_002 if exists cascade]
+SQL> drop DATABASE LINK MYSQL_LINK_DOC_002 if exists cascade;
+0 rows affected
+SQL> CREATE USER user_mysql_002 PASSWORD '123456';
+java.sql.SQLSyntaxErrorException: object name already exists: schema USER_MYSQL_002 exists already when initialize the same name schema for user! in statement [CREATE USER user_mysql_002 PASSWORD '123456']
+SQL> CREATE DATABASE LINK MYSQL_LINK_DOC_002 CONNECT TO 'test' IDENTIFIED BY
+   > '123456' USING 'jdbc:mysql://192.168.1.72:3306/test' PROPERTIES
+   > ('caseSensitive':'true');
+0 rows affected
+SQL> DROP table MYSQL_LINK_DOC_002.T_TEST_MYSQL_002 if exists;
+0 rows affected
+SQL> CREATE TABLE MYSQL_LINK_DOC_002.T_TEST_MYSQL_002 (
+   > ID INT,
+   > NAME VARCHAR(20)
+   > );
+0 rows affected
+SQL> GRANT INSERT,SELECT,UPDATE,DELETE ON MYSQL_LINK_DOC_002.T_TEST_MYSQL_002 TO user_mysql_002;
+0 rows affected
+SQL> grant change_authorization to user_mysql_002; 
+java.sql.SQLException: invalid role specification: USER_MYSQL_002 in statement [grant change_authorization to user_mysql_002]
+SQL> connect user user_mysql_002 password '123456';
+Database connected.
+SQL> insert into MYSQL_LINK_DOC_002.T_TEST_MYSQL_002 values(1,'zhangsan');
+1 row affected
+SQL> UPDATE MYSQL_LINK_DOC_002.T_TEST_MYSQL_002 SET ID = 2;
+1 row affected
+SQL> select * from MYSQL_LINK_DOC_002.T_TEST_MYSQL_002;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 2  | zhangsan |
++----+----------+
+1 row selected.
+SQL> delete from MYSQL_LINK_DOC_002.T_TEST_MYSQL_002;
+1 row affected
+SQL> select * from MYSQL_LINK_DOC_002.T_TEST_MYSQL_002;
+0 rows selected.
+SQL> disconnect user_mysql_002;
+SQL> exit
+Disconnected.

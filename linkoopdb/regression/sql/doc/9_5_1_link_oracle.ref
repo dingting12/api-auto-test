@@ -1,0 +1,242 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 9_5_1_link_oracle.sql
+SQL> --Description: doc 9.5.1 link oracle
+   > --Date：2020-07-14
+   > --Author：丁婷
+SQL> drop user user_oracle_001 if exists cascade;
+0 rows affected
+SQL> CREATE USER user_oracle_001 PASSWORD '123456';
+0 rows affected
+SQL> GRANT CREATE_SCHEMA TO user_oracle_001;
+0 rows affected
+SQL> grant change_authorization to user_oracle_001; 
+0 rows affected
+SQL> connect user user_oracle_001 password '123456';
+Database connected.
+SQL> drop DATABASE LINK ORACLE_LINK_DOC_001 if exists;
+0 rows affected
+SQL> CREATE DATABASE LINK ORACLE_LINK_DOC_001 CONNECT TO 'testlink1' IDENTIFIED BY
+   > '123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+   > properties('maxActive':'10','otherUsers':'TEMP,SYSTEM');
+0 rows affected
+SQL> RELOAD DATABASE LINK ORACLE_LINK_DOC_001;
+0 rows affected
+SQL> DROP DATABASE LINK ORACLE_LINK_DOC_001 if exists cascade;
+0 rows affected
+SQL> CREATE DATABASE LINK ORACLE_LINK_DOC_001 CONNECT TO 'testlink1' IDENTIFIED BY
+   > '123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+   > properties('maxActive':'10','otherUsers':'TEMP,SYSTEM');
+0 rows affected
+SQL> ALTER DATABASE LINK ORACLE_LINK_DOC_001 CONNECT TO 'LINKOOPDB' IDENTIFIED BY
+   > '123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+   > properties('maxActive':'10','otherUsers':'TEMP,SYSTEM');
+0 rows affected
+SQL> DROP table ORACLE_LINK_DOC_001.T_TEST_001 if exists cascade;
+0 rows affected
+SQL> CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_001 (
+   > ID INT,
+   > NAME VARCHAR(20)
+   > );
+0 rows affected
+SQL> INSERT INTO ORACLE_LINK_DOC_001.T_TEST_001 VALUES (1,'zs');
+1 row affected
+SQL> SELECT * FROM ORACLE_LINK_DOC_001.T_TEST_001;
++----+------+
+| ID | NAME |
++----+------+
+| 1  | zs   |
++----+------+
+1 row selected.
+SQL> UPDATE ORACLE_LINK_DOC_001.T_TEST_001 SET ID = 2;
+1 row affected
+SQL> SELECT * FROM ORACLE_LINK_DOC_001.T_TEST_001;
++----+------+
+| ID | NAME |
++----+------+
+| 2  | zs   |
++----+------+
+1 row selected.
+SQL> DELETE FROM ORACLE_LINK_DOC_001.T_TEST_001;
+1 row affected
+SQL> SELECT * FROM ORACLE_LINK_DOC_001.T_TEST_001;
+0 rows selected.
+SQL> INSERT INTO ORACLE_LINK_DOC_001.T_TEST_001 VALUES (1,'zs');
+1 row affected
+SQL> DROP view ORACLE_LINK_DOC_001.V_VIEW_001 if exists;
+0 rows affected
+SQL> CREATE VIEW ORACLE_LINK_DOC_001.V_VIEW_001 AS SELECT * FROM ORACLE_LINK_DOC_001.T_TEST_001;
+0 rows affected
+SQL> SELECT * FROM ORACLE_LINK_DOC_001.V_VIEW_001;
++----+------+
+| ID | NAME |
++----+------+
+| 1  | zs   |
++----+------+
+1 row selected.
+SQL> DROP table ORACLE_LINK_DOC_001.T_TEST_SYNONYM_001 if exists;
+0 rows affected
+SQL> create table ORACLE_LINK_DOC_001.T_TEST_SYNONYM_001 (
+   > col1 int, 
+   > col2 varchar(200)
+   > );
+0 rows affected
+SQL> create synonym ORACLE_LINK_DOC_001.S_TEST_001 for ORACLE_LINK_DOC_001.T_TEST_SYNONYM_001;
+0 rows affected
+SQL> drop synonym ORACLE_LINK_DOC_001.S_TEST_001 if exists;
+0 rows affected
+SQL> DROP table ORACLE_LINK_DOC_001.T_TEST_COL_001 if exists;
+0 rows affected
+SQL> create table ORACLE_LINK_DOC_001.T_TEST_COL_001 ( 
+   > id int, 
+   > name VARCHAR(20), 
+   > age int 
+   > );
+0 rows affected
+SQL> alter table ORACLE_LINK_DOC_001.T_TEST_COL_001 add phone int;
+0 rows affected
+SQL> alter table ORACLE_LINK_DOC_001.T_TEST_COL_001 add salary int;
+0 rows affected
+SQL> show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
++----------------+-----------------------------------------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                                                          |
++----------------+-----------------------------------------------------------------------------------------------------------------------+
+| T_TEST_COL_001 | CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001(ID INTEGER,NAME VARCHAR(20),AGE INTEGER,PHONE INTEGER,SALARY INTEGER) |
++----------------+-----------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> ALTER TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001 DROP COLUMN name;
+0 rows affected
+SQL> ALTER TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001 DROP COLUMN phone;
+0 rows affected
+SQL> show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
++----------------+----------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                           |
++----------------+----------------------------------------------------------------------------------------+
+| T_TEST_COL_001 | CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001(ID INTEGER,AGE INTEGER,SALARY INTEGER) |
++----------------+----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> ALTER table ORACLE_LINK_DOC_001.T_TEST_COL_001 ALTER age RENAME TO name;
+0 rows affected
+SQL> show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
++----------------+-----------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                            |
++----------------+-----------------------------------------------------------------------------------------+
+| T_TEST_COL_001 | CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001(ID INTEGER,NAME INTEGER,SALARY INTEGER) |
++----------------+-----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table ORACLE_LINK_DOC_001.T_TEST_COL_001 alter column name set data type varchar(38);
+0 rows affected
+SQL> show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
++----------------+---------------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                                |
++----------------+---------------------------------------------------------------------------------------------+
+| T_TEST_COL_001 | CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001(ID INTEGER,NAME VARCHAR(38),SALARY INTEGER) |
++----------------+---------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> alter table ORACLE_LINK_DOC_001.T_TEST_COL_001 alter column name set data type DOUBLE;
+0 rows affected
+SQL> show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
++----------------+----------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                           |
++----------------+----------------------------------------------------------------------------------------+
+| T_TEST_COL_001 | CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001(ID INTEGER,NAME DOUBLE,SALARY INTEGER) |
++----------------+----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> DROP table ORACLE_LINK_DOC_001.T_TEST_CONSTRAINT_001 if exists;
+0 rows affected
+SQL> create table ORACLE_LINK_DOC_001.T_TEST_CONSTRAINT_001 (id int, name varchar(20));
+0 rows affected
+SQL> alter table ORACLE_LINK_DOC_001.T_TEST_CONSTRAINT_001 add constraint pk_O2 primary key(id);
+0 rows affected
+SQL> select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='T_TEST_CONSTRAINT_001' and CONSTRAINT_NAME='PK_O2';
++--------------------+---------------------+-----------------+-----------------+---------------+---------------------+-----------------------+---------------+--------------------+
+| CONSTRAINT_CATALOG | CONSTRAINT_SCHEMA   | CONSTRAINT_NAME | CONSTRAINT_TYPE | TABLE_CATALOG | TABLE_SCHEMA        | TABLE_NAME            | IS_DEFERRABLE | INITIALLY_DEFERRED |
++--------------------+---------------------+-----------------+-----------------+---------------+---------------------+-----------------------+---------------+--------------------+
+| PUBLIC             | ORACLE_LINK_DOC_001 | PK_O2           | PRIMARY KEY     | PUBLIC        | ORACLE_LINK_DOC_001 | T_TEST_CONSTRAINT_001 | NO            | NO                 |
++--------------------+---------------------+-----------------+-----------------+---------------+---------------------+-----------------------+---------------+--------------------+
+1 row selected.
+SQL> show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
++----------------+----------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                           |
++----------------+----------------------------------------------------------------------------------------+
+| T_TEST_COL_001 | CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001(ID INTEGER,NAME DOUBLE,SALARY INTEGER) |
++----------------+----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> DROP table ORACLE_LINK_DOC_001.T_TEST_UNI_001 if exists;
+0 rows affected
+SQL> create table ORACLE_LINK_DOC_001.T_TEST_UNI_001 (id int, name VARCHAR(20), age int );
+0 rows affected
+SQL> ALTER TABLE ORACLE_LINK_DOC_001.T_TEST_UNI_001 ADD CONSTRAINT uc_O3 UNIQUE (name,age);
+0 rows affected
+SQL> select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='T_TEST_UNI_001' and CONSTRAINT_NAME='UC_O3';
++--------------------+---------------------+-----------------+-----------------+---------------+---------------------+----------------+---------------+--------------------+
+| CONSTRAINT_CATALOG | CONSTRAINT_SCHEMA   | CONSTRAINT_NAME | CONSTRAINT_TYPE | TABLE_CATALOG | TABLE_SCHEMA        | TABLE_NAME     | IS_DEFERRABLE | INITIALLY_DEFERRED |
++--------------------+---------------------+-----------------+-----------------+---------------+---------------------+----------------+---------------+--------------------+
+| PUBLIC             | ORACLE_LINK_DOC_001 | UC_O3           | UNIQUE          | PUBLIC        | ORACLE_LINK_DOC_001 | T_TEST_UNI_001 | NO            | NO                 |
++--------------------+---------------------+-----------------+-----------------+---------------+---------------------+----------------+---------------+--------------------+
+1 row selected.
+SQL> show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
++----------------+----------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                           |
++----------------+----------------------------------------------------------------------------------------+
+| T_TEST_COL_001 | CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001(ID INTEGER,NAME DOUBLE,SALARY INTEGER) |
++----------------+----------------------------------------------------------------------------------------+
+1 row selected.
+SQL> drop table ORACLE_LINK_DOC_001.T_TEST_KEY_001  if exists;
+0 rows affected
+SQL> drop table ORACLE_LINK_DOC_001.T_TEST_KEY_002  if exists;
+0 rows affected
+SQL> create table ORACLE_LINK_DOC_001.T_TEST_KEY_001 (id int, name VARCHAR(20), age int );
+0 rows affected
+SQL> create table ORACLE_LINK_DOC_001.T_TEST_KEY_002 (id int, name VARCHAR(20), age int );
+0 rows affected
+SQL> alter table ORACLE_LINK_DOC_001.T_TEST_KEY_001 add constraint pk_O4 primary key(id);
+0 rows affected
+SQL> alter table ORACLE_LINK_DOC_001.T_TEST_KEY_002 add constraint pk_O5 primary key(age);
+0 rows affected
+SQL> ALTER TABLE ORACLE_LINK_DOC_001.T_TEST_KEY_001 ADD CONSTRAINT fk_O4 FOREIGN KEY(ID)
+   > REFERENCES ORACLE_LINK_DOC_001.T_TEST_KEY_002(age);
+0 rows affected
+SQL> connect user admin password '123456';
+Database connected.
+SQL> drop user user_oracle_002 if exists cascade;
+0 rows affected
+SQL> drop DATABASE LINK ORACLE_LINK_DOC_002 if exists cascade;
+0 rows affected
+SQL> CREATE USER user_oracle_002 PASSWORD '123456';
+0 rows affected
+SQL> CREATE DATABASE LINK ORACLE_LINK_DOC_002 CONNECT TO 'testlink1' IDENTIFIED BY
+   > '123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+   > properties('maxActive':'10','otherUsers':'TEMP,SYSTEM');
+0 rows affected
+SQL> DROP table ORACLE_LINK_DOC_002.T_TEST_002 if exists;
+0 rows affected
+SQL> CREATE TABLE ORACLE_LINK_DOC_002.T_TEST_002 (
+   > ID INT,
+   > NAME VARCHAR(20)
+   > );
+0 rows affected
+SQL> GRANT INSERT,SELECT,UPDATE,DELETE ON ORACLE_LINK_DOC_002.T_TEST_002 TO user_oracle_002;
+0 rows affected
+SQL> grant change_authorization to user_oracle_002; 
+0 rows affected
+SQL> connect user user_oracle_002 password '123456';
+Database connected.
+SQL> insert into ORACLE_LINK_DOC_002.T_TEST_002 values(1,'zhangsan');
+1 row affected
+SQL> UPDATE ORACLE_LINK_DOC_002.T_TEST_002 SET ID = 2;
+1 row affected
+SQL> select * from ORACLE_LINK_DOC_002.T_TEST_002;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 2  | zhangsan |
++----+----------+
+1 row selected.
+SQL> delete from ORACLE_LINK_DOC_002.T_TEST_002;
+1 row affected
+SQL> select * from ORACLE_LINK_DOC_002.T_TEST_002;
+0 rows selected.
+SQL> exit
+Disconnected.

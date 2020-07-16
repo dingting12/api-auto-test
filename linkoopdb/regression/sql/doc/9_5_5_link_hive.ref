@@ -1,0 +1,99 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 9_5_5_link_hive.sql
+SQL> --Description: doc 9.5.5 link hive
+   > --Date：2020-07-14
+   > --Author：丁婷
+SQL> drop user user_hive_001 if exists cascade; 
+0 rows affected
+SQL> CREATE USER user_hive_001 PASSWORD '123456';
+0 rows affected
+SQL> GRANT CREATE_SCHEMA TO user_hive_001;
+0 rows affected
+SQL> grant change_authorization to user_hive_001; 
+0 rows affected
+SQL> connect user user_hive_001 password '123456';
+Database connected.
+SQL> CREATE DATABASE LINK HIVE_LINK_DOC_001 CONNECT TO 'hive' IDENTIFIED BY 'hive'
+   > USING 'hive' PROPERTIES ('maxActive':'5','database':'default');
+0 rows affected
+SQL> RELOAD DATABASE LINK HIVE_LINK_DOC_001;
+0 rows affected
+SQL> DROP DATABASE LINK HIVE_LINK_DOC_001 CASCADE;
+0 rows affected
+SQL> CREATE DATABASE LINK HIVE_LINK_DOC_001 CONNECT TO 'hive' IDENTIFIED BY 'hive'
+   > USING 'hive' PROPERTIES ('maxActive':'5','database':'default');
+0 rows affected
+SQL> ALTER DATABASE LINK HIVE_LINK_DOC_001 CONNECT TO 'hive' IDENTIFIED BY 'hive' USING
+   > 'hive' PROPERTIES ('maxActive':'5','database':'default');
+0 rows affected
+SQL> drop table HIVE_LINK_DOC_001.T_TEST_HIVE_001 if exists cascade;
+0 rows affected
+SQL> CREATE TABLE HIVE_LINK_DOC_001.T_TEST_HIVE_001 (
+   > ID INT,
+   > NAME VARCHAR(20)
+   > );
+0 rows affected
+SQL> INSERT INTO HIVE_LINK_DOC_001.T_TEST_HIVE_001 VALUES (1,'zs');
+1 row affected
+SQL> SELECT * FROM HIVE_LINK_DOC_001.T_TEST_HIVE_001; 
++----+------+
+| ID | NAME |
++----+------+
+| 1  | zs   |
++----+------+
+1 row selected.
+SQL> drop VIEW HIVE_LINK_DOC_001.T_VIEW_HIVE_001 if exists;
+0 rows affected
+SQL> CREATE VIEW HIVE_LINK_DOC_001.T_VIEW_HIVE_001 AS SELECT * from HIVE_LINK_DOC_001.T_TEST_HIVE_001; 
+0 rows affected
+SQL> SELECT * FROM HIVE_LINK_DOC_001.T_VIEW_HIVE_001;
++----+------+
+| ID | NAME |
++----+------+
+| 1  | zs   |
++----+------+
+1 row selected.
+SQL> connect user admin password '123456';
+Database connected.
+SQL> drop user user_hive_002 if exists cascade;
+0 rows affected
+SQL> drop DATABASE LINK HIVE_LINK_DOC_002 if exists cascade;
+0 rows affected
+SQL> CREATE USER user_hive_002 PASSWORD '123456';
+0 rows affected
+SQL> CREATE DATABASE LINK HIVE_LINK_DOC_002 CONNECT TO 'test' IDENTIFIED BY
+   > '123456' USING 'jdbc:mysql://192.168.1.72:3306/test' PROPERTIES
+   > ('caseSensitive':'true');
+0 rows affected
+SQL> DROP table HIVE_LINK_DOC_002.T_TEST_HIVE_002 if exists;
+0 rows affected
+SQL> CREATE TABLE HIVE_LINK_DOC_002.T_TEST_HIVE_002 (
+   > ID INT,
+   > NAME VARCHAR(20)
+   > );
+0 rows affected
+SQL> GRANT INSERT,SELECT,UPDATE,DELETE ON HIVE_LINK_DOC_002.T_TEST_HIVE_002 TO user_hive_002;
+0 rows affected
+SQL> grant change_authorization to user_hive_002; 
+0 rows affected
+SQL> connect user user_hive_002 password '123456';
+Database connected.
+SQL> insert into HIVE_LINK_DOC_002.T_TEST_HIVE_002 values(1,'zhangsan');
+1 row affected
+SQL> UPDATE HIVE_LINK_DOC_002.T_TEST_HIVE_002 SET ID = 2;
+1 row affected
+SQL> select * from HIVE_LINK_DOC_002.T_TEST_HIVE_002;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 2  | zhangsan |
++----+----------+
+1 row selected.
+SQL> delete from HIVE_LINK_DOC_002.T_TEST_HIVE_002;
+1 row affected
+SQL> select * from HIVE_LINK_DOC_002.T_TEST_HIVE_002;
+0 rows selected.
+SQL> exit
+Disconnected.

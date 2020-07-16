@@ -1,0 +1,192 @@
+--Description: doc 9.5.1 link oracle
+--Date：2020-07-14
+--Author：丁婷
+drop user user_oracle_001 if exists cascade;
+
+CREATE USER user_oracle_001 PASSWORD '123456';
+
+GRANT CREATE_SCHEMA TO user_oracle_001;
+
+grant change_authorization to user_oracle_001; 
+
+connect user user_oracle_001 password '123456';
+
+drop DATABASE LINK ORACLE_LINK_DOC_001 if exists;
+
+CREATE DATABASE LINK ORACLE_LINK_DOC_001 CONNECT TO 'testlink1' IDENTIFIED BY
+'123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+properties('maxActive':'10','otherUsers':'TEMP,SYSTEM');
+
+RELOAD DATABASE LINK ORACLE_LINK_DOC_001;
+
+DROP DATABASE LINK ORACLE_LINK_DOC_001 if exists cascade;
+
+
+
+
+CREATE DATABASE LINK ORACLE_LINK_DOC_001 CONNECT TO 'testlink1' IDENTIFIED BY
+'123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+properties('maxActive':'10','otherUsers':'TEMP,SYSTEM');
+
+ALTER DATABASE LINK ORACLE_LINK_DOC_001 CONNECT TO 'LINKOOPDB' IDENTIFIED BY
+'123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+properties('maxActive':'10','otherUsers':'TEMP,SYSTEM');
+
+DROP table ORACLE_LINK_DOC_001.T_TEST_001 if exists cascade;
+
+CREATE TABLE ORACLE_LINK_DOC_001.T_TEST_001 (
+ID INT,
+NAME VARCHAR(20)
+);
+
+
+INSERT INTO ORACLE_LINK_DOC_001.T_TEST_001 VALUES (1,'zs');
+
+SELECT * FROM ORACLE_LINK_DOC_001.T_TEST_001;
+
+UPDATE ORACLE_LINK_DOC_001.T_TEST_001 SET ID = 2;
+
+SELECT * FROM ORACLE_LINK_DOC_001.T_TEST_001;
+
+DELETE FROM ORACLE_LINK_DOC_001.T_TEST_001;
+
+SELECT * FROM ORACLE_LINK_DOC_001.T_TEST_001;
+
+INSERT INTO ORACLE_LINK_DOC_001.T_TEST_001 VALUES (1,'zs');
+
+DROP view ORACLE_LINK_DOC_001.V_VIEW_001 if exists;
+
+CREATE VIEW ORACLE_LINK_DOC_001.V_VIEW_001 AS SELECT * FROM ORACLE_LINK_DOC_001.T_TEST_001;
+
+SELECT * FROM ORACLE_LINK_DOC_001.V_VIEW_001;
+
+
+
+
+
+DROP table ORACLE_LINK_DOC_001.T_TEST_SYNONYM_001 if exists;
+
+create table ORACLE_LINK_DOC_001.T_TEST_SYNONYM_001 (
+col1 int, 
+col2 varchar(200)
+);
+
+create synonym ORACLE_LINK_DOC_001.S_TEST_001 for ORACLE_LINK_DOC_001.T_TEST_SYNONYM_001;
+
+drop synonym ORACLE_LINK_DOC_001.S_TEST_001 if exists;
+
+
+
+
+DROP table ORACLE_LINK_DOC_001.T_TEST_COL_001 if exists;
+
+create table ORACLE_LINK_DOC_001.T_TEST_COL_001 ( 
+id int, 
+name VARCHAR(20), 
+age int 
+);
+
+
+alter table ORACLE_LINK_DOC_001.T_TEST_COL_001 add phone int;
+alter table ORACLE_LINK_DOC_001.T_TEST_COL_001 add salary int;
+
+show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
+
+ALTER TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001 DROP COLUMN name;
+ALTER TABLE ORACLE_LINK_DOC_001.T_TEST_COL_001 DROP COLUMN phone;
+
+show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
+
+ALTER table ORACLE_LINK_DOC_001.T_TEST_COL_001 ALTER age RENAME TO name;
+
+show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
+
+alter table ORACLE_LINK_DOC_001.T_TEST_COL_001 alter column name set data type varchar(38);
+
+show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
+
+alter table ORACLE_LINK_DOC_001.T_TEST_COL_001 alter column name set data type DOUBLE;
+
+show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
+
+
+
+
+DROP table ORACLE_LINK_DOC_001.T_TEST_CONSTRAINT_001 if exists;
+
+create table ORACLE_LINK_DOC_001.T_TEST_CONSTRAINT_001 (id int, name varchar(20));
+
+alter table ORACLE_LINK_DOC_001.T_TEST_CONSTRAINT_001 add constraint pk_O2 primary key(id);
+
+select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='T_TEST_CONSTRAINT_001' and CONSTRAINT_NAME='PK_O2';
+
+show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
+
+DROP table ORACLE_LINK_DOC_001.T_TEST_UNI_001 if exists;
+
+create table ORACLE_LINK_DOC_001.T_TEST_UNI_001 (id int, name VARCHAR(20), age int );
+
+ALTER TABLE ORACLE_LINK_DOC_001.T_TEST_UNI_001 ADD CONSTRAINT uc_O3 UNIQUE (name,age);
+
+select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where TABLE_NAME='T_TEST_UNI_001' and CONSTRAINT_NAME='UC_O3';
+
+show create table ORACLE_LINK_DOC_001.T_TEST_COL_001;
+
+drop table ORACLE_LINK_DOC_001.T_TEST_KEY_001  if exists;
+
+drop table ORACLE_LINK_DOC_001.T_TEST_KEY_002  if exists;
+
+
+create table ORACLE_LINK_DOC_001.T_TEST_KEY_001 (id int, name VARCHAR(20), age int );
+
+create table ORACLE_LINK_DOC_001.T_TEST_KEY_002 (id int, name VARCHAR(20), age int );
+
+alter table ORACLE_LINK_DOC_001.T_TEST_KEY_001 add constraint pk_O4 primary key(id);
+
+alter table ORACLE_LINK_DOC_001.T_TEST_KEY_002 add constraint pk_O5 primary key(age);
+
+ALTER TABLE ORACLE_LINK_DOC_001.T_TEST_KEY_001 ADD CONSTRAINT fk_O4 FOREIGN KEY(ID)
+REFERENCES ORACLE_LINK_DOC_001.T_TEST_KEY_002(age);
+
+
+
+
+connect user admin password '123456';
+
+drop user user_oracle_002 if exists cascade;
+
+drop DATABASE LINK ORACLE_LINK_DOC_002 if exists cascade;
+
+CREATE USER user_oracle_002 PASSWORD '123456';
+
+CREATE DATABASE LINK ORACLE_LINK_DOC_002 CONNECT TO 'testlink1' IDENTIFIED BY
+'123456' USING 'jdbc:oracle:thin:@192.168.1.72:1521:xe'
+properties('maxActive':'10','otherUsers':'TEMP,SYSTEM');
+
+DROP table ORACLE_LINK_DOC_002.T_TEST_002 if exists;
+
+CREATE TABLE ORACLE_LINK_DOC_002.T_TEST_002 (
+ID INT,
+NAME VARCHAR(20)
+);
+
+
+GRANT INSERT,SELECT,UPDATE,DELETE ON ORACLE_LINK_DOC_002.T_TEST_002 TO user_oracle_002;
+
+grant change_authorization to user_oracle_002; 
+
+connect user user_oracle_002 password '123456';
+
+insert into ORACLE_LINK_DOC_002.T_TEST_002 values(1,'zhangsan');
+
+UPDATE ORACLE_LINK_DOC_002.T_TEST_002 SET ID = 2;
+
+select * from ORACLE_LINK_DOC_002.T_TEST_002;
+
+delete from ORACLE_LINK_DOC_002.T_TEST_002;
+
+select * from ORACLE_LINK_DOC_002.T_TEST_002;
+
+
+
+

@@ -13,10 +13,8 @@ Force Tags       owner:丁婷
 doc test   
 	[Documentation]    测试用户手册例子
     [Tags]     SQL-Test       external type test
-	Logon And Execute SQL Script     admin/123456           9_4_data_export.sql
-				   Compare Files     9_4_data_export.log    9_4_data_export.ref
-	
-	
+	Logon And Execute SQL Script     admin/123456                9_6_1_external_hdfs.sql
+				   Compare Files     9_6_1_external_hdfs.log           9_6_1_external_hdfs.ref
 
 *** Keywords ***
 Setup Custom Settings

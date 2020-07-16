@@ -1,0 +1,48 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 9_6_7_external_hive.sql
+SQL> --Description: doc 9.6.7 external hive
+   > --Date：2020-07-14
+   > --Author：丁婷
+SQL> drop table HIVE_1 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE HIVE_1 (
+   > COLUMN1 INT,
+   > COLUMN2 VARCHAR(20) 
+   > ) FORMAT 'HIVE' PROPERTIES ('table':'hive_test_001');
+0 rows affected
+SQL> select * from HIVE_1 order by COLUMN1;
++---------+----------+
+| COLUMN1 | COLUMN2  |
++---------+----------+
+| 1       | zhangsan |
+| 2       | lisi     |
++---------+----------+
+2 rows selected.
+SQL> drop table HIVE_TEST1 if exists;
+0 rows affected
+SQL> drop table HIVE_TEST2 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE HIVE_TEST1 BY HIVE('table':'default.hive_table_1');
+0 rows affected
+SQL> select * from HIVE_TEST1 order by COLUMN1 ;
++---------+----------+
+| COLUMN1 | COLUMN2  |
++---------+----------+
+| 1       | zhangsan |
+| 2       | lisi     |
++---------+----------+
+2 rows selected.
+SQL> CREATE EXTERNAL TABLE HIVE_TEST2 BY HIVE('table':'gcy_test.hive_table_2');
+0 rows affected
+SQL> select * from HIVE_TEST2 order by COLUMN1;
++---------+----------+
+| COLUMN1 | COLUMN2  |
++---------+----------+
+| 1       | zhangsan |
+| 2       | lisi     |
++---------+----------+
+2 rows selected.
+SQL> exit
+Disconnected.

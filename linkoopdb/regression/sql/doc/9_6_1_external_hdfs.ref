@@ -1,0 +1,202 @@
+SQLCli Release 0.0.74
+SQL> connect admin/123456
+Database connected.
+SQL> start 9_6_1_external_hdfs.sql
+SQL> --Description: doc 9.6.1 external hdfs
+   > --Date：2020-07-14
+   > --Author：丁婷
+SQL> drop table external_csv_001 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE external_csv_001(
+   >   id INT,
+   >   name VARCHAR(200),
+   >   sal DOUBLE,
+   >   birthday TIMESTAMP
+   > ) location
+   > ('hdfs:///user/testdb73/external_file/show_csv12.csv')
+   > format 'csv' (delimiter '|' escape '$' header 'true' NULL '!!!' quote
+   > '@');
+0 rows affected
+SQL> select * from external_csv_001 order by id;
++----+------------+--------+---------------------+
+| ID | NAME       | SAL    | BIRTHDAY            |
++----+------------+--------+---------------------+
+| 1  | "dsdsddfs" | 23.45  | 2018-09-01 23:12:23 |
+| 2  | xcuh       | <null> | 2019-12-06 12:34:50 |
+| 3  | ckoijo     | 9802   | 1997-03-23 07:23:05 |
+| 4  | nnoij      | 123.34 | 1998-05-09 16:40:09 |
+| 5  | "/"ds"     | <null> | 2004-07-06 23:12:23 |
+| 6  | <null>     | 43.54  | 2004-07-06 23:12:23 |
++----+------------+--------+---------------------+
+6 rows selected.
+SQL> drop table external_csv_002 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE external_csv_002 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs:///user/testdb73/external_file/test_doc_001.csv') FORMAT 'csv' (DELIMITER ',');
+0 rows affected
+SQL> select * from external_csv_002 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 2  | lisi     |
++----+----------+
+2 rows selected.
+SQL> drop table external_csv_003 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE external_csv_003 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs:///user/testdb73/external_file/test_doc_001.csv,hdfs:///user/testdb73/external_file/test_doc_002.csv') FORMAT 'csv'
+   > (DELIMITER ',');
+0 rows affected
+SQL> select * from external_csv_003 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 2  | lisi     |
+| 3  | wangwu   |
+| 4  | songyi   |
++----+----------+
+4 rows selected.
+SQL> drop table external_csv_004 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE external_csv_004 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs:///user/testdb73/external_file/csv_doc') FORMAT 'csv' (DELIMITER ',');
+0 rows affected
+SQL> select * from external_csv_004 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 2  | lisi     |
+| 3  | wangwu   |
+| 4  | songyi   |
++----+----------+
+4 rows selected.
+SQL> drop table external_csv_005 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE external_csv_005 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs:///user/testdb73/external_file/csv_doc,hdfs:///user/testdb73/external_file/test_doc_001.csv') FORMAT 'csv'
+   > (DELIMITER ',');
+0 rows affected
+SQL> select * from external_csv_005 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 1  | zhangsan |
+| 2  | lisi     |
+| 2  | lisi     |
+| 3  | wangwu   |
+| 4  | songyi   |
++----+----------+
+6 rows selected.
+SQL> drop table external_parquet_001 if exists;
+0 rows affected
+SQL> drop table external_parquet_002 if exists;
+0 rows affected
+SQL> drop table external_parquet_003 if exists;
+0 rows affected
+SQL> drop table external_parquet_004 if exists;
+0 rows affected
+SQL> drop table external_parquet_005 if exists;
+0 rows affected
+SQL> drop table external_parquet_006 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE external_parquet_001 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs://node73:8020/user/testdb73/external_file/doc/test1.parquet') FORMAT 'parquet';
+0 rows affected
+SQL> select * from external_parquet_001 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
++----+----------+
+1 row selected.
+SQL> CREATE EXTERNAL TABLE external_parquet_002 BY PARQUET('location'
+   > :'hdfs://node73:8020/user/testdb73/external_file/doc/test1.parquet');
+0 rows affected
+SQL> select * from external_parquet_002 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
++----+----------+
+1 row selected.
+SQL> CREATE EXTERNAL TABLE external_parquet_003 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs://node73:8020/user/testdb73/external_file/doc/parquet_test') FORMAT 'parquet' properties(
+   > 'recursiveFileLookup':'true');
+0 rows affected
+SQL> select * from external_parquet_003 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 1  | zhangsan |
+| 2  | lisi     |
+| 2  | lisi     |
++----+----------+
+4 rows selected.
+SQL> CREATE EXTERNAL TABLE external_parquet_004 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs://node73:8020/user/testdb73/external_file/doc/test1.parquet,hdfs://node73:8020/user/testdb73/external_file/doc/test2.parquet') FORMAT
+   > 'parquet';
+0 rows affected
+SQL> select * from external_parquet_004 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 2  | lisi     |
++----+----------+
+2 rows selected.
+SQL> CREATE EXTERNAL TABLE external_parquet_005 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs://node73:8020/user/testdb73/external_file/doc/parquet_test') FORMAT 'parquet';
+0 rows affected
+SQL> select * from external_parquet_005 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 2  | lisi     |
++----+----------+
+2 rows selected.
+SQL> CREATE EXTERNAL TABLE external_parquet_006 (ID INT, NAME VARCHAR(10)) LOCATION
+   > ('hdfs://node73:8020/user/testdb73/external_file/doc/parquet_test,hdfs://node73:8020/user/testdb73/external_file/doc/test1.parquet') FORMAT
+   > 'parquet';
+0 rows affected
+SQL> select * from external_parquet_006 order by id;
++----+----------+
+| ID | NAME     |
++----+----------+
+| 1  | zhangsan |
+| 1  | zhangsan |
+| 2  | lisi     |
++----+----------+
+3 rows selected.
+SQL> drop table external_orc_001 if exists;
+0 rows affected
+SQL> drop table external_orc_002 if exists;
+0 rows affected
+SQL> CREATE EXTERNAL TABLE external_orc_001 (name VARCHAR(10), FAVORITE_COLOR VARCHAR(30),FAVORITE_NUMBERS VARCHAR(30)) LOCATION
+   > ('hdfs://node73:8020/node74/stream74/linkoopdb/data/users.orc') FORMAT 'orc';
+0 rows affected
+SQL> select * from external_orc_001 order by name;
++--------+----------------+------------------+
+| NAME   | FAVORITE_COLOR | FAVORITE_NUMBERS |
++--------+----------------+------------------+
+| Alyssa | <null>         | [3, 9, 15, 20]   |
+| Ben    | red            | []               |
++--------+----------------+------------------+
+2 rows selected.
+SQL> CREATE EXTERNAL TABLE external_orc_002 BY ORC('location':'hdfs://node73:8020/node74/stream74/linkoopdb/data/users.orc');
+0 rows affected
+SQL> select * from external_orc_002 order by name;
++--------+----------------+------------------+
+| NAME   | FAVORITE_COLOR | FAVORITE_NUMBERS |
++--------+----------------+------------------+
+| Alyssa | <null>         | ARRAY[3,9,15,20] |
+| Ben    | red            | ARRAY[]          |
++--------+----------------+------------------+
+2 rows selected.
+SQL> exit
+Disconnected.
