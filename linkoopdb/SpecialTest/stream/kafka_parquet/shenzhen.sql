@@ -7,10 +7,6 @@ __internal__ drop kafka topic shenzhen;
 sleep 10
 __internal__ create kafka topic shenzhen Partitions 20 replication_factor 1;
 sleep 10
-submitjob datasend.sql 32
-showjob all
-startjob all
-
 
 CREATE stream s_kafka_source(
 TS_15M VARCHAR(17),
@@ -127,6 +123,11 @@ ctime timestamp,
 atime timestamp
 )LOCATION ('hdfs:///node62/shenzhen') FORMAT 'parquet' properties('recursiveFileLookup':'true');
 
+sleep 600
+
 select * from t_parquet;
 
+submitjob datasend.sql 32
+showjob all
+startjob all
 waitjob all 
