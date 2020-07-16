@@ -10,7 +10,7 @@ sleep 10
 submitjob datasend.sql 32
 showjob all
 startjob all
-waitjob all 
+
 
 CREATE stream s_kafka_source(
 TS_15M VARCHAR(17),
@@ -128,3 +128,5 @@ atime timestamp
 )LOCATION ('hdfs:///node62/shenzhen') FORMAT 'parquet' properties('recursiveFileLookup':'true');
 
 select * from t_parquet;
+
+waitjob all 
