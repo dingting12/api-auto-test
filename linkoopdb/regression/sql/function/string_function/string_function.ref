@@ -1,7 +1,7 @@
-SQLCli Release 0.0.62
+SQLCli Release 0.0.97
 SQL> connect admin/123456
 Database connected.
-SQL> start string_function.sql
+SQL> start string_function/string_function.sql
 SQL> --Description:字符串函数补充测试用例
    > --Date：2020-06-09
    > --Author：贾路遥
@@ -12,13 +12,13 @@ SQL>
 SQL> --建表Test_Builtin_2
 SQL> DROP TABLE Test_Builtin_2 IF EXISTS ;
 0 rows affected
-Running time elapsed:      0.09 Seconds
+Running time elapsed:      0.10 Seconds
 SQL> CREATE TABLE Test_Builtin_2 (id int,name VARCHAR(100));
 0 rows affected
-Running time elapsed:      0.06 Seconds
+Running time elapsed:      0.07 Seconds
 SQL> INSERT INTO Test_Builtin_2 VALUES (1,' Justin Bieber '),(2,' Hailey Baldwin  '),(3,'    Selena Gomez');
 3 rows affected
-Running time elapsed:      0.81 Seconds
+Running time elapsed:      0.65 Seconds
 SQL> INSERT INTO Test_Builtin_2 VALUES(4,' q az xe'),(5,'S D B J Y '),(6,'  z  xn  HJd UG'),(7,' cs sds dsd');
 4 rows affected
 Running time elapsed:      0.50 Seconds
@@ -32,7 +32,7 @@ SQL> SELECT CHARACTER_LENGTH('  ') FROM Test_Builtin_2 limit 1;
 | 2  |
 +----+
 1 row selected.
-Running time elapsed:      0.56 Seconds
+Running time elapsed:      0.61 Seconds
 SQL> SELECT CHARACTER_LENGTH(name) FROM Test_Builtin_2 order by id;
 +----+
 | C1 |
@@ -46,12 +46,12 @@ SQL> SELECT CHARACTER_LENGTH(name) FROM Test_Builtin_2 order by id;
 | 11 |
 +----+
 7 rows selected.
-Running time elapsed:      0.01 Seconds
+Running time elapsed:      1.28 Seconds
 SQL> 
 SQL> --异常测试
 SQL> SELECT CHARACTER_LENGTH(timestamp '2019-02-11 09:22:23') FROM Test_Builtin_2 limit 1;
 java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT CHARACTER_LENGTH(timestamp '2019-02-11 09:22:23') FROM Test_Builtin_2 limit 1]
-Running time elapsed:      0.00 Seconds
+Running time elapsed:      0.01 Seconds
 SQL> SELECT CHARACTER_LENGTH( ) FROM Test_Builtin_2 limit 1;
 java.sql.SQLSyntaxErrorException: unexpected token: ) in statement [SELECT CHARACTER_LENGTH( ) FROM Test_Builtin_2 limit 1]
 Running time elapsed:      0.00 Seconds
@@ -76,7 +76,7 @@ SQL> SELECT CHARACTER_LENGTH(trim(both from name)) FROM Test_Builtin_2 order by 
 | 10 |
 +----+
 7 rows selected.
-Running time elapsed:      1.53 Seconds
+Running time elapsed:      0.87 Seconds
 SQL> SELECT CHARACTER_LENGTH(trim(substring(' l i n ko o p d b ', 5))) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -84,7 +84,7 @@ SQL> SELECT CHARACTER_LENGTH(trim(substring(' l i n ko o p d b ', 5))) FROM Test
 | 12 |
 +----+
 1 row selected.
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.58 Seconds
 SQL> 
 SQL> --TRIM()函数
    > --TRIM (BOTH FROM <expression>)
@@ -95,7 +95,7 @@ SQL> SELECT trim(BOTH 'qw' FROM 'qww') FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> SELECT trim(BOTH 'q' FROM 'qww') FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -103,7 +103,7 @@ SQL> SELECT trim(BOTH 'q' FROM 'qww') FROM Test_Builtin_2 limit 1;
 | ww |
 +----+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT trim(BOTH 'qwq' FROM 'qwwww') FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -111,7 +111,7 @@ SQL> SELECT trim(BOTH 'qwq' FROM 'qwwww') FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> SELECT trim(both from name) FROM Test_Builtin_2 ORDER BY id;
 +----------------+
 | C1             |
@@ -125,7 +125,7 @@ SQL> SELECT trim(both from name) FROM Test_Builtin_2 ORDER BY id;
 | cs sds dsd     |
 +----------------+
 7 rows selected.
-Running time elapsed:      0.81 Seconds
+Running time elapsed:      0.86 Seconds
 SQL> SELECT trim(both from '  ') FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -133,7 +133,7 @@ SQL> SELECT trim(both from '  ') FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT trim(BOTH 'a' FROM 'abc a b') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -141,7 +141,7 @@ SQL> SELECT trim(BOTH 'a' FROM 'abc a b') FROM Test_Builtin_2 limit 1;
 | bc a b |
 +--------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> SELECT trim(name) FROM Test_Builtin_2 ORDER BY id;
 +----------------+
 | C1             |
@@ -155,7 +155,7 @@ SQL> SELECT trim(name) FROM Test_Builtin_2 ORDER BY id;
 | cs sds dsd     |
 +----------------+
 7 rows selected.
-Running time elapsed:      0.72 Seconds
+Running time elapsed:      0.71 Seconds
 SQL> SELECT trim('  ') FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -163,7 +163,7 @@ SQL> SELECT trim('  ') FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> SELECT trim(TRAILING FROM name) FROM Test_Builtin_2 ORDER BY id;
 +------------------+
 | C1               |
@@ -177,7 +177,7 @@ SQL> SELECT trim(TRAILING FROM name) FROM Test_Builtin_2 ORDER BY id;
 |  cs sds dsd      |
 +------------------+
 7 rows selected.
-Running time elapsed:      0.70 Seconds
+Running time elapsed:      0.80 Seconds
 SQL> SELECT trim(TRAILING FROM '  ') FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -185,7 +185,7 @@ SQL> SELECT trim(TRAILING FROM '  ') FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> SELECT trim(TRAILING FROM 12 3 ) FROM Test_Builtin_2 limit 1;
 java.sql.SQLSyntaxErrorException: unexpected token: 3 in statement [SELECT trim(TRAILING FROM 12 3 ) FROM Test_Builtin_2 limit 1]
 Running time elapsed:      0.00 Seconds
@@ -202,7 +202,7 @@ SQL> SELECT trim(LEADING FROM name) FROM Test_Builtin_2 ORDER BY id;
 | cs sds dsd       |
 +------------------+
 7 rows selected.
-Running time elapsed:      0.77 Seconds
+Running time elapsed:      0.80 Seconds
 SQL> SELECT trim(LEADING FROM '  ') FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -210,7 +210,7 @@ SQL> SELECT trim(LEADING FROM '  ') FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> SELECT trim(LEADING FROM 12 3 ) FROM Test_Builtin_2 limit 1;
 java.sql.SQLSyntaxErrorException: unexpected token: 3 in statement [SELECT trim(LEADING FROM 12 3 ) FROM Test_Builtin_2 limit 1]
 Running time elapsed:      0.00 Seconds
@@ -221,7 +221,7 @@ SQL> SELECT trim('a' FROM 'abc a ba') FROM Test_Builtin_2 limit 1;
 | bc a b |
 +--------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> SELECT trim('SL' FROM 'SLINKOOPDBL') FROM Test_Builtin_2 limit 1;
 +----------+
 | C1       |
@@ -229,7 +229,7 @@ SQL> SELECT trim('SL' FROM 'SLINKOOPDBL') FROM Test_Builtin_2 limit 1;
 | INKOOPDB |
 +----------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> SELECT trim('SL' FROM 'SINKOOPDBL') FROM Test_Builtin_2 limit 1;
 +----------+
 | C1       |
@@ -237,7 +237,7 @@ SQL> SELECT trim('SL' FROM 'SINKOOPDBL') FROM Test_Builtin_2 limit 1;
 | INKOOPDB |
 +----------+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.64 Seconds
 SQL> --异常测试
 SQL> SELECT trim(12 3 ) FROM Test_Builtin_2 limit 1;
 java.sql.SQLSyntaxErrorException: unexpected token: 3 in statement [SELECT trim(12 3 ) FROM Test_Builtin_2 limit 1]
@@ -252,7 +252,7 @@ SQL> SELECT trim('a' 'b') FROM Test_Builtin_2 limit 1;
 | ab |
 +----+
 1 row selected.
-Running time elapsed:      0.74 Seconds
+Running time elapsed:      0.45 Seconds
 SQL> SELECT trim('a' 'abc a ba') FROM Test_Builtin_2 limit 1;
 +-----------+
 | C1        |
@@ -260,7 +260,7 @@ SQL> SELECT trim('a' 'abc a ba') FROM Test_Builtin_2 limit 1;
 | aabc a ba |
 +-----------+
 1 row selected.
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT trim('a' ,'abc a b') FROM Test_Builtin_2 limit 1;
 java.sql.SQLSyntaxErrorException: unexpected token: , in statement [SELECT trim('a' ,'abc a b') FROM Test_Builtin_2 limit 1]
 Running time elapsed:      0.00 Seconds
@@ -283,7 +283,7 @@ SQL> SELECT to_date('2018-09-01','YYYY-DD-MM') FROM Test_Builtin_2 limit 1;
 | 2018-1-9 |
 +----------+
 1 row selected.
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> SELECT to_date('2018-09-01','YYYY-MM') FROM Test_Builtin_2 limit 1;
 +----------+
 | C1       |
@@ -291,7 +291,7 @@ SQL> SELECT to_date('2018-09-01','YYYY-MM') FROM Test_Builtin_2 limit 1;
 | 2018-9-1 |
 +----------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.45 Seconds
 SQL> SELECT to_date('2018-09-01','YYYY-DD') FROM Test_Builtin_2 limit 1;
 +----------+
 | C1       |
@@ -299,7 +299,7 @@ SQL> SELECT to_date('2018-09-01','YYYY-DD') FROM Test_Builtin_2 limit 1;
 | 2018-1-9 |
 +----------+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT to_date('2018-09-11','YYYY-DD') FROM Test_Builtin_2 limit 1;
 +----------+
 | C1       |
@@ -307,7 +307,7 @@ SQL> SELECT to_date('2018-09-11','YYYY-DD') FROM Test_Builtin_2 limit 1;
 | 2018-1-9 |
 +----------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> SELECT to_date('2018-09-01','YYYY') FROM Test_Builtin_2 limit 1;
 +----------+
 | C1       |
@@ -323,7 +323,7 @@ SQL> SELECT to_date('2018-09-01','YY') FROM Test_Builtin_2 limit 1;
 | 2018-1-1 |
 +----------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> 
 SQL> 
 SQL> --英文月份
@@ -342,7 +342,7 @@ SQL> SELECT to_date('99-JUN-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 1999-6-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> SELECT to_date('23-JUN-03','dd-MON-YY')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -350,7 +350,7 @@ SQL> SELECT to_date('23-JUN-03','dd-MON-YY')FROM Test_Builtin_2 LIMIT 1;
 | 2003-6-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.51 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT to_date('99-JUN-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -358,7 +358,7 @@ SQL> SELECT to_date('99-JUN-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 1999-6-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.58 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> SELECT to_date('13-FEB-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -366,7 +366,7 @@ SQL> SELECT to_date('13-FEB-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-2-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> SELECT to_date('13-MAR-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -374,7 +374,7 @@ SQL> SELECT to_date('13-MAR-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-3-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> SELECT to_date('13-APR-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -382,7 +382,7 @@ SQL> SELECT to_date('13-APR-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-4-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> SELECT to_date('13-MAY-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -390,7 +390,7 @@ SQL> SELECT to_date('13-MAY-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-5-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.60 Seconds
 SQL> SELECT to_date('13-Aug-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -398,7 +398,7 @@ SQL> SELECT to_date('13-Aug-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-8-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> SELECT to_date('13-JAN-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -406,7 +406,7 @@ SQL> SELECT to_date('13-JAN-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-1-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.53 Seconds
+Running time elapsed:      0.67 Seconds
 SQL> SELECT to_date('13-July-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -414,7 +414,7 @@ SQL> SELECT to_date('13-July-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-7-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.54 Seconds
 SQL> SELECT to_date('13-Sep-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +-----------+
 | C1        |
@@ -422,7 +422,7 @@ SQL> SELECT to_date('13-Sep-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-9-23 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> SELECT to_date('13-Oct-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +------------+
 | C1         |
@@ -430,7 +430,7 @@ SQL> SELECT to_date('13-Oct-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-10-23 |
 +------------+
 1 row selected.
-Running time elapsed:      0.54 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT to_date('13-nov-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +------------+
 | C1         |
@@ -438,7 +438,7 @@ SQL> SELECT to_date('13-nov-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-11-23 |
 +------------+
 1 row selected.
-Running time elapsed:      0.84 Seconds
+Running time elapsed:      0.46 Seconds
 SQL> SELECT to_date('13-dec-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 +------------+
 | C1         |
@@ -446,7 +446,7 @@ SQL> SELECT to_date('13-dec-23','YY-MON-DD')FROM Test_Builtin_2 LIMIT 1;
 | 2013-12-23 |
 +------------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> SELECT to_date('13-dec-23','dd-MON-yy')FROM Test_Builtin_2 LIMIT 1;
 +------------+
 | C1         |
@@ -454,7 +454,7 @@ SQL> SELECT to_date('13-dec-23','dd-MON-yy')FROM Test_Builtin_2 LIMIT 1;
 | 2023-12-13 |
 +------------+
 1 row selected.
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> SELECT to_date('2018-nov-01','YYYY-MONTH-DD') FROM Test_Builtin_2 limit 1;
 +-----------+
 | C1        |
@@ -462,7 +462,7 @@ SQL> SELECT to_date('2018-nov-01','YYYY-MONTH-DD') FROM Test_Builtin_2 limit 1;
 | 2018-11-1 |
 +-----------+
 1 row selected.
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> 
 SQL> --NULL
 SQL> SELECT to_date('20180901','MMDD') FROM Test_Builtin_2 limit 1;
@@ -472,7 +472,7 @@ SQL> SELECT to_date('20180901','MMDD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> SELECT to_date('2018-09-01','MM') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -480,7 +480,7 @@ SQL> SELECT to_date('2018-09-01','MM') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT to_date('2018-09-01','DD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -488,7 +488,7 @@ SQL> SELECT to_date('2018-09-01','DD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT to_date('2018-09-01','MMDD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -496,7 +496,7 @@ SQL> SELECT to_date('2018-09-01','MMDD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.66 Seconds
 SQL> SELECT to_date('2018-09-01','YYYYMMDD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -512,7 +512,7 @@ SQL> SELECT to_date('2018-09-01','YYYYMM') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.44 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> SELECT to_date('2018-09-01','YYYYDD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -520,7 +520,7 @@ SQL> SELECT to_date('2018-09-01','YYYYDD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> SELECT to_date('20180901','YYYYMM') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -528,7 +528,7 @@ SQL> SELECT to_date('20180901','YYYYMM') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT to_date('20180901','YYYYDD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -536,7 +536,7 @@ SQL> SELECT to_date('20180901','YYYYDD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> SELECT to_date('2018-09-01','DDD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -544,7 +544,7 @@ SQL> SELECT to_date('2018-09-01','DDD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.55 Seconds
 SQL> SELECT to_date('2018-09-01','YYYY-MM-DDD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -552,7 +552,7 @@ SQL> SELECT to_date('2018-09-01','YYYY-MM-DDD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> SELECT to_date('2018-09-01','MM-DDD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -568,7 +568,7 @@ SQL> SELECT to_date('2018-09-01','YYYY-MON-DD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT to_date('2018-09-01','MON') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -576,7 +576,7 @@ SQL> SELECT to_date('2018-09-01','MON') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.67 Seconds
 SQL> SELECT to_date('2018-09-01','MONTH') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -584,7 +584,7 @@ SQL> SELECT to_date('2018-09-01','MONTH') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.46 Seconds
 SQL> SELECT to_date('2018-09-01','YYYY-MONTH-DD') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -592,7 +592,7 @@ SQL> SELECT to_date('2018-09-01','YYYY-MONTH-DD') FROM Test_Builtin_2 limit 1;
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> 
 SQL> 
 SQL> --函数嵌套使用
@@ -603,15 +603,15 @@ SQL> SELECT to_date(to_timestamp('2018-11-22 23:12:13','YYYY-MM-DD HH24:MI:SS'))
 | 2018-11-22 |
 +------------+
 1 row selected.
-Running time elapsed:      0.51 Seconds
-SQL> SELECT to_date(CURRENT_TIMESTAMP) FROM Test_Builtin_2 LIMIT 1;
-+-----------+
-| C1        |
-+-----------+
-| 2020-6-16 |
-+-----------+
+Running time elapsed:      0.55 Seconds
+SQL> SELECT '当前日期',to_date(CURRENT_TIMESTAMP) FROM Test_Builtin_2 LIMIT 1;
++----------+-----------+
+| C1       | C2        |
++----------+-----------+
+| 当前日期 | 2020-7-16 |
++----------+-----------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> 
 SQL> 
 SQL> --TO_TIMESTAMP()函数
@@ -638,7 +638,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','YYYY-MM-DD HH:SS') FROM Test_Bu
 | 2018-11-22 11:00:12 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.90 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','YYYY-MM-DD HH12') FROM Test_Builtin_2 limit 1;
 +---------------------+
 | C1                  |
@@ -646,7 +646,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','YYYY-MM-DD HH12') FROM Test_Bui
 | 2018-11-22 11:00:00 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.61 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','YYYY-MM-DD HH12:MI') FROM Test_Builtin_2 limit 1;
 +---------------------+
 | C1                  |
@@ -654,7 +654,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','YYYY-MM-DD HH12:MI') FROM Test_
 | 2018-11-22 11:12:00 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.49 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','YYYY-MM-DD HH12:SS') FROM Test_Builtin_2 limit 1;
 +---------------------+
 | C1                  |
@@ -662,7 +662,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','YYYY-MM-DD HH12:SS') FROM Test_
 | 2018-11-22 11:00:12 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH24:MI:SS') FROM Test_Builtin_2 limit 1;
 +---------------------+
 | C1                  |
@@ -670,7 +670,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH24:MI:SS') FROM Te
 | 2018-11-22 23:12:13 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.50 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH24:MI') FROM Test_Builtin_2 limit 1;
 +---------------------+
 | C1                  |
@@ -678,7 +678,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH24:MI') FROM Test_
 | 2018-11-22 23:12:00 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.56 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH24:SS') FROM Test_Builtin_2 limit 1;
 +---------------------+
 | C1                  |
@@ -686,7 +686,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH24:SS') FROM Test_
 | 2018-11-22 23:00:12 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.00 Seconds
+Running time elapsed:      0.63 Seconds
 SQL> 
 SQL> --NULL
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','HH') FROM Test_Builtin_2 limit 1;
@@ -696,7 +696,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','HH') FROM Test_Builtin_2 limit 
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.52 Seconds
+Running time elapsed:      0.47 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','HH12') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -704,7 +704,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','HH12') FROM Test_Builtin_2 limi
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.45 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','MI') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -712,7 +712,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','MI') FROM Test_Builtin_2 limit 
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.45 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','SS') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -720,7 +720,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 11:12:13','SS') FROM Test_Builtin_2 limit 
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -728,7 +728,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12') FROM Test_Bui
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.43 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 13:12:13','YYYY-MM-DD HH12:MI:SS') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -736,7 +736,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 13:12:13','YYYY-MM-DD HH12:MI:SS') FROM Te
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12:MI:SS') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -744,7 +744,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12:MI:SS') FROM Te
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.42 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12:MI') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -752,7 +752,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12:MI') FROM Test_
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.46 Seconds
 SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12:SS') FROM Test_Builtin_2 limit 1;
 +--------+
 | C1     |
@@ -760,7 +760,7 @@ SQL> SELECT  TO_TIMESTAMP('2018-11-22 23:12:13','YYYY-MM-DD HH12:SS') FROM Test_
 | <null> |
 +--------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.44 Seconds
 SQL> 
 SQL> --函数嵌套使用
 SQL> SELECT to_timestamp(to_date('2018-11-22','YYYY-MM-DD')) FROM Test_Builtin_2 limit 1;
@@ -770,7 +770,7 @@ SQL> SELECT to_timestamp(to_date('2018-11-22','YYYY-MM-DD')) FROM Test_Builtin_2
 | 2018-11-22 00:00:00 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT to_timestamp(to_date(ADD_MONTHS(timestamp '2011-01-01 21:01:33',6))) FROM Test_Builtin_2 LIMIT 1;
 +---------------------+
 | C1                  |
@@ -778,15 +778,15 @@ SQL> SELECT to_timestamp(to_date(ADD_MONTHS(timestamp '2011-01-01 21:01:33',6)))
 | 2011-07-01 00:00:00 |
 +---------------------+
 1 row selected.
-Running time elapsed:      0.51 Seconds
-SQL> SELECT to_timestamp(CURRENT_DATE) FROM Test_Builtin_2 LIMIT 1;
-+---------------------+
-| C1                  |
-+---------------------+
-| 2020-06-16 00:00:00 |
-+---------------------+
+Running time elapsed:      0.50 Seconds
+SQL> SELECT '当前时间',to_timestamp(CURRENT_DATE) FROM Test_Builtin_2 LIMIT 1;
++----------+---------------------+
+| C1       | C2                  |
++----------+---------------------+
+| 当前时间 | 2020-07-16 00:00:00 |
++----------+---------------------+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.52 Seconds
 SQL> 
 SQL> 
 SQL> --substring()函数
@@ -797,7 +797,7 @@ SQL> SELECT substring('linkoopdb', 5) FROM Test_Builtin_2 limit 1;
 | oopdb |
 +-------+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> SELECT substring('linkoopdb', 100) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -805,7 +805,7 @@ SQL> SELECT substring('linkoopdb', 100) FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.71 Seconds
 SQL> SELECT substring('linkoopdb', -100) FROM Test_Builtin_2 limit 1;
 +-----------+
 | C1        |
@@ -821,7 +821,7 @@ SQL> SELECT substring('linkoopdb', 0) FROM Test_Builtin_2 limit 1;
 | linkoopdb |
 +-----------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> SELECT substring('linkoopdb', -1) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -829,7 +829,7 @@ SQL> SELECT substring('linkoopdb', -1) FROM Test_Builtin_2 limit 1;
 | b  |
 +----+
 1 row selected.
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT substring(' l i n ko o p d b ', 5) FROM Test_Builtin_2 limit 1;
 +----------------+
 | C1             |
@@ -837,7 +837,7 @@ SQL> SELECT substring(' l i n ko o p d b ', 5) FROM Test_Builtin_2 limit 1;
 |  n ko o p d b  |
 +----------------+
 1 row selected.
-Running time elapsed:      0.46 Seconds
+Running time elapsed:      0.62 Seconds
 SQL> SELECT substring('linkoopdb', 100,100) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -845,7 +845,7 @@ SQL> SELECT substring('linkoopdb', 100,100) FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.00 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT substring('linkoopdb', 1,2) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -853,7 +853,7 @@ SQL> SELECT substring('linkoopdb', 1,2) FROM Test_Builtin_2 limit 1;
 | li |
 +----+
 1 row selected.
-Running time elapsed:      0.81 Seconds
+Running time elapsed:      0.48 Seconds
 SQL> SELECT substring('linkoopdb', -100,-100) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -861,7 +861,7 @@ SQL> SELECT substring('linkoopdb', -100,-100) FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.43 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT substring('linkoopdb', 0,0) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -869,7 +869,7 @@ SQL> SELECT substring('linkoopdb', 0,0) FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.49 Seconds
+Running time elapsed:      0.51 Seconds
 SQL> SELECT substring('linkoopdb', -1,-2) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -877,7 +877,7 @@ SQL> SELECT substring('linkoopdb', -1,-2) FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.50 Seconds
 SQL> SELECT substring('linkoopdb', 5,3) FROM Test_Builtin_2 limit 1;
 +-----+
 | C1  |
@@ -885,7 +885,7 @@ SQL> SELECT substring('linkoopdb', 5,3) FROM Test_Builtin_2 limit 1;
 | oop |
 +-----+
 1 row selected.
-Running time elapsed:      0.45 Seconds
+Running time elapsed:      0.53 Seconds
 SQL> SELECT substring('linkoopdb', 5,0) FROM Test_Builtin_2 limit 1;
 +----+
 | C1 |
@@ -893,7 +893,7 @@ SQL> SELECT substring('linkoopdb', 5,0) FROM Test_Builtin_2 limit 1;
 |    |
 +----+
 1 row selected.
-Running time elapsed:      0.48 Seconds
+Running time elapsed:      0.66 Seconds
 SQL> SELECT substring('linkoopdb', 5,100) FROM Test_Builtin_2 limit 1;
 +-------+
 | C1    |
@@ -901,7 +901,7 @@ SQL> SELECT substring('linkoopdb', 5,100) FROM Test_Builtin_2 limit 1;
 | oopdb |
 +-------+
 1 row selected.
-Running time elapsed:      0.47 Seconds
-Running time elapsed:     51.14 Seconds
+Running time elapsed:      0.42 Seconds
+Running time elapsed:     54.06 Seconds
 SQL> exit
 Disconnected.

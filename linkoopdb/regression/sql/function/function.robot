@@ -32,5 +32,5 @@ Setup Custom Settings
     Compare Enable ConsoleOutput       True
 	Compare Skip                       ^[| 当前时间].*
     Compare Skip                       ^[| 当前日期].*
-
-
+	Compare Skip                       ^[| java.sql.SQLException].*
+	Compare Skip                       ^[| java.sql.SQLSyntaxErrorException].*
