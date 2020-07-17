@@ -149,5 +149,5 @@ Upload csv files
 	
 Upload ldbdist files
     SSH Connect                %{LDBSSH_ROOTURL}/%{JOB_BASE_NAME}/
-    SSH Upload                  ldbdist/*.csv   doc/
-	SSH Upload                  ldbdist/TEST    doc/
+    SSH Upload                  ldbdist/*.csv     doc/
+	SSH Upload                  ldbdist/TEST/*    doc/TEST
