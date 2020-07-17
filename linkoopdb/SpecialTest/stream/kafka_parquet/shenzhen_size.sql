@@ -79,7 +79,7 @@ atime timestamp
    'format':'parquet',
    'path':'hdfs:///node62/shenzhen',
    'write-mode':'size',
-   'batch-size':'100*1024*1024'
+   'batch-size':'104857600'
 );
 
 set session STREAM_EXECUTE_PARALLELISM 20;
