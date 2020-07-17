@@ -16,14 +16,24 @@ SQL> drop table T_DATA_LOAD_003 if exists ;
 SQL> drop table T_DATA_LOAD_004 if exists ;
 0 rows affected
 SQL> CREATE EXTERNAL TABLE T_DATA_LOAD_001 (ID INT, NAME VARCHAR(10)) LOCATION
-   > ('hdfs:///user/testdb73/external_file/doc/TEST1.csv') FORMAT 'csv' (DELIMITER ',');
+   > ('HDFSRPC_URL/doc/TEST1.csv') FORMAT 'csv' (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_DATA_LOAD_001 (ID INT, NAME VARCHAR(10)) LOCATION
+REWROTED    > ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/doc/TEST1.csv') FORMAT 'csv' (DELIMITER ',')
 0 rows affected
 SQL> CREATE EXTERNAL TABLE T_DATA_LOAD_002 (ID INT, NAME VARCHAR(10)) LOCATION
-   > ('hdfs:///user/testdb73/external_file/csv_doc') FORMAT 'csv' (DELIMITER ',');
+   > ('HDFSRPC_URL/doc/csv_doc') FORMAT 'csv' (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_DATA_LOAD_002 (ID INT, NAME VARCHAR(10)) LOCATION
+REWROTED    > ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/doc/csv_doc') FORMAT 'csv' (DELIMITER ',')
 0 rows affected
 SQL> CREATE EXTERNAL TABLE T_DATA_LOAD_003 (ID INT, NAME VARCHAR(10)) LOCATION
-   > ('hdfs:///user/testdb73/external_file/csv_doc,hdfs:///user/testdb73/external_file/doc/TEST1.csv') FORMAT 'csv'
+   > ('HDFSRPC_URL/doc/csv_doc,HDFSRPC_URL/doc/TEST1.csv') FORMAT 'csv'
    > (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_DATA_LOAD_003 (ID INT, NAME VARCHAR(10)) LOCATION
+REWROTED    > ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/doc/csv_doc,hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-dingting/doc/TEST1.csv') FORMAT 'csv'
+REWROTED    > (DELIMITER ',')
 0 rows affected
 SQL> CREATE TABLE T_DATA_LOAD_004 (ID INT, NAME VARCHAR(10));
 0 rows affected
@@ -59,8 +69,8 @@ SQL> select * from T_DATA_LOAD_004 order by id;
 +----+----------+
 | ID | NAME     |
 +----+----------+
-| 1  | zhangsan |
 | 1  | ZHANGSAN |
+| 1  | zhangsan |
 | 2  | lisi     |
 | 2  | LISI     |
 | 3  | wangwu   |
@@ -250,7 +260,12 @@ SQL> drop table T_LOAD_LDBDIST_005 if exists;
 SQL> CREATE EXTERNAL TABLE T_LOAD_LDBDIST_001 (
    > ID INT,
    > NAME VARCHAR(20)
-   > ) LOCATION('ldbdist://192.168.1.73:54322/TEST1.csv') FORMAT 'csv' (DELIMITER ',');
+   > ) LOCATION('LDBDIST_URL/doc/TEST1.csv') FORMAT 'csv' (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_LOAD_LDBDIST_001 (
+REWROTED    > ID INT,
+REWROTED    > NAME VARCHAR(20)
+REWROTED    > ) LOCATION('ldbdist://node74:54321/linkoopdb-sql-test-dingting/doc/TEST1.csv') FORMAT 'csv' (DELIMITER ',')
 0 rows affected
 SQL> CREATE TABLE T_LOAD_LDBDIST_002 (
    > ID INT,
@@ -271,8 +286,15 @@ SQL> CREATE EXTERNAL TABLE T_LOAD_LDBDIST_003 (
    > ID INT,
    > NAME VARCHAR(20)
    > ) LOCATION
-   > ('ldbdist://192.168.1.73:54322/TEST1.csv,ldbdist://192.168.1.73:54322/TEST2.csv') FORMAT
+   > ('LDBDIST_URL/doc/TEST1.csv,LDBDIST_URL/doc/TEST2.csv') FORMAT
    > 'csv' (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_LOAD_LDBDIST_003 (
+REWROTED    > ID INT,
+REWROTED    > NAME VARCHAR(20)
+REWROTED    > ) LOCATION
+REWROTED    > ('ldbdist://node74:54321/linkoopdb-sql-test-dingting/doc/TEST1.csv,ldbdist://node74:54321/linkoopdb-sql-test-dingting/doc/TEST2.csv') FORMAT
+REWROTED    > 'csv' (DELIMITER ',')
 0 rows affected
 SQL> delete from T_LOAD_LDBDIST_002;
 2 rows affected
@@ -294,11 +316,43 @@ SQL> CREATE EXTERNAL TABLE T_LOAD_LDBDIST_004 (
    > ID INT,
    > NAME VARCHAR(20)
    > ) LOCATION
-   > ('ldbdist://192.168.1.73:54322/TEST') FORMAT 'csv' (DELIMITER ',');
+   > ('LDBDIST_URL/doc/TEST') FORMAT 'csv' (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_LOAD_LDBDIST_004 (
+REWROTED    > ID INT,
+REWROTED    > NAME VARCHAR(20)
+REWROTED    > ) LOCATION
+REWROTED    > ('ldbdist://node74:54321/linkoopdb-sql-test-dingting/doc/TEST') FORMAT 'csv' (DELIMITER ',')
 0 rows affected
 SQL> delete from T_LOAD_LDBDIST_002;
 6 rows affected
 SQL> INSERT INTO T_LOAD_LDBDIST_002 SELECT * FROM T_LOAD_LDBDIST_004;
+4 rows affected
+SQL> select * from T_LOAD_LDBDIST_002 order by id;
++----+---------+
+| ID | NAME    |
++----+---------+
+| 3  | wangwu  |
+| 4  | songyi3 |
+| 4  | songyi3 |
+| 4  | songyi  |
++----+---------+
+4 rows selected.
+SQL> CREATE EXTERNAL TABLE T_LOAD_LDBDIST_005(
+   > ID INT,
+   > NAME VARCHAR(20)) LOCATION
+   > ('LDBDIST_URL/doc/TEST1.csv,LDBDIST_URL/doc/TEST') FORMAT
+   > 'csv' (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_LOAD_LDBDIST_005(
+REWROTED    > ID INT,
+REWROTED    > NAME VARCHAR(20)) LOCATION
+REWROTED    > ('ldbdist://node74:54321/linkoopdb-sql-test-dingting/doc/TEST1.csv,ldbdist://node74:54321/linkoopdb-sql-test-dingting/doc/TEST') FORMAT
+REWROTED    > 'csv' (DELIMITER ',')
+0 rows affected
+SQL> delete from T_LOAD_LDBDIST_002;
+4 rows affected
+SQL> INSERT INTO T_LOAD_LDBDIST_002 SELECT * FROM T_LOAD_LDBDIST_005;
 6 rows affected
 SQL> select * from T_LOAD_LDBDIST_002 order by id;
 +----+----------+
@@ -312,29 +366,5 @@ SQL> select * from T_LOAD_LDBDIST_002 order by id;
 | 4  | songyi   |
 +----+----------+
 6 rows selected.
-SQL> CREATE EXTERNAL TABLE T_LOAD_LDBDIST_005(
-   > ID INT,
-   > NAME VARCHAR(20)) LOCATION
-   > ('ldbdist://192.168.1.73:54322/TEST1.csv,ldbdist://192.168.1.73:54322/TEST') FORMAT
-   > 'csv' (DELIMITER ',');
-0 rows affected
-SQL> delete from T_LOAD_LDBDIST_002;
-6 rows affected
-SQL> INSERT INTO T_LOAD_LDBDIST_002 SELECT * FROM T_LOAD_LDBDIST_005;
-8 rows affected
-SQL> select * from T_LOAD_LDBDIST_002 order by id;
-+----+----------+
-| ID | NAME     |
-+----+----------+
-| 1  | ZHANGSAN |
-| 1  | ZHANGSAN |
-| 2  | LISI     |
-| 2  | LISI     |
-| 3  | wangwu   |
-| 4  | songyi3  |
-| 4  | songyi3  |
-| 4  | songyi   |
-+----+----------+
-8 rows selected.
 SQL> exit
 Disconnected.
