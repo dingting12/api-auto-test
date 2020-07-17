@@ -22,15 +22,13 @@ FunctionTestHdfsTest-Time
     Logon And Execute SQL Script    admin/123456              OLAP_function/OLAP_function.sql           OLAP_function.log
     Compare Files                   OLAP_function.log       OLAP_function/OLAP_function.ref
 
-#FunctionTestHdfsTest-Builtin
-    #[Documentation]    内置函数测试
-    #Logon And Execute SQL Script    admin/123456              built-in_function/built-in_function.sql           built-in_function.log
-    #Compare Files                   built-in_function.log       built-in_function/built-in_function.ref
+FunctionTestHdfsTest-Builtin
+    [Documentation]    内置函数测试
+    Logon And Execute SQL Script    admin/123456              built-in_function/built-in_function.sql           built-in_function.log
+    Compare Files                   built-in_function.log       built-in_function/built-in_function.ref
 
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True
 	Compare Skip                       ^[| 当前时间].*
     Compare Skip                       ^[| 当前日期].*
-	Compare Skip                       ^[| java.sql.SQLException].*
-	Compare Skip                       ^[| java.sql.SQLSyntaxErrorException].*
