@@ -1,0 +1,4277 @@
+SQLCli Release 0.0.97
+SQL> connect admin/123456
+Database connected.
+SQL> start built-in_function/built-in_function.sql
+SQL> loaddriver F:\db_ex\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
+driver file [F:\db_ex\driver\linkoopdb-jdbc-2.2.2.jar] does not exist.
+SQL> connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
+Database connected.
+SQL> 
+SQL> --建表
+SQL> DROP TABLE Test_Builtin_Func_1 IF EXISTS;
+0 rows affected
+SQL> CREATE TABLE Test_Builtin_Func_1 (id int,name VARCHAR(100),salary double,grade double);
+0 rows affected
+SQL> INSERT INTO Test_Builtin_Func_1 VALUES (1,'zs',8000, 97),(2,'ls',6000,65),(3,'ww',7000,88);
+3 rows affected
+SQL> INSERT INTO Test_Builtin_Func_1 VALUES (3,'ys',7000,77);
+1 row affected
+SQL> SELECT * FROM Test_Builtin_Func_1;
++----+------+--------+-------+
+| ID | NAME | SALARY | GRADE |
++----+------+--------+-------+
+| 3  | ys   | 7000   | 77    |
+| 1  | zs   | 8000   | 97    |
+| 2  | ls   | 6000   | 65    |
+| 3  | ww   | 7000   | 88    |
++----+------+--------+-------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --ABS
+SQL> SELECT abs(0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT abs(-1565567.6535643665434565777777734534546) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 1565567.654 |
++-------------+
+1 row selected.
+SQL> SELECT abs(-922337203685477580999888765) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| 199888765 |
++-----------+
+1 row selected.
+SQL> SELECT abs(9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
++---------------+
+| C1            |
++---------------+
+| 1998986778987 |
++---------------+
+1 row selected.
+SQL> SELECT abs(id) FROM Test_Builtin_Func_1 order by id;
++----+
+| C1 |
++----+
+| 1  |
+| 2  |
+| 3  |
+| 3  |
++----+
+4 rows selected.
+SQL> 
+SQL> --null,oracle报错：无效数字
+SQL> SELECT abs(name) FROM Test_Builtin_Func_1;
++--------+
+| C1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+SQL> 
+SQL> --报错，长度超出范围
+SQL> SELECT abs(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --ACOS
+SQL> SELECT acos(0) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 1.570796327 |
++-------------+
+1 row selected.
+SQL> SELECT acos(-1) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 3.141592654 |
++-------------+
+1 row selected.
+SQL> 
+SQL> --null,oracle报错：无效数字
+SQL> SELECT acos(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT acos(name) FROM Test_Builtin_Func_1]
+SQL> 
+SQL> --报错，长度超出范围
+SQL> SELECT acos(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> --超出范围，没报错
+SQL> SELECT acos(-1565567.6535643665434565777777734534546) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| nan |
++-----+
+1 row selected.
+SQL> SELECT acos(-922337203685477580999888765) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| nan |
++-----+
+1 row selected.
+SQL> SELECT acos(9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| nan |
++-----+
+1 row selected.
+SQL> SELECT ACOS(id) FROM Test_Builtin_Func_1 order by id;
++-----+
+| C1  |
++-----+
+| 0   |
+| nan |
+| nan |
+| nan |
++-----+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --APPROX_COUNT_DISTINCT
+SQL> SELECT APPROX_COUNT_DISTINCT(id) FROM Test_Builtin_Func_1;
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
+SQL> SELECT APPROX_COUNT_DISTINCT(name) FROM Test_Builtin_Func_1;
++----+
+| C1 |
++----+
+| 4  |
++----+
+1 row selected.
+SQL> SELECT APPROX_COUNT_DISTINCT(id,name) FROM Test_Builtin_Func_1;
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
+SQL> SELECT APPROX_COUNT_DISTINCT(id,0.1,0.2,842978934) FROM Test_Builtin_Func_1;
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --approx_percentile
+SQL> SELECT approx_percentile(10.0) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: APPROX_PERCENTILE(NUMERIC) in statement [SELECT approx_percentile(10.0) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT approx_percentile(10.0, array[0.5, 0.4, 0.1]) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------------+
+| C1                    |
++-----------------------+
+| ARRAY[10.0,10.0,10.0] |
++-----------------------+
+1 row selected.
+SQL> SELECT approx_percentile(10.454444444566777, array[0.5, 0.4, 0.1], 100) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------------------------------------------------------+
+| C1                                                              |
++-----------------------------------------------------------------+
+| ARRAY[10.454444444566777,10.454444444566777,10.454444444566777] |
++-----------------------------------------------------------------+
+1 row selected.
+SQL> SELECT approx_percentile(10.0000000000000097888564654353454636, array[0.5, 0.4, 0.1], 100) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                       |
++--------------------------------------------------------------------------------------------------------------------------+
+| ARRAY[10.0000000000000100000000000000000000,10.0000000000000100000000000000000000,10.0000000000000100000000000000000000] |
++--------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT approx_percentile(10.0432600000000097888564654353454636, array[0.5, 0.4, 0.1], 100000000798989879745465545464534366784500000000000) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                       |
++--------------------------------------------------------------------------------------------------------------------------+
+| ARRAY[10.0432600000000090000000000000000000,10.0432600000000090000000000000000000,10.0432600000000090000000000000000000] |
++--------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT approx_percentile(9223372036854775809998986778987, array[0.5, 0.4, 0.1], 100) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------------------------------------------------------------------------------------------+
+| C1                                                                                                     |
++--------------------------------------------------------------------------------------------------------+
+| ARRAY[9223372036854776000000000000000,9223372036854776000000000000000,9223372036854776000000000000000] |
++--------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --array_contains
+SQL> SELECT array_contains(array[1.2, 2.1, 3], 2.1) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT array_contains(array[1.2, 2.1, 3], 2.2) FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| False |
++-------+
+1 row selected.
+SQL> SELECT array_contains(array[name], 'ys') FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT array_contains(array['name'], 'name') FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT array_contains(array[name], name) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT array_contains(array[name], 'name') FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| False |
++-------+
+1 row selected.
+SQL> SELECT array_contains(array[id], 1) FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| False |
++-------+
+1 row selected.
+SQL> SELECT array_contains(array[id], id) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT array_contains(array[], 2.2) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'array_contains(array(), 2.2BD)' due to data type mismatch: Input to function array_contains should have been array followed by a value with same element type, but it's [array<string>, decimal(2,1)].;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [array_contains(array(), 2.2) AS C1#34246]
+      +- Union
+         :- Project [ID#40505 AS ID#34242, NAME#40506 AS NAME#34243, SALARY#40507 AS SALARY#34244, GRADE#40508 AS GRADE#34245]
+         :  +- Relation[ID#40505,NAME#40506,SALARY#40507,GRADE#40508] parquet
+         +- Project [ID#40513 AS ID#34242, NAME#40514 AS NAME#34243, SALARY#40515 AS SALARY#34244, GRADE#40516 AS GRADE#34245]
+            +- Relation[ID#40513,NAME#40514,SALARY#40515,GRADE#40516] parquet
+
+SQL> SELECT array_contains(0, 0) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: ARRAY_CONTAINS(INTEGER,INTEGER) in statement [SELECT array_contains(0, 0) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --ascii
+SQL> SELECT ascii('abc') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 97 |
++----+
+1 row selected.
+SQL> SELECT ascii('ABC') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 65 |
++----+
+1 row selected.
+SQL> SELECT ascii(3.14) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 51 |
++----+
+1 row selected.
+SQL> SELECT ascii('&') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 38 |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --ASIN
+SQL> SELECT asin(0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT asin(-1) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------+
+| C1           |
++--------------+
+| -1.570796327 |
++--------------+
+1 row selected.
+SQL> 
+SQL> --报错，类型不匹配
+SQL> SELECT asin(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT asin(name) FROM Test_Builtin_Func_1]
+SQL> 
+SQL> --报错，长度超出范围
+SQL> SELECT asin(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> --NAN
+SQL> SELECT asin(-1565567.6535643665434565777777734534546) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| nan |
++-----+
+1 row selected.
+SQL> SELECT asin(-922337203685477580999888765) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| nan |
++-----+
+1 row selected.
+SQL> SELECT asin(9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| nan |
++-----+
+1 row selected.
+SQL> SELECT asin(id) FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| 1.570796327 |
+| nan         |
+| nan         |
+| nan         |
++-------------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --ASSERT_TRUE
+SQL> SELECT assert_true(1) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'assert_true(1)' due to data type mismatch: argument 1 requires boolean type, however, '1' is of int type.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [assert_true(1) AS C1#34306]
+      +- Union
+         :- Project [ID#40727 AS ID#34302, NAME#40728 AS NAME#34303, SALARY#40729 AS SALARY#34304, GRADE#40730 AS GRADE#34305]
+         :  +- Relation[ID#40727,NAME#40728,SALARY#40729,GRADE#40730] parquet
+         +- Project [ID#40735 AS ID#34302, NAME#40736 AS NAME#34303, SALARY#40737 AS SALARY#34304, GRADE#40738 AS GRADE#34305]
+            +- Relation[ID#40735,NAME#40736,SALARY#40737,GRADE#40738] parquet
+
+SQL> SELECT assert_true(1 >= 1) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT assert_true(1 > 1) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: 'false' is not true!
+SQL> SELECT assert_true((1*(1+3)/4) > 0) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --ATAN
+SQL> SELECT atan(0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT atan(-1) FROM Test_Builtin_Func_1 LIMIT 1;
++---------------+
+| C1            |
++---------------+
+| -0.7853981634 |
++---------------+
+1 row selected.
+SQL> SELECT atan(-1565567.6535643665434565777777734534546) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------+
+| C1           |
++--------------+
+| -1.570795688 |
++--------------+
+1 row selected.
+SQL> SELECT atan(-922337203685477580999888765) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------+
+| C1           |
++--------------+
+| -1.570796327 |
++--------------+
+1 row selected.
+SQL> SELECT atan(9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 1.570796327 |
++-------------+
+1 row selected.
+SQL> SELECT atan(id) FROM Test_Builtin_Func_1 ORDER BY id;
++--------------+
+| C1           |
++--------------+
+| 0.7853981634 |
+| 1.107148718  |
+| 1.249045772  |
+| 1.249045772  |
++--------------+
+4 rows selected.
+SQL> 
+SQL> --报错，类型不匹配
+SQL> SELECT atan(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT atan(name) FROM Test_Builtin_Func_1]
+SQL> 
+SQL> --报错，长度超出范围
+SQL> SELECT atan(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --ATAN2
+SQL> SELECT atan2(-922337203685477580999888765,9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
++------------------+
+| C1               |
++------------------+
+| -9.999999967e-05 |
++------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT atan2(-0.4444444443224333547685878378856783467204678547657382,9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> SELECT atan2(-922337203685477580999888765,-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> SELECT atan2(id,name) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT atan2(id,name) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --BASE64
+SQL> SELECT base64('sql') FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| c3Fs |
++------+
+1 row selected.
+SQL> SELECT base64(' ') FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| IA== |
++------+
+1 row selected.
+SQL> SELECT base64(binary(name)) FROM Test_Builtin_Func_1 order by id;
++------+
+| C1   |
++------+
+| enM= |
+| bHM= |
+| d3c= |
+| eXM= |
++------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT base64(bin(name)) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT base64(0) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'base64(0)' due to data type mismatch: argument 1 requires binary type, however, '0' is of int type.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [base64(0) AS C1#34396]
+      +- Union
+         :- Project [ID#41056 AS ID#34392, NAME#41057 AS NAME#34393, SALARY#41058 AS SALARY#34394, GRADE#41059 AS GRADE#34395]
+         :  +- Relation[ID#41056,NAME#41057,SALARY#41058,GRADE#41059] parquet
+         +- Project [ID#41064 AS ID#34392, NAME#41065 AS NAME#34393, SALARY#41066 AS SALARY#34394, GRADE#41067 AS GRADE#34395]
+            +- Relation[ID#41064,NAME#41065,SALARY#41066,GRADE#41067] parquet
+
+SQL> SELECT base64(name) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| eXM= |
++------+
+1 row selected.
+SQL> SELECT base64(12847320) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'base64(12847320)' due to data type mismatch: argument 1 requires binary type, however, '12847320' is of int type.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [base64(12847320) AS C1#34406]
+      +- Union
+         :- Project [ID#41091 AS ID#34402, NAME#41092 AS NAME#34403, SALARY#41093 AS SALARY#34404, GRADE#41094 AS GRADE#34405]
+         :  +- Relation[ID#41091,NAME#41092,SALARY#41093,GRADE#41094] parquet
+         +- Project [ID#41099 AS ID#34402, NAME#41100 AS NAME#34403, SALARY#41101 AS SALARY#34404, GRADE#41102 AS GRADE#34405]
+            +- Relation[ID#41099,NAME#41100,SALARY#41101,GRADE#41102] parquet
+
+SQL> 
+SQL> 
+SQL> --BIN
+SQL> SELECT bin(0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT bin(8987) FROM Test_Builtin_Func_1 LIMIT 1;
++----------------+
+| C1             |
++----------------+
+| 10001100011011 |
++----------------+
+1 row selected.
+SQL> SELECT bin(-1565567.6535643665434565777777734534546) FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------------------------------+
+| C1                                                               |
++------------------------------------------------------------------+
+| 1111111111111111111111111111111111111111111010000001110010000001 |
++------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT bin(-922337203685477580999888765) FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------------------------------+
+| C1                                                               |
++------------------------------------------------------------------+
+| 1111111111111111111111111111111111110100000101011111000010000011 |
++------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT bin(9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------------------------------------+
+| C1                                        |
++-------------------------------------------+
+| 11101000101101100111001011001100101101011 |
++-------------------------------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT bin(-0.4444444443224333547685878378856783467204678547657382,9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: BIN(NUMERIC,NUMERIC) in statement [SELECT bin(-0.4444444443224333547685878378856783467204678547657382,9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT bin(name) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --BIT_LENGTH
+SQL> SELECT bit_length(name) FROM Test_Builtin_Func_1;
++----+
+| C1 |
++----+
+| 16 |
+| 16 |
+| 16 |
+| 16 |
++----+
+4 rows selected.
+SQL> SELECT bit_length(bin(1234354)) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| 168 |
++-----+
+1 row selected.
+SQL> SELECT bit_length(binary('name')) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 32 |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --BOOLEAN
+SQL> SELECT boolean(0) FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| False |
++-------+
+1 row selected.
+SQL> SELECT boolean(1) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT boolean(1-1*234) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT boolean(ID) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT boolean(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> SELECT boolean(NAME) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --BROUND
+   > --SELECT bround(2.55211243253, 1000000000000000000000) FROM Test_Builtin_Func_1 LIMIT 1;
+SQL> SELECT bround(2.55211243253, 100000000000000000000) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 2.552112433 |
++-------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --CBRT
+SQL> SELECT cbrt(7436723673292305) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 195191.3412 |
++-------------+
+1 row selected.
+SQL> SELECT cbrt(9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------+
+| C1           |
++--------------+
+| 2.097152e+10 |
++--------------+
+1 row selected.
+SQL> SELECT cbrt(id) FROM Test_Builtin_Func_1 order by id;
++------------+
+| C1         |
++------------+
+| 1          |
+| 1.25992105 |
+| 1.44224957 |
+| 1.44224957 |
++------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT cbrt(name) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT cbrt(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --CEIL
+SQL> SELECT ceil(0) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT ceil(9223372036854775809998986778987.7472362) FROM Test_Builtin_Func_1 limit 1;
++---------------+
+| C1            |
++---------------+
+| 1998986778988 |
++---------------+
+1 row selected.
+SQL> SELECT ceil(0.0000000000000000001) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT ceil(name) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT ceil(name) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT ceil(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --CHAR
+SQL> SELECT char(1) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|   |
++----+
+1 row selected.
+SQL> SELECT char(66) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| B  |
++----+
+1 row selected.
+SQL> SELECT char(0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> SELECT char(24454432) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT char('123') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT char('123') FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT char(name) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT char(name) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT char(-0.44444444432243335477657382) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --CHAR_LENGTH
+SQL> SELECT CHAR_LENGTH(name) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| 2  |
+| 2  |
+| 2  |
+| 2  |
++----+
+4 rows selected.
+SQL> SELECT CHAR_LENGTH(' 你好 ') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 4  |
++----+
+1 row selected.
+SQL> SELECT CHAR_LENGTH('2020-04-03 11:11:11') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 19 |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT CHAR_LENGTH(DATE '2020-04-03 11:11:11') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLDataException: data exception: invalid datetime format in statement [SELECT CHAR_LENGTH(DATE '2020-04-03 11:11:11') FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT CHAR_LENGTH(id) FROM Test_Builtin_Func_1 ORDER BY id;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT CHAR_LENGTH(id) FROM Test_Builtin_Func_1 ORDER BY id]
+SQL> 
+SQL> 
+SQL> --CHARACTER_LENGTH
+SQL> SELECT CHARACTER_LENGTH(name) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| 2  |
+| 2  |
+| 2  |
+| 2  |
++----+
+4 rows selected.
+SQL> SELECT CHARACTER_LENGTH(' 你好 ') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 4  |
++----+
+1 row selected.
+SQL> SELECT CHARACTER_LENGTH('2020-04-03 11:11:11') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 19 |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT CHARACTER_LENGTH(DATE '2020-04-03 11:11:11') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLDataException: data exception: invalid datetime format in statement [SELECT CHARACTER_LENGTH(DATE '2020-04-03 11:11:11') FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT CHARACTER_LENGTH(id) FROM Test_Builtin_Func_1 ORDER BY id;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT CHARACTER_LENGTH(id) FROM Test_Builtin_Func_1 ORDER BY id]
+SQL> 
+SQL> 
+SQL> --CHR
+SQL> SELECT chr(95) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| _  |
++----+
+1 row selected.
+SQL> SELECT chr(01) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|   |
++----+
+1 row selected.
+SQL> SELECT chr(0101) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| e  |
++----+
+1 row selected.
+SQL> SELECT chr(101) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| e  |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT chr(0x101) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: unexpected token: X101 in statement [SELECT chr(0x101) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT chr(name) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT chr(name) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --COALESCE
+SQL> SELECT coalesce(1, 2, 14,143,12,12,41,122,12,21,13,1,1,21,15,61,91,71,81,19) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> SELECT coalesce(4, 2, 14,143,12,12,41,122,12,21,13,1,1,21,15,61,91,71,81,19,null) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 4  |
++----+
+1 row selected.
+SQL> SELECT coalesce(null, 2, 14,143,12,12,41,122,12,21,13,1,1,21,15,61,91,71,81,19,null) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 2  |
++----+
+1 row selected.
+SQL> SELECT coalesce(NULL,4, 2, 14,143,12,12,41,122,12,21,13,1,1,21,15,61,91,71,81,19) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 4  |
++----+
+1 row selected.
+SQL> 
+SQL> --执行不停止
+   > --SELECT coalesce(NULL,4, 2, 14,143,12,12,41,122,12,21.21,13,1,1,21,15,61,91,71,81,19,323.33,67,34,21,5789,324543,78,2311,44,46,54,78,98,7655,666774,6432,687,09,5,99,9098,8987,6665,89,88,8,557,780) FROM Test_Builtin_Func_1 limit 1;
+   > 
+   > --SELECT coalesce(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL) FROM Test_Builtin_Func_1 limit 1;
+   > 
+   > --异常测试
+SQL> SELECT coalesce(-0.4444444443224333547685878378856783467204678547657382,NULL,null) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --CONCAT
+SQL> SELECT concat('ldb的话沙发和文件拷贝VCD加快了我iu活动和巴西马赛克了', '12345689客户公分的身高多少', '那肯定深刻的撒觉得你塞克我','“yweuuiqkjrwehj327890ewy188yruerfmsdjkew紧急时刻到了封杀，。;;[]{}\|!@#$%*)&#&(@&!_+-=`发货金额为','edrgierqj3289','erwqefgre329083uqa5ykhfgbhyfsdkhjfdkahauewiry8w9rrhfhfhfgh') FROM Test_Builtin_Func_1 limit 1;
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                                                                                                                                                                               |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ldb的话沙发和文件拷贝VCD加快了我iu活动和巴西马赛克了12345689客户公分的身高多少那肯定深刻的撒觉得你塞克我“yweuuiqkjrwehj327890ewy188yruerfmsdjkew紧急时刻到了封杀，。;;[]{}\|!@#$%*)&#&(@&!_+-=`发货金额为edrgierqj3289erwqefgre329083uqa5ykhfgbhyfsdkhjfdkahauewiry8w9rrhfhfhfgh |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT concat('LDB', null, 'wd') FROM Test_Builtin_Func_1 limit 1;
++-------+
+| C1    |
++-------+
+| LDBwd |
++-------+
+1 row selected.
+SQL> SELECT concat('Linkoop DB', 'SQL', 1246575839263747372995734736761) FROM Test_Builtin_Func_1 limit 1;
++----------------------------------------------+
+| C1                                           |
++----------------------------------------------+
+| Linkoop DBSQL1246575839263747372995734736761 |
++----------------------------------------------+
+1 row selected.
+SQL> SELECT concat('Linkoop DB', 'SQL', null) FROM Test_Builtin_Func_1 limit 1;
++---------------+
+| C1            |
++---------------+
+| Linkoop DBSQL |
++---------------+
+1 row selected.
+SQL> SELECT concat('1', '2', '2',4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,44,4,4,4,4,4,4,4,4,4,4,4,4,2,4,4,4,4,4,4,4,4,3,4,43,3,4,5,5,4,6,6,89,8,90) FROM Test_Builtin_Func_1 limit 1;
++------------------------------------------------------------------------+
+| C1                                                                     |
++------------------------------------------------------------------------+
+| 1224444444444444444444444444444444444444444442444444443443345546689890 |
++------------------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> --返回结果为null
+SQL> SELECT concat('1', '2', '2',4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,44,4,4,4,4,4,4,4,4,4,4,4,4,2,4,4,4,4,4,4,4,4,3,4,43,3,4,5,5,4,6,null) FROM Test_Builtin_Func_1 limit 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --CONCAT_WS
+SQL> SELECT concat_ws('LDB', null, 'wd') FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| wd |
++----+
+1 row selected.
+SQL> SELECT concat_ws('LDB', ' ', 'wd') FROM Test_Builtin_Func_1 limit 1;
++--------+
+| C1     |
++--------+
+|  LDBwd |
++--------+
+1 row selected.
+SQL> SELECT concat_ws('LDB', '', 'wd') FROM Test_Builtin_Func_1 limit 1;
++-------+
+| C1    |
++-------+
+| LDBwd |
++-------+
+1 row selected.
+SQL> SELECT concat_ws(' l ', 'ndy', 'wd') FROM Test_Builtin_Func_1 limit 1;
++----------+
+| C1       |
++----------+
+| ndy l wd |
++----------+
+1 row selected.
+SQL> SELECT concat_ws('Linkoop DB', 'SQL', 1246575839263747372995734736761) FROM Test_Builtin_Func_1 limit 1;
++----------------------------------------------+
+| C1                                           |
++----------------------------------------------+
+| SQLLinkoop DB1246575839263747372995734736761 |
++----------------------------------------------+
+1 row selected.
+SQL> SELECT concat_ws('Linkoop DB', 'SQL', null) FROM Test_Builtin_Func_1 limit 1;
++-----+
+| C1  |
++-----+
+| SQL |
++-----+
+1 row selected.
+SQL> SELECT concat_ws('1', '2', '2',4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,44,4,4,4,4,4,4,4,4,4,4,4,4,2,4,4,4,4,4,4,4,4,3,4,43,3,4,5,5,4,6,6,89,8,90) FROM Test_Builtin_Func_1 limit 1;
++---------------------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                                    |
++---------------------------------------------------------------------------------------------------------------------------------------+
+| 2121414141414141414141414141414141414141414141414141414141414414141414141414141414141412141414141414141413141431314151514161618918190 |
++---------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT concat_ws('1', '2', '2',4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,44,4,4,4,4,4,4,4,4,4,4,4,4,2,4,4,4,4,4,4,4,4,3,4,43,3,4,5,5,4,6,null) FROM Test_Builtin_Func_1 limit 1;
++-----------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                          |
++-----------------------------------------------------------------------------------------------------------------------------+
+| 212141414141414141414141414141414141414141414141414141414141441414141414141414141414141214141414141414141314143131415151416 |
++-----------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --CONV
+SQL> SELECT conv('100', 2, 10) from Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 4  |
++----+
+1 row selected.
+SQL> SELECT conv('100', 10, 2) from Test_Builtin_Func_1 LIMIT 1;
++---------+
+| C1      |
++---------+
+| 1100100 |
++---------+
+1 row selected.
+SQL> SELECT conv('2', 10, 2) from Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 10 |
++----+
+1 row selected.
+SQL> SELECT conv('2444', 10, 16) from Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| 98C |
++-----+
+1 row selected.
+SQL> SELECT conv('4444', 10, 8) from Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| 10534 |
++-------+
+1 row selected.
+SQL> SELECT conv('23432', 16, 8) from Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 432062 |
++--------+
+1 row selected.
+SQL> SELECT conv('2322', 8, 16) from Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| 4D2 |
++-----+
+1 row selected.
+SQL> SELECT conv('234432', 8, 2) from Test_Builtin_Func_1 LIMIT 1;
++-------------------+
+| C1                |
++-------------------+
+| 10011100100011010 |
++-------------------+
+1 row selected.
+SQL> SELECT conv('23443224322', 8, -10) from Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 2626496722 |
++------------+
+1 row selected.
+SQL> SELECT conv(634, 16, 8) from Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| 3064 |
++------+
+1 row selected.
+SQL> SELECT conv(null, 16, 8) from Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT conv(null, null, null) from Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT conv(-0.44444444487382,10,8) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT conv(12435,10,2.4) FROM Test_Builtin_Func_1 LIMIT 1;
++----------------+
+| C1             |
++----------------+
+| 11000010010011 |
++----------------+
+1 row selected.
+SQL> SELECT conv(12435,10,2.7) FROM Test_Builtin_Func_1 LIMIT 1;
++----------------+
+| C1             |
++----------------+
+| 11000010010011 |
++----------------+
+1 row selected.
+SQL> SELECT conv(conv(12435,10,2.7),10,8) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| 240044354066633 |
++-----------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+   > --s1000
+SQL> SELECT conv(12435,NULL,null) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: S1000 General error
+SQL> SELECT conv(-0.4444444443224333547685878378856783467204678547657382,8,2) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> SELECT conv(12435,10,2,4) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: CONV(INTEGER,INTEGER,INTEGER,INTEGER) in statement [SELECT conv(12435,10,2,4) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --CORR
+SQL> SELECT corr(-123.2,-456.2) from Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT corr(salary,grade) from Test_Builtin_Func_1;
++--------------+
+| C1           |
++--------------+
+| 0.9438337229 |
++--------------+
+1 row selected.
+SQL> SELECT corr(salary,id) from Test_Builtin_Func_1;
++---------------+
+| C1            |
++---------------+
+| -0.4264014327 |
++---------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT corr(name,id) from Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT corr(salary,name) from Test_Builtin_Func_1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --COS
+SQL> SELECT cos(342342689) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------+
+| C1           |
++--------------+
+| 0.3929837931 |
++--------------+
+1 row selected.
+SQL> SELECT cos(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++---------------+
+| C1            |
++---------------+
+| 0.06564512751 |
+| 0.9039115103  |
+| 0.8620134343  |
+| 0.8620134343  |
++---------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT cos(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT cos(name) FROM Test_Builtin_Func_1]
+SQL> SELECT cos(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --COSH
+SQL> SELECT cosh(0.44444444482) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 1.100401943 |
++-------------+
+1 row selected.
+SQL> SELECT cosh(id) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| 10.067662 |
++-----------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT cosh(0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> SELECT cosh(name) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT cosh(name) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --COT
+SQL> SELECT cot(0.44444444482) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 2.099863486 |
++-------------+
+1 row selected.
+SQL> SELECT cot(id) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------+
+| C1           |
++--------------+
+| -7.015252551 |
++--------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT cot(0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> SELECT cot(name) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT cot(name) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --COVAR_POP
+SQL> SELECT covar_pop(salary,grade) from Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| 8000 |
++------+
+1 row selected.
+SQL> SELECT covar_pop(grade,salary) from Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| 8000 |
++------+
+1 row selected.
+SQL> SELECT covar_pop(0,0) from Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT covar_pop(0.4444444443224333547685878378856783467204678547657382,43) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> SELECT covar_pop(name,salary) from Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --COVAR_SAMP
+SQL> SELECT COVAR_SAMP(salary,grade) from Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 10666.66667 |
++-------------+
+1 row selected.
+SQL> SELECT COVAR_SAMP(grade,salary) from Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 10666.66667 |
++-------------+
+1 row selected.
+SQL> SELECT COVAR_SAMP(0,0) from Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT COVAR_SAMP(0.4444444443224333547685878378856783467204678547657382,43) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> SELECT COVAR_SAMP(name,salary) from Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --CRC32
+SQL> SELECT CRC32(' ') FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 3916222277 |
++------------+
+1 row selected.
+SQL> SELECT CRC32(null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT CRC32(name) FROM Test_Builtin_Func_1 ORDER BY id;
++------------+
+| C1         |
++------------+
+| 1560650501 |
+| 1100814034 |
+| 4022737233 |
+| 1982394566 |
++------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT CRC32(salary) FROM Test_Builtin_Func_1 ORDER BY id;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'crc32(`SALARY`)' due to data type mismatch: argument 1 requires binary type, however, '`SALARY`' is of double type.;;
+'Sort [ID#34993 ASC NULLS FIRST], true
++- 'Project [crc32(SALARY#34995) AS C1#34997]
+   +- Union
+      :- Project [ID#44241 AS ID#34993, NAME#44242 AS NAME#34994, SALARY#44243 AS SALARY#34995, GRADE#44244 AS GRADE#34996]
+      :  +- Relation[ID#44241,NAME#44242,SALARY#44243,GRADE#44244] parquet
+      +- Project [ID#44249 AS ID#34993, NAME#44250 AS NAME#34994, SALARY#44251 AS SALARY#34995, GRADE#44252 AS GRADE#34996]
+         +- Relation[ID#44249,NAME#44250,SALARY#44251,GRADE#44252] parquet
+
+SQL> SELECT CRC32(id) FROM Test_Builtin_Func_1 ORDER BY id;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'crc32(`ID`)' due to data type mismatch: argument 1 requires binary type, however, '`ID`' is of int type.;;
+'Sort [ID#35007 ASC NULLS FIRST], true
++- 'Project [crc32(ID#35007) AS C1#35011]
+   +- Union
+      :- Project [ID#44275 AS ID#35007, NAME#44276 AS NAME#35008, SALARY#44277 AS SALARY#35009, GRADE#44278 AS GRADE#35010]
+      :  +- Relation[ID#44275,NAME#44276,SALARY#44277,GRADE#44278] parquet
+      +- Project [ID#44319 AS ID#35007, NAME#44320 AS NAME#35008, SALARY#44321 AS SALARY#35009, GRADE#44322 AS GRADE#35010]
+         +- Relation[ID#44319,NAME#44320,SALARY#44321,GRADE#44322] parquet
+
+SQL> 
+SQL> 
+SQL> --CURRENT_DATABASE
+SQL> SELECT CURRENT_DATABASE() FROM Test_Builtin_Func_1 LIMIT 1;
++---------+
+| C1      |
++---------+
+| default |
++---------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT CURRENT_DATABASE(a) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: A in statement [SELECT CURRENT_DATABASE(a) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --DEGREES
+SQL> SELECT degrees(374383982733) FROM Test_Builtin_Func_1 limit 1;
++-----------------+
+| C1              |
++-----------------+
+| 2.145062213e+13 |
++-----------------+
+1 row selected.
+SQL> SELECT degrees(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| 458366.2361 |
+| 343774.6771 |
+| 401070.4566 |
+| 401070.4566 |
++-------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT degrees(0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 limit 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --ELT
+SQL> SELECT elt(6, 'scala', 'java', 'hello world','a','b','c','d','e') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| c  |
++----+
+1 row selected.
+SQL> SELECT elt(id, 'scala', 'java', 'hello world') FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| scala       |
+| java        |
+| hello world |
+| hello world |
++-------------+
+4 rows selected.
+SQL> SELECT elt(6, 'scala', 'java',NULL, 'hello world','a','b','c','d','e') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: S1000 General error
+SQL> SELECT elt(6, 'scala', 'java','hello world','a','b','c','d','e',123) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: ELT(INTEGER,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,INTEGER) in statement [SELECT elt(6, 'scala', 'java','hello world','a','b','c','d','e',123) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> --异常测试
+SQL> SELECT elt(0, 'scala', 'java', 'hello world','a','b','c','d','e') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT elt(65, 'scala', 'java', 'hello world','a','b','c','d','e') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --ENCODE
+SQL> SELECT encode('abc', 'utf-8') from Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| abc |
++-----+
+1 row selected.
+SQL> SELECT encode('abc', 'gbk') from Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| abc |
++-----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT encode('abc', '12') from Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: 12
+SQL> 
+SQL> 
+SQL> --EXP
+SQL> SELECT exp(99) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| 9.889030319e+42 |
++-----------------+
+1 row selected.
+SQL> SELECT exp(id) FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| 2.718281828 |
+| 7.389056099 |
+| 20.08553692 |
+| 20.08553692 |
++-------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT exp(name) FROM Test_Builtin_Func_1 ORDER BY id;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT exp(name) FROM Test_Builtin_Func_1 ORDER BY id]
+SQL> SELECT exp(0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --COLLECT_LIST
+SQL> SELECT collect_list(name) FROM  Test_Builtin_Func_1;
++----------------------------+
+| C1                         |
++----------------------------+
+| ARRAY['ww','ls','zs','ys'] |
++----------------------------+
+1 row selected.
+SQL> SELECT collect_list(id),collect_list(salary) FROM  Test_Builtin_Func_1;
++----------------+--------------------------------------------+
+| C1             | C2                                         |
++----------------+--------------------------------------------+
+| ARRAY[3,3,2,1] | ARRAY[7000.0E0,7000.0E0,6000.0E0,8000.0E0] |
++----------------+--------------------------------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT collect_list('a','b','c') FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: COLLECT_LIST(VARCHAR,VARCHAR,VARCHAR) in statement [SELECT collect_list('a','b','c') FROM Test_Builtin_Func_1]
+SQL> SELECT collect_list(id,name,salary) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: COLLECT_LIST(INTEGER,VARCHAR,DOUBLE) in statement [SELECT collect_list(id,name,salary) FROM Test_Builtin_Func_1]
+SQL> 
+SQL> 
+SQL> --COLLECT_SET
+SQL> SELECT collect_set(id),collect_set(salary) FROM  Test_Builtin_Func_1;
++--------------+-----------------------------------+
+| C1           | C2                                |
++--------------+-----------------------------------+
+| ARRAY[1,2,3] | ARRAY[6000.0E0,8000.0E0,7000.0E0] |
++--------------+-----------------------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT collect_set('a','b','c') FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: COLLECT_SET(VARCHAR,VARCHAR,VARCHAR) in statement [SELECT collect_set('a','b','c') FROM Test_Builtin_Func_1]
+SQL> SELECT collect_set(id,name,salary) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: COLLECT_SET(INTEGER,VARCHAR,DOUBLE) in statement [SELECT collect_set(id,name,salary) FROM Test_Builtin_Func_1]
+SQL> 
+SQL> 
+SQL> --EXPLODE
+SQL> SELECT EXPLODE(array[1,2,3,45])FROM  Test_Builtin_Func_1;
++----+
+| C1 |
++----+
+| 1  |
+| 2  |
+| 3  |
+| 45 |
+| 1  |
+| 2  |
+| 3  |
+| 45 |
+| 1  |
+| 2  |
+| 3  |
+| 45 |
+| 1  |
+| 2  |
+| 3  |
+| 45 |
++----+
+16 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT EXPLODE(collect_set(id)) FROM  Test_Builtin_Func_1;
+java.sql.SQLException: Worker execution: ldb worker caused error: Generators are not supported outside the SELECT clause, but got: 'Aggregate [explode(collect_set(ID#35168, 0, 0)) AS C1#35172];
+SQL> SELECT EXPLODE(id) FROM  Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: EXPLODE(INTEGER) in statement [SELECT EXPLODE(id) FROM  Test_Builtin_Func_1]
+SQL> 
+SQL> 
+SQL> --EXPLODE_OUTER
+SQL> SELECT EXPLODE_OUTER(array[1,2,3,45])FROM  Test_Builtin_Func_1;
++----+
+| C1 |
++----+
+| 1  |
+| 2  |
+| 3  |
+| 45 |
+| 1  |
+| 2  |
+| 3  |
+| 45 |
+| 1  |
+| 2  |
+| 3  |
+| 45 |
+| 1  |
+| 2  |
+| 3  |
+| 45 |
++----+
+16 rows selected.
+SQL> SELECT EXPLODE_OUTER(id) FROM  Test_Builtin_Func_1;
+java.sql.SQLException: com.datapps.linkoopdb.jdbc.types.NumberType cannot be cast to com.datapps.linkoopdb.jdbc.types.ArrayType
+SQL> 
+SQL> --异常测试
+SQL> SELECT EXPLODE_OUTER(collect_set(id)) FROM  Test_Builtin_Func_1;
+java.sql.SQLException: Worker execution: ldb worker caused error: Generators are not supported outside the SELECT clause, but got: 'Aggregate [explode(collect_set(ID#35179, 0, 0)) AS C1#35183];
+SQL> 
+SQL> 
+SQL> --EXPM1
+SQL> SELECT EXPM1(id) FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| 1.718281828 |
+| 6.389056099 |
+| 19.08553692 |
+| 19.08553692 |
++-------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT EXPM1(name) FROM Test_Builtin_Func_1 ORDER BY id;
++--------+
+| C1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+SQL> SELECT EXPM1(0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --FACTORIAL
+SQL> SELECT factorial(salary) FROM Test_Builtin_Func_1;
++--------+
+| C1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+SQL> SELECT factorial(id) FROM Test_Builtin_Func_1;
++----+
+| C1 |
++----+
+| 6  |
+| 1  |
+| 2  |
+| 6  |
++----+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT factorial(name) FROM Test_Builtin_Func_1;
++--------+
+| C1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+SQL> SELECT factorial(20) FROM Test_Builtin_Func_1 ;
++---------------------+
+| C1                  |
++---------------------+
+| 2432902008176640000 |
+| 2432902008176640000 |
+| 2432902008176640000 |
+| 2432902008176640000 |
++---------------------+
+4 rows selected.
+SQL> SELECT factorial(21) FROM Test_Builtin_Func_1 ;
++--------+
+| C1     |
++--------+
+| <null> |
+| <null> |
+| <null> |
+| <null> |
++--------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --FIND_IN_SET
+SQL> SELECT find_in_set('a',null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT find_in_set(null,null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT find_in_set(null,'a') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT find_in_set('a','b,b,c,d,e,a,aa,aaa,aaaaa') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 6  |
++----+
+1 row selected.
+SQL> SELECT find_in_set('a','b,b,c,d,e,aa,aaa,aaaaa') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT find_in_set(1,'0,2,1,45') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --FIRST
+SQL> SELECT first(name) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| ww |
++----+
+1 row selected.
+SQL> SELECT first('hello','123,','ew') FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| hello |
++-------+
+1 row selected.
+SQL> SELECT first(NULL,'hello','123,','ew') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: S1000 General error
+SQL> SELECT first('wow',name,'omg') FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| wow |
++-----+
+1 row selected.
+SQL> SELECT first(NULL,'wow',name,'omg') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: S1000 General error
+SQL> SELECT first(first(name),'wow','omg') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: It is not allowed to use an aggregate function in the argument of another aggregate function. Please use the inner aggregate function in a sub-query.;;
+GlobalLimit (0 + 1)
++- LocalLimit (0 + 1)
+   +- Aggregate [first(first(NAME#35359, false), false) AS C1#35362]
+      +- Union
+         :- Project [ID#46524 AS ID#35358, NAME#46525 AS NAME#35359, SALARY#46526 AS SALARY#35360, GRADE#46527 AS GRADE#35361]
+         :  +- Relation[ID#46524,NAME#46525,SALARY#46526,GRADE#46527] parquet
+         +- Project [ID#46532 AS ID#35358, NAME#46533 AS NAME#35359, SALARY#46534 AS SALARY#35360, GRADE#46535 AS GRADE#35361]
+            +- Relation[ID#46532,NAME#46533,SALARY#46534,GRADE#46535] parquet
+
+SQL> 
+SQL> 
+SQL> --FIRST_VALUE
+SQL> SELECT first_value(name) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| ys |
++----+
+1 row selected.
+SQL> SELECT first_value('hello','123,','ew') FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| hello |
++-------+
+1 row selected.
+SQL> SELECT first_value(NULL,'hello','123,','ew') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: S1000 General error
+SQL> SELECT first_value('wow',name,'omg') FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| wow |
++-----+
+1 row selected.
+SQL> SELECT first_value(NULL,'wow',name,'omg') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: S1000 General error
+SQL> SELECT first_value(first_value(name),'wow','omg') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: It is not allowed to use an aggregate function in the argument of another aggregate function. Please use the inner aggregate function in a sub-query.;;
+GlobalLimit (0 + 1)
++- LocalLimit (0 + 1)
+   +- Aggregate [first(first(NAME#35388, false), false) AS C1#35391]
+      +- Union
+         :- Project [ID#46701 AS ID#35387, NAME#46702 AS NAME#35388, SALARY#46703 AS SALARY#35389, GRADE#46704 AS GRADE#35390]
+         :  +- Relation[ID#46701,NAME#46702,SALARY#46703,GRADE#46704] parquet
+         +- Project [ID#46709 AS ID#35387, NAME#46710 AS NAME#35388, SALARY#46711 AS SALARY#35389, GRADE#46712 AS GRADE#35390]
+            +- Relation[ID#46709,NAME#46710,SALARY#46711,GRADE#46712] parquet
+
+SQL> 
+SQL> 
+SQL> --FLOOR
+SQL> SELECT floor(1233443895.375) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 1233443895 |
++------------+
+1 row selected.
+SQL> SELECT floor(-213.748) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| -214 |
++------+
+1 row selected.
+SQL> SELECT floor(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT floor(name) FROM Test_Builtin_Func_1]
+SQL> SELECT floor(0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --FORMAT_NUMBER
+SQL> SELECT format_number(12332.123456, '##################.###') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| 12332.123 |
++-----------+
+1 row selected.
+SQL> SELECT format_number(12332.123456, '##################.####') FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 12332.1235 |
++------------+
+1 row selected.
+SQL> SELECT format_number(12332.123456, '##################.##') FROM Test_Builtin_Func_1 LIMIT 1;
++----------+
+| C1       |
++----------+
+| 12332.12 |
++----------+
+1 row selected.
+SQL> SELECT format_number(12332.123456,2) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| 12,332.12 |
++-----------+
+1 row selected.
+SQL> SELECT format_number(12332.123456,0) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 12,332 |
++--------+
+1 row selected.
+SQL> SELECT format_number(12332.923456,0) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 12,333 |
++--------+
+1 row selected.
+SQL> SELECT format_number(salary,10) FROM Test_Builtin_Func_1;
++------------------+
+| C1               |
++------------------+
+| 7,000.0000000000 |
+| 8,000.0000000000 |
+| 6,000.0000000000 |
+| 7,000.0000000000 |
++------------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT format_number(name,0) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'format_number(`NAME`, 0)' due to data type mismatch: argument 1 requires numeric type, however, '`NAME`' is of string type.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [format_number(NAME#35443, 0) AS C1#35446]
+      +- Union
+         :- Project [ID#46906 AS ID#35442, NAME#46907 AS NAME#35443, SALARY#46908 AS SALARY#35444, GRADE#46909 AS GRADE#35445]
+         :  +- Relation[ID#46906,NAME#46907,SALARY#46908,GRADE#46909] parquet
+         +- Project [ID#46914 AS ID#35442, NAME#46915 AS NAME#35443, SALARY#46916 AS SALARY#35444, GRADE#46917 AS GRADE#35445]
+            +- Relation[ID#46914,NAME#46915,SALARY#46916,GRADE#46917] parquet
+
+SQL> SELECT format_number(0.4444444443224333547685878378856783467204678547657382,0) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --FORMAT_STRING
+SQL> SELECT format_string('Hello World %d %s', 100, 'days') FROM Test_Builtin_Func_1 LIMIT 1;
++----------------------+
+| C1                   |
++----------------------+
+| Hello World 100 days |
++----------------------+
+1 row selected.
+SQL> SELECT format_string('Hello World', 100, 'days') FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| Hello World |
++-------------+
+1 row selected.
+SQL> SELECT format_string('Hello World %d', 100, 'days') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| Hello World 100 |
++-----------------+
+1 row selected.
+SQL> SELECT format_string('Hello World %x %d %X %c %s %s %f', 100, 100,100,100,100,name,salary) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------------------------------+
+| C1                                         |
++--------------------------------------------+
+| Hello World 64 100 64 d 100 ys 7000.000000 |
++--------------------------------------------+
+1 row selected.
+SQL> SELECT format_string('Hello World %d %s', 100,100,100,100,100,100,100,100,100,1001,11) FROM Test_Builtin_Func_1 LIMIT 1;
++---------------------+
+| C1                  |
++---------------------+
+| Hello World 100 100 |
++---------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT format_string('Hello World %d %s', 100) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: Format specifier '%s'
+SQL> 
+SQL> 
+SQL> --GET_JSON_OBJECT
+SQL> SELECT GET_JSON_OBJECT('{"a":"b"}', '$.a') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| b  |
++----+
+1 row selected.
+SQL> SELECT GET_JSON_OBJECT('{
+   >  "store":
+   >         {
+   >          "fruit":[{"weight":8,"type":"apple"}, {"weight":9,"type":"pear"}],  
+   >          "bicycle":{"price":19.95,"color":"red"}
+   >          }, 
+   >  "email":"amy@only_for_json_udf_test.net", 
+   >  "owner":"amy" 
+   > }
+   > ', '$.store') FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                         |
++------------------------------------------------------------------------------------------------------------+
+| {"fruit":[{"weight":8,"type":"apple"},{"weight":9,"type":"pear"}],"bicycle":{"price":19.95,"color":"red"}} |
++------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT GET_JSON_OBJECT('{
+   >  "store":
+   >         {
+   >          "fruit":[{"weight":8,"type":"apple"}, {"weight":9,"type":"pear"}],  
+   >          "bicycle":{"price":19.95,"color":"red"}
+   >          }, 
+   >  "email":"amy@only_for_json_udf_test.net", 
+   >  "owner":"amy" 
+   > }
+   > ', '$.email') FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------------------+
+| C1                             |
++--------------------------------+
+| amy@only_for_json_udf_test.net |
++--------------------------------+
+1 row selected.
+SQL> SELECT GET_JSON_OBJECT('{
+   >  "store":
+   >         {
+   >          "fruit":[{"weight":8,"type":"apple"}, {"weight":9,"type":"pear"}],  
+   >          "bicycle":{"price":19.95,"color":"red"}
+   >          }, 
+   >  "email":"amy@only_for_json_udf_test.net", 
+   >  "owner":"amy" 
+   > }
+   > ', '$.store.fruit[0].weight') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 8  |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT GET_JSON_OBJECT('{
+   >  "store":
+   >         {
+   >          "fruit":[{"weight":8,"type":"apple"}, {"weight":9,"type":"pear"}],  
+   >          "bicycle":{"price":19.95,"color":"red"}
+   >          }, 
+   >  "email":"amy@only_for_json_udf_test.net", 
+   >  "owner":"amy" 
+   > }
+   > ', '$.store.fruit[3].weight') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT GET_JSON_OBJECT('{
+   >  "store":
+   >         {
+   >          "fruit":[{"weight":8,"type":"apple"}, {"weight":9,"type":"pear"}],  
+   >          "bicycle":{"price":19.95,"color":"red"}
+   >          }, 
+   >  "email":"amy@only_for_json_udf_test.net", 
+   >  "owner":"amy" 
+   > }
+   > ', '$.[3]') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --GREATEST
+SQL> SELECT greatest(10, 9, 2, 4, 3,null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --SELECT greatest(10, 9, 2, 4, 3,345,342,12,43534,5463,34,2,2313,213,45,436,76,786,886,767,876,768,867,64,4,3,3,3,3,2,1,5,3,54,5,6,7,7,6,8) FROM Test_Builtin_Func_1 LIMIT 1;
+SQL> SELECT greatest(10,9,floor(3.4)) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 10 |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --HASH
+SQL> SELECT hash(null) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 42 |
++----+
+1 row selected.
+SQL> SELECT hash(123) FROM Test_Builtin_Func_1 LIMIT 1;
++----------+
+| C1       |
++----------+
+| 85273170 |
++----------+
+1 row selected.
+SQL> SELECT hash(date '2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 1614428694 |
++------------+
+1 row selected.
+SQL> SELECT hash(name) FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| 943096469   |
+| 636809306   |
+| -1718967115 |
+| -1128361545 |
++-------------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --HEX
+SQL> SELECT hex(id) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| 1  |
+| 2  |
+| 3  |
+| 3  |
++----+
+4 rows selected.
+SQL> SELECT hex('linkoopdb') FROM Test_Builtin_Func_1  LIMIT 1;
++--------------------+
+| C1                 |
++--------------------+
+| 6C696E6B6F6F706462 |
++--------------------+
+1 row selected.
+SQL> SELECT id,hex(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++----+------+
+| ID | C2   |
++----+------+
+| 1  | 1F40 |
+| 2  | 1770 |
+| 3  | 1B58 |
+| 3  | 1B58 |
++----+------+
+4 rows selected.
+SQL> SELECT hex(name) FROM Test_Builtin_Func_1  ORDER BY id;
++------+
+| C1   |
++------+
+| 7A73 |
+| 6C73 |
+| 7777 |
+| 7973 |
++------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --HYPOT
+SQL> SELECT hypot(0,0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT hypot(5,12) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 13 |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT hypot(id,name) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --IF
+SQL> SELECT if(1 < 2, 'a', null) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| a  |
++----+
+1 row selected.
+SQL> SELECT if(1 > 2, 'a', null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT if(1 < 2, null, 'b') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT if(null, null, 'b') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: S1000 General error
+SQL> 
+SQL> --异常测试
+SQL> SELECT IF(0,NULL,1) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve '(IF(0, CAST(NULL AS INT), 1))' due to data type mismatch: type of predicate expression in If should be boolean, not int;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [if (0) cast(null as int) else 1 AS C1#35605]
+      +- Union
+         :- Project [ID#47546 AS ID#35601, NAME#47547 AS NAME#35602, SALARY#47548 AS SALARY#35603, GRADE#47549 AS GRADE#35604]
+         :  +- Relation[ID#47546,NAME#47547,SALARY#47548,GRADE#47549] parquet
+         +- Project [ID#47554 AS ID#35601, NAME#47555 AS NAME#35602, SALARY#47556 AS SALARY#35603, GRADE#47557 AS GRADE#35604]
+            +- Relation[ID#47554,NAME#47555,SALARY#47556,GRADE#47557] parquet
+
+SQL> SELECT if(1 < 2, 'a', 'b','c') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: IF(BOOLEAN,VARCHAR,VARCHAR,VARCHAR) in statement [SELECT if(1 < 2, 'a', 'b','c') FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --IFNULL
+SQL> select ifnull(id,null) from Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| 1  |
+| 2  |
+| 3  |
+| 3  |
++----+
+4 rows selected.
+SQL> select ifnull(NULL,id) from Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| 1  |
+| 2  |
+| 3  |
+| 3  |
++----+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --INITCAP
+SQL> SELECT initcap(name) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| Zs |
+| Ls |
+| Ys |
+| Ww |
++----+
+4 rows selected.
+SQL> SELECT initcap(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++--------+
+| C1     |
++--------+
+| 8000.0 |
+| 6000.0 |
+| 7000.0 |
+| 7000.0 |
++--------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --INPUT_FILE_NAME
+SQL> SELECT input_file_name() FROM Test_Builtin_Func_1 LIMIT 1;
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                                                                                                            |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| hdfs://node73/node74/stream74/db_base/home/PUBLIC/tables/PUBLIC/a241f46b-566c-40d5-91b4-e8d547019613/3db86f7b-de1d-4246-b3b5-704fe645638e/part-00000-15efbdc4-9880-4da0-8be2-89cb11ef42f0-c000.snappy.parquet |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --ISNAN
+SQL> SELECT ISNAN(asin(-1565567.6535643665434565777777734534546)) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT ISNAN(asin(id)) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --ISNOTNULL
+SQL> SELECT isnotnull(0) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT isnotnull(null) FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| False |
++-------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --JSON_PATH
+SQL> SELECT JSON_PATH('{ "store": {
+   >     "book": [
+   >       { "category": "reference",
+   >         "author": "Nigel Rees",
+   >         "title": "Sayings of the Century",
+   >         "price": 8.95
+   >       },
+   >       { "category": "fiction",
+   >         "author": "Evelyn Waugh",
+   >         "title": "Sword of Honour",
+   >         "price": 12.99
+   >       },
+   >       { "category": "fiction",
+   >         "author": "Herman Melville",
+   >         "title": "Moby Dick",
+   >         "isbn": "0-553-21311-3",
+   >         "price": 8.99
+   >       },
+   >       { "category": "fiction",
+   >         "author": "J. R. R. Tolkien",
+   >         "title": "The Lord of the Rings",
+   >         "isbn": "0-395-19395-8",
+   >         "price": 22.99
+   >       }
+   >     ],
+   >     "bicycle": {
+   >       "color": "red",
+   >       "price": 19.95
+   >     }
+   >   }
+   > }','$.store.book[*].author') FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------------------------------------------------------+
+| C1                                                                 |
++--------------------------------------------------------------------+
+| ["Nigel Rees","Evelyn Waugh","Herman Melville","J. R. R. Tolkien"] |
++--------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT JSON_PATH('{ "store": {
+   >     "book": [
+   >       { "category": "reference",
+   >         "author": "Nigel Rees",
+   >         "title": "Sayings of the Century",
+   >         "price": 8.95
+   >       },
+   >       { "category": "fiction",
+   >         "author": "Evelyn Waugh",
+   >         "title": "Sword of Honour",
+   >         "price": 12.99
+   >       },
+   >       { "category": "fiction",
+   >         "author": "Herman Melville",
+   >         "title": "Moby Dick",
+   >         "isbn": "0-553-21311-3",
+   >         "price": 8.99
+   >       },
+   >       { "category": "fiction",
+   >         "author": "J. R. R. Tolkien",
+   >         "title": "The Lord of the Rings",
+   >         "isbn": "0-395-19395-8",
+   >         "price": 22.99
+   >       }
+   >     ],
+   >     "bicycle": {
+   >       "color": "red",
+   >       "price": 19.95
+   >     }
+   >   }
+   > }','$.store..price') FROM Test_Builtin_Func_1 LIMIT 1;
++-------------------------------+
+| C1                            |
++-------------------------------+
+| [8.95,12.99,8.99,22.99,19.95] |
++-------------------------------+
+1 row selected.
+SQL> SELECT JSON_PATH('{ "store": {
+   >     "book": [
+   >       { "category": "reference",
+   >         "author": "Nigel Rees",
+   >         "title": "Sayings of the Century",
+   >         "price": 8.95
+   >       },
+   >       { "category": "fiction",
+   >         "author": "Evelyn Waugh",
+   >         "title": "Sword of Honour",
+   >         "price": 12.99
+   >       },
+   >       { "category": "fiction",
+   >         "author": "Herman Melville",
+   >         "title": "Moby Dick",
+   >         "isbn": "0-553-21311-3",
+   >         "price": 8.99
+   >       },
+   >       { "category": "fiction",
+   >         "author": "J. R. R. Tolkien",
+   >         "title": "The Lord of the Rings",
+   >         "isbn": "0-395-19395-8",
+   >         "price": 22.99
+   >       }
+   >     ],
+   >     "bicycle": {
+   >       "color": "red",
+   >       "price": 19.95
+   >     }
+   >   }
+   > }','$..book[?(@.isbn)]') FROM Test_Builtin_Func_1 LIMIT 1;
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                                                                                                                                  |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [{"category":"fiction","author":"Herman Melville","title":"Moby Dick","isbn":"0-553-21311-3","price":8.99},{"category":"fiction","author":"J. R. R. Tolkien","title":"The Lord of the Rings","isbn":"0-395-19395-8","price":22.99}] |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> --LCASE
+SQL> SELECT lcase(null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT lcase('数据库') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| 数据库 |
++--------+
+1 row selected.
+SQL> SELECT lcase('ABC DEF GHI IDis') FROM Test_Builtin_Func_1 LIMIT 1;
++------------------+
+| C1               |
++------------------+
+| abc def ghi idis |
++------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --LEAST
+SQL> SELECT least(10, null, 2, 4, 3) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 2  |
++----+
+1 row selected.
+SQL> SELECT least( null,null) FROM Test_Builtin_Func_1 limit 1;
+java.sql.SQLSyntaxErrorException: data type cast needed for parameter or null literal in statement [SELECT least( null,null) FROM Test_Builtin_Func_1 limit 1]
+SQL> SELECT least(10, -1, 2, 4, 3,32,45,667,-604823,325,534,6,45,3,4,43,43,15,7889) FROM Test_Builtin_Func_1 limit 1;
++---------+
+| C1      |
++---------+
+| -604823 |
++---------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --LEFT
+SQL> SELECT LEFT('linkoopdb',0) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> SELECT LEFT('linkoopdb','i') FROM Test_Builtin_Func_1 limit 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT LEFT('linkoopdb','i') FROM Test_Builtin_Func_1 limit 1]
+SQL> SELECT LEFT('linkoopdb',10000000000000000000000) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --LENGTH
+SQL> SELECT LENGTH('  ') FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 2  |
++----+
+1 row selected.
+SQL> SELECT LENGTH(name) FROM Test_Builtin_Func_1 order by id;
++----+
+| C1 |
++----+
+| 2  |
+| 2  |
+| 2  |
+| 2  |
++----+
+4 rows selected.
+SQL> --异常测试
+SQL> SELECT LENGTH(timestamp '2019-02-11 09:22:23') FROM Test_Builtin_Func_1 limit 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT LENGTH(timestamp '2019-02-11 09:22:23') FROM Test_Builtin_Func_1 limit 1]
+SQL> SELECT LENGTH( ) FROM Test_Builtin_Func_1 limit 1;
+java.sql.SQLSyntaxErrorException: unexpected token: ) in statement [SELECT LENGTH( ) FROM Test_Builtin_Func_1 limit 1]
+SQL> SELECT LENGTH(abc) FROM Test_Builtin_Func_1 limit 1;
+java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: ABC in statement [SELECT LENGTH(abc) FROM Test_Builtin_Func_1 limit 1]
+SQL> 
+SQL> 
+SQL> --LEVENSHTEIN
+SQL> SELECT levenshtein('2019-02-11 09:22:23', '2019-12-23 09:44:23') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 5  |
++----+
+1 row selected.
+SQL> SELECT levenshtein(id, name) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 2  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --LN
+SQL> SELECT ln(1234443.376367367347743834932390239066466565646) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --LOCATE
+SQL> SELECT locate('bar', 'barbarbar') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> SELECT locate('bar', 'barbarbar',3) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 4  |
++----+
+1 row selected.
+SQL> SELECT locate('bar', 'barbarbar',1000000) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT locate('bar', 'barbarbar',-1) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT locate('bar', 'barbarbar',0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --LOG10
+SQL> SELECT log10(10000000000000000) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 16 |
++----+
+1 row selected.
+SQL> SELECT log10(0) FROM Test_Builtin_Func_1 limit 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT log10(-10000000000000000) FROM Test_Builtin_Func_1 limit 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --LOG1P
+SQL> SELECT log1p(0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT log1p(1000000000000000000000000) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 55.26204223 |
++-------------+
+1 row selected.
+SQL> SELECT log1p(-1000000000000000000000000) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --LOG2
+SQL> SELECT log2(0) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT log2(1000000000000000000000000) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 79.72627428 |
++-------------+
+1 row selected.
+SQL> SELECT log2(-1000000000000000000000000) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --LOWER
+SQL> SELECT lower('ABDC DUJW WJ') FROM Test_Builtin_Func_1 limit 1;
++--------------+
+| C1           |
++--------------+
+| abdc dujw wj |
++--------------+
+1 row selected.
+SQL> SELECT lower('1212435') FROM Test_Builtin_Func_1 limit 1;
++---------+
+| C1      |
++---------+
+| 1212435 |
++---------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT lower(122334) FROM Test_Builtin_Func_1 limit 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT lower(122334) FROM Test_Builtin_Func_1 limit 1]
+SQL> 
+SQL> 
+SQL> --LPAD
+SQL> SELECT lpad('hi', 5, '??') FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| ???hi |
++-------+
+1 row selected.
+SQL> SELECT lpad('hi',10, '??') FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| ????????hi |
++------------+
+1 row selected.
+SQL> SELECT lpad('hi',0, '??') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT lpad('hi',-10, '??') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: String index out of range: -10
+SQL> 
+SQL> 
+SQL> --MD5
+SQL> SELECT md5('6666') FROM Test_Builtin_Func_1 LIMIT 1;
++----------------------------------+
+| C1                               |
++----------------------------------+
+| e9510081ac30ffa83f10b68cde1cac07 |
++----------------------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --MOD
+SQL> SELECT mod(10, 3) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> 
+SQL> --NANVL
+SQL> SELECT nanvl(asin(-1565567.6535643665434565777777734534546),null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT nanvl(asin(-922337203685477580999888765),1) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> SELECT nanvl(asin(9223372036854775809998986778987),'abcd') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT nanvl(asin(id),id) FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| 1.570796327 |
+| 2           |
+| 3           |
+| 3           |
++-------------+
+4 rows selected.
+SQL> 
+SQL> 
+SQL> --NEGATIVE
+SQL> SELECT NEGATIVE(id) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| -1 |
+| -2 |
+| -3 |
+| -3 |
++----+
+4 rows selected.
+SQL> SELECT NEGATIVE('asd') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT NEGATIVE(null) FROM Test_Builtin_Func_1  LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT NEGATIVE(0) FROM Test_Builtin_Func_1  LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT NEGATIVE(-1565567.6535643665434565777777734534546) FROM Test_Builtin_Func_1  LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 1565567.654 |
++-------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --NULLIF
+SQL> SELECT NULLIF(asin(id),id) FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| 1.570796327 |
+| nan         |
+| nan         |
+| nan         |
++-------------+
+4 rows selected.
+SQL> SELECT NULLIF(null,null) FROM Test_Builtin_Func_1  LIMIT 1;
+java.sql.SQLSyntaxErrorException: data type cast needed for parameter or null literal in statement [SELECT NULLIF(null,null) FROM Test_Builtin_Func_1  LIMIT 1]
+SQL> SELECT NULLIF(9,null) FROM Test_Builtin_Func_1  LIMIT 1;
++----+
+| C1 |
++----+
+| 9  |
++----+
+1 row selected.
+SQL> SELECT NULLIF(null,9) FROM Test_Builtin_Func_1  LIMIT 1;
+java.sql.SQLSyntaxErrorException: data type cast needed for parameter or null literal in statement [SELECT NULLIF(null,9) FROM Test_Builtin_Func_1  LIMIT 1]
+SQL> SELECT NULLIF(9,9) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT NULLIF(99999639) FROM Test_Builtin_Func_1  LIMIT 1;
+java.sql.SQLSyntaxErrorException: unexpected token: ) required: , in statement [SELECT NULLIF(99999639) FROM Test_Builtin_Func_1  LIMIT 1]
+SQL> 
+SQL> 
+SQL> --NVL
+SQL> SELECT NVL(asin(id),id) FROM Test_Builtin_Func_1 ORDER BY id;
++-------------+
+| C1          |
++-------------+
+| 1.570796327 |
+| nan         |
+| nan         |
+| nan         |
++-------------+
+4 rows selected.
+SQL> SELECT NVL(null,null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT NVL(9,null) FROM Test_Builtin_Func_1  LIMIT 1;
++----+
+| C1 |
++----+
+| 9  |
++----+
+1 row selected.
+SQL> SELECT NVL(null,9) FROM Test_Builtin_Func_1  LIMIT 1;
++----+
+| C1 |
++----+
+| 9  |
++----+
+1 row selected.
+SQL> SELECT NVL(9,9) FROM Test_Builtin_Func_1  LIMIT 1;
++----+
+| C1 |
++----+
+| 9  |
++----+
+1 row selected.
+SQL> SELECT NVL(99999639) FROM Test_Builtin_Func_1  LIMIT 1;
+java.sql.SQLSyntaxErrorException: unexpected token: ) required: , in statement [SELECT NVL(99999639) FROM Test_Builtin_Func_1  LIMIT 1]
+SQL> 
+SQL> 
+SQL> --NVL2
+SQL> SELECT NVL2(asin(id),id,NEGATIVE(id)) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| 1  |
+| 2  |
+| 3  |
+| 3  |
++----+
+4 rows selected.
+SQL> SELECT NVL2(null,NULL,null) FROM Test_Builtin_Func_1  LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT NVL2(9,10,null) FROM Test_Builtin_Func_1  LIMIT 1;
++----+
+| C1 |
++----+
+| 10 |
++----+
+1 row selected.
+SQL> SELECT NVL2(null,9,12) FROM Test_Builtin_Func_1  LIMIT 1;
++----+
+| C1 |
++----+
+| 12 |
++----+
+1 row selected.
+SQL> SELECT NVL2(9,null,12) FROM Test_Builtin_Func_1  LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT NVL2(null,null,12) FROM Test_Builtin_Func_1  LIMIT 1;
++----+
+| C1 |
++----+
+| 12 |
++----+
+1 row selected.
+SQL> SELECT NVL2(122,null,null) FROM Test_Builtin_Func_1  LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT NVL2(99999639) FROM Test_Builtin_Func_1  LIMIT 1;
+java.sql.SQLSyntaxErrorException: unexpected token: ) required: , in statement [SELECT NVL2(99999639) FROM Test_Builtin_Func_1  LIMIT 1]
+SQL> SELECT NVL2(99999639,21) FROM Test_Builtin_Func_1  LIMIT 1;
+java.sql.SQLSyntaxErrorException: unexpected token: ) required: , in statement [SELECT NVL2(99999639,21) FROM Test_Builtin_Func_1  LIMIT 1]
+SQL> 
+SQL> 
+SQL> --PARSE_URL
+SQL> SELECT PARSE_URL('http://www.google.com/PATH?query=1', 'HOST') FROM Test_Builtin_Func_1 LIMIT 1;
++----------------+
+| C1             |
++----------------+
+| www.google.com |
++----------------+
+1 row selected.
+SQL> SELECT PARSE_URL('http://www.google.com/PATH?query=1', 'QUERY') FROM Test_Builtin_Func_1 LIMIT 1;
++---------+
+| C1      |
++---------+
+| query=1 |
++---------+
+1 row selected.
+SQL> SELECT PARSE_URL('http://www.google.com/PATH?query=1', 'PATH') FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| /PATH |
++-------+
+1 row selected.
+SQL> SELECT PARSE_URL('http://facebook.com/path/p1.php?query=1', 'REF') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT PARSE_URL('http://facebook.com/path/p1.php?query=1', 'PROTOCOL') FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| http |
++------+
+1 row selected.
+SQL> SELECT PARSE_URL('http://facebook.com/path/p1.php?query=1', 'FILE') FROM Test_Builtin_Func_1 LIMIT 1;
++----------------------+
+| C1                   |
++----------------------+
+| /path/p1.php?query=1 |
++----------------------+
+1 row selected.
+SQL> SELECT PARSE_URL('http://facebook.com/path/p1.php?query=1', 'AUTHORITY') FROM Test_Builtin_Func_1 LIMIT 1;
++--------------+
+| C1           |
++--------------+
+| facebook.com |
++--------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --PERCENTILE
+SQL> SELECT PERCENTILE(1124.56345, 0.5, 100) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 1124.56345 |
++------------+
+1 row selected.
+SQL> SELECT PERCENTILE(1124.56345, 0.2, 100) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 1124.56345 |
++------------+
+1 row selected.
+SQL> SELECT PERCENTILE(1124.56345, 0.2) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 1124.56345 |
++------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT PERCENTILE(1124.56345, 2.2, 100) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'percentile(1124.56345BD, CAST(2.2BD AS DOUBLE), 100)' due to data type mismatch: Percentage(s) must be between 0.0 and 1.0, but got cast(2.2 as double);;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Aggregate [percentile(1124.56345, cast(2.2 as double), 100, 0, 0) AS C1#36061]
+      +- Union
+         :- Project [ID#49429 AS ID#36057, NAME#49430 AS NAME#36058, SALARY#49431 AS SALARY#36059, GRADE#49432 AS GRADE#36060]
+         :  +- Relation[ID#49429,NAME#49430,SALARY#49431,GRADE#49432] parquet
+         +- Project [ID#49437 AS ID#36057, NAME#49438 AS NAME#36058, SALARY#49439 AS SALARY#36059, GRADE#49440 AS GRADE#36060]
+            +- Relation[ID#49437,NAME#49438,SALARY#49439,GRADE#49440] parquet
+
+SQL> 
+SQL> --PERCENTILE_APPROX
+SQL> SELECT PERCENTILE_APPROX(1124.56345, 0.5, 100) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 1124.56345 |
++------------+
+1 row selected.
+SQL> SELECT PERCENTILE_APPROX(1124.56345, 0.2, 100) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 1124.56345 |
++------------+
+1 row selected.
+SQL> SELECT PERCENTILE_APPROX(1124.56345, 0.2) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 1124.56345 |
++------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT PERCENTILE_APPROX(1124.56345, 2.2, 100) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'percentile_approx(1124.56345BD, CAST(2.2BD AS DOUBLE), 10000)' due to data type mismatch: All percentage values must be between 0.0 and 1.0 (current = 2.2);;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Aggregate [percentile_approx(1124.56345, cast(2.2 as double), 10000, 0, 0) AS C1#36081]
+      +- Union
+         :- Project [ID#49509 AS ID#36077, NAME#49510 AS NAME#36078, SALARY#49511 AS SALARY#36079, GRADE#49512 AS GRADE#36080]
+         :  +- Relation[ID#49509,NAME#49510,SALARY#49511,GRADE#49512] parquet
+         +- Project [ID#49517 AS ID#36077, NAME#49518 AS NAME#36078, SALARY#49519 AS SALARY#36079, GRADE#49520 AS GRADE#36080]
+            +- Relation[ID#49517,NAME#49518,SALARY#49519,GRADE#49520] parquet
+
+SQL> 
+SQL> 
+SQL> 
+SQL> --PMOD
+SQL> SELECT PMOD(-1, 3) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 2  |
++----+
+1 row selected.
+SQL> SELECT PMOD(3, 1) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT PMOD(1, 3) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --POSITION
+SQL> SELECT POSITION('ldb' IN 'linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT POSITION('ko' IN 'linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 4  |
++----+
+1 row selected.
+SQL> SELECT POSITION('oo' IN 'linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 5  |
++----+
+1 row selected.
+SQL> SELECT POSITION(' ' IN 'linkoo pdb') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 7  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --POSITIVE
+SQL> SELECT POSITIVE(1+2/23*22123*1222) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| 2350810.17 |
++------------+
+1 row selected.
+SQL> SELECT POSITIVE(1+2-23*(22123*1222)) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| -621789035 |
++------------+
+1 row selected.
+SQL> SELECT POSITIVE(1+2/(23*22123*1222)) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --POW
+SQL> SELECT POW(null, 3) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT POW(null, null) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: data type cast needed for parameter or null literal in statement [SELECT POW(null, null) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT POW(4, null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT POW(0, 0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> SELECT POW(1.765, -23.45) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| 1.636200635e-06 |
++-----------------+
+1 row selected.
+SQL> 
+SQL> --POWER
+SQL> SELECT POWER(null, 3) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT POWER(null, null) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: data type cast needed for parameter or null literal in statement [SELECT POWER(null, null) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT POWER(4, null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT POWER(0, 0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> SELECT POWER(1.765, -23.45) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| 1.636200635e-06 |
++-----------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> -- PRINTF
+SQL> SELECT PRINTF('Hello World %d %s', 100, 'days') FROM Test_Builtin_Func_1 LIMIT 1;
++----------------------+
+| C1                   |
++----------------------+
+| Hello World 100 days |
++----------------------+
+1 row selected.
+SQL> SELECT PRINTF('Hello World %d', 100, 'days') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| Hello World 100 |
++-----------------+
+1 row selected.
+SQL> SELECT PRINTF('Hello World %s', 100, 'days') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| Hello World 100 |
++-----------------+
+1 row selected.
+SQL> SELECT PRINTF('Hello World %d', 100, 'days') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| Hello World 100 |
++-----------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> --RADIANS
+SQL> SELECT RADIANS(180) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 3.141592654 |
++-------------+
+1 row selected.
+SQL> SELECT RADIANS(0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT RADIANS(90) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 1.570796327 |
++-------------+
+1 row selected.
+SQL> SELECT RADIANS(0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT RADIANS(1.1235) FROM Test_Builtin_Func_1 LIMIT 1;
++---------------+
+| C1            |
++---------------+
+| 0.01960877415 |
++---------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> --RAND
+SQL> SELECT RAND() FROM Test_Builtin_Func_1;
++--------------+
+| C1           |
++--------------+
+| 0.304464477  |
+| 0.3431307342 |
+| 0.65924972   |
+| 0.9576496726 |
++--------------+
+4 rows selected.
+SQL> SELECT RAND(1) FROM Test_Builtin_Func_1;
++--------------+
+| C1           |
++--------------+
+| 0.1338570973 |
+| 0.2630967865 |
+| 0.1164199579 |
+| 0.6604548037 |
++--------------+
+4 rows selected.
+SQL> SELECT RAND(12356) FROM Test_Builtin_Func_1;
++---------------+
+| C1            |
++---------------+
+| 0.08355675566 |
+| 0.3633739957  |
+| 0.427028782   |
+| 0.3938905303  |
++---------------+
+4 rows selected.
+SQL> SELECT RAND(1.2357) FROM Test_Builtin_Func_1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'rand(1.2357BD)' due to data type mismatch: argument 1 requires (int or bigint) type, however, '1.2357BD' is of decimal(5,4) type.;;
+'Project [rand(1.2357) AS C1#36260]
++- Union
+   :- Project [ID#50183 AS ID#36256, NAME#50184 AS NAME#36257, SALARY#50185 AS SALARY#36258, GRADE#50186 AS GRADE#36259]
+   :  +- Relation[ID#50183,NAME#50184,SALARY#50185,GRADE#50186] parquet
+   +- Project [ID#50191 AS ID#36256, NAME#50192 AS NAME#36257, SALARY#50193 AS SALARY#36258, GRADE#50194 AS GRADE#36259]
+      +- Relation[ID#50191,NAME#50192,SALARY#50193,GRADE#50194] parquet
+
+SQL> SELECT RAND(id) FROM Test_Builtin_Func_1;
+java.sql.SQLException: Worker execution: ldb worker caused error: Input argument to rand must be an integer, long or null literal.;
+SQL> 
+SQL> 
+SQL> -- RANDN
+SQL> SELECT RANDN() FROM Test_Builtin_Func_1;
++---------------+
+| C1            |
++---------------+
+| 2.327814743   |
+| 0.3384875468  |
+| 0.4689762317  |
+| 0.04130683944 |
++---------------+
+4 rows selected.
+SQL> SELECT RANDN(1) FROM Test_Builtin_Func_1;
++---------------+
+| C1            |
++---------------+
+| -1.03227322   |
+| -0.6345746631 |
+| -0.9218141224 |
+| 0.7511924133  |
++---------------+
+4 rows selected.
+SQL> SELECT RANDN(12356) FROM Test_Builtin_Func_1;
++----------------+
+| C1             |
++----------------+
+| -2.266803579   |
+| -0.6308433972  |
+| -0.08258883115 |
+| -0.1520192971  |
++----------------+
+4 rows selected.
+SQL> SELECT RANDN(1.2357) FROM Test_Builtin_Func_1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'randn(1.2357BD)' due to data type mismatch: argument 1 requires (int or bigint) type, however, '1.2357BD' is of decimal(5,4) type.;;
+'Project [randn(1.2357) AS C1#36285]
++- Union
+   :- Project [ID#50271 AS ID#36281, NAME#50272 AS NAME#36282, SALARY#50273 AS SALARY#36283, GRADE#50274 AS GRADE#36284]
+   :  +- Relation[ID#50271,NAME#50272,SALARY#50273,GRADE#50274] parquet
+   +- Project [ID#50279 AS ID#36281, NAME#50280 AS NAME#36282, SALARY#50281 AS SALARY#36283, GRADE#50282 AS GRADE#36284]
+      +- Relation[ID#50279,NAME#50280,SALARY#50281,GRADE#50282] parquet
+
+SQL> SELECT RANDN(id) FROM Test_Builtin_Func_1;
+java.sql.SQLException: Worker execution: ldb worker caused error: Input argument to randn must be an integer, long or null literal.;
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> --REGEXP_EXTRACT
+SQL> SELECT REGEXP_EXTRACT('100-200', '(\d)', 1) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> SELECT REGEXP_EXTRACT('oom&ssm&dmm', '(o|d|s)m', 1) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| o  |
++----+
+1 row selected.
+SQL> SELECT REGEXP_EXTRACT('oom&ssm&dmm', '(o|d|s)m', 0) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| om |
++----+
+1 row selected.
+SQL> SELECT REGEXP_EXTRACT('oom&ssm&dmm', '(o|d|s)m', 2) FROM Test_Builtin_Func_1 limit 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: No group 2
+SQL> SELECT REGEXP_EXTRACT('22.629024982452393,113.84886883199215', '(\d+),(\d+)', 1) FROM Test_Builtin_Func_1 limit 1;
++-----------------+
+| C1              |
++-----------------+
+| 629024982452393 |
++-----------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> 
+SQL> --REGEXP_REPLACE
+SQL> SELECT regexp_replace('100-200', '(\d)', 'num') FROM Test_Builtin_Func_1 limit 1;
++---------------------+
+| C1                  |
++---------------------+
+| numnumnum-numnumnum |
++---------------------+
+1 row selected.
+SQL> SELECT regexp_replace('oom&ssm&dmm', '(o|d|s)m', '*') FROM Test_Builtin_Func_1 limit 1;
++----------+
+| C1       |
++----------+
+| o*&s*&*m |
++----------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --REPEAT
+SQL> SELECT repeat('123', 1000) FROM Test_Builtin_Func_1 LIMIT 1;
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 12312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312... |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT repeat('123', 1000.4325) FROM Test_Builtin_Func_1 LIMIT 1;
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 12312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312312... |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT repeat('123', -1000) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> SELECT repeat(123, -1000) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT repeat(123, -1000) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --REPLACE
+SQL> SELECT replace('ABCabc','e324','ewrewq') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| ABCabc |
++--------+
+1 row selected.
+SQL> SELECT replace('ABCabc','e324') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| ABCabc |
++--------+
+1 row selected.
+SQL> SELECT replace('ABCabcerfsdfwer','sdfwe','ewrewq') FROM Test_Builtin_Func_1 LIMIT 1;
++------------------+
+| C1               |
++------------------+
+| ABCabcerfewrewqr |
++------------------+
+1 row selected.
+SQL> SELECT replace('aabbaabbccdd','ab','ewrewq') FROM Test_Builtin_Func_1 LIMIT 1;
++----------------------+
+| C1                   |
++----------------------+
+| aewrewqbaewrewqbccdd |
++----------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT replace(1223345,23,'ewrewq') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT replace(1223345,23,'ewrewq') FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --REVERSE
+SQL> SELECT reverse(name) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| sz |
+| sl |
+| ww |
+| sy |
++----+
+4 rows selected.
+SQL> SELECT reverse('EMS解放和维护广大') FROM Test_Builtin_Func_1 LIMIT 1;
++-------------------+
+| C1                |
++-------------------+
+| 大广护维和放解SME |
++-------------------+
+1 row selected.
+SQL> SELECT reverse('126364759869746363525424244264会降低房价恢复健康撒dsjkfh j') FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------------------------+
+| C1                                                         |
++------------------------------------------------------------+
+| j hfkjsd撒康健复恢价房低降会462442424525363647968957463621 |
++------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --RIGHT
+SQL> SELECT right('Linkoop db', 2) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| db |
++----+
+1 row selected.
+SQL> SELECT right('Linkoop db', 2.9) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| db |
++----+
+1 row selected.
+SQL> SELECT right('Linkoop db', 100) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| Linkoop db |
++------------+
+1 row selected.
+SQL> SELECT right('Linkoop db', -100) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> SELECT right('Linkoop db', -10000000000000000000) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> SELECT right('Linkoop db', 10000000000000000000) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --RINT
+SQL> SELECT rint(-444444444322433354768.58783788567882) FROM Test_Builtin_Func_1 LIMIT 1;
++------------------+
+| C1               |
++------------------+
+| -4.444444443e+20 |
++------------------+
+1 row selected.
+SQL> SELECT rint(444444444322433354768.58783788567882) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------------+
+| C1              |
++-----------------+
+| 4.444444443e+20 |
++-----------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT rint(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --RLIKE
+SQL> SELECT rlike('^\abc$', 'a') FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT rlike('a', '^\abc$') FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| False |
++-------+
+1 row selected.
+SQL> SELECT rlike('天王盖地虎，小鸡炖蘑菇', '虎，菇') FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| False |
++-------+
+1 row selected.
+SQL> SELECT rlike('天王盖地虎，小鸡炖蘑菇', '虎，小') FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> SELECT rlike(123, 12) FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| True |
++------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --ROUND
+SQL> SELECT round(2.53453253254245345345, 0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 3  |
++----+
+1 row selected.
+SQL> SELECT round(2.53453253254245345345, -10) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT round(2.53453253254245345345, 5) FROM Test_Builtin_Func_1 LIMIT 1;
++---------+
+| C1      |
++---------+
+| 2.53453 |
++---------+
+1 row selected.
+SQL> 
+SQL> --SELECT round(2.53453253254245345345, 4555432343432323223) FROM Test_Builtin_Func_1 LIMIT 1;
+   > 
+   > --SELECT round(2.5345325325424534534543524235435, 4555432343432323223) FROM Test_Builtin_Func_1 LIMIT 1;
+   > 
+   > 
+   > --RPAD
+SQL> SELECT rpad('hi', 5, '??') FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| hi??? |
++-------+
+1 row selected.
+SQL> SELECT rpad('hi',10, '??') FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| hi???????? |
++------------+
+1 row selected.
+SQL> SELECT rpad('hi',0, '??') FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT rpad('hi', 5000000000007658887, '??') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Java heap space
+SQL> SELECT rpad('hi',-10, '??') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: String index out of range: -10
+SQL> 
+SQL> 
+SQL> --SHA
+SQL> SELECT sha(binary('linkoopdb')) FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------+
+| C1                                       |
++------------------------------------------+
+| 242dc7328cb53444959db63794c67e8fe581a2ec |
++------------------------------------------+
+1 row selected.
+SQL> SELECT sha('linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------+
+| C1                                       |
++------------------------------------------+
+| 242dc7328cb53444959db63794c67e8fe581a2ec |
++------------------------------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT sha(123) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'sha1(123)' due to data type mismatch: argument 1 requires binary type, however, '123' is of int type.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [sha1(123) AS C1#36768]
+      +- Union
+         :- Project [ID#52333 AS ID#36764, NAME#52334 AS NAME#36765, SALARY#52335 AS SALARY#36766, GRADE#52336 AS GRADE#36767]
+         :  +- Relation[ID#52333,NAME#52334,SALARY#52335,GRADE#52336] parquet
+         +- Project [ID#52341 AS ID#36764, NAME#52342 AS NAME#36765, SALARY#52343 AS SALARY#36766, GRADE#52344 AS GRADE#36767]
+            +- Relation[ID#52341,NAME#52342,SALARY#52343,GRADE#52344] parquet
+
+SQL> 
+SQL> 
+SQL> --SHA1
+SQL> SELECT sha1(binary('linkoopdb')) FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------+
+| C1                                       |
++------------------------------------------+
+| 242dc7328cb53444959db63794c67e8fe581a2ec |
++------------------------------------------+
+1 row selected.
+SQL> SELECT sha1('linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------+
+| C1                                       |
++------------------------------------------+
+| 242dc7328cb53444959db63794c67e8fe581a2ec |
++------------------------------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT sha1(123) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'sha1(123)' due to data type mismatch: argument 1 requires binary type, however, '123' is of int type.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [sha1(123) AS C1#36783]
+      +- Union
+         :- Project [ID#52387 AS ID#36779, NAME#52388 AS NAME#36780, SALARY#52389 AS SALARY#36781, GRADE#52390 AS GRADE#36782]
+         :  +- Relation[ID#52387,NAME#52388,SALARY#52389,GRADE#52390] parquet
+         +- Project [ID#52395 AS ID#36779, NAME#52396 AS NAME#36780, SALARY#52397 AS SALARY#36781, GRADE#52398 AS GRADE#36782]
+            +- Relation[ID#52395,NAME#52396,SALARY#52397,GRADE#52398] parquet
+
+SQL> 
+SQL> 
+SQL> --SHA2
+SQL> SELECT sha2(binary('linkoopdb'), 256) FROM Test_Builtin_Func_1 LIMIT 1;
++------------------------------------------------------------------+
+| C1                                                               |
++------------------------------------------------------------------+
+| 32e22d8e1e4c323b22a6b89612bf04d909cb9842420dc7f1d27d66dfb4f3e38c |
++------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT sha2(binary('linkoopdb'), 224) FROM Test_Builtin_Func_1 LIMIT 1;
++---------------------------------+
+| C1                              |
++---------------------------------+
+| �nIK:�    ��a�A���\rh�<j���|;( |
++---------------------------------+
+1 row selected.
+SQL> SELECT sha2(binary('linkoopdb'), 384) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------------------------------------------------------------------------------------+
+| C1                                                                                               |
++--------------------------------------------------------------------------------------------------+
+| 380964b072eb5d5d043920bc65840ac0192b525a0bd77123193d57404de310302e135f4bd1c1219ed193dacbf7106c01 |
++--------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> SELECT sha2(binary('linkoopdb'), 512) FROM Test_Builtin_Func_1 LIMIT 1;
++----------------------------------------------------------------------------------------------------------------------------------+
+| C1                                                                                                                               |
++----------------------------------------------------------------------------------------------------------------------------------+
+| 2374f7134ea93669aacb3f54effc43dba1443981aff69bc9f3a7ee564cec0f7e5a5c5fbfbbad1fb3bfa3138fc4a55277d8c3298ef60dc0c460b2a913824045f2 |
++----------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT sha2(binary('linkoopdb'), 666) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT sha2(binary('linkoopdb')) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: routine signature not found for: SHA2(BINARY) in statement [SELECT sha2(binary('linkoopdb')) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT sha2(123, 256) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'sha2(123, 256)' due to data type mismatch: argument 1 requires binary type, however, '123' is of int type.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [sha2(123, 256) AS C1#36830]
+      +- Union
+         :- Project [ID#52613 AS ID#36826, NAME#52614 AS NAME#36827, SALARY#52615 AS SALARY#36828, GRADE#52616 AS GRADE#36829]
+         :  +- Relation[ID#52613,NAME#52614,SALARY#52615,GRADE#52616] parquet
+         +- Project [ID#52621 AS ID#36826, NAME#52622 AS NAME#36827, SALARY#52623 AS SALARY#36828, GRADE#52624 AS GRADE#36829]
+            +- Relation[ID#52621,NAME#52622,SALARY#52623,GRADE#52624] parquet
+
+SQL> 
+SQL> 
+SQL> --SHIFTLEFT
+SQL> SELECT shiftleft(14, 2) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 56 |
++----+
+1 row selected.
+SQL> SELECT shiftleft(14.43, 2) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 56 |
++----+
+1 row selected.
+SQL> SELECT shiftleft(-14.43, 2) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| -56 |
++-----+
+1 row selected.
+SQL> SELECT shiftleft(null, 2) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT shiftleft(null, null) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT shiftleft(14.43, 4536543432) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLDataException: data exception: numeric value out of range
+SQL> 
+SQL> 
+SQL> --SIGNUM
+SQL> SELECT signum(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| 1  |
+| 1  |
+| 1  |
+| 1  |
++----+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT signum(name) FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT signum('2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1;
++--------+
+| C1     |
++--------+
+| <null> |
++--------+
+1 row selected.
+SQL> SELECT signum(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --SIN
+SQL> SELECT sin(342342689) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------+
+| C1           |
++--------------+
+| 0.9195453977 |
++--------------+
+1 row selected.
+SQL> SELECT sin(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++---------------+
+| C1            |
++---------------+
+| 0.9978430324  |
+| -0.4277195126 |
+| 0.5068854299  |
+| 0.5068854299  |
++---------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT sin(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT sin(name) FROM Test_Builtin_Func_1]
+SQL> SELECT sin(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> --SINH
+SQL> SELECT SINH(342342689) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| inf |
++-----+
+1 row selected.
+SQL> SELECT SINH(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++-----+
+| C1  |
++-----+
+| inf |
+| inf |
+| inf |
+| inf |
++-----+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT SINH(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT SINH(name) FROM Test_Builtin_Func_1]
+SQL> SELECT SINH(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --SIZE
+   > 
+   > --异常测试
+SQL> SELECT size(name) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'size(`NAME`)' due to data type mismatch: argument 1 requires (array or map) type, however, '`NAME`' is of string type.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [size(NAME#36912) AS C1#36915]
+      +- Union
+         :- Project [ID#52924 AS ID#36911, NAME#52925 AS NAME#36912, SALARY#52926 AS SALARY#36913, GRADE#52927 AS GRADE#36914]
+         :  +- Relation[ID#52924,NAME#52925,SALARY#52926,GRADE#52927] parquet
+         +- Project [ID#52932 AS ID#36911, NAME#52933 AS NAME#36912, SALARY#52934 AS SALARY#36913, GRADE#52935 AS GRADE#36914]
+            +- Relation[ID#52932,NAME#52933,SALARY#52934,GRADE#52935] parquet
+
+SQL> SELECT size(map(1,2,3)) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: cannot resolve 'map(1, 2, 3)' due to data type mismatch: map expects a positive even number of arguments.;;
+'GlobalLimit (0 + 1)
++- 'LocalLimit (0 + 1)
+   +- 'Project [size(map(1, 2, 3)) AS C1#36920]
+      +- Union
+         :- Project [ID#53022 AS ID#36916, NAME#53023 AS NAME#36917, SALARY#53024 AS SALARY#36918, GRADE#53025 AS GRADE#36919]
+         :  +- Relation[ID#53022,NAME#53023,SALARY#53024,GRADE#53025] parquet
+         +- Project [ID#53031 AS ID#36916, NAME#53032 AS NAME#36917, SALARY#53033 AS SALARY#36918, GRADE#53034 AS GRADE#36919]
+            +- Relation[ID#53031,NAME#53032,SALARY#53033,GRADE#53034] parquet
+
+SQL> 
+SQL> 
+SQL> --SOUNDEX
+SQL> SELECT SOUNDEX('Linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
++------+
+| C1   |
++------+
+| L521 |
++------+
+1 row selected.
+SQL> SELECT SOUNDEX('互访对赛') FROM Test_Builtin_Func_1 LIMIT 1;
++----------+
+| C1       |
++----------+
+| 互访对赛 |
++----------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT SOUNDEX(salary) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT SOUNDEX(salary) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT SOUNDEX(id) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT SOUNDEX(id) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> --SPACE
+SQL> SELECT CONCAT(SPACE(0), '1')  FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> SELECT CONCAT(SPACE(100), '1')  FROM Test_Builtin_Func_1 LIMIT 1;
++-------------------------------------------------------------------------------------------------------+
+| C1                                                                                                    |
++-------------------------------------------------------------------------------------------------------+
+|                                                                                                     1 |
++-------------------------------------------------------------------------------------------------------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT CONCAT(SPACE(100000000000), '1')  FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Java heap space
+SQL> 
+SQL> 
+SQL> --SPLIT
+SQL> SELECT split('oneAtwoBthreeC', '[A]') from Test_Builtin_Func_1 LIMIT 1;
++---------------------------+
+| C1                        |
++---------------------------+
+| ARRAY['one','twoBthreeC'] |
++---------------------------+
+1 row selected.
+SQL> SELECT split('www.baidu.com.cn', '[.]') from Test_Builtin_Func_1 LIMIT 1;
++---------------------------------+
+| C1                              |
++---------------------------------+
+| ARRAY['www','baidu','com','cn'] |
++---------------------------------+
+1 row selected.
+SQL> SELECT split('www&baidu&com&cn', '[&]') from Test_Builtin_Func_1 LIMIT 1;
++---------------------------------+
+| C1                              |
++---------------------------------+
+| ARRAY['www','baidu','com','cn'] |
++---------------------------------+
+1 row selected.
+SQL> SELECT split('oneAtwoBthreeC', 'ABC') from Test_Builtin_Func_1 LIMIT 1;
++-------------------------+
+| C1                      |
++-------------------------+
+| ARRAY['oneAtwoBthreeC'] |
++-------------------------+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --SQRT
+SQL> SELECT SQRT(0.0) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| 0  |
++----+
+1 row selected.
+SQL> SELECT SQRT(-34567.0) FROM Test_Builtin_Func_1 limit 1;
++-----+
+| C1  |
++-----+
+| nan |
++-----+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT SQRT(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> 
+SQL> --SUBSTR
+SQL> SELECT substr('L inkoop DB', -100) FROM Test_Builtin_Func_1 limit 1;
++-------------+
+| C1          |
++-------------+
+| L inkoop DB |
++-------------+
+1 row selected.
+SQL> SELECT substr('L inkoop DB', 0) FROM Test_Builtin_Func_1 limit 1;
++-------------+
+| C1          |
++-------------+
+| L inkoop DB |
++-------------+
+1 row selected.
+SQL> SELECT substr('L inkoop DB', 0, 2) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+| L  |
++----+
+1 row selected.
+SQL> SELECT substr('L inkoop DB', 3, 100) FROM Test_Builtin_Func_1 limit 1;
++-----------+
+| C1        |
++-----------+
+| inkoop DB |
++-----------+
+1 row selected.
+SQL> SELECT substr('L inkoop DB', 76, 2) FROM Test_Builtin_Func_1 limit 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --SUBSTRING_INDEX
+SQL> SELECT substring_index('www.apache.org.com', '.', 3) FROM Test_Builtin_Func_1 LIMIT 1;
++----------------+
+| C1             |
++----------------+
+| www.apache.org |
++----------------+
+1 row selected.
+SQL> SELECT substring_index('www.apache.org.com', '.', 0) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+|    |
++----+
+1 row selected.
+SQL> SELECT substring_index('www.apache.org.com', '.', 6) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------+
+| C1                 |
++--------------------+
+| www.apache.org.com |
++--------------------+
+1 row selected.
+SQL> SELECT substring_index('www.apache.org.com', '.', -10) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------+
+| C1                 |
++--------------------+
+| www.apache.org.com |
++--------------------+
+1 row selected.
+SQL> SELECT substring_index('www.apache.org.com', '.', 2.6) FROM Test_Builtin_Func_1 LIMIT 1;
++------------+
+| C1         |
++------------+
+| www.apache |
++------------+
+1 row selected.
+SQL> SELECT substring_index('www.apache.org.com', '-', 3) FROM Test_Builtin_Func_1 LIMIT 1;
++--------------------+
+| C1                 |
++--------------------+
+| www.apache.org.com |
++--------------------+
+1 row selected.
+SQL> SELECT substring_index('www-apache-org.com', '-', 1) FROM Test_Builtin_Func_1 LIMIT 1;
++-----+
+| C1  |
++-----+
+| www |
++-----+
+1 row selected.
+SQL> 
+SQL> 
+SQL> --TAN
+SQL> SELECT tan(342342689) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 2.339906667 |
++-------------+
+1 row selected.
+SQL> SELECT tan(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++---------------+
+| C1            |
++---------------+
+| 15.20056507   |
+| -0.4731873726 |
+| 0.5880249771  |
+| 0.5880249771  |
++---------------+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT tan(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT tan(name) FROM Test_Builtin_Func_1]
+SQL> SELECT tan(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> --TANH
+SQL> SELECT tanh(342342689) FROM Test_Builtin_Func_1 LIMIT 1;
++----+
+| C1 |
++----+
+| 1  |
++----+
+1 row selected.
+SQL> SELECT tanh(salary) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| 1  |
+| 1  |
+| 1  |
+| 1  |
++----+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT tanh(name) FROM Test_Builtin_Func_1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT tanh(name) FROM Test_Builtin_Func_1]
+SQL> SELECT tanh(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLException: Worker execution: ldb worker caused error: decimal can only support precision up to 38;
+SQL> 
+SQL> 
+SQL> --TRANSLATE
+SQL> SELECT TRANSLATE('linkoopdb','nob','123') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| li1k22pd3 |
++-----------+
+1 row selected.
+SQL> SELECT TRANSLATE('linkoopdb','abc','123') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| linkoopd2 |
++-----------+
+1 row selected.
+SQL> SELECT TRANSLATE(name,'s','123') FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| z1 |
+| l1 |
+| ww |
+| y1 |
++----+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT TRANSLATE(123456,123,456) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT TRANSLATE(123456,123,456) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> --UCASE
+SQL> SELECT ucase('linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| LINKOOPDB |
++-----------+
+1 row selected.
+SQL> SELECT ucase(name) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| ZS |
+| LS |
+| YS |
+| WW |
++----+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT ucase(date '2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT ucase(date '2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT ucase(salary) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT ucase(salary) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT ucase(id) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT ucase(id) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> 
+SQL> --UPPER
+SQL> SELECT upper('linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| LINKOOPDB |
++-----------+
+1 row selected.
+SQL> SELECT upper(name) FROM Test_Builtin_Func_1 ORDER BY id;
++----+
+| C1 |
++----+
+| ZS |
+| LS |
+| WW |
+| YS |
++----+
+4 rows selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT upper(date '2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT upper(date '2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT upper(salary) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT upper(salary) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> SELECT upper(id) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [SELECT upper(id) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> 
+SQL> 
+SQL> 
+SQL> --TRUNC
+SQL> SELECT trunc(12345.324,0) FROM Test_Builtin_Func_1 LIMIT 1;
++-------+
+| C1    |
++-------+
+| 12345 |
++-------+
+1 row selected.
+SQL> SELECT trunc(12345.324,100) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| 12345.324 |
++-----------+
+1 row selected.
+SQL> SELECT trunc(12345.32434265645,100) FROM Test_Builtin_Func_1 LIMIT 1;
++-------------+
+| C1          |
++-------------+
+| 12345.32434 |
++-------------+
+1 row selected.
+SQL> SELECT trunc(12345.32434265645,3) FROM Test_Builtin_Func_1 LIMIT 1;
++-----------+
+| C1        |
++-----------+
+| 12345.324 |
++-----------+
+1 row selected.
+SQL> 
+SQL> --异常测试
+SQL> SELECT trunc('1234.3232',3) FROM Test_Builtin_Func_1 LIMIT 1;
+java.sql.SQLSyntaxErrorException: incompatible data type in conversion in statement [SELECT trunc('1234.3232',3) FROM Test_Builtin_Func_1 LIMIT 1]
+SQL> exit
+Disconnected.
