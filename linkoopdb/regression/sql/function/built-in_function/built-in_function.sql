@@ -1346,9 +1346,9 @@ SELECT round(2.53453253254245345345, -10) FROM Test_Builtin_Func_1 LIMIT 1;
 
 SELECT round(2.53453253254245345345, 5) FROM Test_Builtin_Func_1 LIMIT 1;
 
-SELECT round(2.53453253254245345345, 4555432343432323223) FROM Test_Builtin_Func_1 LIMIT 1;
+--SELECT round(2.53453253254245345345, 4555432343432323223) FROM Test_Builtin_Func_1 LIMIT 1;
 
-SELECT round(2.5345325325424534534543524235435, 4555432343432323223) FROM Test_Builtin_Func_1 LIMIT 1;
+--SELECT round(2.5345325325424534534543524235435, 4555432343432323223) FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 --RPAD
@@ -1469,91 +1469,137 @@ SELECT SOUNDEX(id) FROM Test_Builtin_Func_1 LIMIT 1;
 
 --SPACE
 SELECT CONCAT(SPACE(0), '1')  FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT CONCAT(SPACE(100), '1')  FROM Test_Builtin_Func_1 LIMIT 1;
+
 --异常测试
+
 SELECT CONCAT(SPACE(100000000000), '1')  FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 --SPLIT
 SELECT split('oneAtwoBthreeC', '[A]') from Test_Builtin_Func_1 LIMIT 1;
+
 SELECT split('www.baidu.com.cn', '[.]') from Test_Builtin_Func_1 LIMIT 1;
+
 SELECT split('www&baidu&com&cn', '[&]') from Test_Builtin_Func_1 LIMIT 1;
+
 SELECT split('oneAtwoBthreeC', 'ABC') from Test_Builtin_Func_1 LIMIT 1;
 
 
 --SQRT
 SELECT SQRT(0.0) FROM Test_Builtin_Func_1 limit 1;
+
 SELECT SQRT(-34567.0) FROM Test_Builtin_Func_1 limit 1;
+
 --异常测试
+
 SELECT SQRT(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 
 --SUBSTR
 SELECT substr('L inkoop DB', -100) FROM Test_Builtin_Func_1 limit 1;
+
 SELECT substr('L inkoop DB', 0) FROM Test_Builtin_Func_1 limit 1;
+
 SELECT substr('L inkoop DB', 0, 2) FROM Test_Builtin_Func_1 limit 1;
+
 SELECT substr('L inkoop DB', 3, 100) FROM Test_Builtin_Func_1 limit 1;
+
 SELECT substr('L inkoop DB', 76, 2) FROM Test_Builtin_Func_1 limit 1;
 
 
 --SUBSTRING_INDEX
 SELECT substring_index('www.apache.org.com', '.', 3) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT substring_index('www.apache.org.com', '.', 0) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT substring_index('www.apache.org.com', '.', 6) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT substring_index('www.apache.org.com', '.', -10) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT substring_index('www.apache.org.com', '.', 2.6) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT substring_index('www.apache.org.com', '-', 3) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT substring_index('www-apache-org.com', '-', 1) FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 --TAN
 SELECT tan(342342689) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT tan(salary) FROM Test_Builtin_Func_1 ORDER BY id;
+
 --异常测试
+
 SELECT tan(name) FROM Test_Builtin_Func_1;
+
 SELECT tan(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
 
 --TANH
 SELECT tanh(342342689) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT tanh(salary) FROM Test_Builtin_Func_1 ORDER BY id;
+
 --异常测试
+
 SELECT tanh(name) FROM Test_Builtin_Func_1;
+
 SELECT tanh(-0.4444444443224333547685878378856783467204678547657382) FROM Test_Builtin_Func_1 LIMIT 1;
+
 
 --TRANSLATE
 SELECT TRANSLATE('linkoopdb','nob','123') FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT TRANSLATE('linkoopdb','abc','123') FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT TRANSLATE(name,'s','123') FROM Test_Builtin_Func_1 ORDER BY id;
+
 --异常测试
+
 SELECT TRANSLATE(123456,123,456) FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 --UCASE
 SELECT ucase('linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT ucase(name) FROM Test_Builtin_Func_1 ORDER BY id;
+
 --异常测试
+
 SELECT ucase(date '2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT ucase(salary) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT ucase(id) FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 
 --UPPER
 SELECT upper('linkoopdb') FROM Test_Builtin_Func_1 LIMIT 1;
-SELECT upper(name) FROM Test_Builtin_Func_1 ORDER BY id;
---异常测试
-SELECT upper(date '2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1;
-SELECT upper(salary) FROM Test_Builtin_Func_1 LIMIT 1;
-SELECT upper(id) FROM Test_Builtin_Func_1 LIMIT 1;
 
+SELECT upper(name) FROM Test_Builtin_Func_1 ORDER BY id;
+
+--异常测试
+
+SELECT upper(date '2020-02-20') FROM Test_Builtin_Func_1 LIMIT 1;
+
+SELECT upper(salary) FROM Test_Builtin_Func_1 LIMIT 1;
+
+SELECT upper(id) FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 
 --TRUNC
 SELECT trunc(12345.324,0) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT trunc(12345.324,100) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT trunc(12345.32434265645,100) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT trunc(12345.32434265645,3) FROM Test_Builtin_Func_1 LIMIT 1;
+
 --异常测试
+
 SELECT trunc('1234.3232',3) FROM Test_Builtin_Func_1 LIMIT 1;
