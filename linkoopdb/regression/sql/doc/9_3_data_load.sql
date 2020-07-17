@@ -9,13 +9,13 @@ drop table T_DATA_LOAD_003 if exists ;
 drop table T_DATA_LOAD_004 if exists ;
 
 CREATE EXTERNAL TABLE T_DATA_LOAD_001 (ID INT, NAME VARCHAR(10)) LOCATION
-('hdfs:///user/testdb73/external_file/doc/TEST1.csv') FORMAT 'csv' (DELIMITER ',');
+('HDFSRPC_URL/doc/TEST1.csv') FORMAT 'csv' (DELIMITER ',');
 
 CREATE EXTERNAL TABLE T_DATA_LOAD_002 (ID INT, NAME VARCHAR(10)) LOCATION
-('hdfs:///user/testdb73/external_file/csv_doc') FORMAT 'csv' (DELIMITER ',');
+('HDFSRPC_URL/doc/csv_doc') FORMAT 'csv' (DELIMITER ',');
 
 CREATE EXTERNAL TABLE T_DATA_LOAD_003 (ID INT, NAME VARCHAR(10)) LOCATION
-('hdfs:///user/testdb73/external_file/csv_doc,hdfs:///user/testdb73/external_file/doc/TEST1.csv') FORMAT 'csv'
+('HDFSRPC_URL/doc/csv_doc,HDFSRPC_URL/doc/TEST1.csv') FORMAT 'csv'
 (DELIMITER ',');
 
 
@@ -157,7 +157,7 @@ drop table T_LOAD_LDBDIST_005 if exists;
 CREATE EXTERNAL TABLE T_LOAD_LDBDIST_001 (
 ID INT,
 NAME VARCHAR(20)
-) LOCATION('ldbdist://192.168.1.73:54322/TEST1.csv') FORMAT 'csv' (DELIMITER ',');
+) LOCATION('LDBDIST_URL/doc/TEST1.csv') FORMAT 'csv' (DELIMITER ',');
 
 
 CREATE TABLE T_LOAD_LDBDIST_002 (
@@ -176,7 +176,7 @@ CREATE EXTERNAL TABLE T_LOAD_LDBDIST_003 (
 ID INT,
 NAME VARCHAR(20)
 ) LOCATION
-('ldbdist://192.168.1.73:54322/TEST1.csv,ldbdist://192.168.1.73:54322/TEST2.csv') FORMAT
+('LDBDIST_URL/doc/TEST1.csv,LDBDIST_URL/doc/TEST2.csv') FORMAT
 'csv' (DELIMITER ',');
 
 delete from T_LOAD_LDBDIST_002;
@@ -190,7 +190,7 @@ CREATE EXTERNAL TABLE T_LOAD_LDBDIST_004 (
 ID INT,
 NAME VARCHAR(20)
 ) LOCATION
-('ldbdist://192.168.1.73:54322/TEST') FORMAT 'csv' (DELIMITER ',');
+('LDBDIST_URL/doc/TEST') FORMAT 'csv' (DELIMITER ',');
 
 delete from T_LOAD_LDBDIST_002;
 
@@ -203,7 +203,7 @@ select * from T_LOAD_LDBDIST_002 order by id;
 CREATE EXTERNAL TABLE T_LOAD_LDBDIST_005(
 ID INT,
 NAME VARCHAR(20)) LOCATION
-('ldbdist://192.168.1.73:54322/TEST1.csv,ldbdist://192.168.1.73:54322/TEST') FORMAT
+('LDBDIST_URL/doc/TEST1.csv,LDBDIST_URL/doc/TEST') FORMAT
 'csv' (DELIMITER ',');
 
 delete from T_LOAD_LDBDIST_002;

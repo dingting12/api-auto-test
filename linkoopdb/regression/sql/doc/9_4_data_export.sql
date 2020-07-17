@@ -21,7 +21,7 @@ CREATE EXTERNAL TABLE T_data_export_002 (
 ID INT, 
 NAME VARCHAR(10)
 ) 
-LOCATION('hdfs:///user/testdb73/external_file/doc/csv_test') FORMAT 'csv' (DELIMITER ',');
+LOCATION('HDFSRPC_URL') FORMAT 'csv' (DELIMITER ',');
 
 delete from T_data_export_002;
 

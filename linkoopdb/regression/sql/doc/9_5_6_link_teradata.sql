@@ -119,7 +119,7 @@ alter table td_link_doc_001.T_TD_FR_01 alter column id set not null;
 alter table td_link_doc_001.T_TD_FR_01 add constraint pk_t04 primary key(id);
 alter table td_link_doc_001.T_TD_FR_02 alter column age set not null;
 alter table td_link_doc_001.T_TD_FR_02 add constraint pk_t05 primary key(age);
-ALTER TABLE td_link_doc_001.T_TD_FR_01 ADD CONSTRAINT fk_t04 FOREIGN KEY(ID)
+ALTER TABLE td_link_doc_001.T_TD_FR_01 ADD CONSTRAINT fk_t040 FOREIGN KEY(ID)
 REFERENCES td_link_doc_001.T_TD_FR_02(age);
 
 

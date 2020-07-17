@@ -4,7 +4,10 @@ Documentation    RobotFrameWork文档实例
 
 # 引用公共函数
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Test Setup       run keywords   SQL Test Setup   AND   Setup Custom Settings
+Test Setup       run keywords   SQL Test Setup   AND   
+...              Setup Custom Settings   AND
+...              Upload csv files   AND
+...              Upload ldbdist files 
 Test Teardown    SQL Test Clnup
 Library          OperatingSystem
 Force Tags       owner:丁婷
@@ -133,4 +136,18 @@ doc test chapter 9.6.7 external hive
 Setup Custom Settings
     Compare Enable ConsoleOutput       True 
 	SQLCli Enable ConsoleOutput        True
+    SQLCli Set SQLMAPPING              doc.map
 
+
+Upload csv files
+    HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
+    HDFS Upload                data/*.csv             doc/
+    HDFS Upload                data/*.orc             doc/
+    HDFS Upload                data/*.parquet         doc/
+	HDFS Upload                data/csv_doc           doc/
+	HDFS Upload                data/parquet_test      doc/
+	
+Upload ldbdist files
+    SSH Connect                %{LDBSSH_ROOTURL}/%{JOB_BASE_NAME}/
+    SSH Upload                  ldbdist/*.csv   doc/
+	SSH Upload                  ldbdist/TEST    doc/
