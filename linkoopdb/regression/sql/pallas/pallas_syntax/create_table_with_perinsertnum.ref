@@ -1,0 +1,119 @@
+SQLCli Release 0.0.54
+SQL> start create_table_with_perinsertnum.sql
+SQL> --Description:验证创建PALLAS表时配置perinsertnum
+   > --Date：2020-07-15
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- positive test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- perinsertnum为最小值1
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('perinsertnum':'1') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.25 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.90 Seconds
+SQL> 
+SQL> -- perinsertnum为最大值1000000
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('perinsertnum':'100000') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.53 Seconds
+SQL> 
+SQL> 
+SQL> -- negative test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.95 Seconds
+SQL> 
+SQL> -- properties key错误/不存在
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnumm':'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: perinsertnumm in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnumm':'8') ENGINE PALLAS]
+Running time elapsed:      0.14 Seconds
+SQL> 
+SQL> -- properties key包含大写字符
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('Perinsertnum':'1') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: Perinsertnum in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('Perinsertnum':'1') ENGINE PALLAS]
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- properties key包含空格
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('perinsertnum ':'1') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: perinsertnum  in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('perinsertnum ':'1') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- properties value缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':8) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':8) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties key缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(perinsertnum:'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: PERINSERTNUM in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(perinsertnum:'8') ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties缺少括号
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'perinsertnum':'8' ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: perinsertnum required: ( in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'perinsertnum':'8' ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- perinsertnum的value为负数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'-4') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 100000 for property perinsertnum in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'-4') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- perinsertnum的value为0
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'0') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 100000 for property perinsertnum in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'0') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- perinsertnum的value为大小写字母
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'Ab') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value Ab for property perinsertnum, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'Ab') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- perinsertnum的value为浮点数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'4.56') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 4.56 for property perinsertnum, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'4.56') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- perinsertnum的value为汉字
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'四个') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 四个 for property perinsertnum, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'四个') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- perinsertnum的value为特殊字符
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'*&@') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value *&@ for property perinsertnum, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'*&@') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- perinsertnum的value为空
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value  for property perinsertnum, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- perinsertnum的value为NULL
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':NULL) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: NULL in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':NULL) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- perinsertnum的value包含空格
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'1 ') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 1  for property perinsertnum, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'1 ') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- perinsertnum的value值超过上限100001
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'100001') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 100000 for property perinsertnum in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('perinsertnum':'100001') ENGINE PALLAS]
+Running time elapsed:      0.12 Seconds
+Running time elapsed:      5.17 Seconds
+SQL> exit
+Disconnected.

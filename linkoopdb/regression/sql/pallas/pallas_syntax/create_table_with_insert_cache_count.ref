@@ -1,0 +1,118 @@
+SQLCli Release 0.0.54
+SQL> start create_table_with_insert_cache_count.sql
+SQL> --Description:验证创建PALLAS表时配置insert.cache.count
+   > --Date：2020-07-15
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- positive test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- insert.cache.count为最小值1
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('insert.cache.count':'1') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.22 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.83 Seconds
+SQL> 
+SQL> -- insert.cache.count为最大值10000
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('insert.cache.count':'10000') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.23 Seconds
+SQL> 
+SQL> -- negative test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.79 Seconds
+SQL> 
+SQL> -- properties key错误/不存在
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('cache.count':'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: cache.count in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('cache.count':'8') ENGINE PALLAS]
+Running time elapsed:      0.13 Seconds
+SQL> 
+SQL> -- properties key包含大写字符
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('insert.Cache.count':'1') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: insert.Cache.count in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('insert.Cache.count':'1') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- properties key包含空格
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('insert.cache.count ':'1') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: insert.cache.count  in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('insert.cache.count ':'1') ENGINE PALLAS]
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- properties value缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':8) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':8) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- properties key缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(insert.cache.count:'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: INSERT in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(insert.cache.count:'8') ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties缺少括号
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'insert.cache.count':'8' ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: insert.cache.count required: ( in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'insert.cache.count':'8' ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- insert.cache.count的value为负数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'-4') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 10000 for property insert.cache.count in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'-4') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- insert.cache.count的value为0
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'0') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 10000 for property insert.cache.count in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'0') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- insert.cache.count的value为大小写字母
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'Ab') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value Ab for property insert.cache.count, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'Ab') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- insert.cache.count的value为浮点数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'4.56') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 4.56 for property insert.cache.count, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'4.56') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- insert.cache.count的value为汉字
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'四个') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 四个 for property insert.cache.count, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'四个') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- insert.cache.count的value为特殊字符
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'*&@') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value *&@ for property insert.cache.count, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'*&@') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- insert.cache.count的value为空
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value  for property insert.cache.count, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- insert.cache.count的value为NULL
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':NULL) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: NULL in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':NULL) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- insert.cache.count的value包含空格
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'1 ') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 1  for property insert.cache.count, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'1 ') ENGINE PALLAS]
+Running time elapsed:      0.12 Seconds
+SQL> 
+SQL> -- insert.cache.count的value值超过上限10000
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'10001') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 10000 for property insert.cache.count in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('insert.cache.count':'10001') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+Running time elapsed:      4.75 Seconds
+SQL> exit
+Disconnected.

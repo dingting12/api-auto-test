@@ -1,0 +1,113 @@
+SQLCli Release 0.0.54
+SQL> start create_table_with_binlog.sql
+SQL> --Description:验证创建PALLAS表时配置binlog
+   > --Date：2020-07-15
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- positive test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- binlog为true
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('binlog':'true') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.31 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.85 Seconds
+SQL> 
+SQL> -- binlog为false
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('binlog':'false') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.24 Seconds
+SQL> 
+SQL> -- negative test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.89 Seconds
+SQL> 
+SQL> -- properties key错误/不存在
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlogs':'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: binlogs in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlogs':'8') ENGINE PALLAS]
+Running time elapsed:      0.13 Seconds
+SQL> 
+SQL> -- properties key包含大写字符
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('binLog':'true') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: binLog in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('binLog':'true') ENGINE PALLAS]
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- properties key包含空格
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('binlog ':'true') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: binlog  in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('binlog ':'true') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- properties value缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':8) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':8) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties key缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(binlog:'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: BINLOG in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(binlog:'8') ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties缺少括号
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'binlog':'8' ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: binlog required: ( in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'binlog':'8' ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- binlog为负数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'-4') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value -4 for property binlog, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'-4') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- binlog为0
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'0') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 0 for property binlog, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'0') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- binlog为大小写字母
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'Ab') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value Ab for property binlog, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'Ab') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- binlog为浮点数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'4.56') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 4.56 for property binlog, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'4.56') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- binlog为汉字
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'四个') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 四个 for property binlog, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'四个') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- binlog为特殊字符
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'*&@') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value *&@ for property binlog, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'*&@') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- binlog为空
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value  for property binlog, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'') ENGINE PALLAS]
+Running time elapsed:      0.12 Seconds
+SQL> 
+SQL> -- binlog为NULL
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':NULL) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: NULL in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':NULL) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- binlog包含空格
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'false ') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value false  for property binlog, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('binlog':'false ') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+Running time elapsed:      4.67 Seconds
+SQL> exit
+Disconnected.

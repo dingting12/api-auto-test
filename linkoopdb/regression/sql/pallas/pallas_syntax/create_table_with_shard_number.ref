@@ -1,0 +1,128 @@
+SQLCli Release 0.0.54
+SQL> start create_table_with_shard_number.sql
+SQL> --Description:验证创建PALLAS表时配置linkoopdb.pallas.shard_number
+   > --Date：2020-07-15
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- positive test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- shard_number为最小值1
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'1') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.22 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.80 Seconds
+SQL> 
+SQL> -- shard_number为最大值4096
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'4096') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:     11.22 Seconds
+SQL> 
+SQL> -- negative test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.98 Seconds
+SQL> 
+SQL> -- properties key错误/不存在
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('shard_number':'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: shard_number in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('shard_number':'8') ENGINE PALLAS]
+Running time elapsed:      0.39 Seconds
+SQL> 
+SQL> -- properties key包含大写字符
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.Shard_number':'1') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: linkoopdb.pallas.Shard_number in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.Shard_number':'1') ENGINE PALLAS]
+Running time elapsed:      0.19 Seconds
+SQL> 
+SQL> -- properties key包含空格
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number ':'1') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: linkoopdb.pallas.shard_number  in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number ':'1') ENGINE PALLAS]
+Running time elapsed:      0.49 Seconds
+SQL> 
+SQL> -- properties value缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':8) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':8) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties key缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(linkoopdb.pallas.shard_number:'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: LINKOOPDB in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(linkoopdb.pallas.shard_number:'8') ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties 多个key之间隔开符号错误
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8';'linkoopdb.pallas.shard_duplicate_number':'3') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: ; required: , in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8';'linkoopdb.pallas.shard_duplicate_number':'3') ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- properties缺少括号
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'linkoopdb.pallas.shard_number':'8' ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: linkoopdb.pallas.shard_number required: ( in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'linkoopdb.pallas.shard_number':'8' ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- shard_number不是2的n次方
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'10') ENGINE PALLAS;
+java.sql.SQLException: pallas表的shard数必须是2的幂次方！
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- shard_number为负数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'-4') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 4096 for property linkoopdb.pallas.shard_number in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'-4') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- shard_number为0
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'0') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 4096 for property linkoopdb.pallas.shard_number in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'0') ENGINE PALLAS]
+Running time elapsed:      0.12 Seconds
+SQL> 
+SQL> -- shard_number为大小写字母
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'Ab') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value Ab for property linkoopdb.pallas.shard_number, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'Ab') ENGINE PALLAS]
+Running time elapsed:      0.12 Seconds
+SQL> 
+SQL> -- shard_number为浮点数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'4.56') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 4.56 for property linkoopdb.pallas.shard_number, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'4.56') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- shard_number为汉字
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'四个') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 四个 for property linkoopdb.pallas.shard_number, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'四个') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- shard_number为特殊字符
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'*&@') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value *&@ for property linkoopdb.pallas.shard_number, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'*&@') ENGINE PALLAS]
+Running time elapsed:      0.14 Seconds
+SQL> 
+SQL> -- shard_duplicate_number为空
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value  for property linkoopdb.pallas.shard_number, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- shard_duplicate_number为NULL
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':NULL) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: NULL in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':NULL) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- shard_duplicate_number包含空格
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'1 ') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 1  for property linkoopdb.pallas.shard_number, value must be an int number. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'1 ') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- shard_number值超过上限4096
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8192') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value:  value must be greater than or equal to 1 and less than or equal to 4096 for property linkoopdb.pallas.shard_number in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.shard_number':'8192') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+Running time elapsed:     16.67 Seconds
+SQL> exit
+Disconnected.

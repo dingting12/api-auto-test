@@ -1,0 +1,64 @@
+SQLCli Release 0.0.54
+SQL> start create_table_basic_syntax.sql
+SQL> --Description:验证创建PALLAS表的基本语法
+   > --Date：2020-07-15
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      1.52 Seconds
+SQL> DROP TABLE T_SYNTAX IF EXISTS;
+0 rows affected
+Running time elapsed:      0.44 Seconds
+SQL> 
+SQL> -- 正常
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.76 Seconds
+SQL> 
+SQL> -- create拼错
+SQL> CREAT TABLE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: CREAT in statement [CREAT TABLE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- table拼错
+SQL> CREATE TABALE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: TABALE in statement [CREATE TABALE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALLAS]
+Running time elapsed:      0.70 Seconds
+SQL> 
+SQL> -- 缺少engine
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: PALLAS in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- engine拼错
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) EGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: EGINE in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) EGINE PALLAS]
+Running time elapsed:      0.35 Seconds
+SQL> 
+SQL> -- pallas拼错
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALAS;
+java.sql.SQLSyntaxErrorException: unexpected token: PALAS required: dfs/pallas/mem in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) ENGINE PALAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- 字段名后缺失类型
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: syntax error or access rule violation in statement [CREATE TABLE T_SYNTAX (A INTEGER, B) ENGINE PALLAS]
+Running time elapsed:      0.35 Seconds
+SQL> 
+SQL> -- 缺少)
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: ENGINE in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255) ENGINE PALLAS]
+Running time elapsed:      0.22 Seconds
+SQL> 
+SQL> -- 缺少括号
+SQL> CREATE TABLE T_SYNTAX A INT, B VARCHAR(255) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: A required: ( in statement [CREATE TABLE T_SYNTAX A INT, B VARCHAR(255) ENGINE PALLAS]
+Running time elapsed:      0.47 Seconds
+Running time elapsed:      6.69 Seconds
+SQL> exit
+Disconnected.
