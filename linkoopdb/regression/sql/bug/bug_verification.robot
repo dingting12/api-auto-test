@@ -21,5 +21,5 @@ Create HDFS PATH
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
     HDFS Delete                %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/666
 Tear Down
-    Logon And Execute SQL Script       admin/123456   LDB-367/tear_down.sql
+    Logon And Execute SQL Script       admin/123456   LDB-3367/tear_down.sql
     HDFS Delete                %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/666
