@@ -15,7 +15,7 @@ Force Tags       owner:丁婷
 *** Test Cases ***
 external type boolean test  
 	[Documentation]    测试外部表类型
-    [Tags]     SQL-Test       external type boolean test
+    [Tags]     EXTERNAL
     Logon And Execute SQL Script     admin/123456                                          external_table_basic_type_hdfs_csv_boolean.sql
 				   Compare Files     external_table_basic_type_hdfs_csv_boolean.log        external_table_basic_type_hdfs_csv_boolean.ref
 	Logon And Execute SQL Script     admin/123456                                          external_table_basic_type_hdfs_orc_boolean.sql

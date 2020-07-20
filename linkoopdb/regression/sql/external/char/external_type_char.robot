@@ -15,7 +15,7 @@ Force Tags       owner:丁婷
 *** Test Cases ***
 external type char test  
 	[Documentation]    测试外部表类型
-    [Tags]     SQL-Test       external type char test
+    [Tags]     EXTERNAL
     Logon And Execute SQL Script     admin/123456                                       external_table_basic_type_hdfs_csv_char.sql
 				   Compare Files     external_table_basic_type_hdfs_csv_char.log        external_table_basic_type_hdfs_csv_char.ref
 	Logon And Execute SQL Script     admin/123456                                       external_table_basic_type_hdfs_orc_char.sql

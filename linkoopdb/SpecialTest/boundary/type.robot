@@ -12,7 +12,7 @@ Force Tags       owner:丁婷
 *** Test Cases ***
 TYPETest
     [Documentation]    测试类型与值域
-    [Tags]     SQL-Test      type test
+    [Tags]     DATATYPE
     Logon And Execute SQL Script    admin/123456  type.sql   type.log
     Compare Files             type.log  type.ref
 

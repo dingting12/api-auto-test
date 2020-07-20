@@ -12,7 +12,7 @@ Force Tags       owner:丁婷
 *** Test Cases ***
 SMOKETEST   
 	[Documentation]    冒烟测试
-    [Tags]     SQL-Test       smoke test
+    [Tags]     SMOKE
     Logon And Execute SQL Script     admin/123456                     CORE_基本PSM.sql
 	               Compare Files     CORE_基本PSM.log                 CORE_基本PSM.ref
 	LOgon And Execute SQL Script     admin/123456                     CORE_cast_case.sql
