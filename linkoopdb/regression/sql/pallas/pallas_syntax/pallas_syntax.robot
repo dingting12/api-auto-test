@@ -5,13 +5,12 @@ Suite Teardown    Tear Down
 
 *** Settings ***
 Documentation    PALLAS建表语法回归测试
-Force Tags       SQL-Test  owner:阮娜
 
 
 *** Test Cases ***
 Pallas-Syntax
     [Documentation]    PALLAS建表语法回归测试
-    [Tags]     Smoke   PALLAS
+    [Tags]     PALLAS
 
     Logon And Execute SQL Script       admin/123456   create_table_basic_syntax.sql   create_table_basic_syntax.log
     Compare Files                      create_table_basic_syntax.log   create_table_basic_syntax.ref
