@@ -15,6 +15,8 @@ LDB-3367
     Logon And Execute SQL Script       admin/123456   LDB-3367/LDB-3367.sql   LDB-3367/LDB-3367.log
     Compare Files                      LDB-3367/LDB-3367.log   LDB-3367/LDB-3367.ref
 
+
+*** Keywords ***
 Create HDFS PATH
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
 
