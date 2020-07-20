@@ -1,0 +1,123 @@
+SQLCli Release 0.0.54
+SQL> start create_table_with_sensitive.sql
+SQL> --Description:验证创建PALLAS表时配置sensitive
+   > --Date：2020-07-15
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- positive test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- sensitive为true
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('sensitive':'0') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.24 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.90 Seconds
+SQL> 
+SQL> -- sensitive为false
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('sensitive':'1') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.22 Seconds
+SQL> 
+SQL> -- negative test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.81 Seconds
+SQL> 
+SQL> -- properties key错误/不存在
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitives':'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: sensitives in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitives':'8') ENGINE PALLAS]
+Running time elapsed:      0.13 Seconds
+SQL> 
+SQL> -- properties key包含大写字符
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('Sensitive':'true') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: Sensitive in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('Sensitive':'true') ENGINE PALLAS]
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- properties key包含空格
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('sensitive ':'true') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: sensitive  in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('sensitive ':'true') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- properties value缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':1) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':1) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties key缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(sensitive:'1') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: SENSITIVE in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(sensitive:'1') ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties缺少括号
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'sensitive':'1' ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: sensitive required: ( in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'sensitive':'1' ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- sensitive为负数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'-4') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value -4 for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'-4') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- sensitive为0
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'0') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: object name already exists: T_SYNTAX in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'0') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- sensitive为大小写字母
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'Ab') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value Ab for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'Ab') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- sensitive为浮点数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'4.56') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 4.56 for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'4.56') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- sensitive为汉字
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'四个') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 四个 for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'四个') ENGINE PALLAS]
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- sensitive为特殊字符
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'*&@') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value *&@ for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'*&@') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- sensitive为空
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value  for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- sensitive为NULL
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':NULL) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: NULL in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':NULL) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- sensitive包含空格
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'0 ') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 0  for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'0 ') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- sensitive=true
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'true') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value true for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'true') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- sensitive=false
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'false') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value false for property sensitive, value must be one of [{0,1}]. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('sensitive':'false') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+Running time elapsed:      4.70 Seconds
+SQL> exit
+Disconnected.

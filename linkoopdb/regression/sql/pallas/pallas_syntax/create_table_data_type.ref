@@ -1,0 +1,129 @@
+SQLCli Release 0.0.54
+SQL> start create_table_data_type.sql
+SQL> --Description:验证创建PALLAS表时数据类型的使用
+   > --Date：2020-07-15
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.91 Seconds
+SQL> DROP TABLE T_SYNTAX IF EXISTS;
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- 正常
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255), C SMALLINT, D BIGINT, E BOOLEAN, F CHAR(10), G DECIMAL(10,2), H DOUBLE, I FLOAT, J REAL, L NUMERIC(4,2), M TIMESTAMP, N ARRAY) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: ARRAY in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255), C SMALLINT, D BIGINT, E BOOLEAN, F CHAR(10), G DECIMAL(10,2), H DOUBLE, I FLOAT, J REAL, L NUMERIC(4,2), M TIMESTAMP, N ARRAY) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- int类型拼错
+SQL> CREATE TABLE T_SYNTAX (A INTGER, B VARCHAR(255)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: INTGER in statement [CREATE TABLE T_SYNTAX (A INTGER, B VARCHAR(255)) ENGINE PALLAS]
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- varchar类型拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B VACHAR(255)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: VACHAR in statement [CREATE TABLE T_SYNTAX (A INTEGER, B VACHAR(255)) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- varchar长度为负数
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B VARCHAR(-30)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: - in statement [CREATE TABLE T_SYNTAX (A INTEGER, B VARCHAR(-30)) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- varchar长度括号缺失
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B VARCHAR30) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: VARCHAR30 in statement [CREATE TABLE T_SYNTAX (A INTEGER, B VARCHAR30) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- varchar长度括号(缺失
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B VARCHAR30)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: VARCHAR30 in statement [CREATE TABLE T_SYNTAX (A INTEGER, B VARCHAR30)) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- smallint拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B SMALINT) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: SMALINT in statement [CREATE TABLE T_SYNTAX (A INTEGER, B SMALINT) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- bigint拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B BIGGINT) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: BIGGINT in statement [CREATE TABLE T_SYNTAX (A INTEGER, B BIGGINT) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- BOOL拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B BOLLEAN) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: BOLLEAN in statement [CREATE TABLE T_SYNTAX (A INTEGER, B BOLLEAN) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- char缺少长度
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B CHAR) ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.23 Seconds
+SQL> 
+SQL> -- char长度为0
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B CHAR(0)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: precision or scale out of range in statement [CREATE TABLE T_SYNTAX (A INTEGER, B CHAR(0)) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- date拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B DATA) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: DATA in statement [CREATE TABLE T_SYNTAX (A INTEGER, B DATA) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- decimal拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B DECMAL(10,2)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: DECMAL in statement [CREATE TABLE T_SYNTAX (A INTEGER, B DECMAL(10,2)) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- decimal总长度和小数部分之间缺少逗号
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B DECIMAL(10 2)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: 2 required: ) in statement [CREATE TABLE T_SYNTAX (A INTEGER, B DECIMAL(10 2)) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- double拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B DOUBLLE) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: DOUBLLE in statement [CREATE TABLE T_SYNTAX (A INTEGER, B DOUBLLE) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- FLOAT拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B FLAOT) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: FLAOT in statement [CREATE TABLE T_SYNTAX (A INTEGER, B FLAOT) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- REAL拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B REALL) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: REALL in statement [CREATE TABLE T_SYNTAX (A INTEGER, B REALL) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- NUMERIC拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B NUMBER(5,2)) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: NUMBER in statement [CREATE TABLE T_SYNTAX (A INTEGER, B NUMBER(5,2)) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- TIMESTAMP拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B TIMETAMP) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: TIMETAMP in statement [CREATE TABLE T_SYNTAX (A INTEGER, B TIMETAMP) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- ARRAY前没有带类型
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B ARRAY) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: ARRAY in statement [CREATE TABLE T_SYNTAX (A INTEGER, B ARRAY) ENGINE PALLAS]
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- ARRAY拼错
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B VARCHAR(30) ARAY) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: ARAY in statement [CREATE TABLE T_SYNTAX (A INTEGER, B VARCHAR(30) ARAY) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- ARRAY在类型前面
+SQL> CREATE TABLE T_SYNTAX (A INTEGER, B ARRAY FLOAT) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: type not found or user lacks privilege: ARRAY in statement [CREATE TABLE T_SYNTAX (A INTEGER, B ARRAY FLOAT) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+Running time elapsed:      7.40 Seconds
+SQL> exit
+Disconnected.

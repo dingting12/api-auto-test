@@ -1,0 +1,113 @@
+SQLCli Release 0.0.54
+SQL> start create_table_with_dict_compress_enabled.sql
+SQL> --Description:验证创建PALLAS表时配置linkoopdb.pallas.dict_compress_enabled
+   > --Date：2020-07-15
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- positive test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为true
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'true') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.24 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.79 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为false
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'false') ENGINE PALLAS;
+0 rows affected
+Running time elapsed:      0.23 Seconds
+SQL> 
+SQL> -- negative test cases
+   > -- 删除表
+SQL> DROP TABLE T_SYNTAX_NORMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.80 Seconds
+SQL> 
+SQL> -- properties key错误/不存在
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('dict_compress_enableds':'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: dict_compress_enableds in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('dict_compress_enableds':'8') ENGINE PALLAS]
+Running time elapsed:      0.13 Seconds
+SQL> 
+SQL> -- properties key包含大写字符
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('Linkoopdb.pallas.dict_compress_enabled':'true') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: Linkoopdb.pallas.dict_compress_enabled in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('Linkoopdb.pallas.dict_compress_enabled':'true') ENGINE PALLAS]
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- properties key包含空格
+SQL> CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled ':'true') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property name: Pallas table can not define property: linkoopdb.pallas.dict_compress_enabled  in statement [CREATE TABLE T_SYNTAX_NORMAL (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled ':'true') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- properties value缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':8) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: incompatible data type in operation in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':8) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties key缺少''
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(linkoopdb.pallas.dict_compress_enabled:'8') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: LINKOOPDB in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties(linkoopdb.pallas.dict_compress_enabled:'8') ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- properties缺少括号
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'linkoopdb.pallas.dict_compress_enabled':'8' ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: linkoopdb.pallas.dict_compress_enabled required: ( in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties 'linkoopdb.pallas.dict_compress_enabled':'8' ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为负数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'-4') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value -4 for property linkoopdb.pallas.dict_compress_enabled, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'-4') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为0
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'0') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 0 for property linkoopdb.pallas.dict_compress_enabled, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'0') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为大小写字母
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'Ab') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value Ab for property linkoopdb.pallas.dict_compress_enabled, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'Ab') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为浮点数
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'4.56') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 4.56 for property linkoopdb.pallas.dict_compress_enabled, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'4.56') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为汉字
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'四个') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value 四个 for property linkoopdb.pallas.dict_compress_enabled, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'四个') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为特殊字符
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'*&@') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value *&@ for property linkoopdb.pallas.dict_compress_enabled, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'*&@') ENGINE PALLAS]
+Running time elapsed:      0.12 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为空
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value  for property linkoopdb.pallas.dict_compress_enabled, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'') ENGINE PALLAS]
+Running time elapsed:      0.10 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled为NULL
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':NULL) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: unexpected token: NULL in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':NULL) ENGINE PALLAS]
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- linkoopdb.pallas.dict_compress_enabled包含空格
+SQL> CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'false ') ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: invalid property value: invalid value false  for property linkoopdb.pallas.dict_compress_enabled, value must be TRUE or FALSE. in statement [CREATE TABLE T_SYNTAX (A INT, B VARCHAR(255)) properties('linkoopdb.pallas.dict_compress_enabled':'false ') ENGINE PALLAS]
+Running time elapsed:      0.11 Seconds
+Running time elapsed:      4.41 Seconds
+SQL> exit
+Disconnected.
