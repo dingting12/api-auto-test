@@ -22,3 +22,4 @@ Create HDFS PATH
 
 Tear Down
     Logon And Execute SQL Script       admin/123456   LDB-367/tear_down.sql
+    HDFS Delete              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
