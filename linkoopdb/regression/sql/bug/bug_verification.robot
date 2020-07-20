@@ -1,6 +1,6 @@
 *** Settings ***
 Resource          %{TEST_ROOT}/regression/common/SetupRobot.robot
-Suite Setup       SQL Test Setup
+Suite Setup       Create HDFS PATH
 Suite Teardown    Tear Down
 
 *** Settings ***
@@ -19,7 +19,7 @@ LDB-3367
 *** Keywords ***
 Create HDFS PATH
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
-
+    HDFS Delete                %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/666
 Tear Down
     Logon And Execute SQL Script       admin/123456   LDB-367/tear_down.sql
-    HDFS Delete              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
+    HDFS Delete                %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/666
