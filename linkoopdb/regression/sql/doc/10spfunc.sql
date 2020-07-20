@@ -35,8 +35,8 @@ DROP TYPE tdv_type_1 IF EXISTS CASCADE;
 CREATE TYPE udt_wy_1 AS SMALLINT;
 
 CREATE TYPE IF NOT EXISTS tdv_type_1(
-col1 INT, 
-col2 INT, 
+col1 INT,
+col2 INT,
 col3 VARCHAR(200)
 );
 
@@ -231,9 +231,9 @@ CALL test_repeat_statement();
 select * from trs_table order by COL1;
 
 --测试ITERATE
-DROP table tis_table IF EXISTS ;
 
 DROP PROCEDURE test_iterate_statement IF EXISTS CASCADE;
+DROP table tis_table IF EXISTS ;
 
 CREATE TABLE tis_table(COL1 INT, COL2 INT);
 
@@ -283,9 +283,11 @@ call sp_loop ();
 
 
 --存储过程中支持进行增删改查操作
-DROP table employee IF EXISTS ;
 
 DROP PROCEDURE Test_changedata_p1 IF EXISTS CASCADE;
+DROP table employee IF EXISTS cascade;
+
+
 
 CREATE TABLE employee(
    employee_number INTEGER,
@@ -375,7 +377,7 @@ DROP TABLE t_tmp_wy_1 IF EXISTS CASCADE;
 
 create table t_tmp_wy_1(
 c1 int,
-c2 varchar(30), 
+c2 varchar(30),
 c3 int
 );
 
@@ -392,7 +394,7 @@ L1: WHILE (SQLSTATE = '00000')
 DO
 FETCH projcursor INTO var1, var2;
 insert into t_tmp_wy_1 values(var1, var2,SQLCODE);
-IF VAR1 = 6 THEN
+IF VAR1 = 3 THEN
   insert into t_tmp_wy_1 values(100, SQLSTATE,SQLCODE);
   LEAVE L1;
   END IF;
@@ -423,6 +425,32 @@ CREATE TABLE test_proc_cursor_employee(
      salary_amount DECIMAL(10,2) NOT NULL
 );
 
+INSERT INTO test_proc_cursor_employee VALUES(0801,0801,100,111100,'Trainer','I.B.','2018-11-14','2018-11-14',100000);
+INSERT INTO test_proc_cursor_employee VALUES(1001,1003,401,412101,'Hoover','William',now(),now(),25525);
+INSERT INTO test_proc_cursor_employee VALUES(1002,1003,401,413201,'Brown','Alan',now(),now(),43100);
+INSERT INTO test_proc_cursor_employee VALUES(1003,0801,401,411100,'Trader','James',now(),now(),37850);
+INSERT INTO test_proc_cursor_employee VALUES(1004,1003,401,412101,'Johnson','Darlene',now(),now(),36300);
+INSERT INTO test_proc_cursor_employee VALUES(1005,0801,403,431100,'Ryan','Loretta',now(),now(),31200);
+INSERT INTO test_proc_cursor_employee VALUES(1006,1019,301,312101,'Stein','John',now(),now(),29450);
+INSERT INTO test_proc_cursor_employee VALUES(1007,1005,403,432101,'Villegas','Arnando',now(),now(),49700);
+INSERT INTO test_proc_cursor_employee VALUES(1008,1019,301,312102,'Kanieski','Carol',now(),now(),29250);
+INSERT INTO test_proc_cursor_employee VALUES(1009,1005,403,432101,'Lombardo','Domingus',now(),now(),31000);
+INSERT INTO test_proc_cursor_employee VALUES(1010,1003,401,412101,'Rogers','Frank',now(),now(),46000);
+INSERT INTO test_proc_cursor_employee VALUES(1011,0801,402,421100,'Daly','James',now(),now(),52500);
+INSERT INTO test_proc_cursor_employee VALUES(1012,1005,403,432101,'Hopkins','Paulene',now(),now(),37900);
+INSERT INTO test_proc_cursor_employee VALUES(1013,1003,401,412102,'Phillips','Charles',now(),now(),24500);
+INSERT INTO test_proc_cursor_employee VALUES(1014,1011,402,422101,'Crane','Robert',now(),now(),24500);
+INSERT INTO test_proc_cursor_employee VALUES(1015,1017,501,512101,'Wilson','Edward',now(),now(),53625);
+INSERT INTO test_proc_cursor_employee VALUES(1016,0801,302,321100,'Rogers','Nora',now(),now(),56500);
+INSERT INTO test_proc_cursor_employee VALUES(1017,0801,501,511100,'Runyon','Irene',now(),now(),66000);
+INSERT INTO test_proc_cursor_employee VALUES(1018,1017,501,512101,'Ratzlaff','Larry',now(),now(),54000);
+INSERT INTO test_proc_cursor_employee VALUES(1019,0801,301,311100,'Kubic','Ron',now(),now(),57700);
+INSERT INTO test_proc_cursor_employee VALUES(1020,1005,403,432101,'Charles','John',now(),now(),39500);
+INSERT INTO test_proc_cursor_employee VALUES(1021,1025,201,222101,'Morrissey','Jim',now(),now(),38750);
+INSERT INTO test_proc_cursor_employee VALUES(1022,1003,401,412102,'Machado','Albert',now(),now(),32300);
+INSERT INTO test_proc_cursor_employee VALUES(1023,1017,501,512101,'Rabbit','Peter',now(),now(),26500);
+INSERT INTO test_proc_cursor_employee VALUES(1024,1005,403,432101,'Brown','Allen',now(),now(),43700);
+INSERT INTO test_proc_cursor_employee VALUES(1025,0801,201,211100,'Short','Michael',now(),now(),34700);
 
 CREATE PROCEDURE upd_cur1 ()
 MODIFIES SQL DATA
@@ -448,7 +476,7 @@ END;
 
 call upd_cur1();
 
-select * from test_proc_cursor_employee;
+select * from test_proc_cursor_employee order by employee_number;
 
 
 
@@ -546,14 +574,6 @@ END;
 
 call sp_test1();
 
-DROP PROCEDURE sp_name IF EXISTS CASCADE;
-
-CREATE PROCEDURE sp_name ()
-DYNAMIC RESULT SETS number
-BEGIN
-  statement
-END;
-/
 
 DROP TABLE t_test1 IF EXISTS CASCADE;
 
@@ -624,6 +644,32 @@ hire_date DATE NOT NULL,
 birthdate DATE NOT NULL,
 salary_amount DECIMAL(10,2) NOT NULL
 );
+INSERT INTO t_sqlstate_emp_wy1 VALUES(0801,0801,100,111100,'Trainer','I.B.',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),100000);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1001,1003,401,412101,'Hoover','William',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),25525);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1002,1003,401,413201,'Brown','Alan',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),43100);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1003,0801,401,411100,'Trader','James',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),37850);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1004,1003,401,412101,'Johnson','Darlene',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),36300);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1005,0801,403,431100,'Ryan','Loretta',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),31200);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1006,1019,301,312101,'Stein','John',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),29450);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1007,1005,403,432101,'Villegas','Arnando',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),49700);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1008,1019,301,312102,'Kanieski','Carol',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),29250);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1009,1005,403,432101,'Lombardo','Domingus',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),31000);
+INSERT INTO t_sqlstate_emp_wy1 VALUES (1010,1003,401,412101,'Rogers','Frank',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),46000);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1011,0801,402,421100,'Daly','James',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),52500);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1012,1005,403,432101,'Hopkins','Paulene',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),37900);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1013,1003,401,412102,'Phillips','Charles',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),24500);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1014,1011,402,422101,'Crane','Robert',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),24500);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1015,1017,501,512101,'Wilson','Edward',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),53625);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1016,0801,302,321100,'Rogers','Nora',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),56500);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1017,0801,501,511100,'Runyon','Irene',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),66000);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1018,1017,501,512101,'Ratzlaff','Larry',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),54000);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1019,0801,301,311100,'Kubic','Ron',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),57700);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1020,1005,403,432101,'Charles','John',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),39500);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1021,1025,201,222101,'Morrissey','Jim',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),38750);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1022,1003,401,412102,'Machado','Albert',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),32300);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1023,1017,501,512101,'Rabbit','Peter',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),26500);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1024,1005,403,432101,'Brown','Allen',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),43700);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1024,1005,1003,432101,'Brown','Allen',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),43700);
 
 CREATE TABLE t_sqlstate_errorlog_wy1(
   Sql_code INT,
@@ -642,7 +688,7 @@ begin
 END;
 /
 
-call test_activitycount_p7(p1_wy1,1,'zhangsan');
+call test_activitycount_p7(p1_wy1,'c');
 
 call p1_wy1;
 
@@ -662,7 +708,7 @@ department_number = :deptnum_wy1;
 END;
 /
 
-call p_sqlstate_wy1(1,lastnm_wy1);
+call p_sqlstate_wy1(1003,lastnm_wy1);
 
 call lastnm_wy1;
 
@@ -683,23 +729,52 @@ CREATE TABLE employee(
  salary_amount DECIMAL(10,2) NOT NULL
 );
 
+INSERT INTO employee VALUES(0801,0801,100,111100,'Trainer','I.B.','2018-11-14','2018-11-14',100000);
+INSERT INTO employee VALUES(1001,1003,401,412101,'Hoover','William',now(),now(),25525);
+INSERT INTO employee VALUES(1002,1003,401,413201,'Brown','Alan',now(),now(),43100);
+INSERT INTO employee VALUES(1003,0801,401,411100,'Trader','James',now(),now(),37850);
+INSERT INTO employee VALUES(1004,1003,401,412101,'Johnson','Darlene',now(),now(),36300);
+INSERT INTO employee VALUES(1005,0801,403,431100,'Ryan','Loretta',now(),now(),31200);
+INSERT INTO employee VALUES(1006,1019,301,312101,'Stein','John',now(),now(),29450);
+INSERT INTO employee VALUES(1007,1005,403,432101,'Villegas','Arnando',now(),now(),49700);
+INSERT INTO employee VALUES(1008,1019,301,312102,'Kanieski','Carol',now(),now(),29250);
+INSERT INTO employee VALUES(1009,1005,403,432101,'Lombardo','Domingus',now(),now(),31000);
+INSERT INTO employee VALUES (1010,1003,401,412101,'Rogers','Frank',now(),now(),46000);
+INSERT INTO employee VALUES(1011,0801,402,421100,'Daly','James',now(),now(),52500);
+INSERT INTO employee VALUES(1012,1005,403,432101,'Hopkins','Paulene',now(),now(),37900);
+INSERT INTO employee VALUES(1013,1003,401,412102,'Phillips','Charles',now(),now(),24500);
+INSERT INTO employee VALUES(1014,1011,402,422101,'Crane','Robert',now(),now(),24500);
+INSERT INTO employee VALUES(1015,1017,501,512101,'Wilson','Edward',now(),now(),53625);
+INSERT INTO employee VALUES(1016,0801,302,321100,'Rogers','Nora',now(),now(),56500);
+INSERT INTO employee VALUES(1017,0801,501,511100,'Runyon','Irene',now(),now(),66000);
+INSERT INTO employee VALUES(1018,1017,501,512101,'Ratzlaff','Larry',now(),now(),54000);
+INSERT INTO employee VALUES(1019,0801,301,311100,'Kubic','Ron',now(),now(),57700);
+INSERT INTO employee VALUES(1020,1005,403,432101,'Charles','John',now(),now(),39500);
+INSERT INTO employee VALUES(1021,1025,201,222101,'Morrissey','Jim',now(),now(),38750);
+INSERT INTO employee VALUES(1022,1003,401,412102,'Machado','Albert',now(),now(),32300);
+INSERT INTO employee VALUES(1023,1017,501,512101,'Rabbit','Peter',now(),now(),26500);
+INSERT INTO employee VALUES(1024,1005,403,432101,'Brown','Allen','2018-11-14','2018-11-14',43700);
+INSERT INTO employee VALUES(1025,0801,201,211100,'Short','Michael',now(),now(),34700);
+
 CREATE PROCEDURE test_proc_select(IN enum INT,IN fname VARCHAR(50),IN
 hdate DATE,IN sal DECIMAL(10,2),OUT lname VARCHAR(50))
 BEGIN
   SELECT last_name INTO lname FROM employee
-  WHERE employee_number==enum
-  AND first_name=fname
-  AND hire_date=hdate
+  WHERE employee_number = enum
+  AND first_name = fname
+  AND hire_date = hdate
   AND salary_amount=sal;
 END;
 /
-call test_proc_select(1,'lily','2020-7-14',43901743.12,lname);
+call test_proc_select(0801,'I.B.','2018-11-14',100000,lname);
 
 call lname;
 
 --10.3.7. 存储过程中的诊断语句
 drop table tab1 IF EXISTS CASCADE;
 drop PROCEDURE getdiag1 IF EXISTS CASCADE;
+
+CREATE TABLE tab1 (c1 INTEGER);
 
 CREATE PROCEDURE getdiag1 (OUT OParam INTEGER,INOUT rowcount INTEGER)
 BEGIN
@@ -710,99 +785,105 @@ SET OParam = 0;
 END IF;
 END;
 /
-CREATE TABLE tab1 (c1 INTEGER);
 
 CALL getdiag1(OParam, NULL);
 
 call OParam;
 
+drop PROCEDURE sp_diagnostics_Sample4 IF EXISTS CASCADE;
 
-drop PROCEDURE setsignalsp1 IF EXISTS CASCADE;
+drop table t_diagnostics_employee IF EXISTS;
 
-CREATE PROCEDURE setsignalsp1 (INOUT acno INTEGER, INOUT amt FLOAT,OUT
-Message VARCHAR(50),OUT Class VARCHAR(50))
-cs1: BEGIN
-DECLARE balance_too_low CONDITION;
-DECLARE count INTEGER DEFAULT 0;
-DECLARE bal_amt, balance FLOAT;
-DECLARE EXIT HANDLER FOR balance_too_low
-BEGIN
-GET DIAGNOSTICS EXCEPTION 1
-Message = MESSAGE_TEXT, Class = CLASS_ORIGIN;
-SET count = count + 1;
-INSERT INTO errortbl VALUES (acno, count, User,
-current_timestamp, 'Balance too low for the
- account');
-END;
-SELECT balamt INTO balance
-FROM Deposit
-WHERE accountno = acno;
-SET bal_amt = balance - amt;
-IF (bal_amt < 1000) THEN
-SIGNAL balance_too_low
-SET MESSAGE_TEXT = 'Balance is too low',
-CLASS_ORIGIN = 'Stored Procedure';
-ELSE
-UPDATE Deposit
-SET balance = bal_amt
-WHERE accountno == acno;
-END IF;
-END cs1;
+drop table t_diagnostics_tab1 IF EXISTS;
+
+create table t_diagnostics_employee (last_name varchar(10), department_number INTEGER);
+
+insert into t_diagnostics_employee values ('a',501);
+insert into t_diagnostics_employee values ('b',501);
+insert into t_diagnostics_employee values ('c',501);
+insert into t_diagnostics_employee values ('d',501);
+
+CREATE  TABLE t_diagnostics_tab1(c1 varCHAR(30), c2 INTEGER);
+
+insert into  t_diagnostics_tab1 values('a',1);
+insert into  t_diagnostics_tab1 values('b',2);
+
+CREATE PROCEDURE sp_diagnostics_Sample4(OUT SO VARCHAR(30), OUT RS VARCHAR(5), OUT ML INT, OUT CN INT,out co VARCHAR(30),
+ OUT CI VARCHAR(30),out Omsg varchar(30),out lastnm varchar(20),IN deptnum INTEGER)
+ BEGIN
+ DECLARE condition1 CONDITION;
+ DECLARE CONTINUE HANDLER FOR condition1
+ GET DIAGNOSTICS EXCEPTION 1
+ CO = CLASS_ORIGIN,
+ CI = CONDITION_IDENTIFIER,
+ CN = CONDITION_NUMBER,
+ ML = MESSAGE_LENGTH,
+ RS = RETURNED_SQLSTATE,
+ SO = SUBCLASS_ORIGIN,
+ Omsg = MESSAGE_TEXT;
+ L1:BEGIN
+ DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+ BEGIN
+ DECLARE EXIT HANDLER FOR SQLEXCEPTION
+ BEGIN
+ DELETE FROM t_diagnostics_tab1;
+  RESIGNAL condition1 SET MESSAGE_TEXT = 'Table does not exist';
+ END;
+ SELECT last_name INTO :lastnm FROM t_diagnostics_employee WHERE department_number = :deptnum;
+ END;
+ SELECT last_name INTO :lastnm FROM t_diagnostics_employee WHERE department_number = :deptnum;
+ END L1;
+ END;
 /
 
-call setsignalsp1(acno,amt,Message,Class);
+CALL sp_diagnostics_Sample4( SO , RS ,ML , CN , co ,CI  ,Omsg , lastnm ,501);
 
-call acno;
+call SO;
 
-call amt;
+call RS;
 
-call Message;
+call ML;
 
-call Class;
+call CN;
 
+call co;
 
+call CI;
 
+call Omsg;
 
-drop PROCEDURE resignalsp1 IF EXISTS CASCADE;
-
-CREATE PROCEDURE resignalsp1 (OUT OParam1 INTEGER,INOUT pcondno INTEGER
-,OUT count INTEGER)
-cs1 :BEGIN
-DECLARE nodata CONDITION;
-DECLARE cnt INTEGER DEFAULT VALUE 0;
-DECLARE CONTINUE HANDLER FOR nodata
-SET count = 0;
-cs2:BEGIN
-DECLARE CONTINUE HANDLER FOR SQLSTATE '45000'
-BEGIN
-GET DIAGNOSTICS EXCEPTION pcondno
-condname = CONDITION_IDENTIFIER;
-IF (condname = 'nodata') THEN
-RESIGNAL 'nodata';
-END IF;
-END;
-SET OParam1 = 0;
-CALL resignalsp2(cnt); /* returns exception '45000' */
-END cs2;
-END cs1;
-/
-
-call resignalsp1(OParam1,pcondno,count);
-
-call OParam1;
-
-call pcondno;
-
-call count;
+call lastnm;
 
 
 --10.3.8. 存储过程的异常情况处理
-drop table t_sqlstate_errorlog_wy2 if exists;
+DROP PROCEDURE p_sqlstate_wy3 IF EXISTS CASCADE;
+drop table t_sqlstate_emp_wy1 if exists CASCADE;
+drop table t_sqlstate_errorlog_wy2 if exists CASCADE;
+
+CREATE TABLE t_sqlstate_emp_wy1
+(
+employee_number INTEGER,
+manager_employee_number INTEGER,
+department_number INTEGER,
+job_code INTEGER,
+last_name CHAR(20) NOT NULL,
+first_name VARCHAR(30) NOT NULL,
+hire_date DATE NOT NULL,
+birthdate DATE NOT NULL,
+salary_amount DECIMAL(10,2) NOT NULL
+);
+
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1022,1003,401,412102,'Machado','Albert',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),32300);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1023,1017,501,512101,'Rabbit','Peter',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),26500);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1024,1005,403,432101,'Brown','Allen',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),43700);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1024,1005,1025,432101,'Brown','Allen',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),43700);
+
 CREATE TABLE t_sqlstate_errorlog_wy2(
   Sql_code INT,
-  Sql_State CHAR(5)
+  Sql_State CHAR(5),
+  message VARCHAR(50)
 );
-DROP PROCEDURE p_sqlstate_wy3 IF EXISTS CASCADE;
+
 CREATE PROCEDURE p_sqlstate_wy3 (IN empnum_wy3 INTEGER, OUT lastnm_wy3
 VARCHAR(20))
 BEGIN
@@ -829,16 +910,35 @@ employee_number = :empnum_wy3;
 END;
 /
 
-call p_sqlstate_wy3(2,lastnm_wy3);
+call p_sqlstate_wy3(1022,lastnm_wy3);
 
 call lastnm_wy3;
 
-
+select * from t_sqlstate_errorlog_wy2;
 
 
 
 DROP PROCEDURE p_sqlstate_wy2 IF EXISTS CASCADE;
 DROP table t_sqlstate_errorlog_wy1 IF EXISTS CASCADE;
+drop table t_sqlstate_emp_wy1 if exists cascade;
+
+CREATE TABLE t_sqlstate_emp_wy1
+(
+employee_number INTEGER,
+manager_employee_number INTEGER,
+department_number INTEGER,
+job_code INTEGER,
+last_name CHAR(20) NOT NULL,
+first_name VARCHAR(30) NOT NULL,
+hire_date DATE NOT NULL,
+birthdate DATE NOT NULL,
+salary_amount DECIMAL(10,2) NOT NULL
+);
+
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1022,1003,401,412102,'Machado','Albert',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),32300);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1023,1017,501,512101,'Rabbit','Peter',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),26500);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1024,1005,403,432101,'Brown','Allen',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),43700);
+INSERT INTO t_sqlstate_emp_wy1 VALUES(1024,1005,1025,432101,'Brown','Allen',TO_DATE('2018-11-15','yyyy-mm-dd'),TO_DATE('2018-11-15','yyyy-mm-dd'),43700);
 
 CREATE TABLE t_sqlstate_errorlog_wy1(
   Sql_code INT,
@@ -858,15 +958,29 @@ department_number = :deptnum_wy2;
 END;
 /
 
-call p_sqlstate_wy2(2,lastnm_wy2);
+call p_sqlstate_wy2(1025,lastnm_wy2);
 
 call lastnm_wy2;
 
 
-
-
-
 DROP PROCEDURE new_customer IF EXISTS CASCADE;
+drop table CUSTOMERS if exists;
+drop table ADDRESSES if exists;
+
+CREATE TABLE CUSTOMERS(
+  id                  INT DEFAULT 0,
+  first_name VARCHAR (50),
+  last_name  VARCHAR (50),
+  times         TIMESTAMP
+);
+
+CREATE TABLE ADDRESSES(
+  id                 INT DEFAULT 0,
+  temp_id            INT,
+  address   VARCHAR (50)
+);
+
+
 CREATE PROCEDURE new_customer(IN firstname VARCHAR(50), IN lastname
 VARCHAR(50), IN address VARCHAR(100))
 MODIFIES SQL DATA
@@ -880,6 +994,11 @@ INSERT INTO ADDRESSES VALUES (DEFAULT, temp_id, address);
 END
 /
 
+call new_customer('zhang','san','bj');
+
+select * from CUSTOMERS;
+
+select * from ADDRESSES;
 
 
 DROP TABLE t_proc_wy_tab1 IF EXISTS CASCADE;
