@@ -8,18 +8,18 @@ Suite Teardown    SQL Test Clnup
 
 *** Settings ***
 Documentation    HDFS分区分桶回归测试
-
+Force Tags       HDFS   owner:阮娜
 
 *** Test Cases ***
 Partition-HDFS
     [Documentation]    HDFS分区进行回归测试
-    [Tags]     HDFS
+    [Tags]     PARTITION    HDFS
     Logon And Execute SQL Script       admin/123456  partition/partition.sql          partition.log
     Compare Files             partition.log       partition/partition.ref
 
 Bucket-HDFS
     [Documentation]    HDFS分桶进行回归测试
-    [Tags]     HDFS
+    [Tags]     BUCKET    HDFS
     Logon And Execute SQL Script       admin/123456  bucket/bucket.sql          bucket.log
     Compare Files             bucket.log       bucket/bucket.ref
 

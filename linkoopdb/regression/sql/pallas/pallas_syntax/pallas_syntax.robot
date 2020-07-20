@@ -5,7 +5,7 @@ Suite Teardown    Tear Down
 
 *** Settings ***
 Documentation    PALLAS建表语法回归测试
-
+Force Tags       PALLAS   owner:阮娜
 
 *** Test Cases ***
 Pallas-Syntax
