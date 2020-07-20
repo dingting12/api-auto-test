@@ -1,7 +1,7 @@
 --Description:验证bug:http://192.168.1.79:8900/browse/LDB-3445
 --Date：2020-07-20
 --Author：翟坤
-connect admin/123456@jdbc:linkoopdb:tcp://node67:9107/ldb
+
 SET ECHO ON
 SET TIMING ON
 
