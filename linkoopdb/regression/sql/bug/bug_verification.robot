@@ -18,7 +18,10 @@ LDB-3367
 
 *** Keywords ***
 Create HDFS PATH
+    SQL Test Setup
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
     HDFS Delete                %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/666
+
 Tear Down
     HDFS Delete                %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/666
+    SQL Test Clnup
