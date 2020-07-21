@@ -12,7 +12,7 @@ Force Tags       owner:丁婷
 *** Test Cases ***
 EXTERNALFORMATTEST   
 	[Documentation]    测试外部表格式
-    [Tags]     SQL-Test       external format test
+    [Tags]     EXTERNAL
     Logon And Execute SQL Script     admin/123456                            external_hdfs_csv_format.sql
 				   Compare Files     external_hdfs_csv_format.log            external_hdfs_csv_format.ref
 	LOgon And Execute SQL Script     admin/123456                            external_hdfs_parquet_format.sql

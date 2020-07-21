@@ -11,7 +11,7 @@ Force Tags       owner:阮娜
 
 *** Test Cases ***
 VarcharSizeTest
-    [Tags]     SQL-Test       varchar size test
+    [Tags]     SPECIALRUN
     Logon And Execute SQL Script    admin/123456  varchar_size.sql   varchar_size.log
     Compare Files             varchar_size.log  varchar_size.ref
 

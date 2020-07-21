@@ -1,0 +1,52 @@
+SQLCli Release 0.0.54
+SQL> start LDB-3367.sql
+SQL> connect admin/123456
+Database connected.
+SQL> --Description:验证bug:http://192.168.1.79:8900/browse/LDB-3445
+   > --Date：2020-07-20
+   > --Author：翟坤
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 清空测试表
+SQL> DROP TABLE TEST1 IF EXISTS;
+0 rows affected
+Running time elapsed:      1.08 Seconds
+SQL> DROP TABLE TEST2 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.13 Seconds
+SQL> 
+SQL> -- 创建pallas表TEST1
+SQL> CREATE TABLE TEST1 (ID INT, NAME VARCHAR(10)) engine pallas;
+0 rows affected
+Running time elapsed:      0.31 Seconds
+SQL> 
+SQL> -- 向表TEST1插入一条数据，数据中有换行
+SQL> INSERT INTO TEST1 VALUES(2,'ddd
+   > sdfds');
+1 row affected
+Running time elapsed:      0.52 Seconds
+SQL> 
+SQL> -- 创建外部表TEST2
+SQL> CREATE EXTERNAL TABLE TEST2 (ID INT, NAME VARCHAR(10)) LOCATION ('HDFSRPC_URL/666') FORMAT 'csv' (DELIMITER ',' multiLine 'true');
+0 rows affected
+Running time elapsed:      0.43 Seconds
+SQL> 
+SQL> -- 将TEST1中的数据插入到TEST2
+SQL> INSERT INTO TEST2 SELECT * FROM TEST1;
+2 rows affected
+Running time elapsed:      5.61 Seconds
+SQL> 
+SQL> -- TEST2中只有一条数据
+SQL> SELECT * FROM TEST2;
++----+------------+
+| ID | NAME       |
++----+------------+
+| 2  | ddd\nsdfds |
++----+------------+
+1 row selected.
+Running time elapsed:      4.20 Seconds
+Running time elapsed:     13.19 Seconds
+SQL> exit
+Disconnected.

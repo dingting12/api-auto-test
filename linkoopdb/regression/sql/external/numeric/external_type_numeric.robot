@@ -15,7 +15,7 @@ Force Tags       owner:丁婷
 *** Test Cases ***
 external type numeric test   
 	[Documentation]    测试外部表类型
-    [Tags]     SQL-Test       external type numeric test
+    [Tags]     EXTERNAL
     Logon And Execute SQL Script     admin/123456                                          external_table_basic_type_hdfs_csv_numeric.sql
 				   Compare Files     external_table_basic_type_hdfs_csv_numeric.log        external_table_basic_type_hdfs_csv_numeric.ref
 	Logon And Execute SQL Script     admin/123456                                          external_table_basic_type_hdfs_orc_numeric.sql

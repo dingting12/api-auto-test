@@ -242,7 +242,10 @@ class RunSQLCli(object):
                 myHeadLessMode = False
                 mylogger = logger
             m_SuiteName = os.path.basename(str(EXECUTION_CONTEXTS.current.variables['${SUITE_SOURCE}']))
-            m_TestName = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
+            if "${TEST_NAME}" in EXECUTION_CONTEXTS.current.variables:
+                m_TestName = str(EXECUTION_CONTEXTS.current.variables['${TEST_NAME}'])
+            else:
+                m_TestName =  str(EXECUTION_CONTEXTS.current.variables['${PREV_TEST_NAME}'])
             m_WorkerName = m_SuiteName+":"+m_TestName
 
             cli = SQLCli(logon=p_szLogonString,

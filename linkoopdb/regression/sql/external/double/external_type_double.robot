@@ -15,7 +15,7 @@ Force Tags       owner:丁婷
 *** Test Cases ***
 external type double test   
 	[Documentation]    测试外部表类型
-    [Tags]     SQL-Test       external type double test
+    [Tags]     EXTERNAL
     Logon And Execute SQL Script     admin/123456                                          external_table_basic_type_hdfs_csv_double.sql
 				   Compare Files     external_table_basic_type_hdfs_csv_double.log        external_table_basic_type_hdfs_csv_double.ref
 	Logon And Execute SQL Script     admin/123456                                          external_table_basic_type_hdfs_orc_double.sql
