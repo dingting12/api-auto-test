@@ -17,6 +17,13 @@ Partition-HDFS
     Logon And Execute SQL Script       admin/123456  partition/partition.sql          partition.log
     Compare Files             partition.log       partition/partition.ref
 
+Partition-aggregate
+    [Documentation]    HDFS分区聚合测试
+    [Tags]     PARTITION    HDFS
+    Logon And Execute SQL Script       admin/123456  partition/partition_aggregate.sql          partition_aggregate.log
+    Compare Files             partition_aggregate.log       partition/partition_aggregate.ref
+
+
 Bucket-HDFS
     [Documentation]    HDFS分桶进行回归测试
     [Tags]     BUCKET    HDFS
