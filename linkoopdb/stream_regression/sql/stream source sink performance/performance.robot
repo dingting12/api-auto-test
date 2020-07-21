@@ -14,7 +14,7 @@ Force Tags       owner:丁婷
 STREAM PERFORMANCE  
 	[Documentation]    测试kafka source到各类sink的性能
     [Tags]     STREAM    PERFORMANCE
-    Logon And Execute SQL Script     admin/123456     kafka.sql
+    Logon And Execute SQL Script     admin/123456        kafka.sql
 				   Compare Files     kafka.log           kafka.ref
 	
 *** Keywords ***

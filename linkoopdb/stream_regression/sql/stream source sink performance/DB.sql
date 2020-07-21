@@ -73,7 +73,7 @@ ctime timestamp
   'connector': 'jdbc',
   'tableName': 'T_STREAM_KAFKA_PER_001',
   'driver': 'com.datapps.linkoopdb.jdbc.JdbcDriver',
-  'dbUrl': 'jdbc:linkoopdb:tcp://node74:9105/ldb',
+  'dbUrl': 'jdbc:linkoopdb:tcp://node62:59105/ldb',
   'username': 'admin',
   'password': '123456',
   'batchSize': '10000'

@@ -35,7 +35,7 @@ delete from T_DATA_LOAD_004;
 
 INSERT INTO T_DATA_LOAD_004 SELECT * FROM T_DATA_LOAD_003;
 
-select * from T_DATA_LOAD_004 order by id;
+select * from T_DATA_LOAD_004 order by NAME;
 
 
 --9.3.2. 从HIVE表加载

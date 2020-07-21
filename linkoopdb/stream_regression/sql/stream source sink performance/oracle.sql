@@ -73,9 +73,9 @@ ctime timestamp
 'connector': 'jdbc',
 'tableName': 'oracle_sink_per_001',
 'driver': 'oracle.jdbc.driver.OracleDriver',
-'dbUrl': 'jdbc:oracle:thin:@192.168.1.72:1521:xe',
-'username': 'gcy',
-'password': '123456',
+'dbUrl': 'jdbc:oracle:thin:@192.168.1.80:1521:ldb',
+'username': 'testuser',
+'password': 'testuser',
 'batchSize': '10000'
 );
 

@@ -42,11 +42,17 @@ ctime timestamp
  'separator':','
 );
 
-__internal__ create kafka server node10:9092;
-__internal__ drop kafka topic kafka_per_001;
-__internal__ create kafka topic kafka_per_001 Partitions 20 replication_factor 1;
+--__internal__ create kafka server node10:9092;
 
-sleep 30;
+--sleep 10;
+
+--__internal__ drop kafka topic kafka_per_001;
+
+--sleep 10;
+
+--__internal__ create kafka topic kafka_per_001 Partitions 20 replication_factor 1;
+--
+--sleep 10;
 
 create stream S_KAFKA_SINK_PER_001 (
 TS_15M VARCHAR(17),
@@ -77,13 +83,14 @@ ctime timestamp
 ) PROPERTIES (
 'type': 'sink',
 'connector': 'kafka',
-'version': '0.10',
-'topic': 'kafka_per_001',
+'version': 'universal',
+'topic': 'kafka_per_003',
 'group.id': '103001',
 'bootstrap.servers': 'node10:9092',
 'format': 'csv' ,
 'separator':','
 );
 
+set session STREAM_EXECUTE_PARALLELISM 20;
 
 INSERT INTO S_KAFKA_SINK_PER_001 SELECT * FROM S_KAFKA_TO_KAFKA_PER_001;
