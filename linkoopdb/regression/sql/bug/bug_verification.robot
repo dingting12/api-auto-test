@@ -20,9 +20,9 @@ LDB-3367
 Create HDFS PATH
     SQL Test Setup
     HDFS Connnect              %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/
-    HDFS Delete                %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/666
+    HDFS Delete                666
 
 Tear Down
-    HDFS Delete                %{HDFSWEB_ROOTURL}/%{JOB_BASE_NAME}/666
+    HDFS Delete                666
     Logon And Execute SQL Script       admin/123456   LDB-3367/tear_down.sql
     SQL Test Clnup

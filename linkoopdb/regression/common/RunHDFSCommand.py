@@ -6,6 +6,8 @@ from hdfs.util import HdfsError
 import traceback
 from glob import glob
 from robot.api import logger
+import sys
+import time
 
 
 class HDFSException(Exception):
@@ -46,7 +48,7 @@ class RunHDFSCommand(object):
         """ 删除指定的HDFS文件 """
         if self.__m_HDFS_Handler__ is None:
             raise HDFSException("Please Connect HDFS first.")
-        self.__m_HDFS_Handler__.delete(hdfs_path)
+        self.__m_HDFS_Handler__.delete(hdfs_path, recursive=True)
 
     def HDFS_Upload(self, local_path, hdfs_path=None):
         """ 上传文件到hdfs """
@@ -114,10 +116,9 @@ class RunHDFSCommand(object):
 if __name__ == '__main__':
     myCompare = RunHDFSCommand()
 
-    myCompare.HDFS_Connnect("http://node73:50070/user/testdb73/jenkins/work")
+    myCompare.HDFS_Connnect("http://node73:50070/user/testdb73/jenkins/work/shitest")
     mylist = myCompare.HDFS_list()
     for row in mylist:
         print("Row = " + str(row))
-    myCompare.HDFS_mkdirs("shi1")
-    myCompare.HDFS_mkdirs("shi2")
-    myCompare.HDFS_setPermission("shi2", "777")
+    myCompare.HDFS_Delete("666")
+
