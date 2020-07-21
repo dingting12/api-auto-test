@@ -13,9 +13,8 @@ LDB-3367
     [Tags]     PALLAS
 
     SQLCli Set SQLMAPPING               LDB-3367/LDB-3367.map
-    Logon And Execute SQL Script        admin/123456   LDB-3367/LDB-3367.sql   LDB-3367/LDB-3367.log
-    Compare Files                       LDB-3367/LDB-3367.log   LDB-3367/LDB-3367.ref
-    Logon And Execute SQL Script        admin/123456   LDB-3367/tear_down.sql
+    Logon And Execute SQL Script        admin/123456   LDB-3367/LDB-3367.sql   LDB-3367.log
+    Compare Files                       LDB-3367.log   LDB-3367/LDB-3367.ref
 
 *** Keywords ***
 Create HDFS PATH
