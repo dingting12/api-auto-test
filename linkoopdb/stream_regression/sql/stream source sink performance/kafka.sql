@@ -84,11 +84,12 @@ ctime timestamp
 'type': 'sink',
 'connector': 'kafka',
 'version': 'universal',
-'topic': 'kafka_per_003',
+'topic': 'kafka_per_004',
 'group.id': '103001',
 'bootstrap.servers': 'node10:9092',
 'format': 'csv' ,
-'separator':','
+'separator':',',
+'request.timeout.ms':'120000'
 );
 
 set session STREAM_EXECUTE_PARALLELISM 20;

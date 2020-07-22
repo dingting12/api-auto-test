@@ -9,6 +9,7 @@ block_size = 100
 block_num = 0
 while True:
     start_idx = block_num*block_size
+    # issues = jira.search_issues('project = "LinkoopDB" AND summary ~ "use cppjieba CutForSearch, old is Cut"', start_idx, block_size)
     issues = jira.search_issues('project = "LinkoopDB"', start_idx, block_size)
     if len(issues) == 0:
         # Retrieve issues until there are no more to come
@@ -44,6 +45,19 @@ while True:
             else:
                 m_UpLevel_FeatureID = "0"
             m_FeatureDesc = issue.fields.description
+            if len(issue.fields.fixVersions) == 0:
+                m_Fixed_Version = "UNKNOWN"
+            else:
+                m_Fixed_Version = str(issue.fields.fixVersions[0]).strip()
+            if m_Fixed_Version in ("UNKNOWN", "1.0", "1.1", "1.2", "2.0", "2.1"):
+                m_Fixed_Version = "2.1"
+            if m_Fixed_Version in ("2.2", "2.2.2"):
+                m_Fixed_Version = "2.2"
+            if m_Fixed_Version in ("2.3"):
+                m_Fixed_Version = "2.3"
+            if m_Fixed_Version in ("3.0"):
+                m_Fixed_Version = "3.0"
+
             m_Features.append({
                 'Feature_ID': m_FeatureID.strip(),
                 'Feature_Summary': m_FeatureSummary,
@@ -52,6 +66,7 @@ while True:
                 "Owner_ID": 'Jira',
                 "Support_Status": 'Supported',
                 "Component_ID": '0000',
+                "First_Version": m_Fixed_Version,
                 "Created_Date": datetime.datetime.now()
             })
 

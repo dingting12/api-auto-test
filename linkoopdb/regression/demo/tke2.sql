@@ -26,3 +26,21 @@ COMMIT;
 SELECT * FROM TKE2 ORDER BY ID;
 SELECT * FROM TAB1 ORDER BY ID;
 
+CREATE PROCEDURE test_value(IN p1 INTEGER, OUT pmsg CHAR(30))
+BEGIN
+IF p1 > 0 THEN
+SET pmsg = 'Positive value';
+ELSEIF p1 = 0 THEN
+SET pmsg = 'Zero Value';
+ELSE
+SET pmsg = 'Negative Value';
+END IF;
+END;
+/
+
+call test_value(-1,pmsg);
+call pmsg;
+call test_value(1,pmsg);
+call pmsg;
+call test_value(0,pmsg);
+call pmsg;
