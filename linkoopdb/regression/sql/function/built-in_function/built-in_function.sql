@@ -1,6 +1,6 @@
-loaddriver F:\db_ex\driver\linkoopdb-jdbc-2.2.2.jar com.datapps.linkoopdb.jdbc.JdbcDriver
-
-connect admin/123456@jdbc:linkoopdb:tcp://192.168.1.74:9105/ldb
+--Description:内置函数补充测试用例
+--Date：2020-07-22
+--Author：贾路遥
 
 --建表
 DROP TABLE Test_Builtin_Func_1 IF EXISTS;
@@ -20,6 +20,8 @@ SELECT abs(-922337203685477580999888765) FROM Test_Builtin_Func_1 LIMIT 1;
 SELECT abs(9223372036854775809998986778987) FROM Test_Builtin_Func_1 LIMIT 1;
 
 SELECT abs(id) FROM Test_Builtin_Func_1 order by id;
+
+SELECT abs() FROM Test_Builtin_Func_1;
 
 --null,oracle报错：无效数字
 SELECT abs(name) FROM Test_Builtin_Func_1;
@@ -928,7 +930,19 @@ SELECT JSON_PATH('{ "store": {
   }
 }','$..book[?(@.isbn)]') FROM Test_Builtin_Func_1 LIMIT 1;
 
+SELECT JSON_PATH('[{"snumber":"13011560889", "enddate":"12321312321","codetag":"1"},{"snumber":"18600010011", "enddate":"212212222", "codetag":"0"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"2"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"3"}]','$[?(@.snumber == "13011560889")].codetag') FROM TABLE1;
 
+SELECT JSON_PATH(JSON_PATH('[{"snumber":"13011560889", "enddate":"12321312321","codetag":"1"},{"snumber":"18600010011", "enddate":"212212222", "codetag":"0"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"2"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"3"}]','$[?(@.snumber == "13011560889")].codetag'), '$[0]') FROM TABLE1;
+
+SELECT JSON_PATH('[{"snumber":"13011560889", "enddate":"12321312321","codetag":"1"},{"snumber":"18600010011", "enddate":"212212222", "codetag":"0"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"2"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"3"}]','$[?(@.codetag > "1")].snumber') FROM TABLE1;
+
+SELECT JSON_PATH('[{"snumber":"13011560889", "enddate":"12321312321","codetag":"1"},{"snumber":"18600010011", "enddate":"212212222", "codetag":"0"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"2"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"3"}]','$[?(@.snumber === "13011560889")].codetag') FROM TABLE1;
+
+SELECT JSON_PATH(JSON_PATH('[{"snumber":"13011560889", "enddate":"12321312321","codetag":"1"},{"snumber":"18600010011", "enddate":"212212222", "codetag":"0"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"2"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"3"}]','$[?(@.snumber === "13011560889")].codetag'), '$[0]') FROM TABLE1;
+
+SELECT JSON_PATH('[{"snumber":"13011560889", "enddate":"12321312321","codetag":"1"},{"snumber":"18600010011", "enddate":"212212222", "codetag":"0"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"2"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"3"}]','$[?(@.snumber = "13011560889")].codetag') FROM TABLE1;
+
+SELECT JSON_PATH(JSON_PATH('[{"snumber":"13011560889", "enddate":"12321312321","codetag":"1"},{"snumber":"18600010011", "enddate":"212212222", "codetag":"0"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"2"},{"snumber":"13011560889", "enddate":"212212222", "codetag":"3"}]','$[?(@.snumber = "13011560889")].codetag'), '$[0]') FROM TABLE1;
 
 
 --LCASE
@@ -1485,6 +1499,24 @@ SELECT split('www.baidu.com.cn', '[.]') from Test_Builtin_Func_1 LIMIT 1;
 SELECT split('www&baidu&com&cn', '[&]') from Test_Builtin_Func_1 LIMIT 1;
 
 SELECT split('oneAtwoBthreeC', 'ABC') from Test_Builtin_Func_1 LIMIT 1;
+
+SELECT split('',',') FROM dual;
+
+--将split的结果存到表中
+
+DROP TABLE t_split IF EXISTS;
+
+CREATE TABLE t_split AS (SELECT split('',',') FROM dual) WITH DATA engine pallas;
+
+select * from t_split;
+
+DROP TABLE t_split IF EXISTS;
+
+SET SESSION write_mode by_buffer_size; 
+
+CREATE TABLE t_split AS (SELECT split('',',') FROM dual) WITH DATA engine pallas;
+
+select * from t_split;
 
 
 --SQRT
