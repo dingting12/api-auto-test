@@ -73,8 +73,8 @@ ctime timestamp
 'connector': 'jdbc',
 'tableName': 'MYSQL_PERFORMANCE_001',
 'driver': 'com.mysql.jdbc.Driver',
-'dbUrl': 'jdbc:mysql://node72:3306/jmeter_istreamsql',
-'username': 'test',
+'dbUrl': 'jdbc:mysql://node10:3306/stream_db',
+'username': 'stream',
 'password': '123456',
 'batchSize': '10000'
 );
