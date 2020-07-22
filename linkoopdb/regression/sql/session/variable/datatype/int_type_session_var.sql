@@ -602,13 +602,9 @@ SELECT int_var1 FROM t_session_var_dfs LIMIT 1;
 
 SELECT int_var2 FROM t_session_var_dfs LIMIT 1;
 
-
 --session断开后再连接，查看变量是否删除
-
-session save sessionA;
-
 disconnect;
 
-session restore sessionA;
+connect admin/123456
 
 show session_variables;
