@@ -17,7 +17,7 @@ DROP TABLE t_session_var_dfs IF EXISTS;
 CREATE TABLE t_session_var_dfs(tunique BIGINT,tint INT,tvarchar VARCHAR(200),tdouble DOUBLE,tdecimal DECIMAL(10,2),
                                tdate DATE,ttimestamp TIMESTAMP,tsmallint SMALLINT,tbigint BIGINT,tchar CHAR(20),
                                tnumeric NUMERIC(13,6),tfloat FLOAT,treal REAL,tboolean BOOLEAN,tbinary BINARY(100),
-                               tvarbinary VARBINARY(100),tvarbinary BIT);
+                               tvarbinary VARBINARY(100),tbit BIT);
 
 INSERT INTO t_session_var_dfs VALUES(1,-453964439,'d*m0MQelJun',8395834.458193136,98820829.05,'2036-11-08','2020-07-17 17:20:35',-32506,-1659745308,'S%zoij9',3668542.819854,5591242.990233061,2315442.773261026,true,'TetVvr70ow$yz##pCrUzHSfZP5mNRh%atdTCxvH^vtn','nxL*(6KJXD8ba^*Obw07',0);
 INSERT INTO t_session_var_dfs VALUES(2,-646501834,'dHRk^Tk*VvHGJ%',4003552.9779974404,79403933.17,'2007-06-21','2020-07-17 17:20:35',-2854,-17822322,'MMG',706533.255953,7659454.752059324,8661026.03624552,false,'dWY3ZTQw3JSv39w#mo%)RvH*T%rt*GfS3qHzf','yjF2K5B*ew*FCUdKQOrW0OfT70ohdKuyo(Y(BfC',0);
