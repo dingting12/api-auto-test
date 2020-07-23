@@ -288,7 +288,7 @@ BEGIN
   DECLARE num INT;
   SET num=0;
   INSERT INTO employee VALUES(1025,0801,201,211100,'Short','Michael',
-now(),now(),34700);
+'2020-01-01','1994-07-03',34700);
   SET num=(SELECT count(*) FROM employee);
   IF num=2 THEN SET flag='true';
   END IF;
@@ -406,32 +406,13 @@ CREATE TABLE test_proc_cursor_employee(
      salary_amount DECIMAL(10,2) NOT NULL
 );
 
-INSERT INTO test_proc_cursor_employee VALUES(0801,0801,100,111100,'Trainer','I.B.','2018-11-14','2018-11-14',100000);
-INSERT INTO test_proc_cursor_employee VALUES(1001,1003,401,412101,'Hoover','William',now(),now(),25525);
-INSERT INTO test_proc_cursor_employee VALUES(1002,1003,401,413201,'Brown','Alan',now(),now(),43100);
-INSERT INTO test_proc_cursor_employee VALUES(1003,0801,401,411100,'Trader','James',now(),now(),37850);
-INSERT INTO test_proc_cursor_employee VALUES(1004,1003,401,412101,'Johnson','Darlene',now(),now(),36300);
-INSERT INTO test_proc_cursor_employee VALUES(1005,0801,403,431100,'Ryan','Loretta',now(),now(),31200);
-INSERT INTO test_proc_cursor_employee VALUES(1006,1019,301,312101,'Stein','John',now(),now(),29450);
-INSERT INTO test_proc_cursor_employee VALUES(1007,1005,403,432101,'Villegas','Arnando',now(),now(),49700);
-INSERT INTO test_proc_cursor_employee VALUES(1008,1019,301,312102,'Kanieski','Carol',now(),now(),29250);
-INSERT INTO test_proc_cursor_employee VALUES(1009,1005,403,432101,'Lombardo','Domingus',now(),now(),31000);
-INSERT INTO test_proc_cursor_employee VALUES(1010,1003,401,412101,'Rogers','Frank',now(),now(),46000);
-INSERT INTO test_proc_cursor_employee VALUES(1011,0801,402,421100,'Daly','James',now(),now(),52500);
-INSERT INTO test_proc_cursor_employee VALUES(1012,1005,403,432101,'Hopkins','Paulene',now(),now(),37900);
-INSERT INTO test_proc_cursor_employee VALUES(1013,1003,401,412102,'Phillips','Charles',now(),now(),24500);
-INSERT INTO test_proc_cursor_employee VALUES(1014,1011,402,422101,'Crane','Robert',now(),now(),24500);
-INSERT INTO test_proc_cursor_employee VALUES(1015,1017,501,512101,'Wilson','Edward',now(),now(),53625);
-INSERT INTO test_proc_cursor_employee VALUES(1016,0801,302,321100,'Rogers','Nora',now(),now(),56500);
-INSERT INTO test_proc_cursor_employee VALUES(1017,0801,501,511100,'Runyon','Irene',now(),now(),66000);
-INSERT INTO test_proc_cursor_employee VALUES(1018,1017,501,512101,'Ratzlaff','Larry',now(),now(),54000);
-INSERT INTO test_proc_cursor_employee VALUES(1019,0801,301,311100,'Kubic','Ron',now(),now(),57700);
-INSERT INTO test_proc_cursor_employee VALUES(1020,1005,403,432101,'Charles','John',now(),now(),39500);
-INSERT INTO test_proc_cursor_employee VALUES(1021,1025,201,222101,'Morrissey','Jim',now(),now(),38750);
-INSERT INTO test_proc_cursor_employee VALUES(1022,1003,401,412102,'Machado','Albert',now(),now(),32300);
-INSERT INTO test_proc_cursor_employee VALUES(1023,1017,501,512101,'Rabbit','Peter',now(),now(),26500);
-INSERT INTO test_proc_cursor_employee VALUES(1024,1005,403,432101,'Brown','Allen',now(),now(),43700);
-INSERT INTO test_proc_cursor_employee VALUES(1025,0801,201,211100,'Short','Michael',now(),now(),34700);
+INSERT INTO test_proc_cursor_employee VALUES(0801,0801,100,111100,'Trainer','I.B.','2018-01-14','2019-01-14',100000);
+INSERT INTO test_proc_cursor_employee VALUES(1001,1003,401,412101,'Hoover','William','2018-02-14','2019-02-14',25525);
+INSERT INTO test_proc_cursor_employee VALUES(1002,1003,401,413201,'Brown','Alan','2018-03-14','2019-03-14',43100);
+INSERT INTO test_proc_cursor_employee VALUES(1003,0801,401,411100,'Trader','James','2018-04-14','2019-04-14',37850);
+INSERT INTO test_proc_cursor_employee VALUES(1004,1003,401,412101,'Johnson','Darlene','2018-05-14','2019-05-14',36300);
+INSERT INTO test_proc_cursor_employee VALUES(1005,0801,403,431100,'Ryan','Loretta','2018-06-14','2019-06-14',31200);
+INSERT INTO test_proc_cursor_employee VALUES(1006,1019,301,312101,'Stein','John','2018-07-14','2019-07-14',29450);
 
 CREATE PROCEDURE upd_cur1 ()
 MODIFIES SQL DATA
@@ -969,7 +950,7 @@ label_one: BEGIN ATOMIC
 DECLARE temp_id INTEGER;
 DECLARE UNDO HANDLER FOR SQLEXCEPTION;
 INSERT INTO CUSTOMERS VALUES (DEFAULT, firstname, lastname,
-CURRENT_TIMESTAMP);
+'2020-01-01 20:10:10');
 SET temp_id = IDENTITY();
 INSERT INTO ADDRESSES VALUES (DEFAULT, temp_id, address);
 END

@@ -12,9 +12,9 @@ Force Tags       owner:丁婷
 *** Test Cases ***
 doc test   
 	[Documentation]    测试用户手册例子
-    [Tags]     SQL-Test       external type test
+    [Tags]            DOC
 	Logon And Execute SQL Script     admin/123456           10spfunc.sql
-#	Compare Files                                           10spfunc.sql.log    10spfunc.sql.ref
+	Compare Files                                           10spfunc.log    10spfunc.ref
 	
 	
 
