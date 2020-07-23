@@ -73,10 +73,10 @@ ctime timestamp
 'connector': 'jdbc',
 'tableName': 'MYSQL_PERFORMANCE_001',
 'driver': 'com.mysql.jdbc.Driver',
-'dbUrl': 'jdbc:mysql://node10:3306/stream_db',
+'dbUrl': 'jdbc:mysql://node10:3306/stream_db?useServerPrepStmts=false&rewriteBatchedStatements=true',
 'username': 'stream',
 'password': '123456',
-'batchSize': '10000'
+'batchSize': '50000'
 );
 
 set session STREAM_EXECUTE_PARALLELISM 20;
