@@ -1,4 +1,4 @@
-SQLCli Release 0.0.64
+SQLCli Release 0.0.98
 SQL> connect admin/123456
 Database connected.
 SQL> start F031 Configurable compact output parallel.sql
@@ -29,14 +29,13 @@ SQL> INSERT INTO t_compact  VALUES (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-
 1 row affected
 SQL> ALTER TABLE t_compact SET PROPERTIES ('compact.parallel':'4');
 0 rows affected
-SQL> show table properties t_compact;
-+------------------+-----------------------------------------------------------------------------------------------------------+
-| NAME             | VALUE                                                                                                     |
-+------------------+-----------------------------------------------------------------------------------------------------------+
-| compact.parallel | 4                                                                                                         |
-| location         | hdfs://node73:8020/node74/stream74/db_base/home/PUBLIC/tables/PUBLIC/99523771-d510-44fa-bfff-622358fc116c |
-+------------------+-----------------------------------------------------------------------------------------------------------+
-2 rows selected.
+SQL> select PERIPHERAL_INFO from INFORMATION_SCHEMA.system_tables where table_name='T_COMPACT';
++-------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                   |
++-------------------------------------------------------------------------------------------------------------------+
+| {"format":"parquet","parameters":{"compact.parallel":"4"},"partitionColumns":[],"bucketColumns":[],"bucketNum":0} |
++-------------------------------------------------------------------------------------------------------------------+
+1 row selected.
 SQL> select * from t_compact order by empno;
 +-------+-------+----------+------+------------+------+--------+--------+
 | EMPNO | ENAME | JOB      | MGR  | HIREDATE   | SAL  | COMM   | DEPTNO |

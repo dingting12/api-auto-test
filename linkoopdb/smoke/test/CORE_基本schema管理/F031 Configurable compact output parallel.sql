@@ -22,6 +22,6 @@ INSERT INTO t_compact  VALUES (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','y
 
 ALTER TABLE t_compact SET PROPERTIES ('compact.parallel':'4');
 
-show table properties t_compact;
+select PERIPHERAL_INFO from INFORMATION_SCHEMA.system_tables where table_name='T_COMPACT';
 
 select * from t_compact order by empno;
