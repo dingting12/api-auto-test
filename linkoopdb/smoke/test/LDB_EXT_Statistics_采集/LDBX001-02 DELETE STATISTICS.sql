@@ -25,10 +25,10 @@ INSERT INTO t_ANALYZE_delete VALUES (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2
 ANALYZE TABLE t_ANALYZE_delete COMPUTE STATISTICS;
 
 
-SELECT * FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE_DELETE';
+SELECT "columnName","numRows","distinctCount","min","max","nullCount","avgLen","maxLen" FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE_DELETE' order by "columnName";
 
 ANALYZE TABLE t_ANALYZE_delete DELETE STATISTICS;
 
-SELECT * FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE_DELETE';
+SELECT "columnName","numRows","distinctCount","min","max","nullCount","avgLen","maxLen" FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE_DELETE' order by "columnName";
 
 select * from t_ANALYZE ORDER BY EMPNO;

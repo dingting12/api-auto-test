@@ -28,7 +28,7 @@ ANALYZE TABLE t_ANALYZE_base COMPUTE STATISTICS WITH HISTOGRAM;
 ANALYZE TABLE t_ANALYZE_base COMPUTE STATISTICS FOR COLUMNS empno,ename;
 
 
-SELECT * FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE';
+SELECT "columnName","numRows","distinctCount","min","max","nullCount","avgLen","maxLen" FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE' order by "columnName";
 
 
 select * from t_ANALYZE ORDER BY EMPNO;

@@ -50,25 +50,6 @@ INSERT INTO TDV_TABLE VALUES(2,NEW tdv_type_1(9527, 9528, 'Teradata-syntaxtest'
 select * from TDV_TABLE;
 
 -- 10.3存储过程
-DROP PROCEDURE test_value IF EXISTS CASCADE;
-
-CREATE PROCEDURE test_value
-(IN p1 INTEGER, OUT pmsg CHAR(30))
-BEGIN
-IF p1 > 0 THEN
-SET pmsg = 'Positive value';
-ELSEIF p1 = 0 THEN
-SET pmsg = 'Zero Value';
-ELSE
-SET pmsg = 'Negative Value';
-END IF;
-END;
-/
-
-CALL test_value(3, pmsg);
-
-CALL pmsg;
-
 DROP PROCEDURE call_test1 IF EXISTS CASCADE;
 
 CREATE PROCEDURE call_test1 (IN V1 INTEGER, INOUT V2 INTEGER,

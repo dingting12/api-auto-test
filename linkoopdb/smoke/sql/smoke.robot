@@ -340,7 +340,7 @@ StatisticsTest
 	Compare Files        LDBX001 ANALYZE statement to collect statistics.log    										../test/LDB_EXT_Statistics_采集/LDBX001 ANALYZE statement to collect statistics.ref
 
 	LOgon And Execute SQL Script     admin/123456  ../test/LDB_EXT_Statistics_采集/LDBX001-01 Basic ANALYZE.sql                                                                           LDBX001-01 Basic ANALYZE.log
-	Compare Files        LDBX001-01 Basic ANALYZE.log    			 													../test/LDB_EXT_Statistics_采集/LDBX001-01 Basic ANALYZELDBX001-01 Basic ANALYZE.ref
+	Compare Files        LDBX001-01 Basic ANALYZE.log    			 													../test/LDB_EXT_Statistics_采集/LDBX001-01 Basic ANALYZE.ref
 
 	LOgon And Execute SQL Script     admin/123456  ../test/LDB_EXT_Statistics_采集/LDBX001-02 DELETE STATISTICS.sql                                                                       LDBX001-02 DELETE STATISTICS.log
 	Compare Files        LDBX001-02 DELETE STATISTICS.log                  												../test/LDB_EXT_Statistics_采集/LDBX001-02 DELETE STATISTICS.ref
@@ -367,3 +367,7 @@ Setup Custom Settings
 	SQLCli Enable ConsoleOutput        True
 	Compare Skip                       ^[| 当前时间戳].*
     Compare Skip                       ^[| 当前时间].*
+    Compare Skip                       ^[| LdbProject ].*
+    Compare Skip                       ^[| \+\- LdbUnion ].*
+    Compare Skip                       ^[| \:\- LdbLogicalRelation].*
+    Compare Skip                       ^[| \+\- LdbLogicalRelation].*
