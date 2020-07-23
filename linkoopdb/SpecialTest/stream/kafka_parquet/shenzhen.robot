@@ -16,3 +16,4 @@ FunctionTestHdfsTest-String
 *** Keywords ***
 Setup Custom Settings
     Compare Enable ConsoleOutput       True
+	SQLCli Set SQLMAPPING               random.map

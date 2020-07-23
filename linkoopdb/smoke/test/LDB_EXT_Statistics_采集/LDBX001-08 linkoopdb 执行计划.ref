@@ -1,0 +1,78 @@
+SQLCli Release 0.0.94
+SQL> connect admin/123456
+Database connected.
+SQL> start LDBX001-08 linkoopdb 执行计划.sql
+SQL> set echo on
+SQL> 
+SQL> -- 清空环境
+SQL> drop table t_explain  IF  EXISTS;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 创建表
+SQL> CREATE TABLE IF NOT EXISTS t_explain (
+   > EMPNO INT,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > COMM INT,
+   > DEPTNO INT);
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 插入数据
+SQL> INSERT INTO t_explain VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);
+1 row affected
+SQL> INSERT INTO t_explain VALUES (7499,'ALLEN','SALESMAN',7698,TO_DATE('1981-2-20','yyyy-mm-dd'),1600,300,30);
+1 row affected
+SQL> INSERT INTO t_explain VALUES (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','yyyy-mm-dd'),1250,500,30);
+1 row affected
+SQL> explain plan for select * from t_explain;
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| OPERATION                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| LdbProject [EMPNO#310443, ENAME#310444, JOB#310445, MGR#310446, HIREDATE#310447, SAL#310448, COMM#310449, DEPTNO#310450]                  |
+| +- LdbUnion [EMPNO#310443, ENAME#310444, JOB#310445, MGR#310446, HIREDATE#310447, SAL#310448, COMM#310449, DEPTNO#310450]                 |
+|    :- LdbLogicalRelation [EMPNO#310443, ENAME#310444, JOB#310445, MGR#310446, HIREDATE#310447, SAL#310448, COMM#310449, DEPTNO#310450]    |
+|    +- LdbUnion [EMPNO#310443, ENAME#310444, JOB#310445, MGR#310446, HIREDATE#310447, SAL#310448, COMM#310449, DEPTNO#310450]              |
+|       :- LdbLogicalRelation [EMPNO#310443, ENAME#310444, JOB#310445, MGR#310446, HIREDATE#310447, SAL#310448, COMM#310449, DEPTNO#310450] |
+|       +- LdbLogicalRelation [EMPNO#310443, ENAME#310444, JOB#310445, MGR#310446, HIREDATE#310447, SAL#310448, COMM#310449, DEPTNO#310450] |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+6 rows selected.
+SQL> explain plan for select a.*,b.* from t_explain a inner join t_explain b on a.empno=b.empno;
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| OPERATION                                                                                                                                                                                                                             |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| LdbProject [EMPNO#310451, ENAME#310452, JOB#310453, MGR#310454, HIREDATE#310455, SAL#310456, COMM#310457, DEPTNO#310458, EMPNO#310459, ENAME#310460, JOB#310461, MGR#310462, HIREDATE#310463, SAL#310464, COMM#310465, DEPTNO#310466] |
+| +- JOIN INNER (EMPNO#310459 = EMPNO#310451)                                                                                                                                                                                           |
+|    :- LdbUnion [EMPNO#310451, ENAME#310452, JOB#310453, MGR#310454, HIREDATE#310455, SAL#310456, COMM#310457, DEPTNO#310458]                                                                                                          |
+|    :  :- LdbLogicalRelation [EMPNO#310451, ENAME#310452, JOB#310453, MGR#310454, HIREDATE#310455, SAL#310456, COMM#310457, DEPTNO#310458]                                                                                             |
+|    :  +- LdbUnion [EMPNO#310451, ENAME#310452, JOB#310453, MGR#310454, HIREDATE#310455, SAL#310456, COMM#310457, DEPTNO#310458]                                                                                                       |
+|    :     :- LdbLogicalRelation [EMPNO#310451, ENAME#310452, JOB#310453, MGR#310454, HIREDATE#310455, SAL#310456, COMM#310457, DEPTNO#310458]                                                                                          |
+|    :     +- LdbLogicalRelation [EMPNO#310451, ENAME#310452, JOB#310453, MGR#310454, HIREDATE#310455, SAL#310456, COMM#310457, DEPTNO#310458]                                                                                          |
+|    +- LdbUnion [EMPNO#310459, ENAME#310460, JOB#310461, MGR#310462, HIREDATE#310463, SAL#310464, COMM#310465, DEPTNO#310466]                                                                                                          |
+|       :- LdbLogicalRelation [EMPNO#310459, ENAME#310460, JOB#310461, MGR#310462, HIREDATE#310463, SAL#310464, COMM#310465, DEPTNO#310466]                                                                                             |
+|       +- LdbUnion [EMPNO#310459, ENAME#310460, JOB#310461, MGR#310462, HIREDATE#310463, SAL#310464, COMM#310465, DEPTNO#310466]                                                                                                       |
+|          :- LdbLogicalRelation [EMPNO#310459, ENAME#310460, JOB#310461, MGR#310462, HIREDATE#310463, SAL#310464, COMM#310465, DEPTNO#310466]                                                                                          |
+|          +- LdbLogicalRelation [EMPNO#310459, ENAME#310460, JOB#310461, MGR#310462, HIREDATE#310463, SAL#310464, COMM#310465, DEPTNO#310466]                                                                                          |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+12 rows selected.
+SQL> explain plan for select row_number() over(partition by 1 order by empno) id,a.* from t_explain a;
++----------------------------------------------------------------------------------------------------------------------------------------------------+
+| OPERATION                                                                                                                                          |
++----------------------------------------------------------------------------------------------------------------------------------------------------+
+| LdbProject [ID#310475, EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474]                |
+| +- LdbProject [EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474, ID#310475]             |
+|    +- LdbWindow [EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474, ID#310475]           |
+|       +- LdbProject [EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474]                  |
+|          +- LdbUnion [EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474]                 |
+|             :- LdbLogicalRelation [EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474]    |
+|             +- LdbUnion [EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474]              |
+|                :- LdbLogicalRelation [EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474] |
+|                +- LdbLogicalRelation [EMPNO#310467, ENAME#310468, JOB#310469, MGR#310470, HIREDATE#310471, SAL#310472, COMM#310473, DEPTNO#310474] |
++----------------------------------------------------------------------------------------------------------------------------------------------------+
+9 rows selected.
+SQL> exit
+Disconnected.

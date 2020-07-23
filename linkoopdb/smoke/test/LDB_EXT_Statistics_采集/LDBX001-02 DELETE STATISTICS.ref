@@ -1,0 +1,62 @@
+SQLCli Release 0.0.94
+SQL> connect admin/123456
+Database connected.
+SQL> start LDBX001-02 DELETE STATISTICS.sql
+SQL> set echo on
+SQL> 
+SQL> -- 清空环境
+SQL> drop table t_ANALYZE_delete  IF  EXISTS;
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 创建表
+SQL> CREATE TABLE IF NOT EXISTS t_ANALYZE_delete (
+   > EMPNO INT,
+   > ENAME VARCHAR(20),
+   > JOB VARCHAR(20),
+   > MGR INT,
+   > HIREDATE DATE,
+   > SAL INT,
+   > COMM INT,
+   > DEPTNO INT);
+0 rows affected
+SQL> 
+SQL> 
+SQL> -- 插入数据
+SQL> INSERT INTO t_ANALYZE_delete VALUES (7369,'SMITH','CLERK',7902,TO_DATE('1980-12-17','yyyy-mm-dd'),800,NULL,20);
+1 row affected
+SQL> INSERT INTO t_ANALYZE_delete VALUES (7499,'ALLEN','SALESMAN',7698,TO_DATE('1981-2-20','yyyy-mm-dd'),1600,300,30);
+1 row affected
+SQL> INSERT INTO t_ANALYZE_delete VALUES (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','yyyy-mm-dd'),1250,500,30);
+1 row affected
+SQL> ANALYZE TABLE t_ANALYZE_delete COMPUTE STATISTICS;
+0 rows affected
+SQL> SELECT "columnName","numRows","distinctCount","min","max","nullCount","avgLen","maxLen" FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE_DELETE' order by "columnName";
++------------+---------+---------------+------------+------------+-----------+--------+--------+
+| columnName | numRows | distinctCount | min        | max        | nullCount | avgLen | maxLen |
++------------+---------+---------------+------------+------------+-----------+--------+--------+
+| COMM       | 3       | 2             | 300        | 500        | 1         | 4      | 4      |
+| DEPTNO     | 3       | 2             | 20         | 30         | 0         | 4      | 4      |
+| EMPNO      | 3       | 3             | 7369       | 7521       | 0         | 4      | 4      |
+| ENAME      | 3       | 3             | <null>     | <null>     | 0         | 5      | 5      |
+| HIREDATE   | 3       | 3             | 1980-12-17 | 1981-02-20 | 0         | 4      | 4      |
+| JOB        | 3       | 2             | <null>     | <null>     | 0         | 7      | 8      |
+| MGR        | 3       | 2             | 7698       | 7902       | 0         | 4      | 4      |
+| SAL        | 3       | 3             | 800        | 1600       | 0         | 4      | 4      |
++------------+---------+---------------+------------+------------+-----------+--------+--------+
+8 rows selected.
+SQL> ANALYZE TABLE t_ANALYZE_delete DELETE STATISTICS;
+0 rows affected
+SQL> SELECT "columnName","numRows","distinctCount","min","max","nullCount","avgLen","maxLen" FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE_DELETE' order by "columnName";
+0 rows selected.
+SQL> select * from t_ANALYZE ORDER BY EMPNO;
++-------+-------+----------+------+------------+------+--------+--------+
+| EMPNO | ENAME | JOB      | MGR  | HIREDATE   | SAL  | COMM   | DEPTNO |
++-------+-------+----------+------+------------+------+--------+--------+
+| 7369  | SMITH | CLERK    | 7902 | 1980-12-17 | 800  | <null> | 20     |
+| 7499  | ALLEN | SALESMAN | 7698 | 1981-2-20  | 1600 | 300    | 30     |
+| 7521  | WARD  | SALESMAN | 7698 | 1981-2-2   | 1250 | 500    | 30     |
++-------+-------+----------+------+------------+------+--------+--------+
+3 rows selected.
+SQL> exit
+Disconnected.

@@ -25,7 +25,7 @@ INSERT INTO t_ANALYZE VALUES (7521,'WARD','SALESMAN',7698,TO_DATE('1981-2-2','yy
 ANALYZE TABLE t_ANALYZE COMPUTE STATISTICS;
 
 
-SELECT * FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE';
+SELECT "columnName","numRows","distinctCount","min","max","nullCount","avgLen","maxLen" FROM LDB_INFO_SCHEMA.TABLE_STATS WHERE "tableName"='T_ANALYZE' order by "columnName";
 
 
 select * from t_ANALYZE ORDER BY EMPNO;
