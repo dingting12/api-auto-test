@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 from hdfs.client import Client
+from hdfs import InsecureClient
 from hdfs.util import HdfsError
 import traceback
 from glob import glob
@@ -27,6 +28,7 @@ class RunHDFSCommand(object):
         self.__m_HDFS_NodePort__ = None
         self.__m_HDFS_WebFSURL__ = None
         self.__m_HDFS_WebFSDir__ = None
+        self.__m_HDFS_ConnectUser = None
 
     def HDFS_mkdirs(self, hdfs_path):
         """ 创建目录 """
@@ -100,6 +102,9 @@ class RunHDFSCommand(object):
         self.__m_HDFS_WebFSDir__ = m_NewDirectory
         self.__m_HDFS_Handler__ = Client(self.__m_HDFS_WebFSURL__, self.__m_HDFS_WebFSDir__, session=None)
 
+    def HDFS_SetConnectedUser(self, p_ConnectUser):
+        self.__m_HDFS_ConnectUser = p_ConnectUser
+
     def HDFS_Connnect(self, p_szURL):
         """ 连接HDFS, URL使用WEBFS协议 """
         self.__m_HDFS_Protocal__ = p_szURL.split("://")[0]
@@ -108,9 +113,9 @@ class RunHDFSCommand(object):
         self.__m_HDFS_WebFSDir__ = p_szURL[len(self.__m_HDFS_WebFSURL__):]
         logger.info("Will connect to [" + str(self.__m_HDFS_WebFSURL__) + "]," +
                     "Rootdir is [" + str(self.__m_HDFS_WebFSDir__) + "] .... ")
-        self.__m_HDFS_Handler__ = Client(self.__m_HDFS_WebFSURL__,
-                                         self.__m_HDFS_WebFSDir__,
-                                         proxy=None, session=None)
+        self.__m_HDFS_Handler__ = InsecureClient(url=self.__m_HDFS_WebFSURL__,
+                                         user=self.__m_HDFS_ConnectUser,
+                                         root=self.__m_HDFS_WebFSDir__)
 
 
 if __name__ == '__main__':
@@ -120,5 +125,7 @@ if __name__ == '__main__':
     mylist = myCompare.HDFS_list()
     for row in mylist:
         print("Row = " + str(row))
-    myCompare.HDFS_Delete("666")
+    myCompare.HDFS_Delete("label.txt")
+    # myCompare.HDFS_Upload("label.txt")
+    # myCompare.HDFS_Delete("666")
 

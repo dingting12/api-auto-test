@@ -365,9 +365,9 @@ ExternalTabTest
 Setup Custom Settings
     Compare Enable ConsoleOutput       True 
 	SQLCli Enable ConsoleOutput        True
-	Compare Skip                       ^[| 当前时间戳].*
-    Compare Skip                       ^[| 当前时间].*
-    Compare Skip                       ^[| LdbProject ].*
-    Compare Skip                       ^[| \+\- LdbUnion ].*
-    Compare Skip                       ^[| \:\- LdbLogicalRelation].*
-    Compare Skip                       ^[| \+\- LdbLogicalRelation].*
+	Compare Skip                       ^[ 当前时间戳].*
+    Compare Skip                       ^[ 当前时间].*
+    Compare Skip                       ^[ LdbProject ].*
+    Compare Skip                       ^[ \+\- LdbUnion ].*
+    Compare Skip                       ^[ \:\- LdbLogicalRelation].*
+    Compare Skip                       ^[ \+\- LdbLogicalRelation].*

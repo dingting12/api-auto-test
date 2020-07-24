@@ -63,6 +63,9 @@ SQL Test Setup
     # Case运行在脚本所在的目录下，切换当前工作目录
     SetupRoot CD CurrentDirectory      ${SUITE SOURCE}
 
+    # 设置HDFS上传文件时候使用的用户名
+    HDFS SetConnectedUser              ldbtest
+
 SQL Test Clnup
     # 暂时空置
     Log to Console      "Test Completed."
