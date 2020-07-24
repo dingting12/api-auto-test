@@ -23,12 +23,23 @@ Partition-aggregate
     Logon And Execute SQL Script       admin/123456  partition/partition_aggregate.sql          partition_aggregate.log
     Compare Files             partition_aggregate.log       partition/partition_aggregate.ref
 
-
 Bucket-HDFS
     [Documentation]    HDFS分桶进行回归测试
     [Tags]     BUCKET    HDFS
     Logon And Execute SQL Script       admin/123456  bucket/bucket.sql          bucket.log
     Compare Files             bucket.log       bucket/bucket.ref
+
+Bucket-sort
+    [Documentation]    HDFS分桶排序进行回归测试
+    [Tags]     BUCKET    HDFS
+    Logon And Execute SQL Script       admin/123456  bucket/bucket_sort.sql          bucket_sort.log
+    Compare Files             bucket_sort.log       bucket/bucket_sort.ref
+
+Bucket-Partition
+    [Documentation]    HDFS分区分桶进行回归测试
+    [Tags]     BUCKET    HDFS
+    Logon And Execute SQL Script       admin/123456  partition_bucket.sql          partition_bucket.log
+    Compare Files             partition_bucket.log       partition_bucket.ref
 
 *** Keywords ***
 Setup Custom Settings
