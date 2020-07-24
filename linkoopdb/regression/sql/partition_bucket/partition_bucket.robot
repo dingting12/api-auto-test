@@ -37,7 +37,7 @@ Bucket-sort
 
 Bucket-Partition
     [Documentation]    HDFS分区分桶进行回归测试
-    [Tags]     BUCKET    HDFS
+    [Tags]     PARTITION     BUCKET    HDFS
     Logon And Execute SQL Script       admin/123456  partition_bucket.sql          partition_bucket.log
     Compare Files             partition_bucket.log       partition_bucket.ref
 
