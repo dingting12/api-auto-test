@@ -5,7 +5,7 @@ Resource           %{TEST_ROOT}/regression/common/SetupRobot.robot
 Test Setup       run keywords   
 ... 			 SQL Test Setup   AND 
 ...              Setup Custom Settings   AND 
-...              Upload csv files   AND
+...              Upload csv files  
 Test Teardown    SQL Test Clnup
 Force Tags       FUNCTION  owner:贾路遥
 
