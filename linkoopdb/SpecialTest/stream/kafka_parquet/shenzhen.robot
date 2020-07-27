@@ -7,7 +7,7 @@ Test Setup       run keywords
 ...              Setup Custom Settings   AND 
 ...              Upload csv files  
 Test Teardown    SQL Test Clnup
-Force Tags       FUNCTION  owner:贾路遥
+Force Tags         owner:贾路遥
 
 *** Test Cases ***
 StreamTestKafka-Parquet
