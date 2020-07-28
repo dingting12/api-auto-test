@@ -29,6 +29,7 @@ class RunHDFSCommand(object):
         self.__m_HDFS_WebFSURL__ = None
         self.__m_HDFS_WebFSDir__ = None
         self.__m_HDFS_ConnectUser = None
+        self.__m_HDFS_FirstConnected = True
 
     def HDFS_mkdirs(self, hdfs_path):
         """ 创建目录 """
@@ -116,16 +117,27 @@ class RunHDFSCommand(object):
         self.__m_HDFS_Handler__ = InsecureClient(url=self.__m_HDFS_WebFSURL__,
                                          user=self.__m_HDFS_ConnectUser,
                                          root=self.__m_HDFS_WebFSDir__)
+        if (self.__m_HDFS_FirstConnected):
+            # 第一次连接尝试删除目录
+            self.HDFS_Delete(self.__m_HDFS_WebFSDir__)
+            self.HDFS_mkdirs(self.__m_HDFS_WebFSDir__)
+            self.HDFS_setPermission(self.__m_HDFS_WebFSDir__, "777")
+            self.__m_HDFS_FirstConnected = False
 
 
 if __name__ == '__main__':
     myCompare = RunHDFSCommand()
 
     myCompare.HDFS_Connnect("http://node73:50070/user/testdb73/jenkins/work/shitest")
+
     mylist = myCompare.HDFS_list()
     for row in mylist:
         print("Row = " + str(row))
-    myCompare.HDFS_Delete("label.txt")
-    # myCompare.HDFS_Upload("label.txt")
+    # myCompare.HDFS_Delete("label.txt")
+    myCompare.HDFS_Upload("label.txt")
+    mylist = myCompare.HDFS_list()
+    for row in mylist:
+        print("Row = " + str(row))
+
     # myCompare.HDFS_Delete("666")
 
