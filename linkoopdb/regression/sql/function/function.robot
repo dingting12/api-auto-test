@@ -17,7 +17,7 @@ FunctionTestHdfsTest-Time
     Logon And Execute SQL Script    admin/123456              time_function/date_time_function.sql           date_time_function.log
     Compare Files                   date_time_function.log       time_function/date_time_function.ref
 	
-FunctionTestHdfsTest-Time
+FunctionTestHdfsTest-OLAP
     [Documentation]    OLAP函数测试
     Logon And Execute SQL Script    admin/123456              OLAP_function/OLAP_function.sql           OLAP_function.log
     Compare Files                   OLAP_function.log       OLAP_function/OLAP_function.ref
