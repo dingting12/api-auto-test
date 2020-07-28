@@ -1,0 +1,1081 @@
+SQLCli Release 0.0.97
+SQL> connect admin/123456
+Database connected.
+SQL> start partition/partition.sql
+SQL> --Description:partition
+   > --Date：2020-06-18
+   > --Author：阮娜
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 删除视图
+SQL> DROP VIEW V_PART IF EXISTS;
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> DROP VIEW V_PART_1 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> 
+SQL> -- 删除表
+SQL> DROP TABLE T_PART_INT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_PART_INT1 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART_BOOL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART_CHAR IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART_DATE IF EXISTS;
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE T_PART_DECIMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART_DOUBLE IF EXISTS;
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> DROP TABLE T_PART_FLOAT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_PART_NUMERIC IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_REAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_SMALLINT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_TIMESTAMP IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_PART_VARCHAR IF EXISTS;
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> DROP TABLE T_PART_BIGINT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART_ARRAY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART2 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART3 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART_MONTH IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_LEN IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_ABS IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_MOD IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_FLOOR IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_TODATE IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_DAY IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_ROUND IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART2_FUNC2 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART2_FUNC1 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_EX_DATA IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART_EX1 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> DROP TABLE T_PART_PALLAS IF EXISTS;
+0 rows affected
+Running time elapsed:      0.00 Seconds
+SQL> DROP TABLE T_PART_1 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE T_PART_2 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> DROP TABLE EX_PART_BUC IF EXISTS;
+0 rows affected
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- 创建外部表，10条数据
+SQL> CREATE EXTERNAL TABLE EX_PART_BUC(TBIGINT BIGINT,TINT INT,TSMALLINT SMALLINT,TREAL REAL,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(10,2),TNUMERIC NUMERIC(10,4),TDATE DATE,TTIMESTAMP TIMESTAMP,TBOOL BOOLEAN,TCHAR CHAR(30),TVARCHAR VARCHAR(255))
+   > location ('HDFSRPC_URL/partition_bucket/partition_bucket.csv') FORMAT 'csv' (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE EX_PART_BUC(TBIGINT BIGINT,TINT INT,TSMALLINT SMALLINT,TREAL REAL,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(10,2),TNUMERIC NUMERIC(10,4),TDATE DATE,TTIMESTAMP TIMESTAMP,TBOOL BOOLEAN,TCHAR CHAR(30),TVARCHAR VARCHAR(255))
+REWROTED    > location ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-ruanna/partition_bucket/partition_bucket.csv') FORMAT 'csv' (DELIMITER ',')
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> 
+SQL> -- 创建分区表，以int类型列分区
+SQL> CREATE TABLE T_PART_INT (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_INT;
++------------+----------------------------------------------------------------------------------------------------------+
+| TABLE      | CREATE_TABLE                                                                                             |
++------------+----------------------------------------------------------------------------------------------------------+
+| T_PART_INT | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_INT(A INTEGER,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++------------+----------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.03 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_INT';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/ef07ee6d-ed99-4f4d-890c-59ba207ce803","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据
+SQL> INSERT INTO T_PART_INT SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.35 Seconds
+SQL> -- 查询表T_PART_INT
+SQL> SELECT * FROM T_PART_INT;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.38 Seconds
+SQL> 
+SQL> -- 创建分区表，以boolean类型列分区
+SQL> CREATE TABLE T_PART_BOOL (A BOOLEAN, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_BOOL;
++-------------+-----------------------------------------------------------------------------------------------------------+
+| TABLE       | CREATE_TABLE                                                                                              |
++-------------+-----------------------------------------------------------------------------------------------------------+
+| T_PART_BOOL | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_BOOL(A BOOLEAN,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++-------------+-----------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_BOOL';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/09080551-7cf5-40d3-83b3-9f9fe20986a0","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.07 Seconds
+SQL> -- 插入数据，2个分区
+SQL> INSERT INTO T_PART_BOOL SELECT TBOOL, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.85 Seconds
+SQL> -- 查询表T_PART_BOOLEAN
+SQL> SELECT * FROM T_PART_BOOL;
++-------+---------+------------------------------------------------------------------------------------------------------+
+| A     | B       | C                                                                                                    |
++-------+---------+------------------------------------------------------------------------------------------------------+
+| True  | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| True  | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| True  | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| True  | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| True  | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| True  | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| False | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| False | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| False | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| False | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
++-------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> -- 创建分区表，以char类型列分区
+SQL> CREATE TABLE T_PART_CHAR (A CHAR(30), B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_CHAR;
++-------------+------------------------------------------------------------------------------------------------------------+
+| TABLE       | CREATE_TABLE                                                                                               |
++-------------+------------------------------------------------------------------------------------------------------------+
+| T_PART_CHAR | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_CHAR(A CHAR(30),B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++-------------+------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_CHAR';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/85981af2-437a-493c-b7fe-f82cd6c30372","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据，分区字段值全都一致，1个分区
+SQL> INSERT INTO T_PART_CHAR SELECT TCHAR, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.80 Seconds
+SQL> -- 查询表T_PART_CHAR
+SQL> SELECT * FROM T_PART_CHAR;
++--------------------------------+---------+------------------------------------------------------------------------------------------------------+
+| A                              | B       | C                                                                                                    |
++--------------------------------+---------+------------------------------------------------------------------------------------------------------+
+| abcdefghijklmnopqrstuvwxyzabcd | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| abcdefghijklmnopqrstuvwxyzabcd | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| abcdefghijklmnopqrstuvwxyzabcd | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| abcdefghijklmnopqrstuvwxyzabcd | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| abcdefghijklmnopqrstuvwxyzabcd | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| abcdefghijklmnopqrstuvwxyzabcd | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| abcdefghijklmnopqrstuvwxyzabcd | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| abcdefghijklmnopqrstuvwxyzabcd | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| abcdefghijklmnopqrstuvwxyzabcd | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| abcdefghijklmnopqrstuvwxyzabcd | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++--------------------------------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.31 Seconds
+SQL> 
+SQL> -- 创建分区表，以date类型列分区
+SQL> CREATE TABLE T_PART_DATE (A DATE, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_DATE;
++-------------+--------------------------------------------------------------------------------------------------------+
+| TABLE       | CREATE_TABLE                                                                                           |
++-------------+--------------------------------------------------------------------------------------------------------+
+| T_PART_DATE | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_DATE(A DATE,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++-------------+--------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_DATE';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/612feffd-951a-47a3-b9ec-050d550f6314","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据，9个分区
+SQL> INSERT INTO T_PART_DATE SELECT TDATE, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.39 Seconds
+SQL> -- 查询表T_PART_DATE
+SQL> SELECT * FROM T_PART_DATE;
++------------+---------+------------------------------------------------------------------------------------------------------+
+| A          | B       | C                                                                                                    |
++------------+---------+------------------------------------------------------------------------------------------------------+
+| 1981-9-8   | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1998-7-21  | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1981-6-9   | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 1981-5-1   | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 1981-9-28  | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 1982-1-23  | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 1989-12-18 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 1981-12-3  | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 1981-12-3  | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 1980-12-17 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++------------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.42 Seconds
+SQL> 
+SQL> -- 创建分区表，以decimal类型列分区
+SQL> CREATE TABLE T_PART_DECIMAL (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (B);
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_DECIMAL;
++----------------+--------------------------------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                                                 |
++----------------+--------------------------------------------------------------------------------------------------------------+
+| T_PART_DECIMAL | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_DECIMAL(A INTEGER,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(B) |
++----------------+--------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_DECIMAL';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/0281291e-9d4f-491b-83b5-9c8a48057bec","format":"parquet","parameters":{},"partitionColumns":["B"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据，10个分区
+SQL> INSERT INTO T_PART_DECIMAL SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.47 Seconds
+SQL> -- 查询表T_PART_DECIMAL
+SQL> SELECT * FROM T_PART_DECIMAL;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.48 Seconds
+SQL> 
+SQL> -- 创建分区表，以double类型列分区
+SQL> CREATE TABLE T_PART_DOUBLE (A DOUBLE, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_DOUBLE;
++---------------+------------------------------------------------------------------------------------------------------------+
+| TABLE         | CREATE_TABLE                                                                                               |
++---------------+------------------------------------------------------------------------------------------------------------+
+| T_PART_DOUBLE | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_DOUBLE(A DOUBLE,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++---------------+------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_DOUBLE';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/01f727f8-6f59-4308-a5a2-6d38cff26ea6","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.06 Seconds
+SQL> -- 插入数据，10个分区
+SQL> INSERT INTO T_PART_DOUBLE SELECT TDOUBLE, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.40 Seconds
+SQL> -- 查询表T_PART_DOUBLE
+SQL> SELECT * FROM T_PART_DOUBLE;
++---------+---------+------------------------------------------------------------------------------------------------------+
+| A       | B       | C                                                                                                    |
++---------+---------+------------------------------------------------------------------------------------------------------+
+| 1108.07 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1169.82 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 3575.2  | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 2690.46 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 3824.37 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 4740.62 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 9896.61 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 2042.85 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 3797.61 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 3867.12 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++---------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.44 Seconds
+SQL> 
+SQL> -- 创建分区表，以float类型列分区
+SQL> CREATE TABLE T_PART_FLOAT (A FLOAT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.15 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_FLOAT;
++--------------+----------------------------------------------------------------------------------------------------------+
+| TABLE        | CREATE_TABLE                                                                                             |
++--------------+----------------------------------------------------------------------------------------------------------+
+| T_PART_FLOAT | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_FLOAT(A FLOAT,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++--------------+----------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_FLOAT';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/c84f0cb0-7318-4f53-9d11-83a8cae7108e","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.07 Seconds
+SQL> -- 插入数据，10个分区
+SQL> INSERT INTO T_PART_FLOAT SELECT TFLOAT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.33 Seconds
+SQL> -- 查询表T_PART_FLOAT
+SQL> SELECT * FROM T_PART_FLOAT;
++---------+---------+------------------------------------------------------------------------------------------------------+
+| A       | B       | C                                                                                                    |
++---------+---------+------------------------------------------------------------------------------------------------------+
+| 6490.95 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1169.33 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 2608.45 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 8639.29 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 2592.84 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 9506.85 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 2946.04 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 5296.49 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 412.9   | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 1937.72 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++---------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.42 Seconds
+SQL> 
+SQL> -- 创建分区表，以NUMERIC类型列分区
+SQL> CREATE TABLE T_PART_NUMERIC (A NUMERIC(10,4), B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_NUMERIC;
++----------------+--------------------------------------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                                                       |
++----------------+--------------------------------------------------------------------------------------------------------------------+
+| T_PART_NUMERIC | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_NUMERIC(A NUMERIC(10,4),B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++----------------+--------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_NUMERIC';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/9eaafdc6-89bc-4bd4-8f73-c816f704c92b","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.07 Seconds
+SQL> -- 插入数据，分区字段值有null，null为一个分区，总共7个分区
+SQL> INSERT INTO T_PART_NUMERIC SELECT TNUMERIC, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.26 Seconds
+SQL> -- 查询表T_PART_NUMERIC
+SQL> SELECT * FROM T_PART_NUMERIC;
++-----------+---------+------------------------------------------------------------------------------------------------------+
+| A         | B       | C                                                                                                    |
++-----------+---------+------------------------------------------------------------------------------------------------------+
+| 6167.0253 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 9869.2003 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| <null>    | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| <null>    | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 5972.95   | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 3846.5961 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 3846.5961 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 2963.901  | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 2946.5426 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 2946.5426 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
++-----------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.38 Seconds
+SQL> 
+SQL> -- 创建分区表，以REAL类型列分区
+SQL> CREATE TABLE T_PART_REAL (A REAL, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_REAL;
++-------------+----------------------------------------------------------------------------------------------------------+
+| TABLE       | CREATE_TABLE                                                                                             |
++-------------+----------------------------------------------------------------------------------------------------------+
+| T_PART_REAL | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_REAL(A DOUBLE,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++-------------+----------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.01 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_REAL';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/08bf18af-454a-4ff5-9018-a3c48d9c5132","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.07 Seconds
+SQL> -- 插入数据，10个分区
+SQL> INSERT INTO T_PART_REAL SELECT TREAL, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.57 Seconds
+SQL> -- 查询表T_PART_REAL
+SQL> SELECT * FROM T_PART_REAL;
++---------+---------+------------------------------------------------------------------------------------------------------+
+| A       | B       | C                                                                                                    |
++---------+---------+------------------------------------------------------------------------------------------------------+
+| 5537.86 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 2829.49 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 3036.58 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 345.41  | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 9931.54 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 3487.25 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 8901.04 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 2963.33 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7724.82 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 296.58  | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++---------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.39 Seconds
+SQL> 
+SQL> -- 创建分区表，以SMALLINT类型列分区
+SQL> CREATE TABLE T_PART_SMALLINT (A SMALLINT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_SMALLINT;
++-----------------+----------------------------------------------------------------------------------------------------------------+
+| TABLE           | CREATE_TABLE                                                                                                   |
++-----------------+----------------------------------------------------------------------------------------------------------------+
+| T_PART_SMALLINT | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_SMALLINT(A SMALLINT,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++-----------------+----------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_SMALLINT';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/259bc560-839c-468f-9baf-57c8d914e04f","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据，字段值不均匀，3个分区
+SQL> INSERT INTO T_PART_SMALLINT SELECT TSMALLINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.85 Seconds
+SQL> -- 查询表T_PART_SMALLINT
+SQL> SELECT * FROM T_PART_SMALLINT;
++----+---------+------------------------------------------------------------------------------------------------------+
+| A  | B       | C                                                                                                    |
++----+---------+------------------------------------------------------------------------------------------------------+
+| 30 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 30 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 30 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 30 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 30 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 30 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 20 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 10 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 10 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 10 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++----+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.31 Seconds
+SQL> 
+SQL> -- 创建分区表，以TIMESTAMP类型列分区
+SQL> CREATE TABLE T_PART_TIMESTAMP (A TIMESTAMP, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_TIMESTAMP;
++------------------+------------------------------------------------------------------------------------------------------------------+
+| TABLE            | CREATE_TABLE                                                                                                     |
++------------------+------------------------------------------------------------------------------------------------------------------+
+| T_PART_TIMESTAMP | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_TIMESTAMP(A TIMESTAMP,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++------------------+------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_TIMESTAMP';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/64533c8c-df9d-4f68-b99c-a443ac7a3569","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.07 Seconds
+SQL> -- 插入数据，10个分区
+SQL> INSERT INTO T_PART_TIMESTAMP SELECT TTIMESTAMP, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.34 Seconds
+SQL> -- 查询表T_PART_TIMESTAMP
+SQL> SELECT * FROM T_PART_TIMESTAMP;
++---------------------+---------+------------------------------------------------------------------------------------------------------+
+| A                   | B       | C                                                                                                    |
++---------------------+---------+------------------------------------------------------------------------------------------------------+
+| 2033-09-24 12:24:45 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 2034-07-06 17:55:27 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 2045-10-31 11:25:51 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 2034-12-31 09:06:46 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 2048-04-12 17:48:56 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 2028-09-24 20:44:53 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 1986-08-19 19:45:36 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 1998-01-23 20:58:41 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 2027-04-17 04:52:37 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 2027-01-10 13:04:17 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++---------------------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.46 Seconds
+SQL> 
+SQL> -- 创建分区表，以VARCHAR类型列分区
+SQL> CREATE TABLE T_PART_VARCHAR (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (C);
+0 rows affected
+Running time elapsed:      0.48 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_VARCHAR;
++----------------+--------------------------------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                                                 |
++----------------+--------------------------------------------------------------------------------------------------------------+
+| T_PART_VARCHAR | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_VARCHAR(A INTEGER,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(C) |
++----------------+--------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_VARCHAR';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/d9ee86a3-310d-4604-ab27-0bcf0fec2f4e","format":"parquet","parameters":{},"partitionColumns":["C"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据，9个分区
+SQL> INSERT INTO T_PART_VARCHAR SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.25 Seconds
+SQL> -- 查询表T_PART_VARCHAR
+SQL> SELECT * FROM T_PART_VARCHAR;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
++------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.37 Seconds
+SQL> 
+SQL> -- 创建分区表，以BIGINT类型列分区
+SQL> CREATE TABLE T_PART_BIGINT (A BIGINT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_BIGINT;
++---------------+------------------------------------------------------------------------------------------------------------+
+| TABLE         | CREATE_TABLE                                                                                               |
++---------------+------------------------------------------------------------------------------------------------------------+
+| T_PART_BIGINT | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_BIGINT(A BIGINT,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++---------------+------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_BIGINT';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/5dbba040-fa48-4a64-a9c0-efefa9d77764","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据，10个分区
+SQL> INSERT INTO T_PART_BIGINT SELECT TBIGINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.32 Seconds
+SQL> -- 查询表T_PART_BIGINT
+SQL> SELECT * FROM T_PART_BIGINT;
++---------+---------+------------------------------------------------------------------------------------------------------+
+| A       | B       | C                                                                                                    |
++---------+---------+------------------------------------------------------------------------------------------------------+
+| 1000005 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1000004 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1000006 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 1000007 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 1000008 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 1000002 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 1000001 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 1000003 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 1000009 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 1000010 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++---------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.59 Seconds
+SQL> 
+SQL> -- 创建分区表，以ARRAY类型列分区（不支持）
+SQL> CREATE TABLE T_PART_ARRAY (A INT ARRAY, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_ARRAY;
++--------------+------------------------------------------------------------------------------------------------------------------+
+| TABLE        | CREATE_TABLE                                                                                                     |
++--------------+------------------------------------------------------------------------------------------------------------------+
+| T_PART_ARRAY | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART_ARRAY(A INTEGER ARRAY,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A) |
++--------------+------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_ARRAY';
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/622db7e2-3170-4fe3-9e69-75a6a22bf90b","format":"parquet","parameters":{},"partitionColumns":["A"],"bucketColumns":[],"bucketNum":0} |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据，2个分区
+SQL> INSERT INTO T_PART_ARRAY VALUES (ARRAY[1,2], 1.1, 'a'), (ARRAY[1,2], 2.2, 'b'), (ARRAY[2,3], 3.3, 'c');
+java.sql.SQLTransactionRollbackException: IO error: Worker execution: ldb worker caused error: Cannot use ArrayType(IntegerType,true) for partition column;
+can not query sql: 
+INSERT INTO T_PART_ARRAY VALUES (ARRAY[1,2], 1.1, 'a'), (ARRAY[1,2], 2.2, 'b'), (ARRAY[2,3], 3.3, 'c'), Worker execution: ldb worker caused error: Cannot use ArrayType(IntegerType,true) for partition column; Caused by [Worker execution: ldb worker caused error: Cannot use ArrayType(IntegerType,true) for partition column;] Caused by [Worker execution: ldb worker caused error: Cannot use ArrayType(IntegerType,true) for partition column; Caused by [Worker execution: ldb worker caused error: Cannot use ArrayType(IntegerType,true) for partition column;]]
+Running time elapsed:      0.04 Seconds
+SQL> 
+SQL> -- 创建以2个字段分区的分区表
+SQL> CREATE TABLE T_PART2 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A, C);
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART2;
++---------+----------------------------------------------------------------------------------------------------------+
+| TABLE   | CREATE_TABLE                                                                                             |
++---------+----------------------------------------------------------------------------------------------------------+
+| T_PART2 | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART2(A INTEGER,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A, C) |
++---------+----------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART2';
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                       |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/47eb1f41-5373-4979-9dc6-7615663c5dc4","format":"parquet","parameters":{},"partitionColumns":["A","C"],"bucketColumns":[],"bucketNum":0} |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据
+SQL> INSERT INTO T_PART2 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.26 Seconds
+SQL> -- 查询表T_PART2
+SQL> SELECT * FROM T_PART2;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
++------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.37 Seconds
+SQL> 
+SQL> -- 创建以所有字段分区的分区表（不支持）
+SQL> CREATE TABLE T_PART3 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A, B, C);
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART3;
++---------+-------------------------------------------------------------------------------------------------------------+
+| TABLE   | CREATE_TABLE                                                                                                |
++---------+-------------------------------------------------------------------------------------------------------------+
+| T_PART3 | CREATE TABLE IF NOT EXISTS PUBLIC.T_PART3(A INTEGER,B DECIMAL(10,2),C VARCHAR(255)) PARTITIONED BY(A, B, C) |
++---------+-------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART3';
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                           |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs:///user/ldb1/data/home/PUBLIC/tables/PUBLIC/1cc47f9f-a749-41af-9186-fbb7b2efdfc2","format":"parquet","parameters":{},"partitionColumns":["A","B","C"],"bucketColumns":[],"bucketNum":0} |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 插入数据：Cannot use all columns for partition columns;
+SQL> INSERT INTO T_PART3 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+java.sql.SQLException: Worker execution: ldb worker caused error: Cannot use all columns for partition columns;
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- 创建以func(col)分区的分区表
+SQL> CREATE TABLE T_PART_MONTH (A DATE, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (MONTH(A));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column MONTH in statement [CREATE TABLE T_PART_MONTH (A DATE, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (MONTH(A))]
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_PART_LEN (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (LENGTH(C));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column LENGTH in statement [CREATE TABLE T_PART_LEN (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (LENGTH(C))]
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_PART_ABS (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (ABS(A));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column ABS in statement [CREATE TABLE T_PART_ABS (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (ABS(A))]
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_PART_MOD (A BIGINT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (MOD(A, 2));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column MOD in statement [CREATE TABLE T_PART_MOD (A BIGINT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (MOD(A, 2))]
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_PART_FLOOR (A FLOAT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (FLOOR(A));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column FLOOR in statement [CREATE TABLE T_PART_FLOOR (A FLOAT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (FLOOR(A))]
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_PART_TODATE (A TIMESTAMP, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (TO_DATE(A));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column TO_DATE in statement [CREATE TABLE T_PART_TODATE (A TIMESTAMP, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (TO_DATE(A))]
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_PART_DAY (A TIMESTAMP, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (DAY(TO_DATE(A)));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column DAY in statement [CREATE TABLE T_PART_DAY (A TIMESTAMP, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (DAY(TO_DATE(A)))]
+Running time elapsed:      0.00 Seconds
+SQL> CREATE TABLE T_PART_ROUND (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (ROUND(B));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column ROUND in statement [CREATE TABLE T_PART_ROUND (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (ROUND(B))]
+Running time elapsed:      0.00 Seconds
+SQL> -- 创建以多个func(col)分区的分区表
+SQL> CREATE TABLE T_PART2_FUNC2 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (ABS(A), LENGTH(C));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column ABS in statement [CREATE TABLE T_PART2_FUNC2 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (ABS(A), LENGTH(C))]
+Running time elapsed:      0.00 Seconds
+SQL> -- 创建以func(col)和col分区的分区表
+SQL> CREATE TABLE T_PART2_FUNC1 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A, LENGTH(C));
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column LENGTH in statement [CREATE TABLE T_PART2_FUNC1 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A, LENGTH(C))]
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建以不存在字段分区的分区表
+SQL> CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (D);
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column D in statement [CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (D)]
+Running time elapsed:      0.00 Seconds
+SQL> -- PARTITIONED拼写错误
+SQL> CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTIONED BY (A);
+java.sql.SQLSyntaxErrorException: unexpected token: PARTIONED in statement [CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTIONED BY (A)]
+Running time elapsed:      0.00 Seconds
+SQL> -- 缺失括号
+SQL> CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY A;
+java.sql.SQLSyntaxErrorException: unexpected token: A required: ( in statement [CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY A]
+Running time elapsed:      0.00 Seconds
+SQL> -- 缺失逗号
+SQL> CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A C);
+java.sql.SQLSyntaxErrorException: unexpected token: C in statement [CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A C)]
+Running time elapsed:      0.00 Seconds
+SQL> -- 缺失BY
+SQL> CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED (A);
+java.sql.SQLSyntaxErrorException: unexpected token: ( required: BY in statement [CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED (A)]
+Running time elapsed:      0.00 Seconds
+SQL> -- SORTED BY
+SQL> CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A) SORTED BY (A);
+java.sql.SQLSyntaxErrorException: unexpected token: SORTED in statement [CREATE TABLE T_PART (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A) SORTED BY (A)]
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 创建分区表，以int类型列分区
+SQL> CREATE TABLE T_PART_INT1 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> -- 分批次插入数据
+SQL> INSERT INTO T_PART_INT1 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC WHERE TBIGINT BETWEEN 1000001 AND 1000005;
+5 rows affected
+Running time elapsed:      0.89 Seconds
+SQL> INSERT INTO T_PART_INT1 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC WHERE TBIGINT BETWEEN 1000006 AND 10000010;
+5 rows affected
+Running time elapsed:      0.75 Seconds
+SQL> -- 查询表T_PART_INT
+SQL> SELECT * FROM T_PART_INT1;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
++------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.60 Seconds
+SQL> 
+SQL> -- 创建外部分区表T_PART_EX1
+SQL> CREATE EXTERNAL TABLE T_PART_EX1(TINT INT,TDECIMAL DECIMAL(10,2),TVARCHAR VARCHAR(255))
+   > LOCATION ('HDFSRPC_URL/partition_bucket') FORMAT 'csv' (DELIMITER ',') PARTITIONED BY (TINT);
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_PART_EX1(TINT INT,TDECIMAL DECIMAL(10,2),TVARCHAR VARCHAR(255))
+REWROTED    > LOCATION ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-ruanna/partition_bucket') FORMAT 'csv' (DELIMITER ',') PARTITIONED BY (TINT)
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_PART_EX1;
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE      | CREATE_TABLE                                                                                                                                                                                                                                                              |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_PART_EX1 | CREATE EXTERNAL TABLE IF NOT EXISTS PUBLIC.T_PART_EX1(TINT INTEGER,TDECIMAL DECIMAL(10,2),TVARCHAR VARCHAR(255)) LOCATION ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-ruanna/partition_bucket') FORMAT 'csv' (DELIMITER ',' ) PARTITIONED BY(TINT) |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 查看系统表中该表的分区字段
+SQL> select PERIPHERAL_INFO from information_schema.system_tables where TABLE_NAME = 'T_PART_EX1';
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PERIPHERAL_INFO                                                                                                                                                                                                    |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"location":"hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-ruanna/partition_bucket","format":"csv","parameters":{"DELIMITER":","},"partitionColumns":["TINT"],"bucketColumns":[],"bucketNum":0} |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.08 Seconds
+SQL> -- 分批次插入数据
+SQL> INSERT INTO T_PART_EX1 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC WHERE TBIGINT BETWEEN 1000001 AND 1000005; 
+5 rows affected
+Running time elapsed:      0.71 Seconds
+SQL> INSERT INTO T_PART_EX1 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC WHERE TBIGINT BETWEEN 1000006 AND 10000010;
+10 rows affected
+Running time elapsed:      0.54 Seconds
+SQL> -- 查询表T_PART_EX1
+SQL> SELECT * FROM T_PART_EX1;
++------+----------+------------------------------------------------------------------------------------------------------+
+| TINT | TDECIMAL | TVARCHAR                                                                                             |
++------+----------+------------------------------------------------------------------------------------------------------+
+| 7698 | 5201.08  | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35  | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15  | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7839 | 3207.93  | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08  | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7839 | 442.02   | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7698 | 5546.49  | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13  | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7566 | 2106.95  | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7782 | 5468.79  | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
++------+----------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.21 Seconds
+SQL> 
+SQL> -- 全部读出外部分区表数据到内部表
+SQL> CREATE TABLE T_EX_DATA (TINT INT,TDECIMAL DECIMAL(10,2),TVARCHAR VARCHAR(255));
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> INSERT INTO T_EX_DATA SELECT * FROM T_PART_EX1;
+10 rows affected
+Running time elapsed:      4.67 Seconds
+SQL> SELECT * FROM T_EX_DATA;
++------+----------+------------------------------------------------------------------------------------------------------+
+| TINT | TDECIMAL | TVARCHAR                                                                                             |
++------+----------+------------------------------------------------------------------------------------------------------+
+| 7698 | 5201.08  | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35  | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15  | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7839 | 3207.93  | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08  | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7839 | 442.02   | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7698 | 5546.49  | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13  | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7566 | 2106.95  | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7782 | 5468.79  | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
++------+----------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.26 Seconds
+SQL> 
+SQL> -- 创建分区pallas表
+SQL> CREATE TABLE T_PART_PALLAS (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A) ENGINE PALLAS;
+java.sql.SQLSyntaxErrorException: syntax error or access rule violation in direct statement: PARTITIONED BY is not supported by current engine in statement [CREATE TABLE T_PART_PALLAS (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A) ENGINE PALLAS]
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 使用分区表创建视图
+SQL> CREATE VIEW V_PART AS SELECT * FROM T_PART_INT WHERE A = 7566;
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> -- 查询视图
+SQL> SELECT * FROM V_PART;
++------+---------+---------------------------------------------+
+| A    | B       | C                                           |
++------+---------+---------------------------------------------+
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB |
++------+---------+---------------------------------------------+
+1 row selected.
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> -- 2个分区表union
+SQL> CREATE TABLE T_PART_1 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> CREATE TABLE T_PART_2 (A INT, B DECIMAL(10,2), C VARCHAR(255)) PARTITIONED BY (A);
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> INSERT INTO T_PART_1 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC WHERE TBIGINT BETWEEN 1000001 AND 1000005;
+5 rows affected
+Running time elapsed:      0.85 Seconds
+SQL> INSERT INTO T_PART_2 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC WHERE TBIGINT BETWEEN 1000006 AND 10000010;
+5 rows affected
+Running time elapsed:      0.82 Seconds
+SQL> SELECT * FROM T_PART_1;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
++------+---------+------------------------------------------------------------------------------------------------------+
+5 rows selected.
+Running time elapsed:      0.27 Seconds
+SQL> SELECT * FROM T_PART_2;
++------+---------+----------------------------------------------------------------+
+| A    | B       | C                                                              |
++------+---------+----------------------------------------------------------------+
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA |
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA        |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj         |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                  |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                            |
++------+---------+----------------------------------------------------------------+
+5 rows selected.
+Running time elapsed:      0.37 Seconds
+SQL> SELECT A FROM T_PART_1 UNION SELECT A FROM T_PART_2;
++------+
+| A    |
++------+
+| 7566 |
+| 7698 |
+| 7839 |
+| 7782 |
++------+
+4 rows selected.
+Running time elapsed:      4.86 Seconds
+SQL> 
+SQL> -- 2个视图union
+SQL> CREATE VIEW V_PART_1 AS SELECT * FROM T_PART_INT WHERE A = 7698;
+0 rows affected
+Running time elapsed:      0.13 Seconds
+SQL> SELECT * FROM V_PART_1;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++------+---------+------------------------------------------------------------------------------------------------------+
+5 rows selected.
+Running time elapsed:      0.31 Seconds
+SQL> SELECT * FROM V_PART UNION SELECT * FROM V_PART_1;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
++------+---------+------------------------------------------------------------------------------------------------------+
+6 rows selected.
+Running time elapsed:      4.40 Seconds
+Running time elapsed:     48.93 Seconds
+SQL> exit
+Disconnected.
