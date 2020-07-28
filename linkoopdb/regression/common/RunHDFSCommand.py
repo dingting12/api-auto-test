@@ -119,9 +119,11 @@ class RunHDFSCommand(object):
                                          root=self.__m_HDFS_WebFSDir__)
         if (self.__m_HDFS_FirstConnected):
             # 第一次连接尝试删除目录
-            self.HDFS_Delete(self.__m_HDFS_WebFSDir__)
-            self.HDFS_mkdirs(self.__m_HDFS_WebFSDir__)
-            self.HDFS_setPermission(self.__m_HDFS_WebFSDir__, "777")
+            self.__m_HDFS_WebFSDir__ = self.__m_HDFS_WebFSDir__.strip()
+            if not (len(self.__m_HDFS_WebFSDir__) == 0 or self.__m_HDFS_WebFSDir__ == "/"):
+                self.HDFS_Delete(self.__m_HDFS_WebFSDir__)
+                self.HDFS_mkdirs(self.__m_HDFS_WebFSDir__)
+                self.HDFS_setPermission(self.__m_HDFS_WebFSDir__, "777")
             self.__m_HDFS_FirstConnected = False
 
 
