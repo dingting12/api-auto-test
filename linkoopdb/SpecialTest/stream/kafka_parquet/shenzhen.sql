@@ -77,7 +77,7 @@ atime timestamp
    'type': 'sink',
    'connector':'filesystem',
    'format':'parquet',
-   'path':'hdfs:///node62/shenzhen',
+   'path':'HDFSRPC_URL/shenzhen',
    'write-mode':'time',
    'batch-rollover-interval':'1D',
    'time-format':'yyyy-mm-dd',
@@ -121,7 +121,7 @@ CLIENTIP VARCHAR(128),
 SERVERIP VARCHAR(128),
 ctime timestamp,
 atime timestamp
-)LOCATION ('hdfs:///node62/shenzhen') FORMAT 'parquet' properties('recursiveFileLookup':'true');
+)LOCATION ('HDFSRPC_URL/shenzhen') FORMAT 'parquet' properties('recursiveFileLookup':'true');
 
 sleep 600
 

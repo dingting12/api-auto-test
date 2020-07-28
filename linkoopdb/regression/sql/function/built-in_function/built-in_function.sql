@@ -754,11 +754,36 @@ SELECT GET_JSON_OBJECT('{
 
 
 --GREATEST
-SELECT greatest(10, 9, 2, 4, 3,null) FROM Test_Builtin_Func_1 LIMIT 1;
 
---SELECT greatest(10, 9, 2, 4, 3,345,342,12,43534,5463,34,2,2313,213,45,436,76,786,886,767,876,768,867,64,4,3,3,3,3,2,1,5,3,54,5,6,7,7,6,8) FROM Test_Builtin_Func_1 LIMIT 1;
+--参数中有null值,第一个参数为null
+SELECT greatest(10, 9, 2, 4, 3,null) FROM Test_Builtin_Func_1 LIMIT 1; 
 
+--参数中有null值,任意参数为null
+SELECT greatest(null,10, 9, 2, 4, 3) FROM Test_Builtin_Func_1 LIMIT 1;
+
+--参数中有函数floor()
 SELECT greatest(10,9,floor(3.4)) FROM Test_Builtin_Func_1 LIMIT 1;
+
+--参数中部分为数值型，隐式类型转换转成数值型（issue:LDB-3474）
+SELECT GREATEST(2, '5', 12, 3, 16, 8, 9) A FROM DUAL;
+
+--参数中部分为数值型，字符串不能通过隐式类型转换成数值型会报错
+SELECT GREATEST(2, 'A', 12, 3, 16, 8, 9) A FROM DUAL;
+
+--参数全部为字符型
+SELECT GREATEST('A', 'B', 'C', 'D', 'E', 'F','G') A FROM DUAL;
+
+--参数全部为字符型，首字母相等
+SELECT GREATEST('A', 'B', 'C', 'D', 'E','GA', 'GAB') A FROM DUAL;
+
+--参数部分为字符型，会把非字符型转换成字符型（issue:LDB-3474）
+SELECT GREATEST('A', 6, 7, 5000, 'E', 'F','G') A FROM DUAL;
+
+--参数全部为时间类型
+SELECT GREATEST('2020-02-02','2014-08-01',TO_DATE('2014-09-01 00:00:00','YYYY-MM-DD')) A FROM DUAL;
+
+--参数个数较多（issue:LDB-3474）
+--SELECT greatest(10, 9, 2, 4, 3,345,342,12,43534,5463,34,2,2313,213,45,436,76,786,886,767,876,768,867,64,4,3,3,3,3,2,1,5,3,54,5,6,7,7,6,8) FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 --HASH
@@ -954,11 +979,41 @@ SELECT lcase('ABC DEF GHI IDis') FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 --LEAST
+
+--参数中有null值,第一个参数为null
+SELECT least(10, 9, 2, 4, 3,null) FROM Test_Builtin_Func_1 LIMIT 1; 
+
+--参数中有null值,任意参数为null
+SELECT least(null,10, 9, 2, 4, 3) FROM Test_Builtin_Func_1 LIMIT 1;
+
 SELECT least(10, null, 2, 4, 3) FROM Test_Builtin_Func_1 limit 1;
 
 SELECT least( null,null) FROM Test_Builtin_Func_1 limit 1;
 
+--参数中有函数floor()
+SELECT least(10,9,floor(3.4)) FROM Test_Builtin_Func_1 LIMIT 1;
+
+--参数中部分为数值型，隐式类型转换转成数值型（issue:LDB-3474）
+SELECT least(2, '5', 12, 3, 16, 8, 9) A FROM DUAL;
+
+--参数中部分为数值型，字符串不能通过隐式类型转换成数值型会报错
+SELECT least(2, 'A', 12, 3, 16, 8, 9) A FROM DUAL;
+
+--参数全部为字符型
+SELECT least('A', 'B', 'C', 'D', 'E', 'F','G') A FROM DUAL;
+
+--参数全部为字符型，首字母相等
+SELECT least('A', 'B', 'C', 'D', 'E','GA', 'GAB') A FROM DUAL;
+
+--参数部分为字符型，会把非字符型转换成字符型（issue:LDB-3474）
+SELECT least('A', 6, 7, 5000, 'E', 'F','G') A FROM DUAL;
+
+--参数全部为时间类型
+SELECT least('2020-02-02','2014-08-01',TO_DATE('2014-09-01 00:00:00','YYYY-MM-DD')) A FROM DUAL;
+
+--参数个数较多（issue:LDB-3474）
 SELECT least(10, -1, 2, 4, 3,32,45,667,-604823,325,534,6,45,3,4,43,43,15,7889) FROM Test_Builtin_Func_1 limit 1;
+--SELECT least(10, 9, 2, 4, 3,345,342,12,43534,5463,34,2,2313,213,45,436,76,786,886,767,876,768,867,64,4,3,3,3,3,2,1,5,3,54,5,6,7,7,6,8) FROM Test_Builtin_Func_1 LIMIT 1;
 
 
 --LEFT

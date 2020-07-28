@@ -1,0 +1,661 @@
+SQLCli Release 0.0.97
+SQL> connect admin/123456
+Database connected.
+SQL> start bucket/bucket_sort.sql
+SQL> --Description:partition
+   > --Date：2020-06-30
+   > --Author：阮娜
+SQL> SET ECHO ON
+SQL> SET TIMING ON
+Running time elapsed:      0.00 Seconds
+SQL> 
+SQL> -- 删除视图
+SQL> DROP VIEW V_BUC IF EXISTS;
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> DROP VIEW V_BUC_1 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> -- 删除表
+SQL> DROP TABLE T_BUC IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_INT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_BOOLEAN IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_CHAR IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_DATE IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_DECIMAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_DOUBLE IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_FLOAT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_NUMERIC IF EXISTS;
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE T_BUC_REAL IF EXISTS;
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> DROP TABLE T_BUC_SMALLINT IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_TIMESTAMP IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_VARCHAR IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_SORT2 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_SORT3 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE T_BUC_EX1 IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> DROP TABLE EX_PART_BUC IF EXISTS;
+0 rows affected
+Running time elapsed:      0.03 Seconds
+SQL> 
+SQL> -- 创建外部表，10条数据
+SQL> CREATE EXTERNAL TABLE EX_PART_BUC(TBIGINT BIGINT,TINT INT,TSMALLINT SMALLINT,TREAL REAL,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(10,2),TNUMERIC NUMERIC(10,4),TDATE DATE,TTIMESTAMP TIMESTAMP,TBOOL BOOLEAN,TCHAR CHAR(30),TVARCHAR VARCHAR(255))
+   > location ('HDFSRPC_URL/partition_bucket/partition_bucket.csv') FORMAT 'csv' (DELIMITER ',');
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE EX_PART_BUC(TBIGINT BIGINT,TINT INT,TSMALLINT SMALLINT,TREAL REAL,TDOUBLE DOUBLE,TFLOAT FLOAT,TDECIMAL DECIMAL(10,2),TNUMERIC NUMERIC(10,4),TDATE DATE,TTIMESTAMP TIMESTAMP,TBOOL BOOLEAN,TCHAR CHAR(30),TVARCHAR VARCHAR(255))
+REWROTED    > location ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-ruanna/partition_bucket/partition_bucket.csv') FORMAT 'csv' (DELIMITER ',')
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> 
+SQL> -- 创建分桶表，以int类型列排序
+SQL> CREATE TABLE T_BUC_INT (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 4 BUCKETS;
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_INT;
++-----------+-------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE     | CREATE_TABLE                                                                                                                        |
++-----------+-------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_INT | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_INT(A INTEGER,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 4 BUCKETS |
++-----------+-------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，2个分桶，一个桶有9条数据，一个桶有1条数据
+SQL> INSERT INTO T_BUC_INT SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.73 Seconds
+SQL> -- 查询表T_BUC_INT
+SQL> SELECT * FROM T_BUC_INT;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
++------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.27 Seconds
+SQL> 
+SQL> -- 创建分桶表，以VARCHAR类型排序
+SQL> CREATE TABLE T_BUC_BOOLEAN (A BOOLEAN, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (C) INTO 3 BUCKETS;
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_BOOLEAN;
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE         | CREATE_TABLE                                                                                                                            |
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_BOOLEAN | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_BOOLEAN(A BOOLEAN,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (C) INTO 3 BUCKETS |
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，2个分桶，一个桶4条false数据，一个桶6条true数据
+SQL> INSERT INTO T_BUC_BOOLEAN SELECT TBOOL, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.81 Seconds
+SQL> -- 查询表T_BUC_BOOLEAN
+SQL> SELECT * FROM T_BUC_BOOLEAN;
++-------+---------+------------------------------------------------------------------------------------------------------+
+| A     | B       | C                                                                                                    |
++-------+---------+------------------------------------------------------------------------------------------------------+
+| False | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| False | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| False | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| False | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| True  | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| True  | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| True  | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| True  | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| True  | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| True  | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
++-------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.32 Seconds
+SQL> 
+SQL> -- 创建分桶表，以char类型排序
+SQL> CREATE TABLE T_BUC_CHAR (A CHAR(30), B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 2 BUCKETS;
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_CHAR;
++------------+---------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE      | CREATE_TABLE                                                                                                                          |
++------------+---------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_CHAR | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_CHAR(A CHAR(30),B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 2 BUCKETS |
++------------+---------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，分桶字段值全都一致，1个分桶
+SQL> INSERT INTO T_BUC_CHAR SELECT TCHAR, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.74 Seconds
+SQL> -- 查询表T_BUC_CHAR
+SQL> SELECT * FROM T_BUC_CHAR;
++--------------------------------+---------+------------------------------------------------------------------------------------------------------+
+| A                              | B       | C                                                                                                    |
++--------------------------------+---------+------------------------------------------------------------------------------------------------------+
+| abcdefghijklmnopqrstuvwxyzabcd | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| abcdefghijklmnopqrstuvwxyzabcd | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| abcdefghijklmnopqrstuvwxyzabcd | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| abcdefghijklmnopqrstuvwxyzabcd | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| abcdefghijklmnopqrstuvwxyzabcd | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| abcdefghijklmnopqrstuvwxyzabcd | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| abcdefghijklmnopqrstuvwxyzabcd | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| abcdefghijklmnopqrstuvwxyzabcd | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| abcdefghijklmnopqrstuvwxyzabcd | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| abcdefghijklmnopqrstuvwxyzabcd | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
++--------------------------------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.27 Seconds
+SQL> 
+SQL> -- 创建分桶表，以date类型排序
+SQL> CREATE TABLE T_BUC_DATE (A DATE, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 1 BUCKETS;
+0 rows affected
+Running time elapsed:      0.05 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_DATE;
++------------+-----------------------------------------------------------------------------------------------------------------------------------+
+| TABLE      | CREATE_TABLE                                                                                                                      |
++------------+-----------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_DATE | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_DATE(A DATE,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 1 BUCKETS |
++------------+-----------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，1个分桶
+SQL> INSERT INTO T_BUC_DATE SELECT TDATE, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.65 Seconds
+SQL> -- 查询表T_BUC_DATE
+SQL> SELECT * FROM T_BUC_DATE;
++------------+---------+------------------------------------------------------------------------------------------------------+
+| A          | B       | C                                                                                                    |
++------------+---------+------------------------------------------------------------------------------------------------------+
+| 1980-12-17 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 1981-5-1   | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 1981-6-9   | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 1981-9-8   | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1981-9-28  | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 1981-12-3  | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 1981-12-3  | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 1982-1-23  | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 1989-12-18 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 1998-7-21  | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
++------------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.28 Seconds
+SQL> 
+SQL> -- 创建分桶表，以decimal类型排序
+SQL> CREATE TABLE T_BUC_DECIMAL (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (B) SORTED BY (B) INTO 5 BUCKETS;
+0 rows affected
+Running time elapsed:      0.06 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_DECIMAL;
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE         | CREATE_TABLE                                                                                                                            |
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_DECIMAL | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_DECIMAL(A INTEGER,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (B) SORTED BY (B) INTO 5 BUCKETS |
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，10条数据平均分到5个桶
+SQL> INSERT INTO T_BUC_DECIMAL SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.89 Seconds
+SQL> -- 查询表T_BUC_DECIMAL
+SQL> SELECT * FROM T_BUC_DECIMAL;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
++------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.40 Seconds
+SQL> 
+SQL> -- 创建分桶表，以double类型排序
+SQL> CREATE TABLE T_BUC_DOUBLE (A DOUBLE, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 10 BUCKETS;
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_DOUBLE;
++--------------+----------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE        | CREATE_TABLE                                                                                                                           |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_DOUBLE | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_DOUBLE(A DOUBLE,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 10 BUCKETS |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，10条数据非平均分到5个桶
+SQL> INSERT INTO T_BUC_DOUBLE SELECT TDOUBLE, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.96 Seconds
+SQL> -- 查询表T_BUC_DOUBLE
+SQL> SELECT * FROM T_BUC_DOUBLE;
++---------+---------+------------------------------------------------------------------------------------------------------+
+| A       | B       | C                                                                                                    |
++---------+---------+------------------------------------------------------------------------------------------------------+
+| 3797.61 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 3575.2  | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 3824.37 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 3867.12 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 2042.85 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 4740.62 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 1108.07 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1169.82 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 2690.46 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 9896.61 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
++---------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.49 Seconds
+SQL> 
+SQL> -- 创建分桶表，以float类型排序
+SQL> CREATE TABLE T_BUC_FLOAT (A FLOAT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 6 BUCKETS;
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_FLOAT;
++-------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE       | CREATE_TABLE                                                                                                                        |
++-------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_FLOAT | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_FLOAT(A FLOAT,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 6 BUCKETS |
++-------------+-------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，10条数据非平均分到5个桶
+SQL> INSERT INTO T_BUC_FLOAT SELECT TFLOAT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.94 Seconds
+SQL> -- 查询表T_BUC_FLOAT
+SQL> SELECT * FROM T_BUC_FLOAT;
++---------+---------+------------------------------------------------------------------------------------------------------+
+| A       | B       | C                                                                                                    |
++---------+---------+------------------------------------------------------------------------------------------------------+
+| 2946.04 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 412.9   | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 2608.45 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 5296.49 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 8639.29 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 9506.85 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 2592.84 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 1169.33 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1937.72 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 6490.95 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
++---------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.38 Seconds
+SQL> 
+SQL> -- 创建分桶表，以NUMERIC类型排序
+SQL> CREATE TABLE T_BUC_NUMERIC (A NUMERIC(10,4), B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 7 BUCKETS;
+0 rows affected
+Running time elapsed:      0.10 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_NUMERIC;
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE         | CREATE_TABLE                                                                                                                                  |
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_NUMERIC | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_NUMERIC(A NUMERIC(10,4),B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 7 BUCKETS |
++---------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，分桶字段值有null，4个分桶
+SQL> INSERT INTO T_BUC_NUMERIC SELECT TNUMERIC, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.83 Seconds
+SQL> -- 查询表T_BUC_NUMERIC
+SQL> SELECT * FROM T_BUC_NUMERIC;
++-----------+---------+------------------------------------------------------------------------------------------------------+
+| A         | B       | C                                                                                                    |
++-----------+---------+------------------------------------------------------------------------------------------------------+
+| <null>    | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| <null>    | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 5972.95   | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 2946.5426 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 2946.5426 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 2963.901  | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 9869.2003 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 3846.5961 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 3846.5961 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 6167.0253 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
++-----------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.39 Seconds
+SQL> 
+SQL> -- 创建分桶表，以REAL类型排序
+SQL> CREATE TABLE T_BUC_REAL (A REAL, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 8 BUCKETS;
+0 rows affected
+Running time elapsed:      0.11 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_REAL;
++------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE      | CREATE_TABLE                                                                                                                        |
++------------+-------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_REAL | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_REAL(A DOUBLE,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 8 BUCKETS |
++------------+-------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，6个分桶
+SQL> INSERT INTO T_BUC_REAL SELECT TREAL, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.08 Seconds
+SQL> -- 查询表T_BUC_REAL
+SQL> SELECT * FROM T_BUC_REAL;
++---------+---------+------------------------------------------------------------------------------------------------------+
+| A       | B       | C                                                                                                    |
++---------+---------+------------------------------------------------------------------------------------------------------+
+| 5537.86 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 3036.58 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7724.82 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 296.58  | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 2829.49 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 2963.33 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 3487.25 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 8901.04 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 345.41  | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 9931.54 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
++---------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.59 Seconds
+SQL> 
+SQL> -- 创建分桶表，以SMALLINT类型排序
+SQL> CREATE TABLE T_BUC_SMALLINT (A SMALLINT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 9 BUCKETS;
+0 rows affected
+Running time elapsed:      0.68 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_SMALLINT;
++----------------+-------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE          | CREATE_TABLE                                                                                                                              |
++----------------+-------------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_SMALLINT | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_SMALLINT(A SMALLINT,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 9 BUCKETS |
++----------------+-------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据
+SQL> INSERT INTO T_BUC_SMALLINT SELECT TSMALLINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.93 Seconds
+SQL> -- 查询表T_BUC_SMALLINT
+SQL> SELECT * FROM T_BUC_SMALLINT;
++----+---------+------------------------------------------------------------------------------------------------------+
+| A  | B       | C                                                                                                    |
++----+---------+------------------------------------------------------------------------------------------------------+
+| 10 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 10 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 10 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 20 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 30 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 30 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 30 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 30 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 30 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 30 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
++----+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.39 Seconds
+SQL> 
+SQL> -- 创建分桶表，以TIMESTAMP类型排序
+SQL> CREATE TABLE T_BUC_TIMESTAMP (A TIMESTAMP, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 13 BUCKETS;
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_TIMESTAMP;
++-----------------+----------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE           | CREATE_TABLE                                                                                                                                 |
++-----------------+----------------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_TIMESTAMP | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_TIMESTAMP(A TIMESTAMP,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A) INTO 13 BUCKETS |
++-----------------+----------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，8个分桶
+SQL> INSERT INTO T_BUC_TIMESTAMP SELECT TTIMESTAMP, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.01 Seconds
+SQL> -- 查询表T_BUC_TIMESTAMP
+SQL> SELECT * FROM T_BUC_TIMESTAMP;
++---------------------+---------+------------------------------------------------------------------------------------------------------+
+| A                   | B       | C                                                                                                    |
++---------------------+---------+------------------------------------------------------------------------------------------------------+
+| 2027-04-17 04:52:37 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 2034-07-06 17:55:27 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 2028-09-24 20:44:53 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 2027-01-10 13:04:17 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 2048-04-12 17:48:56 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 2045-10-31 11:25:51 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 1986-08-19 19:45:36 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 2033-09-24 12:24:45 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 1998-01-23 20:58:41 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 2034-12-31 09:06:46 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
++---------------------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.64 Seconds
+SQL> 
+SQL> -- 创建分桶表，以BOOL类型列分桶
+SQL> CREATE TABLE T_BUC_VARCHAR (A BOOLEAN , B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (C) SORTED BY (A) INTO 997 BUCKETS;
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_VARCHAR;
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE         | CREATE_TABLE                                                                                                                              |
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_VARCHAR | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_VARCHAR(A BOOLEAN,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (C) SORTED BY (A) INTO 997 BUCKETS |
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，9个分桶
+SQL> INSERT INTO T_BUC_VARCHAR SELECT TBOOL, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      1.09 Seconds
+SQL> -- 查询表T_BUC_VARCHAR
+SQL> SELECT * FROM T_BUC_VARCHAR;
++-------+---------+------------------------------------------------------------------------------------------------------+
+| A     | B       | C                                                                                                    |
++-------+---------+------------------------------------------------------------------------------------------------------+
+| False | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| True  | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| False | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| False | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| True  | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| True  | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| True  | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| True  | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| True  | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| False | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
++-------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:     14.73 Seconds
+SQL> 
+SQL> -- 创建以2个字段排序的分桶表
+SQL> CREATE TABLE T_BUC_SORT2 (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A, B) INTO 4 BUCKETS;
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_SORT2;
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE       | CREATE_TABLE                                                                                                                            |
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_SORT2 | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_SORT2(A INTEGER,B DECIMAL(10,2),C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (A,B) INTO 4 BUCKETS |
++-------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，2个分桶
+SQL> INSERT INTO T_BUC_SORT2 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.85 Seconds
+SQL> -- 查询表T_BUC_SORT2
+SQL> SELECT * FROM T_BUC_SORT2;
++------+---------+------------------------------------------------------------------------------------------------------+
+| A    | B       | C                                                                                                    |
++------+---------+------------------------------------------------------------------------------------------------------+
+| 7782 | 5468.79 | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 7566 | 2106.95 | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7698 | 2136.13 | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7698 | 4784.35 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5201.08 | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 5509.15 | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5546.49 | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7839 | 442.02  | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7839 | 3207.93 | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08 | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
++------+---------+------------------------------------------------------------------------------------------------------+
+10 rows selected.
+Running time elapsed:      0.34 Seconds
+SQL> 
+SQL> -- 创建以全部列字段排序的分桶表
+SQL> CREATE TABLE T_BUC_SORT3 (A INT, B SMALLINT , C BIGINT) CLUSTERED BY (A) SORTED BY (A, B, C) INTO 4 BUCKETS;
+0 rows affected
+Running time elapsed:      0.09 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_SORT3;
++-------------+--------------------------------------------------------------------------------------------------------------------------------+
+| TABLE       | CREATE_TABLE                                                                                                                   |
++-------------+--------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_SORT3 | CREATE TABLE IF NOT EXISTS PUBLIC.T_BUC_SORT3(A INTEGER,B SMALLINT,C BIGINT) CLUSTERED BY (A) SORTED BY (A,B,C) INTO 4 BUCKETS |
++-------------+--------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，2个分桶
+SQL> INSERT INTO T_BUC_SORT3 SELECT TINT, TSMALLINT, TBIGINT FROM EX_PART_BUC;
+10 rows affected
+Running time elapsed:      0.85 Seconds
+SQL> -- 查询表T_BUC_SORT2
+SQL> SELECT * FROM T_BUC_SORT3;
++------+----+---------+
+| A    | B  | C       |
++------+----+---------+
+| 7782 | 10 | 1000001 |
+| 7566 | 20 | 1000002 |
+| 7698 | 10 | 1000009 |
+| 7698 | 10 | 1000010 |
+| 7698 | 30 | 1000003 |
+| 7698 | 30 | 1000004 |
+| 7698 | 30 | 1000005 |
+| 7839 | 30 | 1000006 |
+| 7839 | 30 | 1000007 |
+| 7839 | 30 | 1000008 |
++------+----+---------+
+10 rows selected.
+Running time elapsed:      0.38 Seconds
+SQL> 
+SQL> -- 创建以不存在字段排序的分桶表
+SQL> CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (D) INTO 4 BUCKETS;
+java.sql.SQLSyntaxErrorException: unexpected token: invalided column D in statement [CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (D) INTO 4 BUCKETS]
+Running time elapsed:      0.00 Seconds
+SQL> -- SORTED拼写错误
+SQL> CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORT BY (B) INTO 4 BUCKETS;
+java.sql.SQLSyntaxErrorException: unexpected token: SORT required: INTO in statement [CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORT BY (B) INTO 4 BUCKETS]
+Running time elapsed:      0.00 Seconds
+SQL> -- 缺失括号
+SQL> CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY B INTO 4 BUCKETS;
+java.sql.SQLSyntaxErrorException: unexpected token: B required: ( in statement [CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY B INTO 4 BUCKETS]
+Running time elapsed:      0.00 Seconds
+SQL> -- SORTED BY位置错误
+SQL> CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) INTO 4 BUCKETS SORTED BY (B);
+java.sql.SQLSyntaxErrorException: unexpected token: SORTED in statement [CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) INTO 4 BUCKETS SORTED BY (B)]
+Running time elapsed:      0.00 Seconds
+SQL> -- 缺失BY
+SQL> CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED (B) INTO 4 BUCKETS;
+java.sql.SQLSyntaxErrorException: unexpected token: ( required: BY in statement [CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED (B) INTO 4 BUCKETS]
+Running time elapsed:      0.00 Seconds
+SQL> -- 创建以多个字段排序的分桶表
+SQL> CREATE TABLE T_BUC (A INT, B DECIMAL(10,2), C VARCHAR(255)) CLUSTERED BY (A) SORTED BY (B, C) INTO 4 BUCKETS;
+0 rows affected
+Running time elapsed:      0.08 Seconds
+SQL> 
+SQL> -- 创建外部分桶表T_BUC_EX1
+SQL> CREATE EXTERNAL TABLE T_BUC_EX1(TINT INT,TDECIMAL DECIMAL(10,2),TVARCHAR VARCHAR(255))
+   > LOCATION ('HDFSRPC_URL/partition_bucket1') FORMAT 'csv' (DELIMITER ',') CLUSTERED BY (TINT) SORTED BY (TINT) INTO 4 BUCKETS;
+REWROTED SQL> Your SQL has been changed to:
+REWROTED    > CREATE EXTERNAL TABLE T_BUC_EX1(TINT INT,TDECIMAL DECIMAL(10,2),TVARCHAR VARCHAR(255))
+REWROTED    > LOCATION ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-ruanna/partition_bucket1') FORMAT 'csv' (DELIMITER ',') CLUSTERED BY (TINT) SORTED BY (TINT) INTO 4 BUCKETS
+0 rows affected
+Running time elapsed:      0.07 Seconds
+SQL> -- 查看创建表的ddl
+SQL> SHOW CREATE TABLE T_BUC_EX1;
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TABLE     | CREATE_TABLE                                                                                                                                                                                                                                                                                             |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| T_BUC_EX1 | CREATE EXTERNAL TABLE IF NOT EXISTS PUBLIC.T_BUC_EX1(TINT INTEGER,TDECIMAL DECIMAL(10,2),TVARCHAR VARCHAR(255)) LOCATION ('hdfs://node73:8020/user/testdb73/jenkins/work/linkoopdb-sql-test-ruanna/partition_bucket1') FORMAT 'csv' (DELIMITER ',' ) CLUSTERED BY (TINT) SORTED BY (TINT) INTO 4 BUCKETS |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row selected.
+Running time elapsed:      0.00 Seconds
+SQL> -- 插入数据，2个分桶
+SQL> INSERT INTO T_BUC_EX1 SELECT TINT, TDECIMAL, TVARCHAR FROM EX_PART_BUC; 
+20 rows affected
+Running time elapsed:      0.61 Seconds
+SQL> -- 查询表T_BUC_EX1
+SQL> SELECT * FROM T_BUC_EX1;
++------+----------+------------------------------------------------------------------------------------------------------+
+| TINT | TDECIMAL | TVARCHAR                                                                                             |
++------+----------+------------------------------------------------------------------------------------------------------+
+| 7566 | 2106.95  | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7698 | 5201.08  | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35  | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15  | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5546.49  | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13  | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7839 | 3207.93  | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08  | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7839 | 442.02   | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7566 | 2106.95  | T9oP1tEEw4I85RFHX4MUnw0JWnO1TI21Dm8RFnknjIB                                                          |
+| 7698 | 5201.08  | sI5kjlaWflJDMA6e3rWZplFnKCSObDxUt9AV                                                                 |
+| 7698 | 4784.35  | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7698 | 5509.15  | o8b6aIqJwkdYGCfwOKvdorrh5DmlugoTESOexlDOI53uUyYeFrXaeSSdOwiv4AY8LzHeaRHEKg5iSbGFLDRDq3Rd4oDgggyDBFm3 |
+| 7839 | 3207.93  | 64d5uZovFhCv8mZPz8Rc2Dz7OmA29hWAYiNOLDaqVBRgRbweACRHMj2ShVddhA                                       |
+| 7839 | 7676.08  | HOZ9esgErLL9m6V952H2I5WG07thtDCPAFldiD4FvUJqvKrO60ApBgA                                              |
+| 7839 | 442.02   | PwPuzd0JZUBJMUBbMtRBUwOIF9MO6iYd0Bagf4oERj6w8Rt1RxKonj                                               |
+| 7698 | 5546.49  | dRjG33kXpT8cM0FCOMYyn9jvuefrc                                                                        |
+| 7698 | 2136.13  | 2pngVLiHPk3gIE07ISn                                                                                  |
+| 7782 | 5468.79  | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
+| 7782 | 5468.79  | NRHDqobzUJxjRXDBKtb4rJwlNJB6R0YFI71h                                                                 |
++------+----------+------------------------------------------------------------------------------------------------------+
+20 rows selected.
+Running time elapsed:      0.15 Seconds
+Running time elapsed:     35.72 Seconds
+SQL> exit
+Disconnected.
