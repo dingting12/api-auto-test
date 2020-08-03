@@ -5,7 +5,8 @@
 -- 10.1 用户自定义函数(UDF)
 drop jar 'testUdf-0.0.1-SNAPSHOT.jar';
 
-add jar '$TEST_ROOT/regression/sql/doc/testUdf-0.0.1-SNAPSHOT.jar' not check exists;
+--add jar '$TEST_ROOT/regression/sql/doc/testUdf-0.0.1-SNAPSHOT.jar' not check exists;
+add jar 'F:\自动化测试\linkoop-auto-test\linkoopdb\regression\sql\doc\testUdf-0.0.1-SNAPSHOT.jar' not check exists;
 
 drop function function_test_int if exists;
 

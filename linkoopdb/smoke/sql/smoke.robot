@@ -60,7 +60,7 @@ SMOKETEST
 
 PrivilegeTest
 	[Documentation]    基本安全与授权测试
-    [Tags]     PRIVILEGE
+    [Tags]    SMOKE  PRIVILEGE
 	LOgon And Execute SQL Script     admin/123456  ../test/CORE_基本安全与授权/E081-01 SELECT privilege at the table level.sql                                                            E081-01 SELECT privilege at the table level.log
 	Compare Files        E081-01 SELECT privilege at the table level.log        										../test/CORE_基本安全与授权/E081-01 SELECT privilege at the table level.ref
 
@@ -102,7 +102,7 @@ BaseDataTest
 
 SystemSchemaTest
 	[Documentation]    系统信息schema测试
-    [Tags]     SYSTABLE
+    [Tags]   SMOKE  SYSTABLE
 	LOgon And Execute SQL Script     admin/123456  ../test/CORE_系统信息schema/F021 在系统表中标注schema是否大小写敏感.sql                                                                F021 在系统表中标注schema是否大小写敏感.log
 	Compare Files        F021 在系统表中标注schema是否大小写敏感.log    												../test/CORE_系统信息schema/F021 在系统表中标注schema是否大小写敏感.ref
 
@@ -244,7 +244,7 @@ QueryTest
 
 JoinTest
 	[Documentation]    基础JOIN测试
-    [Tags]     JOIN
+    [Tags]    SMOKE   JOIN
 	LOgon And Execute SQL Script     admin/123456  ../test/CORE_基础JOIN/F041-01 Inner join (but not necessarily the INNER keyword).sql                                                   F041-01 Inner join (but not necessarily the INNER keyword).log
 	Compare Files        F041-01 Inner join (but not necessarily the INNER keyword).log                  				../test/CORE_基础JOIN/F041-01 Inner join (but not necessarily the INNER keyword).ref
 
@@ -271,7 +271,7 @@ JoinTest
 
 DataTypeTest
 	[Documentation]    数据类型测试
-    [Tags]     DATATYPE
+    [Tags]   SMOKE    DATATYPE
 	LOgon And Execute SQL Script     admin/123456  ../test/CORE_数据类型/E011-04 Arithmetic operators.sql                                                                                 E011-04 Arithmetic operators.log
      Compare Files   	 E011-04 Arithmetic operators.log                                              					../test/CORE_数据类型/E011-04 Arithmetic operators.ref
 
@@ -313,7 +313,7 @@ DataTypeTest
 
 SetFunctionTest
 	[Documentation]    集合函数测试
-    [Tags]     FUNCTION
+    [Tags]     SMOKE   FUNCTION
 	LOgon And Execute SQL Script     admin/123456  ../test/CORE_集合函数/E091-01 AVG.sql                                                                                                  E091-01 AVG.log
 	Compare Files        E091-01 AVG.log                  																../test/CORE_集合函数/E091-01 AVG.ref
 
@@ -335,7 +335,7 @@ SetFunctionTest
 
 StatisticsTest
 	[Documentation]    Statistics采集测试
-    [Tags]     SMOKE
+    [Tags]     SMOKE 
 	LOgon And Execute SQL Script     admin/123456  ../test/LDB_EXT_Statistics_采集/LDBX001 ANALYZE statement to collect statistics.sql                                                    LDBX001 ANALYZE statement to collect statistics.log
 	Compare Files        LDBX001 ANALYZE statement to collect statistics.log    										../test/LDB_EXT_Statistics_采集/LDBX001 ANALYZE statement to collect statistics.ref
 
@@ -350,7 +350,7 @@ StatisticsTest
 
 ExternalTabTest
 	[Documentation]    External_Table测试
-    [Tags]     EXTERNAL
+    [Tags]     SMOKE   EXTERNAL
 	LOgon And Execute SQL Script     admin/123456  ../test/LDB_EXT_External_Table/LDBX022-07 alter external table statement.sql                                                           LDBX022-07 alter external table statement.log
 	Compare Files        LDBX022-07 alter external table statement.log    												../test/LDB_EXT_External_Table/LDBX022-07 alter external table statement.ref
 
